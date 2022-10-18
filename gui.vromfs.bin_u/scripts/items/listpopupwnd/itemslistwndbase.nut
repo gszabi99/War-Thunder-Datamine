@@ -1,13 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let stdMath = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.ItemsListWndBase <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ItemsListWndBase <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/universalSpareApplyWnd"
 
@@ -25,7 +19,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
       align = align
       position = "50%pw-50%w, 50%ph-50%h"
-      hasPopupMenuArrow = checkObj(alignObj)
+      hasPopupMenuArrow = ::check_obj(alignObj)
     }
   }
 
@@ -33,22 +27,22 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     setCurItem(itemsList[0])
     updateWndAlign()
-    this.guiScene.performDelayed(this, @() this.guiScene.performDelayed(this, function() {
-      if (this.scene.isValid())
-        ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    guiScene.performDelayed(this, @() guiScene.performDelayed(this, function() {
+      if (scene.isValid())
+        ::move_mouse_on_child_by_value(scene.findObject("items_list"))
     }))
   }
 
   function updateWndAlign()
   {
-    if (checkObj(alignObj))
-      align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, this.scene.findObject("frame_obj"))
+    if (::check_obj(alignObj))
+      align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("frame_obj"))
   }
 
   function setCurItem(item)
   {
     curItem = item
-    this.scene.findObject("header_text").setValue(curItem.getName())
+    scene.findObject("header_text").setValue(curItem.getName())
   }
 
   function onItemSelect(obj)

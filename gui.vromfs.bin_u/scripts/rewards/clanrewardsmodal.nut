@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-let function isRewardBest(medal, clanData) {
+let function isRewardBest (medal, clanData)
+{
   if((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
     foreach(reward in clanData.clanBestRewards)
       if(::u.isEqual(reward, medal.bestRewardsConfig))
@@ -43,7 +36,7 @@ let function isRewardVisible (medal, clanData)
     maxClanBestRewards = ::get_warpoints_blk()?.maxClanBestRewards ?? maxClanBestRewards
     let blocksCount = rewards.len() > 3 ? 2 : 1
     let myClanRights = ::g_clans.getMyClanRights()
-    canEditBestRewards = clanId == ::clan_get_my_clan_id() && isInArray("CHANGE_INFO", myClanRights)
+    canEditBestRewards = clanId == ::clan_get_my_clan_id() && ::isInArray("CHANGE_INFO", myClanRights)
     return {
       width = blocksCount + "@unlockBlockWidth + " + (blocksCount - 1) + "@framePadding"
       isEditable = canEditBestRewards
@@ -62,7 +55,7 @@ let function isRewardVisible (medal, clanData)
   function initScreen()
   {
     fillBestRewardsIds()
-    ::move_mouse_on_child(this.scene.findObject("rewards_list"), 0)
+    ::move_mouse_on_child(scene.findObject("rewards_list"), 0)
   }
 
   function fillBestRewardsIds()
@@ -96,18 +89,18 @@ let function isRewardVisible (medal, clanData)
 
   function onBestRewardSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::checkObj(obj))
       return
 
     let isChecked = obj.getValue()
     if(bestIds.len() == maxClanBestRewards && isChecked)
     {
       obj.setValue(false)
-      obj.tooltip = loc("clan/clan_awards/hint/favoritesLimit")
-      ::g_popups.add(null, loc("clan/clan_awards/hint/favoritesLimit"))
+      obj.tooltip = ::loc("clan/clan_awards/hint/favoritesLimit")
+      ::g_popups.add(null, ::loc("clan/clan_awards/hint/favoritesLimit"))
       return
     }
-    obj.tooltip = loc(isChecked
+    obj.tooltip = ::loc(isChecked
       ? "mainmenu/UnlockAchievementsRemoveFromFavorite/hint"
       : "mainmenu/UnlockAchievementsToFavorite/hint")
     updateBestRewardsIds(obj.id, isChecked)
@@ -120,7 +113,7 @@ let function isRewardVisible (medal, clanData)
       return
 
     let taskId = ::char_send_custom_action("cln_set_clan_best_rewards",
-      EATT_SIMPLE_OK,
+      ::EATT_SIMPLE_OK,
       ::DataBlock(),
       ::json_to_string({clanId = clanId, bestRewards = getBestRewardsConfig()}, false),
       -1)
@@ -136,7 +129,7 @@ let function isRewardVisible (medal, clanData)
       return
 
     let checkBoxObj = obj.getChild(idx).findObject("reward_"+idx)
-    if (!checkObj(checkBoxObj))
+    if (!::check_obj(checkBoxObj))
       return
 
     checkBoxObj.setValue(!checkBoxObj.getValue())

@@ -1,14 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { debug_dump_stack } = require("dagor.debug")
 
 ::gui_handlers.clanChangeMembershipReqWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -48,20 +40,20 @@ let { debug_dump_stack } = require("dagor.debug")
   function initScreen()
   {
     if ( !clanData )
-      return this.goBack()
+      return goBack()
     reinitScreen()
   }
 
   function reinitScreen()
   {
     let container = ::create_options_container("optionslist", optionItems, true, 0.5, false)
-    this.guiScene.replaceContentFromText("contentBody", container.tbl, container.tbl.len(), this)
+    guiScene.replaceContentFromText("contentBody", container.tbl, container.tbl.len(), this)
 
     local option = ::get_option(::USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
-    minRankCondTypeObject = this.scene.findObject(option.id)
+    minRankCondTypeObject = scene.findObject(option.id)
 
     option = ::get_option(::USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP)
-    autoAcceptMembershipObject = this.scene.findObject(option.id)
+    autoAcceptMembershipObject = scene.findObject(option.id)
     autoAcceptMembershipObject.setValue(clanData.autoAcceptMembership)
 
     loadRequirementsBattles( clanData.membershipRequirements )
@@ -70,13 +62,13 @@ let { debug_dump_stack } = require("dagor.debug")
     recalcMinRankCondTypeSwitchState()
 
     let isMembershipAccptanceEnabled = clanMembershipAcceptance.getValue(clanData)
-    this.scene.findObject("membership_acceptance_checkbox").setValue(isMembershipAccptanceEnabled)
+    scene.findObject("membership_acceptance_checkbox").setValue(isMembershipAccptanceEnabled)
   }
 
   function loadRequirementsBattles( rawClanMemberRequirementsBlk )
   {
     foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != EGD_NONE)
+      if (diff.egdCode != ::EGD_NONE)
       {
         let option = ::get_option(diff.clanReqOption)
         let modeName = diff.getEgdName(false)
@@ -86,7 +78,7 @@ let { debug_dump_stack } = require("dagor.debug")
           battlesRequired = req.getInt("count", 0)
 
         let optIdx = option.values.indexof(battlesRequired) ?? 0
-        this.scene.findObject(option.id).setValue(optIdx)
+        scene.findObject(option.id).setValue(optIdx)
       }
   }
 
@@ -98,8 +90,8 @@ let { debug_dump_stack } = require("dagor.debug")
       if (!unitType.isAvailable())
         continue
 
-      let obj = this.scene.findObject("rankReq" + unitType.name)
-      if (!checkObj(obj))
+      let obj = scene.findObject("rankReq" + unitType.name)
+      if (!::check_obj(obj))
         continue
 
       local ranksRequired = 0
@@ -121,8 +113,8 @@ let { debug_dump_stack } = require("dagor.debug")
       if (!unitType.isAvailable())
         continue
 
-      let obj = this.scene.findObject("rankReq" + unitType.name)
-      if (!checkObj(obj))
+      let obj = scene.findObject("rankReq" + unitType.name)
+      if (!::check_obj(obj))
         continue
 
       let ranksRequired = obj.getValue()
@@ -137,10 +129,10 @@ let { debug_dump_stack } = require("dagor.debug")
   {
     local nonEmptyBattlesReqCount = 0
     foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != EGD_NONE)
+      if (diff.egdCode != ::EGD_NONE)
       {
         let option = ::get_option(diff.clanReqOption)
-        let optIdx = this.scene.findObject(option.id).getValue()
+        let optIdx = scene.findObject(option.id).getValue()
         if (optIdx > 0)
           nonEmptyBattlesReqCount++
       }
@@ -174,7 +166,7 @@ let { debug_dump_stack } = require("dagor.debug")
     if (gotChanges)
       sendRequirementsToChar(newRequirements, autoAcceptMembershipObject.getValue())
     else
-      this.goBack()
+      goBack()
   }
 
   function fillRequirements( newRequirements )
@@ -197,7 +189,7 @@ let { debug_dump_stack } = require("dagor.debug")
       return true;
 
     let errText = format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
-    debug_dump_stack()
+    callstack()
     ::script_net_assert_once("bad clan requirements", errText)
     return false
   }
@@ -213,8 +205,8 @@ let { debug_dump_stack } = require("dagor.debug")
       if (!unitType.isAvailable())
         continue
 
-      let obj = this.scene.findObject("rankReq" + unitType.name)
-      if (!checkObj(obj))
+      let obj = scene.findObject("rankReq" + unitType.name)
+      if (!::check_obj(obj))
         continue
 
       let rankVal = obj.getValue()
@@ -239,11 +231,11 @@ let { debug_dump_stack } = require("dagor.debug")
   function appendRequirementsBattles( newRequirements )
   {
     foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != EGD_NONE)
+      if (diff.egdCode != ::EGD_NONE)
       {
         let option = ::get_option(diff.clanReqOption)
         let modeName = diff.getEgdName(false);
-        let battleReqVal = option.values[this.scene.findObject(option.id).getValue()];
+        let battleReqVal = option.values[scene.findObject(option.id).getValue()];
 
         if ( battleReqVal > 0 )
         {
@@ -258,7 +250,7 @@ let { debug_dump_stack } = require("dagor.debug")
 
   function sendRequirementsToChar( newRequirements, autoAccept )
   {
-    let resultCB = Callback((@(newRequirements, autoAccept) function() {
+    let resultCB = ::Callback((@(newRequirements, autoAccept) function() {
       clanData.membershipRequirements = newRequirements;
       clanData.autoAcceptMembership = autoAccept;
 
@@ -266,10 +258,10 @@ let { debug_dump_stack } = require("dagor.debug")
         owner.reinitClanWindow()
 
       ::broadcastEvent("ClanRquirementsChanged")
-      this.goBack()
+      goBack()
     })(newRequirements, autoAccept), this )
 
-    let taskId = ::clan_request_set_membership_requirements(clanData.id, newRequirements, autoAccept)
+    let taskId = clan_request_set_membership_requirements(clanData.id, newRequirements, autoAccept)
 
     ::g_tasker.addTask(taskId, {showProgressBox = true}, resultCB)
   }
@@ -279,14 +271,14 @@ let { debug_dump_stack } = require("dagor.debug")
     clanMembershipAcceptance.setValue(clanData, obj.getValue(), this)
   }
 
-  function onEventClanInfoUpdate(_p)
+  function onEventClanInfoUpdate(p)
   {
     if (clanData.id != ::clan_get_my_clan_id())
       return
 
     clanData = ::my_clan_info
     if (!clanData)
-      return this.goBack()
+      return goBack()
 
     reinitScreen()
   }
@@ -298,7 +290,7 @@ let { debug_dump_stack } = require("dagor.debug")
 
     clanData = ::get_clan_info_table()
     if (!clanData)
-      return this.goBack()
+      return goBack()
 
     reinitScreen()
   }

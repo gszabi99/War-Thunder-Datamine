@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { setPollBaseUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
@@ -32,18 +24,18 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 
 ::gui_start_unlock_wnd <- function gui_start_unlock_wnd(config)
 {
-  let unlockType = getTblValue("type", config, -1)
-  if (unlockType == UNLOCKABLE_COUNTRY)
+  let unlockType = ::getTblValue("type", config, -1)
+  if (unlockType == ::UNLOCKABLE_COUNTRY)
   {
-    if (isInArray(config.id, shopCountriesList))
+    if (::isInArray(config.id, shopCountriesList))
       return checkRankUpWindow(config.id, -1, 1, config)
     return false
   }
   else if (unlockType == "TournamentReward")
     return ::gui_handlers.TournamentRewardReceivedWnd.open(config)
-  else if (unlockType == UNLOCKABLE_AIRCRAFT)
+  else if (unlockType == ::UNLOCKABLE_AIRCRAFT)
   {
-    if (!hasFeature("Tanks") && ::getAircraftByName(config?.id)?.isTank())
+    if (!::has_feature("Tanks") && ::getAircraftByName(config?.id)?.isTank())
       return false
   }
 
@@ -80,20 +72,20 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     if (!config)
       return
 
-    this.guiScene.setUpdatesEnabled(false, false)
-    this.scene.findObject("award_name").setValue(config.name)
+    guiScene.setUpdatesEnabled(false, false)
+    scene.findObject("award_name").setValue(config.name)
 
-    if (getTblValue("type", config, -1) == UNLOCKABLE_AIRCRAFT || "unitName" in config)
+    if (::getTblValue("type", config, -1) == ::UNLOCKABLE_AIRCRAFT || "unitName" in config)
     {
-      let id = getTblValue("id", config)
-      let unitName = getTblValue("unitName", config, id)
+      let id = ::getTblValue("id", config)
+      let unitName = ::getTblValue("unitName", config, id)
       unit = ::getAircraftByName(unitName)
       updateUnitItem()
     }
 
     updateTexts()
     updateImage()
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(true, true)
     checkUnitTutorial()
     updateButtons()
   }
@@ -105,8 +97,8 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 
     let params = {hasActions = true}
     let data = ::build_aircraft_item(unit.name, unit, params)
-    let airObj = this.scene.findObject("reward_aircrafts")
-    this.guiScene.replaceContentFromText(airObj, data, data.len(), this)
+    let airObj = scene.findObject("reward_aircrafts")
+    guiScene.replaceContentFromText(airObj, data, data.len(), this)
     airObj.tooltipId = ::g_tooltip.getIdUnit(unit.name)
     airObj.setValue(0)
     ::fill_unit_item_timers(airObj.findObject(unit.name), unit, params)
@@ -114,11 +106,11 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 
   function updateTexts()
   {
-    let desc = getTblValue("desc", config)
+    let desc = ::getTblValue("desc", config)
     if (desc)
     {
-      let descObj = this.scene.findObject("award_desc")
-      if (checkObj(descObj))
+      let descObj = scene.findObject("award_desc")
+      if (::checkObj(descObj))
       {
         descObj.setValue(desc)
 
@@ -127,16 +119,16 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
       }
     }
 
-    let rewardText = getTblValue("rewardText", config, "")
+    let rewardText = ::getTblValue("rewardText", config, "")
     if (rewardText != "")
     {
-      let rewObj = this.scene.findObject("award_reward")
-      if (checkObj(rewObj))
-        rewObj.setValue(loc("challenge/reward") + " " + config.rewardText)
+      let rewObj = scene.findObject("award_reward")
+      if (::checkObj(rewObj))
+        rewObj.setValue(::loc("challenge/reward") + " " + config.rewardText)
     }
 
-    let nObj = this.scene.findObject("next_award")
-    if (checkObj(nObj) && ("id" in config))
+    let nObj = scene.findObject("next_award")
+    if (::checkObj(nObj) && ("id" in config))
       nObj.setValue(::get_next_award_text(config.id))
   }
 
@@ -146,8 +138,8 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     if (image == "")
       return
 
-    let imgObj = this.scene.findObject("award_image")
-    if (!checkObj(imgObj))
+    let imgObj = scene.findObject("award_image")
+    if (!::checkObj(imgObj))
       return
 
     imgObj["background-image"] = image
@@ -174,11 +166,11 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 
   function updateButtons()
   {
-    this.showSceneBtn("btn_sendEmail", getTblValue("showSendEmail", config, false)
+    this.showSceneBtn("btn_sendEmail", ::getTblValue("showSendEmail", config, false)
                                   && !::is_vietnamese_version())
 
-    this.showSceneBtn("btn_postLink", hasFeature("FacebookWallPost")
-                                 && getTblValue("showPostLink", config, false))
+    this.showSceneBtn("btn_postLink", ::has_feature("FacebookWallPost")
+                                 && ::getTblValue("showPostLink", config, false))
 
     local linkText = ::g_promo.getLinkText(config)
     if (config?.pollId && config?.link)
@@ -191,16 +183,16 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     let linkObj = this.showSceneBtn("btn_link_to_site", show)
     if (show)
     {
-      if (checkObj(linkObj))
+      if (::checkObj(linkObj))
       {
         linkObj.link = linkText
         let linkBtnText = ::g_promo.getLinkBtnText(config)
         if (linkBtnText != "")
-          setColoredDoubleTextToButton(this.scene, "btn_link_to_site", linkBtnText)
+          setColoredDoubleTextToButton(scene, "btn_link_to_site", linkBtnText)
       }
 
-      let imageObj = this.scene.findObject("award_image_button")
-      if (checkObj(imageObj))
+      let imageObj = scene.findObject("award_image_button")
+      if (::checkObj(imageObj))
         imageObj.link = linkText
     }
     let showPs4ActivityFeed = isPlatformSony && ("ps4ActivityFeedData" in config)
@@ -213,16 +205,16 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     this.showSceneBtn("btn_set_air", showSetAir)
     let okObj = this.showSceneBtn("btn_ok", !showSetAir)
     if ("okBtnText" in config)
-      okObj.setValue(loc(config.okBtnText))
+      okObj.setValue(::loc(config.okBtnText))
 
     this.showSceneBtn("btn_close", !showSetAir || !needShowUnitTutorial)
 
     let buyObj = this.showSceneBtn("btn_buy_unit", canBuy)
-    if (canBuy && checkObj(buyObj))
+    if (canBuy && ::checkObj(buyObj))
     {
-      let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
+      let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
       let unitCost = canBuyOnline? ::Cost() : ::getUnitCost(unit)
-      placePriceTextToButton(this.scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(unit))
+      placePriceTextToButton(scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(unit))
     }
 
     let actionText = ::g_language.getLocTextFromConfig(config, "actionText", "")
@@ -231,7 +223,7 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     if (showActionBtn)
       actionObj.setValue(actionText)
 
-    ::show_facebook_screenshot_button(this.scene, getTblValue("showShareBtn", config, false))
+    ::show_facebook_screenshot_button(scene, ::getTblValue("showShareBtn", config, false))
 
     this.showSceneBtn("btn_get_qr", config?.qrUrl != null)
   }
@@ -256,14 +248,14 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     needShowUnitTutorial = false
   }
 
-  function onTakeNavBar(_obj)
+  function onTakeNavBar(obj)
   {
     onTake()
   }
 
   function onMsgLink(obj)
   {
-    if (getTblValue("type", config) == "regionalPromoPopup")
+    if (::getTblValue("type", config) == "regionalPromoPopup")
       ::add_big_query_record("promo_popup_click",
         ::save_to_json({ id = config?.id ?? config?.link ?? config?.popupImage ?? - 1 }))
     openLinkWithSource([ obj?.link, config?.forceExternalBrowser ?? false ], "show_unlock")
@@ -274,7 +266,7 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     unitActions.buy(unit, "show_unlock")
   }
 
-  function onEventCrewTakeUnit(_params)
+  function onEventCrewTakeUnit(params)
   {
     if (needShowUnitTutorial)
       return goBack()
@@ -282,7 +274,7 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
     updateUnitItem()
   }
 
-  function onEventUnitBought(_params)
+  function onEventUnitBought(params)
   {
     updateUnitItem()
     updateButtons()
@@ -301,25 +293,25 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 
   function sendInvitationEmail()
   {
-    let linkString = format(loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    let msg_head = format(loc("mainmenu/invitationHead"), ::my_user_name)
-    let msg_body = format(loc("mainmenu/invitationBody"), linkString)
+    let linkString = format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+    let msg_head = format(::loc("mainmenu/invitationHead"), ::my_user_name)
+    let msg_body = format(::loc("mainmenu/invitationBody"), linkString)
     ::shell_launch("mailto:yourfriend@email.com?subject=" + msg_head + "&body=" + msg_body)
   }
 
   function onFacebookPostLink()
   {
-    let link = format(loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    let message = loc("facebook/wallMessage")
+    let link = format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+    let message = ::loc("facebook/wallMessage")
     ::make_facebook_login_and_do((@(link, message) function() {
-                 ::scene_msg_box("facebook_login", null, loc("facebook/uploading"), null, null)
+                 ::scene_msg_box("facebook_login", null, ::loc("facebook/uploading"), null, null)
                  ::facebook_post_link(link, message)
                })(link, message), this)
   }
 
   function onOk()
   {
-    let onOkFunc = getTblValue("onOkFunc", config)
+    let onOkFunc = ::getTblValue("onOkFunc", config)
     if (onOkFunc)
       onOkFunc()
     goBack()
@@ -352,10 +344,10 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 
   function onUnitActivate(obj)
   {
-    this.openUnitActionsList(obj.findObject(unit.name), true)
+    openUnitActionsList(obj.findObject(unit.name), true)
   }
 
-  function openQR(_obj) {
+  function openQR(obj) {
     openQrWindow({
       baseUrl = config.qrUrl
       needUrlWithQrRedirect = true

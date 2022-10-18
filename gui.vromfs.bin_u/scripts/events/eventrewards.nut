@@ -1,10 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 
                                  //param name in tournament configs //param name in userlogs configs
 let getRewardConditionId = @(rewardBlk) rewardBlk?.condition_type ?? rewardBlk?.awardType ?? ""
@@ -29,13 +23,13 @@ let function getLeaderboardConditionText(rewardBlk, progress = null) {
   let value = getConditionValue(rewardBlk)
   let valueMin = rewardBlk?.valueMin
   let txtValue = valueMin
-    ? loc("conditions/position/from_to", {min = valueMin, max = value}) : value
-  local res = loc("conditions/" + conditionId + "/" + rewardBlk.fieldName, {value = txtValue})
+    ? ::loc("conditions/position/from_to", {min = valueMin, max = value}) : value
+  local res = ::loc("conditions/" + conditionId + "/" + rewardBlk.fieldName, {value = txtValue})
   let progressTxt = progress && valueMin
-    ? $"{loc("ui/dot")} {loc("conditions/position/place")}{loc("ui/colon")} {progress}"
+    ? $"{::loc("ui/dot")} {::loc("conditions/position/place")}{::loc("ui/colon")} {progress}"
     : progress
       ? "".concat(" ",
-        loc("ui/parentheses/space", {text = $"{progress}{loc("ui/slash")}{value}"}))
+        ::loc("ui/parentheses/space", {text = $"{progress}{::loc("ui/slash")}{value}"}))
       : ""
 
   return $"{res}{progressTxt}"
@@ -43,7 +37,7 @@ let function getLeaderboardConditionText(rewardBlk, progress = null) {
 
 let function getSequenceWinsText(rewardBlk, progress = null) {
   let value = getConditionValue(rewardBlk)
-  local res = loc("conditions/sequence_wins", {value = value})
+  local res = ::loc("conditions/sequence_wins", {value = value})
 
   if (progress)
     res += " (" + progress + "/" + value + ")"
@@ -62,7 +56,7 @@ let rewardConditionsList = {
     id = "reach_value"
     function updateProgress(reward_blk, event, eventEconomicName, callback, context)
     {
-      let cb = Callback(callback, context)
+      let cb = ::Callback(callback, context)
       ::g_reward_progress_manager.requestProgress(event, eventEconomicName, reward_blk.fieldName,
         function (value) {
           local progress = "0"
@@ -85,7 +79,7 @@ let rewardConditionsList = {
     id = "field_number"
     function updateProgress(reward_blk, event, eventEconomicName, callback, context)
     {
-      local cb = Callback(callback, context)
+      local cb = ::Callback(callback, context)
       ::g_reward_progress_manager.requestProgress(event, eventEconomicName, reward_blk.fieldName,
         function (value) {
           local progress = "0"
@@ -113,7 +107,7 @@ let rewardConditionsList = {
       if (request.forClans)
         request.tournament_mode = GAME_EVENT_TYPE.TM_ELO_GROUP_DETAIL
       request.lbField  <- reward_blk.fieldName
-      let cb = Callback(callback, context)
+      let cb = ::Callback(callback, context)
       ::events.requestSelfRow(request, function(self_row) {
         let progress = self_row?[0].pos
         cb(progress != null ? progress + 1 : null)
@@ -133,10 +127,10 @@ let rewardConditionsList = {
 
   sequence_wins = {
     id = "sequence_wins"
-    function updateProgress(_rewardBlk, _event, eventEconomicName, callback, context)
+    function updateProgress(rewardBlk, event, eventEconomicName, callback, context)
     {
       let progress = getTournamentInfoBlk(eventEconomicName)?.sequenceWinCount ?? 0
-      Callback(callback, context)(progress.tostring())
+      ::Callback(callback, context)(progress.tostring())
     }
     getText = getSequenceWinsText
   }
@@ -158,14 +152,14 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
       let cost = ::Cost().setFromTbl(blk)
       return (cost > ::zero_money) ? cost : null
     }
-    getIconStyle = function(value, _blk) {
+    getIconStyle = function(value, blk) {
       let img = (value.gold > 0) ? "#ui/gameuiskin#items_eagles.png" : "#ui/gameuiskin#items_warpoints.png"
       return ::LayersIcon.getIconData(null, img)
     }
-    getRowIcon = function(_value, _blk) {
+    getRowIcon = function(value, blk) {
       return ""
     }
-    getTooltipId = function (_value) {
+    getTooltipId = function (value) {
       return null
     }
   }
@@ -179,15 +173,15 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
         if (trophy)
           return {
             trophy = trophy
-            count = getTblValue("trophyCount", blk, 1)
+            count = ::getTblValue("trophyCount", blk, 1)
           }
       }
       return null
     }
-    getIconStyle = function(value, _blk) {
+    getIconStyle = function(value, blk) {
       return value ? value.trophy.getIcon() : ""
     }
-    getRowIcon = function(value, _blk) {
+    getRowIcon = function(value, blk) {
       return value ? value.trophy.getSmallIconName() : ""
     }
     valueText = function(value) {
@@ -207,15 +201,15 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
         if (item)
           return {
             item = item
-            count = getTblValue("itemsCount", blk, 1)
+            count = ::getTblValue("itemsCount", blk, 1)
           }
       }
       return null
     }
-    getIconStyle = function(value, _blk) {
+    getIconStyle = function(value, blk) {
       return value ? value.item.getIcon(false) : ""
     }
-    getRowIcon = function(value, _blk) {
+    getRowIcon = function(value, blk) {
       return value ? value.item.getSmallIconName() : ""
     }
     valueText = function(value) {
@@ -236,7 +230,7 @@ let function initConfigs() {
     if (!("getValue" in cfg))
       cfg.getValue = (@(id) function(blk) { return blk?[id] })(id)
     if (!("getIconStyle" in cfg))
-      cfg.getIconStyle = (@(id) function(_value, _blk) { return ::LayersIcon.getIconData("reward_" + id) })(id)
+      cfg.getIconStyle = (@(id) function(value, blk) { return ::LayersIcon.getIconData("reward_" + id) })(id)
   }
 }
 initConfigs()
@@ -326,8 +320,8 @@ let function getRewardDescText(rewardBlk) {
       continue
 
     let valueText = ("valueText" in cfg) ? cfg.valueText(value) : value.tostring()
-    let locText = cfg.locId.len() ? loc(cfg.locId) : ""
-    text = addToText(text, locText, valueText, "activeTextColor")
+    let locText = cfg.locId.len() ? ::loc(cfg.locId) : ""
+    text = ::UnlockConditions.addToText(text, locText, valueText, "activeTextColor")
   }
   return text
 }
@@ -357,12 +351,12 @@ let function getTotalRewardDescText(rewardsBlksArray) {
       else
       {
         let val = ("valueText" in cfg)? cfg.valueText(value) : value
-        text = addToText(text, "", val, "activeTextColor")
+        text = ::UnlockConditions.addToText(text, "", val, "activeTextColor")
       }
     }
 
   if (money > ::zero_money)
-    text = addToText(text, "", money.tostring(), "activeTextColor")
+    text = ::UnlockConditions.addToText(text, "", money.tostring(), "activeTextColor")
   return text
 }
 
@@ -422,7 +416,7 @@ let function getNextReward(rewardBlk, event) {
 
   foreach (nextPretendetn in allRewards[conditionId])
   {
-    if (!getTblValue(conditionId, nextPretendetn))
+    if (!::getTblValue(conditionId, nextPretendetn))
       continue
     if (nextPretendetn[conditionId] > rewardBlk[conditionId])
       return nextPretendetn

@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.clanSquadInfoWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -25,7 +18,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   static function open(alignObj, squad)
   {
-    if (!checkObj(alignObj))
+    if (!::checkObj(alignObj))
       return null
 
     let params = {
@@ -38,11 +31,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen()
   {
-    membersObj = this.scene.findObject("members")
+    membersObj = scene.findObject("members")
     let viewBlk = ::handyman.renderCached(memberTplName,
       {members = array(squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE, null)})
-    this.guiScene.replaceContentFromText(membersObj, viewBlk, viewBlk.len(), this)
-    this.scene.findObject("squad_info_update").setUserData(this)
+    guiScene.replaceContentFromText(membersObj, viewBlk, viewBlk.len(), this)
+    scene.findObject("squad_info_update").setUserData(this)
     refreshList()
     updatePosition()
 
@@ -78,11 +71,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let memberObj = getSquadObj(mebmerObjIndex)
     memberObj.show(isVisible)
     memberObj.enable(isVisible)
-    if (!isVisible || !checkObj(memberObj))
+    if (!isVisible || !::checkObj(memberObj))
       return
 
     let memeberUidStr = memberUid.tostring()
-    let contact = ::getContact(memeberUidStr)
+    let contact = getContact(memeberUidStr)
     if (!contact)
       requestUsersInfo([memeberUidStr])
     memberObj["id"] = "member_" + memeberUidStr
@@ -92,7 +85,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     memberObj.findObject("tooltip")["uid"] = memeberUidStr
     memberObj.findObject("not_member_data").show(contact? false : true)
     let statusObj = memberObj.findObject("statusImg")
-    if (checkObj(statusObj))
+    if (::checkObj(statusObj))
     {
       let presence = contact?.presence ?? ::g_contact_presence.UNKNOWN
       statusObj["background-image"] = presence.getIcon()
@@ -111,7 +104,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updatePosition()
   {
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, this.scene.findObject("squad_info"))
+    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("squad_info"))
   }
 
   function getMemberUidByObj(obj)
@@ -125,7 +118,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local memberUid = getMemberUidByObj(obj)
     obj =memberUid? obj : getSquadObj(selectedIndex)
     memberUid = memberUid || selectedMember
-    if (!memberUid || !checkObj(obj))
+    if (!memberUid || !::checkObj(obj))
       return
 
     let position = obj.getPosRC()
@@ -152,25 +145,25 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     selectedIndex = selectedMember ? index : -1
   }
 
-  function onEventClanSquadsListChanged(_params)
+  function onEventClanSquadsListChanged(params)
   {
     let leader = squad.leader
     let newSquad = ::u.search(squadsListData.getList(), @(s) s?.leader == leader)
     if (!newSquad)
     {
-      this.goBack()
+      goBack()
       return
     }
     squad = newSquad
-    this.doWhenActiveOnce("refreshList")
+    doWhenActiveOnce("refreshList")
   }
 
-  function onEventContactsUpdated(_params)
+  function onEventContactsUpdated(params)
   {
-    this.doWhenActiveOnce("refreshList")
+    doWhenActiveOnce("refreshList")
   }
 
-  function onUpdate(_obj, _dt)
+  function onUpdate(obj, dt)
   {
     squadsListData.requestList()
   }

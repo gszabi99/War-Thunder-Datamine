@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { AMMO,
         getAmmoAmount,
         getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
@@ -16,10 +11,10 @@ let function canBuyMod(unit, mod)
     return false
 
   let status = ::shop_get_module_research_status(unit.name, mod.name)
-  if (status & ES_ITEM_STATUS_CAN_BUY)
+  if (status & ::ES_ITEM_STATUS_CAN_BUY)
     return true
 
-  if (status & (ES_ITEM_STATUS_MOUNTED | ES_ITEM_STATUS_OWNED))
+  if (status & (::ES_ITEM_STATUS_MOUNTED | ::ES_ITEM_STATUS_OWNED))
   {
     let amount = getAmmoAmount(unit, mod.name, AMMO.MODIFICATION)
     let maxAmount = getAmmoMaxAmount(unit, mod.name, AMMO.MODIFICATION)
@@ -32,7 +27,7 @@ let function canBuyMod(unit, mod)
 let function isModResearched(unit, mod)
 {
   let status = ::shop_get_module_research_status(unit.name, mod.name)
-  if (status & (ES_ITEM_STATUS_CAN_BUY | ES_ITEM_STATUS_OWNED | ES_ITEM_STATUS_MOUNTED | ES_ITEM_STATUS_RESEARCHED))
+  if (status & (::ES_ITEM_STATUS_CAN_BUY | ::ES_ITEM_STATUS_OWNED | ::ES_ITEM_STATUS_MOUNTED | ::ES_ITEM_STATUS_RESEARCHED))
     return true
 
   return false
@@ -44,8 +39,8 @@ let isModClassExpendable = @(moduleData) (moduleData?.modClass ?? "") == "expend
 let function canResearchMod(unit, mod, checkCurrent = false)
 {
   let status = ::shop_get_module_research_status(unit.name, mod.name)
-  let canResearch = checkCurrent ? status == ES_ITEM_STATUS_CAN_RESEARCH :
-                        0 != (status & (ES_ITEM_STATUS_CAN_RESEARCH | ES_ITEM_STATUS_IN_RESEARCH))
+  let canResearch = checkCurrent ? status == ::ES_ITEM_STATUS_CAN_RESEARCH :
+                        0 != (status & (::ES_ITEM_STATUS_CAN_RESEARCH | ::ES_ITEM_STATUS_IN_RESEARCH))
 
   return canResearch
 }
@@ -87,7 +82,7 @@ let function getModificationByName(unit, modName)
   if (!("modifications" in unit))
     return null
 
-  foreach(_i, modif in unit.modifications)
+  foreach(i, modif in unit.modifications)
     if (modif.name == modName)
       return modif
 
@@ -129,9 +124,9 @@ let function updateRelationModificationList(unit, modifName)
   {
     let blk = ::get_modifications_blk();
     mod.relationModification <- [];
-    foreach(_ind, m in unit.modifications)
+    foreach(ind, m in unit.modifications)
     {
-      if ("reqModification" in m && isInArray(modifName, m.reqModification))
+      if ("reqModification" in m && ::isInArray(modifName, m.reqModification))
       {
         let modification = blk?.modifications?[m.name]
         if (modification?.effects)

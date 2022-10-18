@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 ::gui_handlers.SkipableMsgBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -29,30 +21,30 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     updateSkipCheckBox()
 
-    let msgTextObj = this.scene.findObject("msgText")
-    if (checkObj(msgTextObj))
+    let msgTextObj = scene.findObject("msgText")
+    if (::check_obj(msgTextObj))
       msgTextObj.setValue(message)
 
-    let listTextObj = this.scene.findObject("listText")
-    if (checkObj(listTextObj))
+    let listTextObj = scene.findObject("listText")
+    if (::check_obj(listTextObj))
       listTextObj.setValue(list)
 
-    let btnSelectObj = this.scene.findObject("btn_select")
-    if (checkObj(btnSelectObj))
+    let btnSelectObj = scene.findObject("btn_select")
+    if (::check_obj(btnSelectObj))
       btnSelectObj.show(ableToStartAndSkip)
 
-    let btnCancelObj = this.scene.findObject("btn_cancel")
-    if(checkObj(btnCancelObj))
-      btnCancelObj.setValue(loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
+    let btnCancelObj = scene.findObject("btn_cancel")
+    if(::check_obj(btnCancelObj))
+      btnCancelObj.setValue(::loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
 
     if (startBtnText != "")
-      setDoubleTextToButton(this.scene, "btn_select", startBtnText)
+      setDoubleTextToButton(scene, "btn_select", startBtnText)
   }
 
   function updateSkipCheckBox()
   {
-    let skipObj = this.scene.findObject("skip_this")
-    if (checkObj(skipObj))
+    let skipObj = scene.findObject("skip_this")
+    if (::check_obj(skipObj))
     {
       skipObj.show(ableToStartAndSkip && skipFunc)
       skipObj.enable(ableToStartAndSkip && skipFunc)
@@ -74,7 +66,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (parentHandler && onStartPressed)
       isStarted = true
 
-    this.goBack()
+    goBack()
   }
 
   function afterModalDestroy()

@@ -1,23 +1,17 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
-let { get_time_msec } = require("dagor.time")
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
 local isUpdating = false
 local userData = null
 
-let brInfoByGamemodeId = persist("brInfoByGamemodeId", @() Watched({}))
-let recentBrGameModeId = persist("recentBrGameModeId", @() Watched(""))
-let recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() Watched(null))
-let recentBR = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
-let recentBRData = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
+let brInfoByGamemodeId = persist("brInfoByGamemodeId", @() ::Watched({}))
+let recentBrGameModeId = persist("recentBrGameModeId", @() ::Watched(""))
+let recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() ::Watched(null))
+let recentBR = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
+let recentBRData = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
 
 recentBR.subscribe(@(_) ::broadcastEvent("BattleRatingChanged"))
 
@@ -26,7 +20,7 @@ let function calcSquadMrank(brData) {
     return -1
 
   local maxBR = -1
-  foreach (name, _idx in brData)
+  foreach (name, idx in brData)
   {
     if (name != "error" && brData[name].len() > 0)
     {
@@ -49,7 +43,7 @@ let function getBRDataByMrankDiff(diff = 3) {
     return []
 
   return recentBRData.value
-    .filter(@(v, _n) (v?[0].mrank ?? -1) >= 0 && (squadMrank - v[0].mrank >= diff))
+    .filter(@(v, n) (v?[0].mrank ?? -1) >= 0 && (squadMrank - v[0].mrank >= diff))
     .map(@(v) ::calc_battle_rating_from_rank(v[0].mrank))
 }
 
@@ -73,7 +67,7 @@ let function getCrafts(data, country = null) {
   foreach (name in craftData)
   {
      let craft = ::getAircraftByName(name)
-     if (craft == null || isInArray(name, brokenAirs))
+     if (craft == null || ::isInArray(name, brokenAirs))
        continue
 
      crafts.append({
@@ -167,7 +161,7 @@ let function getUserData() {
 
 let function requestBattleRating(cb, recentUserData) {
   isUpdating = true
-  lastRequestTimeMsec  = get_time_msec()
+  lastRequestTimeMsec  = ::dagor.getCurTime()
   let errorCB = @(...) isUpdating = false
   ::request_matching("wtmm_static.calc_ranks", cb, errorCB, recentUserData, {
     showError = false
@@ -187,7 +181,7 @@ updateBattleRating = function(gameMode = null, brData = null) //!!FIX ME: why ou
     return
   }
 
-  if (isUpdating && !(get_time_msec() - lastRequestTimeMsec >= MATCHING_REQUEST_LIFETIME))
+  if (isUpdating && !(::dagor.getCurTime() - lastRequestTimeMsec >= MATCHING_REQUEST_LIFETIME))
   {
     if(isBRKnown(recentUserData))
       setBattleRating(recentUserData, null)
@@ -223,17 +217,17 @@ let function updateBattleRatingDelayed() {
   })
 }
 
-let function updateLeaderRatingDelayed(_p) {
+let function updateLeaderRatingDelayed(p) {
   if (::g_squad_manager.isSquadLeader())
     updateBattleRatingDelayed()
 }
 
 addListenersWithoutEnv({
-  ProfileUpdated             = @(_p) updateBattleRatingDelayed()
-  CrewChanged                = @(_p) updateBattleRatingDelayed()
-  CurrentGameModeIdChanged   = @(_p) updateBattleRatingDelayed()
-  EventsDataUpdated          = @(_p) updateBattleRatingDelayed()
-  LoadingStateChange         = @(_p) updateBattleRatingDelayed()
+  ProfileUpdated             = @(p) updateBattleRatingDelayed()
+  CrewChanged                = @(p) updateBattleRatingDelayed()
+  CurrentGameModeIdChanged   = @(p) updateBattleRatingDelayed()
+  EventsDataUpdated          = @(p) updateBattleRatingDelayed()
+  LoadingStateChange         = @(p) updateBattleRatingDelayed()
 
   SquadStatusChanged         = updateLeaderRatingDelayed
   SquadOnlineChanged         = updateLeaderRatingDelayed

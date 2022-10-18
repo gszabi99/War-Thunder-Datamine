@@ -1,17 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
 ::WwBattleResults <- class
 {
   id = ""
-  winner = SIDE_NONE
+  winner = ::SIDE_NONE
   operationId = null
-  playerSide = SIDE_NONE
+  playerSide = ::SIDE_NONE
   playerCountry = ""
   time = 0
   updateAppliedOnHost = -1
@@ -26,7 +20,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   static teamDefaults = {
     name            = ""
-    side            = SIDE_NONE
+    side            = ::SIDE_NONE
     country         = ""
     armies          = []
     armyStates      = {}
@@ -123,7 +117,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
           if (armyName.len() == 0)
             continue
 
-          let army =getTblValue(armyName, wwArmies)
+          let army =::getTblValue(armyName, wwArmies)
           let armyState = armyStatesBlk?[armyName].state ?? "EASAB_UNKNOWN"
 
           if (teamCountry == "")
@@ -176,7 +170,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
       for (local j = 0; j < teamsBlk.blockCount(); j++)
       {
         let teamBlk = teamsBlk.getBlock(j)
-        let team = getTblValue(teamBlk.getBlockName() || "", teams)
+        let team = ::getTblValue(teamBlk.getBlockName() || "", teams)
         if (!team)
           continue
 
@@ -211,7 +205,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function isWinner()
   {
-    return winner != SIDE_NONE && winner == playerSide
+    return winner != ::SIDE_NONE && winner == playerSide
   }
 
   function getOperationId()
@@ -232,26 +226,26 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   */
   function updateFromUserlog(userlog)
   {
-    let wwSharedPool = getTblValue("wwSharedPool", userlog)
-    let wwBattleResult = getTblValue("wwBattleResult", userlog, {})
+    let wwSharedPool = ::getTblValue("wwSharedPool", userlog)
+    let wwBattleResult = ::getTblValue("wwBattleResult", userlog, {})
     if (!wwSharedPool)
       return this
 
-    let initialArmies = getTblValue("initialArmies", wwSharedPool, [])
-    let teamsCasualties = getTblValue("casualties", wwSharedPool, [])
+    let initialArmies = ::getTblValue("initialArmies", wwSharedPool, [])
+    let teamsCasualties = ::getTblValue("casualties", wwSharedPool, [])
 
     // Restoring team sides
 
-    let localTeam  = getTblValue("localTeam", wwSharedPool, "")
+    let localTeam  = ::getTblValue("localTeam", wwSharedPool, "")
     let sidesOrder = ::g_world_war.getSidesOrder() // [ player, enemy ]
-    let winnerSide = getTblValue("win", userlog) ? sidesOrder[0] : sidesOrder[1]
+    let winnerSide = ::getTblValue("win", userlog) ? sidesOrder[0] : sidesOrder[1]
 
-    local sideInBattle = SIDE_NONE
+    local sideInBattle = ::SIDE_NONE
     local countryInBattle = ""
     let teamBySide = {}
-    foreach (_armyName, initialArmy in initialArmies)
+    foreach (armyName, initialArmy in initialArmies)
     {
-      let teamName = getTblValue("team", initialArmy, "")
+      let teamName = ::getTblValue("team", initialArmy, "")
       let side = teamName == localTeam ? sidesOrder[0] : sidesOrder[1]
       teamBySide[side] <- teamName
       initialArmy.side <- ::ww_side_val_to_name(side)
@@ -267,10 +261,10 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     let wwArmies = initialArmies.map(function(initialArmy, armyName) {
       let armyState = wwBattleResult?.armyStates[armyName] ?? {}
 
-      let side  = ::ww_side_name_to_val(getTblValue("side", initialArmy, ""))
-      let country = getTblValue("country", initialArmy, "")
-      let clanTag = getTblValue("armyGroupName", armyState, "")
-      let unitTypeTextCode = getTblValue("unitType", initialArmy, "")
+      let side  = ::ww_side_name_to_val(::getTblValue("side", initialArmy, ""))
+      let country = ::getTblValue("country", initialArmy, "")
+      let clanTag = ::getTblValue("armyGroupName", armyState, "")
+      let unitTypeTextCode = ::getTblValue("unitType", initialArmy, "")
       let wwUnitType = ::g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
       let wwArmy = ::g_world_war.getArmyByName(armyName)
       let hasFoundArmy = wwArmy.getUnitType() != ::g_ww_unit_type.UNKNOWN.code
@@ -296,13 +290,13 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     // Updating
 
     let wwOperationId = wwSharedPool?.operationId
-    id = getTblValue("battleId", wwSharedPool, "")
+    id = ::getTblValue("battleId", wwSharedPool, "")
     if (wwOperationId)
       operationId = wwOperationId.tointeger()
     winner = winnerSide
     playerSide = sideInBattle
     playerCountry = countryInBattle
-    locName = getTblValue("locName", userlog, "")
+    locName = ::getTblValue("locName", userlog, "")
     isBattleResultsIgnored = ::g_world_war.isCurrentOperationFinished()
 
     teams = {}
@@ -326,9 +320,9 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
         teamUnits = ::u.tablesCombine(teamUnits, armyUnits, function(a, b) { return a + b }, 0)
       }
 
-      let teamCasualties = getTblValue(teamName, teamsCasualties, {})
+      let teamCasualties = ::getTblValue(teamName, teamsCasualties, {})
       let teamUnitStats  = ::u.mapAdvanced(teamUnits, (@(teamCasualties) function(initial, unitName, ...) {
-        let casualties = getTblValue(unitName, teamCasualties, 0)
+        let casualties = ::getTblValue(unitName, teamCasualties, 0)
         return {
           initial    = initial
           remain     = initial - casualties

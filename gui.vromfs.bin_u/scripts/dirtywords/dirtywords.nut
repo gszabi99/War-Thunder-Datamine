@@ -1,4 +1,3 @@
-from "%scripts/dagui_library.nut" import *
 //
 // Dirty Words checker.
 //
@@ -30,12 +29,12 @@ local dictAsian = {
 
 // Collect language tables
 local function init(langSources) {
-  foreach (varName, _val in dict)
+  foreach (varName, val in dict)
   {
     dict[varName] = []
     foreach (source in langSources)
     {
-      foreach (_i, vSrc in (source?[varName] ?? []))
+      foreach (i, vSrc in (source?[varName] ?? []))
       {
         local v
         switch (typeof vSrc)
@@ -51,14 +50,14 @@ local function init(langSources) {
               v.arr = v.arr.map(@(av) regexp2(av))
             break
           default:
-            assert(false, "Wrong var type in DirtyWordsFilter config")
+            ::dagor.assertf(false, "Wrong var type in DirtyWordsFilter config")
         }
         dict[varName].append(v)
       }
     }
   }
 
-  foreach (varName, _val in dictAsian) {
+  foreach (varName, val in dictAsian) {
     local res = {}
     local sources = langSources.map(@(v) v?[varName] ?? {}).sort(@(a, b) b.len() <=> a.len())
     foreach (src in sources) {
@@ -195,7 +194,7 @@ local function preparePhrase(text)
 local function prepareWord(word)
 {
   // convert to lower
-  word = (utf8(word).strtr(alphabet.upper, alphabet.lower)).strip()
+  word = ::strip(::utf8(word).strtr(alphabet.upper, alphabet.lower))
 
   // replaces
   foreach (p in prepareword)
@@ -229,7 +228,7 @@ local function checkWord(word)
   word = prepareWord(word)
 
   local status = true
-  local fl = utf8(word).slice(0, 1)
+  local fl = ::utf8(word).slice(0, 1)
 
   if (status)
     status = checkRegexps(word, dict.foulcore, true)
@@ -265,7 +264,7 @@ local function getUnicodeCharsArray(str) {
 
 local function getMaskedWord(w, maskChar = "*")
 {
-  return "".join(array(utf8(w).charCount(), maskChar))
+  return "".join(array(::utf8(w).charCount(), maskChar))
 }
 
 // Returns corrected version of phrase.

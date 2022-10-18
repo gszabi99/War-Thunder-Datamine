@@ -1,18 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged,
   getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor,
   getMatchingEventId, fetchLbData } = require("%scripts/events/eSport.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
+let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needShowOverrideSlotbar, isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 let { setModalBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
 let function getActiveTicketTxt(event) {
@@ -27,7 +20,7 @@ let function getActiveTicketTxt(event) {
     ? ticket.getTicketTournamentData(event.economicName) : null
 
   return tournamentData
-    ? loc("ui/parentheses/space", {text = $"{tournamentData.battleCount}/{ticket.battleLimit}"})
+    ? ::loc("ui/parentheses/space", {text = $"{tournamentData.battleCount}/{ticket.battleLimit}"})
     : ""
 }
 
@@ -48,7 +41,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function initScreen() {
-    this.scene.findObject("update_timer").setUserData(this)
+    scene.findObject("update_timer").setUserData(this)
     setModalBreadcrumbGoBackParams(this)
     updateQueueInterface()
     updateContentView()
@@ -58,7 +51,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       updateOverrideSlotbar(getEventMission(curEvent), curEvent)
     else
       resetSlotbarOverrided()
-    this.createSlotbar({
+    createSlotbar({
       eventId = curEvent.name
       needPresetsPanel = !showOverrideSlotbar
       afterSlotbarSelect = updateApplyButton
@@ -79,7 +72,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   function updateQueueInterface() {
     if (!queueToShow || !::queues.isQueueActive(queueToShow))
       queueToShow = getCurEventQueue()
-    let slotbar = this.getSlotbar()
+    let slotbar = getSlotbar()
     if (slotbar)
       slotbar.shade(isInEventQueue())
   }
@@ -112,7 +105,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       local dayCountries = []
       foreach (country, units in countries) {
         dayCountries.append({ icon = ::get_country_icon($"{::g_string.trim(country)}_round") })
-        foreach (name, _v in units)
+        foreach (name, v in units)
           items.append({
             text = ::getUnitName(::getAircraftByName(name))
             image = ::getUnitClassIco(name)
@@ -124,7 +117,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
         day = i+1
         dayCountries = dayCountries
         items = items
-        chapterName = loc("tournaments/enumerated_day", {num = i + 1})
+        chapterName = ::loc("tournaments/enumerated_day", {num = i + 1})
         isCollapsed = isCollapsed
         collapsed = isCollapsed ? "yes" : "no"
       })
@@ -135,7 +128,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateLbObjects(lbData) {
     let isLbEnable = lbData.rows.len() > 0
-    let lbObj = ::showBtn("leaderboard_obj", isLeaderboardsAvailable(), this.scene)
+    let lbObj = ::showBtn("leaderboard_obj", isLeaderboardsAvailable(), scene)
     if (!lbObj?.isValid())
       return
 
@@ -144,7 +137,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!isLbEnable)
       return
 
-    let topObj = this.scene.findObject("top_nest")
+    let topObj = scene.findObject("top_nest")
     if (!topObj?.isValid())
       return
 
@@ -154,11 +147,11 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
         break
 
       let txt = row._id == ::my_user_id_str
-        ? colorize("totalTextColor", row.name) : row.name
+        ? ::colorize("totalTextColor", row.name) : row.name
       texts.append({ text = $"{idx + 1} {txt}"})
     }
     let data = ::handyman.renderCached("%gui/commonParts/text", {texts = texts})
-    this.guiScene.replaceContentFromText(topObj, data, data.len(), this)
+    guiScene.replaceContentFromText(topObj, data, data.len(), this)
   }
 
   function getDescParams() {
@@ -166,8 +159,8 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       getEventByDay(tournament.id, curTourParams.dayNum, false),
       @(lbData) updateLbObjects(lbData), this)
     let rangeData = ::events.getPlayersRangeTextData(curEvent)
-    let missArr = [$"{loc("mainmenu/missions")}{loc("ui/colon")}"]
-    foreach (miss, _v in (curEvent.mission_decl?.missions_list ?? {}))
+    let missArr = [$"{::loc("mainmenu/missions")}{::loc("ui/colon")}"]
+    foreach (miss, v in (curEvent.mission_decl?.missions_list ?? {}))
       missArr.append("".concat("<color=@activeTextColor>",
         ::get_combine_loc_name_mission(::get_meta_mission_info_by_name(miss)), "</color>"))
     let descTxtArr = [
@@ -179,8 +172,8 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     return {
       descTxt = "\n".join(descTxtArr, true)
-      lbBtnTxt = ::g_string.utf8ToUpper(loc("tournaments/leaderboard"))
-      rewardsBtnTxt = ::g_string.utf8ToUpper(loc("tournaments/rewards"))
+      lbBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/leaderboard"))
+      rewardsBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/rewards"))
       hasRewardBtn = isRewardsAvailable(tournament)
       days = getDaysParams()
     }
@@ -191,7 +184,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     let isFinished = curTourParams.dayNum == DAY.FINISH
     if (isFinished)
       foreach (key in ["h_left", "h_center", "h_right"]) {
-        let obj = this.scene.findObject(key)
+        let obj = scene.findObject(key)
         if (obj?.isValid())
           obj["background-saturate"] = 0
       }
@@ -204,12 +197,12 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     let eventDescTextObj = descObj.findObject("event_desc_text")
     if (eventDescTextObj?.isValid())
       eventDescTextObj.setValue(descTxt)
-    ::showBtn("rewards_btn", hasRewardBtn, this.scene)
+    ::showBtn("rewards_btn", hasRewardBtn, scene)
   }
 
   function updateApplyButton() {
     if (curTourParams.dayNum == DAY.FINISH) {
-      ::showBtnTable(this.scene, {
+      ::showBtnTable(scene, {
         action_btn = false
         leave_btn = false
       })
@@ -217,11 +210,11 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     local startText = "events/join_event"
-    let btnObj = ::showBtn("action_btn", !curTourParams.isMyTournament, this.scene)
+    let btnObj = ::showBtn("action_btn", !curTourParams.isMyTournament, scene)
     if (!curTourParams.isMyTournament) {
-      btnObj.setValue(loc(startText))
+      btnObj.setValue(::loc(startText))
       btnObj.inactiveColor = "no"
-      this.showSceneBtn("leave_btn", false)
+      showSceneBtn("leave_btn", false)
       return
     }
     let isEvent = curEvent != null
@@ -239,17 +232,17 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       btnObj["isCancel"] = isReady ? "yes" : "no"
     }
     else {
-      startText = loc("mainmenu/toBattle")
+      startText = ::loc("mainmenu/toBattle")
       btnObj["isCancel"] = "no"
     }
-    btnObj.setValue($"{loc(startText)}{getActiveTicketTxt(curEvent)}")
-    this.showSceneBtn("leave_btn", isInQueue)
+    btnObj.setValue($"{::loc(startText)}{getActiveTicketTxt(curEvent)}")
+    showSceneBtn("leave_btn", isInQueue)
   }
 
   function updateTourView() {
     let { sesIdx, sesLen, isSesActive, isTraining } = curTourParams
     let { battleDay, curSesTime } = getTourCommonViewParams(tournament, curTourParams)
-    let timeTxtObj = this.scene.findObject("time_txt")
+    let timeTxtObj = scene.findObject("time_txt")
     if (!timeTxtObj?.isValid())
       return
 
@@ -260,13 +253,13 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    this.scene.findObject("battle_day").setValue(battleDay)
+    scene.findObject("battle_day").setValue(battleDay)
     let txtColor = getOverlayTextColor(isSesActive)
     timeTxtObj.overlayTextColor = txtColor
     let iconImg = $"#ui/gameuiskin#{isSesActive ? "play_tour" : "clock_tour"}.svg"
-    this.scene.findObject("session_ico")["background-image"] = iconImg
+    scene.findObject("session_ico")["background-image"] = iconImg
 
-    let schedulerObj = this.scene.findObject("scheduler_obj")
+    let schedulerObj = scene.findObject("scheduler_obj")
     if (schedulerObj?.isValid())
       for (local i = 0; i < sesLen; i++) {
         let sObj = schedulerObj.findObject($"session_{i}")
@@ -285,15 +278,15 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     let taskId = ::char_send_blk("cln_subscribe_tournament", blk)
     let taskOptions = {
       showProgressBox = true
-      progressBoxText = loc("tournaments/registration_in_progress")
+      progressBoxText = ::loc("tournaments/registration_in_progress")
     }
     let onSuccess = @() ::broadcastEvent("TourRegistrationComplete", {id = tourId})
     ::g_tasker.addTask(taskId, taskOptions, onSuccess)
   }
 
-  function onEventTourRegistrationComplete(_param) {
+  function onEventTourRegistrationComplete(param) {
     curTourParams.isMyTournament = true
-    ::showBtn("my_tournament_img", true, this.scene)
+    ::showBtn("my_tournament_img", true, scene)
     updateContentView()
   }
 
@@ -324,7 +317,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     ::EventJoinProcess(curEvent, null,
-      @(_curEvent) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+      @(curEvent) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
       function() {
         configForStatistic.canIntoToBattle <- false
         ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
@@ -334,7 +327,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onLeaveEvent() {
     if (!::g_squad_utils.canJoinFlightMsgBox(
       { isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel" },
-      Callback(onLeaveEventActions, this)))
+      ::Callback(onLeaveEventActions, this)))
       return
     else
       onLeaveEventActions()
@@ -348,9 +341,9 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     ::queues.leaveQueue(q, { isCanceledByPlayer = true })
   }
 
-  onEventSquadStatusChanged = @(_p) updateApplyButton()
-  onEventSquadSetReady = @(_p) updateApplyButton()
-  onEventSquadDataUpdated = @(_p) updateApplyButton()
+  onEventSquadStatusChanged = @(p) updateApplyButton()
+  onEventSquadSetReady = @(p) updateApplyButton()
+  onEventSquadDataUpdated = @(p) updateApplyButton()
 
   onLeaderboard = @()
     ::gui_modal_event_leaderboards(getMatchingEventId(tournament.id, curTourParams.dayNum, false),
@@ -358,11 +351,11 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onReward() {
     ::gui_handlers.EventRewardsWnd.open([{
-        header = loc("tournaments/rewards")
+        header = ::loc("tournaments/rewards")
         event = curEvent
         tourId = tournament.id
       },{
-        header = loc("tournaments/seasonRewards")
+        header = ::loc("tournaments/seasonRewards")
         event = curEvent
         tourId = tournament.sharedEconomicName
       }])
@@ -374,10 +367,10 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!isInQueue)
       return
 
-    let textObj = this.scene.findObject("waitText")
-    let iconObj = this.scene.findObject("queue_wait_icon")
+    let textObj = scene.findObject("waitText")
+    let iconObj = scene.findObject("queue_wait_icon")
     ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
-      iconObj, loc("yn1/waiting_for_game_query"))
+      iconObj, ::loc("yn1/waiting_for_game_query"))
   }
 
   function updateWnd() {
@@ -390,7 +383,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       updateContentView()
   }
 
-  function onTimer(_obj, _dt) {
+  function onTimer(obj, dt) {
     updateWnd()
     updateQueueView()
   }
@@ -400,7 +393,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     resetSlotbarOverrided()
-    this.checkedForward(base.goBack)
+    checkedForward(base.goBack)
   }
 
   function goBack() {
@@ -410,8 +403,8 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    ::scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
-      [["ok", Callback(function(){
+    ::scene_msg_box("requeue_question", null, ::loc("msg/cancel_queue_question"),
+      [["ok", ::Callback(function(){
           onLeaveEvent()
           goBackImpl()
         }, this)], ["no", null]], "ok")

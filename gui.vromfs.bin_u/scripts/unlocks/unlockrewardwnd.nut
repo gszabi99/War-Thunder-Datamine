@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.trophyRewardWnd {
+::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
+{
   wndType = handlerType.MODAL
 
   unlockConfig = null
@@ -23,28 +16,28 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   viewParams = null
 
   function openChest() {
-    if (this.opened)
+    if (opened)
       return false
 
-    this.opened = true
-    this.updateWnd()
+    opened = true
+    updateWnd()
     return true
   }
 
   function checkConfigsArray() {
     let unlockType = ::g_unlock_view.getUnlockType(unlockData)
-    if (unlockType == UNLOCKABLE_AIRCRAFT)
-      this.unit = ::getAircraftByName(unlockData.id)
-    else if (unlockType == UNLOCKABLE_DECAL
-      || unlockType == UNLOCKABLE_SKIN
-      || unlockType == UNLOCKABLE_ATTACHABLE)
+    if (unlockType == ::UNLOCKABLE_AIRCRAFT)
+      unit = ::getAircraftByName(unlockData.id)
+    else if (unlockType == ::UNLOCKABLE_DECAL
+      || unlockType == ::UNLOCKABLE_SKIN
+      || unlockType == ::UNLOCKABLE_ATTACHABLE)
       {
-        this.updateResourceData(unlockData.id, unlockType)
+        updateResourceData(unlockData.id, unlockType)
       }
   }
 
   function getIconData() {
-    if (!this.opened)
+    if (!opened)
       return ""
 
     let imgConfig = ::g_unlock_view.getUnlockImageConfig(unlockData)
@@ -59,20 +52,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function updateRewardText() {
-    if (!this.opened)
+    if (!opened)
       return
 
-    let obj = this.scene.findObject("prize_desc_div")
-    if (!checkObj(obj))
+    let obj = scene.findObject("prize_desc_div")
+    if (!::checkObj(obj))
       return
 
     let data = ::g_unlock_view.getViewItem(unlockData, (viewParams ?? {}).__merge({
-      header = loc("mainmenu/you_received")
+      header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
     }))
 
-    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
+    guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
   checkSkipAnim = @() false
@@ -86,7 +79,7 @@ return {
     let config = ::g_unlocks.getUnlockById(unlockId)
     if (!config)
     {
-      logerr($"Unlock Reward: Could not find unlock config {unlockId}")
+      ::dagor.logerr($"Unlock Reward: Could not find unlock config {unlockId}")
       return
     }
 

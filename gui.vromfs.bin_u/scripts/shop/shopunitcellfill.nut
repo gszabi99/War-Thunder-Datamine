@@ -1,10 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format, split_by_chars } = require("string")
-let { round } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
@@ -62,7 +56,7 @@ let function initCell(cell, initData) {
   cardObj.findObject("mainActionButton").holderId = id
 }
 
-let function updateCardStatus(obj, _id, statusTbl) {
+let function updateCardStatus(obj, id, statusTbl) {
   let {
     isGroup             = false,
     unitName            = "",
@@ -176,7 +170,7 @@ let function updateCardStatus(obj, _id, statusTbl) {
     discountObj.setValue("")
   else {
     discountObj.setValue($"-{discount}%")
-    discountObj.tooltip = format(loc("discount/buy/tooltip"), discount.tostring())
+    discountObj.tooltip = format(::loc("discount/buy/tooltip"), discount.tostring())
   }
 
   let hasBonus = expMul > 1 || wpMul > 1
@@ -189,9 +183,9 @@ let function updateCardStatus(obj, _id, statusTbl) {
     let locEnd = isGroup ? "/group/tooltip" : "/tooltip"
     let tooltipArr = []
     if (expMul > 1)
-      tooltipArr.append(format(loc($"bonus/expitemAircraftMul{locEnd}"), $"x{expMul}"))
+      tooltipArr.append(format(::loc($"bonus/expitemAircraftMul{locEnd}"), $"x{expMul}"))
     if (wpMul > 1)
-      tooltipArr.append(format(loc($"bonus/wpitemAircraftMul{locEnd}"), $"x{wpMul}"))
+      tooltipArr.append(format(::loc($"bonus/wpitemAircraftMul{locEnd}"), $"x{wpMul}"))
     bonusObj.tooltip = "\n".join(tooltipArr, true)
   }
 }
@@ -216,7 +210,7 @@ let function updateCellTimedStatusImpl(cell, timedTbl) {
 
   let rentIcon = showInObj(cell, "rentIcon", rentProgress >= 0)
   if (rentProgress >= 0)
-    updateSector1InObj(rentIcon, "rentProgress", 360 - round(360.0 * rentProgress).tointeger())
+    updateSector1InObj(rentIcon, "rentProgress", 360 - ::round(360.0 * rentProgress).tointeger())
 }
 
 let getUnitFixedParams = function(unit, params) {
@@ -266,7 +260,7 @@ let getUnitStatusTbl = function(unit, params) {
     hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0
       && hasMarkerByUnitName(unit.name, getEdiffFunc())
   }
-  if (forceNotInResearch || !::isUnitInResearch(unit) || hasFeature("SpendGold")) //it not look like good idea to calc it here
+  if (forceNotInResearch || !::isUnitInResearch(unit) || ::has_feature("SpendGold")) //it not look like good idea to calc it here
     if (::show_console_buttons)
       res.mainButtonIcon <- "#ui/gameuiskin#slot_menu.svg"
     else
@@ -330,7 +324,7 @@ let function getFakeUnitStatusTbl(unit, params) {
   return {
     unitName             = unit.name
     unitImage            = unit.image
-    nameText             = loc(unit?.nameLoc ?? $"mainmenu/type_{nameForLoc}")
+    nameText             = ::loc(unit?.nameLoc ?? $"mainmenu/type_{nameForLoc}")
     isInactive           = true
     shopStatus           = getUnitItemStatusText(bitStatus, true)
     unitRankText         = ::get_unit_rank_text(unit, null, showBR, getEdiffFunc())
@@ -441,7 +435,7 @@ let function getGroupStatusTbl(group, params) {
     //primary unit params
     primaryUnitId       = primaryUnit.name,
     unitImage,
-    nameText            = needUnitNameOnPlate ? ::getUnitName(primaryUnit) : loc($"shop/group/{group.name}")
+    nameText            = needUnitNameOnPlate ? ::getUnitName(primaryUnit) : ::loc($"shop/group/{group.name}")
     unitRarity          = getUnitRarity(primaryUnit)
     unitClassIcon       = getUnitRoleIcon(primaryUnit)
     unitClass           = getUnitRole(primaryUnit)
@@ -491,7 +485,7 @@ let getStatusTbl = @(unitOrGroup, params) unitOrGroup == null ? { isVisible = fa
       .__update(getUnitResearchStatusTbl(unitOrGroup, params))
       .__update(getUnitFixedParams(unitOrGroup, params))
 
-let getTimedStatusTbl = @(unitOrGroup, _params) unitOrGroup == null ? {}
+let getTimedStatusTbl = @(unitOrGroup, params) unitOrGroup == null ? {}
   : ::isUnitGroup(unitOrGroup) ? getGroupTimedStatusTbl(unitOrGroup)
   : unitOrGroup?.isFakeUnit ? {}
   : getUnitTimedStatusTbl(unitOrGroup)
@@ -504,7 +498,7 @@ let function updateCellTimedStatus(cell, getTimedStatus) {
 
   let holderId = cell.holderId
   let cardObj = cell.findObject(holderId)
-  SecondsUpdater(cardObj, function(_obj, _) {
+  SecondsUpdater(cardObj, function(obj, _) {
     if (holderId != cell.holderId) //remove timer if cell show other vehicle
       return true
     timedStatus = getTimedStatus()

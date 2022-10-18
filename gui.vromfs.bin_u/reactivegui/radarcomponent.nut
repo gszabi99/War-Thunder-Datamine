@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
-
 //local frp = require("frp")
 //local {isEqual} = require("%sqstd/underscore.nut")
 let {PI, floor, cos, sin, fabs, sqrt} = require("%sqstd/math.nut")
@@ -56,9 +53,9 @@ let getCompassStrikeWidth = @(oneElementWidth, step) 360.0 * oneElementWidth / s
 
 //animation trigger
 let frameTrigger = {}
-selectedTargetBlinking.subscribe(@(v) v ? anim_start(frameTrigger) : anim_request_stop(frameTrigger))
+selectedTargetBlinking.subscribe(@(v) v ? ::anim_start(frameTrigger) : ::anim_request_stop(frameTrigger))
 let speedTargetTrigger = {}
-selectedTargetSpeedBlinking.subscribe(@(v) v ? anim_start(speedTargetTrigger) : anim_request_stop(speedTargetTrigger))
+selectedTargetSpeedBlinking.subscribe(@(v) v ? ::anim_start(speedTargetTrigger) : ::anim_request_stop(speedTargetTrigger))
 
 const targetLifeTime = 5.0
 
@@ -582,9 +579,9 @@ let radToDeg = 180.0 / 3.14159
 let function getRadarModeText(radarModeNameWatch, isRadarVisibleWatch) {
   let texts = []
   if (radarModeNameWatch.value >= 0)
-    texts.append(loc(modeNames[radarModeNameWatch.value]))
+    texts.append(::loc(modeNames[radarModeNameWatch.value]))
   else if (isRadarVisibleWatch.value)
-    texts.append(Irst.value ? loc("hud/irst") : loc("hud/radarEmitting"))
+    texts.append(Irst.value ? ::loc("hud/irst") : ::loc("hud/radarEmitting"))
  return "".join(texts)
 }
 
@@ -634,10 +631,10 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5),
-                loc("measureUnits/deg"),
+                ::loc("measureUnits/deg"),
                 "x",
                 floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5),
-                loc("measureUnits/deg"),
+                ::loc("measureUnits/deg"),
                 (ScanPatternsMax.value > 1 ? "*" : " "))
       }),
       !HasDistanceScale.value ? null
@@ -649,8 +646,8 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         pos = [max(size[0] * 0.75, hdpx(70)), -hdpx(20)]
         text = "".concat(VelocitySearch.value
-                ? cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false)
-                : cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
+                ? ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false)
+                : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
                 (DistanceScalesMax.value > 1 ? "*" : " "))
       }),
       !HasDistanceScale.value ? null
@@ -662,10 +659,10 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         pos = [max(size[0] * 0.75, hdpx(70)), size[1] + hdpx(6)]
         text = VelocitySearch.value
-          ? cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false)
-          : cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMin.value * 1000.0, true, false, false)
+          ? ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false)
+          : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMin.value * 1000.0, true, false, false)
       }),
-      !HasAzimuthScale.value || !cross_call.hasFeature("RadarElevationControl") ? null
+      !HasAzimuthScale.value || !::cross_call.hasFeature("RadarElevationControl") ? null
       : @() styleText.__merge({
         halign = ALIGN_RIGHT
         watch = ElevationMin
@@ -675,9 +672,9 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         pos = [-size[0], (-ElevationMin.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
-        text = "".concat(floor((ElevationMin.value) * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor((ElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
-      !HasAzimuthScale.value || !cross_call.hasFeature("RadarElevationControl") ? null
+      !HasAzimuthScale.value || !::cross_call.hasFeature("RadarElevationControl") ? null
       : @() styleText.__merge({
         halign = ALIGN_RIGHT
         watch = ElevationMax
@@ -687,7 +684,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         pos = [-size[0], (-ElevationMax.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
-        text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       !HasAzimuthScale.value ? null
       : @() styleText.__merge({
@@ -697,7 +694,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = fontOutlineFxFactor
         fontFxColor = Color(0, 0, 0, 120)
         pos = [hdpx(4), hdpx(4)]
-        text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       !HasAzimuthScale.value ? null
       : @() styleText.__merge({
@@ -709,7 +706,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = fontOutlineFxFactor
         fontFxColor = Color(0, 0, 0, 120)
         pos = [-hdpx(4), hdpx(4)]
-        text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       HasAzimuthScale.value ? null
       : @() styleText.__merge({
@@ -721,7 +718,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = fontOutlineFxFactor
         fontFxColor = Color(0, 0, 0, 120)
         pos = [-hdpx(4), hdpx(4)]
-        text = "".concat(floor((AzimuthMax.value - AzimuthMin.value) * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor((AzimuthMax.value - AzimuthMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       makeRadarModeText({
           pos = [size[0] * 0.5, -hdpx(20)]
@@ -782,10 +779,10 @@ let function B_ScopeSquare(size, color, hide_back) {
     color = isColorOrWhite(color)
   }
   let scopeSquareAzimuthComp1 = B_ScopeSquareAzimuthComponent(size, Azimuth, Distance, AzimuthHalfWidth, false, color)
-  let scopeSquareElevationComp1 = cross_call.hasFeature("RadarElevationControl") ?
+  let scopeSquareElevationComp1 = ::cross_call.hasFeature("RadarElevationControl") ?
     B_ScopeSquareElevationComp(size, Elevation, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, color) : null
   let scopeSquareAzimuthComp2 = B_ScopeSquareAzimuthComponent(size, Azimuth2, Distance2, AzimuthHalfWidth2, false, color)
-  let scopeSquareElevationComp2 = cross_call.hasFeature("RadarElevationControl") ?
+  let scopeSquareElevationComp2 = ::cross_call.hasFeature("RadarElevationControl") ?
     B_ScopeSquareElevationComp(size, Elevation2, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, color) : null
   let scopeSqLaunchRangeComp = B_ScopeSquareLaunchRangeComponent(size, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax, color)
   let tgts = targetsComponent(size, createTargetOnRadarSquare, color)
@@ -1212,9 +1209,9 @@ let B_ScopeCircleMarkers = @(size, color) function() {
           fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
           fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
           text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5),
-                   loc("measureUnits/deg"), "x",
+                   ::loc("measureUnits/deg"), "x",
                    floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5),
-                   loc("measureUnits/deg"),
+                   ::loc("measureUnits/deg"),
                    (ScanPatternsMax.value > 1
                       ? "*"
                       : " "))
@@ -1227,9 +1224,9 @@ let B_ScopeCircleMarkers = @(size, color) function() {
           fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
           fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
           text = "".concat(VelocitySearch.value
-                    ? cross_call.measureTypes.SPEED.getMeasureUnitsText(
+                    ? ::cross_call.measureTypes.SPEED.getMeasureUnitsText(
                       DistanceMax.value, true, false, false)
-                    : cross_call.measureTypes.DISTANCE.getMeasureUnitsText(
+                    : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(
                       DistanceMax.value * 1000.0, true, false, false),
                     (DistanceScalesMax.value > 1
                       ? "*"
@@ -1240,21 +1237,21 @@ let B_ScopeCircleMarkers = @(size, color) function() {
           pos = [size[0] * 0.5 - hdpx(4), -hdpx(18)]
           fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
           fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
-          text = "".concat("0", loc("measureUnits/deg"))
+          text = "".concat("0", ::loc("measureUnits/deg"))
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
         pos = [size[0] + hdpx(4), size[1] * 0.5 - hdpx(15)]
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
-        text = "".concat("90", loc("measureUnits/deg"))
+        text = "".concat("90", ::loc("measureUnits/deg"))
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
         pos = [size[0] * 0.5 - hdpx(18), size[1] + hdpx(4)]
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
-        text = "".concat("180", loc("measureUnits/deg"))
+        text = "".concat("180", ::loc("measureUnits/deg"))
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
@@ -1262,7 +1259,7 @@ let B_ScopeCircleMarkers = @(size, color) function() {
         hplace = ALIGN_LEFT
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
-        text = "".concat("270", loc("measureUnits/deg"))
+        text = "".concat("270", ::loc("measureUnits/deg"))
       }),
       makeRadarModeText({
           pos = [size[0] * (0.5 - 0.15), -hdpx(20)]
@@ -1506,9 +1503,9 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
             pos = [scanRangeX, scanRangeY]
             hplace = ALIGN_RIGHT
             text = "".concat( floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5),
-                            loc("measureUnits/deg"), "x",
+                            ::loc("measureUnits/deg"), "x",
                             floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5),
-                            loc("measureUnits/deg"),
+                            ::loc("measureUnits/deg"),
                             (ScanPatternsMax.value > 1
                               ? "*"
                               : " "))
@@ -1525,15 +1522,15 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
           fontSize = hudFontHgt * fontScale
           pos = [scanYaw, scanPitch]
           text =  "".concat(VelocitySearch.value
-                    ? cross_call.measureTypes.SPEED.getMeasureUnitsText(
+                    ? ::cross_call.measureTypes.SPEED.getMeasureUnitsText(
                       DistanceMax.value, true, false, false)
-                    : cross_call.measureTypes.DISTANCE.getMeasureUnitsText(
+                    : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(
                       DistanceMax.value * 1000.0, true, false, false),
                     (DistanceScalesMax.value > 1
                       ? "*"
                       : " "))
       })
-      !HasAzimuthScale.value || !cross_call.hasFeature("RadarElevationControl") ? null
+      !HasAzimuthScale.value || !::cross_call.hasFeature("RadarElevationControl") ? null
       : @() styleText.__merge({
         halign = ALIGN_RIGHT
         valign = ALIGN_TOP
@@ -1547,9 +1544,9 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
           (0.5 + (0.25 + 0.5 * ElevationMin.value * elevMaxInv * elevMaxScreenRelSize) * sin(AzimuthMin.value) - 0.03 * cos(AzimuthMin.value) - 1.0) * size[0],
           (0.5 - (0.25 + 0.5 * ElevationMin.value * elevMaxInv * elevMaxScreenRelSize) * cos(AzimuthMin.value) - 0.03 * sin(AzimuthMin.value) - 0.0) * size[1]
         ]
-        text = "".concat(floor((ElevationMin.value) * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor((ElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       })
-      !HasAzimuthScale.value || !cross_call.hasFeature("RadarElevationControl") ? null
+      !HasAzimuthScale.value || !::cross_call.hasFeature("RadarElevationControl") ? null
       : @() styleText.__merge({
         halign = ALIGN_RIGHT
         valign = ALIGN_TOP
@@ -1563,7 +1560,7 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
           (0.5 + (0.25 + 0.5 * ElevationMax.value * elevMaxInv * elevMaxScreenRelSize) * sin(AzimuthMin.value) - 0.03 * cos(AzimuthMin.value) - 1.0) * size[0],
           (0.5 - (0.25 + 0.5 * ElevationMax.value * elevMaxInv * elevMaxScreenRelSize) * cos(AzimuthMin.value) - 0.03 * sin(AzimuthMin.value) - 0.0) * size[1]
         ]
-        text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
       })
       makeRadarModeText({
           pos = [size[0] * (0.5 - 0.15), -hdpx(20)]
@@ -1636,10 +1633,10 @@ let function B_ScopeHalf(size, color, fontScale) {
   let markers = B_ScopeHalfCircleMarkers(size, color, fontScale)
   let cue = B_ScopeHalfCue(size, color)
   let az1 = B_ScopeAzimuthComponent(size, Azimuth, Distance, AzimuthHalfWidth, color)
-  let el1 = cross_call.hasFeature("RadarElevationControl") ?
+  let el1 = ::cross_call.hasFeature("RadarElevationControl") ?
     B_ScopeElevationComp(size, Elevation, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, AzimuthMin, color) : null
   let az2 = B_ScopeAzimuthComponent(size, Azimuth2, Distance2, AzimuthHalfWidth2, color)
-  let el2 = cross_call.hasFeature("RadarElevationControl") ?
+  let el2 = ::cross_call.hasFeature("RadarElevationControl") ?
     B_ScopeElevationComp(size, Elevation2, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, AzimuthMin, color) : null
   let aamLaunch = B_ScopeHalfLaunchRangeComponent(size, AzimuthMin, AzimuthMax,
                                                       AamLaunchZoneDistMin, AamLaunchZoneDistMax, color)
@@ -1983,10 +1980,10 @@ let C_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5),
-                loc("measureUnits/deg"),
+                ::loc("measureUnits/deg"),
                 "x",
                 floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5),
-                loc("measureUnits/deg"),
+                ::loc("measureUnits/deg"),
                 (ScanPatternsMax.value > 1 ? "*" : " "))
       }),
       IsBScopeVisible.value || !HasDistanceScale.value ? null
@@ -1998,8 +1995,8 @@ let C_ScopeSquareMarkers = @(size, color) function() {
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         pos = [size[0] * 0.75, -hdpx(20)]
         text = "".concat(VelocitySearch.value
-                ? cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false)
-                : cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
+                ? ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false)
+                : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
                 (DistanceScalesMax.value > 1 ? "*" : " "))
       }),
       @() styleText.__merge({
@@ -2009,7 +2006,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         pos = [size[0] + hdpx(4), hdpx(4)]
-        text = "".concat(floor(ElevationMax.value * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor(ElevationMax.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       @() styleText.__merge({
         watch = [ ElevationMin, ElevationRangeInv ]
@@ -2018,7 +2015,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         rendObj = ROBJ_TEXT
         pos = [size[0] + hdpx(4), (1.0 - (0.0 - ElevationMin.value) * ElevationRangeInv.value) * size[1] - hdpx(4)]
-        text = "".concat("0", loc("measureUnits/deg"))
+        text = "".concat("0", ::loc("measureUnits/deg"))
       }),
       @() styleText.__merge({
         watch = ElevationMin
@@ -2027,7 +2024,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
         pos = [size[0] + hdpx(4), size[1] - hdpx(20)]
-        text = "".concat(floor(ElevationMin.value * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor(ElevationMin.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       @() styleText.__merge({
         watch = AzimuthMin
@@ -2036,7 +2033,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
         color = isColorOrWhite(color)
         fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
         fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
-        text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), loc("measureUnits/deg"))
+        text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       {
         size = [size[0], SIZE_TO_CONTENT]
@@ -2048,7 +2045,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
           hplace = ALIGN_RIGHT
           fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
           fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
-          text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), loc("measureUnits/deg"))
+          text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
         })
       },
       IsBScopeVisible.value ? null
@@ -2126,7 +2123,7 @@ let mkRadarTgtsDist = @(dist, _id, width, color) styleText.__merge({
   fontSize = hudFontHgt
   fontFxFactor = isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
   fontFxColor = isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
-  text = (dist != null && dist > 0.0) ? cross_call.measureTypes.DISTANCE.getMeasureUnitsText(dist) : ""
+  text = (dist != null && dist > 0.0) ? ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(dist) : ""
 })
 
 let mkRadarTgtsSpd = @(id, width, color) styleText.__merge({
@@ -2145,7 +2142,7 @@ let mkRadarTgtsSpd = @(id, width, color) styleText.__merge({
     let spd = screenTargets?[id]?.radSpeed
     return {
       text = (spd != null && spd > -3000.0)
-        ?  cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(spd) : ""
+        ?  ::cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(spd) : ""
     }
   }
 })
@@ -2565,7 +2562,7 @@ let createAzimuthMarkWithOffset = @(id, size, total_width, angle, is_selected, i
   let animTrigger = "".concat("fadeMarker", id, (is_selected ? "_1" : "_0"))
 
   if (!is_selected)
-    anim_start(animTrigger)
+    ::anim_start(animTrigger)
   let animations = [
     {
       trigger = animTrigger

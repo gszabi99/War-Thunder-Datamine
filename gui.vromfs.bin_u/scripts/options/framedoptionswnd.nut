@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.FramedOptionsWnd <- class extends ::gui_handlers.GenericOptions {
+::gui_handlers.FramedOptionsWnd <- class extends ::gui_handlers.GenericOptions
+{
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/framedOptionsWnd.blk"
   sceneNavBlkName = null
@@ -18,36 +11,36 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen()
   {
-    let tableObj = this.scene.findObject("optionslist")
+    let tableObj = scene.findObject("optionslist")
     tableObj.width = menuWidth
-    if (this.options)
+    if (options)
     {
-      tableObj.height = this.options.len() + "@baseTrHeight"
-      if (this.options.len() <= 1)
+      tableObj.height = options.len() + "@baseTrHeight"
+      if (options.len() <= 1)
         tableObj.invisibleSelection = "yes"
     }
 
     base.initScreen()
 
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, this.scene.findObject("main_frame"))
+    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
     initOpenAnimParams()
   }
 
   function goBack()
   {
-    this.applyOptions(true)
+    applyOptions(true)
   }
 
   function applyReturn()
   {
-    if (!this.applyFunc)
-      this.restoreMainOptions()
+    if (!applyFunc)
+      restoreMainOptions()
     base.applyReturn()
   }
 
   function initOpenAnimParams()
   {
-    let animObj = this.scene.findObject("anim_block")
+    let animObj = scene.findObject("anim_block")
     if (!animObj)
       return
     let size = animObj.getSize()

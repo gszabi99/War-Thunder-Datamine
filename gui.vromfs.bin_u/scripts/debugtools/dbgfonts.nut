@@ -1,16 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 // warning disable: -file:forbidden-function
 
 let fonts = require("fonts")
 let { reloadDargUiScript } = require("reactiveGuiCommand")
-let { register_command } = require("console")
-let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 
-let function debug_change_font_size(shouldIncrease = true) {
+::debug_change_font_size <- function debug_change_font_size(shouldIncrease = true)
+{
   let availableFonts = ::g_font.getAvailableFonts()
   let curFont = ::g_font.getCurrent()
   local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
@@ -19,11 +13,12 @@ let function debug_change_font_size(shouldIncrease = true) {
     ::handlersManager.getActiveBaseHandler().fullReloadScene()
     reloadDargUiScript(false)
   }
-  dlog($"Loaded fonts: {availableFonts[idx].id}")
+  dlog("Loaded fonts: " + availableFonts[idx].id)
 }
 
 local fontsAdditionalText = ""
-let function debug_fonts_list(isActiveColor = true, needBorder = true) {
+::debug_fonts_list <- function debug_fonts_list(isActiveColor = true, needBorder = true)
+{
   let getColor = @() isActiveColor ? "activeTextColor" : "commonTextColor"
 
   let view = {
@@ -46,48 +41,43 @@ let function debug_fonts_list(isActiveColor = true, needBorder = true) {
 
     function onCreate(obj)
     {
-      this.scene = obj
-      this.guiScene = obj.getScene()
+      scene = obj
+      guiScene = obj.getScene()
     }
 
     function updateAllObjs(func)
     {
-      this.guiScene.setUpdatesEnabled(false, false)
-      foreach (id in fonts.getFontsList())
+      guiScene.setUpdatesEnabled(false, false)
+      foreach(id in fonts.getFontsList())
       {
-        let obj = this.scene.findObject(id)
-        if (checkObj(obj))
+        let obj = scene.findObject(id)
+        if (::check_obj(obj))
           func(obj)
       }
-      this.guiScene.setUpdatesEnabled(true, true)
+      guiScene.setUpdatesEnabled(true, true)
     }
 
     function onColorChange(obj)
     {
       isActiveColor = obj.getValue()
-      let color = this.guiScene.getConstantValue(getColor())
-      this.updateAllObjs(function(obj) { obj.color = color })
+      let color = guiScene.getConstantValue(getColor())
+      updateAllObjs(function(obj) { obj.color = color })
     }
 
     function onBorderChange(obj)
     {
       needBorder = obj.getValue()
       let borderText = needBorder ? "yes" : "no"
-      this.updateAllObjs(function(obj) { obj.border = borderText })
+      updateAllObjs(function(obj) { obj.border = borderText })
     }
 
     function onTextChange(obj)
     {
       let text = obj.getValue()
       fontsAdditionalText = text.len() ? "\n" + text : ""
-      this.updateAllObjs(function(obj) { obj.setValue(obj.id + fontsAdditionalText) })
+      updateAllObjs(function(obj) { obj.setValue(obj.id + fontsAdditionalText) })
     }
   }
 
-  debugWnd("%gui/debugTools/fontsList.tpl", view, handler)
+  debug_wnd("%gui/debugTools/fontsList.tpl", view, handler)
 }
-
-register_command(@() debug_change_font_size(), "debug.font_size_increase")
-register_command(@() debug_change_font_size(false), "debug.font_size_decrease")
-register_command(@() debug_fonts_list(), "debug.fonts_list")
-register_command(debug_fonts_list, "debug.fonts_list_with_params")

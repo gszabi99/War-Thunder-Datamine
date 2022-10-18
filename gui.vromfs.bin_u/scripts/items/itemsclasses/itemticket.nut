@@ -1,14 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText,
   getConditionText } = require("%scripts/events/eventRewards.nut")
-let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 
 ::items_classes.Ticket <- class extends ::BaseItem
 {
@@ -47,7 +40,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 
     eventEconomicNamesArray = params != null ? params % "tournamentName" : []
     if (!eventEconomicNamesArray.len())
-      log("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + this.id)
+      ::dagor.debug("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + id)
     else
     {
       let tournamentBlk = ::get_tournaments_blk()
@@ -55,11 +48,11 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
       //handling closed sales
       canBuy = canBuy && !get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/saleClosed", false)
 
-      if (this.isInventoryItem && !isActiveTicket)
+      if (isInventoryItem && !isActiveTicket)
       {
         let tBlk = ::DataBlock()
         ::get_tournament_info_blk(eventEconomicNamesArray[0], tBlk)
-        isActiveTicket = isInArray(tBlk?.activeTicketUID, this.uids)
+        isActiveTicket = ::isInArray(tBlk?.activeTicketUID, uids)
       }
     }
   }
@@ -116,20 +109,20 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
     if (!iconTable)
       iconTable = getIconTableForEvent(null)
 
-    let unitTypeLayer = getTblValue("unitType", customLayers)? "_" + customLayers.unitType : iconTable.unitType
+    let unitTypeLayer = ::getTblValue("unitType", customLayers)? "_" + customLayers.unitType : iconTable.unitType
     let insertLayersArrayCfg = []
     insertLayersArrayCfg.append(_getUnitTypeLayer(unitTypeLayer, small))
-    insertLayersArrayCfg.append(_getDifficultyLayer(getTblValue("diffCode", customLayers) || iconTable.diffCode, small))
-    insertLayersArrayCfg.append(_getTournamentModeLayer(getTblValue("mode", customLayers) || iconTable.mode, small))
-    insertLayersArrayCfg.append(_getTournamentTypeLayer(getTblValue("type", customLayers) || iconTable.type, small))
-    insertLayersArrayCfg.append(addItemName ? _getNameLayer(getTblValue("name", iconTable), small) : null)
+    insertLayersArrayCfg.append(_getDifficultyLayer(::getTblValue("diffCode", customLayers) || iconTable.diffCode, small))
+    insertLayersArrayCfg.append(_getTournamentModeLayer(::getTblValue("mode", customLayers) || iconTable.mode, small))
+    insertLayersArrayCfg.append(_getTournamentTypeLayer(::getTblValue("type", customLayers) || iconTable.type, small))
+    insertLayersArrayCfg.append(addItemName ? _getNameLayer(::getTblValue("name", iconTable), small) : null)
 
     return ::LayersIcon.genInsertedDataFromLayer(_getBackground(small), insertLayersArrayCfg)
   }
 
   function getBasePartOfLayerId(small)
   {
-    return this.iconStyle + (small? "_shop" : "")
+    return iconStyle + (small? "_shop" : "")
   }
 
   function _getBackground(small)
@@ -174,11 +167,11 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
     if (!event)
       return null
 
-    if (getTblValue("clans_only", event, false))
+    if (::getTblValue("clans_only", event, false))
       return "clan"
     if (::events.getMaxTeamSize(event) == 1)
       return "pvp"
-    if (getTblValue("squads_only", event, false))
+    if (::getTblValue("squads_only", event, false))
       return "squad"
 
     return "team"
@@ -205,13 +198,13 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
     return ::LayersIcon.findLayerCfg(getBasePartOfLayerId(small) + "_gt_" + lType)
   }
 
-  function _getNameForLayer(_event, eventEconomicName = "")
+  function _getNameForLayer(event, eventEconomicName = "")
   {
-    local text = this.locId ? loc(this.locId + "/short", loc(this.locId, "")) : ""
+    local text = locId ? ::loc(locId + "/short", ::loc(locId, "")) : ""
     if (text == "")
       text = ::events.getNameByEconomicName(eventEconomicName)
     if (text == "")
-      text = loc("item/" + this.id, loc("item/" + defaultLocId, ""))
+      text = ::loc("item/" + id, ::loc("item/" + defaultLocId, ""))
     return text
   }
 
@@ -230,26 +223,26 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 
   function getName(colored = true)
   {
-    local name = this.locId ? loc(this.locId + "/short", loc(this.locId, "")) : ""
+    local name = locId ? ::loc(locId + "/short", ::loc(locId, "")) : ""
     if (name == "" && eventEconomicNamesArray.len())
     {
       if (eventEconomicNamesArray.len() > 1)
-        name = loc("item/" + defaultLocId + "/multipleEvents")
+        name = ::loc("item/" + defaultLocId + "/multipleEvents")
       else
       {
         local eventName = ::events.getNameByEconomicName(eventEconomicNamesArray[0])
-        eventName = colored ? colorize("userlogColoredText", eventName) : eventName
-        name = loc("item/" + defaultLocId, { name = eventName })
+        eventName = colored ? ::colorize("userlogColoredText", eventName) : eventName
+        name = ::loc("item/" + defaultLocId, { name = eventName })
       }
     }
     if (name == "")
-      name = loc("item/" + this.id, "")
+      name = ::loc("item/" + id, "")
     return name
   }
 
   function getTypeName()
   {
-    return loc("item/ticket/reduced")
+    return ::loc("item/ticket/reduced")
   }
 
   function getTicketTournamentData(eventId)
@@ -268,7 +261,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
     {
       foreach (session in sessions % "data")
       {
-        let timeExpired = getTblValue("timeExpired", session, 0)
+        let timeExpired = ::getTblValue("timeExpired", session, 0)
         let timeDelta = timeExpired - curTime
         if (timeDelta <= 0)
           continue
@@ -294,7 +287,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
   {
     local text = ""
     if (maxDefeatCount)
-      text = addToText(text, loc("ticket/defeat_count"),
+      text = ::UnlockConditions.addToText(text, ::loc("ticket/defeat_count"),
         tournamentData.defCount + "/" + maxDefeatCount, valueColor)
     return text
   }
@@ -303,7 +296,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
   {
     local text = ""
     if (maxSequenceDefeatCount)
-      text = addToText(text, loc("ticket/defeat_count_in_a_row"),
+      text = ::UnlockConditions.addToText(text, ::loc("ticket/defeat_count_in_a_row"),
         tournamentData.sequenceDefeatCount + "/" + maxSequenceDefeatCount, valueColor)
     return text
   }
@@ -312,7 +305,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
   {
     local text = ""
     if (battleLimit)
-      text = addToText(text, loc("ticket/battle_count"),
+      text = ::UnlockConditions.addToText(text, ::loc("ticket/battle_count"),
         tournamentData.battleCount + "/" + battleLimit, valueColor)
     return text
   }
@@ -332,24 +325,24 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
       local locParams = {}
       if (maxDefeatCount)
       {
-        locParams = {value = colorize(valueColor, maxDefeatCount)}
-        textParts.append(loc("ticket/max_defeat_count", locParams))
+        locParams = {value = ::colorize(valueColor, maxDefeatCount)}
+        textParts.append(::loc("ticket/max_defeat_count", locParams))
       }
       if (maxSequenceDefeatCount)
       {
-        locParams = {value = colorize(valueColor, maxSequenceDefeatCount)}
-        textParts.append(loc("ticket/max_defeat_count_in_a_row", locParams))
+        locParams = {value = ::colorize(valueColor, maxSequenceDefeatCount)}
+        textParts.append(::loc("ticket/max_defeat_count_in_a_row", locParams))
       }
       if (battleLimit)
       {
-        locParams = {value = colorize(valueColor, battleLimit)}
-        textParts.append(loc("ticket/battle_limit", locParams))
+        locParams = {value = ::colorize(valueColor, battleLimit)}
+        textParts.append(::loc("ticket/battle_limit", locParams))
       }
     }
 
     local text = ::g_string.implode(textParts, "\n")
     if (text.len() == 0)
-      text = loc("ticket/noRestrictions")
+      text = ::loc("ticket/noRestrictions")
 
     return text
   }
@@ -362,13 +355,13 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
     {
       let baseReward = getBaseVictoryReward(event)
       if (baseReward)
-        text += (text.len() ? "\n" : "") + loc("tournaments/reward/everyVictory",  {reward = baseReward})
+        text += (text.len() ? "\n" : "") + ::loc("tournaments/reward/everyVictory",  {reward = baseReward})
 
       if (haveRewards(event))
       {
-        text += (text.len() ? "\n\n" : "") + loc("tournaments/specialRewards") + loc("ui/colon")
+        text += (text.len() ? "\n\n" : "") + ::loc("tournaments/specialRewards") + ::loc("ui/colon")
         let specialRewards = getSortedRewardsByConditions(event)
-        foreach (_conditionId, rewardsList in specialRewards)
+        foreach (conditionId, rewardsList in specialRewards)
           foreach (reward in rewardsList)
             text += "\n" + getConditionText(reward) + " - " + getRewardDescText(reward)
       }
@@ -385,7 +378,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
         desc.append("\n")
 
       if (eventEconomicNamesArray.len() > 1)
-        desc.append(colorize("activeTextColor", ::events.getNameByEconomicName(eventId)))
+        desc.append(::colorize("activeTextColor", ::events.getNameByEconomicName(eventId)))
       desc.append(getAvailableDefeatsText(eventId))
     }
 
@@ -402,7 +395,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
         desc.append("\n")
 
       if (eventEconomicNamesArray.len() > 1)
-        desc.append(colorize("activeTextColor", ::events.getNameByEconomicName(eventId)))
+        desc.append(::colorize("activeTextColor", ::events.getNameByEconomicName(eventId)))
       desc.append(getAvailableDefeatsText(eventId))
       desc.append(getTournamentRewardsText(eventId))
     }
@@ -420,6 +413,6 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 
   function isForEvent(checkEconomicName)
   {
-    return isInArray(checkEconomicName, eventEconomicNamesArray)
+    return ::isInArray(checkEconomicName, eventEconomicNamesArray)
   }
 }

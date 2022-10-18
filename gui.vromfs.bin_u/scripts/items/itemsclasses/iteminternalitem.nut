@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.InternalItem <- class extends ItemCouponBase
@@ -13,14 +7,14 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
   getContentItem   = function()
   {
-    let contentItem = this.metaBlk?.item ?? this.metaBlk?.trophy
+    let contentItem = metaBlk?.item ?? metaBlk?.trophy
     return contentItem && ::ItemsManager.findItemById(contentItem)
   }
 
   function canConsume()
   {
     let item = getContentItem()
-    if (!this.isInventoryItem || !item)
+    if (!isInventoryItem || !item)
       return false
 
     if (item.iType == itemType.TROPHY) {
@@ -38,10 +32,10 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
   function updateShopFilterMask()
   {
-    this.shopFilterMask = iType
+    shopFilterMask = iType
     let contentItem = getContentItem()
     if (contentItem)
-      this.shopFilterMask = this.shopFilterMask | contentItem.iType
+      shopFilterMask = shopFilterMask | contentItem.iType
   }
 
   getContentIconData   = function()
@@ -58,22 +52,22 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     ? getContentItem()?.getBigIcon() ?? base.getBigIcon()
     : base.getBigIcon()
 
-  needShowRewardWnd = @() !this.metaBlk?.trophy
+  needShowRewardWnd = @() !metaBlk?.trophy
 
   function getViewData(params = {}) {
     if (showAsContentItem())
       return getContentItem()?.getViewData(
-          params.__update({count = (params?.count ?? 0) * (this.metaBlk?.count ?? 0)}))
+          params.__update({count = (params?.count ?? 0) * (metaBlk?.count ?? 0)}))
         ?? base.getViewData(params)
     return base.getViewData(params)
   }
 
-  showAsContentItem = @() this.itemDef?.tags?.showAsContentItem ?? false
+  showAsContentItem = @() itemDef?.tags?.showAsContentItem ?? false
 
   function getPrizeDescription(count = 1, colored = true)
   {
     let itemText = getShortDescription(colored)
-    let quantity = count * (this.metaBlk?.count ?? 1)
+    let quantity = count * (metaBlk?.count ?? 1)
     let quantityText = quantity == 1
       ? ""
       : $"x{quantity}"

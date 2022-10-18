@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
 ::WwOperationModel <- class

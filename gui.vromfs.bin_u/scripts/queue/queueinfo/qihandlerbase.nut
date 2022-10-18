@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 
 ::gui_handlers.QiHandlerBase <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -38,18 +30,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!hasTimerText || !timerUpdateObjId)
       return
 
-    let timerObj = this.scene.findObject(timerUpdateObjId)
+    let timerObj = scene.findObject(timerUpdateObjId)
     timerObj.setUserData(this)
     timerObj.timer_handler_func = "onUpdate"
   }
 
   function destroy()
   {
-    if (!this.isValid())
+    if (!isValid())
       return
-    this.scene.show(false)
-    this.guiScene.replaceContentFromText(this.scene, "", 0, null)
-    this.scene = null
+    scene.show(false)
+    guiScene.replaceContentFromText(scene, "", 0, null)
+    scene = null
   }
 
   function checkCurQueue(forceUpdate = false)
@@ -78,7 +70,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onQueueChange()
   {
-    this.scene.show(queue != null)
+    scene.show(queue != null)
     if (!queue)
       return
 
@@ -86,7 +78,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     updateStats()
   }
 
-  function onUpdate(_obj, _dt)
+  function onUpdate(obj, dt)
   {
     if (queue)
       updateTimer()
@@ -94,17 +86,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateTimer()
   {
-    let textObj = this.scene.findObject(timerTextObjId)
-    let timerObj = this.scene.findObject("wait_time_block")
-    let iconObj = this.scene.findObject("queue_wait_icon")
+    let textObj = scene.findObject(timerTextObjId)
+    let timerObj = scene.findObject("wait_time_block")
+    let iconObj = scene.findObject("queue_wait_icon")
     ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
-      iconObj, loc("yn1/waiting_for_game_query"))
+      iconObj, ::loc("yn1/waiting_for_game_query"))
   }
 
-  function leaveQueue(_obj) { if (leaveQueueCb) leaveQueueCb() }
+  function leaveQueue(obj) { if (leaveQueueCb) leaveQueueCb() }
 
-  function onEventQueueChangeState(_p)     { checkCurQueue() }
-  function onEventQueueInfoUpdated(_p)     { if (queue) updateStats() }
+  function onEventQueueChangeState(p)     { checkCurQueue() }
+  function onEventQueueInfoUpdated(p)     { if (queue) updateStats() }
 
   function createStats() {}
   function updateStats() {}

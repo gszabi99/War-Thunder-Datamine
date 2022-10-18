@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::WwArmyGroupHandler <- class
 {
   group = null
@@ -13,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
   constructor(v_placeObj, v_group = null)
   {
-    if (!checkObj(v_placeObj))
+    if (!::checkObj(v_placeObj))
       return
 
     if (!v_group || !v_group.isValid())
@@ -26,11 +20,11 @@ from "%scripts/dagui_library.nut" import *
 
   function updateSelectedStatus()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     let viewObj = scene.findObject(group.getView().getId())
-    if (!checkObj(viewObj))
+    if (!::checkObj(viewObj))
       return
 
     local isSelectedGroupArmy = false
@@ -44,18 +38,18 @@ from "%scripts/dagui_library.nut" import *
     viewObj.selected = isSelectedGroupArmy? "yes" : "no"
   }
 
-  function onEventWWMapArmySelected(_params)
+  function onEventWWMapArmySelected(params)
   {
     updateSelectedStatus()
   }
 
-  function onEventWWMapClearSelection(_params)
+  function onEventWWMapClearSelection(params)
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     let viewObj = scene.findObject(group.getView().getId())
-    if (!checkObj(viewObj))
+    if (!::checkObj(viewObj))
       return
 
     viewObj.selected = "no"

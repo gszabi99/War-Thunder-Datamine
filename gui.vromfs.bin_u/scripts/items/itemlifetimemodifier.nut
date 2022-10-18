@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let regexp2 = require("regexp2")
 
 let class ItemLifetimeModifier {
@@ -14,7 +8,7 @@ let class ItemLifetimeModifier {
 
   constructor(formulaStr)
   {
-    if (typeof formulaStr != "string" || ::u.isEmpty(formulaStr))
+    if (typeof formulaStr != "string" || u.isEmpty(formulaStr))
       return
 
     // for compatibility

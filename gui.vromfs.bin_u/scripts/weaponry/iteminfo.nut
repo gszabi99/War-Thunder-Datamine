@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { isBullets,
         getBulletGroupIndex } = require("%scripts/weaponry/bulletsInfo.nut")
 let { AMMO,
@@ -46,7 +41,7 @@ let function getItemCost(unit, item)
 
 let function isModStatusResearched(unit, mod) {
   let s = ::shop_get_module_research_status(unit.name, mod.name)
-  return (s & ES_ITEM_STATUS_RESEARCHED) != 0
+  return (s & ::ES_ITEM_STATUS_RESEARCHED) != 0
 }
 
 let function getItemStatusTbl(unit, item)
@@ -119,7 +114,7 @@ let function getItemStatusTbl(unit, item)
           && res.canBuyMore
           && getItemCost(unit, item).wp > 0
         res.equipped = res.amount && ::shop_is_modification_enabled(unit.name, item.name)
-        res.goldUnlockable = !res.unlocked && hasFeature("SpendGold")
+        res.goldUnlockable = !res.unlocked && ::has_feature("SpendGold")
           && isReqModificationsUnlocked(unit, item) && canBeResearched(unit, item, false)
         if (item.type == weaponsItem.expendables)
           res.showPrice = !res.amount || canBuyMod(unit, item)
@@ -221,7 +216,7 @@ let function isModInResearch(unit, item)
     return false
 
   let status = ::shop_get_module_research_status(unit.name, item.name)
-  return status == ES_ITEM_STATUS_IN_RESEARCH
+  return status == ::ES_ITEM_STATUS_IN_RESEARCH
 }
 
 let function getItemUpgradesList(item)
@@ -242,7 +237,7 @@ let function countWeaponsUpgrade(unit, item)
   if (!upgrades)
     return null
 
-  foreach (_i, modsArray in upgrades)
+  foreach (i, modsArray in upgrades)
   {
     if (modsArray.len() == 0)
       continue
@@ -275,7 +270,7 @@ let function getItemUpgradesStatus(unit, item)
     let upgradesList = getItemUpgradesList(weapMod || unit) //default weapon upgrades stored in unit
     if (upgradesList)
       foreach(list in upgradesList)
-        if (isInArray(item.name, list))
+        if (::isInArray(item.name, list))
           return "mod"
   }
   return ""

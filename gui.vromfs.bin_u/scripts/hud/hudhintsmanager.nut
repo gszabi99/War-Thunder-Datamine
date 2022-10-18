@@ -1,13 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { get_time_msec } = require("dagor.time")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -39,7 +31,7 @@ enum HintShowState {
   {
     subscribe()
 
-    if (!checkObj(v_nest))
+    if (!::checkObj(v_nest))
       return
     nest = v_nest
 
@@ -57,7 +49,7 @@ enum HintShowState {
   }
 
 
-  function onEventLoadingStateChange(_p)
+  function onEventLoadingStateChange(p)
   {
     if (!::is_in_flight())
     {
@@ -94,7 +86,7 @@ enum HintShowState {
   function findSceneObjects()
   {
     scene = nest.findObject("hud_hints_nest")
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return false
 
     guiScene = scene.getScene()
@@ -112,11 +104,11 @@ enum HintShowState {
 
   function subscribe()
   {
-    ::g_hud_event_manager.subscribe("LocalPlayerDead", function (_eventData) {
+    ::g_hud_event_manager.subscribe("LocalPlayerDead", function (eventData) {
       onLocalPlayerDead()
     }, this)
 
-    ::g_hud_event_manager.subscribe("WatchedHeroChanged", function (_eventData) {
+    ::g_hud_event_manager.subscribe("WatchedHeroChanged", function (eventData) {
       onWatchedHeroChanged()
     }, this)
 
@@ -124,7 +116,7 @@ enum HintShowState {
     {
       if(!hint.isEnabled() || isHintShowCountExceeded(hint))
       {
-        log("Hints: " + (hint?.showEvent ?? "_") + " is disabled")
+        ::dagor.debug("Hints: " + (hint?.showEvent ?? "_") + " is disabled")
         continue
       }
 
@@ -178,7 +170,7 @@ enum HintShowState {
     activeHints.append({
       hint = hint
       hintObj = null
-      addTime = get_time_msec()
+      addTime = ::dagor.getCurTime()
       eventData = eventData
       lifeTimerWeak = null
     })
@@ -205,7 +197,7 @@ enum HintShowState {
     if (lifeTime <= 0)
       return
 
-    hintData.lifeTimerWeak = timers.addTimer(lifeTime, Callback(function () {
+    hintData.lifeTimerWeak = timers.addTimer(lifeTime, ::Callback(function () {
       hideHint(hintData, false)
       removeFromList(hintData)
       removeDelayedShowTimer(hintData.hint)
@@ -224,7 +216,7 @@ enum HintShowState {
   function updateHintInList(hintData, eventData)
   {
     hintData.eventData = eventData
-    hintData.addTime = get_time_msec()
+    hintData.addTime = ::dagor.getCurTime()
   }
 
   function removeFromList(hintData)
@@ -284,11 +276,11 @@ enum HintShowState {
 
   function showHint(hintData)
   {
-    if (!checkObj(nest))
+    if (!::checkObj(nest))
       return
 
     let hintNestObj = nest.findObject(hintData.hint.getHintNestId())
-    if (!checkObj(hintNestObj))
+    if (!::checkObj(hintNestObj))
       return
 
     checkRemovedHints(hintData.hint) //remove hints with not finished animation if needed
@@ -300,7 +292,7 @@ enum HintShowState {
     hintData.hintObj = hintNestObj.findObject(id)
     setCoutdownTimer(hintData)
 
-    lastShowedTimeDict[hintData.hint.maskId] <- get_time_msec()
+    lastShowedTimeDict[hintData.hint.maskId] <- ::dagor.getCurTime()
     ::increase_hint_show_count(hintData.hint.maskId)
   }
 
@@ -310,12 +302,12 @@ enum HintShowState {
       return
 
     let hintObj = hintData.hintObj
-    if (!checkObj(hintObj))
+    if (!::checkObj(hintObj))
       return
 
-    hintData.secondsUpdater <- SecondsUpdater(hintObj, (@(hintData) function (obj, _params) {
+    hintData.secondsUpdater <- SecondsUpdater(hintObj, (@(hintData) function (obj, params) {
       let textObj = obj.findObject("time_text")
-      if (!checkObj(textObj))
+      if (!::checkObj(textObj))
         return false
 
       let lifeTime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
@@ -333,7 +325,7 @@ enum HintShowState {
   function hideHint(hintData, isInstant)
   {
     let hintObject = hintData.hintObj
-    if (!checkObj(hintObject))
+    if (!::check_obj(hintObject))
       return
 
     let needFinalizeRemove = hintData.hint.hideHint(hintObject, isInstant)
@@ -354,7 +346,7 @@ enum HintShowState {
     for(local i = animatedRemovedHints.len() - 1; i >= 0; i--)
     {
       let hintData = animatedRemovedHints[i]
-      if (checkObj(hintData.hintObj))
+      if (::check_obj(hintData.hintObj))
       {
         if (!hint.hintType.isSameReplaceGroup(hintData.hint, hint))
           continue
@@ -378,13 +370,13 @@ enum HintShowState {
     updateRemoveTimer(hintData)
 
     let hintObj = hintData.hintObj
-    if (!checkObj(hintObj))
+    if (!::checkObj(hintObj))
       return showHint(hintData)
 
     setCoutdownTimer(hintData)
 
     let timeBarObj = hintObj.findObject("time_bar")
-    if (checkObj(timeBarObj))
+    if (::checkObj(timeBarObj))
     {
       let totaltime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
       let currentTime = hintData.hint.getTimerCurrentTimeSec(hintData.eventData, hintData.addTime)
@@ -393,7 +385,7 @@ enum HintShowState {
     }
   }
 
-  function onEventScriptsReloaded(_p)
+  function onEventScriptsReloaded(p)
   {
     foreach(hintData in activeHints)
       hintData.hint = ::g_hud_hints.getByName(hintData.hint.name)
@@ -414,7 +406,7 @@ enum HintShowState {
     }
     else
     {
-      let ageSec = (get_time_msec() - lastShowedTimeDict[hint.maskId]) * 0.001
+      let ageSec = (::dagor.getCurTime() - lastShowedTimeDict[hint.maskId]) * 0.001
       return ageSec >= interval ? HintShowState.SHOW_HINT : HintShowState.NOT_MATCH
     }
 
@@ -424,7 +416,7 @@ enum HintShowState {
   function isHintShowCountExceeded(hint)
   {
     if(hint.maskId >= 0 || (hint?.totalCount ?? 0) > 0)
-      log("Hints: " + (hint?.showEvent ?? "_")
+      ::dagor.debug("Hints: " + (hint?.showEvent ?? "_")
       + " maskId = " + hint.maskId
       + " totalCount = " + (hint?.totalCount ?? "_")
       + " showedCount = " + ::get_hint_seen_count(hint.maskId))
@@ -440,7 +432,7 @@ enum HintShowState {
     if(delayedShowTimers?[hint.name])
       return
 
-    delayedShowTimers[hint.name] <- timers.addTimer(hint.delayTime, Callback(function () {
+    delayedShowTimers[hint.name] <- timers.addTimer(hint.delayTime, ::Callback(function () {
       if(delayedShowTimers?[hint.name])
         onShowEvent(hint, eventData)
     }, this)).weakref()

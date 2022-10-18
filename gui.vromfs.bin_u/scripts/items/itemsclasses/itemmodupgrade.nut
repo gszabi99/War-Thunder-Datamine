@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
 ::items_classes.ModUpgrade <- class extends BaseItemModClass
@@ -20,7 +14,7 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   getConditionsBlk = @(configBlk) configBlk?.modUpgradeParams
 
-  getActivateInfo  = @() loc("item/modUpgrade/activateInModifications")
+  getActivateInfo  = @() ::loc("item/modUpgrade/activateInModifications")
 
   function initConditions(conditionsBlk)
   {
@@ -31,7 +25,7 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
   function getDescriptionIntroArray()
   {
     if (level)
-      return [ loc("multiplayer/level") + loc("ui/colon") + colorize("activeTextColor", level) ]
+      return [ ::loc("multiplayer/level") + ::loc("ui/colon") + ::colorize("activeTextColor", level) ]
     return null
   }
 
@@ -39,14 +33,14 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   function canActivateOnMod(unit, mod)
   {
-    if (this.modsList && !isInArray(mod.name, this.modsList)
-      && !isInArray(::get_modifications_blk()?.modifications?[mod.name]?.modUpgradeType, this.modsList))
+    if (modsList && !::isInArray(mod.name, modsList)
+      && !::isInArray(::get_modifications_blk()?.modifications?[mod.name]?.modUpgradeType, modsList))
       return false
-    if (this.countries && !isInArray(unit.shopCountry, this.countries))
+    if (countries && !::isInArray(unit.shopCountry, countries))
       return false
-    if (this.rankRange && (unit.rank < this.rankRange.x || unit.rank > this.rankRange.y))
+    if (rankRange && (unit.rank < rankRange.x || unit.rank > rankRange.y))
       return false
-    if (this.unitTypes && !isInArray(unit.unitType.lowerName, this.unitTypes))
+    if (unitTypes && !::isInArray(unit.unitType.lowerName, unitTypes))
       return false
     if (level - 1 != ::get_modification_level(unit.name, mod.name))
       return false
@@ -55,7 +49,7 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   function activateOnMod(unit, mod, extSuccessCb = null)
   {
-    let uid = this.uids?[0]
+    let uid = uids?[0]
     if (uid == null)
       return false
 

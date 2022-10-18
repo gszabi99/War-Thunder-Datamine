@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getBattleTaskUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { eachParam } = require("%sqstd/datablock.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
@@ -30,9 +22,9 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   collapsibleChaptersIdx = null
 
   function initScreen() {
-    this.showSceneBtn("show_all_unlocks", hasFeature("ShowAllBattleTasks"))
-    chaptersObj = this.scene.findObject("chapters_list")
-    unlocksObj = this.scene.findObject("unlocks_list")
+    this.showSceneBtn("show_all_unlocks", ::has_feature("ShowAllBattleTasks"))
+    chaptersObj = scene.findObject("chapters_list")
+    unlocksObj = scene.findObject("unlocks_list")
     updateWindow()
     ::move_mouse_on_child_by_value(chaptersObj)
   }
@@ -73,8 +65,8 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   function updateNoTasksText() {
     local text = ""
     if (unlocksArray.len() == 0)
-      text = loc("mainmenu/battleTasks/noPersonalUnlocks")
-    this.scene.findObject("no_unlocks_msg").setValue(text)
+      text = ::loc("mainmenu/battleTasks/noPersonalUnlocks")
+    scene.findObject("no_unlocks_msg").setValue(text)
   }
 
   function fillChapterList() {
@@ -108,7 +100,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
       }
     }
     let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-    this.guiScene.replaceContentFromText(chaptersObj, data, data.len(), this)
+    guiScene.replaceContentFromText(chaptersObj, data, data.len(), this)
 
     eachParam(getCollapsedChapters(), @(_, chapterId) collapseChapter(chapterId), this)
 
@@ -147,7 +139,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
       @(config) ::g_battle_tasks.generateItemView(config))
     }
     let data = ::handyman.renderCached(unlocksItemTpl, view)
-    this.guiScene.replaceContentFromText(unlocksObj, data, data.len(), this)
+    guiScene.replaceContentFromText(unlocksObj, data, data.len(), this)
 
     let unlockId = curUnlockId
     let curUnlockIdx = unlocks.findindex(@(unlock) unlock.id == unlockId) ?? 0
@@ -167,7 +159,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   function onUnlockSelect(obj) {
     curUnlockId = getSelectedChildId(obj)
     if (::show_console_buttons && !isFillingUnlocksList) {
-      this.guiScene.applyPendingChanges(false)
+      guiScene.applyPendingChanges(false)
       ::move_mouse_on_child_by_value(obj)
     }
   }
@@ -177,7 +169,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     updateWindow()
   }
 
-  function onEventUnlocksCacheInvalidate(_p) {
+  function onEventUnlocksCacheInvalidate(p) {
     updateWindow()
   }
 
@@ -187,7 +179,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", canShow && isHeader)
     if (isHeader)
       collapsedButtonObj.setValue(
-        loc(getCollapsedChapters()?[curChapterId] != null ? "mainmenu/btnExpand" : "mainmenu/btnCollapse"))
+        ::loc(getCollapsedChapters()?[curChapterId] != null ? "mainmenu/btnExpand" : "mainmenu/btnCollapse"))
   }
 
   function onCollapse(obj) {
@@ -215,7 +207,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     foreach (group in chapterGroups)
     {
       let groupObj = chaptersObj.findObject(group.id)
-      if(!checkObj(groupObj))
+      if(!::check_obj(groupObj))
         continue
 
       isHiddenGroupSelected = isHiddenGroupSelected || curChapterId == group.id
@@ -239,7 +231,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     return collapsedChapters
   }
 
-  function onChaptersListHover(_obj) {
+  function onChaptersListHover(obj) {
     if (::show_console_buttons)
       updateButtons()
   }

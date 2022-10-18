@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.RemoteMissionModalHandler <- class extends ::gui_handlers.CampaignChapter {
+::gui_handlers.RemoteMissionModalHandler <- class extends ::gui_handlers.CampaignChapter
+{
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/empty.blk"
 
@@ -15,11 +8,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen()
   {
     if (mission == null)
-      return this.goBack()
+      return goBack()
 
-    this.gm = ::get_game_mode()
-    this.curMission = mission
-    this.setMission()
+    gm = ::get_game_mode()
+    curMission = mission
+    setMission()
   }
 
   function getModalOptionsParam(optionItems, applyFunc)
@@ -27,12 +20,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return {
       options = optionItems
       applyAtClose = false
-      wndOptionsMode = ::get_options_mode(this.gm)
+      wndOptionsMode = ::get_options_mode(gm)
       owner = this
       applyFunc = applyFunc
-      cancelFunc = Callback(function() {
+      cancelFunc = ::Callback(function() {
                                 ::g_missions_manager.isRemoteMission = false
-                                this.goBack()
+                                goBack()
                               }, this)
     }
   }

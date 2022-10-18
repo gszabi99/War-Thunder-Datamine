@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let DataBlock = require("DataBlock")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
@@ -14,80 +8,80 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     if (!isAvailable())
       return
 
-    this.getSaveDataContents = ::request_list_controls_backup
+    getSaveDataContents = ::request_list_controls_backup
     base.initScreen()
   }
 
 
   function doSave(descr)
   {
-    this.showWaitAnimation(true)
+    showWaitAnimation(true)
     let blk = DataBlock()
     blk.comment = descr.comment
     blk.path = descr.path
 
-    let cb = Callback(onBackupSaved, this)
+    let cb = ::Callback(onBackupSaved, this)
     ::request_save_controls_backup(@(result) cb(result), blk)
   }
 
 
   function onBackupSaved(params)
   {
-    this.showWaitAnimation(false)
+    showWaitAnimation(false)
     if (!params.success)
-      ::showInfoMsgBox(loc("msgbox/errorSavingPreset"))
-    this.goBack()
+      ::showInfoMsgBox(::loc("msgbox/errorSavingPreset"))
+    goBack()
   }
 
 
   function doLoad(descr)
   {
-    this.showWaitAnimation(true)
+    showWaitAnimation(true)
     let blk = DataBlock()
     blk.path = descr.path
     blk.comment = descr.comment
 
-    let cb = Callback(onBackupLoaded, this)
+    let cb = ::Callback(onBackupLoaded, this)
     ::request_load_controls_backup(@(result) cb(result), blk)
   }
 
 
   function onBackupLoaded(params)
   {
-    this.showWaitAnimation(false)
+    showWaitAnimation(false)
     if (params.success)
     {
       ::preset_changed = true
       ::broadcastEvent("ControlsPresetChanged")
     }
     else
-      ::showInfoMsgBox(loc("msgbox/errorSavingPreset"))
-    this.goBack()
+      ::showInfoMsgBox(::loc("msgbox/errorSavingPreset"))
+    goBack()
   }
 
 
   function doDelete(descr)
   {
-    this.showWaitAnimation(true)
+    showWaitAnimation(true)
     let blk = DataBlock()
     blk.path = descr.path
     blk.comment = descr.comment
 
-    let cb = Callback(onBackupDeleted, this)
+    let cb = ::Callback(onBackupDeleted, this)
     ::request_delete_controls_backup(@(result) cb(result), blk)
   }
 
 
-  function onBackupDeleted(_params)
+  function onBackupDeleted(params)
   {
-    this.showWaitAnimation(false)
-    this.requestEntries()
+    showWaitAnimation(false)
+    requestEntries()
   }
 
 
   static function isAvailable()
   {
-    return (isPlatformSony || isPlatformXboxOne) && "request_list_controls_backup" in getroottable()
+    return (isPlatformSony || isPlatformXboxOne) && "request_list_controls_backup" in ::getroottable()
   }
 
 

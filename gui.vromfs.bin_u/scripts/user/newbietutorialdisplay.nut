@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { skipTutorialBitmaskId } = require("%scripts/tutorials/tutorialsData.nut")
 
@@ -22,7 +17,7 @@ let needShowTutorial = @(id, tutorVersion) !::loadLocalByAccount("tutor/" + id)
 let saveShowedTutorial = @(id) ::saveLocalByAccount("tutor/" + id, true)
 
 subscriptions.addListenersWithoutEnv({
-  AccountReset = function(_p) {
+  AccountReset = function(p) {
     saveVersion()
     ::saveLocalByAccount("tutor", null)
     ::save_local_account_settings("tutor", null)

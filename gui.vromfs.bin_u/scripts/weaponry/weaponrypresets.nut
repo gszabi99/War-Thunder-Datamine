@@ -1,11 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
-const MIN_TIERS_COUNT = 13
+const TIERS_NUMBER = 13
 const MAX_PRESETS_NUM = 20
 const CUSTOM_PRESET_PREFIX = "custom"
 let CHAPTER_ORDER = ["NONE", "FAVORITE", "UNIVERSAL", "AIR_TO_AIR", "AIR_TO_GROUND", "AIR_TO_SEA", "ARMORED", "CUSTOM"]
@@ -18,12 +13,14 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
   && a?.blk == b?.blk
   && a?.dm == b?.dm
 
-let function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc = isEqualWeapon) {
+let getTierIdxBySlot = @(slot) TIERS_NUMBER - 1 - slot
+
+let function addSlotWeaponsFromPreset(res, slotBlk, preset, isEqualFunc = isEqualWeapon) {
   foreach (weapon in (preset % "Weapon")) {
     let slotWeapon = ::u.copy(weapon)
     slotWeapon.presetId = preset.name
     slotWeapon.slot = slotBlk.index
-    slotWeapon.tier = slotBlk?.tier ?? (tiersCount - 1 - slotBlk.index)
+    slotWeapon.tier = slotBlk?.tier ?? getTierIdxBySlot(slotBlk.index)
     slotWeapon.iconType = preset?.iconType
     slotWeapon.showInWeaponMenu  = preset?.showInWeaponMenu ?? false
     foreach (dependentWeapon in (preset % "DependentWeaponPreset"))
@@ -40,7 +37,6 @@ let function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualF
 }
 
 let getUnitWeaponSlots = @(blk)(blk?.WeaponSlots == null ? [] : blk.WeaponSlots % "WeaponSlot")
-
 // For now weapon data can be two different types
 // depends of whether or not unit config contains the weaponPilons block.
 let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
@@ -64,7 +60,7 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
         continue
       }
 
-      addSlotWeaponsFromPreset(res, slot, curPreset, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT)
+      addSlotWeaponsFromPreset(res, slot, curPreset)
     }
   }
   // !!!FIX ME: Processing old format of weapons data should be removed over time when all units presets get ability to be customized.
@@ -88,13 +84,13 @@ let getPresetWeapons = @(unitBlk, weapon) weapon == null ? []
   : "weaponsBlk" in weapon ? getWeaponsByTypes(unitBlk, weapon.weaponsBlk)
   : getPresetWeaponsByName(unitBlk, weapon.name)
 
-let function getSlotWeapons(slotBlk, tiersCount = MIN_TIERS_COUNT) {
+let function getSlotWeapons(slotBlk) {
   let res = []
   if (slotBlk == null)
     return res
 
   foreach (preset in ((slotBlk % "WeaponPreset")))
-    addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount)
+    addSlotWeaponsFromPreset(res, slotBlk, preset)
   return res
 }
 
@@ -103,7 +99,7 @@ let function getUnitWeapons(unitBlk) {// Pesets weapon only
   let slots = getUnitWeaponSlots(unitBlk).filter(@(s) s?.tier != null)
   if(slots.len() > 0)
     foreach (slot in slots)
-      res.extend(getSlotWeapons(slot, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT))
+      res.extend(getSlotWeapons(slot))
   else
     foreach (preset in getUnitPresets(unitBlk))
       foreach (weapon in getPresetWeaponsByPath(unitBlk, preset.blk)) {
@@ -126,7 +122,7 @@ let function getSlotsWeaponsForEditPreset(unitBlk) {
   foreach (slot in slots) {
     let slotWeapons = []
     foreach (preset in (slot % "WeaponPreset"))
-      addSlotWeaponsFromPreset(slotWeapons, slot, preset, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT, isEqualEditSlots)
+      addSlotWeaponsFromPreset(slotWeapons, slot, preset, isEqualEditSlots)
     res.extend(slotWeapons)
   }
 
@@ -147,24 +143,19 @@ let function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, bullets = null) {
   }
 }
 
-let function getUnitWeaponsByTier(unit, blkPath, tierId)
-  {
-    let unitBlk = ::get_full_unit_blk(unit.name)
-    let tiersCount = unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
-
-    return unit.hasWeaponSlots
-    ? (getSlotWeapons(getUnitWeaponSlots(unitBlk).findvalue(
-        @(s) s?.tier == tierId), tiersCount).filter(@(w) getWeaponBlkParams(w.blk, {}).weaponBlkPath == blkPath)
+let getUnitWeaponsByTier = @(unit, blkPath, tierId)
+  unit.hasWeaponSlots
+    ? (getSlotWeapons(getUnitWeaponSlots(::get_full_unit_blk(unit.name)).findvalue(
+        @(s) s?.tier == tierId)).filter(@(w) getWeaponBlkParams(w.blk, {}).weaponBlkPath == blkPath)
         ?? [])
     : null
-  }
 
 let function getUnitWeaponsByPreset(unit, blkPath, presetName) {
   let unitBlk = ::get_full_unit_blk(unit.name)
   if (unit.hasWeaponSlots) {
     local res = []
     foreach (slot in getUnitWeaponSlots(unitBlk))
-      foreach (weapon in getSlotWeapons(slot, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT))
+      foreach (weapon in getSlotWeapons(slot))
         if (getWeaponBlkParams(weapon.blk, {}).weaponBlkPath == blkPath
           && weapon.presetId == presetName)
           res.append(weapon)
@@ -182,7 +173,7 @@ let function getDefaultPresetId(unitBlk) {
   return null
 }
 
-let createNameCustomPreset = @(idx) loc("shop/slotbarPresets/item", { number = idx + 1 })
+let createNameCustomPreset = @(idx) ::loc("shop/slotbarPresets/item", { number = idx + 1 })
 
 let getDefaultCustomPresetParams = @(idx) {
   name              = $"{CUSTOM_PRESET_PREFIX}{idx}"
@@ -193,7 +184,7 @@ let getDefaultCustomPresetParams = @(idx) {
 let isCustomPreset = @(preset) (preset.name ?? "").indexof(CUSTOM_PRESET_PREFIX) != null
 
 return {
-  MIN_TIERS_COUNT
+  TIERS_NUMBER
   MAX_PRESETS_NUM
   CHAPTER_ORDER
   CHAPTER_NEW_IDX

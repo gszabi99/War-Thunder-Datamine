@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { invert } = require("%sqstd/underscore.nut")
 
@@ -25,11 +20,11 @@ let function getActivityByGameMode(mode) { return mode && gameModeToActivity?[mo
 let function switchGameModeByGameIntent(intent) {
   let gameModeId = getGameModeByActivity(intent.activityId)
   if (gameModeId) {
-    log($"[PSGI] switching game mode to {gameModeId}")
+    ::dagor.debug($"[PSGI] switching game mode to {gameModeId}")
     ::game_mode_manager.setCurrentGameModeById(gameModeId);
     return
   }
-  log($"[PSGI] game mode not found for {intent.activityId} ")
+  ::dagor.debug($"[PSGI] game mode not found for {intent.activityId} ")
 }
 
 let function enableGameIntents() {

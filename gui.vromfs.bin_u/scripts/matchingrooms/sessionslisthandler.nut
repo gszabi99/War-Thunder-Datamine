@@ -1,15 +1,9 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { sessionsListBlkPath } = require("%scripts/matchingRooms/getSessionsListBlkPath.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { setGuiOptionsMode } = require_native("guiOptions")
+let { setGuiOptionsMode } = ::require_native("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
@@ -19,7 +13,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
 ::back_sessions_func <- ::gui_start_mainmenu
 
-::g_script_reloader.registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
+::g_script_reloader.registerPersistentData("SessionsList", ::getroottable(), ["match_search_gm"])
 
 ::gui_start_session_list <- function gui_start_session_list(prev_scene_func=null)
 {
@@ -36,18 +30,18 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 ::gui_start_missions <- function gui_start_missions() //!!FIX ME: is it really used in some cases?
 {
   ::match_search_gm = -1
-  ::gui_start_session_list(::gui_start_mainmenu)
+  gui_start_session_list(gui_start_mainmenu)
 }
 
 ::gui_start_skirmish <- function gui_start_skirmish()
 {
-  ::prepare_start_skirmish()
-  ::gui_start_session_list(::gui_start_mainmenu)
+  prepare_start_skirmish()
+  gui_start_session_list(gui_start_mainmenu)
 }
 
 ::prepare_start_skirmish <- function prepare_start_skirmish()
 {
-  ::match_search_gm = GM_SKIRMISH
+  ::match_search_gm = ::GM_SKIRMISH
 }
 
 ::build_check_table <- function build_check_table(session, gm=0)
@@ -57,11 +51,11 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   if (session)
     gm = session.gameModeInt
 
-  if (gm == GM_BUILDER)
+  if (gm == ::GM_BUILDER)
   {
     ret.silentFeature <- "ModeBuilder"
   }
-  else if (gm == GM_DYNAMIC)
+  else if (gm == ::GM_DYNAMIC)
   {
     if (session)
     {
@@ -70,7 +64,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     }
     ret.silentFeature <- "ModeDynamic"
   }
-  else if (gm == GM_SINGLE_MISSION)
+  else if (gm == ::GM_SINGLE_MISSION)
   {
     if (session)
       ret.unlock <- session.chapter+"/"+session.map
@@ -100,18 +94,18 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function initScreen()
   {
     base.initScreen()
-    sessionsListObj = this.scene.findObject("sessions_table")
+    sessionsListObj = scene.findObject("sessions_table")
 
     roomsList = []
     curPageRoomsList = []
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams(null) //skirmish when no params
 
     isCoop = isGameModeCoop(::match_search_gm)
-    this.scene.findObject("sessions_update").setUserData(this)
+    scene.findObject("sessions_update").setUserData(this)
 
-    let head = this.scene.findObject("sessions_diff_header")
-    if (checkObj(head))
-      head.setValue(isCoop? loc("multiplayer/difficultyShort") : loc("multiplayer/createModeShort"))
+    let head = scene.findObject("sessions_diff_header")
+    if (::checkObj(head))
+      head.setValue(isCoop? ::loc("multiplayer/difficultyShort") : ::loc("multiplayer/createModeShort"))
 
     updateRoomsHeader()
     initOptions()
@@ -125,7 +119,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function initRoomsPerPage()
   {
     let listHeight = sessionsListObj.getSize()[1]
-    let rowHeight = this.guiScene.calcString("@baseTrHeight", null)
+    let rowHeight = guiScene.calcString("@baseTrHeight", null)
     roomsPerPage = max((listHeight / rowHeight).tointeger(), 1)
   }
 
@@ -134,28 +128,28 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     local title = ""
     if (isCoop)
     {
-      if(hasFeature("ModeDynamic"))
+      if(::has_feature("ModeDynamic"))
       {
-        ::showBtn("btn_dynamic", true)
-        let dynBtn = this.guiScene["btn_dynamic"]
-        if(checkObj(dynBtn))
+        showBtn("btn_dynamic", true)
+        let dynBtn = guiScene["btn_dynamic"]
+        if(::checkObj(dynBtn))
         {
           dynBtn.inactiveColor = havePremium.value? "no" : "yes"
-          dynBtn.tooltip = havePremium.value? "" : loc("mainmenu/onlyWithPremium")
+          dynBtn.tooltip = havePremium.value? "" : ::loc("mainmenu/onlyWithPremium")
         }
       }
 
-      ::showBtn("btn_coop", true)
-      ::showBtn("btn_builder", hasFeature("ModeBuilder"))
-      title = loc("mainmenu/btnMissions")
+      showBtn("btn_coop", true)
+      showBtn("btn_builder", ::has_feature("ModeBuilder"))
+      title = ::loc("mainmenu/btnMissions")
     }
     else
     {
-      ::showBtn("btn_skirmish", true)
-      title = loc("mainmenu/btnCustomMatch")
+      showBtn("btn_skirmish", true)
+      title = ::loc("mainmenu/btnCustomMatch")
     }
 
-    this.setSceneTitle(title)
+    setSceneTitle(title)
   }
 
   function initOptions()
@@ -168,26 +162,26 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         [::USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]
     else
-    if (::match_search_gm == GM_SKIRMISH)
+    if (::match_search_gm == ::GM_SKIRMISH)
       options = [
         [::USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]
 
     if (!options) return
 
-    let container = ::create_options_container(optionsContainer, options, false, 0.5, false)
-    let optObj = this.scene.findObject("session-options")
-    if (checkObj(optObj))
-      this.guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
+    let container = create_options_container(optionsContainer, options, false, 0.5, false)
+    let optObj = scene.findObject("session-options")
+    if (::check_obj(optObj))
+      guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
 
-    this.optionsContainers.append(container.descr)
+    optionsContainers.append(container.descr)
   }
 
   function onGamemodeChange(obj)
   {
     if (!obj) return
     let value = obj.getValue()
-    let option = ::get_option(::USEROPT_SEARCH_GAMEMODE)
+    let option = get_option(::USEROPT_SEARCH_GAMEMODE)
     if (!(value in option.values))
       return
 
@@ -196,11 +190,11 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function onDifficultyChange(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     let value = obj.getValue()
-    let option = ::get_option(::USEROPT_SEARCH_DIFFICULTY)
+    let option = get_option(::USEROPT_SEARCH_DIFFICULTY)
     if (!(value in option.values))
       return
 
@@ -212,9 +206,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     updateRoomsList()
   }
 
-  function onSkirmish(_obj) { ::checkAndCreateGamemodeWnd(this, GM_SKIRMISH) }
+  function onSkirmish(obj) { ::checkAndCreateGamemodeWnd(this, ::GM_SKIRMISH) }
 
-  function onSessionsUpdate(_obj = null, _dt = 0.0)
+  function onSessionsUpdate(obj = null, dt = 0.0)
   {
     if (::handlersManager.isAnyModalHandlerActive()
         || ::is_multiplayer()
@@ -224,24 +218,24 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     roomsListData.requestList(getCurFilter())
   }
 
-  function onEventSearchedRoomsChanged(_p)
+  function onEventSearchedRoomsChanged(p)
   {
     updateRoomsList()
   }
 
-  function onEventRoomsSearchStarted(_p)
+  function onEventRoomsSearchStarted(p)
   {
     updateSearchMsg()
   }
 
   function updateSearchMsg()
   {
-    let infoText = this.guiScene["info-text"]
-    if (checkObj(infoText))
+    let infoText = guiScene["info-text"]
+    if (::checkObj(infoText))
     {
       let show = (type(roomsList) != "array") || (roomsList.len() == 0)
       if (show)
-        infoText.setValue(roomsListData.isNewest() ? loc("wait/sessionNone") : loc("wait/sessionSearch"))
+        infoText.setValue(roomsListData.isNewest() ? ::loc("wait/sessionNone") : ::loc("wait/sessionSearch"))
       infoText.show(show)
     }
   }
@@ -288,7 +282,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (_roomsMarkUpData)
       return _roomsMarkUpData
 
-    this.guiScene.applyPendingChanges(false)
+    guiScene.applyPendingChanges(false)
     _roomsMarkUpData = {
       tr_size = "pw, @baseTrHeight"
       is_header = true
@@ -304,14 +298,14 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
     let columnsOrder = getColumnsList()
     let deletedArr = []
-    foreach (id, _data in _roomsMarkUpData.columns)
-      if (!isInArray(id, columnsOrder))
+    foreach (id, data in _roomsMarkUpData.columns)
+      if (!::isInArray(id, columnsOrder))
         deletedArr.append(id)
 
     foreach (id in deletedArr)
       delete _roomsMarkUpData.columns[id]
 
-    if (checkObj(sessionsListObj))
+    if (::checkObj(sessionsListObj))
       ::count_width_for_mptable(sessionsListObj, _roomsMarkUpData.columns)
 
     return _roomsMarkUpData
@@ -319,8 +313,8 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function updateRoomsHeader()
   {
-    let headerObj = this.scene.findObject("sessions-header")
-    if (!checkObj(headerObj))
+    let headerObj = scene.findObject("sessions-header")
+    if (!::checkObj(headerObj))
       return
 
     let header = [{
@@ -332,7 +326,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       name = "#multiplayer/game_host"
     }]
     let headerData = ::build_mp_table(header, getRoomsListMarkUpData(), getColumnsList())
-    this.guiScene.replaceContentFromText(headerObj, headerData, headerData.len(), this)
+    guiScene.replaceContentFromText(headerObj, headerData, headerData.len(), this)
   }
 
   function updateRoomsList()
@@ -347,7 +341,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function updateRoomsPage()
   {
-    if (!checkObj(sessionsListObj))
+    if (!::checkObj(sessionsListObj))
       return
 
     let selectedRoom = getCurRoom()
@@ -372,7 +366,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     let roomsInfoTbl = ::SessionLobby.getRoomsInfoTbl(curPageRoomsList)
     let data = ::build_mp_table(roomsInfoTbl, getRoomsListMarkUpData(), getColumnsList(), roomsInfoTbl.len())
     sessionsListObj.deleteChildren()
-    this.guiScene.appendWithBlk(sessionsListObj, data, this)
+    guiScene.appendWithBlk(sessionsListObj, data, this)
 
     sessionsListObj.setValue(curPageRoomsList.len() > 0 ? selectedRow : -1)
     updateCurRoomInfo()
@@ -381,7 +375,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function updatePaginator(maxPage)
   {
-    let pagObj = this.scene.findObject("paginator_place")
+    let pagObj = scene.findObject("paginator_place")
     if (maxPage > 0)
       ::generatePaginator(pagObj, this, curPage, maxPage, null, true)
     else
@@ -396,7 +390,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function getCurRoom()
   {
-    if (!checkObj(sessionsListObj))
+    if (!::checkObj(sessionsListObj))
       return null
 
     let curRow = sessionsListObj.getValue()
@@ -408,11 +402,11 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function updateCurRoomInfo()
   {
     let room = getCurRoom()
-    fillSessionInfo(this.scene, room?.public)
-    ::update_vehicle_info_button(this.scene, room)
+    fillSessionInfo(scene, room?.public)
+    ::update_vehicle_info_button(scene, room)
 
-    let btnObj = this.scene.findObject("btn_select")
-    if (checkObj(btnObj))
+    let btnObj = scene.findObject("btn_select")
+    if (::checkObj(btnObj))
       btnObj.inactiveColor = room ? "no" : "yes"
   }
 
@@ -423,11 +417,11 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   doSelectSessions = @() ::move_mouse_on_child_by_value(sessionsListObj)
 
-  function onGamercard(_obj)
+  function onGamercard(obj)
   {
   }
 
-  function onStart(_obj)
+  function onStart(obj)
   {
     if (!suggestAndAllowPsnPremiumFeatures())
       return
@@ -439,7 +433,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
     let room = getCurRoom()
     if (!room)
-      return this.msgBox("no_room_selected", loc("ui/nothing_selected"), [["ok"]], "ok")
+      return this.msgBox("no_room_selected", ::loc("ui/nothing_selected"), [["ok"]], "ok")
 
     if (::g_squad_manager.getSquadRoomId() != room.roomId
       && !::g_squad_utils.canJoinFlightMsgBox(
@@ -451,22 +445,22 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       )
       return
 
-    this.checkedNewFlight((@(room) function() {
+    checkedNewFlight((@(room) function() {
       ::SessionLobby.joinFoundRoom(room)
     })(room))
   }
 
-  function onVehiclesInfo(_obj)
+  function onVehiclesInfo(obj)
   {
     ::gui_start_modal_wnd(::gui_handlers.VehiclesWindow, {
-      teamDataByTeamName = getTblValue("public", getCurRoom())
+      teamDataByTeamName = ::getTblValue("public", getCurRoom())
     })
   }
 }
 
 ::fillCountriesList <- function fillCountriesList(obj, countries, handler = null)
 {
-  if (!checkObj(obj))
+  if (!::check_obj(obj))
     return
 
   if (obj.childrenCount() != shopCountriesList.len())
@@ -485,5 +479,5 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   foreach(idx, country in shopCountriesList)
     if (idx < obj.childrenCount())
-      obj.getChild(idx).show(isInArray(country, countries))
+      obj.getChild(idx).show(::isInArray(country, countries))
 }

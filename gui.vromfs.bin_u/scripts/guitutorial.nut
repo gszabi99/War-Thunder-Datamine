@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 
 const TITOR_STEP_TIMEOUT_SEC  = 30
@@ -20,7 +13,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   _isNoDelayOnClick = false //optional no delay on_click for lightboxes
 }
 
-::guiTutor.createHighlight <- function createHighlight(scene, objDataArray, handler = null, params = null)
+guiTutor.createHighlight <- function createHighlight(scene, objDataArray, handler = null, params = null)
   //obj Config = [{
   //    obj          //    DaGuiObject,
                      // or string obj name in scene,
@@ -31,37 +24,37 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   //  }...]
 {
   let guiScene = scene.getScene()
-  let sizeIncMul = getTblValue("sizeIncMul", params, this._sizeIncMul)
-  let sizeIncAdd = getTblValue("sizeIncAdd", params, this._sizeIncAdd)
-  let isFullscreen = params?.isFullscreen ?? this._isFullscreen
+  let sizeIncMul = ::getTblValue("sizeIncMul", params, _sizeIncMul)
+  let sizeIncAdd = ::getTblValue("sizeIncAdd", params, _sizeIncAdd)
+  let isFullscreen = params?.isFullscreen ?? _isFullscreen
   let rootBox = ::GuiBox().setFromDaguiObj(isFullscreen ? guiScene.getRoot() : scene)
   let rootPosCompensation = [ - rootBox.c1[0], - rootBox.c1[1] ]
-  let defOnClick = getTblValue("onClick", params, null)
+  let defOnClick = ::getTblValue("onClick", params, null)
   let view = {
-    id = getTblValue("id", params, this._id)
+    id = ::getTblValue("id", params, _id)
     isFullscreen = isFullscreen
-    lightBlock = getTblValue("lightBlock", params, this._lightBlock)
-    darkBlock = getTblValue("darkBlock", params, this._darkBlock)
+    lightBlock = ::getTblValue("lightBlock", params, _lightBlock)
+    darkBlock = ::getTblValue("darkBlock", params, _darkBlock)
     lightBlocks = []
     darkBlocks = []
   }
 
-  let rootXPad = isFullscreen ? -to_pixels("1@bwInVr") : 0
-  let rootYPad = isFullscreen ? -to_pixels("1@bhInVr") : 0
+  let rootXPad = isFullscreen ? -::to_pixels("1@bwInVr") : 0
+  let rootYPad = isFullscreen ? -::to_pixels("1@bhInVr") : 0
   let darkBoxes = []
   if (view.darkBlock && view.darkBlock != "")
     darkBoxes.append(rootBox.cloneBox(rootXPad, rootYPad).incPos(rootPosCompensation))
 
   foreach(config in objDataArray)
   {
-    let block = this.getBlockFromObjData(config, scene, defOnClick)
+    let block = getBlockFromObjData(config, scene, defOnClick)
     if (!block)
       continue
 
     block.box.incSize(sizeIncAdd, sizeIncMul)
     block.box.incPos(rootPosCompensation)
-    block.onClick <- getTblValue("onClick", block) || defOnClick
-    view.lightBlocks.append(this.blockToView(block))
+    block.onClick <- ::getTblValue("onClick", block) || defOnClick
+    view.lightBlocks.append(blockToView(block))
 
     for(local i = darkBoxes.len() - 1; i >= 0; i--)
     {
@@ -75,7 +68,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   }
 
   foreach(box in darkBoxes)
-    view.darkBlocks.append(this.blockToView({ box = box, onClick = defOnClick }))
+    view.darkBlocks.append(blockToView({ box = box, onClick = defOnClick }))
 
   let data = ::handyman.renderCached(("%gui/tutorials/tutorDarkScreen"), view)
   guiScene.replaceContentFromText(scene, data, data.len(), handler)
@@ -83,12 +76,12 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   return scene.findObject(view.id)
 }
 
-::guiTutor.getBlockFromObjData <- function getBlockFromObjData(objData, scene = null, defOnClick = null)
+guiTutor.getBlockFromObjData <- function getBlockFromObjData(objData, scene = null, defOnClick = null)
 {
   local res = null
-  local obj = getTblValue("obj", objData) || objData
+  local obj = ::getTblValue("obj", objData) || objData
   if (typeof(obj) == "string")
-    obj = checkObj(scene) ? scene.findObject(obj) : null
+    obj = ::checkObj(scene) ? scene.findObject(obj) : null
   else if (typeof(obj) == "function")
     obj = obj()
   if (typeof(obj) == "array")
@@ -110,7 +103,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   } else if (typeof(obj) == "instance")
     if (obj instanceof ::DaGuiObject)
     {
-      if (checkObj(obj) && obj.isVisible())
+      if (::checkObj(obj) && obj.isVisible())
         res = {
           id = "_" + (obj?.id ?? "null")
           box = ::GuiBox().setFromDaguiObj(obj)
@@ -123,16 +116,16 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   if (!res)
     return null
 
-  let id = getTblValue("id", objData)
+  let id = ::getTblValue("id", objData)
   if (id)
     res.id <- id
-  res.onClick <- getTblValue("onClick", objData, defOnClick)
-  res.isNoDelayOnClick <- objData?.isNoDelayOnClick ?? this._isNoDelayOnClick
+  res.onClick <- ::getTblValue("onClick", objData, defOnClick)
+  res.isNoDelayOnClick <- objData?.isNoDelayOnClick ?? _isNoDelayOnClick
   res.hasArrow <- objData?.hasArrow ?? false
   return res
 }
 
-::guiTutor.blockToView <- function blockToView(block)
+guiTutor.blockToView <- function blockToView(block)
 {
   let box = block.box
   for(local i = 0; i < 2; i++)
@@ -183,10 +176,10 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
       return finalizeTutorial()
 
     ownerWeak = ownerWeak.weakref()
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(true, true)
     this.showSceneBtn("close_btn", isTutorialCancelable)
     if (!isTutorialCancelable)
-      this.scene.findObject("allow_cancel_timer").setUserData(this)
+      scene.findObject("allow_cancel_timer").setUserData(this)
     showStep()
   }
 
@@ -196,15 +189,15 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
       return finalizeTutorial()
 
     let stepData = config[stepIdx]
-    let actionType = getTblValue("actionType", stepData, tutorAction.ANY_CLICK)
+    let actionType = ::getTblValue("actionType", stepData, tutorAction.ANY_CLICK)
     let params = {
       onClick = (actionType == tutorAction.ANY_CLICK)? "onNext" : null
     }
 
-    let msgObj = this.scene.findObject("msg_text")
-    local text = getTblValue("text", stepData, "")
+    let msgObj = scene.findObject("msg_text")
+    local text = ::getTblValue("text", stepData, "")
 
-    let bottomText = getTblValue("bottomText", stepData, "")
+    let bottomText = ::getTblValue("bottomText", stepData, "")
     if (text != "" && bottomText != "")
       text += "\n\n" + bottomText
 
@@ -212,7 +205,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
 
     let needAccessKey = (actionType == tutorAction.OBJ_CLICK ||
                            actionType == tutorAction.FIRST_OBJ_CLICK)
-    let shortcut = getTblValue("shortcut", stepData, needAccessKey ? ::GAMEPAD_ENTER_SHORTCUT : null)
+    let shortcut = ::getTblValue("shortcut", stepData, needAccessKey ? ::GAMEPAD_ENTER_SHORTCUT : null)
     let blocksList = []
     local objList = stepData?.obj ?? []
     if (!::u.isArray(objList))
@@ -240,9 +233,9 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
     updateObjectsPos(blocksList, needArrow)
 
     if (needArrow) {
-      let mainMsgY = this.scene.findObject("msg_block").getPosRC()[1]
-      let arrowWidth = to_pixels("1@tutorArrowSize")
-      let arrowHeight = to_pixels("3@tutorArrowSize")
+      let mainMsgY = scene.findObject("msg_block").getPosRC()[1]
+      let arrowWidth = ::to_pixels("1@tutorArrowSize")
+      let arrowHeight = ::to_pixels("3@tutorArrowSize")
       let view = { arrows = [] }
 
       foreach (block in blocksList)
@@ -259,7 +252,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
       }
 
       let blk = ::handyman.renderCached("%gui/tutorials/tutorArrow", view)
-      this.guiScene.replaceContentFromText(this.scene.findObject("arrows_container"), blk, blk.len(), this)
+      guiScene.replaceContentFromText(scene.findObject("arrows_container"), blk, blk.len(), this)
     }
 
     if (actionType == tutorAction.FIRST_OBJ_CLICK && blocksList.len() > 0)
@@ -267,11 +260,11 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
       blocksList[0].onClick = "onNext"
       blocksList.reverse()
     }
-    ::guiTutor.createHighlight(this.scene.findObject("dark_screen"), blocksList, this, params)
+    ::guiTutor.createHighlight(scene.findObject("dark_screen"), blocksList, this, params)
 
     this.showSceneBtn("dummy_console_next", actionType == tutorAction.ANY_CLICK)
 
-    local nextActionShortcut = getTblValue("nextActionShortcut", stepData)
+    local nextActionShortcut = ::getTblValue("nextActionShortcut", stepData)
     if (nextActionShortcut && ::show_console_buttons)
       nextActionShortcut = "PRESS_TO_CONTINUE"
 
@@ -282,19 +275,19 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
       markup += "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = "#" + nextActionShortcut })
     }
 
-    let nextShObj = this.scene.findObject("next_step_shortcut")
-    this.guiScene.replaceContentFromText(nextShObj, markup, markup.len(), ownerWeak)
+    let nextShObj = scene.findObject("next_step_shortcut")
+    guiScene.replaceContentFromText(nextShObj, markup, markup.len(), ownerWeak)
 
-    let waitTime = getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY? 1 : -1)
+    let waitTime = ::getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY? 1 : -1)
     if (waitTime > 0)
-      ::Timer(this.scene, waitTime, (@(stepIdx) function() {timerNext(stepIdx)})(stepIdx), this)
+      ::Timer(scene, waitTime, (@(stepIdx) function() {timerNext(stepIdx)})(stepIdx), this)
 
     stepTimeoutSec = TITOR_STEP_TIMEOUT_SEC
   }
 
   function updateObjectsPos(blocks, needArrow = true)
   {
-    this.guiScene.applyPendingChanges(false)
+    guiScene.applyPendingChanges(false)
 
     let boxList = []
     foreach(b in blocks)
@@ -302,16 +295,16 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
 
     if (needArrow)
     {
-      let incSize = to_pixels("3@tutorArrowSize") // arrow height
+      let incSize = ::to_pixels("3@tutorArrowSize") // arrow height
       foreach(b in blocks)
         if (b.hasArrow)
           boxList.append(b.box.cloneBox(incSize)) // inc targetBox for correct place message
     }
 
-    let mainMsgObj = this.scene.findObject("msg_block")
-    let minPos = this.guiScene.calcString("1@bh", null)
-    let maxPos = this.guiScene.calcString("sh -1@bh", null)
-    let newPos = ::LinesGenerator.findGoodPos(mainMsgObj, 1, boxList, minPos, maxPos)
+    let mainMsgObj = scene.findObject("msg_block")
+    let minPos = guiScene.calcString("1@bh", null)
+    let maxPos = guiScene.calcString("sh -1@bh", null)
+    let newPos = LinesGenerator.findGoodPos(mainMsgObj, 1, boxList, minPos, maxPos)
     if (newPos != null)
       mainMsgObj.top = newPos.tostring()
   }
@@ -346,12 +339,12 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
     if (canceled)
       return
 
-    let stepData = getTblValue(stepIdx, config)
-    let cb = getTblValue("cb", stepData)
+    let stepData = ::getTblValue(stepIdx, config)
+    let cb = ::getTblValue("cb", stepData)
     if (!cb)
       return
 
-    if (::u.isCallback(cb) || getTblValue("keepEnv", stepData, false))
+    if (::u.isCallback(cb) || ::getTblValue("keepEnv", stepData, false))
       cb()
     else
       ::call_for_handler(ownerWeak, cb)
@@ -365,10 +358,10 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   function finalizeTutorial()
   {
     canceled = false
-    this.goBack()
+    goBack()
   }
 
-  function onAllowCancelTimer(_obj, dt)
+  function onAllowCancelTimer(obj, dt)
   {
     if (isTutorialCancelable)
       return

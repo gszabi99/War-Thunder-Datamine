@@ -1,18 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { get_time_msec } = require("dagor.time")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { format } = require("string")
 
 // -------------------------------------------------------
 // Matching game modes managment
 // -------------------------------------------------------
-
-const MAX_FETCH_RETRIES = 5
 
 let requestedGameModesTimeOut = 10000 //ms
 local lastRequestTimeMsec = - requestedGameModesTimeOut
@@ -65,7 +55,7 @@ local requestedGameModes = []
         }
         else
         {
-          log("fetch gamemodes error, retry - " + __fetch_counter)
+          ::dagor.debug("fetch gamemodes error, retry - " + __fetch_counter)
           fetchGameModes()
         }
       }.bindenv(::g_matching_game_modes)
@@ -87,7 +77,7 @@ local requestedGameModes = []
       foreach (modeInfo in removed_list)
       {
         let { gameModeId = -1, name = "" } = modeInfo
-        log($"matching game mode removed '{name}' [{gameModeId}]")
+        ::dagor.debug($"matching game mode removed '{name}' [{gameModeId}]")
         __removeGameMode(gameModeId)
         needNotify = true
       }
@@ -98,7 +88,7 @@ local requestedGameModes = []
       foreach (modeInfo in added_list)
       {
         let { gameModeId = -1, name = "" } = modeInfo
-        log($"matching game mode added '{name}' [{gameModeId}]")
+        ::dagor.debug($"matching game mode added '{name}' [{gameModeId}]")
         needToFetchGmList.append(gameModeId)
       }
     }
@@ -116,7 +106,7 @@ local requestedGameModes = []
         let visible  = modeInfo?.visible
         let active   = modeInfo?.active
 
-        log($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
+        ::dagor.debug($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
 
         if (disabled && visible == false && active == false)
         {
@@ -149,7 +139,7 @@ local requestedGameModes = []
   function __notifyGmChanged()
   {
     let gameEventsOldFormat = {}
-    foreach (_gm_id, modeInfo in __gameModes)
+    foreach (gm_id, modeInfo in __gameModes)
     {
       if (::events.isCustomGameMode(modeInfo))
         continue
@@ -174,7 +164,7 @@ local requestedGameModes = []
       let idx = requestedGameModes.indexof(gameModeId)
       if (idx != null)
         requestedGameModes.remove(idx)
-      log(format("matching game mode fetched '%s' [%d]",
+      ::dagor.debug(format("matching game mode fetched '%s' [%d]",
                          modeInfo.name, gameModeId))
       __gameModes[gameModeId] <- modeInfo
     }
@@ -192,20 +182,20 @@ local requestedGameModes = []
       })
   }
 
-  function onEventSignOut(_p)
+  function onEventSignOut(p)
   {
     __gameModes.clear()
     __fetching = false
     __fetch_counter = 0
   }
 
-  function onEventScriptsReloaded(_p)
+  function onEventScriptsReloaded(p)
   {
     forceUpdateGameModes()
   }
 
   //no need to request gameModes before configs inited
-  function onEventLoginComplete(_p)
+  function onEventLoginComplete(p)
   {
     forceUpdateGameModes()
   }
@@ -218,14 +208,14 @@ local requestedGameModes = []
 
   function requestGameModeById(gameModeId)
   {
-    let isRequested = isInArray(gameModeId, requestedGameModes)
+    let isRequested = ::isInArray(gameModeId, requestedGameModes)
     if (isRequested
-      && (get_time_msec() - lastRequestTimeMsec <= requestedGameModesTimeOut))
+      && (::dagor.getCurTime() - lastRequestTimeMsec <= requestedGameModesTimeOut))
       return
 
     if (!isRequested)
       requestedGameModes.append(gameModeId)
-    lastRequestTimeMsec = get_time_msec()
+    lastRequestTimeMsec = ::dagor.getCurTime()
     __loadGameModesFromList([gameModeId])
   }
 

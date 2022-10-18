@@ -1,9 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-::WwPathTracker <- class {
+::WwPathTracker <- class
+{
   status = ""
   currentPosition = null
   moveType = -1
@@ -11,36 +7,41 @@ from "%scripts/dagui_library.nut" import *
   path = null
   points = null
 
-  constructor(blk = null) {
-    this.update(blk)
+  constructor(blk = null)
+  {
+    update(blk)
   }
 
-  function update(blk = null) {
+  function update(blk = null)
+  {
     if (!blk)
       return
 
-    this.status = blk.status
-    this.currentPosition = blk.pos
-    this.moveType = blk.moveType
+    status = blk.status
+    currentPosition = blk.pos
+    moveType = blk.moveType
 
-    this.path = blk.getBlockByName("path")
-    this.checkPoints(this.path?.points)
+    path = blk.getBlockByName("path")
+    checkPoints(path?.points)
   }
 
-  function checkPoints(pointsBlk) {
-    this.points = []
+  function checkPoints(pointsBlk)
+  {
+    points = []
     if (!pointsBlk)
       return
 
     for (local i = 0; i < pointsBlk.blockCount(); i++)
-      this.points.append(::u.copy(pointsBlk.getBlock(i)))
+      points.append(::u.copy(pointsBlk.getBlock(i)))
   }
 
-  function isMove() {
-    return ::g_ww_army_move_state.getMoveParamsByName(this.status).isMove
+  function isMove()
+  {
+    return ::g_ww_army_move_state.getMoveParamsByName(status).isMove
   }
 
-  function getCurrentPos() {
-    return this.currentPosition
+  function getCurrentPos()
+  {
+    return currentPosition
   }
 }

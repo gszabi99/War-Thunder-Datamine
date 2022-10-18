@@ -90,9 +90,9 @@
     2.0,
     1.4
   ],
-  "AileronMaxDv": 10.0,
-  "ElevatorMaxDv": 10.0,
-  "RudderMaxDv": 10.0,
+  "AileronMaxDv": 100.0,
+  "ElevatorMaxDv": 65.0,
+  "RudderMaxDv": 60.0,
   "CockpitOpenedDoorBreakSpeed": 600.0,
   "MomentOfInertia": [
     5500.0,
@@ -475,7 +475,6 @@
     "External": false,
     "Booster": false,
     "Main": {
-      "ExtinguisherNum": 0,
       "Type": "TurboProp",
       "Cylinders": 12,
       "Mass": 185.0,
@@ -485,7 +484,7 @@
       "RPMMin": 4700.0,
       "RPMMax": 6850.0,
       "RPMAfterburner": 6850.0,
-      "RPMMaxAllowed": 8900.0,
+      "RPMMaxAllowed": 7600.0,
       "StandbyFriction": 1E-05,
       "FuelConsumptionOnIdle": 0.175,
       "FuelConsumptionOnHalfThr": 0.8,
@@ -497,7 +496,7 @@
       "MinThrMult": 0.2,
       "MaxThrMult": 1.1,
       "IsWaterCooled": false,
-      "EngineInertiaMoment": 2.501,
+      "EngineInertiaMoment": 1.001,
       "RPMAmplitude0": [
         8000.0,
         0.0
@@ -999,33 +998,33 @@
       ],
       "AirFlowSolver": true,
       "AirFlow1": [
-        -30.0,
+        -100.0,
         0.0,
-        0.1,
+        1.0,
         1.0
       ],
       "AirFlow2": [
-        -12.0,
+        -10.0,
         0.0,
         1.0,
-        0.5
+        1.0
       ],
       "AirFlow3": [
         0.0,
-        -1.0,
+        -2.0,
         1.0,
         1.0
       ],
       "AirFlow4": [
-        9.0,
-        -11.0,
-        0.5,
+        10.0,
+        -6.0,
+        0.6,
         1.0
       ],
       "AirFlow5": [
-        28.0,
-        -18.0,
-        0.15,
+        100.0,
+        -8.0,
+        0.1,
         1.0
       ],
       "FlapCompensatorEfficiency": [
@@ -1057,7 +1056,7 @@
     "Mass": {
       "Mass": 155.0,
       "Diameter": 12.6,
-      "InertiaMomentCoeff": 0.5
+      "InertiaMomentCoeff": 1.5
     },
     "Governor": {
       "PitchMin": 0.0,
@@ -1111,7 +1110,7 @@
       "AfterCritMaxDistanceAngle": 28.0,
       "ClAfterCrit": 1.1,
       "CxAfterCoeff": 0.01,
-      "OswaldsEfficiencyNumber": 0.85,
+      "OswaldsEfficiencyNumber": 1.85,
       "MachFactor": 3,
       "CombinedCl": false,
       "MachCrit1": 0.79,
@@ -1135,10 +1134,10 @@
       "MultLineCoeff4": -0.2,
       "MultLimit4": 0.7,
       "MachCrit5": 0.01,
-      "MachMax5": 0.9,
-      "MultMachMax5": 1.8,
+      "MachMax5": 0.6,
+      "MultMachMax5": 3.8,
       "MultLineCoeff5": 0.0,
-      "MultLimit5": 1.8,
+      "MultLimit5": 4.8,
       "MachCrit6": 0.0,
       "MachMax6": 0.0,
       "MultMachMax6": 0.0,
@@ -1987,8 +1986,8 @@
     },
     "Throttle": {
       "Limits": [
-        0.05,
-        0.95
+        0.2,
+        0.9
       ],
       "ClimbMax": [
         -3.0,

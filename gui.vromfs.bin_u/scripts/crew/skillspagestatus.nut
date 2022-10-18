@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_skills_page_status <-
 {
@@ -59,10 +53,10 @@ enums.addTypesByGlobalName("g_skills_page_status", {
   */
 })
 
-::g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints)
+g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints)
 {
   local res = ::g_skills_page_status.NONE
-  let items = getTblValue("items", page)
+  let items = ::getTblValue("items", page)
   if (!items || !items.len())
     return res
 
@@ -89,7 +83,7 @@ enums.addTypesByGlobalName("g_skills_page_status", {
       allowedAmount.append(availStep - curStep)
   }
 
-  foreach(statusType in this.types)
+  foreach(statusType in types)
   {
     if (res.priority >= statusType.priority)
       continue

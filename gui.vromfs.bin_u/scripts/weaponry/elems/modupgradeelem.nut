@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
@@ -14,12 +8,12 @@ elemModelType.addTypes({
     hasUpgradeItems = null
 
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
-    onEventModUpgraded = @(p) this.notify([p.unit.name, p.mod.name])
-    onEventOverdriveActivated = @(_p) this.notify([])
-    onEventInventoryUpdate = function(_p)
+    onEventModUpgraded = @(p) notify([p.unit.name, p.mod.name])
+    onEventOverdriveActivated = @(p) notify([])
+    onEventInventoryUpdate = function(p)
     {
       hasUpgradeItems = null
-      this.notify([])
+      notify([])
     }
 
     needShowAvailableUpgrades = function()
@@ -34,7 +28,7 @@ elemModelType.addTypes({
 elemViewType.addTypes({
   MOD_UPGRADE_ICON = {
     model = elemModelType.MOD_UPGRADE
-    getBhvParamsString = @(params) this.bhvParamsToString(
+    getBhvParamsString = @(params) bhvParamsToString(
       params.__merge({
         subscriptions = [params?.unit || "", params?.mod || ""]
       }))
@@ -72,5 +66,5 @@ return {
   createMarkup = @(objId = null, unitName = null, modName = null)
     elemViewType.MOD_UPGRADE_ICON.createMarkup(makeConfig(unitName, modName), objId)
   setValueToObj = @(obj, unitName, modName)
-    checkObj(obj) && obj.setValue(elemViewType.MOD_UPGRADE_ICON.getBhvParamsString(makeConfig(unitName, modName)))
+    ::check_obj(obj) && obj.setValue(elemViewType.MOD_UPGRADE_ICON.getBhvParamsString(makeConfig(unitName, modName)))
 }

@@ -1,14 +1,7 @@
-from "%scripts/dagui_library.nut" import *
+let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_modal_editbox_wnd <- function gui_modal_editbox_wnd(params) {
+::gui_modal_editbox_wnd <- function gui_modal_editbox_wnd(params)
+{
   if (!params?.okFunc)
     return
 
@@ -46,103 +39,103 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen()
   {
-    this.scene.findObject("edit_box_window_header").setValue(this.title)
-    this.checkWarningFunc = this.checkWarningFunc ?? @(...) true
+    scene.findObject("edit_box_window_header").setValue(title)
+    checkWarningFunc = checkWarningFunc ?? @(...) true
 
-    this.editBoxObj = this.showSceneBtn(this.multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
-    this.showSceneBtn(this.leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true).setValue(this.label)
+    editBoxObj = this.showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
+    this.showSceneBtn(leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true).setValue(label)
 
-    let isEnabled = this.editBoxEnableFunc ? this.editBoxEnableFunc() : true
-    this.editBoxObj.enable(isEnabled)
-    if (this.editBoxTextOnDisable)
-      this.editBoxObj["edit-hint"] = isEnabled? "" : this.editBoxTextOnDisable
-    if (this.value)
-      this.editBoxObj.setValue(this.value)
-    if (this.maxLen)
-      this.editBoxObj["max-len"] = this.maxLen.tostring()
-    if (this.charMask)
-      this.editBoxObj["char-mask"] = this.charMask
-    if (this.needOpenIMEonInit)
-      this.editBoxObj.setValue(true) //opens IME, not change text.
-    if (this.isPassword) {
-      this.editBoxObj["type"] = "password"
-      this.editBoxObj["password-smb"] = loc("password_mask_char", "*")
+    let isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
+    editBoxObj.enable(isEnabled)
+    if (editBoxTextOnDisable)
+      editBoxObj["edit-hint"] = isEnabled? "" : editBoxTextOnDisable
+    if (value)
+      editBoxObj.setValue(value)
+    if (maxLen)
+      editBoxObj["max-len"] = maxLen.tostring()
+    if (charMask)
+      editBoxObj["char-mask"] = charMask
+    if (needOpenIMEonInit)
+      editBoxObj.setValue(true) //opens IME, not change text.
+    if (isPassword) {
+      editBoxObj["type"] = "password"
+      editBoxObj["password-smb"] = ::loc("password_mask_char", "*")
     }
 
-    this.updateBtnByValue(this.value || "")
-    this.value = null
+    updateBtnByValue(value || "")
+    value = null
 
-    if (!this.canCancel && !this.cancelFunc)
+    if (!canCancel && !cancelFunc)
       this.showSceneBtn("btn_back", false)
 
-    if (this.okBtnText != "")
-      setColoredDoubleTextToButton(this.scene, "btn_ok", this.okBtnText)
+    if (okBtnText != "")
+      setColoredDoubleTextToButton(scene, "btn_ok", okBtnText)
 
     if (isEnabled)
     {
-      this.guiScene.applyPendingChanges(false)
-      ::select_editbox(this.editBoxObj)
+      guiScene.applyPendingChanges(false)
+      ::select_editbox(editBoxObj)
     }
   }
 
   function onChangeValue(obj)
   {
     let curVal = obj.getValue() || ""
-    if (this.validateFunc)
+    if (validateFunc)
     {
-      let newVal = this.validateFunc(curVal)
+      let newVal = validateFunc(curVal)
       if (newVal != curVal)
         return obj.setValue(newVal)
     }
-    this.updateBtnByValue(curVal)
-    this.updateWarningByValue(obj, curVal)
+    updateBtnByValue(curVal)
+    updateWarningByValue(obj, curVal)
   }
 
   function isApplyEnabled(curVal)
   {
-    return (this.checkButtonFunc == null || this.checkButtonFunc(curVal))
-           && (this.allowEmpty || curVal != "")
+    return (checkButtonFunc == null || checkButtonFunc(curVal))
+           && (allowEmpty || curVal != "")
   }
 
   function updateBtnByValue(curVal)
   {
-    this.scene.findObject("btn_ok").enable(this.isApplyEnabled(curVal))
+    scene.findObject("btn_ok").enable(isApplyEnabled(curVal))
   }
 
   function updateWarningByValue(obj, curVal) {
-    let res = !this.checkWarningFunc(curVal)
+    let res = !checkWarningFunc(curVal)
     obj.warning = res? "yes" : "no"
     obj.warningText = res? "yes" : "no"
-    obj.tooltip = res ? this.editboxWarningTooltip : ""
+    obj.tooltip = res? editboxWarningTooltip : ""
   }
 
   function onOk()
   {
-    this.value = this.editBoxObj.getValue() || ""
-    if (this.isApplyEnabled(this.value))
-      return this.guiScene.performDelayed(this, this.goBack)
+    value = editBoxObj.getValue() || ""
+    if (isApplyEnabled(value))
+      return guiScene.performDelayed(this, goBack)
 
-    this.value = null
+    value = null
   }
 
   function goBack()
   {
-    if (this.value || this.canCancel)
+    if (value || canCancel)
       base.goBack()
     else
-      if (this.cancelFunc)
-        ::call_for_handler(this.owner, this.cancelFunc)
+      if (cancelFunc)
+        ::call_for_handler(owner, cancelFunc)
   }
 
   function afterModalDestroy()
   {
-    if (this.value && this.okFunc)
-      if (this.owner)
-        this.okFunc.call(this.owner, this.value)
+    if (value && okFunc)
+      if (owner)
+        okFunc.call(owner, value)
       else
-        this.okFunc(this.value)
+        okFunc(value)
 
-    if (!this.value && this.cancelFunc)
-      ::call_for_handler(this.owner, this.cancelFunc)
+    if (!value && cancelFunc)
+      ::call_for_handler(owner, cancelFunc)
   }
 }

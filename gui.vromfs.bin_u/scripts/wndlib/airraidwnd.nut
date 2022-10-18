@@ -1,14 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { secondsToTime, millisecondsToSecondsInt } = require("%scripts/time.nut")
 let { buildTimeStr } = require("%scripts/timeLoc.nut")
 let { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
 point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
-let { get_time_msec } = require("dagor.time")
 let exitGame = require("%scripts/utils/exitGame.nut")
 
 const TIME_TO_EXPLOSION = 11000
@@ -36,21 +29,21 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
       updateMainNuclearExplosionEvent()
   }
 
-  function onNuclearExplosionTimer(_obj, _dt) {
+  function onNuclearExplosionTimer(obj, dt) {
     updateNuclearExplosionTimer()
   }
 
   function initTimer() {
-    let timerObj = this.scene.findObject("nuclear_explosion_timer")
-    if (checkObj(timerObj))
+    let timerObj = scene.findObject("nuclear_explosion_timer")
+    if (::check_obj(timerObj))
       timerObj.setUserData(this)
 
-    countdownStartedTime = get_time_msec()
+    countdownStartedTime = ::dagor.getCurTime()
     updateNuclearExplosionTimer()
   }
 
   function updateNuclearExplosionTimer() {
-    let activeTime = get_time_msec() - countdownStartedTime
+    let activeTime = ::dagor.getCurTime() - countdownStartedTime
 
     if (activeTime > TIME_TO_SERENA_ACTIVATION && !isSirenActive)
       isSirenActive = set_siren_state(true)
@@ -70,8 +63,8 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
       let countdownSeconds = millisecondsToSecondsInt(TIME_TO_EXPLOSION - activeTime)
       let countdownTime = secondsToTime(countdownSeconds)
 
-      let textObj = this.scene.findObject("nuclear_explosion_timer_text")
-      if (checkObj(textObj)) {
+      let textObj = scene.findObject("nuclear_explosion_timer_text")
+      if (::check_obj(textObj)) {
         textObj.setValue(buildTimeStr({
             hour = countdownTime.hours,
             min = countdownTime.minutes,
@@ -86,22 +79,22 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
 
     ::scene_msg_box("show_message_from_matching",
       null,
-      ::g_string.implode([colorize("warningTextColor",
-        loc("NEW_CLIENT/EXIT_TITLE")),
-        loc("NEW_CLIENT/EXIT_MESSAGE")], "\n"),
+      ::g_string.implode([::colorize("warningTextColor",
+        ::loc("NEW_CLIENT/EXIT_TITLE")),
+        ::loc("NEW_CLIENT/EXIT_MESSAGE")], "\n"),
         [["ok", @() exitGame() ]],
         "ok",
         { cancel_fn = @() exitGame() })
 
-    let timerObj = this.scene.findObject("nuclear_explosion_timer")
-    if (checkObj(timerObj))
+    let timerObj = scene.findObject("nuclear_explosion_timer")
+    if (::check_obj(timerObj))
       timerObj.setUserData(null)
   }
 
   function updateMainNuclearExplosionEvent() {
     ::g_delayed_actions.add(@() point_camera_to_event(), TIME_TO_POINT_CAMERA_TO_EVENT)
     ::g_delayed_actions.add(@() play_background_nuclear_explosion(), TIME_TO_BACKGROUND_NUCLEAR_EVENT)
-    ::g_delayed_actions.add(Callback(@() this.goForward(::gui_start_mainmenu), this), TIME_TO_BACKGROUND_NUCLEAR_EVENT_END)
+    ::g_delayed_actions.add(::Callback(@() goForward(::gui_start_mainmenu), this), TIME_TO_BACKGROUND_NUCLEAR_EVENT_END)
   }
 }
 ::gui_handlers.airRaidWndScene <- airRaidWndScene

@@ -34,25 +34,6 @@
       },
       "conditions": {},
       "actions": {
-        "unitLoadBehTree": {
-          "name": "missionFighter",
-          "objects": [
-            "ht_t1_hunter",
-            "ht_t2_hunter"
-          ]
-        },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": [
-            "ht_t1_hunter",
-            "ht_t2_hunter"
-          ],
-          "stealthRadius": 1500.0,
-          "calmDetection": true
-        },
         "triggerEnable": {
           "target": [
             "ht_t1_restart",
@@ -366,6 +347,10 @@
           "wait": {
             "time": 1.0
           },
+          "unitLoadBehTree": {
+            "name": "missionFighter",
+            "objects": "ht_t1_hunter"
+          },
           "unitMoveTo": {
             "object_marking": 0,
             "object_var_name": "",
@@ -390,7 +375,7 @@
             "useFormationCenter": false,
             "teleportOffset": [
               0.0,
-              1000.0,
+              500.0,
               0.0
             ]
           },
@@ -854,6 +839,10 @@
             "isStealth": true,
             "resetFormation": true
           },
+          "unitLoadBehTree": {
+            "name": "missionFighter",
+            "objects": "ht_t2_hunter"
+          },
           "wait": {
             "time": 1.0
           },
@@ -881,7 +870,7 @@
             "useFormationCenter": false,
             "teleportOffset": [
               0.0,
-              1000.0,
+              500.0,
               0.0
             ]
           },

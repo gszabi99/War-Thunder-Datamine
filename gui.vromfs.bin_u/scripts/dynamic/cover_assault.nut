@@ -1,15 +1,7 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
-} = require("%scripts/dynamic/misGenFuncTools.nut")
-let { sqrt } = require("%sqstd/math.nut")
-let { debug_dump_stack } = require("dagor.debug")
-
-let function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
+::_generateCoverGattackMission <- function _generateCoverGattackMission(isFreeFlight, createGroundUnitsProc)
+{
   let mission_preset_name = "cover_gattack_preset01";
-  ::mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk");
+  ::mgBeginMission("gameData/missions/dynamic_campaign/objectives/"+mission_preset_name+".blk");
   let playerSide = ::mgGetPlayerSide();
   let enemySide = ::mgGetEnemySide();
   let bombtargets = createGroundUnitsProc(enemySide);
@@ -31,47 +23,50 @@ let function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   let wpMax = ws.dynPlanesMaxCost;
   let playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
   local playerPlaneCost = ::getAircraftCost(playerFighterPlane);
-  if (playerPlaneCost == 0)
-    playerPlaneCost = 250
+  if (playerPlaneCost == 0){playerPlaneCost = 250}
 
-  let enemyFighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
+  let enemyFighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
   local enemyPlaneCost = ::getAircraftCost(enemyFighterPlane);
-  if (enemyPlaneCost == 0)
-    enemyPlaneCost = 250
+  if (enemyPlaneCost == 0){enemyPlaneCost = 250}
 
-  let planeCost = planeCostCalculate(playerPlaneCost, enemyPlaneCost);
+  let planeCost = ::planeCostCalculate(playerPlaneCost, enemyPlaneCost);
+
 
 //mission type and bombers count setup
-  if ( tanks_count > 0 && tanks_count > light_count && tanks_count > art_count) {
+  if ( tanks_count > 0 && tanks_count > light_count && tanks_count > art_count)
+  {
     bombersCount = ::rndRangeInt(tanks_count*3, tanks_count*6);
     ground_type = "tank";
     squad_type = "#bomb_targets_tanks";
     allyAssaultPlane = ::getAircraftDescription(playerSide, "assault", ["can_be_assault"],
-      ["antiTankBomb", "antiTankRocket"], false, 0, wpMax);
+                                              ["antiTankBomb", "antiTankRocket"], false, 0, wpMax);
     ::mgSetInt("variables/assault_time", 60);
   }
-  else if (light_count > 0 && light_count > art_count) {
+  else if (light_count > 0 && light_count > art_count)
+  {
     bombersCount = ::rndRangeInt(light_count*2, light_count*4);
     ground_type = "truck";
     squad_type = "#bomb_targets_light";
     allyAssaultPlane = ::getAircraftDescription(playerSide, "assault", ["can_be_assault"],
-      ["rocket", "bomb", "cannon"], false, 0, wpMax);
+                                              ["rocket", "bomb", "cannon"], false, 0, wpMax);
     ::mgSetInt("variables/assault_time", 120);
   }
-  else if (art_count > 0) {
+  else if (art_count > 0)
+  {
     bombersCount = ::rndRangeInt(art_count*2, art_count*4);
     ground_type = "artillery";
     squad_type = "#bomb_targets_art";
     allyAssaultPlane = ::getAircraftDescription(playerSide, "assault", ["can_be_assault"],
-      ["rocket", "bomb", "cannon"], false, 0, wpMax);
+                                              ["rocket", "bomb", "cannon"], false, 0, wpMax);
     ::mgSetInt("variables/assault_time", 120);
   }
-  else if (ships_count > 0) {
+  else if (ships_count > 0)
+  {
     bombersCount = ::rndRangeInt(ships_count*4, ships_count*8);
     ground_type = "destroyer";
     squad_type = "#bomb_targets_ships";
     allyAssaultPlane = ::getAircraftDescription(playerSide, "assault", ["can_be_assault"],
-      ["antiShipBomb", "antiShipRocket"], false, 0, wpMax);
+                                              ["antiShipBomb", "antiShipRocket"], false, 0, wpMax);
     ::mgSetInt("variables/assault_time", 60);
   }
   else
@@ -86,7 +81,8 @@ let function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   ::mgReplace("triggers", "object", "#bomb_targets", squad_type);
   ::mgReplace("triggers", "target", "#bomb_targets", squad_type);
 
-  if (ground_type != "destroyer") {
+  if (ground_type != "destroyer")
+  {
     ::mgReplace("mission_settings/briefing/part", "target", "target_waypoint_bombers", squad_type);
     ::mgReplace("mission_settings/briefing/part", "lookAt", "target_waypoint_bombers", squad_type);
     ::mgReplace("mission_settings/briefing/part", "point", "target_waypoint_bombers", squad_type);
@@ -122,6 +118,7 @@ let function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
     enemy1Count = enemyTotalCount-4;
   let enemy2Count = enemyTotalCount-enemy1Count;
 
+
 //battle distance calculate
   let rndHeight = ::rndRange(2000, 4000);
   let allySpeed = ::getDistancePerMinute(allyAssaultPlane);
@@ -135,6 +132,7 @@ let function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   ::mgSetupAirfield(bombtargets, allySpeed*timeToTarget+3000);
   let startLookAt = ::mgCreateStartLookAt();
 
+
 //points setup
   ::mgSetupArea("player_start", bombtargets, startLookAt, 180, allySpeed*timeToTarget, rndHeight);
   ::mgSetupArea("ally_assault_start", bombtargets, startLookAt, 180, allySpeed*timeToTarget-300, rndHeight-100);
@@ -147,30 +145,30 @@ let function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   ::mgSetupArea("enemy_evac", bombtargets, "player_start", 45, 90000, 1000);
 
   ::mgSetupArea("enemy1_pointToFight", "player_start", bombtargets, 0,
-    allySpeed*timeToEnemy1, rndHeight+::rndRange(0,500));
+              allySpeed*timeToEnemy1, rndHeight+::rndRange(0,500));
   ::mgSetupArea("enemy1_start", "enemy1_pointToFight", bombtargets, enemy1Angle,
-    enemySpeed*timeToEnemy1, 0);
+              enemySpeed*timeToEnemy1, 0);
 
   ::mgSetupArea("enemy2_start", bombtargets, "player_start", 180,
-    3000, rndHeight+500);
+              3000, rndHeight+500);
 
 //armada setup
-  ::mgSetupArmada("#player.fighter", "player_start", ::Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane);
-  ::mgSetupArmada("#player_cut.any", "player_start", ::Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane);
+  ::mgSetupArmada("#player.fighter", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane);
+  ::mgSetupArmada("#player_cut.any", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane);
   ::gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.fighter");
 
-  ::mgSetupArmada("#ally01.assault", "ally_assault_start", ::Point3(0, 0, 0), bombtargets,
-    "#ally_assault_group", bombersCount, bombersCount, allyAssaultPlane);
+  ::mgSetupArmada("#ally01.assault", "ally_assault_start", Point3(0, 0, 0), bombtargets,
+                "#ally_assault_group", bombersCount, bombersCount, allyAssaultPlane);
 
   if (allyFightersCount != 0)
-    ::mgSetupArmada("#ally02.fighter", "ally_fighter_start", ::Point3(0, 0, 0), bombtargets,
-      "#ally_fighters_group", allyFightersCount, allyFightersCount, playerFighterPlane);
+    ::mgSetupArmada("#ally02.fighter", "ally_fighter_start", Point3(0, 0, 0), bombtargets,
+                  "#ally_fighters_group", allyFightersCount, allyFightersCount, playerFighterPlane);
 
-  ::mgSetupArmada("#enemy01.fighter", "enemy1_start", ::Point3(0, 0, 0), "#player.fighter",
-    "#enemy_group01", enemy1Count, enemy1Count, enemyFighterPlane);
+  ::mgSetupArmada("#enemy01.fighter", "enemy1_start", Point3(0, 0, 0), "#player.fighter",
+                "#enemy_group01", enemy1Count, enemy1Count, enemyFighterPlane);
 
-  ::mgSetupArmada("#enemy02.fighter", "enemy2_start", ::Point3(0, 0, 0), "#player.fighter",
-    "#enemy_group01", enemy2Count, enemy2Count, enemyFighterPlane);
+  ::mgSetupArmada("#enemy02.fighter", "enemy2_start", Point3(0, 0, 0), "#player.fighter",
+                "#enemy_group01", enemy2Count, enemy2Count, enemyFighterPlane);
 
   ::mgSetMinMaxAircrafts("player", "", 1, 8);
   ::mgSetMinMaxAircrafts("ally", "fighter", 0, 16);
@@ -178,9 +176,9 @@ let function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   ::mgSetMinMaxAircrafts("enemy", "fighter", 0, 44);
 
 //mission warpoint cost calculate
-  let mission_mult = sqrt(enemyTotalCount/20.0+0.05);
+  let mission_mult = ::sqrt(enemyTotalCount/20.0+0.05);
   let missionWpCost = warpointCalculate(mission_preset_name, allyFightersCount+bombersCount*0.5, enemyTotalCount, planeCost,
-    playerFighterPlane, mission_mult);
+                                          playerFighterPlane, mission_mult);
   ::mgSetInt("mission_settings/mission/wpAward", missionWpCost);
 
   ::mgSetEffShootingRate(0.1);
@@ -188,34 +186,36 @@ let function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   if (playerFighterPlane == "" || allyAssaultPlane == "")
     return
 
-  slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
+  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
 
   ::mgSetBool("variables/training_mode", isFreeFlight);
  // mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testAssaultCover_temp.blk");
   if (::mgFullLogs())
-    debug_dump_stack();
+    dagor.debug_dump_stack();
 
   ::mgAcceptMission();
 }
 
-let function genCoverGattackMission(isFreeFlight) {
-  generateCoverGattackMission(isFreeFlight,
-    function(enemySide) {
-      return ::mgCreateGroundUnits(enemySide, false, false,
-        {
-          heavy_vehicles = "#bomb_targets_tanks"
-          light_vehicles = "#bomb_targets_light"
-          infantry = "#bomb_target_cover"
-          air_defence = "#bomb_target_cover"
-          anti_tank = "#bomb_targets_art"
-          bombtarget = "*"
-          ships = "#bomb_targets_ships"
-          carriers = "#bomb_target_cover"
-        })
-    }
-  )
-}
+missionGenFunctions.append( function(isFreeFlight)
+{
+_generateCoverGattackMission (isFreeFlight, function(nemySide)
+      {
+       return ::mgCreateGroundUnits(nemySide,
+         false, false,
+       {
+         heavy_vehicles = "#bomb_targets_tanks"
+         light_vehicles = "#bomb_targets_light"
+         infantry = "#bomb_target_cover"
+         air_defence = "#bomb_target_cover"
+         anti_tank = "#bomb_targets_art"
+         bombtarget = "*"
+         ships = "#bomb_targets_ships"
+         carriers = "#bomb_target_cover"
+       }
 
-return {
-  genCoverGattackMission
+       )
+     }
+)
+
 }
+);

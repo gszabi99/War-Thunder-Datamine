@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { cutPrefix, cutPostfix } = require("%sqstd/string.nut")
 let regexp2 = require("regexp2")
 

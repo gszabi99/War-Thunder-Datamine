@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let u = require("%sqStdLibs/helpers/u.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 
@@ -25,7 +19,7 @@ local ModificationBase = class extends ::BaseItem
       initConditions(conditionsBlk)
   }
 
-  getConditionsBlk = @(_configBlk) null
+  getConditionsBlk = @(configBlk) null
 
   function initConditions(conditionsBlk)
   {
@@ -53,7 +47,7 @@ local ModificationBase = class extends ::BaseItem
     if (intro)
       textParts.extend(intro)
 
-    let expireText = this.getCurExpireTimeText()
+    let expireText = getCurExpireTimeText()
     if (expireText != "")
       textParts.append(expireText)
 
@@ -62,32 +56,32 @@ local ModificationBase = class extends ::BaseItem
       let locMods = u.map(modsList,
         function(mod)
         {
-          local res = loc("modification/" + mod + "/short", "")
+          local res = ::loc("modification/" + mod + "/short", "")
           if (!res.len())
-            res = loc("modification/" + mod)
+            res = ::loc("modification/" + mod)
           return res
         })
-      textParts.append(loc("multiAward/type/modification") + loc("ui/colon")
-          + colorize("activeTextColor", ::g_string.implode(locMods, ", ")))
+      textParts.append(::loc("multiAward/type/modification") + ::loc("ui/colon")
+          + ::colorize("activeTextColor", ::g_string.implode(locMods, ", ")))
     }
 
     if (countries)
     {
-      let locCountries = u.map(countries, @(country) loc("unlockTag/" + country))
-      textParts.append(loc("trophy/unlockables_names/country") + loc("ui/colon")
-          + colorize("activeTextColor", ::g_string.implode(locCountries, ", ")))
+      let locCountries = u.map(countries, @(country) ::loc("unlockTag/" + country))
+      textParts.append(::loc("trophy/unlockables_names/country") + ::loc("ui/colon")
+          + ::colorize("activeTextColor", ::g_string.implode(locCountries, ", ")))
     }
     if (unitTypes)
     {
       let processedUnitTypes = processUnitTypeArray(unitTypes)
-      let locUnitTypes = u.map(processedUnitTypes, @(unitType) loc($"mainmenu/type_{unitType}"))
-      textParts.append(loc("mainmenu/btnUnits") + loc("ui/colon")
-          + colorize("activeTextColor", ::g_string.implode(locUnitTypes, ", ")))
+      let locUnitTypes = u.map(processedUnitTypes, @(unitType) ::loc($"mainmenu/type_{unitType}"))
+      textParts.append(::loc("mainmenu/btnUnits") + ::loc("ui/colon")
+          + ::colorize("activeTextColor", ::g_string.implode(locUnitTypes, ", ")))
     }
 
     let rankText = getRankText()
     if (rankText.len())
-      textParts.append(loc("sm_rank") + loc("ui/colon") + colorize("activeTextColor", rankText))
+      textParts.append(::loc("sm_rank") + ::loc("ui/colon") + ::colorize("activeTextColor", rankText))
 
     let outro = getDescriptionOutroArray()
     if (outro)
@@ -104,7 +98,7 @@ local ModificationBase = class extends ::BaseItem
     return ""
   }
 
-  function getIcon(_addItemName = true)
+  function getIcon(addItemName = true)
   {
     local res = ::LayersIcon.genDataFromLayer(getIconBgLayer())
     res += ::LayersIcon.genDataFromLayer(getIconMainLayer())

@@ -1,11 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 /**
  * Action to perform after change country window closes.
@@ -31,12 +24,12 @@ enum ChangeCountryAction {
     availableCountries = getAvailableCountries()
     let view = {
       headerText = hasUnlockedAvailableCountry()
-        ? loc("mainmenu/coutryChoice")
-        : loc("mainmenu/countryChoice/changeMode")
+        ? ::loc("mainmenu/coutryChoice")
+        : ::loc("mainmenu/countryChoice/changeMode")
 
       messageText = hasUnlockedAvailableCountry()
-        ? loc("notAvailbleCountry/choose")
-        : loc("notAvailbleCountry/none")
+        ? ::loc("notAvailbleCountry/choose")
+        : ::loc("notAvailbleCountry/none")
 
       showOkButton = hasUnlockedAvailableCountry()
 
@@ -44,16 +37,16 @@ enum ChangeCountryAction {
     }
 
     let data = ::handyman.renderCached("%gui/changeCountry", view)
-    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
+    guiScene.replaceContentFromText(scene, data, data.len(), this)
 
-    buttonObject = this.getObj("btn_apply")
-    if (!checkObj(buttonObject))
+    buttonObject = getObj("btn_apply")
+    if (!::checkObj(buttonObject))
       buttonObject = null
     if (buttonObject != null)
       buttonObject.enable(false)
 
-    let listObj = this.scene.findObject("countries_list")
-    if (checkObj(listObj))
+    let listObj = scene.findObject("countries_list")
+    if (::checkObj(listObj))
     {
       listObj.setValue(getValueByCountry(currentCountry))
       onCountrySelect(listObj)
@@ -81,7 +74,7 @@ enum ChangeCountryAction {
       return
     let countryUnlocked = isCountryUnlocked(country)
     currentCountry = countryUnlocked ? country : null
-    if (checkObj(buttonObject))
+    if (::checkObj(buttonObject))
       buttonObject.enable(countryUnlocked || !hasUnlockedAvailableCountry())
   }
 
@@ -93,13 +86,13 @@ enum ChangeCountryAction {
       return
     chosenCountry = currentCountry
     pendingAction = ChangeCountryAction.APPLY_COUNTRY
-    this.goBack()
+    goBack()
   }
 
   function onChangeMode()
   {
     pendingAction = ChangeCountryAction.CHANGE_GAME_MODE
-    this.goBack()
+    goBack()
   }
 
   function createShopFilterItems(countries)
@@ -110,7 +103,7 @@ enum ChangeCountryAction {
       let country = countries[i]
       shopFilterItems.append({
         shopFilterId = country
-        shopFilterText = loc(country)
+        shopFilterText = ::loc(country)
         shopFilterImage = ::get_country_icon(country, true, !isCountryUnlocked(country))
       })
     }
@@ -136,7 +129,7 @@ enum ChangeCountryAction {
   {
     let res = []
     let currentMode = ::game_mode_manager.getCurrentGameMode()
-    let source = getTblValue("source", currentMode, {})
+    let source = ::getTblValue("source", currentMode, {})
     foreach (country in shopCountriesList)
     {
       if (::events.isCountryAvailable(source, country))
@@ -147,7 +140,7 @@ enum ChangeCountryAction {
 
   function isCountryUnlocked(country)
   {
-    return isInArray(country, ::unlocked_countries)
+    return ::isInArray(country, ::unlocked_countries)
   }
 
   function hasUnlockedAvailableCountry()

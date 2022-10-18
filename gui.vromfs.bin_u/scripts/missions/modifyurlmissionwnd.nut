@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let regexp2 = require("regexp2")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
@@ -30,17 +22,17 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
   function initScreen()
   {
-    let title = urlMission ? loc("urlMissions/modify") : loc("urlMissions/add")
-    this.scene.findObject("title").setValue(title)
+    let title = urlMission ? ::loc("urlMissions/modify") : ::loc("urlMissions/add")
+    scene.findObject("title").setValue(title)
 
     if (urlMission)
     {
-      this.scene.findObject("name_editbox").setValue(urlMission.name)
-      this.scene.findObject("url_editbox").setValue(urlMission.url)
+      scene.findObject("name_editbox").setValue(urlMission.name)
+      scene.findObject("url_editbox").setValue(urlMission.url)
     } else
-      this.scene.findObject("btn_apply").setValue(loc("chat/create"))
+      scene.findObject("btn_apply").setValue(::loc("chat/create"))
 
-    ::select_editbox(this.scene.findObject("name_editbox"))
+    ::select_editbox(scene.findObject("name_editbox"))
   }
 
   function onChangeName(obj)
@@ -74,13 +66,13 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     isValuesValid = !::is_chat_message_empty(curName)
                     && !::is_chat_message_empty(curUrl)
 
-    this.scene.findObject("btn_apply").enable(isValuesValid)
+    scene.findObject("btn_apply").enable(isValuesValid)
   }
 
   function onApply()
   {
     if (!isValuesValid)
-      return ::showInfoMsgBox(loc("msg/allFieldsMustBeFilled"))
+      return ::showInfoMsgBox(::loc("msg/allFieldsMustBeFilled"))
 
     local res = true
     let name = clearBorderSymbols(curName, [" "])
@@ -91,7 +83,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
       res = ::g_url_missions.createMission(name, url)
 
     if (res)
-      this.goBack()
+      goBack()
   }
 
   function getValidatedCurName()
@@ -99,5 +91,5 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     return validateNameRegexp.replace("", curName)
   }
 
-  onKbdWrapDown = @() setFocusToNextObj(this.scene, tabFocusArray, 1)
+  onKbdWrapDown = @() setFocusToNextObj(scene, tabFocusArray, 1)
 }

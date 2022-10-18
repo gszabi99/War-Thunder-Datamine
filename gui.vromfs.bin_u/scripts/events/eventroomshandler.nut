@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let stdMath = require("%sqstd/math.nut")
@@ -87,7 +79,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (!event)
       return
 
-    if (::events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
+    if (::events.getEventDiffCode(event) == ::DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return
 
@@ -109,9 +101,9 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       initFrameOverEventsWnd()
 
     updateMouseMode()
-    roomsListObj = this.scene.findObject("items_list")
+    roomsListObj = scene.findObject("items_list")
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(event) })
-    eventDescription = ::create_event_description(this.scene)
+    eventDescription = ::create_event_description(scene)
     showOnlyAvailableRooms = ::load_local_account_settings("events/showOnlyAvailableRooms", true)
     let obj = this.showSceneBtn("only_available_rooms", true)
     obj.setValue(showOnlyAvailableRooms)
@@ -120,21 +112,21 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     updateWindow()
     updateClusters()
 
-    this.scene.findObject("wnd_title").setValue(::events.getEventNameText(event))
-    this.scene.findObject("event_update").setUserData(this)
+    scene.findObject("wnd_title").setValue(::events.getEventNameText(event))
+    scene.findObject("event_update").setUserData(this)
 
     if (selectedIdx != -1)
     {
-      this.guiScene.applyPendingChanges(false)
+      guiScene.applyPendingChanges(false)
       ::move_mouse_on_child_by_value(roomsListObj)
     }
     else
-      initTime = get_time_msec()
+      initTime = ::dagor.getCurTime()
   }
 
   function initFrameOverEventsWnd()
   {
-    let frameObj = this.scene.findObject("wnd_frame")
+    let frameObj = scene.findObject("wnd_frame")
     frameObj.width = "1@slotbarWidthFull - 6@framePadding"
     frameObj.height = "1@maxWindowHeightWithSlotbar - 1@frameFooterHeight - 1@frameTopPadding"
     frameObj.top = "1@battleBtnBottomOffset - 1@frameFooterHeight - h"
@@ -142,12 +134,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let roomsListBtn = this.showSceneBtn("btn_rooms_list", true)
     roomsListBtn.btnName = "B"
     roomsListBtn.isOpened = "yes"
-    this.guiScene.applyPendingChanges(false)
+    guiScene.applyPendingChanges(false)
 
     let pos = roomsListBtn.getPosRC()
     roomsListBtn.noMargin = "yes"
-    pos[0] -= this.guiScene.calcString("3@framePadding", null)
-    pos[1] += this.guiScene.calcString("1@frameFooterHeight", null)
+    pos[0] -= guiScene.calcString("3@framePadding", null)
+    pos[1] += guiScene.calcString("1@frameFooterHeight", null)
     roomsListBtn.style = format("position:root; pos:%d,%d;", pos[0], pos[1])
   }
 
@@ -158,7 +150,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function onItemSelect()
   {
-    if (!this.isValid())
+    if (!isValid())
       return
 
     onItemSelectAction()
@@ -170,7 +162,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (selItemIdx < 0 || selItemIdx >= roomsListObj.childrenCount())
       return
     let selItemObj = roomsListObj.getChild(selItemIdx)
-    if (!checkObj(selItemObj) || !selItemObj?.id)
+    if (!::check_obj(selItemObj) || !selItemObj?.id)
       return
 
     let selChapterId = getChapterNameByObjId(selItemObj.id)
@@ -189,7 +181,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateWindow()
   {
-    this.createSlotbar({ eventId = event.name, room = getCurRoom() })
+    createSlotbar({ eventId = event.name, room = getCurRoom() })
     updateDescription()
     updateButtons()
   }
@@ -221,7 +213,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     }
 
     ::EventJoinProcess(event, getCurRoom(),
-      @(_event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+      @(event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
       function() {
         configForStatistic.canIntoToBattle <- false
         ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
@@ -233,12 +225,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     roomsListData.requestList(getCurFilter())
   }
 
-  function onUpdate(_obj, _dt)
+  function onUpdate(obj, dt)
   {
-    this.doWhenActiveOnce("refreshList")
+    doWhenActiveOnce("refreshList")
   }
 
-  function onEventSearchedRoomsChanged(_p)
+  function onEventSearchedRoomsChanged(p)
   {
     isSelectedRoomDataChanged = true
     fillRoomsList()
@@ -247,12 +239,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function onOpenClusterSelect(obj)
   {
     ::queues.checkAndStart(
-      Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
+      ::Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
   }
 
-  function onEventClusterChange(_params)
+  function onEventClusterChange(params)
   {
     updateClusters()
     fillRoomsList()
@@ -260,20 +252,20 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateClusters()
   {
-    clustersModule.updateClusters(this.scene.findObject("cluster_select_button"))
+    clustersModule.updateClusters(scene.findObject("cluster_select_button"))
   }
 
-  function onEventSquadStatusChanged(_params)
+  function onEventSquadStatusChanged(params)
   {
     updateButtons()
   }
 
-  function onEventSquadSetReady(_params)
+  function onEventSquadSetReady(params)
   {
     updateButtons()
   }
 
-  function onEventSquadDataUpdated(_params)
+  function onEventSquadDataUpdated(params)
   {
     updateButtons()
   }
@@ -292,7 +284,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     let reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
-      reasonData.reasonText = loc("multiplayer/no_room_selected")
+      reasonData.reasonText = ::loc("multiplayer/no_room_selected")
 
     let roomMGM = ::SessionLobby.getMGameMode(getCurRoom())
     let isReady = ::g_squad_manager.isMeReady()
@@ -304,18 +296,18 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let availTeams = ::events.getAvailableTeams(roomMGM)
     local startText = ""
     if (isSquadMember)
-      startText = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
+      startText = ::loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
     else if (roomMGM && !::events.isEventSymmetricTeams(roomMGM) && availTeams.len() == 1)
-      startText = loc("events/join_event_by_team",
+      startText = ::loc("events/join_event_by_team",
         { team = ::g_team.getTeamByCode(availTeams[0]).getShortName() })
     else
-      startText = loc("events/join_event")
+      startText = ::loc("events/join_event")
 
     let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0 && reasonData.activeJoinButton)
       startText += format(" (%s)", battlePriceText)
 
-    setColoredDoubleTextToButton(this.scene, "btn_join_event", startText)
+    setColoredDoubleTextToButton(scene, "btn_join_event", startText)
     let reasonTextObj = this.showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
     reasonTextObj.setValue(reasonData.reasonText)
 
@@ -325,8 +317,8 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isHeader)
     if (isHeader)
     {
-      let isCollapsedChapter = isInArray(curChapterId, collapsedChapterNamesArray)
-      startText = loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
+      let isCollapsedChapter = ::isInArray(curChapterId, collapsedChapterNamesArray)
+      startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
   }
@@ -353,7 +345,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     if (initTime != -1 && selectedIdx != -1)
     {
-      if (get_time_msec() - initTime < NOTICEABLE_RESPONCE_DELAY_TIME_MS)
+      if (::dagor.getCurTime() - initTime < NOTICEABLE_RESPONCE_DELAY_TIME_MS)
         ::move_mouse_on_child_by_value(roomsListObj)
       initTime = -1
     }
@@ -401,7 +393,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let teamSize = ::events.getMaxTeamSize(event)
     foreach(room in roomsList)
     {
-      let wasFlags = getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
+      let wasFlags = ::getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
       local flags = eRoomFlags.NONE
       let mGameMode = ::events.getMGameMode(event, room)
 
@@ -461,11 +453,11 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
         color = "@warningTextColor"
       let rankText = ::events.getBrTextByRules(reqUnits)
       let ruleTexts = ::u.map(reqUnits, getRuleText)
-      let rulesText = colorize(color, ::g_string.implode(ruleTexts, loc("ui/comma")))
+      let rulesText = ::colorize(color, ::g_string.implode(ruleTexts, ::loc("ui/comma")))
 
-      text = colorize(color, rankText) + " " + text
+      text = ::colorize(color, rankText) + " " + text
       if (rulesText.len())
-        text += loc("ui/comma") + rulesText
+        text += ::loc("ui/comma") + rulesText
     }
 
     return {
@@ -484,13 +476,13 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function updateListInfo(visibleRoomsAmount)
   {
     let needWaitIcon = !visibleRoomsAmount && roomsListData.isInUpdate
-    this.scene.findObject("items_list_wait_icon").show(needWaitIcon)
+    scene.findObject("items_list_wait_icon").show(needWaitIcon)
 
     local infoText = ""
     if (!visibleRoomsAmount && !needWaitIcon)
-      infoText = loc(roomsListData.getList().len() ? "multiplayer/no_rooms_by_clusters" : "multiplayer/no_rooms")
+      infoText = ::loc(roomsListData.getList().len() ? "multiplayer/no_rooms_by_clusters" : "multiplayer/no_rooms")
 
-    this.scene.findObject("items_list_msg").setValue(infoText)
+    scene.findObject("items_list_msg").setValue(infoText)
     roomsListObj.enable(visibleRoomsAmount && !needWaitIcon)
   }
 
@@ -500,7 +492,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
-  function onEventCountryChanged(_p)
+  function onEventCountryChanged(p)
   {
     updateButtons()
     checkRoomsOrder()
@@ -509,14 +501,14 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function updateChaptersTree(roomsList)
   {
     chaptersTree.clear()
-    foreach (_idx, room in roomsList)
+    foreach (idx, room in roomsList)
     {
       let chapterGameMode = ::SessionLobby.getMGameMode(room, true)
       let isCustomMode = ::events.isCustomGameMode(chapterGameMode)
       let isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
       let itemView = {
         itemText = isSeparateCustomRoomsList
-          ? colorize("activeTextColor", loc("events/playersRooms"))
+          ? ::colorize("activeTextColor", ::loc("events/playersRooms"))
           : null
       }
       local name = ""
@@ -548,7 +540,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     }
 
     chaptersTree.sort(@(a, b) b[EROOM_FLAGS_KEY_NAME] <=> a[EROOM_FLAGS_KEY_NAME])
-    foreach (_idx, chapter in chaptersTree)
+    foreach (idx, chapter in chaptersTree)
       chapter.rooms.sort(@(a, b) b[EROOM_FLAGS_KEY_NAME] <=> a[EROOM_FLAGS_KEY_NAME])
 
     return chaptersTree
@@ -561,7 +553,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     selectedIdx = 1 //select first room by default
     let view = { items = [] }
 
-    foreach (_idx, chapter in chaptersTree)
+    foreach (idx, chapter in chaptersTree)
     {
       let haveRooms = chapter.rooms.len() > 0
       if (!haveRooms || (showOnlyAvailableRooms && isLockedByMask(chapter[EROOM_FLAGS_KEY_NAME])))
@@ -577,7 +569,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       }.__update(chapter.itemView)
       view.items.append(listRow)
 
-      foreach (_roomIdx, room in chapter.rooms)
+      foreach (roomIdx, room in chapter.rooms)
       {
         if (showOnlyAvailableRooms && isLockedByMask(room[EROOM_FLAGS_KEY_NAME]))
           continue
@@ -607,7 +599,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     viewRoomList = view
     let data = ::handyman.renderCached("%gui/events/eventRoomsList", view)
-    this.guiScene.replaceContentFromText(roomsListObj, data, data.len(), this)
+    guiScene.replaceContentFromText(roomsListObj, data, data.len(), this)
     let roomsCount = roomsListObj.childrenCount()
     for (local i = 0; i < roomsCount; i++)
       roomsListObj.getChild(i).setIntProp(listIdxPID, i)
@@ -670,7 +662,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateCollapseChaptersStatuses()
   {
-    if (!checkObj(roomsListObj))
+    if (!::check_obj(roomsListObj))
       return
 
     for (local i = 0; i < roomsListObj.childrenCount(); i++)
@@ -678,7 +670,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       let obj = roomsListObj.getChild(i)
       let chapterName = getChapterNameByObjId(obj.id)
 
-      let isCollapsedChapter = isInArray(chapterName, collapsedChapterNamesArray)
+      let isCollapsedChapter = ::isInArray(chapterName, collapsedChapterNamesArray)
       if (!isCollapsedChapter)
         continue
 
@@ -706,13 +698,13 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function collapse(itemName = null)
   {
-    if (!checkObj(roomsListObj))
+    if (!::check_obj(roomsListObj))
       return
 
     let chapterId = itemName && getChapterNameByObjId(itemName)
     local newValue = -1
 
-    this.guiScene.setUpdatesEnabled(false, false)
+    guiScene.setUpdatesEnabled(false, false)
     for (local i = 0; i < roomsListObj.childrenCount(); i++)
     {
       let obj = roomsListObj.getChild(i)
@@ -727,11 +719,11 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       if (iChapter != chapterId)
         continue
 
-      let show = !isInArray(iChapter, collapsedChapterNamesArray)
+      let show = !::isInArray(iChapter, collapsedChapterNamesArray)
       obj.enable(show)
       obj.show(show)
     }
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(true, true)
 
     if (newValue >= 0)
       roomsListObj.setValue(newValue)
@@ -756,14 +748,14 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   }
 
   _isDelayedCrewchangedStarted = false
-  function onEventCrewChanged(_p)
+  function onEventCrewChanged(p)
   {
     if (_isDelayedCrewchangedStarted) //!!FIX ME: need to solve multiple CrewChanged events after change preset
       return
     _isDelayedCrewchangedStarted = true
-    this.guiScene.performDelayed(this, function()
+    guiScene.performDelayed(this, function()
     {
-      if (!this.isValid())
+      if (!isValid())
         return
       _isDelayedCrewchangedStarted = false
       updateButtons()
@@ -771,21 +763,21 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     })
   }
 
-  function onEventAfterJoinEventRoom(_ev)
+  function onEventAfterJoinEventRoom(ev)
   {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.EventsHandler)
   }
 
-  function onEventEventsDataUpdated(_p)
+  function onEventEventsDataUpdated(p)
   {
     //is event still exist
     if (::events.getEventByEconomicName(::events.getEventEconomicName(event)))
       return
 
-    this.guiScene.performDelayed(this, function()
+    guiScene.performDelayed(this, function()
     {
-      if (this.isValid())
-        this.goBack()
+      if (isValid())
+        goBack()
     })
   }
 
@@ -838,9 +830,9 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     updateButtons()
   }
 
-  function onHoveredItemSelect(_obj)
+  function onHoveredItemSelect(obj)
   {
-    if (hoveredIdx != -1 && checkObj(roomsListObj))
+    if (hoveredIdx != -1 && ::check_obj(roomsListObj))
       roomsListObj.setValue(hoveredIdx)
   }
 
@@ -849,8 +841,8 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
-  function goBackShortcut() { this.goBack() }
-  function onRoomsList()    { this.goBack() }
+  function goBackShortcut() { goBack() }
+  function onRoomsList()    { goBack() }
 
   function onLeaveEvent() {}
   function onDownloadPack() {}

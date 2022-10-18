@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {IlsColor, RadarTargetPosValid, RadarTargetPos} = require("%rGui/planeState/planeToolsState.nut")
 let {HorizonY, HorizonX, Roll} = require("%rGui/planeState/planeFlyState.nut")
 

@@ -1,23 +1,17 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
 ::WwCustomFormation <- class extends ::WwFormation
 {
   constructor(blk, airfield)
   {
-    this.units = []
+    units = []
     update(blk, airfield)
   }
 
   function update(blk, airfield)
   {
-    this.owner = ::WwArmyOwner(blk.getBlockByName("owner"))
-    this.morale = airfield.createArmyMorale
+    owner = ::WwArmyOwner(blk.getBlockByName("owner"))
+    morale = airfield.createArmyMorale
   }
 
   function clear()
@@ -38,8 +32,8 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   function addUnits(blk)
   {
     let additionalUnits = wwActionsWithUnitsList.loadUnitsFromBlk(blk.getBlockByName("units"))
-    this.units.extend(additionalUnits)
-    this.units = this.units.reduce(function (memo, unit) {
+    units.extend(additionalUnits)
+    units = units.reduce(function (memo, unit) {
       foreach (unitInMemo in memo)
         if (unitInMemo.name == unit.name)
         {

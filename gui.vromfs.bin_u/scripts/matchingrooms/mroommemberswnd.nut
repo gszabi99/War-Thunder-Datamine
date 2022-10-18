@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let time = require("%scripts/time.nut")
 
 
@@ -62,31 +54,31 @@ let time = require("%scripts/time.nut")
     teams = ::g_team.getTeams()
 
     playersListWidgetWeak = ::gui_handlers.MRoomPlayersListWidget.create({
-      scene = this.scene.findObject("players_list")
+      scene = scene.findObject("players_list")
       room = room
       teams = teams
-      onPlayerDblClickCb = Callback(openUserCard, this)
-      onPlayerRClickCb = Callback(onUserRClick, this)
+      onPlayerDblClickCb = ::Callback(openUserCard, this)
+      onPlayerRClickCb = ::Callback(onUserRClick, this)
     })
     if (playersListWidgetWeak)
       playersListWidgetWeak = playersListWidgetWeak.weakref()
-    this.registerSubHandler(playersListWidgetWeak)
+    registerSubHandler(playersListWidgetWeak)
 
-    this.scene.findObject("update_timer").setUserData(this)
+    scene.findObject("update_timer").setUserData(this)
     updateTeamsHeader()
     initRoomTimer()
   }
 
   function updateTeamsHeader()
   {
-    let headerNest = this.scene.findObject("teams_header")
+    let headerNest = scene.findObject("teams_header")
 
     let countTbl = ::SessionLobby.getMembersCountByTeams(room)
     let countTblReady = ::SessionLobby.getMembersCountByTeams(room, true)
     foreach(team in teams)
     {
       let teamObj = headerNest.findObject("num_team" + team.id)
-      if (!checkObj(teamObj))
+      if (!::check_obj(teamObj))
         continue
 
       local locId = "multiplayer/teamPlayers"
@@ -97,7 +89,7 @@ let time = require("%scripts/time.nut")
       }
       if (locParams.unready)
         locId = "multiplayer/teamPlayers/hasUnready"
-      let text = loc(locId, locParams)
+      let text = ::loc(locId, locParams)
       teamObj.setValue(text)
     }
 
@@ -112,8 +104,8 @@ let time = require("%scripts/time.nut")
 
   function initRoomTimer()
   {
-    let timerObj = this.scene.findObject("event_time")
-    SecondsUpdater(timerObj, Callback(function(obj, _params)
+    let timerObj = scene.findObject("event_time")
+    SecondsUpdater(timerObj, ::Callback(function(obj, params)
     {
       local text = ""
       let startTime = ::SessionLobby.getRoomSessionStartTime(room)
@@ -121,9 +113,9 @@ let time = require("%scripts/time.nut")
       {
         let secToStart = startTime - ::get_matching_server_time()
         if (secToStart <= 0)
-          text = loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
+          text = ::loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
         else
-          text = loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
+          text = ::loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
       }
       obj.setValue(text)
     }, this))
@@ -133,7 +125,7 @@ let time = require("%scripts/time.nut")
   {
     let roomInfo = ::g_mroom_info.get(room.roomId)
     if (roomInfo.isRoomDestroyed)
-      return this.goBack()
+      return goBack()
 
     let fullRoom = roomInfo.getFullRoomData()
     if (fullRoom)
@@ -160,7 +152,7 @@ let time = require("%scripts/time.nut")
     ::session_player_rmenu(this, player)
   }
 
-  function onUserActions(_obj)
+  function onUserActions(obj)
   {
     if (!playersListWidgetWeak)
       return
@@ -170,7 +162,7 @@ let time = require("%scripts/time.nut")
     ::session_player_rmenu(this, player, null, pos)
   }
 
-  function onUpdate(_obj, _dt)
+  function onUpdate(obj, dt)
   {
     ::g_mroom_info.get(room.roomId).checkRefresh()
   }

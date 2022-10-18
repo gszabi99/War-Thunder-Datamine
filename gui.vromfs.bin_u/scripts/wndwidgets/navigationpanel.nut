@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/wndWidgets/navigationPanel"
   sceneBlkName = null
@@ -72,8 +65,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function setNavItems(navItems)
   {
-    let navListObj = this.scene.findObject(navListObjId)
-    if (!checkObj(navListObj))
+    let navListObj = scene.findObject(navListObjId)
+    if (!::checkObj(navListObj))
       return
 
     itemList = navItems
@@ -87,7 +80,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     )}
 
     let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-    this.guiScene.replaceContentFromText(navListObj, data, data.len(), this)
+    guiScene.replaceContentFromText(navListObj, data, data.len(), this)
 
     updateVisibility()
   }
@@ -113,8 +106,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function doNavigate(itemIdx, isRelative = false)
   {
-    let navListObj = this.scene.findObject(navListObjId)
-    if (!checkObj(navListObj))
+    let navListObj = scene.findObject(navListObjId)
+    if (!::checkObj(navListObj))
       return false
 
     let itemsCount = itemList.len()
@@ -143,16 +136,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let isNavRequired = itemList.len() > 1
     this.showSceneBtn(panelObjId, isNavRequired && isPanelVisible)
     this.showSceneBtn(expandButtonObjId, isNavRequired && !isPanelVisible)
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    guiScene.performDelayed(this, function() {
+      if (isValid())
         updateMoveToPanelButton()
     })
   }
 
-  function onNavClick(_obj = null)
+  function onNavClick(obj = null)
   {
-    let navListObj = this.scene.findObject(navListObjId)
-    if (!checkObj(navListObj))
+    let navListObj = scene.findObject(navListObjId)
+    if (!::checkObj(navListObj))
       return false
 
     let itemIdx = navListObj.getValue()
@@ -160,23 +153,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       onClickCb(itemList[itemIdx])
   }
 
-  function onNavSelect(_obj = null)
+  function onNavSelect(obj = null)
   {
-    let navListObj = this.scene.findObject(navListObjId)
-    if (!checkObj(navListObj))
+    let navListObj = scene.findObject(navListObjId)
+    if (!::checkObj(navListObj))
       return false
 
     notifyNavChanged(navListObj.getValue())
   }
 
-  function onExpand(_obj = null)
+  function onExpand(obj = null)
   {
     showPanel(true)
     if (shouldCallCallback && onCollapseCb)
       onCollapseCb(false)
   }
 
-  function onNavCollapse(_obj = null)
+  function onNavCollapse(obj = null)
   {
     showPanel(false)
     if (shouldCallCallback && onCollapseCb)
@@ -186,8 +179,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onCollapse(obj)
   {
     let itemObj = obj?.collapse_header ? obj : obj.getParent()
-    let listObj = checkObj(itemObj) ? itemObj.getParent() : null
-    if (!checkObj(listObj) || !itemObj?.collapse_header)
+    let listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
+    if (!::check_obj(listObj) || !itemObj?.collapse_header)
       return
 
     itemObj.collapsing = "yes"
@@ -245,14 +238,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  onFocusNavigationList = @() ::move_mouse_on_child_by_value(this.scene.findObject(navListObjId))
+  onFocusNavigationList = @() ::move_mouse_on_child_by_value(scene.findObject(navListObjId))
   function updateMoveToPanelButton() {
-    if (this.isValid())
-      this.showSceneBtn("moveToLeftPanel", ::show_console_buttons && !this.scene.findObject(navListObjId).isHovered())
+    if (isValid())
+      this.showSceneBtn("moveToLeftPanel", ::show_console_buttons && !scene.findObject(navListObjId).isHovered())
   }
 
   function getCurrentItem() {
-    let currentIdx = ::get_object_value(this.scene, navListObjId)
+    let currentIdx = ::get_object_value(scene, navListObjId)
     if (currentIdx == null)
       return null
 

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -295,7 +290,7 @@ return [
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
-    showFunc = @() hasFeature("RadarElevationControl")
+    showFunc = @() ::has_feature("RadarElevationControl")
   }
   {
     id = "ship_zoom"
@@ -341,16 +336,16 @@ return [
   {
     id = "aim_time_nonlinearity_ship"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP)
-    setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP, objValue / 100.0)
+    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_AIM_TIME_NONLINEARITY_SHIP)
+    setValue = @(joyParams, objValue)
+      ::set_option_multiplier(::OPTION_AIM_TIME_NONLINEARITY_SHIP, objValue / 100.0)
   }
   {
     id = "aim_acceleration_delay_ship"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP)
-    setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP, objValue / 100.0)
+    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_AIM_ACCELERATION_DELAY_SHIP)
+    setValue = @(joyParams, objValue)
+      ::set_option_multiplier(::OPTION_AIM_ACCELERATION_DELAY_SHIP, objValue / 100.0)
   }
   {
     id = "mouse_z_ship"
@@ -358,14 +353,14 @@ return [
     axis_num = MouseAxis.MOUSE_SCROLL_SHIP
     values = ["none", "ship_sight_distance", "ship_main_engine", "ship_zoom"]
     onChangeValue = "onMouseWheel"
-    showFunc = @() hasFeature("EnableMouse") && hasFeature("Ships")
+    showFunc = @() ::has_feature("EnableMouse") && ::has_feature("Ships")
   }
   {
     id = "mouse_z_mult_ship"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT)
-    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT, objValue / 100.0)
-    showFunc = @() hasFeature("EnableMouse") && hasFeature("Ships")
+    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_MOUSE_Z_SHIP_MULT)
+    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_MOUSE_Z_SHIP_MULT, objValue / 100.0)
+    showFunc = @() ::has_feature("EnableMouse") && ::has_feature("Ships")
   }
 //-------------------------------------------------------
   {

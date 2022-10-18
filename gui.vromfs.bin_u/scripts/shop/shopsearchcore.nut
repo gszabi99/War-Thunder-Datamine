@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let regexp2 = require("regexp2")
 
 let reUnitLocNameSeparators = regexp2(@"[ \-_/.()"+::nbsp+"]")
@@ -11,7 +6,7 @@ let searchTokensCache = {}
 
 local function comparePrep(text)
 {
-  text = utf8(::g_string.utf8ToLower(text)).strtr(translit.cyr, translit.lat)
+  text = ::utf8(::g_string.utf8ToLower(text)).strtr(translit.cyr, translit.lat)
   return reUnitLocNameSeparators.replace("", text)
 }
 
@@ -60,10 +55,10 @@ let function findUnitsByLocName(searchStrRaw, needIncludeHidden = false, needInc
   ))
 }
 
-::add_event_listener("GameLocalizationChanged", @(_p) rebuildCache(),
+::add_event_listener("GameLocalizationChanged", @(p) rebuildCache(),
   null, ::g_listener_priority.CONFIG_VALIDATION)
 
-::add_event_listener("SignOut", @(_p) clearCache(),
+::add_event_listener("SignOut", @(p) clearCache(),
   null, ::g_listener_priority.DEFAULT)
 
 

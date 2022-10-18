@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { get_time_msec } = require("dagor.time")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
@@ -20,8 +15,8 @@ let alwaysForceRefreshEvents = {
 }
 
 let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
-  let data = Watched(defValue)
-  let lastTime = Watched({ request = 0, update = 0 })
+  let data = ::Watched(defValue)
+  let lastTime = ::Watched({ request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
     && lastTime.value.request + STATS_REQUEST_TIMEOUT > get_time_msec()
   let canRefresh = @() !isRequestInProgress()
@@ -64,13 +59,13 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
     refresh(cb)
   }
 
-  let function invalidateConfig(_p) {
+  let function invalidateConfig(p) {
     data(defValue)
     forceRefresh()
   }
 
   addListenersWithoutEnv(
-    alwaysForceRefreshEvents.__merge(forceRefreshEvents).map(@(_v) invalidateConfig),
+    alwaysForceRefreshEvents.__merge(forceRefreshEvents).map(@(v) invalidateConfig),
     ::g_listener_priority.CONFIG_VALIDATION
   )
 
@@ -84,7 +79,7 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
     forceRefresh = forceRefresh
     processResult = processResult
     prepareToRequest = prepareToRequest
-    lastUpdateTime = Computed(@() lastTime.value.update)
+    lastUpdateTime = ::Computed(@() lastTime.value.update)
   }
 }
 
@@ -130,7 +125,7 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
   blk.addInt("appid", APP_ID)
 
   let taskId = ::char_send_custom_action("cln_userstat_grant_rewards",
-    EATT_JSON_REQUEST, blk,
+    ::EATT_JSON_REQUEST, blk,
     ::json_to_string({ unlock = unlockName, stage = stage }, false),
     -1)
   ::g_tasker.addTask(taskId, taskOptions, resultCb, @(result) cbError?(result), TASK_CB_TYPE.REQUEST_DATA)
@@ -145,14 +140,14 @@ let userstatUnlocks = unlocksUpdatable.data
 let userstatDescList = descListUpdatable.data
 let userstatStats = statsUpdatable.data
 
-let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
+let isUserstatMissingData = ::Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
   || userstatStats.value.len() == 0)
 
-let canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight() && hasFeature("BattlePass") // userstat used only for battle pass.
+let canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight() && ::has_feature("BattlePass") // userstat used only for battle pass.
 
 local validateTaskTimer = -1
-let function validateUserstatData(_dt = 0) {
+let function validateUserstatData(dt = 0) {
   if ( validateTaskTimer >= 0 ) {
     ::periodic_task_unregister(validateTaskTimer)
     validateTaskTimer = -1
@@ -172,13 +167,13 @@ let function validateUserstatData(_dt = 0) {
     validateUserstatData, FREQUENCY_MISSING_STATS_UPDATE_SEC)
 }
 
-isUserstatMissingData.subscribe(function(_v) {
+isUserstatMissingData.subscribe(function(v) {
   validateUserstatData()
 })
 
 addListenersWithoutEnv({
-  ProfileUpdated = @(_p) validateUserstatData()
-  BattleEnded    = @(_p) validateUserstatData()
+  ProfileUpdated = @(p) validateUserstatData()
+  BattleEnded    = @(p) validateUserstatData()
 })
 
 return {

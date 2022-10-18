@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let time = require("%scripts/time.nut")
 let { GO_NONE, GO_WAITING_FOR_RESULT } = require_native("guiMission")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 
 enum LIVE_STATS_MODE {
@@ -27,7 +20,7 @@ enum LIVE_STATS_MODE {
 
   isSelfTogglable = false
   isInitialized = false
-  missionMode = GT_VERSUS
+  missionMode = ::GT_VERSUS
   missionObjectives = MISSION_OBJECTIVE.NONE
   isMissionTeamplay = false
   isMissionRace = false
@@ -52,7 +45,7 @@ enum LIVE_STATS_MODE {
   isSwitchScene = false
 
   columnsOrder = {
-    [GT_VERSUS] = {
+    [::GT_VERSUS] = {
       [LIVE_STATS_MODE.SPAWN] = [ "captureZone", "damageZone", "missionAliveTime", "kills", "groundKills", "navalKills",
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "score" ],
       [LIVE_STATS_MODE.FINAL] = [ "captureZone", "damageZone", "missionAliveTime", "kills", "groundKills", "navalKills",
@@ -60,12 +53,12 @@ enum LIVE_STATS_MODE {
       [LIVE_STATS_MODE.WATCH] = [ "name", "score", "captureZone", "damageZone", "missionAliveTime", "kills", "groundKills", "navalKills",
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "deaths" ],
     },
-    [GT_RACE] = {
+    [::GT_RACE] = {
       [LIVE_STATS_MODE.SPAWN] = [ "rowNo", "raceFinishTime", "raceBestLapTime", "penaltyTime" ],
       [LIVE_STATS_MODE.FINAL] = [ "rowNo", "raceFinishTime", "raceBestLapTime", "penaltyTime", "deaths" ],
       [LIVE_STATS_MODE.WATCH] = [ "rowNo", "name", "raceFinishTime", "raceBestLapTime", "penaltyTime", "deaths" ],
     },
-    [GT_FOOTBALL] = {
+    [::GT_FOOTBALL] = {
       [LIVE_STATS_MODE.SPAWN] = [ "footballGoals", "footballAssists", "footballScore" ],
       [LIVE_STATS_MODE.FINAL] = [ "footballGoals", "footballAssists", "footballScore" ],
       [LIVE_STATS_MODE.WATCH] = [ "name", "footballGoals", "footballAssists", "footballScore" ],
@@ -73,9 +66,9 @@ enum LIVE_STATS_MODE {
   }
   function init(parent_obj, nest_obj_id, is_self_togglable)
   {
-    if (!hasFeature("LiveStats"))
+    if (!::has_feature("LiveStats"))
       return
-    if (!checkObj(parent_obj))
+    if (!::checkObj(parent_obj))
       return
     parentObj = parent_obj
     nestObjId = nest_obj_id
@@ -84,15 +77,15 @@ enum LIVE_STATS_MODE {
     isSelfTogglable = is_self_togglable
     gameType = ::get_game_type()
     missionMode =
-        (gameType & GT_RACE) ? GT_RACE
-      : (gameType & GT_FOOTBALL) ? GT_FOOTBALL
-      : GT_VERSUS
+        (gameType & ::GT_RACE) ? ::GT_RACE
+      : (gameType & ::GT_FOOTBALL) ? ::GT_FOOTBALL
+      : ::GT_VERSUS
     isMissionTeamplay = ::is_mode_with_teams(gameType)
-    isMissionRace = !!(gameType & GT_RACE)
+    isMissionRace = !!(gameType & ::GT_RACE)
     isMissionFinished = false
     missionResult = null
     missionObjectives = ::g_mission_type.getCurrentObjectives()
-    isMissionLastManStanding = !!(gameType & GT_LAST_MAN_STANDING)
+    isMissionLastManStanding = !!(gameType & ::GT_LAST_MAN_STANDING)
 
     show(false)
 
@@ -112,10 +105,10 @@ enum LIVE_STATS_MODE {
       isAwaitingSpawn = true
 
       ::g_hud_event_manager.subscribe("MissionResult", onMissionResult, this)
-      ::g_hud_event_manager.subscribe("LocalPlayerAlive", function (_data) {
+      ::g_hud_event_manager.subscribe("LocalPlayerAlive", function (data) {
         checkPlayerSpawned()
       }, this)
-      ::g_hud_event_manager.subscribe("LocalPlayerDead", function (_data) {
+      ::g_hud_event_manager.subscribe("LocalPlayerDead", function (data) {
         checkPlayerDead()
       }, this)
     }
@@ -125,8 +118,8 @@ enum LIVE_STATS_MODE {
 
   function reinit()
   {
-    let _scene = checkObj(parentObj) ? parentObj.findObject(nestObjId) : null
-    if (!checkObj(_scene))
+    let _scene = ::checkObj(parentObj) ? parentObj.findObject(nestObjId) : null
+    if (!::checkObj(_scene))
       return
 
     isSwitchScene = !::u.isEqual(scene, _scene)
@@ -182,7 +175,7 @@ enum LIVE_STATS_MODE {
 
   function show(activate, viewMode = null, playerId = null)
   {
-    let isSceneValid = checkObj(scene)
+    let isSceneValid = ::check_obj(scene)
     activate = activate && isSceneValid
     let isVisibilityToggle = isSelfTogglable && isActive != activate
     isActive = activate
@@ -194,7 +187,7 @@ enum LIVE_STATS_MODE {
       curViewPlayerId = playerId
       curViewMode = (viewMode != null && viewMode >= 0 && viewMode < LIVE_STATS_MODE.TOTAL) ?
         viewMode : LIVE_STATS_MODE.WATCH
-      curColumnsOrder = getTblValue(curViewMode, getTblValue(missionMode, columnsOrder, {}), [])
+      curColumnsOrder = ::getTblValue(curViewMode, ::getTblValue(missionMode, columnsOrder, {}), [])
 
       let misObjs = missionObjectives
       let gt = gameType
@@ -210,7 +203,7 @@ enum LIVE_STATS_MODE {
 
   function fill()
   {
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     if (!isActive)
@@ -227,15 +220,15 @@ enum LIVE_STATS_MODE {
       title = ""
     else if (curViewMode == LIVE_STATS_MODE.SPAWN && !isMissionLastManStanding)
     {
-      let txtUnitName = ::getUnitName(getTblValue("aircraftName", state.player, ""))
+      let txtUnitName = ::getUnitName(::getTblValue("aircraftName", state.player, ""))
       let txtLifetime = time.secondsToString(state.lifetime, true)
-      title = loc("multiplayer/lifetime") + loc("ui/parentheses/space", { text = txtUnitName }) + loc("ui/colon") + txtLifetime
+      title = ::loc("multiplayer/lifetime") + ::loc("ui/parentheses/space", { text = txtUnitName }) + ::loc("ui/colon") + txtLifetime
     }
     else if (curViewMode == LIVE_STATS_MODE.FINAL || isMissionLastManStanding)
     {
-      title = isMissionTeamplay ? loc("debriefing/placeInMyTeam") :
-        (loc("mainmenu/btnMyPlace") + loc("ui/colon"))
-      title += colorize("userlogColoredText", getTblValue("rowNo", state.player, getPlayerPlaceInTeam(state.player)))
+      title = isMissionTeamplay ? ::loc("debriefing/placeInMyTeam") :
+        (::loc("mainmenu/btnMyPlace") + ::loc("ui/colon"))
+      title += ::colorize("userlogColoredText", ::getTblValue("rowNo", state.player, getPlayerPlaceInTeam(state.player)))
     }
 
     let isHeader = curViewMode == LIVE_STATS_MODE.FINAL
@@ -265,8 +258,8 @@ enum LIVE_STATS_MODE {
       let unitNames = []
       foreach (unitId in hero.units)
         unitNames.append(::getUnitName(unitId))
-      view["units"] <- loc("mainmenu/btnUnits") + loc("ui/colon") +
-        ::g_string.implode(unitNames, loc("ui/comma"))
+      view["units"] <- ::loc("mainmenu/btnUnits") + ::loc("ui/colon") +
+        ::g_string.implode(unitNames, ::loc("ui/comma"))
     }
 
     let template = isSelfTogglable ? "%gui/hud/hudLiveStats" : "%gui/hud/hudLiveStatsSpectator"
@@ -274,16 +267,16 @@ enum LIVE_STATS_MODE {
     guiScene.replaceContentFromText(scene, markup, markup.len(), this)
 
     let timerObj = scene.findObject("update_timer")
-    if (checkObj(timerObj))
+    if (::checkObj(timerObj))
       timerObj.setUserData(this)
 
     visState = null
     update(null, 0.0)
   }
 
-  function update(_o = null, _dt = 0.0)
+  function update(o = null, dt = 0.0)
   {
-    if (!isActive || !checkObj(scene))
+    if (!isActive || !::checkObj(scene))
       return
 
     let isCompareStates = curViewMode == LIVE_STATS_MODE.SPAWN
@@ -293,8 +286,8 @@ enum LIVE_STATS_MODE {
     {
       let param = ::g_mplayer_param_type.getTypeById(id)
 
-      let value = getTblValue(id, state.player, param.defVal)
-      let visValue = visState ? getTblValue(id, visState.player, param.defVal) : param.defVal
+      let value = ::getTblValue(id, state.player, param.defVal)
+      let visValue = visState ? ::getTblValue(id, visState.player, param.defVal) : param.defVal
       if (visValue == value && !param.isForceUpdate)
         continue
 
@@ -303,17 +296,17 @@ enum LIVE_STATS_MODE {
       let doShow = text != ""
 
       let plateObj = scene.findObject("plate_" + id)
-      if (checkObj(plateObj) && plateObj.isVisible() != doShow)
+      if (::checkObj(plateObj) && plateObj.isVisible() != doShow)
         plateObj.show(doShow)
 
       local txtObj = scene.findObject("txt_" + id)
-      if (checkObj(txtObj) && txtObj.getValue() != text)
+      if (::checkObj(txtObj) && txtObj.getValue() != text)
         txtObj.setValue(text)
 
       let lableName = param.getName(value)
       plateObj["tooltip"] = lableName
       txtObj = scene.findObject($"lable_{id}")
-      if (checkObj(txtObj) && txtObj.getValue() != lableName)
+      if (::checkObj(txtObj) && txtObj.getValue() != lableName)
         txtObj.setValue(lableName)
     }
 
@@ -321,7 +314,7 @@ enum LIVE_STATS_MODE {
     {
       let text = time.secondsToString(state.lifetime, true)
       let obj = scene.findObject("txt_lifetime")
-      if (checkObj(obj) && obj.getValue() != text)
+      if (::checkObj(obj) && obj.getValue() != text)
         obj.setValue(text)
     }
 
@@ -329,11 +322,11 @@ enum LIVE_STATS_MODE {
     if (state.streaks.len() != visStreaksLen)
     {
       let obj = scene.findObject("hero_streaks")
-      if (checkObj(obj))
+      if (::checkObj(obj))
       {
         local awardsList = []
         foreach (id in state.streaks)
-          awardsList.append({unlockType = UNLOCKABLE_STREAK, unlockId = id})
+          awardsList.append({unlockType = ::UNLOCKABLE_STREAK, unlockId = id})
         awardsList = ::combineSimilarAwards(awardsList)
 
         let view = { awards = [] }
@@ -357,14 +350,14 @@ enum LIVE_STATS_MODE {
 
   function getPlayerPlaceInTeam(player)
   {
-    let playerId = getTblValue("id", player, -1)
-    let teamId = isMissionTeamplay ? getTblValue("team", player, GET_MPLAYERS_LIST) : GET_MPLAYERS_LIST
+    let playerId = ::getTblValue("id", player, -1)
+    let teamId = isMissionTeamplay ? ::getTblValue("team", player, ::GET_MPLAYERS_LIST) : ::GET_MPLAYERS_LIST
     let players = ::get_mplayers_list(teamId, true)
 
     players.sort(::mpstat_get_sort_func(gameType))
 
     foreach (idx, p in players)
-      if (getTblValue("id", p) == playerId)
+      if (::getTblValue("id", p) == playerId)
         return idx + 1
     return 0
   }
@@ -374,9 +367,9 @@ enum LIVE_STATS_MODE {
     if (!isAwaitingSpawn)
       return
     let player = ::get_local_mplayer()
-    if (player.isDead || player.state != PLAYER_IN_FLIGHT)
+    if (player.isDead || player.state != ::PLAYER_IN_FLIGHT)
       return
-    let aircraftName = getTblValue("aircraftName", player, "")
+    let aircraftName = ::getTblValue("aircraftName", player, "")
     if (aircraftName == "" || aircraftName == "dummy_plane")
       return
     isAwaitingSpawn = false
@@ -400,7 +393,7 @@ enum LIVE_STATS_MODE {
 
   function onEventStreakArrived(params)
   {
-    hero.streaks.append(getTblValue("id", params))
+    hero.streaks.append(::getTblValue("id", params))
   }
 
   function onMissionResult(eventData)
@@ -417,7 +410,7 @@ enum LIVE_STATS_MODE {
     if (!isSelfTogglable || isMissionFinished)
       return
     spawnStartState = getState()
-    ::u.appendOnce(getTblValue("aircraftName", spawnStartState.player), hero.units)
+    ::u.appendOnce(::getTblValue("aircraftName", spawnStartState.player), hero.units)
     show(false)
   }
 

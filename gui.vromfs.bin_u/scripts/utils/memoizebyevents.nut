@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 /**
  * Works as standard memoize() func, but clears cache on given subscriptions.broadcast events.
  * Memoizes a given function by caching the computed result. Useful for speeding up
@@ -30,7 +25,7 @@ let function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
   let cache = {}
   local simpleCache
   local simpleCacheUsed = false
-  let function onEventCb(_p) {
+  let function onEventCb(p) {
     cache.clear()
   }
   let {parameters=null, varargs=0, defparams=null} = func.getfuncinfos()

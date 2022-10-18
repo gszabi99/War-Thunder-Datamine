@@ -1,27 +1,20 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_order_award_mode <- {
   types = []
 }
 
-::g_order_award_mode._addMultTextPart <- function _addMultTextPart(currentText, awardValue, signLocId)
+g_order_award_mode._addMultTextPart <- function _addMultTextPart(currentText, awardValue, signLocId)
 {
   if (awardValue > 0)
   {
     if (currentText.len() > 0)
       currentText += " "
-    currentText += colorize("activeTextColor", "x" + awardValue) + loc(signLocId)
+    currentText += ::colorize("activeTextColor", "x" + awardValue) + ::loc(signLocId)
   }
   return currentText
 }
 
-::g_order_award_mode._getAwardTextByDifficultyCost <- function _getAwardTextByDifficultyCost(difficulty, orderItem)
+g_order_award_mode._getAwardTextByDifficultyCost <- function _getAwardTextByDifficultyCost(difficulty, orderItem)
 {
   let cost = ::Cost()
   cost.wp = orderItem.awardWpByDifficulty[difficulty]
@@ -30,7 +23,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   return cost.getUncoloredText()
 }
 
-::g_order_award_mode._getAwardTextByDifficultyMultipliers <- function _getAwardTextByDifficultyMultipliers(difficulty, orderItem)
+g_order_award_mode._getAwardTextByDifficultyMultipliers <- function _getAwardTextByDifficultyMultipliers(difficulty, orderItem)
 {
   local text = ""
   text = ::g_order_award_mode._addMultTextPart(text, orderItem.awardWpByDifficulty[difficulty],
@@ -43,7 +36,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_order_award_mode.template <- {
-  getAwardTextByDifficulty = function(_difficulty, _orderItem) { return "" }
+  getAwardTextByDifficulty = function(difficulty, orderItem) { return "" }
 }
 
 enums.addTypesByGlobalName("g_order_award_mode", {
@@ -67,9 +60,10 @@ enums.addTypesByGlobalName("g_order_award_mode", {
   }
 })
 
-::g_order_award_mode.getAwardModeByOrderParams <- function getAwardModeByOrderParams(orderParams) {
+g_order_award_mode.getAwardModeByOrderParams <- function getAwardModeByOrderParams(orderParams)
+{
   foreach (awardMode in ::g_order_award_mode.types)
-    if (::u.isTable(awardMode) && getTblValue(awardMode.name, orderParams, false))
+    if (::u.isTable(awardMode) && ::getTblValue(awardMode.name, orderParams, false))
       return awardMode
-  return this.UNKNOWN
+  return UNKNOWN
 }

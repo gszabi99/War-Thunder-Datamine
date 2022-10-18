@@ -856,8 +856,7 @@
         "sideDepth": 0.0,
         "volumesCount": 12
       }
-    },
-    "floatingRiSystem__userVolumePresets:object": {}
+    }
   },
   "floating_rendinst_res_group": {
     "floatingRiGroup__wreckageFloatDuration": 15.0,
@@ -974,50 +973,18 @@
     "_extends": "smokescreen_ecs",
     "mod__name": "ship_smoke_screen_system_mod"
   },
-  "unit_repair": {
-    "repair_system_remaining_repair_time": -1.0,
-    "repair_system_delay_time_to_repair": -1.0,
-    "repair_system_auto_check_delay": 0.0,
-    "repair_system_speed_multiplier_base": 1.0,
-    "repair_system_speed_multiplier_koef": 1.0,
-    "repair_system_toolkit_count": 0,
-    "repair_system_toolkit_count_max": -1,
-    "repair_system_scheduled_bot_repair_time": -1.0,
-    "repair_system_state:u32": {},
-    "repair_system_parts_state:list<u32>": {},
-    "repair_system_parts_id:list<i>": {},
-    "repair_system_parts_speed_mult:list<r>": {},
-    "repair_system_parts_hp:list<p4>": {}
-  },
-  "unit_fire_and_extinguish": {
-    "extinguish_system_next_extinguisher_time": -1.0,
-    "extinguish_system_last_extinguish_time": -1.0,
-    "extinguish_system_extinguish_time_start": -1.0,
-    "extinguish_system_extinguish_time_end": -1.0,
-    "extinguish_system_crew_busy_time": -1.0,
-    "extinguish_system_crew_busy_time_end": -1.0,
-    "extinguish_system_extinguisher_time_min": 0.0,
-    "extinguish_system_extinguisher_time_max": 0.0,
-    "extinguish_system_cooldown": 0.0,
-    "extinguish_system_extinguisher_count": 0,
-    "extinguish_system_extinguisher_count_max": 0,
-    "extinguish_system_auto_extinguisher": false,
-    "extinguish_system_is_assisting": false,
-    "fire_system_require_net_sync": false
-  },
   "ground_unit": {
-    "_extends": [
-      "simple_ground_unit",
-      "unit_repair",
-      "unit_fire_and_extinguish"
-    ],
+    "_extends": "simple_ground_unit",
     "move_sys__maxDecel": 0.0,
     "fire_damage__update_burn_interval": 1.0,
     "fire_damage__isBurn": false,
+    "unit_fire": {},
     "fire_fx__id:list<i>": {},
     "fire_fx__fxId:list<i>": {},
     "fire_fx__paramsId:list<i>": {},
+    "unit_extinguish": {},
     "unit_crew": {},
+    "unit_repair": {},
     "unit_fx": {},
     "fuel_tanks": {},
     "ammo_stowage": {},
@@ -1034,18 +1001,6 @@
   },
   "simple_tank": {
     "_extends": "simple_ground_unit"
-  },
-  "trailer": {
-    "_extends": "simple_ground_unit",
-    "track_sound": {
-      "_tags": "sound"
-    }
-  },
-  "simple_trailer": {
-    "_extends": "simple_ground_unit",
-    "track_sound": {
-      "_tags": "sound"
-    }
   },
   "tank": {
     "_extends": "ground_unit",
@@ -1074,83 +1029,8 @@
   "simple_ship": {
     "_extends": "simple_ground_unit"
   },
-  "ship_cover_parts": {
-    "ship_cover_parts_part_id:list<u32>": {},
-    "ship_cover_parts_compartment_id:list<i>": {},
-    "ship_cover_parts_water:list<p3>": {},
-    "ship_cover_parts_weight:list<r>": {},
-    "ship_cover_parts_pos:list<p3>": {},
-    "ship_cover_parts_inner_parts:list<ip2>": {},
-    "ship_inner_parts_ids:list<i>": {},
-    "ship_inner_parts_critical_water:list<r>": {},
-    "ship_compartments_cover_parts:list<ip2>": {}
-  },
-  "ship_breaches": {
-    "ship_breaches_next_id": 0,
-    "ship_breaches_fatal_part_id": -1,
-    "ship_additional_water_left_side": 0.0,
-    "ship_additional_water_right_side": 0.0,
-    "ship_flood_step": 1,
-    "ship_breaches_id:list<i>": {},
-    "ship_breaches_pos:list<p3>": {},
-    "ship_breaches_normal:list<p3>": {},
-    "ship_breaches_size:list<r>": {},
-    "ship_breaches_amount_to_repair:list<r>": {},
-    "ship_breaches_depth_scale:list<r>": {},
-    "ship_breaches_next_check:list<r>": {},
-    "ship_breaches_part_id:list<i>": {},
-    "ship_breaches_cover_id:list<i>": {},
-    "ship_breaches_leaked_amount:list<r>": {},
-    "ship_breaches_offender": {}
-  },
-  "ship_phys_proxy": {
-    "ship_phys_velocity_sq": 0.0,
-    "ship_phys_ground_collision": false,
-    "ship_phys_additional_water": 0.0,
-    "ship_phys_water_leaking": false,
-    "ship_phys_avg_breach_pos": [
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
-  "ship_repair": {
-    "ship_repair_crew_alive_mult": 1.0,
-    "ship_repair_part_idx": -1,
-    "ship_repair_part_remaining_time": -1.0,
-    "_group": {
-      "_replicate": true,
-      "ship_repair_breaches_remaining_time": 1.0
-    },
-    "ship_repair_parts_part_id:list<i>": {},
-    "ship_repair_parts_time:list<r>": {},
-    "ship_repair_parts_hp:list<r>": {}
-  },
-  "ship_unwatering": {
-    "ship_water_mass_vel_mut": 1.0,
-    "_group": {
-      "_replicate": true,
-      "ship_unwatering_remaining_time": -1.0
-    },
-    "ship_pumps_part_id:list<i>": {}
-  },
-  "ship_damage_control": {
-    "_extends": [
-      "ship_cover_parts",
-      "ship_breaches",
-      "ship_phys_proxy",
-      "ship_repair",
-      "ship_unwatering"
-    ],
-    "ship_damage_control_repair_speed_mult": 1.0,
-    "ship_damage_control_extinguish_speed_mult": 1.0,
-    "ship_damage_control_unwatering_speed_mult": 1.0
-  },
   "ship": {
-    "_extends": [
-      "ground_unit",
-      "ship_damage_control"
-    ],
+    "_extends": "ground_unit",
     "mods:list<t>": {
       "mod": [
         "ship_toolkit_ecs",

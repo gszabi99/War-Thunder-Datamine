@@ -1,13 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
-let aeroSmokesList    = persist("aeroSmokesList", @() Watched([]))
-let buyableSmokesList = persist("buyableSmokesList", @() Watched([]))
+let aeroSmokesList    = persist("aeroSmokesList", @() ::Watched([]))
+let buyableSmokesList = persist("buyableSmokesList", @() ::Watched([]))
 
 let function updateAeroSmokeList() {
   let blk = ::DataBlock()
@@ -49,10 +44,10 @@ let function updateBuyableSmokesList() {
     buyableSmokesList(res)
 }
 
-aeroSmokesList.subscribe(@(_p) updateBuyableSmokesList())
+aeroSmokesList.subscribe(@(p) updateBuyableSmokesList())
 addListenersWithoutEnv({
-  LoginComplete = @(_p) updateAeroSmokeList()
-  UnlocksCacheInvalidate = @(_p) updateBuyableSmokesList()
+  LoginComplete = @(p) updateAeroSmokeList()
+  UnlocksCacheInvalidate = @(p) updateBuyableSmokesList()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 

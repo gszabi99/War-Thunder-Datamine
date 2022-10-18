@@ -1,16 +1,11 @@
-#explicit-this
-#no-root-fallback
-
 let { format } = require("string")
-let { toString } = require("%sqStdLibs/helpers/toString.nut")
-let { get_time_msec } = require("dagor.time")
 let cubicBezierSolver = require("%globalScripts/cubicBezierSolver.nut")
 
 //version by 27.01.2011
 //works only when time = 0..1,
 // func(0) = 0,  func(1) = 1
 
-let {PI, sin, cos, fabs} = require("math")
+let {sin, cos, fabs} = require("math")
 
 let function basicFunction(funcName, time) { //time >= -1, time <= 1
   if (time < 0)
@@ -29,18 +24,18 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     case "cubeInv":          return 1.0 - (1.0-time) * (1.0-time) * (1.0-time)
 
     case "elastic":          return ((t < 0.25)? basicFunction("square", 4.0 * t) : 1.0) +
-                                    (1.0 - t) * sin(basicFunction("square", t) * 2.0 * PI)
+                                    (1.0 - t) * sin(basicFunction("square", t) * 2.0 * ::PI)
     case "elasticSmall":     return ((t < 0.25)? basicFunction("square", 4.0 * t) : 1.0) +
-                                    0.1 * (1.0 - t) * sin(basicFunction("square", t) * 2.0 * PI)
+                                    0.1 * (1.0 - t) * sin(basicFunction("square", t) * 2.0 * ::PI)
 
     case "delayed_square":   return (t <= 0.5)? 0 : 4.0*(t - 0.5)*(t - 0.5)
     case "projector":        return (t%(1.0/80)) * 80
-    case "doubleCos":        return 0.5 + 0.5 * cos(4.0 * t * PI)
+    case "doubleCos":        return 0.5 + 0.5 * cos(4.0 * t * ::PI)
 
     //cycled function
-    case "doubleBlink":      return 0.5 - 0.5 * cos(4 * PI * t)
+    case "doubleBlink":      return 0.5 - 0.5 * cos(4 * ::PI * t)
     case "blink":            return (t < 0.1)? 10.0*t : 1.0 - (t-0.1)/0.9
-    case "sin":              return 0.5 + 0.5 * sin((t * 2.0 - 0.5) * PI)
+    case "sin":              return 0.5 + 0.5 * sin((t * 2.0 - 0.5) * ::PI)
 
     case "delayed":          return (t > 0.25) ? 1.0 : 4.0*t
     case "delayedInv":       return (t > 0.75) ? 0.0 : 4.0*(t - 0.75)
@@ -48,13 +43,13 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     case "blinkSin":
       local val = (t < 0.1)? 10.0*t : 1.0 - (t-0.1)/0.9
       if (t < 0.5)
-        val *= 0.75 + 0.25 * sin((t * 80.0 - 0.5) * PI)
+        val *= 0.75 + 0.25 * sin((t * 80.0 - 0.5) * ::PI)
       return val
 
     case "blinkCos":
       local val = (t < 0.1)? 10.0*t : 1.0 - (t-0.1)/0.9
       if (t < 0.5)
-        val *= 0.75 + 0.25 * cos((t * 40.0 - 0.5) * PI)
+        val *= 0.75 + 0.25 * cos((t * 40.0 - 0.5) * ::PI)
       return val
 
     case "rouletteCubicBezier":
@@ -87,13 +82,13 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     if (obj.getFloatProp(this.timerPID, -1) < 0)
       obj.setFloatProp(this.timerPID, this.getFloatObjProp(obj, this.timerName, 0))
     obj.sendNotify("activate")
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function onDetach(obj)
   {
     obj.sendNotify("deactivate")
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function onTimer(obj, dt)
@@ -141,7 +136,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
       width = ::blendProp(curSize[0], width, p.blendTime, dt).tointeger()
       if (width != curSize[0])
         obj.width =  width.tostring()
-//      println(format("GP: WIDTH: cur = %f,  new = %f, blendTo = %s",
+//      ::dagor.debug(format("GP: WIDTH: cur = %f,  new = %f, blendTo = %s",
 //                    curSize[0], width, obj.width))
     }
     if (p.size0[1] != null) {
@@ -150,12 +145,12 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
       height = ::blendProp(curSize[1], height, p.blendTime, dt).tointeger()
       if (height != curSize[1])
         obj.height = height.tostring()
-//      println(format("GP: HEIGHT: cur = %f,  new = %f, blendTo = %s",
+//      ::dagor.debug(format("GP: HEIGHT: cur = %f,  new = %f, blendTo = %s",
 //                    curSize[1], height, obj.height))
     }
   }
 
-  function countProp(propBase, propEnd, func, timer, scale = 1.0, _obj = null) {
+  function countProp(propBase, propEnd, func, timer, scale = 1.0, obj = null) {
     return scale * (propBase + (propEnd - propBase) * basicFunction(func, timer))
   }
 
@@ -216,7 +211,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   {
     ::script_net_assert_once("bhvBasic error",
                              "bhvBasic error (" + header
-                             + ", obj = " + toString(obj)
+                             + ", obj = " + ::toString(obj)
                              + "):\n" + err)
   }
 
@@ -298,7 +293,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     return [1.0, 1.0]
   }
 
-  eventMask = EV_TIMER
+  eventMask = ::EV_TIMER
 }
 
 ::gui_bhv_deprecated.basicPos <- class extends ::gui_bhv_deprecated.basicSize
@@ -427,8 +422,8 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 //But all objects with same periods will winkign synchronously.
 ::gui_bhv_deprecated.syncTransparency <- class extends ::gui_bhv_deprecated.basicTransparency
 {
-  function updateTimer(obj, _dt, p) {  //p - properties config
-    local timer = ((get_time_msec().tofloat() / 1000) % p.totalTime) / p.totalTime
+  function updateTimer(obj, dt, p) {  //p - properties config
+    local timer = ((::dagor.getCurTime().tofloat() / 1000) % p.totalTime) / p.totalTime
 
     if (timer < 0) {
       timer = (p.cycled)? timer%1 + 1.0 : 0.0
@@ -454,7 +449,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   {
     obj.sendNotify("activate")
     this.onTimer(obj, 0.0)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function updateProps(obj, dt, p)
@@ -544,7 +539,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   {
     obj.sendNotify("activate")
     this.onTimer(obj, 0.0)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function updateProps(obj, dt, p) {  //p - properties config
@@ -615,7 +610,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
 ::gui_bhv_deprecated.motionCursorField <- class extends ::gui_bhv_deprecated.basicSize
 {
-  function onMouseMove(obj, mx, my, _bits) {
+  function onMouseMove(obj, mx, my, bits) {
     if (obj.childrenCount() >= 1) {
       let cursor = obj.getChild(0)
       let clicked = this.getBoolObjProp(cursor, "clicked", false)
@@ -632,13 +627,13 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
       cursor.top = my.tointeger().tostring()
     }
 
-    return RETCODE_OBJ_CHANGED
+    return ::RETCODE_OBJ_CHANGED
   }
 
   maxDeviationSq = 0.0001  //sq of screen Height
   timerName = "_size-timer"
   timerPID = ::dagui_propid.add_name_id("_size-timer")
-  eventMask = EV_MOUSE_MOVE
+  eventMask = ::EV_MOUSE_MOVE
 }
 
 ::gui_bhv_deprecated.shakePos <- class extends ::gui_bhv_deprecated.basicPos { //-similar-assigned-expr
@@ -665,7 +660,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
 ::gui_bhv_deprecated.multiLayerImage <- class extends ::gui_bhv_deprecated.basicSize
 {
-  eventMask = EV_TIMER
+  eventMask = ::EV_TIMER
   last_mx_PID = ::dagui_propid.add_name_id("last_mx")
   rotationBasePID = ::dagui_propid.add_name_id("_rotation_base")
   /*
@@ -674,7 +669,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     local cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     obj.setIntProp(last_mx_PID, cursorPos[0])
     this.updateChilds(obj, cursorPos[0], 0)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
   */
 
@@ -683,16 +678,16 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     let mx = ::get_dagui_mouse_cursor_pos_RC()[0]
     local objMx = obj.getIntProp(this.last_mx_PID, 0)
     if (objMx == mx)
-      return RETCODE_NOTHING
+      return ::RETCODE_NOTHING
 
     local blendTime = this.getIntObjProp(obj, "blend-time", 100) / 1000.0
     objMx = ::blendProp(objMx, mx, blendTime, dt).tointeger()
     this.updateChilds(obj, objMx, 0)
     obj.setIntProp(this.last_mx_PID, objMx)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
-  function updateChilds(obj, mx, _my)
+  function updateChilds(obj, mx, my)
   {
     let rootSize = obj.getScene().getRoot().getSize()
     if (mx < 0) mx = 0

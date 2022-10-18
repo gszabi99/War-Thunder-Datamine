@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getHasCompassObservable } = require("hudCompassState")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
@@ -23,7 +16,7 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
   function updatePosHudMultiplayerScore() {
     let multiplayerScoreObj = scene.findObject("hud_multiplayer_score")
-    if (checkObj(multiplayerScoreObj)) {
+    if (::check_obj(multiplayerScoreObj)) {
       multiplayerScoreObj.setValue(stashBhvValueConfig([{
         watch = getHasCompassObservable()
         updateFunc = @(obj, value) obj.top = value ? "0.065@scrn_tgt" : "0.015@scrn_tgt"
@@ -31,17 +24,17 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
     }
   }
 
-  function onEventControlsPresetChanged(_p) {
+  function onEventControlsPresetChanged(p) {
     isReinitDelayed = true
   }
-  function onEventControlsChangedShortcuts(_p) {
+  function onEventControlsChangedShortcuts(p) {
     isReinitDelayed = true
   }
-  function onEventControlsChangedAxes(_p) {
+  function onEventControlsChangedAxes(p) {
     isReinitDelayed = true
   }
 
-  function onEventShowHud(_p) {
+  function onEventShowHud(p) {
     if (isReinitDelayed)
     {
       actionBar?.reinit(true)

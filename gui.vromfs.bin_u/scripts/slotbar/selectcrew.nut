@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -53,32 +45,32 @@ let function getObjPosInSafeArea(obj) {
 
   function initScreen()
   {
-    if (!unit || !unit.isUsable() || isUnitInSlotbar() || !checkObj(unitObj))
+    if (!unit || !unit.isUsable() || isUnitInSlotbar() || !::checkObj(unitObj))
     {
-      this.goBack()
+      goBack()
       return
     }
 
     country = ::getUnitCountry(unit)
     checkAvailableCrew()
 
-    this.guiScene.setUpdatesEnabled(false, false)
+    guiScene.setUpdatesEnabled(false, false)
 
     let tdObj = unitObj.getParent()
     let tdPos = getObjPosInSafeArea(tdObj)
 
     ::gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
 
-    let tdClone = tdObj.getClone(this.scene, this)
+    let tdClone = tdObj.getClone(scene, this)
     tdClone.pos = tdPos[0] + ", " + tdPos[1]
     tdClone["class"] = cellClass
     tdClone.position = "root"
     ::fill_unit_item_timers(tdClone.findObject(unit.name), unit)
 
-    if (!hasFeature("GlobalShowBattleRating") && hasFeature("SlotbarShowBattleRating"))
+    if (!::has_feature("GlobalShowBattleRating") && ::has_feature("SlotbarShowBattleRating"))
     {
       let rankObj = tdClone.findObject("rank_text")
-      if (checkObj(rankObj))
+      if (::checkObj(rankObj))
       {
         let unitRankText = ::get_unit_rank_text(unit, null, true, getCurrentEdiff())
         rankObj.setValue(unitRankText)
@@ -86,15 +78,15 @@ let function getObjPosInSafeArea(obj) {
     }
 
     let bDiv = tdClone.findObject("air_item_bottom_buttons")
-    if (checkObj(bDiv))
-      this.guiScene.destroyElement(bDiv)
+    if (::checkObj(bDiv))
+      guiScene.destroyElement(bDiv)
 
     let markerObj = tdClone.findObject("unlockMarker")
     if (markerObj?.isValid())
-      this.guiScene.destroyElement(markerObj)
+      guiScene.destroyElement(markerObj)
 
     let crew = ::get_crews_list_by_country(country)?[takeCrewIdInCountry]
-    this.createSlotbar(
+    createSlotbar(
       {
         crewId = crew?.id
         shouldSelectCrewRecruit =  takeCrewIdInCountry > 0 && !crew
@@ -110,8 +102,8 @@ let function getObjPosInSafeArea(obj) {
         needFullSlotBlock = true
 
         applySlotSelectionOverride = @(_, __) onChangeUnit()
-        onSlotDblClick = Callback(onApplyCrew, this)
-        onSlotActivate = Callback(onApplyCrew, this)
+        onSlotDblClick = ::Callback(onApplyCrew, this)
+        onSlotActivate = ::Callback(onApplyCrew, this)
       },
       "take-aircraft-slotbar")
 
@@ -119,12 +111,12 @@ let function getObjPosInSafeArea(obj) {
 
     let legendObj = fillLegendData()
 
-    ::move_mouse_on_child_by_value(this.slotbarWeak && this.slotbarWeak.getCurrentAirsTable())
+    ::move_mouse_on_child_by_value(slotbarWeak && slotbarWeak.getCurrentAirsTable())
 
-    let textObj = this.scene.findObject("take-aircraft-text")
+    let textObj = scene.findObject("take-aircraft-text")
     textObj.setValue(messageText)
 
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(true, true)
 
     updateObjectsPositions(tdClone, legendObj, textObj)
     checkUseTutorial()
@@ -136,10 +128,10 @@ let function getObjPosInSafeArea(obj) {
 
   function updateObjectsPositions(tdClone, legendObj, headerObj)
   {
-    let rootSize = this.guiScene.getRoot().getSize()
+    let rootSize = guiScene.getRoot().getSize()
     let sh = rootSize[1]
-    let bh = ::g_dagui_utils.toPixels(this.guiScene, "@bh")
-    let interval = ::g_dagui_utils.toPixels(this.guiScene, "@itemsIntervalBig")
+    let bh = ::g_dagui_utils.toPixels(guiScene, "@bh")
+    let interval = ::g_dagui_utils.toPixels(guiScene, "@itemsIntervalBig")
 
     //count position by visual card obj. real td is higher and wider than a card.
     let visTdObj = tdClone.childrenCount() ? tdClone.getChild(0) : tdClone
@@ -151,7 +143,7 @@ let function getObjPosInSafeArea(obj) {
     local bottom = tdPos[1] + tdSize[1]
 
     //place slotbar
-    let sbObj = this.scene.findObject("slotbar_with_buttons")
+    let sbObj = scene.findObject("slotbar_with_buttons")
     let sbSize = sbObj.getSize()
     let isSlotbarOnTop = bottom + interval + sbSize[1] > sh - bh
     local sbPosY = 0
@@ -167,7 +159,7 @@ let function getObjPosInSafeArea(obj) {
     sbObj.top = sbPosY
 
     //place legend
-    if (checkObj(legendObj))
+    if (::checkObj(legendObj))
     {
       let legendSize = legendObj.getSize()
 
@@ -197,7 +189,7 @@ let function getObjPosInSafeArea(obj) {
       if (isNearTd) //else centered.
       {
         let sw = rootSize[0]
-        let bw = ::g_dagui_utils.toPixels(this.guiScene, "@bw")
+        let bw = ::g_dagui_utils.toPixels(guiScene, "@bw")
         local legendPosX = tdPos[0] + tdSize[0] + interval
         if (legendPosX + legendSize[0] > sw - bw)
           legendPosX = tdPos[0] - interval - legendSize[0]
@@ -244,23 +236,23 @@ let function getObjPosInSafeArea(obj) {
     return isSelectByGroups
       ? ::Cost()
       : ::CrewTakeUnitProcess.getProcessCost(
-          this.getCurCrew(),
+          getCurCrew(),
           unit
         )
   }
 
   function onChangeUnit()
   {
-    takeCrewIdInCountry = this.getCurCrew()?.idInCountry ?? ::get_crew_count(country)
+    takeCrewIdInCountry = getCurCrew()?.idInCountry ?? ::get_crew_count(country)
     updateButtons()
   }
 
   function updateButtons()
   {
-    placePriceTextToButton(this.scene, "btn_set_air", loc("mainmenu/btnTakeAircraft"), getTakeAirCost())
+    placePriceTextToButton(scene, "btn_set_air", ::loc("mainmenu/btnTakeAircraft"), getTakeAirCost())
   }
 
-  function onEventOnlineShopPurchaseSuccessful(_p)
+  function onEventOnlineShopPurchaseSuccessful(p)
   {
     updateButtons()
   }
@@ -281,11 +273,11 @@ let function getObjPosInSafeArea(obj) {
     restrictCancel = getTakeAirCost() < playerBalance
     this.showSceneBtn("btn_set_cancel", !restrictCancel)
 
-    this.guiScene.applyPendingChanges(false)
+    guiScene.applyPendingChanges(false)
     let steps = [
       {
-        obj = this.getSlotbar() && this.getSlotbar().getBoxOfUnits()
-        text = loc("help/takeAircraft", {unitName = ::getUnitName(unit)})
+        obj = getSlotbar() && getSlotbar().getBoxOfUnits()
+        text = ::loc("help/takeAircraft", {unitName = ::getUnitName(unit)})
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
@@ -293,7 +285,7 @@ let function getObjPosInSafeArea(obj) {
       },
       {
         obj = "btn_set_air"
-        text = loc("help/pressOnReady")
+        text = ::loc("help/pressOnReady")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
@@ -305,12 +297,12 @@ let function getObjPosInSafeArea(obj) {
 
   function onApply()
   {
-    onApplyCrew(this.getCurCrew())
+    onApplyCrew(getCurCrew())
   }
 
   function onApplyCrew(crew)
   {
-    let onFinishCb = Callback(onTakeProcessFinish, this)
+    let onFinishCb = ::Callback(onTakeProcessFinish, this)
     if (isSelectByGroups)
       slotbarPresets.setUnit({
         crew = crew
@@ -330,24 +322,24 @@ let function getObjPosInSafeArea(obj) {
     {
       ::add_big_query_record("choosed_crew_for_new_unit",
         ::save_to_json({ unit = unit.name
-          crew = this.getCurCrew()?.id }))
+          crew = getCurCrew()?.id }))
     }
     if (afterSuccessFunc)
       afterSuccessFunc()
-    this.goBack()
+    goBack()
   }
 
-  function onEventSetInQueue(_params)
+  function onEventSetInQueue(params)
   {
-    let reqMoneyMsg = this.scene.findObject("need_money")
-    if (checkObj(reqMoneyMsg))
-      this.guiScene.destroyObject(reqMoneyMsg)
+    let reqMoneyMsg = scene.findObject("need_money")
+    if (::checkObj(reqMoneyMsg))
+      guiScene.destroyObject(reqMoneyMsg)
 
-    let noMoneyMsg = this.scene.findObject("no_money")
-    if (checkObj(noMoneyMsg))
-      this.guiScene.destroyObject(noMoneyMsg)
+    let noMoneyMsg = scene.findObject("no_money")
+    if (::checkObj(noMoneyMsg))
+      guiScene.destroyObject(noMoneyMsg)
 
-    this.goBack()
+    goBack()
   }
 
   function onTakeCancel()
@@ -355,7 +347,7 @@ let function getObjPosInSafeArea(obj) {
     if (restrictCancel)
       return
 
-    this.goBack()
+    goBack()
   }
 
   function addLegendData(result, specType)
@@ -368,17 +360,17 @@ let function getObjPosInSafeArea(obj) {
       id = specType.specName,
       specType = specType,
       imagePath = specType.trainedIcon,
-      locId = loc("crew/trained") + loc("ui/colon") + specType.getName()
+      locId = ::loc("crew/trained") + ::loc("ui/colon") + specType.getName()
     })
   }
 
   function fillLegendData()
   {
-    if (!hasFeature("CrewInfo"))
+    if (!::has_feature("CrewInfo"))
       return null
 
     let legendData = []
-    foreach (_idx, crew in ::get_crews_list_by_country(country))
+    foreach (idx, crew in ::get_crews_list_by_country(country))
     {
       let specType = ::g_crew_spec_type.getTypeByCode(::g_crew_spec_type.getTrainedSpecCode(crew, unit))
       addLegendData(legendData, specType)
@@ -394,17 +386,17 @@ let function getObjPosInSafeArea(obj) {
     })
 
     let view = {
-      header = loc("mainmenu/legend") + loc("ui/colon") + colorize("userlogColoredText", ::getUnitName(unit, false))
+      header = ::loc("mainmenu/legend") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::getUnitName(unit, false))
       haveLegend = legendData.len() > 0
       legendData = legendData
     }
 
-    let obj = this.scene.findObject("qualification_legend")
-    if (!checkObj(obj))
+    let obj = scene.findObject("qualification_legend")
+    if (!::checkObj(obj))
       return null
 
     let blk = ::handyman.renderCached("%gui/slotbar/legend_block", view)
-    this.guiScene.replaceContentFromText(obj, blk, blk.len(), this)
+    guiScene.replaceContentFromText(obj, blk, blk.len(), this)
 
     return obj
   }
@@ -415,7 +407,7 @@ let function getObjPosInSafeArea(obj) {
       afterCloseFunc()
   }
 
-  function onUnitMainFunc(_obj) {}
+  function onUnitMainFunc(obj) {}
   function onUnitMainFuncBtnUnHover() {}
   onUnitMarkerClick = @() null
 

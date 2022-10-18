@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 
@@ -12,12 +7,14 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
   static typeIcon = "#ui/gameuiskin#item_type_key.svg"
   static descReceipesListHeaderPrefix = "key/requires/"
 
-  function getLongDescriptionMarkup(params = null) {
+  function getLongDescriptionMarkup(params = null)
+  {
     return base.getLongDescriptionMarkup()
-      + ExchangeRecipes.getRequirementsMarkup(this.getRelatedRecipes(), this, params)
+      + ExchangeRecipes.getRequirementsMarkup(getRelatedRecipes(), this, params)
   }
 
-  function canConsume() {
+  function canConsume()
+  {
     return false
   }
 }

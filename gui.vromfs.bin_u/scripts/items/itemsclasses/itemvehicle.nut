@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.ItemVehicle <- class extends ItemCouponBase {
@@ -14,11 +9,11 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
   function addResources() {
     base.addResources()
-    this.unit = ::getAircraftByName(this.metaBlk?.unit)
+    unit = ::getAircraftByName(metaBlk?.unit)
   }
 
-  getContentIconData = @() { contentIcon = ::image_for_air(this.unit?.name ?? ""), contentType = "unit" }
-  canConsume = @() this.isInventoryItem && !(this.unit?.isBought() ?? true)
-  canPreview = @() this.unit ? this.unit.canPreview() : false
-  doPreview  = @() this.unit && this.unit.doPreview()
+  getContentIconData = @() { contentIcon = ::image_for_air(unit?.name ?? ""), contentType = "unit" }
+  canConsume = @() isInventoryItem && !(unit?.isBought() ?? true)
+  canPreview = @() unit ? unit.canPreview() : false
+  doPreview  = @() unit && unit.doPreview()
 }

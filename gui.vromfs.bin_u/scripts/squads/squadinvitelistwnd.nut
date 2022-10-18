@@ -1,13 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { ceil } = require("math")
-
 ::gui_handlers.squadInviteListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
@@ -38,7 +29,7 @@ let { ceil } = require("math")
     if (!canOpen())
       return null
 
-    if (!checkObj(alignObj))
+    if (!::checkObj(alignObj))
       return null
 
     let params = {
@@ -50,7 +41,7 @@ let { ceil } = require("math")
 
   static function canOpen()
   {
-    return hasFeature("Squad") && hasFeature("SquadWidget")
+    return ::has_feature("Squad") && ::has_feature("SquadWidget")
       && ::g_squad_manager.isInSquad()
       && (::g_squad_manager.canChangeSquadSize(false) || ::g_squad_manager.getInvitedPlayers().len() > 0
           || ::g_squad_manager.getApplicationsToSquad().len() > 0)
@@ -58,7 +49,7 @@ let { ceil } = require("math")
 
   function initScreen()
   {
-    optionsObj = this.scene.findObject("options_block")
+    optionsObj = scene.findObject("options_block")
 
     updateSquadSizeOption()
     updateReceiveApplicationsOption()
@@ -80,7 +71,7 @@ let { ceil } = require("math")
   function updateList(configPlayersList)
   {
     let playersList = configPlayersList.playersList()
-    let listObj = this.scene.findObject(configPlayersList.listObjId)
+    let listObj = scene.findObject(configPlayersList.listObjId)
     let viewData = getMembersViewData(playersList)
     let viewBlk = ::handyman.renderCached(inviteListTplName, viewData)
     let isFocused = listObj.isFocused()
@@ -89,13 +80,13 @@ let { ceil } = require("math")
     if ((selectedIdx >= 0) && (selectedIdx < listObj.childrenCount()) && isFocused)
       selectedObjId = listObj.getChild(selectedIdx).id
 
-    this.guiScene.replaceContentFromText(listObj, viewBlk, viewBlk.len(), this)
+    guiScene.replaceContentFromText(listObj, viewBlk, viewBlk.len(), this)
     local i = 0
     foreach(memberData in playersList)
     {
       let inviteObjId = "squad_invite_" + memberData.uid
       let inviteObj = listObj.findObject(inviteObjId)
-      if (checkObj(inviteObj))
+      if (::checkObj(inviteObj))
       {
         if (::u.isEqual(selectedObjId, inviteObjId) && isFocused)
           selectedIdx = i
@@ -106,7 +97,7 @@ let { ceil } = require("math")
     let countPlayers = listObj.childrenCount()
     if (isFocused && countPlayers > 0)
       listObj.setValue(clamp(selectedIdx, 0, countPlayers - 1))
-    this.scene.findObject(configPlayersList.headerObjId).show(playersList.len() > 0)
+    scene.findObject(configPlayersList.headerObjId).show(playersList.len() > 0)
     updateSize(listObj, playersList)
     updatePosition()
   }
@@ -134,13 +125,13 @@ let { ceil } = require("math")
       return
 
     let sizes = ::u.map(::g_squad_manager.squadSizesList,
-      @(s) s.value + loc("ui/comma") + loc("squadSize/" + s.name))
+      @(s) s.value + ::loc("ui/comma") + ::loc("squadSize/" + s.name))
     let curValue = ::g_squad_manager.getMaxSquadSize()
     let curIdx = ::g_squad_manager.squadSizesList.findindex(@(s) s.value == curValue) ?? 0
 
-    let optionObj = this.scene.findObject("squad_size_option")
+    let optionObj = scene.findObject("squad_size_option")
     let markup = ::create_option_combobox("", sizes, curIdx, null, false)
-    this.guiScene.replaceContentFromText(optionObj, markup, markup.len(), this)
+    guiScene.replaceContentFromText(optionObj, markup, markup.len(), this)
     optionObj.setValue(curIdx)
     optionObj.enable(::g_squad_manager.canChangeSquadSize())
   }
@@ -158,12 +149,12 @@ let { ceil } = require("math")
 
   function updateSize(listObj, playersList)
   {
-    if (!checkObj(listObj))
+    if (!::checkObj(listObj))
       return
 
     let total = playersList.len()
-    let rows = total && ceil(total.tofloat() / MAX_COLUMNS.tofloat())
-    let columns = rows && ceil(total.tofloat() / rows.tofloat())
+    let rows = total && ::ceil(total.tofloat() / MAX_COLUMNS.tofloat())
+    let columns = rows && ::ceil(total.tofloat() / rows.tofloat())
 
     let sizeFormat = "%d@mIco"
     listObj.width = format(sizeFormat, columns)
@@ -172,14 +163,14 @@ let { ceil } = require("math")
 
   function updatePosition()
   {
-    let nestObj = this.scene.findObject(NEST_OBJ_ID)
-    if (checkObj(nestObj))
+    let nestObj = scene.findObject(NEST_OBJ_ID)
+    if (::checkObj(nestObj))
       align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, nestObj)
   }
 
   function checkActiveForDelayedAction()
   {
-    return this.isSceneActive()
+    return isSceneActive()
   }
 
   function onMemberClicked(obj)
@@ -204,7 +195,7 @@ let { ceil } = require("math")
 
     ::g_squad_manager.enableApplications(value)
     if (!::g_squad_manager.isApplicationsEnabled() && ::g_squad_manager.getApplicationsToSquad().len() > 0)
-      this.msgBox("denyAllMembershipApplications", loc("squad/ConfirmDenyApplications"),
+      this.msgBox("denyAllMembershipApplications", ::loc("squad/ConfirmDenyApplications"),
         [
           ["yes", function() { ::g_squad_manager.denyAllAplication() }],
           ["no",  function() {} ],
@@ -212,18 +203,18 @@ let { ceil } = require("math")
   }
 
   /**event handlers**/
-  function onEventSquadInvitesChanged(_params)
+  function onEventSquadInvitesChanged(params)
   {
-    this.doWhenActiveOnce("updateInviteesList")
+    doWhenActiveOnce("updateInviteesList")
   }
 
-  function onEventSquadApplicationsChanged(_params)
+  function onEventSquadApplicationsChanged(params)
   {
-    this.doWhenActiveOnce("updateApplicationsList")
+    doWhenActiveOnce("updateApplicationsList")
   }
 
-  function onEventSquadPropertiesChanged(_params)
+  function onEventSquadPropertiesChanged(params)
   {
-    this.doWhenActiveOnce("updateReceiveApplicationsOption")
+    doWhenActiveOnce("updateReceiveApplicationsOption")
   }
 }

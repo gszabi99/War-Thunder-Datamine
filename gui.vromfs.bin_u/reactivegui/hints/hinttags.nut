@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let shortcuts = require("shortcuts.nut")
 let colors = require("%rGui/style/colors.nut")
 

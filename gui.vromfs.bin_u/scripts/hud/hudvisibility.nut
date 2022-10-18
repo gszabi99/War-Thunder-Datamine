@@ -1,9 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let isHudVisible = Watched(::is_hud_visible())
+let isHudVisible = ::Watched(::is_hud_visible())
 
 // Called from client
 ::on_show_hud <- function on_show_hud(show = true)

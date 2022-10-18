@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -20,7 +14,7 @@ enum mislistTabsOrder {
   types = []
 }
 
-::g_mislist_type._getMissionConfig <- function _getMissionConfig(id, isHeader = false, isCampaign = false, isUnlocked = true)
+g_mislist_type._getMissionConfig <- function _getMissionConfig(id, isHeader = false, isCampaign = false, isUnlocked = true)
 {
   return {
     id = id
@@ -35,20 +29,20 @@ enum mislistTabsOrder {
   }
 }
 
-::g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaignName, missionBlkArray)
+g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaignName, missionBlkArray)
 {
   let res = []
   let gm = ::get_game_mode()
-  let checkFunc = getTblValue("misBlkCheckFunc", this, function(_misBlk) { return true })
+  let checkFunc = ::getTblValue("misBlkCheckFunc", this, function(misBlk) { return true })
 
   foreach(misBlk in missionBlkArray)
   {
     let missionId = misBlk?.name ?? ""
     if (!checkFunc(misBlk))
       continue
-    if (!hasFeature("Tanks") && ::is_mission_for_unittype(misBlk, ES_UNIT_TYPE_TANK))
+    if (!::has_feature("Tanks") && ::is_mission_for_unittype(misBlk, ::ES_UNIT_TYPE_TANK))
       continue
-    if ((gm == GM_SINGLE_MISSION) && ::g_squad_manager.isNotAloneOnline())
+    if ((gm == ::GM_SINGLE_MISSION) && ::g_squad_manager.isNotAloneOnline())
       if (!misBlk.getBool("gt_cooperative", false) || ::is_user_mission(misBlk))
         continue
     if (misBlk?.hideInSingleMissionList)
@@ -56,10 +50,10 @@ enum mislistTabsOrder {
     let unlock = misBlk?.chapter? ::g_unlocks.getUnlockById(misBlk.chapter + "/" + missionId) : null
     if (unlock && !::is_unlock_visible(unlock))
       continue
-    if (misBlk?.reqFeature && !hasFeature(misBlk.reqFeature))
+    if (misBlk?.reqFeature && !::has_feature(misBlk.reqFeature))
       continue
 
-    let misDescr = this.getMissionConfig(missionId)
+    let misDescr = getMissionConfig(missionId)
     misDescr.blk <- misBlk
     misDescr.chapter <- campaignName
     misDescr.campaign <- misBlk.getStr("campaign","")
@@ -99,13 +93,13 @@ enum mislistTabsOrder {
       }
     }
 
-    if (gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION || gm == GM_TRAINING)
+    if (gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION || gm == ::GM_TRAINING)
     {
       let missionFullName = campaignName + "/" + (misDescr?.id ?? "")
       misDescr.progress <- ::get_mission_progress(missionFullName)
       if (!::is_user_mission(misBlk))
         misDescr.isUnlocked = misDescr?.progress != 4
-      let misLOProgress = ::get_mission_local_online_progress(missionFullName)
+      let misLOProgress = get_mission_local_online_progress(missionFullName)
       misDescr.singleProgress <- misLOProgress?.singleDiff
       misDescr.onlineProgress <- misLOProgress?.onlineDiff
 
@@ -120,13 +114,13 @@ enum mislistTabsOrder {
   return res
 }
 
-::g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, callback, customChapterId = null, customChapters = null)
+g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, callback, customChapterId = null, customChapters = null)
 {
   let gm = ::get_game_mode()
   if (customChapterId)
   {
     let missionBlkArray = ::get_meta_missions_info_chapter(gm, customChapterId)
-    let misList = this.getMissionsByBlkArray(customChapterId, missionBlkArray)
+    let misList = getMissionsByBlkArray(customChapterId, missionBlkArray)
     callback(misList)
     return
   }
@@ -143,13 +137,13 @@ enum mislistTabsOrder {
   {
     let mbc = ::get_meta_missions_info_by_campaigns(gm)
     foreach(c in mbc)
-      if (gm!=GM_CAMPAIGN || ::has_entitlement(c.name) || hasFeature(c.name))
+      if (gm!=::GM_CAMPAIGN || ::has_entitlement(c.name) || ::has_feature(c.name))
         campaigns.append({ name = c.name, chapters = c.chapters})
   }
 
   foreach(camp in campaigns)
   {
-    let campName = getTblValue("name", camp)
+    let campName = ::getTblValue("name", camp)
     let campMissions = []
     local lastMission = null
 
@@ -159,26 +153,26 @@ enum mislistTabsOrder {
         continue;
       let chapterName = chapterMissions[0].getStr("chapter",::get_cur_game_mode_name())
 
-      let isChapterSpecial = isInArray(chapterName, [ "hidden", "test" ])
+      let isChapterSpecial = ::isInArray(chapterName, [ "hidden", "test" ])
       local canShowChapter = true
       if (!::is_debug_mode_enabled && isChapterSpecial)
       {
         let featureName = "MissionsChapter" + ::g_string.toUpper(chapterName, 1)
-        canShowChapter = ::is_dev_version || hasFeature(featureName)
+        canShowChapter = ::is_dev_version || ::has_feature(featureName)
       }
       if (!canShowChapter)
         continue
 
-      let missions = this.getMissionsByBlkArray(chapterName, chapterMissions)
+      let missions = getMissionsByBlkArray(chapterName, chapterMissions)
       if (!missions.len())
         continue
 
-      if (this.showChapterHeaders)
+      if (showChapterHeaders)
       {
         local isChapterUnlocked = true
-        if (lastMission && gm == GM_CAMPAIGN)
+        if (lastMission && gm == ::GM_CAMPAIGN)
           isChapterUnlocked = isChapterSpecial || ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
-        let chapterHeader = this.getMissionConfig(chapterName, true, false, isChapterUnlocked)
+        let chapterHeader = getMissionConfig(chapterName, true, false, isChapterUnlocked)
         campMissions.append(chapterHeader)
       }
       campMissions.extend(missions)
@@ -189,25 +183,25 @@ enum mislistTabsOrder {
     if (!campMissions.len())
       continue
 
-    if (campName && this.showCampaignHeaders)
+    if (campName && showCampaignHeaders)
     {
-      let campHeader = this.getMissionConfig(campName, true, true)
+      let campHeader = getMissionConfig(campName, true, true)
       res.append(campHeader)
     }
     res.extend(campMissions)
 
     //add victory video for campaigns
-    if (lastMission && gm == GM_CAMPAIGN
+    if (lastMission && gm == ::GM_CAMPAIGN
         && (campName == "usa_pacific_41_43" || campName == "jpn_pacific_41_43"))
     {
       let isVideoUnlocked = ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
-      res.append(this.getMissionConfig("victory", true, false, isVideoUnlocked))
+      res.append(getMissionConfig("victory", true, false, isVideoUnlocked))
     }
   }
   callback(res)
 }
 
-::g_mislist_type._getMissionsListByNames <- function _getMissionsListByNames(namesList)
+g_mislist_type._getMissionsListByNames <- function _getMissionsListByNames(namesList)
 {
   let blkList = []
   foreach(name in namesList)
@@ -216,33 +210,33 @@ enum mislistTabsOrder {
     if (misBlk)
       blkList.append(misBlk)
   }
-  return this.getMissionsByBlkArray("", blkList)
+  return getMissionsByBlkArray("", blkList)
 }
 
-::g_mislist_type._getCurMission <- function _getCurMission()
+g_mislist_type._getCurMission <- function _getCurMission()
 {
   if (::SessionLobby.isInRoom())
   {
     let misName = ::SessionLobby.getMissionName(true)
     if (misName)
-      return this.getMissionConfig(misName)
+      return getMissionConfig(misName)
   }
   let lastPlayed = ::get_last_played("", ::get_game_mode())
   if (!lastPlayed)
     return null
 
-  let res = this.getMissionConfig(lastPlayed[1])
+  let res = getMissionConfig(lastPlayed[1])
   res.chapter = lastPlayed[0]
   return res
 }
 
-::g_mislist_type._getMissionNameText <- function _getMissionNameText(mission)
+g_mislist_type._getMissionNameText <- function _getMissionNameText(mission)
 {
   if (mission?.isHeader)
-    return loc((mission?.isCampaign ? "campaigns/" : "chapters/") + (mission?.id ?? ""))
+    return ::loc((mission?.isCampaign ? "campaigns/" : "chapters/") + (mission?.id ?? ""))
   if ("blk" in mission)
     return ::get_combine_loc_name_mission(mission.blk)
-  return loc("missions/" + (mission?.id ?? ""))
+  return ::loc("missions/" + (mission?.id ?? ""))
 }
 
 ::g_mislist_type.template <- {
@@ -257,23 +251,23 @@ enum mislistTabsOrder {
   showChapterHeaders  = true
 
   getMissionConfig = ::g_mislist_type._getMissionConfig
-  requestMissionsList = function(_isShowCampaigns, callback = null, _customChapterId = null, _customChapters = null) { if (callback) callback([]) }
-  getMissionsListByNames = function(_namesList) { return [] }
-  canJoin = function(_gm) { return true }
+  requestMissionsList = function(isShowCampaigns, callback = null, customChapterId = null, customChapters = null) { if (callback) callback([]) }
+  getMissionsListByNames = function(namesList) { return [] }
+  canJoin = function(gm) { return true }
   canCreate = function(gm) { return canJoin(gm) }
 
   getTabName = function() { return "" }
 
   addToList = function() {}
-  canModify = function(_mission) { return false }
-  modifyMission = function(_mission) {}
-  canDelete = function(_mission) { return false }
-  deleteMission = function(_mission) {}
+  canModify = function(mission) { return false }
+  modifyMission = function(mission) {}
+  canDelete = function(mission) { return false }
+  deleteMission = function(mission) {}
 
   canMarkFavorites = function()
   {
     let gm = ::get_game_mode()
-    return gm == GM_DOMINATION || gm == GM_SKIRMISH
+    return gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH
   }
 
   isMissionFavorite = function(mission) { return ::is_mission_favorite(mission.id) }
@@ -291,9 +285,9 @@ enum mislistTabsOrder {
       return null
 
     return {
-      link = loc(infoLinkLocId)
-      text = loc(infoLinkTextLocId)
-      tooltip = loc(infoLinkTooltipLocId, "")
+      link = ::loc(infoLinkLocId)
+      text = ::loc(infoLinkTextLocId)
+      tooltip = ::loc(infoLinkTooltipLocId, "")
     }
   }
 
@@ -309,7 +303,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
   BASE = {
     tabsOrder = mislistTabsOrder.BASE
     canBeEmpty = false
-    getTabName = function() { return loc("mainmenu/btnMissions") }
+    getTabName = function() { return ::loc("mainmenu/btnMissions") }
 
     requestMissionsList = ::g_mislist_type._getMissionsList
     getMissionsByBlkArray = ::g_mislist_type._getMissionsByBlkArray
@@ -324,17 +318,17 @@ enums.addTypesByGlobalName("g_mislist_type", {
   UGM = {
     tabsOrder = mislistTabsOrder.UGM
     canRefreshList = true
-    getTabName = function() { return loc("mainmenu/btnUserMission") }
+    getTabName = function() { return ::loc("mainmenu/btnUserMission") }
     infoLinkLocId = "url/live/user_missions"
     infoLinkTextLocId = "missions/user_missions/getOnline"
     infoLinkTooltipLocId = "missions/user_missions/about"
 
     canJoin = function(gm)
     {
-      if (gm == GM_SINGLE_MISSION)
-        return hasFeature("UserMissions")
-      if (gm == GM_SKIRMISH)
-        return hasFeature("UserMissionsSkirmishLocal")
+      if (gm == ::GM_SINGLE_MISSION)
+        return ::has_feature("UserMissions")
+      if (gm == ::GM_SKIRMISH)
+        return ::has_feature("UserMissionsSkirmishLocal")
       return false
     }
 
@@ -352,28 +346,28 @@ enums.addTypesByGlobalName("g_mislist_type", {
   URL = {
     tabsOrder = mislistTabsOrder.URL
     canAddToList = true
-    getTabName = function() { return loc("urlMissions/header") }
+    getTabName = function() { return ::loc("urlMissions/header") }
     infoLinkLocId = "url/live/user_missions"
     infoLinkTextLocId = "missions/user_missions/getOnline"
     infoLinkTooltipLocId = "missions/user_missions/about"
 
     canJoin = function(gm)
     {
-      return gm == GM_SKIRMISH && hasFeature("UserMissionsSkirmishByUrl")
+      return gm == ::GM_SKIRMISH && ::has_feature("UserMissionsSkirmishByUrl")
     }
 
     canCreate = function(gm)
     {
-      return gm == GM_SKIRMISH && hasFeature("UserMissionsSkirmishByUrlCreate")
+      return gm == ::GM_SKIRMISH && ::has_feature("UserMissionsSkirmishByUrlCreate")
     }
 
-    requestMissionsList = function(_isShowCampaigns, callback, ...) //standard parameters doesn't work for urlMissions
+    requestMissionsList = function(isShowCampaigns, callback, ...) //standard parameters doesn't work for urlMissions
     {
       let list = ::g_url_missions.getList()
       let res = []
       foreach(urlMission in list)
       {
-        let mission = this.getMissionConfig(urlMission.name)
+        let mission = getMissionConfig(urlMission.name)
         mission.urlMission <- urlMission
         mission.blk <- urlMission.getMetaInfo()
         res.append(mission)
@@ -386,20 +380,20 @@ enums.addTypesByGlobalName("g_mislist_type", {
       ::g_url_missions.openCreateUrlMissionWnd()
     }
 
-    canModify = function(_mission) { return true }
+    canModify = function(mission) { return true }
 
     modifyMission = function(mission)
     {
-      let urlMission = getTblValue("urlMission", mission)
+      let urlMission = ::getTblValue("urlMission", mission)
       if (urlMission)
         ::g_url_missions.openModifyUrlMissionWnd(urlMission)
     }
 
-    canDelete = function(_mission) { return true }
+    canDelete = function(mission) { return true }
 
     deleteMission = function(mission)
     {
-      let urlMission = getTblValue("urlMission", mission)
+      let urlMission = ::getTblValue("urlMission", mission)
       if (urlMission)
         ::g_url_missions.openDeleteUrlMissionConfirmationWnd(urlMission)
     }
@@ -407,14 +401,14 @@ enums.addTypesByGlobalName("g_mislist_type", {
     canMarkFavorites = function() { return true }
     isMissionFavorite = function(mission)
     {
-      let urlMission = getTblValue("urlMission", mission)
+      let urlMission = ::getTblValue("urlMission", mission)
       if (urlMission)
         return urlMission.isFavorite
       return false
     }
     toggleFavorite = function(mission)
     {
-      ::g_url_missions.toggleFavorite(getTblValue("urlMission", mission))
+      ::g_url_missions.toggleFavorite(::getTblValue("urlMission", mission))
     }
 
     getCurMission = function()
@@ -424,7 +418,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
         let url = ::SessionLobby.getMissionUrl()
         let urlMission = ::g_url_missions.findMissionByUrl(url)
         if (urlMission)
-          return this.getMissionConfig(urlMission.name)
+          return getMissionConfig(urlMission.name)
       }
 
       let lastPlayed = ::get_last_played("url", ::get_game_mode())
@@ -433,7 +427,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
 
       let urlMission = ::g_url_missions.findMissionByUrl(lastPlayed[1])
       if (urlMission)
-        return this.getMissionConfig(urlMission.name)
+        return getMissionConfig(urlMission.name)
       return null
     }
 
@@ -447,11 +441,13 @@ enums.addTypesByGlobalName("g_mislist_type", {
   return 0
 })
 
-::g_mislist_type.getTypeByName <- function getTypeByName(typeName) {
-  let res = getTblValue(typeName, ::g_mislist_type)
-  return ::u.isTable(res) ? res : this.BASE
+g_mislist_type.getTypeByName <- function getTypeByName(typeName)
+{
+  let res = ::getTblValue(typeName, ::g_mislist_type)
+  return ::u.isTable(res) ? res : BASE
 }
 
-::g_mislist_type.isUrlMission <- function isUrlMission(mission) {
+g_mislist_type.isUrlMission <- function isUrlMission(mission)
+{
   return "urlMission" in mission
 }

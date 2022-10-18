@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 ::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {})
 {
@@ -29,20 +21,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen()
   {
-    let listObj = this.scene.findObject("items_list")
-    if (!checkObj(listObj))
-      return this.goBack()
+    let listObj = scene.findObject("items_list")
+    if (!::checkObj(listObj))
+      return goBack()
 
-    infoHandler = itemInfoHandler(this.scene.findObject("item_info"))
+    infoHandler = itemInfoHandler(scene.findObject("item_info"))
 
-    let titleObj = this.scene.findObject("title")
-    if (checkObj(titleObj))
-      titleObj.setValue(loc(tittleLocId))
+    let titleObj = scene.findObject("title")
+    if (::check_obj(titleObj))
+      titleObj.setValue(::loc(tittleLocId))
 
     fillList(listObj)
 
     if (rewardsArray.len() > 4)
-      listObj.width = (listObj.getSize()[0] + to_pixels("1@scrollBarSize")).tostring()
+      listObj.width = (listObj.getSize()[0] + ::to_pixels("1@scrollBarSize")).tostring()
 
     listObj.setValue(rewardsArray.len() > 0 ? 0 : -1)
     ::move_mouse_on_child_by_value(listObj)
@@ -51,13 +43,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function fillList(listObj)
   {
     let data = getItemsImages()
-    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
   function getItemsImages()
   {
     local data = ""
-    foreach(_idx, reward in rewardsArray)
+    foreach(idx, reward in rewardsArray)
       data += ::trophyReward.getImageByConfig(reward, false, "trophy_reward_place", true)
 
     return data
@@ -81,13 +73,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
     }
     let trophyDesc = ::trophyReward.getFullDescriptonView(reward_config)
-    this.guiScene.replaceContentFromText(prizeInfo, trophyDesc, trophyDesc.len(), this)
+    guiScene.replaceContentFromText(prizeInfo, trophyDesc, trophyDesc.len(), this)
   }
 
-  function onEventItemsShopUpdate(_p)
+  function onEventItemsShopUpdate(p)
   {
-    let listObj = this.scene.findObject("items_list")
-    if (!checkObj(listObj))
+    let listObj = scene.findObject("items_list")
+    if (!::check_obj(listObj))
       return
 
     fillList(listObj)

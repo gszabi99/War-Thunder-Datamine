@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 /*
  API:
  static create(config)
@@ -19,9 +13,8 @@ from "%scripts/dagui_library.nut" import *
 */
 
 
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.MRoomPlayersListWidget <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.MRoomPlayersListWidget <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/playersList"
@@ -43,9 +36,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   static function create(config)
   {
-    if (!getTblValue("teams", config) || !checkObj(getTblValue("scene", config)))
+    if (!::getTblValue("teams", config) || !::check_obj(::getTblValue("scene", config)))
     {
-      assert(false, "cant create playersListWidget - no teams or scene")
+      ::dagor.assertf(false, "cant create playersListWidget - no teams or scene")
       return null
     }
     return ::handlersManager.loadHandler(::gui_handlers.MRoomPlayersListWidget, config)
@@ -93,7 +86,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function getSelectedPlayer()
   {
     let objTbl = getFocusedTeamTableObj()
-    return objTbl && getTblValue(objTbl.getValue(), getTblValue(focusedTeam, playersInTeamTables))
+    return objTbl && ::getTblValue(objTbl.getValue(), ::getTblValue(focusedTeam, playersInTeamTables))
   }
 
   function getSelectedRowPos()
@@ -132,8 +125,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateTeamPlayersTbl(team, playersList)
   {
-    let objTbl = this.scene.findObject(getTeamTableId(team))
-    if (!checkObj(objTbl))
+    let objTbl = scene.findObject(getTeamTableId(team))
+    if (!::checkObj(objTbl))
       return
 
     let teamList = team == ::g_team.ANY ? playersList
@@ -155,12 +148,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getFocusedTeamTableObj()
   {
-    return this.getObj(getTeamTableId(focusedTeam))
+    return getObj(getTeamTableId(focusedTeam))
   }
 
   function updateFocusedTeamByObj(obj)
   {
-    focusedTeam = getTblValue(::getObjIdByPrefix(obj, TEAM_TBL_PREFIX), ::g_team, focusedTeam)
+    focusedTeam = ::getTblValue(::getObjIdByPrefix(obj, TEAM_TBL_PREFIX), ::g_team, focusedTeam)
   }
 
   function onTableClick(obj)
@@ -189,7 +182,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onPlayerHover(obj)
   {
-    if (!checkObj(obj) || !obj.isHovered())
+    if (!::check_obj(obj) || !obj.isHovered())
       return
     let value = ::to_integer_safe(obj?.rowIdx, -1, false)
     let listObj = obj.getParent()
@@ -197,17 +190,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       listObj.setValue(value)
   }
 
-  function onEventLobbyMembersChanged(_p)
+  function onEventLobbyMembersChanged(p)
   {
     updatePlayersTbl()
   }
 
-  function onEventLobbyMemberInfoChanged(_p)
+  function onEventLobbyMemberInfoChanged(p)
   {
     updatePlayersTbl()
   }
 
-  function onEventLobbySettingsChange(_p)
+  function onEventLobbySettingsChange(p)
   {
     updatePlayersTbl()
   }
@@ -231,7 +224,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function moveMouse() {
-    if (this.scene.childrenCount() > 0)
-      ::move_mouse_on_child(this.scene.getChild(0), 0)
+    if (scene.childrenCount() > 0)
+      ::move_mouse_on_child(scene.getChild(0), 0)
   }
 }

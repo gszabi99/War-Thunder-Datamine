@@ -1,14 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let rouletteAnim = require("rouletteAnim.nut")
 
 let BhvRoulette = class
 {
-  eventMask    = EV_ON_CMD | EV_TIMER
+  eventMask    = ::EV_ON_CMD | ::EV_TIMER
   valuePID     = ::dagui_propid.add_name_id("value")
 
   function onAttach(obj)
@@ -18,13 +12,13 @@ let BhvRoulette = class
       try { setValue(obj, obj.value) }
       catch(e) { ::script_net_assert_once("bad bhvRoulette value", "BhvRoulette: bad value on attach: '" + obj.value + "'") }
     }
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
-  function onDetach(_obj)
+  function onDetach(obj)
   {
     ::stop_gui_sound("roulette_spin")
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function setValue(obj, value)

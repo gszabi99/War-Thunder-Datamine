@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { UNIT_GROUP } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -25,7 +20,7 @@ let function overrideUnitViewParamsByGroups(wwUnitViewParams, unitsGroups) {
     return wwUnitViewParams
 
   let defaultUnit = group?.defaultUnit
-  wwUnitViewParams.name         = loc(group.name)
+  wwUnitViewParams.name         = ::loc(group.name)
   wwUnitViewParams.icon         = ::getUnitClassIco(defaultUnit)
   wwUnitViewParams.shopItemType = getUnitRole(defaultUnit)
   wwUnitViewParams.tooltipId    = UNIT_GROUP.getTooltipId(group)

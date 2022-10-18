@@ -1,17 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { round } = require("math")
 let { format } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_start_clan_activity_wnd <- function gui_start_clan_activity_wnd(uid = null, clanData = null) {
+::gui_start_clan_activity_wnd <- function gui_start_clan_activity_wnd(uid = null, clanData = null)
+{
   if (!uid || !clanData)
     return
 
@@ -37,20 +30,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen()
   {
     let maxActivityPerDay = clanData.rewardPeriodDays > 0
-      ? round(1.0 * clanData.maxActivityPerPeriod / clanData.rewardPeriodDays)
+      ? ::round(1.0 * clanData.maxActivityPerPeriod / clanData.rewardPeriodDays)
       : 0
-    let isShowPeriodActivity = hasFeature("ClanVehicles")
+    let isShowPeriodActivity = ::has_feature("ClanVehicles")
     hasClanExperience  = isShowPeriodActivity && ::clan_get_my_clan_id() == clanData.id
     let history = isShowPeriodActivity ? memberData.expActivity : memberData.activityHistory
-    let headerTextObj = this.scene.findObject("clan_activity_header_text")
-    headerTextObj.setValue(format("%s - %s", loc("clan/activity"),
+    let headerTextObj = scene.findObject("clan_activity_header_text")
+    headerTextObj.setValue(format("%s - %s", ::loc("clan/activity"),
       platformModule.getPlayerName(memberData.nick)))
 
     let maxActivityToday = [(isShowPeriodActivity ? memberData.curPeriodActivity : memberData.curActivity).tostring()]
     if (maxActivityPerDay > 0)
       maxActivityToday.append((isShowPeriodActivity ? clanData.maxActivityPerPeriod : maxActivityPerDay).tostring())
-    this.scene.findObject("clan_activity_today_value").setValue(::g_string.implode(maxActivityToday, " / "))
-    this.scene.findObject("clan_activity_total_value").setValue(format("%d",
+    scene.findObject("clan_activity_today_value").setValue(::g_string.implode(maxActivityToday, " / "))
+    scene.findObject("clan_activity_total_value").setValue(format("%d",
       isShowPeriodActivity ? memberData.totalPeriodActivity : memberData.totalActivity))
 
     fillActivityHistory(history)
@@ -68,18 +61,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return right.day - left.day
     })
 
-    let tableHeaderObj = this.scene.findObject("clan_member_activity_history_table_header");
+    let tableHeaderObj = scene.findObject("clan_member_activity_history_table_header");
     local rowIdx = 1
     local rowBlock = ""
     let rowHeader = [
       {
         id       = "clan_activity_history_col_day",
-        text     = loc("clan/activity/day"),
+        text     = ::loc("clan/activity/day"),
         active   = false
       },
       {
         id       = "clan_activity_history_col_value",
-        text     = loc("clan/activity"),
+        text     = ::loc("clan/activity"),
         active   = false
       }
     ];
@@ -88,7 +81,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       rowHeader.append(
         {
           id       = "clan_activity_exp_col_value",
-          text     = loc("reward"),
+          text     = ::loc("reward"),
           active   = false
         }
       )
@@ -96,9 +89,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     rowBlock += ::buildTableRowNoPad("row_header", rowHeader, null,
         "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ")
 
-    this.guiScene.replaceContentFromText(tableHeaderObj, rowBlock, rowBlock.len(), this)
+    guiScene.replaceContentFromText(tableHeaderObj, rowBlock, rowBlock.len(), this)
 
-    let tableObj = this.scene.findObject("clan_member_activity_history_table");
+    let tableObj = scene.findObject("clan_member_activity_history_table");
 
     rowBlock = ""
     /*body*/
@@ -117,17 +110,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         let hasBoost = boost > 0
         if (hasBoost && exp > 0)
         {
-          let baseExp = entry.data?.expRewardBase ?? round(exp/(1 + boost))
-          expText = colorize("activeTextColor",baseExp.tostring()
-            + colorize("goodTextColor", " + " + (exp - baseExp).tostring()))
+          let baseExp = entry.data?.expRewardBase ?? ::round(exp/(1 + boost))
+          expText = ::colorize("activeTextColor",baseExp.tostring()
+            + ::colorize("goodTextColor", " + " + (exp - baseExp).tostring()))
         }
 
         rowParams.append({ text = expText
           textType = hasBoost ? "textAreaCentered" : "activeText"
           textRawParam = "width:t='pw'; text-align:t='center'"
           tooltip = hasBoost
-            ? loc("clan/activity_reward/wasBoost",
-              { bonus = colorize("activeTextColor",
+            ? ::loc("clan/activity_reward/wasBoost",
+              { bonus = ::colorize("activeTextColor",
                 "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(boost))})
             : ""
         })
@@ -135,6 +128,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowParams, null, "")
       rowIdx++
     }
-    this.guiScene.replaceContentFromText(tableObj, rowBlock, rowBlock.len(), this)
+    guiScene.replaceContentFromText(tableObj, rowBlock, rowBlock.len(), this)
   }
 }

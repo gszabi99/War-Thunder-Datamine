@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
@@ -14,7 +8,7 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
 const MIN_CREW_COUNT_FOR_WARNING = 2
 
-::g_hud_crew_member._setCrewMemberState <- function _setCrewMemberState(crewIconObj, newStateData)
+g_hud_crew_member._setCrewMemberState <- function _setCrewMemberState(crewIconObj, newStateData)
 {
   if (!("state" in newStateData))
     return
@@ -29,12 +23,12 @@ const MIN_CREW_COUNT_FOR_WARNING = 2
     ::g_time_bar.setPeriod(timeBarObj, newStateData.totalTakePlaceTime)
     ::g_time_bar.setCurrentTime(timeBarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
     crewIconObj.state = "transfere"
-    crewIconObj.tooltip = loc(this.tooltip)
+    crewIconObj.tooltip = ::loc(tooltip)
   }
   else if (newStateData.state == "dead")
   {
     crewIconObj.state = "dead"
-    crewIconObj.tooltip = loc(this.tooltip)
+    crewIconObj.tooltip = ::loc(tooltip)
   }
   else
   {
@@ -78,7 +72,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
       } else {
         cooldownObj["sector-angle-2"] = (val * 360).tointeger()
         iconObj.state = "bad"
-        iconObj.tooltip = loc(tooltip, {distance = val * 100})
+        iconObj.tooltip = ::loc(tooltip, {distance = val * 100})
       }
     }
   }
@@ -109,12 +103,12 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
   guiScene = null
 
   function init(nest) {
-    if (!hasFeature("TankDetailedDamageIndicator"))
+    if (!::has_feature("TankDetailedDamageIndicator"))
       return
 
     scene = nest.findObject("crew_state")
 
-    if (!checkObj(scene))
+    if (!::checkObj(scene))
       return
 
     guiScene = scene.getScene()
@@ -127,7 +121,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
       ::g_hud_event_manager.subscribe(crewMemberType.hudEventName,
         (@(crewMemberType) function (eventData) {
           let crewObj = scene.findObject(crewMemberType.sceneId)
-          if (checkObj(crewObj))
+          if (::checkObj(crewObj))
             crewMemberType.setCrewMemberState(crewObj, eventData)
         })(crewMemberType), this)
     }
@@ -142,6 +136,6 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
 
   function isValid()
   {
-    return checkObj(scene)
+    return ::checkObj(scene)
   }
 }

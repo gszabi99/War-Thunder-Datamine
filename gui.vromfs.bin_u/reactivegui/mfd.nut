@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let {IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd,
   IsMfdEnabled, RwrPosSize, SecondaryMask} = require("airState.nut")
 let {paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight, targetSize} = require("airHudElems.nut")

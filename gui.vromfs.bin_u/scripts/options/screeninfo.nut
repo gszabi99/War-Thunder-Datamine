@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { round } = require("math")
-
 local function isTripleHead(sw = null, sh = null)
 {
   sw = sw ?? ::screen_width()
@@ -54,7 +47,7 @@ let function getScreenHeightForFonts(sw, sh)
 {
   let scr = getMainScreenSizePx(sw, sh)
   let height = min(0.75 * max(scr[0], scr[1]), min(scr[1], scr[0]))
-  return round(height).tointeger()
+  return ::round(height).tointeger()
 }
 
 return {

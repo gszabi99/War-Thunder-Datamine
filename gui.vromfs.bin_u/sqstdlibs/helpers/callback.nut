@@ -1,8 +1,8 @@
-#explicit-this
-#no-root-fallback
-
 let { format } = require("string")
 let u = require("u.nut")
+
+#explicit-this
+#no-root-fallback
 
 /**
  * Callback - wrapper for regular callback functions with context validation.
@@ -28,7 +28,7 @@ let u = require("u.nut")
  *   Callback.
  */
 
-local assertFunc = function(_callback, errorText) { throw(errorText) }
+local assertFunc = function(callback, errorText) { throw(errorText) }
 local getDbgName = @(context) typeof context
 
 local Callback = class {

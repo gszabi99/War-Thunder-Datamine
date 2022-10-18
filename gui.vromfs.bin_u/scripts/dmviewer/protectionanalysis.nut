@@ -1,13 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
+let { hasFeature } = require("%scripts/user/features.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
 let { hangar_protection_map_update, set_protection_analysis_editing,
@@ -27,11 +20,11 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
   sceneBlkName = "%gui/dmViewer/protectionAnalysis.blk"
   sceneTplName = "%gui/options/verticalOptions"
 
-  protectionAnalysisMode = DM_VIEWER_PROTECTION
+  protectionAnalysisMode = ::DM_VIEWER_PROTECTION
   hintHandler = null
   unit = null
 
-  getSceneTplContainerObj = @() this.scene.findObject("options_container")
+  getSceneTplContainerObj = @() scene.findObject("options_container")
   function getSceneTplView()
   {
     protectionAnalysisOptions.setParams(unit)
@@ -54,25 +47,25 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
     ::enableHangarControls(true)
     ::dmViewer.init(this)
     ::hangar_focus_model(true)
-    this.guiScene.performDelayed(this, @() ::hangar_set_dm_viewer_mode(protectionAnalysisMode))
-    this.setSceneTitle(loc("mainmenu/btnProtectionAnalysis") + " " +
-      loc("ui/mdash") + " " + ::getUnitName(unit.name))
+    guiScene.performDelayed(this, @() ::hangar_set_dm_viewer_mode(protectionAnalysisMode))
+    setSceneTitle(::loc("mainmenu/btnProtectionAnalysis") + " " +
+      ::loc("ui/mdash") + " " + ::getUnitName(unit.name))
 
     onUpdateActionsHint()
 
-    this.guiScene.setUpdatesEnabled(false, false)
-    protectionAnalysisOptions.init(this, this.scene)
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(false, false)
+    protectionAnalysisOptions.init(this, scene)
+    guiScene.setUpdatesEnabled(true, true)
 
-    hitCameraInit(this.scene.findObject("dmviewer_hitcamera"))
+    hitCameraInit(scene.findObject("dmviewer_hitcamera"))
 
-    hintHandler = protectionAnalysisHint.open(this.scene.findObject("hint_scene"))
-    this.registerSubHandler(hintHandler)
+    hintHandler = protectionAnalysisHint.open(scene.findObject("hint_scene"))
+    registerSubHandler(hintHandler)
 
     switch_damage = true //value is off by default it will be changed in AllowSimulation
     allow_cutting = false
 
-    this.scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
+    scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
 
     let isShowProtectionMapOptions = hasFeature("ProtectionMap") && unit.isTank()
     ::showBtn("btnProtectionMap", isShowProtectionMapOptions)
@@ -98,27 +91,27 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
   function onChangeOption(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
-    protectionAnalysisOptions.get(obj.id).onChange(this, this.scene, obj)
+    protectionAnalysisOptions.get(obj.id).onChange(this, scene, obj)
   }
 
   onButtonInc = @(obj) onProgressButton(obj, true)
   onButtonDec = @(obj) onProgressButton(obj, false)
-  onDistanceInc = @(_obj) onButtonInc(this.scene.findObject("buttonInc"))
-  onDistanceDec = @(_obj) onButtonDec(this.scene.findObject("buttonDec"))
+  onDistanceInc = @(obj) onButtonInc(scene.findObject("buttonInc"))
+  onDistanceDec = @(obj) onButtonDec(scene.findObject("buttonDec"))
 
   function onProgressButton(obj, isIncrement)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
     let optionId = ::g_string.cutPrefix(obj.getParent().id, "container_", "")
     let option = protectionAnalysisOptions.get(optionId)
     let value = option.value + (isIncrement ? option.step : - option.step)
-    this.scene.findObject(option.id).setValue(value)
+    scene.findObject(option.id).setValue(value)
   }
 
-  function onWeaponsInfo(_obj)
+  function onWeaponsInfo(obj)
   {
     ::open_weapons_for_unit(unit, { needHideSlotbar = true })
   }
@@ -126,7 +119,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
   function goBack()
   {
     ::hangar_focus_model(false)
-    ::hangar_set_dm_viewer_mode(DM_VIEWER_NONE)
+    ::hangar_set_dm_viewer_mode(::DM_VIEWER_NONE)
     ::repairUnit()
     set_protection_analysis_editing(false)
     base.goBack()
@@ -139,7 +132,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
   function onAllowSimulation(sObj)
   {
-    if (checkObj(sObj))
+    if (::check_obj(sObj))
     {
       switch_damage = !switch_damage
       ::allowDamageSimulationInHangar(switch_damage)
@@ -151,7 +144,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
   function onAllowCutting(sObj)
   {
-    if (checkObj(sObj))
+    if (::check_obj(sObj))
     {
       allow_cutting = !allow_cutting
       ::allowCuttingInHangar(allow_cutting)
@@ -160,29 +153,29 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
   function onUpdateActionsHint()
   {
-    let showHints = hasFeature("HangarHitcamera")
+    let showHints = ::has_feature("HangarHitcamera")
     let hObj = this.showSceneBtn("analysis_hint", showHints)
-    if (!showHints || !checkObj(hObj))
+    if (!showHints || !::check_obj(hObj))
       return
 
     //hint for simulate shot
-    let showHint = hasFeature("HangarHitcamera")
+    let showHint = ::has_feature("HangarHitcamera")
     let bObj = this.showSceneBtn("analysis_hint_shot", showHint)
-    if (showHint && checkObj(bObj))
+    if (showHint && ::check_obj(bObj))
     {
       let shortcuts = []
       if (::show_console_buttons)
         shortcuts.append(getAxisTextOrAxisName("fire"))
       if (controllerState?.is_mouse_connected())
-        shortcuts.append(loc("key/LMB"))
-      bObj.findObject("push_to_shot").setValue(::g_string.implode(shortcuts, loc("ui/comma")))
+        shortcuts.append(::loc("key/LMB"))
+      bObj.findObject("push_to_shot").setValue(::g_string.implode(shortcuts, ::loc("ui/comma")))
     }
   }
 
   function buildProtectionMap()
   {
-    let waitTextObj = this.scene.findObject("pa_wait_text")
-    let cbVerticalAngleObj = this.scene.findObject("checkboxVerticalAngle")
+    let waitTextObj = scene.findObject("pa_wait_text")
+    let cbVerticalAngleObj = scene.findObject("checkboxVerticalAngle")
     if (!waitTextObj?.isValid() || !cbVerticalAngleObj?.isValid())
       return
 
@@ -210,7 +203,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
 return {
   canOpen = function(unit) {
-    return hasFeature("DmViewerProtectionAnalysis")
+    return ::has_feature("DmViewerProtectionAnalysis")
       && ::isInMenu()
       && !::SessionLobby.hasSessionInLobby()
       && unit?.unitType.canShowProtectionAnalysis() == true

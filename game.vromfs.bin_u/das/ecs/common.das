@@ -94,6 +94,3 @@ def reduce(obj : Object implicit; var res : auto(T) implicit; cb : block<(res : 
   for it in obj
     res = invoke(cb, res, it.value)
   return res
-
-def operator ??(a : das_string const? const implicit; default_value : string)
-  return a != null ? *a |> string() : default_value

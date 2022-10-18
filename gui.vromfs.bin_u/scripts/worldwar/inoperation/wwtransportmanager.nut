@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local cachedLoadedTransport = null
@@ -27,7 +22,7 @@ let function isFullLoadedTransport(armyName) {
 }
 
 subscriptions.addListenersWithoutEnv({
-  WWLoadOperation = @(_p) clearCacheLoadedTransport()
+  WWLoadOperation = @(p) clearCacheLoadedTransport()
 })
 
 let function getTransportedArmiesData(formation)

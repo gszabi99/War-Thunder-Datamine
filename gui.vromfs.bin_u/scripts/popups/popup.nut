@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::Popup <- class
 {
   static POPUP_BLK = "%gui/popup/popup.blk"
@@ -33,7 +27,7 @@ from "%scripts/dagui_library.nut" import *
 
   function isValidView()
   {
-    return checkObj(selfObj)
+    return ::check_obj(selfObj)
   }
 
   function show(popupNestObj)
@@ -66,7 +60,7 @@ from "%scripts/dagui_library.nut" import *
 
   function destroy(isForced = false)
   {
-    if (checkObj(selfObj))
+    if (::checkObj(selfObj))
       selfObj.fade = isForced ? "forced" : "out"
   }
 
@@ -86,19 +80,19 @@ from "%scripts/dagui_library.nut" import *
       func()
   }
 
-  function onClickPopup(_obj)
+  function onClickPopup(obj)
   {
     if (onClickPopupAction)
       performPopupAction(onClickPopupAction)
     requestDestroy()
   }
 
-  function onRClickPopup(_obj)
+  function onRClickPopup(obj)
   {
     requestDestroy()
   }
 
-  function onClosePopup(_obj)
+  function onClosePopup(obj)
   {
     requestDestroy()
   }
@@ -115,7 +109,7 @@ from "%scripts/dagui_library.nut" import *
     })
   }
 
-  function onTimerUpdate(_obj, _dt)
+  function onTimerUpdate(obj, dt)
   {
     requestDestroy(false)
   }

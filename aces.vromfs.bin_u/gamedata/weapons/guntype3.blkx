@@ -25,9 +25,7 @@
       "mass": 0.0438,
       "caliber": 0.0132,
       "speed": 850.0,
-      "maxDistance": 3000.0,
-      "modelName": "tank_bullet_ball",
-      "recoilMultiplier": 0.35,
+      "maxDistance": 2000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.05,
@@ -36,6 +34,9 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "t_ball",
       "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_ball",
+      "recoilMultiplier": 0.35,
+      "hitPowerMult": 8.0,
       "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
@@ -45,7 +46,6 @@
         200.0,
         1000.0
       ],
-      "hitPowerMult": 8.0,
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
       "waterCollisionEffect": "hit_12_18mm_water",
@@ -215,9 +215,7 @@
       "mass": 0.0519,
       "caliber": 0.0132,
       "speed": 815.0,
-      "maxDistance": 3000.0,
-      "modelName": "tank_bullet_ball",
-      "recoilMultiplier": 0.35,
+      "maxDistance": 2500.0,
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.05,
@@ -226,10 +224,16 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_ball",
+      "recoilMultiplier": 0.35,
       "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
         3000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -253,6 +257,15 @@
             0.3
           ]
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "hitpower": {
         "HitPower10m": [
@@ -280,14 +293,31 @@
           3000.0
         ]
       },
-      "damage": {
-        "kinetic": {
-          "damageType": "generic",
-          "demarrePenetrationK": 0.9,
-          "demarreSpeedPow": 1.43,
-          "demarreMassPow": 0.71,
-          "demarreCaliberPow": 1.07
-        }
+      "armorpower": {
+        "ArmorPower0m": [
+          27.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          26.0,
+          200.0
+        ],
+        "ArmorPower500m": [
+          18.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          13.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          0.1,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -382,9 +412,7 @@
       "mass": 0.0519,
       "caliber": 0.0132,
       "speed": 815.0,
-      "maxDistance": 3000.0,
-      "modelName": "tank_bullet_ball",
-      "recoilMultiplier": 0.35,
+      "maxDistance": 2500.0,
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.05,
@@ -393,10 +421,16 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_ball",
+      "recoilMultiplier": 0.35,
       "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
         3000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -420,6 +454,15 @@
             0.3
           ]
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "hitpower": {
         "HitPower10m": [
@@ -447,14 +490,31 @@
           3000.0
         ]
       },
-      "damage": {
-        "kinetic": {
-          "damageType": "generic",
-          "demarrePenetrationK": 0.9,
-          "demarreSpeedPow": 1.43,
-          "demarreMassPow": 0.71,
-          "demarreCaliberPow": 1.07
-        }
+      "armorpower": {
+        "ArmorPower0m": [
+          27.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          26.0,
+          200.0
+        ],
+        "ArmorPower500m": [
+          18.0,
+          500.0
+        ],
+        "ArmorPower1000m": [
+          13.0,
+          1000.0
+        ],
+        "ArmorPower1450m": [
+          0.1,
+          1450.0
+        ],
+        "ArmorPower1500m": [
+          0.0,
+          1500.0
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -549,11 +609,9 @@
       "mass": 0.041,
       "caliber": 0.0132,
       "speed": 850.0,
-      "maxDistance": 3000.0,
+      "maxDistance": 2000.0,
       "explosiveType": "petn",
       "explosiveMass": 0.0019,
-      "modelName": "tank_bullet_ball",
-      "recoilMultiplier": 0.35,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
@@ -569,8 +627,10 @@
         2.0
       ],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_belt.ivf",
-      "onHitChanceMultFire": 2.0,
+      "modelName": "tank_bullet_ball",
+      "recoilMultiplier": 0.35,
+      "hitPowerMult": 3.0,
+      "onHitChanceMultFire": 5.0,
       "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
@@ -592,7 +652,6 @@
         200.0,
         1000.0
       ],
-      "hitPowerMult": 3.0,
       "groundCollisionEffect": "hit_12_18mm_dirt_he",
       "ricochetEffect": "hit_12_18mm_metal_ap",
       "waterCollisionEffect": "hit_12_18mm_water",
@@ -647,20 +706,16 @@
       },
       "armorpower": {
         "ArmorPower0m": [
-          3.5,
-          5.0
-        ],
-        "ArmorPower100m": [
-          3.3,
-          100.0
+          7.0,
+          10.0
         ],
         "ArmorPower500m": [
-          3.2,
+          6.0,
           500.0
         ],
         "ArmorPower1000m": [
-          3.0,
-          1000.0
+          5.0,
+          1200.0
         ],
         "ArmorPower1450m": [
           0.1,
@@ -767,9 +822,7 @@
         "mass": 0.0482,
         "caliber": 0.0132,
         "speed": 815.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2500.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -778,11 +831,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -806,6 +865,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -833,14 +901,31 @@
             3000.0
           ]
         },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
+        "armorpower": {
+          "ArmorPower0m": [
+            26.0,
+            10.0
+          ],
+          "ArmorPower100m": [
+            25.0,
+            100.0
+          ],
+          "ArmorPower500m": [
+            16.0,
+            500.0
+          ],
+          "ArmorPower1000m": [
+            12.0,
+            1000.0
+          ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
+          "ArmorPower1500m": [
+            0.0,
+            1500.0
+          ]
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -935,9 +1020,7 @@
         "mass": 0.0437,
         "caliber": 0.0132,
         "speed": 850.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -946,11 +1029,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -974,6 +1063,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -1000,15 +1098,6 @@
             0.1,
             3000.0
           ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1104,11 +1193,9 @@
         "mass": 0.041,
         "caliber": 0.0132,
         "speed": 850.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "explosiveType": "petn",
         "explosiveMass": 0.0019,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -1124,8 +1211,10 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_belt.ivf",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 3.0,
+        "onHitChanceMultFire": 5.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
@@ -1147,7 +1236,6 @@
           200.0,
           1000.0
         ],
-        "hitPowerMult": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -1202,20 +1290,16 @@
         },
         "armorpower": {
           "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
+            7.0,
+            10.0
           ],
           "ArmorPower500m": [
-            3.2,
+            6.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
-            1000.0
+            5.0,
+            1200.0
           ],
           "ArmorPower1450m": [
             0.1,
@@ -1319,11 +1403,9 @@
         "mass": 0.041,
         "caliber": 0.0132,
         "speed": 850.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "explosiveType": "petn",
         "explosiveMass": 0.0019,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -1339,8 +1421,10 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_belt.ivf",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 3.0,
+        "onHitChanceMultFire": 5.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
@@ -1362,7 +1446,6 @@
           200.0,
           1000.0
         ],
-        "hitPowerMult": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -1417,20 +1500,16 @@
         },
         "armorpower": {
           "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
+            7.0,
+            10.0
           ],
           "ArmorPower500m": [
-            3.2,
+            6.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
-            1000.0
+            5.0,
+            1200.0
           ],
           "ArmorPower1450m": [
             0.1,
@@ -1538,9 +1617,7 @@
         "mass": 0.0437,
         "caliber": 0.0132,
         "speed": 850.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -1549,11 +1626,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1577,6 +1660,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -1603,15 +1695,6 @@
             0.1,
             3000.0
           ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1707,9 +1790,7 @@
         "mass": 0.0482,
         "caliber": 0.0132,
         "speed": 815.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2500.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -1718,11 +1799,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1746,6 +1833,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -1773,14 +1869,31 @@
             3000.0
           ]
         },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
+        "armorpower": {
+          "ArmorPower0m": [
+            26.0,
+            10.0
+          ],
+          "ArmorPower100m": [
+            25.0,
+            100.0
+          ],
+          "ArmorPower500m": [
+            16.0,
+            500.0
+          ],
+          "ArmorPower1000m": [
+            12.0,
+            1000.0
+          ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
+          "ArmorPower1500m": [
+            0.0,
+            1500.0
+          ]
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1875,9 +1988,7 @@
         "mass": 0.0482,
         "caliber": 0.0132,
         "speed": 815.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2500.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -1886,11 +1997,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1914,6 +2031,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -1941,14 +2067,31 @@
             3000.0
           ]
         },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
+        "armorpower": {
+          "ArmorPower0m": [
+            26.0,
+            10.0
+          ],
+          "ArmorPower100m": [
+            25.0,
+            100.0
+          ],
+          "ArmorPower500m": [
+            16.0,
+            500.0
+          ],
+          "ArmorPower1000m": [
+            12.0,
+            1000.0
+          ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
+          "ArmorPower1500m": [
+            0.0,
+            1500.0
+          ]
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -2043,11 +2186,9 @@
         "mass": 0.041,
         "caliber": 0.0132,
         "speed": 850.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "explosiveType": "petn",
         "explosiveMass": 0.0019,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -2063,8 +2204,10 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_belt.ivf",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 3.0,
+        "onHitChanceMultFire": 5.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
@@ -2086,7 +2229,6 @@
           200.0,
           1000.0
         ],
-        "hitPowerMult": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -2141,20 +2283,16 @@
         },
         "armorpower": {
           "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
+            7.0,
+            10.0
           ],
           "ArmorPower500m": [
-            3.2,
+            6.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
-            1000.0
+            5.0,
+            1200.0
           ],
           "ArmorPower1450m": [
             0.1,
@@ -2262,9 +2400,7 @@
         "mass": 0.0482,
         "caliber": 0.0132,
         "speed": 815.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2500.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -2273,11 +2409,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -2301,6 +2443,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -2328,14 +2479,31 @@
             3000.0
           ]
         },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
+        "armorpower": {
+          "ArmorPower0m": [
+            26.0,
+            10.0
+          ],
+          "ArmorPower100m": [
+            25.0,
+            100.0
+          ],
+          "ArmorPower500m": [
+            16.0,
+            500.0
+          ],
+          "ArmorPower1000m": [
+            12.0,
+            1000.0
+          ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
+          "ArmorPower1500m": [
+            0.0,
+            1500.0
+          ]
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -2430,9 +2598,7 @@
         "mass": 0.0482,
         "caliber": 0.0132,
         "speed": 815.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2500.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -2441,11 +2607,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -2469,6 +2641,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -2496,14 +2677,31 @@
             3000.0
           ]
         },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
+        "armorpower": {
+          "ArmorPower0m": [
+            26.0,
+            10.0
+          ],
+          "ArmorPower100m": [
+            25.0,
+            100.0
+          ],
+          "ArmorPower500m": [
+            16.0,
+            500.0
+          ],
+          "ArmorPower1000m": [
+            12.0,
+            1000.0
+          ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
+          "ArmorPower1500m": [
+            0.0,
+            1500.0
+          ]
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -2598,9 +2796,7 @@
         "mass": 0.0437,
         "caliber": 0.0132,
         "speed": 850.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2000.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -2609,11 +2805,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -2637,6 +2839,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -2663,15 +2874,6 @@
             0.1,
             3000.0
           ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -2767,11 +2969,9 @@
         "mass": 0.041,
         "caliber": 0.0132,
         "speed": 850.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "explosiveType": "petn",
         "explosiveMass": 0.0019,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -2787,8 +2987,10 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_belt.ivf",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 3.0,
+        "onHitChanceMultFire": 5.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
@@ -2810,7 +3012,6 @@
           200.0,
           1000.0
         ],
-        "hitPowerMult": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -2865,20 +3066,16 @@
         },
         "armorpower": {
           "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
+            7.0,
+            10.0
           ],
           "ArmorPower500m": [
-            3.2,
+            6.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
-            1000.0
+            5.0,
+            1200.0
           ],
           "ArmorPower1450m": [
             0.1,
@@ -2986,9 +3183,7 @@
         "mass": 0.0482,
         "caliber": 0.0132,
         "speed": 815.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2500.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -2997,11 +3192,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -3025,6 +3226,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -3052,14 +3262,31 @@
             3000.0
           ]
         },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
+        "armorpower": {
+          "ArmorPower0m": [
+            26.0,
+            10.0
+          ],
+          "ArmorPower100m": [
+            25.0,
+            100.0
+          ],
+          "ArmorPower500m": [
+            16.0,
+            500.0
+          ],
+          "ArmorPower1000m": [
+            12.0,
+            1000.0
+          ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
+          "ArmorPower1500m": [
+            0.0,
+            1500.0
+          ]
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -3154,9 +3381,7 @@
         "mass": 0.0482,
         "caliber": 0.0132,
         "speed": 815.0,
-        "maxDistance": 3000.0,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
+        "maxDistance": 2500.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.05,
@@ -3165,11 +3390,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_ball",
         "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
         "onHitChanceMultFire": 10.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
           3000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -3193,6 +3424,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -3220,14 +3460,31 @@
             3000.0
           ]
         },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
+        "armorpower": {
+          "ArmorPower0m": [
+            26.0,
+            10.0
+          ],
+          "ArmorPower100m": [
+            25.0,
+            100.0
+          ],
+          "ArmorPower500m": [
+            16.0,
+            500.0
+          ],
+          "ArmorPower1000m": [
+            12.0,
+            1000.0
+          ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
+          "ArmorPower1500m": [
+            0.0,
+            1500.0
+          ]
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -3322,11 +3579,9 @@
         "mass": 0.041,
         "caliber": 0.0132,
         "speed": 850.0,
-        "maxDistance": 3000.0,
+        "maxDistance": 2000.0,
         "explosiveType": "petn",
         "explosiveMass": 0.0019,
-        "modelName": "tank_bullet_ball",
-        "recoilMultiplier": 0.35,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -3342,8 +3597,10 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_belt.ivf",
-        "onHitChanceMultFire": 2.0,
+        "modelName": "tank_bullet_ball",
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 3.0,
+        "onHitChanceMultFire": 5.0,
         "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
@@ -3365,7 +3622,6 @@
           200.0,
           1000.0
         ],
-        "hitPowerMult": 3.0,
         "groundCollisionEffect": "hit_12_18mm_dirt_he",
         "ricochetEffect": "hit_12_18mm_metal_ap",
         "waterCollisionEffect": "hit_12_18mm_water",
@@ -3420,20 +3676,16 @@
         },
         "armorpower": {
           "ArmorPower0m": [
-            3.5,
-            5.0
-          ],
-          "ArmorPower100m": [
-            3.3,
-            100.0
+            7.0,
+            10.0
           ],
           "ArmorPower500m": [
-            3.2,
+            6.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
-            1000.0
+            5.0,
+            1200.0
           ],
           "ArmorPower1450m": [
             0.1,

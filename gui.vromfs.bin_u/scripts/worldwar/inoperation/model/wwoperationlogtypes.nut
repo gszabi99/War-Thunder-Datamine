@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_ww_log_type <- {
@@ -122,13 +116,13 @@ enums.addTypesByGlobalName("g_ww_log_type", {
     }
 }, null, "name")
 
-::g_ww_log_type.getLogTypeByName <- function getLogTypeByName(logName)
+g_ww_log_type.getLogTypeByName <- function getLogTypeByName(logName)
 {
   return enums.getCachedType(
     "name",
     logName,
-    this.cache.byName,
+    cache.byName,
     this,
-    this.UNKNOWN
+    UNKNOWN
   )
 }

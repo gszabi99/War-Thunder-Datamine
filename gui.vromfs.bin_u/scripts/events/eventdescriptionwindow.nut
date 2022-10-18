@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.EventDescriptionWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.EventDescriptionWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.MODAL
   event = null
 
@@ -16,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     if (!checkEvent(event))
     {
-      this.goBack()
+      goBack()
       return
     }
 
@@ -29,8 +22,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       showOkButton = false
     }
     let data = ::handyman.renderCached("%gui/events/eventDescriptionWindow", view)
-    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
-    eventDescription = ::create_event_description(this.scene, event, false)
+    guiScene.replaceContentFromText(scene, data, data.len(), this)
+    eventDescription = ::create_event_description(scene, event, false)
   }
 
   function checkEvent(ev)

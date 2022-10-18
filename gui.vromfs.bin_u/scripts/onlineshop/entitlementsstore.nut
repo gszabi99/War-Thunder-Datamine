@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { isPlatformSony,
         isPlatformXboxOne,
         isPlatformPC,
@@ -11,11 +6,11 @@ let { isPlatformSony,
 let {
   getEntStoreLocId = @() "#msgbox/btn_onlineShop",
   getEntStoreIcon = @() "#ui/gameuiskin#store_icon.svg",
-  isEntStoreTopMenuItemHidden = @(...) !isPlatformPC || !hasFeature("SpendGold") || !::isInMenu() || !canSpendRealMoney(),
+  isEntStoreTopMenuItemHidden = @(...) !isPlatformPC || !::has_feature("SpendGold") || !::isInMenu() || !canSpendRealMoney(),
   getEntStoreUnseenIcon = @() null,
-  openEntStoreTopMenuFunc = @(_obj, handler) handler.startOnlineShop(null, null, "topmenu"),
+  openEntStoreTopMenuFunc = @(obj, handler) handler.startOnlineShop(null, null, "topmenu"),
   needEntStoreDiscountIcon = false,
-  getShopItem = @(_id) null,
+  getShopItem = @(id) null,
   getShopItemsTable = @() {},
   haveDiscount = @() false,
   openIngameStore = @(...) false,

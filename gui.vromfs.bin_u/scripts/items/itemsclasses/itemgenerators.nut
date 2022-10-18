@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { round } = require("math")
-let { get_time_msec } = require("dagor.time")
 let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
@@ -37,12 +29,12 @@ local ItemGenerator = class {
     genType = itemDefDesc?.type ?? ""
     exchange = itemDefDesc?.exchange ?? ""
     bundle   = itemDefDesc?.bundle ?? ""
-    isPack   = isInArray(genType, [ "bundle", "delayedexchange" ])
+    isPack   = ::isInArray(genType, [ "bundle", "delayedexchange" ])
     tags     = itemDefDesc?.tags
     timestamp = itemDefDesc?.Timestamp ?? ""
     rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
     let lifetimeModifierText = itemDefDesc?.lifetime_modifier
-    if (!::u.isEmpty(lifetimeModifierText))
+    if (!u.isEmpty(lifetimeModifierText))
       lifetimeModifier = ItemLifetimeModifier(lifetimeModifierText)
   }
 
@@ -119,7 +111,7 @@ local ItemGenerator = class {
         ::randomize()
       }
 
-      _exchangeRecipesUpdateTime = get_time_msec()
+      _exchangeRecipesUpdateTime = ::dagor.getCurTime()
     }
     return ::u.filter(_exchangeRecipes, @(ec) ec.isEnabled())
   }

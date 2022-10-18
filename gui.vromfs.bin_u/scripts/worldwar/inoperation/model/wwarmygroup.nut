@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { round } = require("math")
 
 ::WwArmyGroup <- class
 {
@@ -28,10 +21,10 @@ let { round } = require("math")
 
   constructor(blk)
   {
-    clanId               = getTblValue("clanId", blk, "").tostring()
-    name                 = getTblValue("name", blk, "")
-    supremeCommanderUid   = getTblValue("supremeCommanderUid", blk, "")
-    supremeCommanderNick = getTblValue("supremeCommanderNick", blk, "")
+    clanId               = ::getTblValue("clanId", blk, "").tostring()
+    name                 = ::getTblValue("name", blk, "")
+    supremeCommanderUid   = ::getTblValue("supremeCommanderUid", blk, "")
+    supremeCommanderNick = ::getTblValue("supremeCommanderNick", blk, "")
     owner                = ::WwArmyOwner(blk.getBlockByName("owner"))
     managerUids          = blk.getBlockByName("managerUids") % "item"
     observerUids         = blk.getBlockByName("observerUids") % "item" || []
@@ -137,14 +130,14 @@ let { round } = require("math")
 
   function getAccessLevel()
   {
-    if (supremeCommanderUid == ::my_user_id_int64 || hasFeature("worldWarMaster"))
+    if (supremeCommanderUid == ::my_user_id_int64 || ::has_feature("worldWarMaster"))
       return WW_BATTLE_ACCESS.SUPREME
 
     if (owner.side == ::ww_get_player_side())
     {
-      if (isInArray(::my_user_id_int64, managerUids))
+      if (::isInArray(::my_user_id_int64, managerUids))
         return WW_BATTLE_ACCESS.MANAGER
-      if (isInArray(::my_user_id_int64, observerUids))
+      if (::isInArray(::my_user_id_int64, observerUids))
         return WW_BATTLE_ACCESS.OBSERVER
     }
 
@@ -189,7 +182,7 @@ let { round } = require("math")
     let total = armyManagers.map(@(m) m.actionsCount).reduce(@(res, value) res + value, 0).tofloat()
     foreach(armyManager in armyManagers) {
       armyManager.activity = total > 0
-        ? round(100 * armyManager.actionsCount / total).tointeger()
+        ? ::round(100 * armyManager.actionsCount / total).tointeger()
         : 0
       armyManager.name = armyManagersNames?[armyManager.uid].name ?? ""
     }

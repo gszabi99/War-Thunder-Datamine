@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 enum wwClanSquadInviteColors {
   BUSY = "fadedTextColor"
   ENABLED = "activeTextColor"
@@ -23,7 +17,7 @@ enum wwClanSquadInviteColors {
       showOnSelect = "hover"
       btnName = "X"
       btnKey = "X"
-      tooltip = @() loc("squad/info")
+      tooltip = @() ::loc("squad/info")
       img = "#ui/gameuiskin#btn_help.svg"
       funcName = "onSquadInfo"
       isHidden = false
@@ -36,7 +30,7 @@ enum wwClanSquadInviteColors {
       showOnSelect = "hover"
       btnName = "A"
       btnKey = "A"
-      text = @() loc("worldwar/inviteSquad")
+      text = @() ::loc("worldwar/inviteSquad")
       isHidden = true
       isDisabled = true
     }
@@ -56,21 +50,21 @@ enum wwClanSquadInviteColors {
 
   function updateSquadDummyButtons()
   {
-    if (!this.selectedSquad)
+    if (!selectedSquad)
       return
-    ::showBtn("btn_ww_battle_invite", canWwBattleInvite(this.selectedSquad), this.dummyButtonsListObj)
+    ::showBtn("btn_ww_battle_invite", canWwBattleInvite(selectedSquad), dummyButtonsListObj)
   }
 
   function canWwBattleInvite(squad)
   {
     let presenceParams = squad?.data?.presence ?? {}
     let presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
-    return presenceType.canInviteToWWBattle && !isGameParamsMatch(presenceParams) && this.isSquadOnline(squad)
+    return presenceType.canInviteToWWBattle && !isGameParamsMatch(presenceParams) && isSquadOnline(squad)
   }
 
   function onSquadLeaderInvite(obj)
   {
-    let actionSquad = this.getSquadByObj(obj)
+    let actionSquad = getSquadByObj(obj)
     if (!actionSquad)
       return
 
@@ -102,11 +96,11 @@ enum wwClanSquadInviteColors {
   function colorizePresence(text, presenceParams, presenceType)
   {
     if (isGameParamsMatch(presenceParams))
-      return colorize(wwClanSquadInviteColors.MATCH_GAME, text)
+      return ::colorize(wwClanSquadInviteColors.MATCH_GAME, text)
 
     let color = presenceType.canInviteToWWBattle
       ? wwClanSquadInviteColors.ENABLED : wwClanSquadInviteColors.BUSY
-    return colorize(color, text)
+    return ::colorize(color, text)
   }
 
   function isGameParamsMatch(presenceParams)

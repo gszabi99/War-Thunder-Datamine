@@ -1,17 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { appendOnce, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { get_time_msec } = require("dagor.time")
 
 let UPDATE_DELAY_MSEC = isPlatformSony? 60000 : 1800000 //60 sec for psn, 30 minutes for others
-let lastUpdate = persist("lastUpdate", @() Watched(0))
-let saveLastUpdate = function() { lastUpdate(get_time_msec()) }
-let canUpdate = @() get_time_msec() - lastUpdate.value >= UPDATE_DELAY_MSEC
+let lastUpdate = persist("lastUpdate", @() ::Watched(0))
+let saveLastUpdate = function() { lastUpdate(::dagor.getCurTime()) }
+let canUpdate = @() ::dagor.getCurTime() - lastUpdate.value >= UPDATE_DELAY_MSEC
 
 local afterUpdateCb = @() null
 let callCbOnce = function() {
@@ -19,8 +13,8 @@ let callCbOnce = function() {
   afterUpdateCb = @() null
 }
 
-let cachedUids = persist("cachedUids", @() Watched({}))
-let pendingUids = persist("pendingUids", @() Watched([]))
+let cachedUids = persist("cachedUids", @() ::Watched({}))
+let pendingUids = persist("pendingUids", @() ::Watched([]))
 
 let updateBlocklist = function() {
   if (isEmpty(pendingUids.value) || !canUpdate()) {
@@ -35,7 +29,7 @@ let updateBlocklist = function() {
 
   let blk = ::DataBlock()
   blk.addBlock("body")
-  blk.body.addStr("groupName", EPL_BLOCKLIST)
+  blk.body.addStr("groupName", ::EPL_BLOCKLIST)
   foreach (uid in waitingUids)
     blk.body.addInt("uid", uid.tointeger())
 
@@ -43,18 +37,18 @@ let updateBlocklist = function() {
     "cln_check_me_in_contacts",
     blk,
     null,
-    Callback(function(response) {
-      log("[UCS] Success update blocked list")
-      debugTableData(response)
+    ::Callback(function(response) {
+      ::dagor.debug("[UCS] Success update blocked list")
+      ::debugTableData(response)
 
       for (local i = 0; i < response.paramCount(); i++) {
         let uid = response.getParamName(i)
 
-        cachedUids.mutate(@(v) v[uid.tostring()] <- get_time_msec())
+        cachedUids.mutate(@(v) v[uid.tostring()] <- ::dagor.getCurTime())
         let contact = ::getContact(uid)
         if (!contact)
         {
-          log($"[UCS]: Fail updating {uid}. Contact not found")
+          ::dagor.debug($"[UCS]: Fail updating {uid}. Contact not found")
           continue
         }
 
@@ -65,9 +59,9 @@ let updateBlocklist = function() {
       ::broadcastEvent("ContactsBlockStatusUpdated")
       callCbOnce()
     }, this),
-    Callback(function(err) {
-      log($"[UCS] Get Block Users: Error receieved: {toString(err, 4)}")
-      debugTableData(waitingUids)
+    ::Callback(function(err) {
+      ::dagor.debug($"[UCS] Get Block Users: Error receieved: {::toString(err, 4)}")
+      ::debugTableData(waitingUids)
 
       //Save to pending ids, so we will try again in next call
       pendingUids.mutate(@(v) v.extend(waitingUids))
@@ -107,11 +101,11 @@ let checkInRoomMembers = function() {
 }
 
 addListenersWithoutEnv({
-  ScriptsReloaded = function(_p) { invalidateCache() }
-  SignOut = function(_p) { invalidateCache() }
-  LobbyMembersChanged = function(_p) { checkInRoomMembers() }
-  RoomJoined = function(_p) { checkInRoomMembers() }
-  ChatLatestThreadsUpdate = function(_p) {
+  ScriptsReloaded = function(p) { invalidateCache() }
+  SignOut = function(p) { invalidateCache() }
+  LobbyMembersChanged = function(p) { checkInRoomMembers() }
+  RoomJoined = function(p) { checkInRoomMembers() }
+  ChatLatestThreadsUpdate = function(p) {
     let arr = []
     foreach (thread in ::g_chat_latest_threads.getList()) {
       if (::is_my_userid(thread.ownerUid))
@@ -121,9 +115,9 @@ addListenersWithoutEnv({
     }
     updateContactsStatusByContacts(arr)
   }
-  ContactsGroupUpdate = function(_p) {
+  ContactsGroupUpdate = function(p) {
     let arr = []
-    foreach (_uid, contact in ::contacts_players)
+    foreach (uid, contact in ::contacts_players)
       arr.append(contact)
 
     updateContactsStatusByContacts(arr)

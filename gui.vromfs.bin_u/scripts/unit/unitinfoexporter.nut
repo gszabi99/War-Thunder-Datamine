@@ -1,23 +1,27 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let {UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX} = require("%scripts/unit/unitInfoType.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 
+::exportUnitInfo <- function exportUnitInfo(params)
+{
+    UnitInfoExporter(params["langs"], params["path"])
+    return "ok"
+}
+
 const COUNTRY_GROUP = "country"
+global const ARMY_GROUP = "army"
 const RANK_GROUP = "rank"
 const COMMON_PARAMS_GROUP = "common"
 const BASE_GROUP = "base"
 const EXTENDED_GROUP = "extended"
 
-let class UnitInfoExporter {
+
+web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
+
+::UnitInfoExporter <- class
+{
   static EXPORT_TIME_OUT = 20000
   static activeUnitInfoExporters = []
   lastActiveTime = -1
@@ -28,7 +32,7 @@ let class UnitInfoExporter {
   langBeforeExport = ""
   curLang = ""
 
-  debugLog = dlog // warning disable: -forbidden-function
+  debugLog = ::dlog // warning disable: -forbidden-function
   isToStringForDebug = true
 
   fullBlk = null
@@ -60,7 +64,7 @@ let class UnitInfoExporter {
 
   function _tostring()
   {
-    return format("Exporter(%s, '%s')", toString(langsList), path)
+    return format("Exporter(%s, '%s')", ::toString(langsList), path)
   }
 
   function isReadyStartExporter()
@@ -80,7 +84,7 @@ let class UnitInfoExporter {
 
   function isValid()
   {
-    foreach(_idx, exporter in activeUnitInfoExporters)
+    foreach(idx, exporter in activeUnitInfoExporters)
       if (exporter == this)
         return true
     return false
@@ -88,12 +92,12 @@ let class UnitInfoExporter {
 
   function isStuck()
   {
-    return get_time_msec() - lastActiveTime < EXPORT_TIME_OUT
+    return ::dagor.getCurTime() - lastActiveTime < EXPORT_TIME_OUT
   }
 
   function updateActive()
   {
-    lastActiveTime = get_time_msec()
+    lastActiveTime = ::dagor.getCurTime()
   }
 
   function remove()
@@ -188,13 +192,13 @@ let class UnitInfoExporter {
     fBlk[COUNTRY_GROUP] = ::DataBlock()
 
     foreach(country in shopCountriesList)
-      fBlk[COUNTRY_GROUP][country] = loc(country)
+      fBlk[COUNTRY_GROUP][country] = ::loc(country)
   }
 
   function exportRank(fBlk)
   {
     fBlk[RANK_GROUP] = ::DataBlock()
-    fBlk[RANK_GROUP].header = loc("shop/age")
+    fBlk[RANK_GROUP].header = ::loc("shop/age")
     fBlk[RANK_GROUP].texts = ::DataBlock()
 
     for(local rank = 1; rank <= ::max_country_rank; rank++)
@@ -209,7 +213,7 @@ let class UnitInfoExporter {
       fBlk[COMMON_PARAMS_GROUP][infoType.id] = infoType.exportCommonToDataBlock()
   }
 
-  function onEventUnitModsRecount(_params)
+  function onEventUnitModsRecount(params)
   {
     processUnits()
   }
@@ -234,7 +238,7 @@ let class UnitInfoExporter {
     if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars)
     {
       debugLog($"Exporter: wait for calculating parameters for unit {curUnit.name}")
-      return ::check_unit_mods_update(curUnit, null, true, true)
+      return check_unit_mods_update(curUnit, null, true, true)
     }
 
     let groupId = curUnit.showOnlyWhenBought? EXTENDED_GROUP : BASE_GROUP
@@ -268,11 +272,3 @@ let class UnitInfoExporter {
     return true
   }
 }
-
-let function exportUnitInfo(params)
-{
-  UnitInfoExporter(params["langs"], params["path"])
-  return "ok"
-}
-
-::web_rpc.register_handler("exportUnitInfo", exportUnitInfo)

@@ -1,7 +1,5 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let interopGet = require("interopGen.nut")
-let { isDmgIndicatorVisible } = require_native("gameplayBinding")
+let { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
 
 let hudState = persist("hudState", @(){
   unitType = Watched("")

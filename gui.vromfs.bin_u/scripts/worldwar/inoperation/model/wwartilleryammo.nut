@@ -1,13 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let time = require("%scripts/time.nut")
-let { ceil } = require("math")
-
-::WwArtilleryAmmo <- class {
+::WwArtilleryAmmo <- class
+{
   hasArtilleryStrike = false
   strikesDone = null
   ammoCount = 0
@@ -42,8 +35,8 @@ let { ceil } = require("math")
       return
 
     hasArtilleryStrike = true
-    nextStrikeTimeMillis = getTblValue("nextStrikeTimeMillis", strikeBlk, 0)
-    strikesDone = getTblValue("strikesDone", strikeBlk, 0)
+    nextStrikeTimeMillis = ::getTblValue("nextStrikeTimeMillis", strikeBlk, 0)
+    strikesDone = ::getTblValue("strikesDone", strikeBlk, 0)
   }
 
   function getAmmoCount()
@@ -83,7 +76,7 @@ let { ceil } = require("math")
       return 0
 
     let millisec = nextStrikeTimeMillis - ::ww_get_operation_time_millisec()
-    return max(ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
+    return max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }
 
   function getTimeToCompleteStrikes()
@@ -95,7 +88,7 @@ let { ceil } = require("math")
     millisec += getUnusedStrikesNumber() * getStrikeIntervalMillisec()
     millisec -= ::ww_get_operation_time_millisec()
 
-    return max(ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
+    return max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }
 
   function getUnusedStrikesNumber()
@@ -118,9 +111,9 @@ let { ceil } = require("math")
     if (!params)
       return
 
-    maxAmmoCount = getTblValue("maxAmmo", params, 0)
-    maxStrikesPerAttack = getTblValue("maxStrikesPerAttack", params, 0)
-    cooldownAfterMoveSec = getTblValue("cooldownAfterMoveSec", params, 0)
-    strikeIntervalSec = getTblValue("strikeIntervalSec", params, 0)
+    maxAmmoCount = ::getTblValue("maxAmmo", params, 0)
+    maxStrikesPerAttack = ::getTblValue("maxStrikesPerAttack", params, 0)
+    cooldownAfterMoveSec = ::getTblValue("cooldownAfterMoveSec", params, 0)
+    strikeIntervalSec = ::getTblValue("strikeIntervalSec", params, 0)
   }
 }

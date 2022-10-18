@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let CollectionSet = require("collectionSet.nut")
 
@@ -48,7 +43,7 @@ let function isCollectionItem(decorator) {
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(_p) invalidateCache()
+  SignOut = @(p) invalidateCache()
 })
 
 return {

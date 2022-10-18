@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let userstatRewardTitleLocId = "battlePass/rewardsTitle"
@@ -34,7 +29,7 @@ let function showRewardWnd(rewards) {
 
   if (firstItemId != null)
     ::gui_start_open_trophy({ [firstItemId] = rewardsToShow,
-      rewardTitle = loc(userstatRewardTitleLocId),
+      rewardTitle = ::loc(userstatRewardTitleLocId),
       rewardListLocId = userstatItemsListLocId
     })
 }
@@ -73,7 +68,7 @@ let function canGetRewards(onAcceptFn, params) {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_p) waitingToShowRewardsArray.clear()
+  SignOut = @(p) waitingToShowRewardsArray.clear()
 })
 
 return {

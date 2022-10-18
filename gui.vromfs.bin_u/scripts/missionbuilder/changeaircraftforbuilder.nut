@@ -1,11 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.changeAircraftForBuilder <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -15,7 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen()
   {
-     this.createSlotbar(
+     createSlotbar(
        {
          showNewSlot = false,
          showEmptySlot = false,
@@ -23,17 +16,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
          afterSlotbarSelect = updateButtons,
          slotbarBehavior = "posNavigator",
          needFullSlotBlock = true
-         onSlotDblClick = Callback(@(_crew) onApply(), this)
-         onSlotActivate = Callback(@(_crew) onApply(), this)
+         onSlotDblClick = ::Callback(@(crew) onApply(), this)
+         onSlotActivate = ::Callback(@(crew) onApply(), this)
        },
        "take-aircraft-slotbar"
      )
 
-     let textObj = this.scene.findObject("take-aircraft-text")
+     let textObj = scene.findObject("take-aircraft-text")
      textObj.top = "1@titleLogoPlateHeight + 1@frameHeaderHeight"
-     textObj.setValue(loc("mainmenu/missionBuilderNotAvailable"))
+     textObj.setValue(::loc("mainmenu/missionBuilderNotAvailable"))
 
-     let air = this.getCurSlotUnit()
+     let air = getCurSlotUnit()
      showedUnit(air)
      updateButtons()
   }
@@ -41,7 +34,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onTakeCancel()
   {
     showedUnit(shopAir)
-    this.goBack()
+    goBack()
   }
 
   function onApply()
@@ -49,13 +42,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (showedUnit.value?.isAir() ?? false)
       return ::gui_start_builder()
 
-    this.msgBox("not_available", loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
+    this.msgBox("not_available", ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
       [["ok"]], "ok")
   }
 
   function updateButtons()
   {
-    this.scene.findObject("btn_set_air").inactiveColor =
+    scene.findObject("btn_set_air").inactiveColor =
       (showedUnit.value?.isAir() ?? false) ? "no"
       : "yes"
   }

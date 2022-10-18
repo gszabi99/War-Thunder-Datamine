@@ -1,11 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_start_battle_tasks_select_new_task_wnd <- function gui_start_battle_tasks_select_new_task_wnd(battleTasksArray = null)
 {
@@ -33,7 +26,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getSceneTplContainerObj()
   {
-    return this.scene.findObject("root-box")
+    return scene.findObject("root-box")
   }
 
   function getBattleTasksViewData()
@@ -67,7 +60,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return null
   }
 
-  function onSelectTask(_obj)
+  function onSelectTask(obj)
   {
     let config = getCurrentConfig()
     let taskObj = getCurrentTaskObj()
@@ -76,7 +69,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.showSceneBtn("btn_requirements_list", ::show_console_buttons && isConfigHaveConditions(config))
   }
 
-  function onSelect(_obj)
+  function onSelect(obj)
   {
     let config = getCurrentConfig()
     if (!config)
@@ -89,8 +82,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
     ::g_tasker.addTask(taskId,
       {showProgressBox = true},
-      Callback(function() {
-          this.goBack()
+      ::Callback(function() {
+          goBack()
           ::broadcastEvent("BattleTasksIncomeUpdate")
         }, this)
     )
@@ -98,7 +91,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function isConfigHaveConditions(config)
   {
-    return getTblValue("names", config, []).len() != 0
+    return ::getTblValue("names", config, []).len() != 0
   }
 
   function onViewBattleTaskRequirements()
@@ -117,21 +110,21 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     showUnlocksGroupWnd([{
       unlocksList = awardsList
-      titleText = loc("unlocks/requirements")
+      titleText = ::loc("unlocks/requirements")
     }])
   }
 
   function getConfigsListObj()
   {
-    if (checkObj(this.scene))
-      return this.scene.findObject("tasks_list")
+    if (::checkObj(scene))
+      return scene.findObject("tasks_list")
     return null
   }
 
   function getCurrentTaskObj()
   {
     let listObj = getConfigsListObj()
-    if (!checkObj(listObj))
+    if (!::checkObj(listObj))
       return null
 
     let value = listObj.getValue()
@@ -141,5 +134,5 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return listObj.getChild(value)
   }
 
-  function onTaskReroll(_obj) {}
+  function onTaskReroll(obj) {}
 }

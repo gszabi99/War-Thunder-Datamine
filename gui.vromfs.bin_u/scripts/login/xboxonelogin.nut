@@ -1,12 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-local { setGuiOptionsMode } = require_native("guiOptions")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 
 ::gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler
@@ -53,7 +48,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
       data += ::handyman.renderCached("%gui/commonParts/button", view)
 
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
-    this.scene.findObject("user_notify_text").setValue(loc("xbox/reqInstantConnection"))
+    this.scene.findObject("user_notify_text").setValue(::loc("xbox/reqInstantConnection"))
     this.updateGamertag()
 
     if (::xbox_is_game_started_by_invite())
@@ -104,16 +99,16 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
         }
         else if (result == XBOX_LOGIN_STATE_FAILED)
         {
-          this.msgBox("no_internet_connection", loc("xbox/noInternetConnection"), [["ok", function() {} ]], "ok")
+          this.msgBox("no_internet_connection", ::loc("xbox/noInternetConnection"), [["ok", function() {} ]], "ok")
           this.isLoginInProcess = false
-          logerr($"XBOX: login failed with error - {err_code}")
+          ::dagor.logerr($"XBOX: login failed with error - {err_code}")
         }
 
       }.bindenv(this)
     )
   }
 
-  function onChangeGamertag(_obj = null)
+  function onChangeGamertag(obj = null)
   {
     ::xbox_account_picker()
   }
@@ -122,19 +117,19 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
   {
     local text = ::xbox_get_active_user_gamertag()
     if (text != "")
-      text = loc("xbox/playAs", {name = text})
+      text = ::loc("xbox/playAs", {name = text})
 
     this.scene.findObject("xbox_active_usertag").setValue(text)
   }
 
-  function onEventXboxActiveUserGamertagChanged(_params)
+  function onEventXboxActiveUserGamertagChanged(params)
   {
     this.updateGamertag()
     if (this.needAutoLogin && ::xbox_get_active_user_gamertag() != "")
       this.onOk()
   }
 
-  function onEventXboxInviteAccepted(_p)
+  function onEventXboxInviteAccepted(p)
   {
     this.onOk()
   }
@@ -143,7 +138,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
     forceHideCursor(false)
   }
 
-  function goBack(_obj) {}
+  function goBack(obj) {}
 }
 
 //Calling from C++

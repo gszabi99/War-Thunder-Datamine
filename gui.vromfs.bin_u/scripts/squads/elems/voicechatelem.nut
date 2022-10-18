@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
@@ -15,11 +9,11 @@ elemModelType.addTypes({
 
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
 
-    onEventVoiceChatStatusUpdated = @(_p) this.notify([])
-    onEventSquadStatusChanged = @(_p) this.notify([])
-    onEventVoiceChatOptionUpdated = @(_p) this.notify([])
-    onEventSquadDataUpdated = @(_p) this.notify([])
-    onEventClanInfoUpdate = @(_p) this.notify([])
+    onEventVoiceChatStatusUpdated = @(p) notify([])
+    onEventSquadStatusChanged = @(p) notify([])
+    onEventVoiceChatOptionUpdated = @(p) notify([])
+    onEventSquadDataUpdated = @(p) notify([])
+    onEventClanInfoUpdate = @(p) notify([])
   }
 })
 
@@ -28,13 +22,13 @@ elemViewType.addTypes({
   VOICE_CHAT = {
     model = elemModelType.VOICE_CHAT
 
-    updateView = function(obj, _params)
+    updateView = function(obj, params)
     {
       if (!::g_login.isLoggedIn())
         return
 
       let nestObj = obj.getParent().getParent()
-      if (!checkObj(nestObj))
+      if (!::check_obj(nestObj))
         return
 
       let isWidgetVisible = nestObj.getFinalProp("isClanOnly") != "yes" ||
@@ -70,7 +64,7 @@ elemViewType.addTypes({
     {
       if (::g_squad_manager.isInSquad())
       {
-        foreach (uid, _member in ::g_squad_manager.getMembers())
+        foreach (uid, member in ::g_squad_manager.getMembers())
           if (::getContact(uid)?.voiceStatus == voiceChatStats.talking)
             return true
       }
@@ -100,14 +94,14 @@ elemViewType.addTypes({
         updateMemberView(obj, memberIndex++, null)
 
       let emptyVoiceObj = nestObj.findObject("voice_chat_no_activity")
-      if (checkObj(emptyVoiceObj))
+      if (::check_obj(emptyVoiceObj))
         emptyVoiceObj.fade = !isAnybodyTalk() ? "in" : "out"
     }
 
     updateMemberView = function(obj, objIndex, uid)
     {
       let memberObj = objIndex < obj.childrenCount() ? obj.getChild(objIndex) : null
-      if (!checkObj(memberObj))
+      if (!::check_obj(memberObj))
         return
 
       let contact = ::getContact(uid)
@@ -120,7 +114,7 @@ elemViewType.addTypes({
     fillContainer = function(obj, childRequired)
     {
       let data = ::handyman.renderCached("%gui/chat/voiceChatElement",
-        { voiceChatElement = array(childRequired, {}) })
+        { voiceChatElement = ::array(childRequired, {}) })
       obj.getScene().replaceContentFromText(obj, data, data.len(), this)
 
       let heightEnd = obj.getParent().getFinalProp("isSmall") == "yes"

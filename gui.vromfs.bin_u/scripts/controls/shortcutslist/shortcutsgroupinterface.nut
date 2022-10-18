@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 return [
@@ -42,21 +37,21 @@ return [
     id = "ID_SHOW_MOUSE_CURSOR"
     checkGroup = ctrlGroups.NO_GROUP
     checkAssign = false
-    showFunc = @() hasFeature("EnableMouse")
-    condition = @() is_platform_pc || isPlatformSony || isPlatformXboxOne
+    showFunc = @() ::has_feature("EnableMouse")
+    condition = @() ::is_platform_pc || isPlatformSony || isPlatformXboxOne
   }
   {
     id = "ID_SCREENSHOT"
     checkGroup = ctrlGroups.COMMON
     checkAssign = false
-    condition = @() is_platform_pc // See AcesApp::makeScreenshot()
+    condition = @() ::is_platform_pc // See AcesApp::makeScreenshot()
     needShowInHelp = true
   }
   {
     id = "ID_SCREENSHOT_WO_HUD"
     checkGroup = ctrlGroups.COMMON
     checkAssign = false
-    condition = @() is_platform_pc // See AcesApp::makeScreenshot()
+    condition = @() ::is_platform_pc // See AcesApp::makeScreenshot()
     needShowInHelp = true
   }
   {

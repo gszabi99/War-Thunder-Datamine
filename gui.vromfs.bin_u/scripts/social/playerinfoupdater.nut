@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-
 let playerInfoUpdater = {
   [PERSISTENT_DATA_PARAMS] = ["lastSendedData"]
 
@@ -14,13 +6,13 @@ let playerInfoUpdater = {
   xboxUserInfoStats = {
     Vehicles = function(myStats) {
       local total = 0
-      foreach (_country, data in myStats?.countryStats ?? {})
+      foreach (country, data in myStats?.countryStats ?? {})
         total += data?.unitsCount ?? 0
       return total
     },
     Medals = function(myStats) {
       local total = 0
-      foreach (_country, data in myStats?.countryStats ?? {})
+      foreach (country, data in myStats?.countryStats ?? {})
         total += data?.medalsCount ?? 0
       return total
     },
@@ -38,7 +30,7 @@ let playerInfoUpdater = {
 
   function updateStatistics()
   {
-    if (!is_platform_xbox)
+    if (!::is_platform_xbox)
       return
 
     let myStats = ::my_stats.getStats()
@@ -52,7 +44,7 @@ let playerInfoUpdater = {
 
   function updatePresence(presence)
   {
-    if (!is_platform_xbox || !presence)
+    if (!::is_platform_xbox || !presence)
       return
 
     if (presence == ::g_contact_presence.UNKNOWN
@@ -63,17 +55,17 @@ let playerInfoUpdater = {
     ::xbox_set_presence(presence.presenceName)
   }
 
-  function onEventMyStatsUpdated(_p)
+  function onEventMyStatsUpdated(p)
   {
     updateStatistics()
   }
 
-  function onEventLoginComplete(_p)
+  function onEventLoginComplete(p)
   {
     updatePresence(::g_contact_presence.ONLINE)
   }
 
-  function onEventSignOut(_p)
+  function onEventSignOut(p)
   {
     updatePresence(::g_contact_presence.OFFLINE)
   }

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { buildTimeStr,  buildDateStrShort, isInTimerangeByUtcStrings,
   getTimestampFromStringUtc } = require("%scripts/time.nut")
@@ -122,7 +117,7 @@ let function getTourParams(tour) {
 
 let getSessionTimeIntervalStr = @(schedule) "".concat(
   buildTimeStr(getTimestampFromStringUtc(schedule.start), false, false),
-  loc("ui/hyphen"),
+  ::loc("ui/hyphen"),
   buildTimeStr(getTimestampFromStringUtc(schedule.end), false, false))
 
 let function getSessionsView(curSesIdx, scheduler) {
@@ -142,9 +137,9 @@ let function getBattleDateStr(tour) {
   let beginTS = getTimestampFromStringUtc(tour.beginDate)
   let endTS = getTimestampFromStringUtc(tour.endDate)
   return "".concat(
-    $"{buildDateStrShort(beginTS)}{loc("ui/comma")}{buildTimeStr(beginTS, false, false)}",
-    loc("ui/mdash"),
-    $"{buildDateStrShort(endTS)}{loc("ui/comma")}{buildTimeStr(endTS, false, false)}")
+    $"{buildDateStrShort(beginTS)}{::loc("ui/comma")}{buildTimeStr(beginTS, false, false)}",
+    ::loc("ui/mdash"),
+    $"{buildDateStrShort(endTS)}{::loc("ui/comma")}{buildTimeStr(endTS, false, false)}")
 }
 
 let function checkByFilter(tour, filter) {
@@ -181,7 +176,7 @@ let function fetchLbData(event, cb, context) {
   ::events.requestSelfRow(
     newSelfRowRequest,
     "mini_lb_self",
-    function (_self_row) {
+    function (self_row) {
       ::events.requestLeaderboard(::events.getMainLbRequest(event),
       "mini_lb_self", cb, context)
     }, this)
@@ -220,15 +215,15 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     headerImg = isFinished || isSoon ? "#ui/gameuiskin#tournament_finished_header.png"
       : $"#ui/gameuiskin#tournament_{armyId}_header.png"
     itemBgr =  $"#ui/images/tournament_{armyId}.jpg"
-    tournamentName = loc($"tournament/{tour.id}")
-    vehicleType = loc($"tournaments/battle_{armyId}")
-    rank = $"{::g_string.utf8ToUpper(loc("shop/age"))} {::get_roman_numeral(tour.rank)}"
-    tournamentType = $" {loc("country/VS")} ".join(teamSizes)
+    tournamentName = ::loc($"tournament/{tour.id}")
+    vehicleType = ::loc($"tournaments/battle_{armyId}")
+    rank = $"{::g_string.utf8ToUpper(::loc("shop/age"))} {::get_roman_numeral(tour.rank)}"
+    tournamentType = $" {::loc("country/VS")} ".join(teamSizes)
     divisionImg = "#ui/gameuiskin#icon_progress_bar_stage_07.png"//!!!FIX IMG PATH
     battleDate = getBattleDateStr(tour)
-    battleDay = isFinished ? loc("items/craft_process/finished")
-      : isTourWndAvailable ? loc("tournaments/enumerated_day", {num = day + 1})
-      : loc("tournaments/coming_soon")
+    battleDay = isFinished ? ::loc("items/craft_process/finished")
+      : isTourWndAvailable ? ::loc("tournaments/enumerated_day", {num = day + 1})
+      : ::loc("tournaments/coming_soon")
     battlesNum = isTourWndAvailable
       ? (getBattlesNum(getEventByDay(tour.id, dayNum, isTraining)) ?? tour.tickets[day].battleLimit)
       : ""
@@ -239,7 +234,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     curStartTime = sesIdx < 0 ? null
       : getSessionTimeIntervalStr(tour.scheduler[day][sesIdx].battle)
     overlayTextColor = getOverlayTextColor(isSesActive)
-    lbBtnTxt = ::g_string.utf8ToUpper(loc("tournaments/leaderboard"))
+    lbBtnTxt = ::g_string.utf8ToUpper(::loc("tournaments/leaderboard"))
   }
 }
 
@@ -323,7 +318,7 @@ let function getSeasonsList() {
 
       // Reorder tournament scheduler by days
       let scheduler = []
-      foreach (_idx, ticket in tour.tickets) {
+      foreach (idx, ticket in tour.tickets) {
         let day = []
         let sTime = getTimestampFromStringUtc(ticket.startActiveTime)
         let eTime = getTimestampFromStringUtc(ticket.stopActiveTime)
@@ -361,7 +356,7 @@ let function getTourActiveTicket(eName, tourId) {
 
 let function getEventMission(curEvent) {
   let list = curEvent?.mission_decl.missions_list ?? {}
-  foreach(key, _val in list)
+  foreach(key, val in list)
     if (typeof(key) == "string")
       return key
 

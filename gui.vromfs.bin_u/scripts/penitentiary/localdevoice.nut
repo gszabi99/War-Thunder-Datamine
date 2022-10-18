@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let devoiceList = {}
 
 let localDevoice = {
@@ -20,7 +14,7 @@ let localDevoice = {
 }
 
 ::add_event_listener("LoadingStateChange",
-  function(_p)
+  function(p)
   {
     if (::is_in_flight())
       devoiceList.clear()

@@ -1,5 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//
+﻿//
 // Dirty Words tables for Russian language.
 //
 

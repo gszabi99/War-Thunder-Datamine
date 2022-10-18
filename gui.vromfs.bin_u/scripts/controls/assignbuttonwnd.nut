@@ -1,16 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc) {
+::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc)
+{
   ::gui_start_modal_wnd(::gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc})
 }
 
-::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsInput.blk"
 
@@ -23,9 +17,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen()
   {
     ::set_bind_mode(true);
-    this.guiScene.sleepKeyRepeat(true);
+    guiScene.sleepKeyRepeat(true);
     isListenButton = true;
-    this.scene.select();
+    scene.select();
   }
 
   function onButtonEntered(obj)
@@ -43,10 +37,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         let btnId = obj["button" + i].tointeger();
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
-        log("onButtonEntered "+i+" "+devId+" "+btnId);
+        ::dagor.debug("onButtonEntered "+i+" "+devId+" "+btnId);
         dev.append(devId);
         btn.append(btnId);
       }
@@ -54,7 +48,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     goBack();
   }
 
-  function onCancelButtonInput(_obj)
+  function onCancelButtonInput(obj)
   {
     goBack();
   }
@@ -74,7 +68,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         btnId = btnId.tointeger()
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
         if (numButtons != 0)
@@ -85,7 +79,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       }
     }
     curBtnText = ::hackTextAssignmentForR2buttonOnPS4(curBtnText)
-    this.scene.findObject("txt_current_button").setValue(curBtnText + ((numButtons < 3)? " + ?" : ""));
+    scene.findObject("txt_current_button").setValue(curBtnText + ((numButtons < 3)? " + ?" : ""));
   }
 
   function afterModalDestroy()
@@ -95,14 +89,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         onButtonEnteredFunc.call(owner, dev, btn);
   }
 
-  function onEventAfterJoinEventRoom(_event)
+  function onEventAfterJoinEventRoom(event)
   {
     goBack()
   }
 
   function goBack()
   {
-    this.guiScene.sleepKeyRepeat(false);
+    guiScene.sleepKeyRepeat(false);
     ::set_bind_mode(false);
     isListenButton = false;
     base.goBack();

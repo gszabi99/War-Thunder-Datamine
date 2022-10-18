@@ -1,12 +1,5 @@
-#explicit-this
-#no-root-fallback
-
-let {handlerType} = require("handlerType.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let { handlersManager } = require("baseGuiHandlerManager.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-::BaseGuiHandler <- class {
+::BaseGuiHandler <- class
+{
   wndType = handlerType.BASE
   sceneBlkName = "%gui/emptyScene.blk"
   sceneNavBlkName = null
@@ -33,7 +26,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
     //must be before setParams
     if (this.wndType == handlerType.BASE)
-      this.backSceneFunc = handlersManager.getLastBaseHandlerStartFunc()
+      this.backSceneFunc = ::handlersManager.getLastBaseHandlerStartFunc()
 
     this.setParams(params)
   }
@@ -53,7 +46,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
   function initCustomHandlerScene()
   {
-    if (!check_obj(this.scene))
+    if (!::check_obj(this.scene))
       return false
 
     this.guiScene = this.scene.getScene()
@@ -80,7 +73,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
     if (!view)
       return false
 
-    let data = handyman.renderCached(this.sceneTplName, view)
+    let data = ::handyman.renderCached(this.sceneTplName, view)
 
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     return true
@@ -94,7 +87,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
   function isValid()
   {
-    return check_obj(this.scene)
+    return ::check_obj(this.scene)
   }
 
   function isInCurrentScene()
@@ -108,7 +101,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
     if(!markup && !this.sceneNavBlkName)
       return
     let obj = this.scene.findObject("nav-help")
-    if (!check_obj(obj))
+    if (!::check_obj(obj))
       return
 
     if (markup)
@@ -121,7 +114,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
   function isSceneActive()
   {
-    return check_obj(this.scene) && this.scene.isEnabled()
+    return ::check_obj(this.scene) && this.scene.isEnabled()
   }
 
   function isSceneActiveNoModals()
@@ -134,9 +127,9 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
   {
     return null
   }
-  function onNewContentLoaded(_handler) {}
+  function onNewContentLoaded(handler) {}
 
-  function onEventNewSceneLoaded(_p)
+  function onEventNewSceneLoaded(p)
   {
     if (this.wndType != handlerType.ROOT)
       return
@@ -148,14 +141,14 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
   function getCurActiveContentHandler()
   {
-    let handler = handlersManager.getActiveBaseHandler()
+    let handler = ::handlersManager.getActiveBaseHandler()
     return (handler && handler.rootHandlerClass == this.getclass()) ? handler : null
   }
   //************** end of only for wndType == handlerType.ROOT *****************//
 
   function getObj(name)
   {
-    if (!check_obj(this.scene))
+    if (!::check_obj(this.scene))
       return null
     return this.scene.findObject(name)
   }
@@ -189,14 +182,14 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
       return
 
     if (needFade)
-      handlersManager.animatedSwitchScene(startFunc)
+      ::handlersManager.animatedSwitchScene(startFunc)
     else
       startFunc()
   }
 
   function fullReloadScene()
   {
-    this.guiScene.performDelayed(this, @() handlersManager.startSceneFullReload())
+    this.guiScene.performDelayed(this, @() ::handlersManager.startSceneFullReload())
   }
 
   function afterModalDestroy() {}
@@ -213,8 +206,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
     {
       this.guiScene.performDelayed(this, function()
       {
-        handlersManager.destroyHandler(this)
-        handlersManager.clearInvalidHandlers()
+        ::handlersManager.destroyHandler(this)
+        ::handlersManager.clearInvalidHandlers()
 
         this.onModalWndDestroy()
       })
@@ -224,7 +217,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
     if (this.wndType == handlerType.BASE && this.backSceneFunc != null)
     {
       if (this.needAnimatedSwitchScene)
-        handlersManager.animatedSwitchScene(this.backSceneFunc)
+        ::handlersManager.animatedSwitchScene(this.backSceneFunc)
       else
         this.backSceneFunc()
     }
@@ -240,7 +233,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
     if (show)
       this.popDelayedActions()
     foreach(handler in this.subHandlers)
-      if (handlersManager.isHandlerValid(handler))
+      if (::handlersManager.isHandlerValid(handler))
         handler.onSceneActivate(show)
   }
 
@@ -276,7 +269,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
       if (typeof(func) == "function")
         func()
       else
-        assert(false, "doWhenActive recieved " + func + ", instead of function")
+        ::dagor.assertf(false, "doWhenActive recieved " + func + ", instead of function")
     }
     else
       this.delayedActions.append(func)
@@ -284,7 +277,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
   function doWhenActiveOnce(funcName)
   {
-    assert(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
+    ::dagor.assertf(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
 
     let prevIdx = this.delayedActions.indexof(funcName)
     if (prevIdx != null)
@@ -293,7 +286,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
     this.popDelayedActions()
   }
 
-  function onEventModalWndDestroy(_params)
+  function onEventModalWndDestroy(params)
   {
     if (this.isSceneActive())
       this.popDelayedActions()
@@ -314,25 +307,20 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
   /**
    * Restores handler to state described in specified state data.
    */
-  function restoreHandler(_stateData)
+  function restoreHandler(stateData)
   {
   }
 
   function registerSubHandler(handler)
   {
-    if (!handlersManager.isHandlerValid(handler))
+    if (!::handlersManager.isHandlerValid(handler))
       return
 
     //clear outdated subHandlers
     for(local i = this.subHandlers.len() - 1; i >= 0; i--)
-      if (!handlersManager.isHandlerValid(this.subHandlers[i]))
+      if (!::handlersManager.isHandlerValid(this.subHandlers[i]))
         this.subHandlers.remove(i)
 
     this.subHandlers.append(handler.weakref())
   }
-
-  _tostring = @() $"BaseGuiHandler(sceneBlkName = {this.sceneBlkName})"
-}
-return {
-  BaseGuiHandler = ::BaseGuiHandler
 }

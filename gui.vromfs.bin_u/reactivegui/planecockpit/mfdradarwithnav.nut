@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let string = require("string")
 let {Altitude, Roll} = require("%rGui/planeState/planeFlyState.nut")
 let {DistanceMax, MfdRadarColor, targets, Irst, TargetsTrigger,
   HasDistanceScale, HasAzimuthScale, Distance} = require("%rGui/radarState.nut")

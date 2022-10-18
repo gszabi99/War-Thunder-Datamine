@@ -1,14 +1,7 @@
-from "%scripts/dagui_library.nut" import *
+let minWindowWidthScale = 1.33  //1.33@sf
 
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-const minWindowWidthScale = 1.33  //1.33@sf
-
-::gui_handlers.WorkshopPreview <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WorkshopPreview <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/items/workshopPreview"
 
@@ -27,7 +20,7 @@ const minWindowWidthScale = 1.33  //1.33@sf
         })
       else if (name == "text")
         infoBlocks.append({
-          text = loc(blk.getParamValue(i))
+          text = ::loc(blk.getParamValue(i))
         })
       else if (name == "imageScale" && infoBlocks.len())
         infoBlocks[infoBlocks.len() - 1][name] <- blk.getParamValue(i)
@@ -35,7 +28,7 @@ const minWindowWidthScale = 1.33  //1.33@sf
 
     let mainImageScale = blk?.main_image_scale ?? minWindowWidthScale
     return {
-      headerText = loc(blk?.main_header ?? "items/workshop")
+      headerText = ::loc(blk?.main_header ?? "items/workshop")
       bgImage = blk?.main_image
       windowWidthScale = max(mainImageScale, minWindowWidthScale)
       mainImageScale = mainImageScale

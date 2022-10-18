@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
@@ -22,27 +16,27 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   function initScreen() {
     base.initScreen()
     this.showSceneBtn("tabs_list", false)
-    this.scene.findObject("back_scene_name").setValue(loc("mainmenu/btnBack"))
-    this.scene.findObject("bc_shop_header").setValue(loc("flightmenu/btnActivateOrder"))
+    scene.findObject("back_scene_name").setValue(::loc("mainmenu/btnBack"))
+    scene.findObject("bc_shop_header").setValue(::loc("flightmenu/btnActivateOrder"))
   }
 
   /*override*/ function updateButtons()
   {
-    let item = this.getCurItem()
+    let item = getCurItem()
     let mainActionData = item ? item.getMainActionData() : null
     let showMainAction = !!mainActionData
     let buttonObj = this.showSceneBtn("btn_main_action", showMainAction)
     if (showMainAction)
     {
-      buttonObj.visualStyle = this.curTab == itemsTab.INVENTORY? "secondary" : "purchase"
-      setDoubleTextToButton(this.scene, "btn_main_action", mainActionData.btnName,
+      buttonObj.visualStyle = curTab == itemsTab.INVENTORY? "secondary" : "purchase"
+      setDoubleTextToButton(scene, "btn_main_action", mainActionData.btnName,
                               mainActionData?.btnColoredName || mainActionData.btnName)
     }
 
     local text = ""
-    if (this.curTab == itemsTab.INVENTORY)
+    if (curTab == itemsTab.INVENTORY)
       text =::g_orders.getWarningText(item)
-    this.setWarningText(text)
+    setWarningText(text)
   }
 
   function goBack() {
@@ -58,19 +52,19 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
     updateButtons()
   }
 
-  function onEventActiveOrderChanged(_params)
+  function onEventActiveOrderChanged(params)
   {
-    this.fillPage()
+    fillPage()
   }
 
   /*override*/ function onMainActionComplete(result)
   {
     // This forces "Activate" button for each item to update.
     if (base.onMainActionComplete(result))
-      this.fillPage()
+      fillPage()
   }
 
-  function onEventOrderUseResultMsgBoxClosed(_params)
+  function onEventOrderUseResultMsgBoxClosed(params)
   {
     goBack()
   }

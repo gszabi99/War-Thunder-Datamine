@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 ::g_script_reloader.loadOnce("%scripts/controls/controlsPreset.nut")
 ::g_script_reloader.loadOnce("%scripts/controls/controlsGlobals.nut")
 ::g_script_reloader.loadOnce("%scripts/controls/controlsCompatibility.nut")
@@ -11,7 +5,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
+local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::g_controls_manager <- {
   [PERSISTENT_DATA_PARAMS] = ["curPreset"]
@@ -66,7 +60,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   hardcodedShortcuts = [
     {
-      condition = function() { return is_platform_pc }
+      condition = function() { return ::is_platform_pc }
       list = [
         {
           name = "ID_SCREENSHOT",
@@ -90,7 +84,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   function setCurPreset(otherPreset)
   {
-    log("ControlsManager: curPreset updated")
+    ::dagor.debug("ControlsManager: curPreset updated")
     this.curPreset = otherPreset
     this.fixDeviceMapping()
     ::broadcastEvent("ControlsReloaded")
@@ -117,7 +111,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
         buttonsCount  = blkJoy["btnCnt"]
         axesOffset    = blkJoy["axesOfs"]
         axesCount     = blkJoy["axesCnt"]
-        connected     = !getTblValue("disconnected", blkJoy, false)
+        connected     = !::getTblValue("disconnected", blkJoy, false)
       }))
 
     if (this.getCurPreset().updateDeviceMapping(realMapping))
@@ -130,7 +124,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
   {
     if (!this.cachedShortcutGroupMap)
     {
-      if (!("shortcutsList" in getroottable()))
+      if (!("shortcutsList" in ::getroottable()))
         return {}
 
       let axisShortcutSuffixesList = []
@@ -177,7 +171,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   function setDefaultRelativeAxes()
   {
-    if (!("shortcutsList" in getroottable()))
+    if (!("shortcutsList" in ::getroottable()))
       return
 
     foreach (shortcut in ::shortcutsList)
@@ -195,7 +189,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     {
       let value = "valueFunction" in fixData ?
         fixData.valueFunction() : fixData.value
-      if (getTblValue("isAppend", fixData))
+      if (::getTblValue("isAppend", fixData))
       {
         let isGamepadExpected =  ::is_xinput_device() || ::have_xinput_device()
         if (this.curPreset.isHotkeyShortcutBinded(fixData.source, value)
@@ -227,7 +221,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
   {
     let prefix = "USEROPT_"
     let userOptTypes = []
-    foreach (oType, _value in this.curPreset.params)
+    foreach (oType, value in this.curPreset.params)
       if (::g_string.startsWith(oType, prefix))
         userOptTypes.append(oType)
     foreach (oType in userOptTypes)
@@ -244,14 +238,14 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     let prefix = "USEROPT_"
     foreach (oType, value in this.curPreset.params)
       if (::g_string.startsWith(oType, prefix))
-        if (oType in getroottable())
-          ::set_option(getroottable()[oType], value)
+        if (oType in ::getroottable())
+          ::set_option(::getroottable()[oType], value)
     setGuiOptionsMode(mainOptionsMode)
   }
 
   // While controls reloaded on PS4 from uncrorrect blk when mission started
   // it is required to commit controls when mission start.
-  function onEventMissionStarted(_params)
+  function onEventMissionStarted(params)
   {
     if (isPlatformSony)
       this.commitControls()

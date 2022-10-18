@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let time = require("%scripts/time.nut")
 let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -45,32 +37,32 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen()
   {
-    this.fillGamercard()
+    fillGamercard()
     reinitScreen()
   }
 
-  function reinitScreen(_params = null)
+  function reinitScreen(params = null)
   {
     if (!topMenuInited && ::g_login.isLoggedIn())
     {
       topMenuInited = true
 
       leftSectionHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
-        this.scene.findObject("topmenu_menu_panel"),
+        scene.findObject("topmenu_menu_panel"),
         this,
         ::g_top_menu_left_side_sections,
-        this.scene.findObject("left_gc_panel_free_width")
+        scene.findObject("left_gc_panel_free_width")
       )
-      this.registerSubHandler(leftSectionHandlerWeak)
+      registerSubHandler(leftSectionHandlerWeak)
 
       if (::last_chat_scene_show)
-        this.switchChatWindow()
+        switchChatWindow()
       if (::last_contacts_scene_show)
         onSwitchContacts()
 
       initTopMenuTimer()
       instantOpenShopWnd()
-      this.createSlotbar(
+      createSlotbar(
         {
           hasResearchesBtn = true
           mainMenuSlotbar = true
@@ -82,27 +74,27 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
         "nav-topMenu"
       )
 
-      this.showSceneBtn("topmenu_psn_update", isPlatformPS4 && isRunningOnPS5())
+      showSceneBtn("topmenu_psn_update", isPlatformPS4 && isRunningOnPS5())
     }
   }
 
   function initTopMenuTimer()
   {
-    let obj = this.getObj("top_menu_scene_timer")
-    if (checkObj(obj))
+    let obj = getObj("top_menu_scene_timer")
+    if (::checkObj(obj))
       obj.setUserData(this)
   }
 
   function getBaseHandlersContainer() //only for wndType = handlerType.ROOT
   {
-    return this.scene.findObject("topMenu_content")
+    return scene.findObject("topMenu_content")
   }
 
   function onNewContentLoaded(handler)
   {
     checkAdvert()
 
-    let hasResearch = getTblValue("hasTopMenuResearch", handler, true)
+    let hasResearch = ::getTblValue("hasTopMenuResearch", handler, true)
     this.showSceneBtn("topmenu_btn_shop_wnd", hasResearch)
     if (!hasResearch)
       closeShop()
@@ -114,7 +106,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     }
   }
 
-  function onTopMenuUpdate(_obj, dt)
+  function onTopMenuUpdate(obj, dt)
   {
     checkAdvertTimer -= dt
     if (checkAdvertTimer<=0)
@@ -131,9 +123,9 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function checkAdvert()
   {
-    if (!::is_news_adver_actual())
+    if (!is_news_adver_actual())
     {
-      let t = ::req_news()
+      let t = req_news()
       if (t >= 0)
         return ::add_bg_task_cb(t, updateAdvert, this)
     }
@@ -142,14 +134,14 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateAdvert()
   {
-    let obj = this.scene.findObject("topmenu_advert")
-    if (!checkObj(obj))
+    let obj = scene.findObject("topmenu_advert")
+    if (!::check_obj(obj))
       return
 
     let blk = ::DataBlock()
     ::get_news_blk(blk)
-    let text = loc(blk?.advert ?? "", "")
-    SecondsUpdater(obj, function(tObj, _params)
+    let text = ::loc(blk?.advert ?? "", "")
+    SecondsUpdater(obj, function(tObj, params)
     {
       let stopUpdate = text.indexof("{time_countdown=") == null
       let textResult = time.processTimeStamps(text)
@@ -164,7 +156,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   {
     isInQueue = inQueue
 
-    let slotbar = this.getSlotbar()
+    let slotbar = getSlotbar()
     if (slotbar)
       slotbar.shade(inQueue)
     updateSceneShade()
@@ -180,12 +172,12 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateSceneShade()
   {
-    local obj = this.getObj("topmenu_backshade_dark")
-    if (checkObj(obj))
+    local obj = getObj("topmenu_backshade_dark")
+    if (::check_obj(obj))
       obj.animation = isInQueue ? "show" : "hide"
 
-    obj = this.getObj("topmenu_backshade_light")
-    if (checkObj(obj))
+    obj = getObj("topmenu_backshade_light")
+    if (::check_obj(obj))
       obj.animation = !isInQueue && topMenuShopActive.value ? "show" : "hide"
   }
 
@@ -218,7 +210,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function shopWndSwitch(unitType = null)
   {
-    if (!this.isValid())
+    if (!isValid())
       return
 
     if (isSmallScreen)
@@ -229,16 +221,16 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     topMenuShopActive(!topMenuShopActive.value)
-    let shopMove = this.getObj("shop_wnd_move")
+    let shopMove = getObj("shop_wnd_move")
     shopMove.moveOut = topMenuShopActive.value ? "yes" : "no"
-    let closeResearch = this.getObj("research_closeButton")
+    let closeResearch = getObj("research_closeButton")
     let showButton = shopMove.moveOut == "yes"
 
     ::dmViewer.update()
 
     if(showButton)
-      this.guiScene.playSound("menu_appear")
-    if(checkObj(closeResearch))
+      guiScene.playSound("menu_appear")
+    if(::checkObj(closeResearch))
       closeResearch.show(showButton)
     activateShopImpl(topMenuShopActive.value, unitType)
     if (shopWeak && shopWeak.getCurrentEdiff() != ::get_current_ediff())
@@ -258,12 +250,12 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   {
     if (topMenuShopActive.value)
     {
-      let shopMove = this.getObj("shop_wnd_move")
-      if (!checkObj(shopMove))
+      let shopMove = getObj("shop_wnd_move")
+      if (!::checkObj(shopMove))
         return
 
-      let closeResearch = this.getObj("research_closeButton")
-      if(checkObj(closeResearch))
+      let closeResearch = getObj("research_closeButton")
+      if(::checkObj(closeResearch))
         closeResearch.show(true)
 
       shopMove.moveOut = "yes"
@@ -271,7 +263,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       shopMove.setFloatProp(::dagui_propid.add_name_id("_size-timer"), 1.0)
       shopMove.height = "sh"
 
-      this.guiScene.performDelayed(this, function () { updateOnShopWndAnim(true) })
+      guiScene.performDelayed(this, function () { updateOnShopWndAnim(true) })
 
       activateShopImpl(true)
     }
@@ -279,12 +271,12 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onShopWndAnimStarted(obj)
   {
-    this.onHoverSizeMove(obj)
+    onHoverSizeMove(obj)
     updateOnShopWndAnim(!topMenuShopActive.value)
     ::showBtn("gamercard_center", !topMenuShopActive.value)
   }
 
-  function onShopWndAnimFinished(_obj)
+  function onShopWndAnimFinished(obj)
   {
     updateOnShopWndAnim(topMenuShopActive.value)
   }
@@ -294,9 +286,9 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     shopWeak?.showUnitInShop(params.unitName)
   }
 
-  function onEventProfileUpdated(_p) {
-    if (!this.scene.isVisible())
-      this.doWhenActiveOnce("updateGamercards")
+  function onEventProfileUpdated(p) {
+    if (!scene.isVisible())
+      doWhenActiveOnce("updateGamercards")
   }
 
   function updateGamercards() {
@@ -322,16 +314,16 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       //instanciate shop window
       if (!shopWeak)
       {
-        let wndObj = this.getObj("shop_wnd_frame")
+        let wndObj = getObj("shop_wnd_frame")
         let shopHandler = ::handlersManager.loadHandler(::gui_handlers.ShopMenuHandler,
           {
             scene = wndObj
-            closeShop = Callback(shopWndSwitch, this)
+            closeShop = ::Callback(shopWndSwitch, this)
             forceUnitType =unitType
           })
         if (shopHandler)
         {
-          this.registerSubHandler(shopHandler)
+          registerSubHandler(shopHandler)
           shopWeak = shopHandler.weakref()
         }
       }
@@ -339,7 +331,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
         shopWeak.setUnitType(unitType)
     }
 
-    ::enableHangarControls(!shouldActivate)
+    enableHangarControls(!shouldActivate)
   }
 
   function goBack()
@@ -360,19 +352,19 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       ::current_base_gui_handler.onTopMenuGoBack.call(::current_base_gui_handler, checkTopMenuButtons)
   }
 
-  function onGCShop(_obj)
+  function onGCShop(obj)
   {
     shopWndSwitch()
   }
 
   function onSwitchContacts()
   {
-    ::switchContactsObj(this.scene, this)
+    ::switchContactsObj(scene, this)
   }
 
   function fullReloadScene()
   {
-    this.checkedForward(function() {
+    checkedForward(function() {
       if (::handlersManager.getLastBaseHandlerStartFunc())
       {
         ::handlersManager.clearScene()
@@ -383,7 +375,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onSceneActivate(show)
   {
-    if (show && !this.getCurActiveContentHandler())
+    if (show && !getCurActiveContentHandler())
     {
       isWaitForContentToActivateScene = true
       return
@@ -398,8 +390,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     if (topMenuShopActive.value && shopWeak)
       shopWeak.onSceneActivate(show)
     if (show) {
-      setShowUnit(this.getCurSlotUnit(), this.getHangarFallbackUnitParams())
-      ::enableHangarControls(!topMenuShopActive.value)
+      setShowUnit(getCurSlotUnit(), getHangarFallbackUnitParams())
+      enableHangarControls(!topMenuShopActive.value)
     }
   }
 
@@ -474,7 +466,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     ]
 
     //Bottom bars
-    let slotbar = this.getSlotbar()
+    let slotbar = getSlotbar()
     if (slotbar)
     {
       if (::unlocked_countries.len() > 1)
@@ -488,7 +480,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
           msgId = "hint_my_crews"
         })
 
-      let presetsList = this.getSlotbarPresetsList()
+      let presetsList = getSlotbarPresetsList()
       let listObj = presetsList.getListObj()
       let presetsObjList = ["btn_slotbar_presets"]
 

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
 ::gui_handlers.WaitForLoginWnd <- class extends ::BaseGuiHandler
@@ -21,9 +16,9 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
   {
     local text = ""
     if (!(::g_login.curState & LOGIN_STATE.MATCHING_CONNECTED))
-      text = loc("yn1/connecting_msg")
+      text = ::loc("yn1/connecting_msg")
     else if (!(::g_login.curState & LOGIN_STATE.CONFIGS_INITED))
-      text = loc("loading")
+      text = ::loc("loading")
     this.scene.findObject("msgText").setValue(text)
   }
 
@@ -46,18 +41,18 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
       animBgLoad("", this.scene.findObject("animated_bg_picture"))
   }
 
-  function onEventLoginStateChanged(_p)
+  function onEventLoginStateChanged(p)
   {
     this.updateText()
     this.updateBg()
   }
 
-  function onEventHangarModelLoaded(_params)
+  function onEventHangarModelLoaded(params)
   {
     ::enableHangarControls(true)
   }
 
-  function onEventActiveHandlersChanged(_p)
+  function onEventActiveHandlersChanged(p)
   {
     this.updateVisibility()
   }

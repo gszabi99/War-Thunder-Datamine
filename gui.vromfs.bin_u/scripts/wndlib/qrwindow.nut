@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { generateQrBlocks } = require("%sqstd/qrCode.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
 
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
@@ -35,15 +27,15 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
     urlWithoutTags = urlWithoutTags
     buttons = buttons
     needShowUrlLink = needShowUrlLink
-    isAllowExternalLink = hasFeature("AllowExternalLink") && !::is_vendor_tencent()
-    infoText = infoText ?? $"{loc("qrWindow/info")} {additionalInfoText}"
+    isAllowExternalLink = ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
+    infoText = infoText ?? $"{::loc("qrWindow/info")} {additionalInfoText}"
   }
 
   function initScreen() {
     if (baseUrl == "" || urlWithoutTags == "")
       goBack()
 
-    this.scene.findObject("wnd_update").setUserData(this)
+    scene.findObject("wnd_update").setUserData(this)
   }
 
   function getQrCodeView() {
@@ -54,7 +46,7 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
     urlWithoutTags = urlConfig.urlWithoutTags
     let urlForQr = needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
     let list = generateQrBlocks(urlForQr)
-    let cellSize = ((qrSize ?? to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
+    let cellSize = ((qrSize ?? ::to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
     let size = cellSize * (list.size + 8)
     return {
       qrSize = size
@@ -68,10 +60,10 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateQrCode() {
     let data = ::handyman.renderCached("%gui/commonParts/qrCode", getQrCodeView())
-    this.guiScene.replaceContentFromText(this.scene.findObject("wnd_content"), data, data.len(), this)
+    guiScene.replaceContentFromText(scene.findObject("wnd_content"), data, data.len(), this)
   }
 
-  function onUpdate(_obj, _dt) {
+  function onUpdate(obj, dt) {
     updateQrCode()
   }
 

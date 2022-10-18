@@ -1,15 +1,9 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let FONT_CHOICE_SAVE_ID = "tutor/fontChange"
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 local wasOpened = false
 
-::gui_handlers.FontChoiceWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.FontChoiceWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.MODAL
   sceneTplName = "%gui/options/fontChoiceWnd"
 
@@ -54,7 +48,7 @@ local wasOpened = false
       return
 
     ::set_option(::USEROPT_FONTS_CSS, newValue, option)
-    this.guiScene.performDelayed(this, @() ::handlersManager.getActiveBaseHandler().fullReloadScene())
+    guiScene.performDelayed(this, @() ::handlersManager.getActiveBaseHandler().fullReloadScene())
   }
 
   function goBack()

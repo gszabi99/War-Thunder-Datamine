@@ -1,11 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::showClanRequests <- function showClanRequests(candidatesData, clanId, owner)
 {
@@ -66,13 +59,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateRequestList()
   {
-    if (!checkObj(this.scene))
+    if (!::checkObj(scene))
       return;
 
     if (curPage > 0 && rowTexts.len() <= curPage * rowsPerPage)
       curPage--
 
-    let tblObj = this.scene.findObject("candidatesList");
+    let tblObj = scene.findObject("candidatesList");
     local data = "";
 
     let headerRow = [];
@@ -85,7 +78,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         tdalign="center",
       });
     }
-    data = ::buildTableRow("row_header", headerRow, null,
+    data = buildTableRow("row_header", headerRow, null,
       "enable:t='no'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ");
 
     let startIdx = curPage * rowsPerPage
@@ -102,11 +95,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
           text = "",
         });
       }
-      data += ::buildTableRow(rowName, rowData, (i-startIdx)%2==0, "");
+      data += buildTableRow(rowName, rowData, (i-startIdx)%2==0, "");
     }
 
-    this.guiScene.setUpdatesEnabled(false, false);
-    this.guiScene.replaceContentFromText(tblObj, data, data.len(), this);
+    guiScene.setUpdatesEnabled(false, false);
+    guiScene.replaceContentFromText(tblObj, data, data.len(), this);
 
     for(local i=startIdx; i < lastIdx; i++)
     {
@@ -116,11 +109,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     tblObj.setValue(1) //after header
-    this.guiScene.setUpdatesEnabled(true, true);
+    guiScene.setUpdatesEnabled(true, true);
     ::move_mouse_on_child_by_value(tblObj)
     onSelect()
 
-    ::generatePaginator(this.scene.findObject("paginator_place"), this, curPage, ((rowTexts.len()-1) / rowsPerPage).tointeger())
+    generatePaginator(scene.findObject("paginator_place"), this, curPage, ((rowTexts.len()-1) / rowsPerPage).tointeger())
   }
 
   function goToPage(obj)
@@ -134,7 +127,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     curCandidate = null;
     if (candidatesList && candidatesList.len()>0)
     {
-      let objTbl = this.scene.findObject("candidatesList");
+      let objTbl = scene.findObject("candidatesList");
       let index = objTbl.getValue() + curPage*rowsPerPage - 1; //header
       if (index in candidatesList)
         curCandidate = candidatesList[index];
@@ -157,8 +150,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onUserAction()
   {
-    let table = this.scene.findObject("candidatesList")
-    if (!checkObj(table))
+    let table = scene.findObject("candidatesList")
+    if (!::checkObj(table))
       return
 
     let index = table.getValue()
@@ -210,7 +203,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (rowTexts.len() > 0)
       updateRequestList()
     else
-      this.goBack()
+      goBack()
   }
 
   function afterModalDestroy()

@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
@@ -23,7 +17,7 @@ enum qTypeCheckOrder {
   typeName = "" //filled automatically by typeName
   bit = QUEUE_TYPE_BIT.UNKNOWN
   checkOrder = qTypeCheckOrder.COMMON
-  getQueueClass = @(_params) ::queue_classes.Event
+  getQueueClass = @(params) ::queue_classes.Event
   useSlots = true
 
   prepareQueueParams = function(params)
@@ -41,8 +35,8 @@ enum qTypeCheckOrder {
   createQueue = @(queueId, params) getQueueClass(params)(queueId, this, params)
   leaveAllQueues = @(successCallback, errorCallback, needShowError = false)
     getQueueClass(null).leaveAll(successCallback, errorCallback, needShowError)
-  updateInfo = function(_successCallback, _errorCallback, _needAllQueues = false) {}
-  isParamsCorresponds = @(_params) true
+  updateInfo = function(successCallback, errorCallback, needAllQueues = false) {}
+  isParamsCorresponds = @(params) true
 }
 
 enums.addTypesByGlobalName("g_queue_type",
@@ -54,7 +48,7 @@ enums.addTypesByGlobalName("g_queue_type",
     EVENT = {
       bit = QUEUE_TYPE_BIT.EVENT
       checkOrder = qTypeCheckOrder.ANY_EVENT
-      isParamsCorresponds = @(params) !::u.isEmpty(getTblValue("mode", params))
+      isParamsCorresponds = @(params) !::u.isEmpty(::getTblValue("mode", params))
     }
 
     NEWBIE = {
@@ -69,22 +63,22 @@ enums.addTypesByGlobalName("g_queue_type",
 
     WW_BATTLE = {
       bit = QUEUE_TYPE_BIT.WW_BATTLE
-      getQueueClass = @(_params) ::queue_classes.WwBattle
+      getQueueClass = @(params) ::queue_classes.WwBattle
       useSlots = false
 
       isParamsCorresponds = @(params) "battleId" in params
       prepareQueueParams = function(params)
       {
         let wwBattle = params?.wwBattle
-        let side = params?.side ?? SIDE_1
+        let side = params?.side ?? ::SIDE_1
         return {
           clusters    = clustersModule.getCurrentClusters()
           operationId = params.operationId
           battleId    = params.battleId
           country     = wwBattle ? wwBattle.getCountryNameBySide(side)
-                          : getTblValue("country", params, "")
+                          : ::getTblValue("country", params, "")
           team        = wwBattle ? wwBattle.getTeamNameBySide(side)
-                          : getTblValue("team", params, SIDE_1)
+                          : ::getTblValue("team", params, ::SIDE_1)
           isBattleByUnitsGroup = wwBattle?.isBattleByUnitsGroup() ?? false
         }
       }
@@ -95,7 +89,7 @@ enums.addTypesByGlobalName("g_queue_type",
           "worldwar.get_queue_info",
           function(response) {
             let queuesInfo = {}
-            let responseQueues = getTblValue("queues", response, [])
+            let responseQueues = ::getTblValue("queues", response, [])
             foreach(battleQueueInfo in responseQueues)
               if (battleQueueInfo?.battleId)
                 queuesInfo[battleQueueInfo.battleId] <- battleQueueInfo
@@ -116,11 +110,12 @@ enums.addTypesByGlobalName("g_queue_type",
 
 ::g_queue_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
-::g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params) {
+g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params)
+{
   if (!params)
-    return this.UNKNOWN
-  foreach(qType in this.types)
+    return UNKNOWN
+  foreach(qType in types)
     if (qType.isParamsCorresponds(params))
       return qType
-  return this.UNKNOWN
+  return UNKNOWN
 }

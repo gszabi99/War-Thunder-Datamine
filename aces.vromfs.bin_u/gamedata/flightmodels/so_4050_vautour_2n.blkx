@@ -2368,13 +2368,848 @@
     }
   },
   "commonWeapons": {
-    "hideNodes": {}
+    "hideNodes": {},
+    "Weapon": [
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonDEFA552.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "dm": "cannon1_dm",
+        "bullets": 100,
+        "spread": 1.2,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonDEFA552.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "cannon2_dm",
+        "bullets": 100,
+        "spread": 1.2,
+        "traceOffset": 2
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonDEFA552.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "dm": "cannon3_dm",
+        "bullets": 100,
+        "spread": 1.2,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonDEFA552.blk",
+        "emitter": "flare4",
+        "flash": "flare4",
+        "dm": "cannon4_dm",
+        "bullets": 100,
+        "spread": 1.2,
+        "traceOffset": 2
+      }
+    ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "so_4050_vautour_2n_fr_default",
-      "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_default.blk"
-    }
+    "preset": [
+      {
+        "name": "so_4050_vautour_2n_fr_default",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_default.blk"
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_as_30",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_as_30.blk",
+        "reqModification": "nord_as_30"
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_as_30_as20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_as_30_as20.blk",
+        "reqModification": [
+          "nord_as_30",
+          "nord_aa_20"
+        ]
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_aa_20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_aa_20.blk",
+        "reqModification": "nord_aa_20"
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_as_20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_as_20.blk",
+        "reqModification": "nord_aa_20"
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_as20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_as20.blk",
+        "reqModification": [
+          "nord_aa_20",
+          "fr_matra_type104a"
+        ],
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+            "amountPerTier": 112.0,
+            "iconType": "nar_ap_rocket_b",
+            "tier": {
+              "idx": 6
+            }
+          }
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_as_20_aa20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_as_20_aa20.blk",
+        "reqModification": "nord_aa_20"
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_250kg",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_250kg.blk",
+        "reqModification": "fr_250kg_type_25c"
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_250kg_aa20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_250kg_aa20.blk",
+        "reqModification": [
+          "nord_aa_20",
+          "fr_250kg_type_25c"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_middle",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5,
+                  "amountPerTier": 3.0,
+                  "iconType": "bombs_middle_group"
+                },
+                {
+                  "idx": 7,
+                  "amountPerTier": 3.0,
+                  "iconType": "bombs_middle_group"
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk",
+              "amountPerTier": 1.0,
+              "iconType": "missile_air_to_air_midrange",
+              "tier": [
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 9
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_250kg_as20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_250kg_as20.blk",
+        "reqModification": [
+          "nord_aa_20",
+          "fr_250kg_type_25c"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_middle",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5,
+                  "amountPerTier": 3.0,
+                  "iconType": "bombs_middle_group"
+                },
+                {
+                  "idx": 7,
+                  "amountPerTier": 3.0,
+                  "iconType": "bombs_middle_group"
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk",
+              "amountPerTier": 1.0,
+              "iconType": "missile_air_to_air_midrange",
+              "tier": [
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 9
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_250kg_as30",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_250kg_as30.blk",
+        "reqModification": [
+          "nord_as_30",
+          "fr_250kg_type_25c"
+        ]
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_400kg",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_400kg.blk",
+        "reqModification": "fr_400kg_type_21b",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_special"
+          }
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_400kg_as30",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_400kg_as30.blk",
+        "reqModification": [
+          "fr_400kg_type_21b",
+          "nord_as_30"
+        ],
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_special"
+          }
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_400kg_aa20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_400kg_aa20.blk",
+        "reqModification": [
+          "fr_400kg_type_21b",
+          "nord_aa_20"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_special",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk",
+              "amountPerTier": 1.0,
+              "iconType": "missile_air_to_air_midrange",
+              "tier": [
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 9
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_400kg_as20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_400kg_as20.blk",
+        "reqModification": [
+          "fr_400kg_type_21b",
+          "nord_aa_20"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_special",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_as20.blk",
+              "amountPerTier": 1.0,
+              "iconType": "missile_air_to_uni",
+              "tier": [
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 9
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_750lb",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_750lb.blk",
+        "reqModification": "fr_750lb_m117"
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_750lb_as30",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_750lb_as30.blk",
+        "reqModification": [
+          "fr_750lb_m117",
+          "nord_as_30"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
+              "amountPerTier": 1.0,
+              "iconType": "missile_air_to_uni_middle"
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_750lb_m117_cone_45.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_large",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_750lb_aa20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_750lb_aa20.blk",
+        "reqModification": [
+          "fr_750lb_m117",
+          "nord_aa_20"
+        ]
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_bombs_750lb_as20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_bombs_750lb_as20.blk",
+        "reqModification": [
+          "fr_750lb_m117",
+          "nord_aa_20"
+        ]
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104.blk",
+        "reqModification": "fr_matra_type104a",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+            "amountPerTier": 112.0,
+            "iconType": "nar_ap_rocket_b",
+            "tier": {
+              "idx": 6
+            }
+          }
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_as30",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_as30.blk",
+        "reqModification": [
+          "fr_matra_type104a",
+          "nord_as_30"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
+              "amountPerTier": 1.0,
+              "iconType": "missile_air_to_uni_middle",
+              "tier": [
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_aa20",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_aa20.blk",
+        "reqModification": [
+          "fr_matra_type104a",
+          "nord_aa_20"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk",
+              "amountPerTier": 1.0,
+              "iconType": "missile_air_to_air_midrange",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_250kg",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_250kg.blk",
+        "reqModification": [
+          "fr_matra_type104a",
+          "fr_250kg_type_25c"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_middle",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_250kg_matra116",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_250kg_matra116.blk",
+        "reqModification": [
+          "fr_matra_type104a",
+          "nord_aa_20",
+          "fr_matra_type116"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_middle",
+              "tier": [
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
+              "amountPerTier": 19.0,
+              "iconType": "nar_ap_large",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_750lb",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_750lb.blk",
+        "reqModification": [
+          "fr_matra_type104a",
+          "fr_750lb_m117"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_750lb_m117_cone_45.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_large",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_750lb_matra116",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_750lb_matra116.blk",
+        "reqModification": [
+          "fr_matra_type104a",
+          "fr_750lb_m117",
+          "fr_matra_type116"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_750lb_m117_cone_45.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_large",
+              "tier": [
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
+              "amountPerTier": 19.0,
+              "iconType": "nar_ap_large",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_400kg",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_400kg.blk",
+        "reqModification": [
+          "fr_matra_type104a",
+          "fr_400kg_type_21b"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_special",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra104_400kg_matra116",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra104_400kg_matra116.blk",
+        "reqModification": [
+          "fr_matra_type104a",
+          "fr_400kg_type_21b",
+          "fr_matra_type116"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_special",
+              "tier": [
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
+              "amountPerTier": 19.0,
+              "iconType": "nar_ap_large",
+              "tier": [
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra116",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra116.blk",
+        "reqModification": "fr_matra_type116",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
+            "amountPerTier": 19.0,
+            "iconType": "nar_ap_large",
+            "tier": [
+              {
+                "idx": 4
+              },
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              },
+              {
+                "idx": 8
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra_t10",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra_t10.blk",
+        "reqModification": "fr_matra_type61",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+              "amountPerTier": 2.0,
+              "iconType": "rockets_ap_large_group_x2",
+              "tier": [
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "amountPerTier": 2.0,
+              "iconType": "rockets_ap_large_group_x2",
+              "tier": [
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                },
+                {
+                  "idx": 9
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "so_4050_vautour_2n_fr_rockets_matra_t10_matra104",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra_t10_matra104.blk",
+        "reqModification": [
+          "fr_matra_type61",
+          "fr_matra_type104a"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 112.0,
+              "iconType": "nar_ap_rocket_b",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+              "amountPerTier": 2.0,
+              "iconType": "rockets_ap_large_group_x2",
+              "tier": [
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "amountPerTier": 2.0,
+              "iconType": "rockets_ap_large_group_x2",
+              "tier": [
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                },
+                {
+                  "idx": 9
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -2491,6 +3326,53 @@
         "aileronBooster": 0.9,
         "elevatorBooster": 0.9
       }
+    },
+    "aden_air_targets": {},
+    "aden_ground_targets": {},
+    "aden_stealth": {},
+    "aden_new_gun": {
+      "reqModification": "aden_belt_pack",
+      "tier": 3
+    },
+    "aden_belt_pack": {
+      "tier": 1
+    },
+    "fr_matra_type61": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "fr_matra_type104a": {
+      "tier": 2,
+      "modClass": "weapon",
+      "reqModification": "fr_matra_type61"
+    },
+    "fr_matra_type116": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fr_matra_type104a"
+    },
+    "nord_aa_20": {
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "nord_as_30": {
+      "reqModification": "nord_aa_20",
+      "tier": 4,
+      "modClass": "weapon"
+    },
+    "fr_250kg_type_25c": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "fr_750lb_m117": {
+      "tier": 2,
+      "modClass": "weapon",
+      "reqModification": "fr_250kg_type_25c"
+    },
+    "fr_400kg_type_21b": {
+      "reqModification": "fr_750lb_m117",
+      "modClass": "weapon",
+      "tier": 3
     }
   },
   "user_skin": {

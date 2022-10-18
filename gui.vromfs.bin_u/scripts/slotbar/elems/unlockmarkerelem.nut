@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
@@ -12,7 +6,7 @@ elemModelType.addTypes({
   UNLOCK_MARKER = {
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
 
-    onEventShopWndSwitched = @(_p) this.notify([])
+    onEventShopWndSwitched = @(p) notify([])
   }
 })
 

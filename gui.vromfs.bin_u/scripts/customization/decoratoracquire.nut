@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 // Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
 
 let function askPurchaseDecorator(decorator, onSuccessCb)
@@ -18,7 +13,7 @@ let function askPurchaseDecorator(decorator, onSuccessCb)
     unitName = ::g_unlocks.getPlaneBySkinId(decoratorId)
     decoratorId = ::g_unlocks.getSkinNameBySkinId(decoratorId)
   }
-  let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_purchaseDecal",
+  let msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_purchaseDecal",
     { purchase = decorator.getName(),
       cost = cost.getTextAccordingToBalance()
     }), cost)
@@ -37,7 +32,7 @@ let function askConsumeDecoratorCoupon(decorator, onSuccessCb)
     return
 
   let inventoryItem = ::ItemsManager.getInventoryItemById(decorator?.getCouponItemdefId())
-  inventoryItem.consume(Callback(function(result) {
+  inventoryItem.consume(::Callback(function(result) {
     if (result?.success ?? false)
       onSuccessCb?()
   }, this), null)
@@ -57,8 +52,8 @@ let function askFindDecoratorCouponOnMarketplace(decorator)
     return
 
   let item = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
-  let itemName = colorize("activeTextColor", item.getName())
-  this.msgBox("find_on_marketplace", loc("msgbox/find_on_marketplace", { itemName = itemName }), [
+  let itemName = ::colorize("activeTextColor", item.getName())
+  this.msgBox("find_on_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = itemName }), [
       [ "find_on_marketplace", @() findDecoratorCouponOnMarketplace(decorator) ],
       [ "cancel" ]
     ], "find_on_marketplace", { cancel_fn = @() null })

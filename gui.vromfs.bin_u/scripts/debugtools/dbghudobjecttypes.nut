@@ -1,36 +1,28 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { GO_FAIL, GO_WIN, MISSION_CAPTURING_ZONE, MISSION_CAPTURED_ZONE, MISSION_CAPTURING_STOP
 } = require_native("guiMission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { hud_message_objective_debug, hud_message_player_damage_debug, hud_message_kill_log_debug,
-  hud_debug_streak
-} = require("%scripts/debugTools/dbgHud.nut")
-
-let results = {
+::g_dbg_hud_object_type <- {
   types = []
-  template = {
-    eventChance = 100
-    hudEventsList = null //array
-    isVisible = function(_hudType) { return true }
-    function genNewEvent() {
-      if (!hudEventsList)
-        return
-      let hudEventData = ::u.map(::u.chooseRandom(hudEventsList), @(val) ::u.isFunction(val) ? val() : val)
-      ::g_hud_event_manager.onHudEvent(hudEventData.eventId, hudEventData)
-    }
+}
+
+::g_dbg_hud_object_type.template <- {
+  eventChance = 100
+  hudEventsList = null //array
+  isVisible = function(hudType) { return true }
+  genNewEvent = function()
+  {
+    if (!hudEventsList)
+      return
+    let hudEventData = ::u.map(::u.chooseRandom(hudEventsList), @(val) ::u.isFunction(val) ? val() : val)
+    ::g_hud_event_manager.onHudEvent(hudEventData.eventId, hudEventData)
   }
 }
 
-enums.addTypes(results, {
+enums.addTypesByGlobalName("g_dbg_hud_object_type", {
   REWARD_MESSAGE = { //visible by prioriy
     eventChance = 50
-    function genNewEvent() {
+    genNewEvent = function() {
       let ignoreIdx = ::g_hud_reward_message.types.indexof(::g_hud_reward_message.UNKNOWN)
       ::g_hud_event_manager.onHudEvent("InBattleReward", {
         messageCode = ::u.chooseRandomNoRepeat(::g_hud_reward_message.types, ignoreIdx).code
@@ -44,7 +36,7 @@ enums.addTypes(results, {
   MISSION_COMPLETE = { //dosnt work in testflight
     eventChance = 20
     eventNames = ["MissionResult", "MissionContinue"]
-    function genNewEvent() {
+    genNewEvent = function() {
       ::g_hud_event_manager.onHudEvent(::u.chooseRandom(eventNames), {
         resultNum = (::math.rnd() % 2) ? GO_FAIL : GO_WIN
       })
@@ -53,22 +45,26 @@ enums.addTypes(results, {
 
   STREAK = {
     eventChance = 2
-    genNewEvent = hud_debug_streak
+    genNewEvent = ::hud_debug_streak
   }
 
   MISSION_OBJECTIVE = {
     eventChance = 20
-    genNewEvent = hud_message_objective_debug
+    genNewEvent = function() {
+      ::hud_message_objective_debug(true, false, ::dbg_msg_obj_counter)
+    }
   }
 
   KILL_LOG = {
     eventChance = 50
-    genNewEvent = hud_message_kill_log_debug
+    genNewEvent = ::hud_message_kill_log_debug
   }
 
   PLAYER_DAMAGE = {
     eventChance = 50
-    genNewEvent = hud_message_player_damage_debug
+    genNewEvent = function() {
+      ::hud_message_player_damage_debug(::dbg_player_damage_counter++)
+    }
   }
 
   TANK_DEBUFFS_TIMERS = {
@@ -78,7 +74,8 @@ enums.addTypes(results, {
     hudEventsList = [
       {
         eventName = "TankDebuffs:Repair"
-        function getEventData() {
+        getEventData = function()
+        {
           return {
             state = ::u.chooseRandom(["notInRepair", "prepareRepair", "repairing"])
             time = 2 + ::math.rnd() % 10
@@ -87,7 +84,8 @@ enums.addTypes(results, {
       }
       {
         eventName = "TankDebuffs:Rearm"
-        function getEventData() {
+        getEventData = function()
+        {
           return {
             state = ::u.chooseRandom(["notInRearm", "rearming"])
             timeToLoadOne = 1 + ::math.rnd() % 5
@@ -98,7 +96,8 @@ enums.addTypes(results, {
       }
       {
         eventName = ["TankCrew:DriverState", "TankCrew:GunnerState"]
-        function getEventData() {
+        getEventData = function()
+        {
           return {
             state = ::u.chooseRandom(["takingPlace", "ok"])
             totalTakePlaceTime = 5 + ::math.rnd() % 10
@@ -107,7 +106,7 @@ enums.addTypes(results, {
         }
       }
     ]
-    function genNewEvent() {
+    genNewEvent = function() {
       let hudEvent = ::u.chooseRandom(hudEventsList)
       local eventName = hudEvent.eventName
       if (::u.isArray(eventName))
@@ -137,8 +136,8 @@ enums.addTypes(results, {
       }
     }
 
-    function genNewEvent() {
-      let drop = ::math.frnd()
+    genNewEvent = function() {
+      let drop = math.frnd()
       let eventId = drop < 0.7 ? MISSION_CAPTURING_ZONE
         : drop < 0.9 ? MISSION_CAPTURED_ZONE
         : MISSION_CAPTURING_STOP
@@ -149,7 +148,7 @@ enums.addTypes(results, {
         hudEventData[key] <- ::u.isFunction(val) ? val() : val
 
       hudEventData.zoneName <- ::u.chooseRandom(["A", "B", "C"])
-      hudEventData.text <- format(loc(hudEventData.locId), hudEventData.zoneName)
+      hudEventData.text <- format(::loc(hudEventData.locId), hudEventData.zoneName)
       hudEventData.isMyTeam <- ::u.chooseRandom([true, false])
       ::g_hud_event_manager.onHudEvent("zoneCapturingEvent", hudEventData)
     }
@@ -208,9 +207,9 @@ enums.addTypes(results, {
         isOverFade = true
         hintType = "standard"
       }
-      { eventId = "hint:missionHint:objectiveSuccess", objectiveType = OBJECTIVE_TYPE_PRIMARY, objectiveText = "" }
+      { eventId = "hint:missionHint:objectiveSuccess", objectiveType = ::OBJECTIVE_TYPE_PRIMARY, objectiveText = "" }
       { eventId = "hint:missionHint:objectiveAdded" }
-      { eventId = "hint:missionHint:objectiveFail", objectiveType = OBJECTIVE_TYPE_PRIMARY, objectiveText = "" }
+      { eventId = "hint:missionHint:objectiveFail", objectiveType = ::OBJECTIVE_TYPE_PRIMARY, objectiveText = "" }
       { eventId = "hint:missionHint:remove", hintType = "standard" }
     ]
   }
@@ -221,9 +220,9 @@ enums.addTypes(results, {
     hudEventsList = [
       {
         eventId = "HudMessage"
-        type = HUD_MSG_DEATH_REASON
-        text = loc("death/ammoExplosion")
-        id = @() ::math.rnd()
+        type = ::HUD_MSG_DEATH_REASON
+        text = ::loc("death/ammoExplosion")
+        id = @() math.rnd()
         showInDamageLog = true
       }
     ]
@@ -233,7 +232,8 @@ enums.addTypes(results, {
     eventChance = 50
     iconsList = ["aircraft_fighter", "aircraft_attacker", "aircraft_bomber"]
     textsList = ["hints/event_start_time", "hints/event_can_join_ally", "hints/event_can_join_enemy", "hints/event_player_start_on"]
-    function genNewEvent() {
+    genNewEvent = function()
+    {
       let eventData = {
         participant = []
         timeSeconds = ::math.rnd() % 15 + 1
@@ -264,5 +264,3 @@ enums.addTypes(results, {
     }
   }
 })
-
-return results

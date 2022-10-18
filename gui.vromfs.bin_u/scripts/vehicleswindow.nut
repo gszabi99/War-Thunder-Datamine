@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 ::gui_handlers.VehiclesWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -19,19 +11,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen()
   {
     let view = {
-      headerText = loc("lobby/vehicles")
+      headerText = ::loc("lobby/vehicles")
       showOkButton = true
     }
     let data = ::handyman.renderCached("%gui/vehiclesWindow", view)
-    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
+    guiScene.replaceContentFromText(scene, data, data.len(), this)
 
     foreach (team in ::events.getSidesList())
     {
       let teamName = ::events.getTeamName(team)
-      let teamObj = this.scene.findObject(teamName)
-      if(!checkObj(teamObj))
+      let teamObj = scene.findObject(teamName)
+      if(!::checkObj(teamObj))
         continue
-      let teamData = getTblValue(teamName, teamDataByTeamName, null)
+      let teamData = ::getTblValue(teamName, teamDataByTeamName, null)
       if (!::events.isTeamDataPlayable(teamData))
         continue
 

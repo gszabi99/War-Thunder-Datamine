@@ -1,7 +1,5 @@
-#no-root-fallback
-#explicit-this
-
 let u = require("u.nut")
+global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 local function isTable(v) {return type(v)=="table"}
 local function isArray(v) {return type(v)=="array"}
 local function isString(v) {return type(v)=="string"}
@@ -13,7 +11,7 @@ local function isFunction(v) {return type(v)=="function"}
  * of and managing in-game type enumerations.
  */
 
-local assertOnce = function(_uniqId, errorText) { throw(errorText) }
+local assertOnce = function(uniqId, errorText) { throw(errorText) }
 
 local function getPropValue(propName, typeObject) {
   local value = typeObject?[propName]
@@ -81,7 +79,12 @@ local function addType(enumTable, typeTemplate, typeName, typeDefinition, enumTa
     : (enumTable?[typeName] ?? {})
 
   typeTbl.clear()
-  typeTbl.__update(typeTemplate ?? {}, typeDefinition)
+  if (typeTemplate)
+    foreach(key, value in typeTemplate)
+      typeTbl[key] <- value
+
+  foreach (key, value in typeDefinition)
+    typeTbl[key] <- value
 
   enumTable[typeName] <- typeTbl
 

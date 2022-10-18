@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 /**
  * Sets an initial mouse pointer pos for a scenes just opened from HUD, because
  * otherwise on PC (where GamepadCursorControls are off) mouse pointer can be
@@ -15,7 +10,6 @@ from "%scripts/dagui_library.nut" import *
  */
 
 let { isMouseCursorVisible } = require("%scripts/controls/mousePointerVisibility.nut")
-let { get_time_msec } = require("dagor.time")
 
 const MOUSE_POINTER_SHOWN_RECENTLY_MS = 250
 
@@ -23,7 +17,7 @@ local lastMousePointerTimeShow = -1
 local lastMousePointerTimeHide = -1
 
 isMouseCursorVisible.subscribe(function(isVisible) {
-  let now = get_time_msec()
+  let now = ::dagor.getCurTime()
   if (isVisible)
     lastMousePointerTimeShow = now
   else
@@ -32,7 +26,7 @@ isMouseCursorVisible.subscribe(function(isVisible) {
 
 let function setMousePointerInitialPos(obj)
 {
-  let now = get_time_msec()
+  let now = ::dagor.getCurTime()
   let isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   let isCursorVisible = ::is_cursor_visible_in_gui()
 

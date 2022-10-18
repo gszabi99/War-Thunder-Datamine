@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
@@ -14,16 +6,16 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     if (!checkUnlocksLists(unlocksLists))
-      return this.goBack()
+      return goBack()
 
-    let fObj = this.scene.findObject("wnd_frame")
+    let fObj = scene.findObject("wnd_frame")
     fObj["max-height"] = "1@maxWindowHeight"
     fObj["max-width"] = "1@maxWindowWidth"
     fObj["class"] = "wnd"
     let blocksCount = (getMaximumListlength(unlocksLists) > 3) ? 2 : 1
     fObj.width="fw"
 
-    let listObj = this.scene.findObject("wnd_content")
+    let listObj = scene.findObject("wnd_content")
     listObj.width = $"{blocksCount}(@unlockBlockWidth + @framePadding) + @scrollBarSize"
     listObj["overflow-y"] = "auto"
     listObj.flow = "h-flow"
@@ -34,7 +26,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function reinitScreen(params = {}) {
-    this.setParams(params)
+    setParams(params)
     initScreen()
   }
 
@@ -47,20 +39,20 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
       let view = { tabs = [] }
       foreach(i, list in unlocksLists)
         view.tabs.append({
-          tabName = getTblValue("titleText", list, "")
+          tabName = ::getTblValue("titleText", list, "")
           navImagesText = ::get_navigation_images_text(i, unlocksLists.len())
         })
 
       let markup = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-      let tabsObj = this.scene.findObject("tabs_list")
+      let tabsObj = scene.findObject("tabs_list")
       tabsObj.show(true)
       tabsObj.enable(true)
-      this.guiScene.replaceContentFromText(tabsObj, markup, markup.len(), this)
+      guiScene.replaceContentFromText(tabsObj, markup, markup.len(), this)
       tabsObj.setValue(0)
     }
     else {
-      let titleText = getTblValue("titleText", unlocksLists[0], "")
-      let titleObj = this.scene.findObject("wnd_title")
+      let titleText = ::getTblValue("titleText", unlocksLists[0], "")
+      let titleObj = scene.findObject("wnd_title")
       titleObj.show(true)
       titleObj.setValue(titleText)
     }
@@ -87,7 +79,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   function getMaximumListlength(lists) {
     local result = 0
     foreach (list in lists) {
-      let len = getTblValue("unlocksList", list, []).len()
+      let len = ::getTblValue("unlocksList", list, []).len()
       result = (result < len) ? len : result
     }
     return result
@@ -95,7 +87,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
 
   function addUnlock(idx, unlock, listObj) {
     let objId = "unlock_" + idx
-    let obj = this.guiScene.createElementByObject(listObj, "%gui/unlocks/unlockBlock.blk", "frameBlock_dark", this)
+    let obj = guiScene.createElementByObject(listObj, "%gui/unlocks/unlockBlock.blk", "frameBlock_dark", this)
     obj.id = objId
     obj.width = "1@unlockBlockWidth"
     obj["margin-bottom"] = "1@framePadding"
@@ -105,7 +97,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onAwardTooltipOpen(obj) {
-    let id = ::getTooltipObjId(obj)
+    let id = getTooltipObjId(obj)
     if (!id)
       return
 
@@ -120,18 +112,18 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
 
   function fillPage() {
     let unlocksList = unlocksLists[currentTab].unlocksList
-    let listObj = this.scene.findObject("wnd_content")
+    let listObj = scene.findObject("wnd_content")
 
-    this.guiScene.setUpdatesEnabled(false, false)
-    this.guiScene.replaceContentFromText(listObj, "", 0, this)
+    guiScene.setUpdatesEnabled(false, false)
+    guiScene.replaceContentFromText(listObj, "", 0, this)
     for(local i = 0; i < unlocksList.len(); i++)
       addUnlock(i, unlocksList[i], listObj)
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(true, true)
     ::move_mouse_on_child_by_value(listObj)
   }
 
-  function getUnlock(_id) {
-    return getTblValue(this.idx, unlocksLists[currentTab])
+  function getUnlock(id) {
+    return ::getTblValue(idx, unlocksLists[currentTab])
   }
 }
 

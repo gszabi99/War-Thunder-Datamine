@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let clanInfoView = require("%scripts/clans/clanInfoView.nut")
 
 let function isFitsRequirements(clanData) {
@@ -13,7 +7,7 @@ let function isFitsRequirements(clanData) {
     return true
 
   let resultBlk = ::DataBlock()
-  ::clan_evaluate_membership_requirements(requirements, resultBlk)
+  clan_evaluate_membership_requirements(requirements, resultBlk)
   return resultBlk?.result
 }
 
@@ -25,16 +19,16 @@ let clanTableFieldsByPage = {
         : "#ui/gameuiskin#icon_primary_fail.svg"
       getCellTooltipText = function(clanData) {
         let reqText = clanInfoView.getClanRequirementsText(clanData?.membership_req)
-        return reqText != "" ? reqText : loc("clan/no_requirements")
+        return reqText != "" ? reqText : ::loc("clan/no_requirements")
       }
     }
-    { id = "activity", field = @() hasFeature("ClanVehicles") ? "clan_activity_by_periods" : "activity",
+    { id = "activity", field = @() ::has_feature("ClanVehicles") ? "clan_activity_by_periods" : "activity",
       showByFeature = "ClanActivity", byDifficulty = false }
     { id = "members_cnt", sort = false, byDifficulty = false }
     { id = ::ranked_column_prefix + "_arc", icon = "#ui/gameuiskin#lb_elo_rating_arcade.svg",
-      tooltip = "#clan/dr_era/desc", byDifficulty = false, diffCode = DIFFICULTY_ARCADE }
+      tooltip = "#clan/dr_era/desc", byDifficulty = false, diffCode = ::DIFFICULTY_ARCADE }
     { id = ::ranked_column_prefix + "_hist", icon = "#ui/gameuiskin#lb_elo_rating.svg",
-      tooltip = "#clan/dr_era/desc", byDifficulty = false, diffCode = DIFFICULTY_REALISTIC }
+      tooltip = "#clan/dr_era/desc", byDifficulty = false, diffCode = ::DIFFICULTY_REALISTIC }
     { id = "slogan", icon = "", tooltip = "", text = "#clan/clan_slogan", byDifficulty = false, sort = false,
       type = ::g_lb_data_type.TEXT, width = "0.4@sf", autoScrollText = "hoverOrSelect" }
   ]
@@ -64,7 +58,7 @@ foreach (page in clanTableFieldsByPage)
     if (!("tooltip" in category))
       category.tooltip <- $"#clan/{category.id}/desc"
     if (!("getIcon" in category))
-      category.getIcon <- @(_diffCode) icon
+      category.getIcon <- @(diffCode) icon
   }
 
 let helpLinksByPage = {

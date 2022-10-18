@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 ::g_script_reloader.loadOnce("%scripts/options/bhvHarmonizedImage.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -63,7 +58,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   }
 }
 
-::add_event_listener("GameLocalizationChanged", function(_params) {
+::add_event_listener("GameLocalizationChanged", function(params) {
     ::init_country_flags_preset()
   }, null, ::g_listener_priority.CONFIG_VALIDATION)
 

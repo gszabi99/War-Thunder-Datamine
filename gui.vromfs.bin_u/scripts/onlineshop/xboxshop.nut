@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 require("%scripts/onlineShop/ingameConsoleStore.nut")
 
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
@@ -23,7 +18,7 @@ shopData.xboxProceedItems.subscribe(function(val) {
     sheetsArray.append({
       id = "xbox_game_consumation"
       locId = "itemTypes/xboxGameConsumation"
-      getSeenId = @() $"##xbox_item_sheet_{xboxMediaItemType.GameConsumable}"
+      getSeenId = @() $"##xbox_item_sheet_{categoryId}"
       categoryId = xboxMediaItemType.GameConsumable
       sortParams = [
         {param = "price", asc = false}
@@ -37,7 +32,7 @@ shopData.xboxProceedItems.subscribe(function(val) {
     sheetsArray.append({
       id = "xbox_game_content"
       locId = "itemTypes/xboxGameContent"
-      getSeenId = @() $"##xbox_item_sheet_{xboxMediaItemType.GameContent}"
+      getSeenId = @() $"##xbox_item_sheet_{categoryId}"
       categoryId = xboxMediaItemType.GameContent
       sortParams = [
         {param = "releaseDate", asc = false}
@@ -73,7 +68,7 @@ shopData.xboxProceedItems.subscribe(function(val) {
     })
   })
 
-  foreach (_idx, sh in sheetsArray)
+  foreach (idx, sh in sheetsArray)
   {
     let sheet = sh
     seenList.setSubListGetter(sheet.getSeenId(), @()
@@ -88,41 +83,41 @@ shopData.xboxProceedItems.subscribe(function(val) {
 {
   function loadCurSheetItemsList()
   {
-    this.itemsList = this.itemsCatalog?[this.curSheet?.categoryId] ?? []
+    itemsList = itemsCatalog?[curSheet?.categoryId] ?? []
   }
 
-  function onEventXboxSystemUIReturn(_p)
+  function onEventXboxSystemUIReturn(p)
   {
-    this.curItem = this.getCurItem()
-    if (!this.curItem)
+    curItem = getCurItem()
+    if (!curItem)
       return
 
-    let wasItemBought = this.curItem.isBought
-    this.curItem.updateIsBoughtStatus()
+    let wasItemBought = curItem.isBought
+    curItem.updateIsBoughtStatus()
 
-    let wasPurchasePerformed = wasItemBought != this.curItem.isBought
+    let wasPurchasePerformed = wasItemBought != curItem.isBought
 
     if (wasPurchasePerformed)
     {
-      ::broadcastEvent("EntitlementStoreItemPurchased", {id = this.curItem.id})
+      broadcastEvent("EntitlementStoreItemPurchased", {id = curItem.id})
       statsd.send_counter("sq.close_product.purchased", 1)
       ::add_big_query_record("close_product",
         ::save_to_json({
-          itemId = this.curItem.id,
+          itemId = curItem.id,
           action = "purchased"
         })
       )
       ::g_tasker.addTask(::update_entitlements_limited(),
         {
           showProgressBox = true
-          progressBoxText = loc("charServer/checking")
+          progressBoxText = ::loc("charServer/checking")
         },
-        Callback(function() {
-          this.updateSorting()
-          this.fillItemsList()
+        ::Callback(function() {
+          updateSorting()
+          fillItemsList()
           ::g_discount.updateOnlineShopDiscounts()
 
-          if (this.curItem.isMultiConsumable || wasPurchasePerformed)
+          if (curItem.isMultiConsumable || wasPurchasePerformed)
             ::update_gamercards()
         }, this)
       )
@@ -134,9 +129,9 @@ shopData.xboxProceedItems.subscribe(function(val) {
     ::g_tasker.addTask(::update_entitlements_limited(),
       {
         showProgressBox = true
-        progressBoxText = loc("charServer/checking")
+        progressBoxText = ::loc("charServer/checking")
       },
-      Callback(function() {
+      ::Callback(function() {
         ::g_discount.updateOnlineShopDiscounts()
         ::update_gamercards()
       })
@@ -146,10 +141,10 @@ shopData.xboxProceedItems.subscribe(function(val) {
   }
 }
 
-let isChapterSuitable = @(chapter) isInArray(chapter, [null, "", "eagles"])
+let isChapterSuitable = @(chapter) ::isInArray(chapter, [null, "", "eagles"])
 let getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
 
-let openIngameStoreImpl = kwarg(
+let openIngameStoreImpl = ::kwarg(
   function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown", forceExternalShop = false) {
     if (!isChapterSuitable(chapter))
       return false
@@ -175,9 +170,9 @@ let openIngameStoreImpl = kwarg(
       return true
     }
 
-    ::queues.checkAndStart(Callback(function() {
+    ::queues.checkAndStart(::Callback(function() {
       xboxSetPurchCb(afterCloseFunc)
-      ::get_gui_scene().performDelayed(getroottable(),
+      ::get_gui_scene().performDelayed(::getroottable(),
         function() {
           local curItem = shopData.getShopItem(curItemId)
           if (curItem)
@@ -198,14 +193,14 @@ let function openIngameStore(params = {}) {
     && isPlayerRecommendedEmailRegistration()) {
     ::add_big_query_record("ingame_store_qr", targetPlatform)
     openQrWindow({
-      headerText = params?.chapter == "eagles" ? loc("charServer/chapter/eagles") : ""
-      infoText = loc("eagles/rechargeUrlNotification")
-      baseUrl = "{0}{1}".subst(loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")
+      headerText = params?.chapter == "eagles" ? ::loc("charServer/chapter/eagles") : ""
+      infoText = ::loc("eagles/rechargeUrlNotification")
+      baseUrl = "{0}{1}".subst(::loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")
       needUrlWithQrRedirect = true
       needShowUrlLink = false
       buttons = [{
         shortcut = "Y"
-        text = loc(getEntStoreLocId())
+        text = ::loc(getEntStoreLocId())
         onClick = "goBack"
       }]
       onEscapeCb = @() openIngameStoreImpl(params)
@@ -223,5 +218,5 @@ return shopData.__merge({
   isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !::isInMenu()
   getEntStoreUnseenIcon = @() SEEN.EXT_XBOX_SHOP
   needEntStoreDiscountIcon = true
-  openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({statsdMetric = "topmenu"})
+  openEntStoreTopMenuFunc = @(obj, handler) openIngameStore({statsdMetric = "topmenu"})
 })

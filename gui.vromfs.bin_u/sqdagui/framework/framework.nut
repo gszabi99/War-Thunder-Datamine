@@ -1,10 +1,14 @@
-#explicit-this
-#no-root-fallback
-
-let { loc } = require("dagor.localize")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 ::gui_handlers <- {}
+
+global enum handlerType
+{
+  ROOT    //root handler dosn't destroy on switch between base handlers. Share object where to create base handlers
+  BASE    //main handler ingame. can be active only one at time.
+  MODAL   //opened in modal window, auto destroys on switch base handler
+  CUSTOM  //handler created in custom object. usualy has parent handler, because it not full scene handler.
+
+  ANY
+}
 
 foreach (fn in [
                  "msgBox.nut"
@@ -12,16 +16,16 @@ foreach (fn in [
                  "baseGuiHandlerManager.nut"
                  "framedMessageBox.nut"
                ])
-  g_script_reloader.loadOnce("%sqDagui/framework/" + fn)
+  ::g_script_reloader.loadOnce("%sqDagui/framework/" + fn)
 
 
 ::open_url_by_obj <- function open_url_by_obj(obj)
 {
-  if (!check_obj(obj) || obj?.link == null || obj?.link == "")
+  if (!::check_obj(obj) || obj?.link == null || obj?.link == "")
     return
-  if (!("open_url" in getroottable()))
+  if (!("open_url" in ::getroottable()))
     return
 
-  let link = (obj.link.slice(0, 1) == "#") ? loc(obj.link.slice(1)) : obj.link
+  let link = (obj.link.slice(0, 1) == "#") ? ::loc(obj.link.slice(1)) : obj.link
   ::open_url(link, false, false, obj?.bqKey ?? obj?.id)
 }

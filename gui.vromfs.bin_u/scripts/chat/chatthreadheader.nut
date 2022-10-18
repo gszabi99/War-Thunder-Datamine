@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.ChatThreadHeader <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ChatThreadHeader <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/chat/chatThreadsListRows"
@@ -27,19 +20,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen()
   {
-    let timerObj = this.scene.findObject("room_" + roomId)
-    if (checkObj(timerObj))
+    let timerObj = scene.findObject("room_" + roomId)
+    if (::checkObj(timerObj))
       timerObj.setUserData(this)
   }
 
   function updateInfo()
   {
-    threadInfo.updateInfoObj(this.scene)
+    threadInfo.updateInfoObj(scene)
   }
 
   function onSceneShow()
   {
-    this.popDelayedActions()
+    popDelayedActions()
   }
 
   function onUserInfo()
@@ -54,30 +47,30 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onEventChatThreadInfoChanged(p)
   {
-    if (getTblValue("roomId", p) == roomId)
-      this.doWhenActiveOnce("updateInfo")
+    if (::getTblValue("roomId", p) == roomId)
+      doWhenActiveOnce("updateInfo")
   }
 
-  function onEventChatFilterChanged(_p)
+  function onEventChatFilterChanged(p)
   {
-    this.doWhenActiveOnce("updateInfo")
+    doWhenActiveOnce("updateInfo")
   }
 
-  function onEventContactsGroupUpdate(_p)
+  function onEventContactsGroupUpdate(p)
   {
-    this.doWhenActiveOnce("updateInfo")
+    doWhenActiveOnce("updateInfo")
   }
 
-  function onEventSquadStatusChanged(_p)
+  function onEventSquadStatusChanged(p)
   {
-    this.doWhenActiveOnce("updateInfo")
+    doWhenActiveOnce("updateInfo")
   }
 
-  function onEventContactsBlockStatusUpdated(_p) {
-    this.doWhenActiveOnce("updateInfo")
+  function onEventContactsBlockStatusUpdated(p) {
+    doWhenActiveOnce("updateInfo")
   }
 
-  function onThreadTimer(_obj, _dt)
+  function onThreadTimer(obj, dt)
   {
     threadInfo.checkRefreshThread()
   }

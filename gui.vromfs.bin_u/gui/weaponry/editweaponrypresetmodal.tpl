@@ -2,7 +2,7 @@ root {
   blur {}
   blur_foreground {}
   frame {
-    id:t='edit_wnd'
+    width:t='13@tierIconSize + 1@modPresetTextMaxWidth + 2@blockInterval'
     class:t='wndNav'
     pos:t='0.5pw-0.5w, 0.5ph-0.5h'
     position:t='absolute'

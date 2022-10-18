@@ -1,14 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { ceil } = require("math")
 let { getCollectionsList } = require("%scripts/collections/collections.nut")
 let { updateDecoratorDescription } = require("%scripts/customization/decoratorDescription.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
 
@@ -33,7 +25,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     isOnlyUncompleted = ::load_local_account_settings(IS_ONLY_UNCOMPLETED_SAVE_ID, false)
       && (selectedDecoratorId == null || !isCollectionCompleted(selectedDecoratorId))
     collectionsList = filterCollectionsList()
-    collectionsListObj = this.scene.findObject("collections_list")
+    collectionsListObj = scene.findObject("collections_list")
     updateOnlyUncompletedCheckbox()
     initCollectionsListSizeOnce()
     initState()
@@ -45,10 +37,10 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (collectionsPerPage > 0)
       return
 
-    let wndCollectionsObj = this.scene.findObject("wnd_collections")
-    countItemsInRow = to_pixels("1@collectionWidth-1@collectionPrizeWidth")
-      / (to_pixels("1@collectionItemSizeWithIndent"))
-    let countRowInCollection = ceil(MAX_COLLECTION_ITEMS / (countItemsInRow*1.0))
+    let wndCollectionsObj = scene.findObject("wnd_collections")
+    countItemsInRow = ::to_pixels("1@collectionWidth-1@collectionPrizeWidth")
+      / (::to_pixels("1@collectionItemSizeWithIndent"))
+    let countRowInCollection = ::ceil(MAX_COLLECTION_ITEMS / (countItemsInRow*1.0))
     collectionHeight = "".concat(countRowInCollection,
       "@collectionItemSizeWithIndent+1@buttonHeight-1@blockInterval")
     let sizes = ::g_dagui_utils.adjustWindowSize(wndCollectionsObj, collectionsListObj,
@@ -65,7 +57,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (collectionIdx == null)
       return
 
-    curPage = ceil(collectionIdx / collectionsPerPage).tointeger()
+    curPage = ::ceil(collectionIdx / collectionsPerPage).tointeger()
     lastSelectedDecoratorObjId = collectionsList[collectionIdx].getDecoratorObjId(collectionIdx, selectedDecoratorId)
   }
 
@@ -94,8 +86,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     view.hasCollections <- view.collections.len() > 0
 
     let data = ::handyman.renderCached("%gui/collections/collection", view)
-    if (checkObj(collectionsListObj))
-      this.guiScene.replaceContentFromText(collectionsListObj, data, data.len(), this)
+    if (::check_obj(collectionsListObj))
+      guiScene.replaceContentFromText(collectionsListObj, data, data.len(), this)
 
     let prevValue = collectionsListObj.getValue()
     let value = findLastValue(prevValue)
@@ -104,8 +96,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     updateDecoratorInfo()
 
-    ::generatePaginator(this.scene.findObject("paginator_place"), this,
-      curPage, ceil(collectionsList.len().tofloat() / collectionsPerPage) - 1, null, true /*show last page*/)
+    generatePaginator(scene.findObject("paginator_place"), this,
+      curPage, ::ceil(collectionsList.len().tofloat() / collectionsPerPage) - 1, null, true /*show last page*/)
   }
 
   function findLastValue(prevValue) {
@@ -191,10 +183,10 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       && ::ItemsManager.canGetDecoratorFromTrophy(decorator)
 
     let bObj = this.showSceneBtn("btn_buy_decorator", canBuy)
-    if (canBuy && checkObj(bObj))
-      placePriceTextToButton(this.scene, "btn_buy_decorator", loc("mainmenu/btnOrder"), decorator?.getCost())
+    if (canBuy && ::check_obj(bObj))
+      placePriceTextToButton(scene, "btn_buy_decorator", ::loc("mainmenu/btnOrder"), decorator?.getCost())
 
-    ::showBtnTable(this.scene, {
+    ::showBtnTable(scene, {
       btn_preview = decorator?.canPreview() ?? false
       btn_marketplace_consume_coupon = canConsumeCoupon
       btn_marketplace_find_coupon = canFindOnMarketplace
@@ -202,8 +194,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     })
   }
 
-  function onDecoratorPreview(_obj) {
-    if (!this.isValid())
+  function onDecoratorPreview(obj) {
+    if (!isValid())
       return
 
     getDecoratorConfig()?.decorator.doPreview()
@@ -214,11 +206,11 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     fillPage()
   }
 
-  function onEventProfileUpdated(_p) {
+  function onEventProfileUpdated(p) {
     updateCollectionsList()
   }
 
-  function onEventInventoryUpdate(_params)
+  function onEventInventoryUpdate(params)
   {
     updateCollectionsList()
   }
@@ -242,12 +234,12 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let collectionIdx = getDecoratorConfig(stateData.lastSelectedDecoratorObjId)?.collectionIdx
     if (collectionIdx == null)
       return
-    curPage = ceil(collectionIdx / collectionsPerPage).tointeger()
+    curPage = ::ceil(collectionIdx / collectionsPerPage).tointeger()
     lastSelectedDecoratorObjId = stateData.lastSelectedDecoratorObjId
     fillPage()
   }
 
-  function onEventBeforeStartShowroom(_p) {
+  function onEventBeforeStartShowroom(p) {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
@@ -256,13 +248,13 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     askPurchaseDecorator(decorator, null)
   }
 
-  function onBtnMarketplaceFindCoupon(_obj)
+  function onBtnMarketplaceFindCoupon(obj)
   {
     let decorator = getDecoratorConfig()?.decorator
     findDecoratorCouponOnMarketplace(decorator)
   }
 
-  function onBtnMarketplaceConsumeCoupon(_obj)
+  function onBtnMarketplaceConsumeCoupon(obj)
   {
     let decorator = getDecoratorConfig()?.decorator
     askConsumeDecoratorCoupon(decorator, null)
@@ -270,7 +262,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateOnlyUncompletedCheckbox()
   {
-    let checkboxObj = this.scene.findObject("checkbox_only_uncompleted")
+    let checkboxObj = scene.findObject("checkbox_only_uncompleted")
     checkboxObj.setValue(isOnlyUncompleted)
   }
 
@@ -295,5 +287,5 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 return {
   openCollectionsWnd = @(params = {}) ::handlersManager.loadHandler(collectionsWnd, params)
-  hasAvailableCollections = @() hasFeature("Collection") && getCollectionsList().len() > 0
+  hasAvailableCollections = @() ::has_feature("Collection") && getCollectionsList().len() > 0
 }

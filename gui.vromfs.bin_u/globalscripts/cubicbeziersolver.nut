@@ -1,10 +1,8 @@
-#explicit-this
-#no-root-fallback
 /**
  * Solver for cubic bezier curve with implicit control points at (0,0) and (1.0, 1.0).
  * Adjust at http://cubic-bezier.com/
  */
-let {fabs} = require("math")
+
 let function sampleCurveX(t, ax, bx, cx) {
   return ((ax * t + bx) * t + cx) * t
 }
@@ -28,10 +26,10 @@ let function solveCurveX(x, epsilon, ax, bx, cx) {
   // First try a few iterations of Newton's method -- normally very fast.
   for (i = 0; i < 8; ++i) {
     x2 = sampleCurveX(t2, ax, bx, cx) - x;
-    if (fabs(x2) < epsilon)
+    if (::fabs(x2) < epsilon)
       return t2;
     d2 = sampleCurveDerivativeX(t2, ax, bx, cx)
-    if (fabs(d2) < epsilon)
+    if (::fabs(d2) < epsilon)
       break;
     t2 = t2 - x2 / d2;
   }
@@ -48,7 +46,7 @@ let function solveCurveX(x, epsilon, ax, bx, cx) {
 
   while (t0 < t1) {
     x2 = sampleCurveX(t2, ax, bx, cx);
-    if (fabs(x2 - x) < epsilon)
+    if (::fabs(x2 - x) < epsilon)
       return t2
     if (x > x2)
       t0 = t2

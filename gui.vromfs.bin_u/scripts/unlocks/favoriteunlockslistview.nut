@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/unlocks/favoriteUnlocksList.blk"
   curFavoriteUnlocksBlk = null
@@ -17,15 +10,15 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen()
   {
-    this.scene.setUserData(this)
+    scene.setUserData(this)
     curFavoriteUnlocksBlk = ::DataBlock()
-    listContainer = this.scene.findObject("favorite_unlocks_list")
+    listContainer = scene.findObject("favorite_unlocks_list")
     updateList()
   }
 
   function updateList()
   {
-    if (!checkObj(listContainer))
+    if (!::checkObj(listContainer))
       return
 
     if(!unlocksListIsValid)
@@ -36,7 +29,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (unlocksObjCount == 0 && total > 0) {
       let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified"),
         { unlocks = array(total, { hasCloseButton = true, hasHiddenContent = true })})
-      this.guiScene.appendWithBlk(listContainer, blk, this)
+      guiScene.appendWithBlk(listContainer, blk, this)
     }
 
     for(local i = 0; i < total; i++)
@@ -50,15 +43,15 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     unlocksListIsValid = true
   }
 
-  function onEventFavoriteUnlocksChanged(_params)
+  function onEventFavoriteUnlocksChanged(params)
   {
     unlocksListIsValid = false
-    this.doWhenActiveOnce("updateList")
+    doWhenActiveOnce("updateList")
   }
 
-  function onEventProfileUpdated(_params)
+  function onEventProfileUpdated(params)
   {
-    this.doWhenActiveOnce("updateList")
+    doWhenActiveOnce("updateList")
   }
 
   function onRemoveUnlockFromFavorites(obj)

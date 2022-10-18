@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 
@@ -87,7 +81,7 @@ global enum WW_LB_MODE
   if (name in lbModeNames)
     return lbModeNames[name]
 
-  logerr("Invalid leaderboard mode '" + name + "'")
+  ::dagor.logerr("Invalid leaderboard mode '" + name + "'")
   return 0
 }
 
@@ -100,27 +94,27 @@ global enum WW_LB_MODE
   }
 }
 
-::g_lb_category.getTypeById <- function getTypeById(id)
+g_lb_category.getTypeById <- function getTypeById(id)
 {
   return enums.getCachedType("id", id, ::g_lb_category.cache.byId,
-    ::g_lb_category, this.UNKNOWN)
+    ::g_lb_category, UNKNOWN)
 }
 
-::g_lb_category.getTypeByField <- function getTypeByField(field)
+g_lb_category.getTypeByField <- function getTypeByField(field)
 {
   return enums.getCachedType("field", field, ::g_lb_category.cache.byField,
-    ::g_lb_category, this.UNKNOWN)
+    ::g_lb_category, UNKNOWN)
 }
 
-::g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(row)
+g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(row)
 {
-  if (!this.additionalTooltipCategoryes || !row)
+  if (!additionalTooltipCategoryes || !row)
     return ""
 
   local res = ""
   local additionalCategory = null
 
-  foreach (categoryTypeName in this.additionalTooltipCategoryes)
+  foreach (categoryTypeName in additionalTooltipCategoryes)
   {
     additionalCategory = ::g_lb_category[categoryTypeName]
     if (!(additionalCategory.field in row))
@@ -145,7 +139,7 @@ global enum WW_LB_MODE
       tooltipKey = tooltipKey.slice(1)
 
     res += (res.len() ? "\n" : "") +
-      loc(tooltipKey) + loc("ui/colon") + ::g_string.stripTags("" + value)
+      ::loc(tooltipKey) + ::loc("ui/colon") + ::g_string.stripTags("" + value)
   }
 
   return res
@@ -197,7 +191,7 @@ global enum WW_LB_MODE
 
   isVisibleInEvent = function(event)
   {
-    if (showFieldFilter && !isInArray(::events.getEventTournamentMode(event), showFieldFilter))
+    if (showFieldFilter && !::isInArray(::events.getEventTournamentMode(event), showFieldFilter))
       return false
 
     if (showEventFilterFunc && !showEventFilterFunc(event))
@@ -210,10 +204,10 @@ global enum WW_LB_MODE
 }
 
 
-::g_lb_category._typeConstructor <- function _typeConstructor ()
+g_lb_category._typeConstructor <- function _typeConstructor ()
 {
-  this.headerImage = "#ui/gameuiskin#lb_" + (this.headerImage != "" ? this.headerImage : this.visualKey) + ".svg"
-  this.headerTooltip = "#multiplayer/" + (this.headerTooltip != "" ? this.headerTooltip : this.visualKey)
+  headerImage = "#ui/gameuiskin#lb_" + (headerImage != "" ? headerImage : visualKey) + ".svg"
+  headerTooltip = "#multiplayer/" + (headerTooltip != "" ? headerTooltip : visualKey)
 }
 
 enums.addTypesByGlobalName("g_lb_category", {

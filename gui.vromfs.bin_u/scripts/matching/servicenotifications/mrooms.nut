@@ -1,13 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { format } = require("string")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let string = require("string")
 
 local MRoomsHandlers = class {
   [PERSISTENT_DATA_PARAMS] = [
@@ -76,7 +69,7 @@ local MRoomsHandlers = class {
     isSelfReady = false
     isLeaving = false
 
-    ::notify_room_destroyed({})
+    notify_room_destroyed({})
   }
 
   function __onHostConnectReady()
@@ -100,7 +93,7 @@ local MRoomsHandlers = class {
 
     if (getTblValue("host", member.public))
     {
-      log(format("found host %s (%s)", member.name, member.userId.tostring()))
+      ::dagor.debug(format("found host %s (%s)", member.name, member.userId.tostring()))
       hostId = member.userId
     }
 
@@ -112,7 +105,7 @@ local MRoomsHandlers = class {
 
   function __getRoomMember(user_id)
   {
-    foreach (_idx, member in roomMembers)
+    foreach (idx, member in roomMembers)
       if (member.userId == user_id)
         return member
     return null
@@ -120,8 +113,8 @@ local MRoomsHandlers = class {
 
   function __getMyRoomMember()
   {
-    foreach (_idx, member in roomMembers)
-      if (::is_my_userid(member.userId))
+    foreach (idx, member in roomMembers)
+      if (is_my_userid(member.userId))
         return member
     return null
   }
@@ -147,7 +140,7 @@ local MRoomsHandlers = class {
     if (user_id in roomOps)
       delete roomOps[user_id]
 
-    if (::is_my_userid(user_id))
+    if (is_my_userid(user_id))
       __cleanupRoomState()
   }
 
@@ -157,7 +150,7 @@ local MRoomsHandlers = class {
       cur_member = __getRoomMember(member.userId)
     if (cur_member == null)
     {
-      log(format("failed to update member attributes. member not found in room %s",
+      ::dagor.debug(format("failed to update member attributes. member not found in room %s",
                           member.userId.tostring()))
       return
     }
@@ -168,7 +161,7 @@ local MRoomsHandlers = class {
       if (member?.public.connect_ready ?? false)
         __onHostConnectReady()
     }
-    else if (::is_my_userid(member.userId))
+    else if (is_my_userid(member.userId))
     {
       let readyStatus = member?.public.ready
       if (readyStatus == true)
@@ -218,21 +211,21 @@ local MRoomsHandlers = class {
 
   function __connectToHost()
   {
-    log("__connectToHost")
+    ::dagor.debug("__connectToHost")
     if (!hasSession())
       return
 
     let host = __getRoomMember(hostId)
     if (!host)
     {
-      log("__connectToHost failed: host is not in the room")
+      ::dagor.debug("__connectToHost failed: host is not in the room")
       return
     }
 
     let me = __getMyRoomMember()
     if (!me)
     {
-      log("__connectToHost failed: player is not in the room")
+      ::dagor.debug("__connectToHost failed: player is not in the room")
       return
     }
 
@@ -241,11 +234,11 @@ local MRoomsHandlers = class {
 
     if (!("room_key" in roomPub))
     {
-      let mePub = toString(me?.public, 3)          // warning disable: -declared-never-used
-      let mePrivate = toString(me?.private, 3)     // warning disable: -declared-never-used
-      let meStr = toString(me, 3)                  // warning disable: -declared-never-used
-      let roomStr = toString(roomPub, 3)           // warning disable: -declared-never-used
-      let roomMission = toString(roomPub?.mission) // warning disable: -declared-never-used
+      let mePub = ::toString(me?.public, 3)          // warning disable: -declared-never-used
+      let mePrivate = ::toString(me?.private, 3)     // warning disable: -declared-never-used
+      let meStr = ::toString(me, 3)                  // warning disable: -declared-never-used
+      let roomStr = ::toString(roomPub, 3)           // warning disable: -declared-never-used
+      let roomMission = ::toString(roomPub?.mission) // warning disable: -declared-never-used
       ::script_net_assert("missing room_key in room")
 
       ::send_error_log("missing room_key in room", false, "log")
@@ -258,7 +251,7 @@ local MRoomsHandlers = class {
     else if ("ip" in hostPub && "port" in hostPub)
     {
       let ip = hostPub.ip
-      let ipStr = format("%u.%u.%u.%u:%d", ip&255, (ip>>8)&255, (ip>>16)&255, ip>>24, hostPub.port)
+      let ipStr = string.format("%u.%u.%u.%u:%d", ip&255, (ip>>8)&255, (ip>>16)&255, ip>>24, hostPub.port)
       serverUrls.append(ipStr)
     }
 
@@ -273,7 +266,7 @@ local MRoomsHandlers = class {
       inviteData = {}
     inviteData.roomId <- notify.roomId
 
-    if (::notify_room_invite(inviteData))
+    if (notify_room_invite(inviteData))
       send_resp({accept = true})
     else
       send_resp({accept = false})
@@ -284,10 +277,10 @@ local MRoomsHandlers = class {
     if (!__isNotifyForCurrentRoom(member))
       return
 
-    log(format("%s (%s) joined to room", member.name, member.userId.tostring()))
+    ::dagor.debug(format("%s (%s) joined to room", member.name, member.userId.tostring()))
     __addRoomMember(member)
 
-    ::notify_room_member_joined(member)
+    notify_room_member_joined(member)
   }
 
   function onRoomMemberLeft(member)
@@ -295,9 +288,9 @@ local MRoomsHandlers = class {
     if (!__isNotifyForCurrentRoom(member))
       return
 
-    log(format("%s (%s) left from room", member.name, member.userId.tostring()))
+    ::dagor.debug(format("%s (%s) left from room", member.name, member.userId.tostring()))
     __removeRoomMember(member.userId)
-    ::notify_room_member_leaved(member)
+    notify_room_member_leaved(member)
   }
 
   function onRoomMemberKicked(member)
@@ -305,9 +298,9 @@ local MRoomsHandlers = class {
     if (!__isNotifyForCurrentRoom(member))
       return
 
-    log(format("%s (%s) kicked from room", member.name, member.userId.tostring()))
+    ::dagor.debug(format("%s (%s) kicked from room", member.name, member.userId.tostring()))
     __removeRoomMember(member.userId)
-    ::notify_room_member_kicked(member)
+    notify_room_member_kicked(member)
   }
 
   function onRoomAttrChanged(notify)
@@ -316,7 +309,7 @@ local MRoomsHandlers = class {
       return
 
     __mergeAttribs(notify, room)
-    ::notify_room_attribs_changed(notify)
+    notify_room_attribs_changed(notify)
   }
 
   function onRoomMemberAttrChanged(notify)
@@ -325,7 +318,7 @@ local MRoomsHandlers = class {
       return
 
     __updateMemberAttributes(notify)
-    ::notify_room_member_attribs_changed(notify)
+    notify_room_member_attribs_changed(notify)
   }
 
   function onRoomDestroyed(notify)
@@ -337,19 +330,19 @@ local MRoomsHandlers = class {
 
   function onHostNotify(notify)
   {
-    debugTableData(notify)
+    ::debugTableData(notify)
     if (!__isNotifyForCurrentRoom(notify))
       return
 
     if (notify.hostId != hostId)
     {
-      log("warning: got host notify from host that is not in current room")
+      ::dagor.debug("warning: got host notify from host that is not in current room")
       return
     }
 
     if (notify.roomId != getRoomId())
     {
-      log("warning: got host notify for wrong room")
+      ::dagor.debug("warning: got host notify for wrong room")
       return
     }
 
@@ -371,7 +364,7 @@ local MRoomsHandlers = class {
 
     if (getTblValue("connect_on_join", room.public))
     {
-      log("room with auto-connect feature")
+      ::dagor.debug("room with auto-connect feature")
       isSelfReady = true
       __onSelfReady()
     }
@@ -396,7 +389,7 @@ local MRoomsHandlers = class {
 
 ::is_host_in_room <- function is_host_in_room()
 {
-  return ::g_mrooms_handlers.hasSession()
+  return g_mrooms_handlers.hasSession()
 }
 
 ::create_room <- function create_room(params, cb)
@@ -406,11 +399,11 @@ local MRoomsHandlers = class {
     params["crossplayRestricted"] <- true
   }
 
-  ::matching_api_func("mrooms.create_room",
+  matching_api_func("mrooms.create_room",
                     function(resp)
                     {
                       if (::checkMatchingError(resp, false))
-                        ::g_mrooms_handlers.onRoomJoinCb(resp)
+                        g_mrooms_handlers.onRoomJoinCb(resp)
                       cb(resp)
                     },
                     params)
@@ -418,16 +411,16 @@ local MRoomsHandlers = class {
 
 ::destroy_room <- function destroy_room(params, cb)
 {
-  ::matching_api_func("mrooms.destroy_room", cb, params)
+  matching_api_func("mrooms.destroy_room", cb, params)
 }
 
 ::join_room <- function join_room(params, cb)
 {
-  ::matching_api_func("mrooms.join_room",
+  matching_api_func("mrooms.join_room",
                     function(resp)
                     {
                       if (::checkMatchingError(resp, false))
-                        ::g_mrooms_handlers.onRoomJoinCb(resp)
+                        g_mrooms_handlers.onRoomJoinCb(resp)
                       else
                       {
                         resp.roomId <- params?.roomId
@@ -440,14 +433,14 @@ local MRoomsHandlers = class {
 
 ::leave_room <- function leave_room(params, cb)
 {
-  let oldRoomId = ::g_mrooms_handlers.getRoomId()
-  ::g_mrooms_handlers.isLeaving = true
+  let oldRoomId = g_mrooms_handlers.getRoomId()
+  g_mrooms_handlers.isLeaving = true
 
-  ::matching_api_func("mrooms.leave_room",
+  matching_api_func("mrooms.leave_room",
                     function(resp)
                     {
-                      if (::g_mrooms_handlers.getRoomId() == oldRoomId)
-                        ::g_mrooms_handlers.onRoomLeaveCb()
+                      if (g_mrooms_handlers.getRoomId() == oldRoomId)
+                        g_mrooms_handlers.onRoomLeaveCb()
                       cb(resp)
                     },
                     params)
@@ -455,53 +448,53 @@ local MRoomsHandlers = class {
 
 ::set_member_attributes <- function set_member_attributes(params, cb)
 {
-  ::matching_api_func("mrooms.set_member_attributes", cb, params)
+  matching_api_func("mrooms.set_member_attributes", cb, params)
 }
 
 ::set_room_attributes <- function set_room_attributes(params, cb)
 {
-  log($"[PSMT] setting room attributes: {params?.public?.psnMatchId}")
-  ::matching_api_func("mrooms.set_attributes", cb, params)
+  ::dagor.debug($"[PSMT] setting room attributes: {params?.public?.psnMatchId}")
+  matching_api_func("mrooms.set_attributes", cb, params)
 }
 
 ::kick_member <- function kick_member(params, cb)
 {
-  ::matching_api_func("mrooms.kick_from_room", cb, params)
+  matching_api_func("mrooms.kick_from_room", cb, params)
 }
 
 ::room_ban_player <- function room_ban_player(params, cb)
 {
-  ::matching_api_func("mrooms.ban_player", cb, params)
+  matching_api_func("mrooms.ban_player", cb, params)
 }
 
 ::room_unban_player <- function room_unban_player(params, cb)
 {
-  ::matching_api_func("mrooms.unban_player", cb, params)
+  matching_api_func("mrooms.unban_player", cb, params)
 }
 
 ::room_start_session <- function room_start_session(params, cb)
 {
-  ::matching_api_func("mrooms.start_session", cb, params)
+  matching_api_func("mrooms.start_session", cb, params)
 }
 
 ::room_set_password <- function room_set_password(params, cb)
 {
-  ::matching_api_func("mrooms.set_password", cb, params)
+  matching_api_func("mrooms.set_password", cb, params)
 }
 
 ::room_set_ready_state <- function room_set_ready_state(params, cb)
 {
-  ::matching_api_func("mrooms.set_ready_state", cb, params)
+  matching_api_func("mrooms.set_ready_state", cb, params)
 }
 
 ::invite_player_to_room <- function invite_player_to_room(params, cb)
 {
-  ::matching_api_func("mrooms.invite_player", cb, params)
+  matching_api_func("mrooms.invite_player", cb, params)
 }
 
 ::fetch_rooms_list <- function fetch_rooms_list(params, cb)
 {
-  ::matching_api_func("mrooms.fetch_rooms_digest2",
+  matching_api_func("mrooms.fetch_rooms_digest2",
                     function (resp)
                     {
                       if (::checkMatchingError(resp, false))
@@ -518,15 +511,15 @@ local MRoomsHandlers = class {
                     params)
 }
 
-::serialize_dyncampaign <- function serialize_dyncampaign(_params, cb)
+::serialize_dyncampaign <- function serialize_dyncampaign(params, cb)
 {
   let priv = {
     dyncamp = {
-      data = ::get_dyncampaign_b64blk()
+      data = get_dyncampaign_b64blk()
     }
   }
 
-  ::matching_api_func("mrooms.set_attributes", cb, {private = priv})
+  matching_api_func("mrooms.set_attributes", cb, {private = priv})
 }
 
 ::get_current_room <- function get_current_room()
@@ -537,7 +530,7 @@ local MRoomsHandlers = class {
 ::leave_session <- function leave_session()
 {
   if (::g_mrooms_handlers.getRoomId() != INVALID_ROOM_ID)
-    ::leave_room({}, function(_resp) {})
+    leave_room({}, function(resp) {})
 }
 
 ::is_player_room_operator <- function is_player_room_operator(user_id)

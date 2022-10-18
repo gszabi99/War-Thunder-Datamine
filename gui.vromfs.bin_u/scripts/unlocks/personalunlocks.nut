@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let battleTaskUnlocks = []
@@ -50,9 +45,9 @@ let function invalidateCache() {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_p) invalidateCache()
-  LoginComplete = @(_p) invalidateCache()
-  UnlocksCacheInvalidate = @(_p) invalidateCache()
+  SignOut = @(p) invalidateCache()
+  LoginComplete = @(p) invalidateCache()
+  UnlocksCacheInvalidate = @(p) invalidateCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

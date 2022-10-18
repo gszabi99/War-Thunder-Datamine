@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
-
 let interopGen = require("interopGen.nut")
 let compass = require("compass.nut")
 let {PI, cos, sin, fabs, sqrt} = require("%sqstd/math.nut")
@@ -150,7 +147,7 @@ let function drawShipIcon(iconSize, iconPos, iconColor, absBearing) {
 let targetSpeed = @() {
   watch = fcsState.TargetSpeed
   rendObj = ROBJ_TEXT
-  text = cross_call.measureTypes.SPEED.getMeasureUnitsText(fcsState.TargetSpeed.value)
+  text = ::cross_call.measureTypes.SPEED.getMeasureUnitsText(fcsState.TargetSpeed.value)
   font = Fonts.tiny_text_hud
   pos = [0, sh(1)]
   color = greenColorGrid
@@ -209,7 +206,7 @@ let progressBar = @() {
           valign = ALIGN_CENTER
           rendObj = ROBJ_INSCRIPTION
           font = Fonts.tiny_text_hud
-          text = loc("updating_range")
+          text = ::loc("updating_range")
         }
         @() {
           watch = fcsState.IsTargetDataAvailable
@@ -220,7 +217,7 @@ let progressBar = @() {
           halign = ALIGN_RIGHT
           rendObj = ROBJ_INSCRIPTION
           font = Fonts.tiny_text_hud
-          text = loc("measuring_range")
+          text = ::loc("measuring_range")
         }
       ]
     }

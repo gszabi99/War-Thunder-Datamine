@@ -1,13 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.CreateRoomWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -48,24 +41,24 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     if (!tabsList.len())
-      return this.goBack()
+      return goBack()
 
     if (tabsList.len() > 1)
     {
-      this.scene.findObject("caption_text").setValue("")
+      scene.findObject("caption_text").setValue("")
       fillTabs()
     }
     switchTab(0)
 
-    let roomNameBoxObj = this.scene.findObject("room_name")
+    let roomNameBoxObj = scene.findObject("room_name")
     roomNameBoxObj["max-len"] = ::g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
 
-    this.scene.findObject("thread_title_header").setValue(loc("chat/threadTitle/limits",
+    scene.findObject("thread_title_header").setValue(::loc("chat/threadTitle/limits",
       {
         min = ::g_chat.threadTitleLenMin
         max = ::g_chat.threadTitleLenMax
       }))
-    this.scene.findObject("chat_room_name_text").setValue(loc("chat/roomName/limits",
+    scene.findObject("chat_room_name_text").setValue(::loc("chat/roomName/limits",
       {
         maxSymbols = ::g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
         maxDigits = ::g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
@@ -81,13 +74,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
     foreach(idx, tab in tabsList)
       view.tabs.append({
-        tabName = loc(tab.locId)
+        tabName = ::loc(tab.locId)
         navImagesText = ::get_navigation_images_text(idx, tabsList.len())
       })
 
     let tabsObj = this.showSceneBtn("tabs_list", true)
     let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
+    guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
   }
 
@@ -118,7 +111,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getSelThreadCategoryName()
   {
-    let cListObj = this.scene.findObject("categories_list")
+    let cListObj = scene.findObject("categories_list")
     return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, ::g_chat_categories.defaultCategoryName)
   }
 
@@ -138,7 +131,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       isValuesValid = isValuesValid && onlyDigits.len() <= ::g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
     }
 
-    this.scene.findObject("btn_create_room").enable(isValuesValid)
+    scene.findObject("btn_create_room").enable(isValuesValid)
   }
 
   function onChangeRoomName(obj)
@@ -160,7 +153,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     checkValues()
   }
 
-  onFocusPassword = @() ::select_editbox(this.scene.findObject("room_password"))
+  onFocusPassword = @() ::select_editbox(scene.findObject("room_password"))
 
   function onCreateRoom()
   {
@@ -172,16 +165,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     else
       createChatRoom()
 
-    this.goBack()
+    goBack()
   }
 
   function createChatRoom()
   {
     let name = "#" + clearBorderSymbols(curName, [" "])
-    local pass = this.scene.findObject("room_password").getValue()
+    local pass = scene.findObject("room_password").getValue()
     if(pass != "")
       pass = clearBorderSymbols(pass, [" "])
-    let invitationsOnly = this.guiScene["room_invitation"].getValue()
+    let invitationsOnly = guiScene["room_invitation"].getValue()
     if (::menu_chat_handler)
     {
       ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, pass, (@(name, invitationsOnly) function () {

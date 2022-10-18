@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
 let class emptySceneWithDarg extends ::BaseGuiHandler {
@@ -14,7 +9,7 @@ let class emptySceneWithDarg extends ::BaseGuiHandler {
     ::enableHangarControls(false, true)
   }
 
-  getWidgetsList = @() this.widgetId == null ? null : [{ widgetId = this.widgetId }]
+  getWidgetsList = @() widgetId == null ? null : [{ widgetId = widgetId }]
 }
 
 ::gui_handlers.emptySceneWithDarg <- emptySceneWithDarg

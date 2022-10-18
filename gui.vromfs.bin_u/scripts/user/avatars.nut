@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
 let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
@@ -23,7 +18,7 @@ let function getIcons()
 let function getAllowedIcons()
 {
   if (!allowedIcons)
-    allowedIcons = getIcons().filter(@(unlockId) ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId)
+    allowedIcons = getIcons().filter(@(unlockId) ::is_unlocked_scripted(::UNLOCKABLE_PILOT, unlockId)
       && ::is_unlock_visible(::g_unlocks.getUnlockById(unlockId)))
   return allowedIcons
 }
@@ -51,8 +46,8 @@ let function invalidateIcons()
 }
 
 subscriptions.addListenersWithoutEnv({
-  LoginComplete    = @(_p) invalidateIcons()
-  ProfileUpdated   = @(_p) invalidateIcons()
+  LoginComplete    = @(p) invalidateIcons()
+  ProfileUpdated   = @(p) invalidateIcons()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 bhvAvatar.init({

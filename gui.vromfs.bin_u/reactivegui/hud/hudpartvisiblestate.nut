@@ -1,12 +1,8 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let extWatched = require("%rGui/globals/extWatched.nut")
-let { send } = require("eventbus")
 
-let isChatPlaceVisible = extWatched("isChatPlaceVisible", false)
-let isOrderStatusVisible = extWatched("isOrderStatusVisible", false)
+let isChatPlaceVisible = extWatched("isChatPlaceVisible", @() ::cross_call.isChatPlaceVisible())
 
-send("updateHudPartVisible", {})
+let isOrderStatusVisible = extWatched("isOrderStatusVisible", @() ::cross_call.isOrderStatusVisible())
 
 return {
   isChatPlaceVisible

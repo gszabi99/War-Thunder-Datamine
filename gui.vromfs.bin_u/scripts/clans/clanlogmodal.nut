@@ -1,14 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { read_text_from_file } = require("dagor.fs")
-let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId)
@@ -34,9 +25,9 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
 
   function initScreen()
   {
-    logListObj = this.scene.findObject("log_list")
-    if (!checkObj(logListObj))
-      return this.goBack()
+    logListObj = scene.findObject("log_list")
+    if (!::checkObj(logListObj))
+      return goBack()
 
     fetchLogPage()
   }
@@ -48,7 +39,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
       ::CLAN_LOG_ROWS_IN_PAGE,
       requestMarker,
       handleLogData,
-      function (_result) {},
+      function (result) {},
       this
     )
   }
@@ -57,12 +48,12 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
   {
     requestMarker = logData.requestMarker
 
-    this.guiScene.setUpdatesEnabled(false, false)
+    guiScene.setUpdatesEnabled(false, false)
     removeNextButton()
     showLogs(logData)
     if (logData.logEntries.len() >= ::CLAN_LOG_ROWS_IN_PAGE)
       addNextButton()
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(true, true)
 
     selectLogItem()
   }
@@ -77,9 +68,9 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
     }
 
     let blk = ::handyman.renderCached("%gui/logEntryList", logData, {
-      details = loadTemplateText("%gui/clans/clanLogDetails")
+      details = ::load_template_text("%gui/clans/clanLogDetails")
     })
-    this.guiScene.appendWithBlk(logListObj, blk, this)
+    guiScene.appendWithBlk(logListObj, blk, this)
   }
 
   function selectLogItem()
@@ -94,7 +85,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
     ::move_mouse_on_child(logListObj, selectedIndex)
   }
 
-  function onUserLinkRClick(_obj, _itype, link) {
+  function onUserLinkRClick(obj, itype, link) {
     let uid = ::g_string.cutPrefix(link, "uid_", null)
 
     if (uid == null)
@@ -106,8 +97,8 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
   function removeNextButton()
   {
     let obj = logListObj.findObject(loadButtonId)
-    if (checkObj(obj))
-      this.guiScene.destroyElement(obj)
+    if (::checkObj(obj))
+      guiScene.destroyElement(obj)
   }
 
   function addNextButton()
@@ -116,16 +107,16 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
     if (!obj)
     {
       let data = format("expandable { id:t='%s'}", loadButtonId)
-      this.guiScene.appendWithBlk(logListObj, data, this)
+      guiScene.appendWithBlk(logListObj, data, this)
       obj = logListObj.findObject(loadButtonId)
     }
 
     let viewBlk = ::handyman.renderCached("%gui/userLog/userLogRow",
       {
-        middle = loc("userlog/showMore")
+        middle = ::loc("userlog/showMore")
         hasExpandImg = true
       })
-    this.guiScene.replaceContentFromText(obj, viewBlk, viewBlk.len(), this)
+    guiScene.replaceContentFromText(obj, viewBlk, viewBlk.len(), this)
   }
 
   function onItemSelect(obj)
@@ -140,7 +131,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
 
     selectedIndex = index
     let selectedObj = obj.getChild(index)
-    if (checkObj(selectedObj) && selectedObj?.id == loadButtonId)
+    if (::check_obj(selectedObj) && selectedObj?.id == loadButtonId)
       fetchLogPage()
   }
 }

@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-enum GamercardDrawerState {
+enum GamercardDrawerState
+{
   STATE_CLOSED
   STATE_OPENING
   STATE_OPENED
@@ -25,7 +18,7 @@ enum GamercardDrawerState {
 
   function initScreen()
   {
-    this.getObj("gamercard_drawer").setUserData(this)
+    getObj("gamercard_drawer").setUserData(this)
   }
 
   function isActive() //opening, opened, or closing to open again
@@ -33,7 +26,7 @@ enum GamercardDrawerState {
     if (currentState == GamercardDrawerState.STATE_OPENED
         || currentState == GamercardDrawerState.STATE_OPENING)
       return true
-    return currentVisible && checkObj(currentTarget)
+    return currentVisible && ::check_obj(currentTarget)
   }
 
   function closeDrawer()
@@ -58,7 +51,7 @@ enum GamercardDrawerState {
 
   function setOpenAnim(open)
   {
-    let gamercardDrawerObject = this.getObj("gamercard_drawer")
+    let gamercardDrawerObject = getObj("gamercard_drawer")
     if (!gamercardDrawerObject)
       return
 
@@ -76,7 +69,7 @@ enum GamercardDrawerState {
     let target = params.target
     let visible = params.visible
     isBlockOtherRestoreFocus = params?.isBlockOtherRestoreFocus ?? false
-    let contentObject = this.getObj("gamercard_drawer_content")
+    let contentObject = getObj("gamercard_drawer_content")
     if (contentObject == null)
       return
 
@@ -106,14 +99,14 @@ enum GamercardDrawerState {
 
   function openCurTargetIfNeeded()
   {
-    if (!currentVisible || !checkObj(currentTarget))
+    if (!currentVisible || !::checkObj(currentTarget))
       return
 
     setShowContent(currentTarget)
     openDrawer()
   }
 
-  function onDrawerOpen(_obj)
+  function onDrawerOpen(obj)
   {
     currentState = GamercardDrawerState.STATE_OPENED
     if (currentTarget != null)
@@ -124,7 +117,7 @@ enum GamercardDrawerState {
     ::broadcastEvent("GamercardDrawerOpened", params)
   }
 
-  function onDrawerClose(_obj)
+  function onDrawerClose(obj)
   {
     currentState = GamercardDrawerState.STATE_CLOSED
     openCurTargetIfNeeded()
@@ -151,7 +144,7 @@ enum GamercardDrawerState {
   function toggleFuncOnObjs(guiObjFunc, obj = null)
   {
     let objId = obj?.id
-    let contentObject = this.getObj("gamercard_drawer_content")
+    let contentObject = getObj("gamercard_drawer_content")
     if (!contentObject)
       return
     for (local i = 0; i < contentObject.childrenCount(); ++i)

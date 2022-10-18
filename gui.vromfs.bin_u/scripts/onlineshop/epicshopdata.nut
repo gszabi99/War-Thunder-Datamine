@@ -1,10 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
+let stdLog = require("%sqstd/log.nut")()
 const LOG_PREFIX = "[EpicStore] "
-let logS = log_with_prefix(LOG_PREFIX)
+let log = stdLog.with_prefix(LOG_PREFIX)
+let logerr = stdLog.logerr
 
 let statsd = require("statsd")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -14,9 +11,9 @@ let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableIt
 
 let canUseIngameShop = ::epic_is_running
 
-let shopItemsQueryResult = persist("shopItemsQueryResult", @() Watched(null)) //DataBlock
-let isLoadingInProgress = Watched(false)
-let isInitedOnce = Watched(false)
+let shopItemsQueryResult = persist("shopItemsQueryResult", @() ::Watched(null)) //DataBlock
+let isLoadingInProgress = ::Watched(false)
+let isInitedOnce = ::Watched(false)
 
 local onItemsReceivedCb = null
 
@@ -25,7 +22,7 @@ isLoadingInProgress.subscribe(@(val)
 )
 
 let function requestData(cb = null) {
-  logS($"Requested store info: cb = {cb}")
+  log($"Requested store info: cb = {cb}")
   isLoadingInProgress(true)
 
   onItemsReceivedCb = cb
@@ -37,7 +34,7 @@ isInitedOnce.subscribe(function(val) {
   if (!val || !canUseIngameShop())
     return
 
-  logS($"Init Once")
+  log($"Init Once")
   requestData()
 })
 
@@ -51,7 +48,7 @@ shopItemsQueryResult.subscribe(function(v) {
   }
 })
 
-let epicCatalog = Computed(function() {
+let epicCatalog = ::Computed(function() {
   if (!shopItemsQueryResult.value)
     return {}
 
@@ -66,9 +63,9 @@ let epicCatalog = Computed(function() {
   return res
 })
 
-let epicItems = Computed(function() {
+let epicItems = ::Computed(function() {
   let res = {}
-  epicCatalog.value.each(@(itemsList, _m) itemsList.each(@(item, _idx) res[item.id] <- item))
+  epicCatalog.value.each(@(itemsList, m) itemsList.each(@(item, idx) res[item.id] <- item))
   return res
 })
 
@@ -81,9 +78,9 @@ epicItems.subscribe(function(_) {
   seenList.onListChanged()
 })
 
-let visibleSeenIds = Computed(function() {
+let visibleSeenIds = ::Computed(function() {
   let res = []
-  epicCatalog.value.each(@(itemsList, _m)
+  epicCatalog.value.each(@(itemsList, m)
     res.extend(itemsList.filter(@(it) !it.canBeUnseen()).map(@(it) it.getSeenId()))
   )
 
@@ -117,7 +114,7 @@ let function onUpdateItemCb(blk) {
   ::broadcastEvent("EpicShopItemUpdated", {item = epicItems.value[itemId]})
 }
 
-let haveAnyItemWithDiscount = Computed(@()
+let haveAnyItemWithDiscount = ::Computed(@()
   epicItems.value.findindex(@(v) v.haveDiscount()) != null
 )
 
@@ -136,17 +133,17 @@ let function haveDiscount() {
 }
 
 subscriptions.addListenersWithoutEnv({
-  LoginComplete = @(_p) initItemsListAfterLogin()
-  SignOut = @(_p) invaldateCache()
-  ScriptsReloaded = function(_p) {
+  LoginComplete = @(p) initItemsListAfterLogin()
+  SignOut = @(p) invaldateCache()
+  ScriptsReloaded = function(p) {
     invaldateCache()
     initItemsListAfterLogin()
   }
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
-getroottable()["epic_shop_items_callback"] <- @(res) shopItemsQueryResult(res)
-getroottable()["epic_shop_item_purchased_callback"] <- updateSpecificItemInfo
-getroottable()["epic_shop_item_callback"] <- onUpdateItemCb
+::getroottable()["epic_shop_items_callback"] <- @(res) shopItemsQueryResult(res)
+::getroottable()["epic_shop_item_purchased_callback"] <- updateSpecificItemInfo
+::getroottable()["epic_shop_item_callback"] <- onUpdateItemCb
 
 return {
   canUseIngameShop

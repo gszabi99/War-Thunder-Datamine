@@ -1,13 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
+local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/items/itemDesc.blk"
 
@@ -16,8 +10,8 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateHandlerData(item, shopDesc = false, preferMarkup = false, params = null)
   {
-    this.scene.scrollToView(true)
-    fillItemDescr(item, this.scene, this, shopDesc, preferMarkup, params)
+    scene.scrollToView(true)
+    fillItemDescr(item, scene, this, shopDesc, preferMarkup, params)
 
     if (item == null)
     {
@@ -37,18 +31,18 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function setHandlerVisible(value)
   {
-    this.scene.show(value)
-    this.scene.enable(value)
+    scene.show(value)
+    scene.enable(value)
   }
 
   function openCategory(categoryId)
   {
-    let containerObj = this.scene.findObject("item_info_collapsable_prizes")
-    if (!checkObj(containerObj))
+    let containerObj = scene.findObject("item_info_collapsable_prizes")
+    if (!::check_obj(containerObj))
       return
     let total = containerObj.childrenCount()
     local visible = false
-    this.guiScene.setUpdatesEnabled(false, false)
+    guiScene.setUpdatesEnabled(false, false)
     for(local i = 0; i < total; i++)
     {
       let childObj = containerObj.getChild(i)
@@ -67,7 +61,7 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
       childObj.collapsed = "yes"
       visible = false
     }
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(true, true)
   }
 
   function onPrizeCategoryClick(obj)
@@ -83,7 +77,7 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
 ::gui_handlers.ItemInfoHandler <- ItemInfoHandler
 
 return function(scene) {
-  if (!checkObj(scene))
+  if (!::check_obj(scene))
     return null
   return ::handlersManager.loadHandler(ItemInfoHandler, { scene = scene })
 }

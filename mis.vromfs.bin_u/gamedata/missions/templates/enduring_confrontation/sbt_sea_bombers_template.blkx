@@ -411,18 +411,18 @@
       },
       "conditions": {
         "objectExists": {
-          "target": "scnv_t2_squad_name",
+          "target": "pt_reinforcement_t2_squad_name",
           "type": "var"
         },
         "varCompareString": {
-          "var_value": "scnv_t2_squad_name",
+          "var_value": "pt_reinforcement_t2_squad_name",
           "value": "",
           "comparasion_func": "notEqual"
         }
       },
       "actions": {
         "varGetStringValue": {
-          "from_var_name": "scnv_t2_squad_name",
+          "from_var_name": "pt_reinforcement_t2_squad_name",
           "var": "sbt_t1_target_name"
         },
         "triggerEnable": {
@@ -715,9 +715,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@sbt_t1_fighter_name",
           "follow_offset": [
             0.0,
@@ -801,9 +798,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@sbt_t1_fighter_name"
         },
         "triggerEnable": {
@@ -887,17 +881,9 @@
         }
       },
       "actions": {
-        "comment": [
-          {
-            "value": "bombery ryadom s cel'yu"
-          },
-          {
-            "value": "settiing flag that attack has been started"
-          },
-          {
-            "value": ""
-          }
-        ],
+        "comment": {
+          "value": "bombery ryadom s cel'yu"
+        },
         "unitMoveTo": {
           "target": "sbt_t1_retreat_point",
           "follow_target": false,
@@ -915,9 +901,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@sbt_t1_bomber_name"
         },
         "unitAttackTarget": {
@@ -926,10 +909,6 @@
           "target": "@sbt_t1_target_name",
           "fireRandom": true,
           "attackNumMax": 2
-        },
-        "varSetBool": {
-          "value": true,
-          "var": "sbt_t1_attack_done"
         },
         "triggerEnable": {
           "target": [
@@ -994,9 +973,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@sbt_t1_bomber_name"
         },
         "triggerEnable": {
@@ -1233,7 +1209,6 @@
           "target": "sbt_t1_defend_bombers",
           "object_var_comp_op": "equal",
           "object_var_name": "",
-          "object_marking": 0,
           "unit_or_area": "@sbt_t1_bomber_name",
           "object_type": "isActive"
         },
@@ -1277,7 +1252,6 @@
             "target": "sbt_t1_defend_bombers",
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "isActive"
           },
@@ -1285,7 +1259,6 @@
             "target": "sbt_t2_attack_bombers",
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "isActive"
           }
@@ -1325,7 +1298,6 @@
             "status": 1,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "isActive"
@@ -1335,7 +1307,6 @@
             "status": 1,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B",
             "unit_or_area": "@sbt_t1_bomber_name",
             "object_type": "isActive"
@@ -1367,7 +1338,6 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
-          "object_marking": 0,
           "team": "A",
           "unit_or_area": "@sbt_t1_bomber_name",
           "object_type": "isActive"
@@ -1439,7 +1409,6 @@
           "target": "sbt_t2_attack_bombers",
           "object_var_comp_op": "equal",
           "object_var_name": "",
-          "object_marking": 0,
           "unit_or_area": "@sbt_t1_bomber_name",
           "object_type": "isActive"
         }
@@ -1493,7 +1462,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@sbt_t1_bomber_name",
@@ -1504,7 +1472,6 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@sbt_t1_bomber_name",
@@ -1578,7 +1545,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@sbt_t1_bomber_name",
@@ -1589,7 +1555,6 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           }
         ],
@@ -1631,7 +1596,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@sbt_t1_bomber_name",
@@ -1642,7 +1606,6 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -1684,7 +1647,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@sbt_t1_bomber_name",
@@ -1695,7 +1657,6 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -1720,18 +1681,18 @@
       },
       "conditions": {
         "objectExists": {
-          "target": "scnv_t1_squad_name",
+          "target": "pt_reinforcement_t1_squad_name",
           "type": "var"
         },
         "varCompareString": {
-          "var_value": "scnv_t1_squad_name",
+          "var_value": "pt_reinforcement_t1_squad_name",
           "value": "",
           "comparasion_func": "notEqual"
         }
       },
       "actions": {
         "varGetStringValue": {
-          "from_var_name": "scnv_t1_squad_name",
+          "from_var_name": "pt_reinforcement_t1_squad_name",
           "var": "sbt_t2_target_name"
         },
         "triggerEnable": {
@@ -2024,9 +1985,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@sbt_t2_fighter_name",
           "follow_offset": [
             0.0,
@@ -2109,9 +2067,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@sbt_t2_fighter_name"
         },
         "triggerEnable": {
@@ -2195,17 +2150,9 @@
         }
       },
       "actions": {
-        "comment": [
-          {
-            "value": "bombery ryadom s cel'yu"
-          },
-          {
-            "value": "settiing flag that attack has been started"
-          },
-          {
-            "value": ""
-          }
-        ],
+        "comment": {
+          "value": "bombery ryadom s cel'yu"
+        },
         "unitMoveTo": {
           "target": "sbt_t2_retreat_point",
           "follow_target": false,
@@ -2223,9 +2170,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@sbt_t2_bomber_name"
         },
         "unitAttackTarget": {
@@ -2234,10 +2178,6 @@
           "target": "@sbt_t2_target_name",
           "fireRandom": true,
           "attackNumMax": 2
-        },
-        "varSetBool": {
-          "value": true,
-          "var": "sbt_t2_attack_done"
         },
         "triggerEnable": {
           "target": [
@@ -2299,9 +2239,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@sbt_t2_bomber_name"
         },
         "triggerEnable": {
@@ -2532,7 +2469,6 @@
           "target": "sbt_t2_defend_bombers",
           "object_var_comp_op": "equal",
           "object_var_name": "",
-          "object_marking": 0,
           "unit_or_area": "@sbt_t2_bomber_name",
           "object_type": "isActive"
         },
@@ -2576,7 +2512,6 @@
             "target": "sbt_t2_defend_bombers",
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isActive"
           },
@@ -2584,7 +2519,6 @@
             "target": "sbt_t1_attack_bombers",
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isActive"
           }
@@ -2624,7 +2558,6 @@
             "status": 1,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isActive"
@@ -2634,7 +2567,6 @@
             "status": 1,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A",
             "unit_or_area": "@sbt_t2_bomber_name",
             "object_type": "isActive"
@@ -2666,7 +2598,6 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
-          "object_marking": 0,
           "team": "B",
           "unit_or_area": "@sbt_t2_bomber_name",
           "object_type": "isActive"
@@ -2738,7 +2669,6 @@
           "target": "sbt_t1_attack_bombers",
           "object_var_comp_op": "equal",
           "object_var_name": "",
-          "object_marking": 0,
           "unit_or_area": "@sbt_t2_bomber_name",
           "object_type": "isActive"
         }
@@ -2792,7 +2722,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@sbt_t2_bomber_name",
@@ -2803,7 +2732,6 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -2874,7 +2802,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@sbt_t2_bomber_name",
@@ -2885,7 +2812,6 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -2927,7 +2853,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@sbt_t2_bomber_name",
@@ -2938,7 +2863,6 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           }
         ],
@@ -2980,7 +2904,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@sbt_t2_bomber_name",
@@ -2991,7 +2914,6 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           }
         ],
@@ -3413,9 +3335,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t1_bomber_name",
             "speed": 300.0,
             "altRange": [
@@ -3464,9 +3383,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t1_bomber_name",
             "speed": 320.0,
             "altRange": [
@@ -3515,9 +3431,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t1_bomber_name",
             "speed": 340.0,
             "altRange": [
@@ -3566,9 +3479,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t1_bomber_name",
             "altRange": [
               4000.0,
@@ -3616,9 +3526,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t1_bomber_name",
             "altRange": [
               5200.0,
@@ -3666,9 +3573,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t2_bomber_name",
             "speed": 300.0,
             "altRange": [
@@ -3717,9 +3621,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t2_bomber_name",
             "speed": 320.0,
             "altRange": [
@@ -3768,9 +3669,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t2_bomber_name",
             "speed": 340.0,
             "altRange": [
@@ -3819,9 +3717,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t2_bomber_name",
             "altRange": [
               4000.0,
@@ -3869,9 +3764,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@sbt_t2_bomber_name",
             "altRange": [
               5200.0,
@@ -3944,7 +3836,6 @@
           "target": "sbt_t2_attack_bombers",
           "object_var_comp_op": "equal",
           "object_var_name": "",
-          "object_marking": 0,
           "unit_or_area": "@sbt_t1_bomber_name",
           "object_type": "isActive"
         },
@@ -4016,7 +3907,6 @@
           "target": "sbt_t1_attack_bombers",
           "object_var_comp_op": "equal",
           "object_var_name": "",
-          "object_marking": 0,
           "unit_or_area": "@sbt_t2_bomber_name",
           "object_type": "isActive"
         },
@@ -4685,9 +4575,7 @@
     "sbt_t2_def_player_activity_calc": 0,
     "sbt_t1_kill_player_activity_calc": 0,
     "sbt_t2_kill_player_activity_calc": 0,
-    "sbt_last_army": 1,
-    "sbt_t1_attack_done": false,
-    "sbt_t2_attack_done": false
+    "sbt_last_army": 1
   },
   "dialogs": {},
   "airfields": {},

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
@@ -14,7 +7,6 @@ let { AMMO,
         getUnitNotReadyAmmoList } = require("%scripts/weaponry/ammoInfo.nut")
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
-let { get_gui_option } = require("guiOptions")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null)
 {
@@ -41,7 +33,7 @@ let { get_gui_option } = require("guiOptions")
   {
     let selList = getSelSlotsData().units
     foreach(c, airName in selList)
-      if ((isInArray(c, countries)) && airName!="")
+      if ((::isInArray(c, countries)) && airName!="")
       {
         let repairCost = ::wp_get_repair_cost(airName)
         if (repairCost > 0)
@@ -50,8 +42,8 @@ let { get_gui_option } = require("guiOptions")
           res.broken_countries.append({ country = c, airs = [airName] })
           res.canFlyout = false
         }
-        let air = ::getAircraftByName(airName)
-        let crew = air && ::getCrewByAir(air)
+        let air = getAircraftByName(airName)
+        let crew = air && getCrewByAir(air)
         if (!crew || ::is_crew_locked_by_prev_battle(crew))
           res.canFlyoutIfRepair = false
 
@@ -68,7 +60,7 @@ let { get_gui_option } = require("guiOptions")
   }
   else
     foreach(cc in ::g_crews_list.get())
-      if (isInArray(cc.country, countries))
+      if (::isInArray(cc.country, countries))
       {
         local have_repaired_in_country = false
         local have_unlocked_in_country = false
@@ -129,20 +121,20 @@ let { get_gui_option } = require("guiOptions")
 
 ::checkBrokenAirsAndDo <- function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCountry = true, cancelFunc = null)
 {
-  if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))
+  if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !::get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))
   {
     let price = ::Cost(repairInfo.unreadyAmmoCost, repairInfo.unreadyAmmoCostGold)
-    local msg = loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
-    msg += "\n\n" + format(loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())
+    local msg = ::loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
+    msg += "\n\n" + format(::loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())
 
     ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
       {
         parentHandler = handler
         message = msg
-        startBtnText = loc("mainmenu/btnBuy")
+        startBtnText = ::loc("mainmenu/btnBuy")
         ableToStartAndSkip = true
         onStartPressed = function() {
-          ::buyAllAmmoAndApply(
+          buyAllAmmoAndApply(
             handler,
             repairInfo.unreadyAmmoList,
             function() {
@@ -176,9 +168,9 @@ let { get_gui_option } = require("guiOptions")
       msgText = repairInfo.randomCountry ? "msgbox/select_%s_aircrafts_random" : "msgbox/select_%s_aircraft"
 
     if(repairInfo.canFlyoutIfRepair)
-      msgText = format(loc(format(msgText, "repared")), ::Cost(repairInfo.repairCost).tostring())
+      msgText = format(::loc(format(msgText, "repared")), ::Cost(repairInfo.repairCost).tostring())
     else
-      msgText = format(loc(format(msgText, "available")),
+      msgText = format(::loc(format(msgText, "available")),
         time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
 
     let repairBtnName = respawns ? "RepairAll" : "Repair"
@@ -191,7 +183,7 @@ let { get_gui_option } = require("guiOptions")
   }
   else if (repairInfo.broken_countries.len() > 0)
   {
-    local msgText = repairInfo.randomCountry ? loc("msgbox/some_repared_aircrafts_random") : loc("msgbox/some_repared_aircrafts")
+    local msgText = repairInfo.randomCountry ? ::loc("msgbox/some_repared_aircrafts_random") : ::loc("msgbox/some_repared_aircrafts")
     msgText = format(msgText, ::Cost(repairInfo.repairCost).tostring())
     ::scene_msg_box("no_aircrafts", null, msgText,
        [
@@ -206,15 +198,15 @@ let { get_gui_option } = require("guiOptions")
     ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
       {
         parentHandler = handler
-        message = loc("msgbox/hasShipWithoutPurshasedTorpedoes",
+        message = ::loc("msgbox/hasShipWithoutPurshasedTorpedoes",
           {
             numShips = repairInfo.shipsWithoutPurshasedTorpedoes.len()
             shipsList = ::g_string.implode(
               repairInfo.shipsWithoutPurshasedTorpedoes.map(@(u)
-                colorize("activeTextColor", ::getUnitName(u, true))),
-              loc("ui/comma"))
+                ::colorize("activeTextColor", ::getUnitName(u, true))),
+              ::loc("ui/comma"))
           })
-        startBtnText = loc(getToBattleLocId())
+        startBtnText = ::loc(getToBattleLocId())
         ableToStartAndSkip = true
         showCheckBoxBullets = false
         skipFunc = function(value) {
@@ -266,7 +258,7 @@ let { get_gui_option } = require("guiOptions")
 
   if (taskId >= 0)
   {
-    let progressBox = ::scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
+    let progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase0"), null, null)
     ::add_bg_task_cb(taskId, function()
     {
       ::destroyMsgBox(progressBox)
@@ -301,7 +293,7 @@ let { get_gui_option } = require("guiOptions")
 
   if (taskId >= 0)
   {
-    let progressBox = ::scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
+    let progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase0"), null, null)
     ::add_bg_task_cb(taskId, (@(handler, unreadyAmmoList, afterDoneFunc, progressBox) function() {
       ::destroyMsgBox(progressBox)
       ::buyAllAmmoAndApply(handler, unreadyAmmoList, afterDoneFunc)

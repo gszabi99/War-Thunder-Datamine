@@ -1,14 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 ::gui_handlers.WwQueueInfo <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -28,14 +19,14 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
   function initScreen()
   {
-    this.scene.setUserData(this)
-    let timerObj = this.scene.findObject("ww_queue_update_timer")
+    scene.setUserData(this)
+    let timerObj = scene.findObject("ww_queue_update_timer")
 
-    if (checkObj(timerObj))
+    if (::checkObj(timerObj))
       timerObj.setUserData(this)
   }
 
-  function onTimerUpdate(_obj, _dt)
+  function onTimerUpdate(obj, dt)
   {
     let currentBattleQueue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
     if (!currentBattleQueue)
@@ -60,8 +51,8 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
       let wwBattle = ::g_world_war.getBattleById(battleInfo?.battleId)
       foreach (idx, sideInfo in getSidesInfo(wwBattle))
       {
-        let sideObj = this.scene.findObject(getSidesObjName(idx))
-        if (!checkObj(sideObj))
+        let sideObj = scene.findObject(getSidesObjName(idx))
+        if (!::check_obj(sideObj))
           continue
 
         if (!sideObj.isVisible())
@@ -82,7 +73,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
   function getSidesInfo(battle)
   {
-    let playerCountry = profileCountrySq.value
+    let playerCountry = ::get_profile_country_sq()
     let sidesInfo = []
     foreach (team in battle.teams)
     {
@@ -108,13 +99,13 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   function fillBattleSideInfo(containerObj, sideInfo)
   {
     let countryObj = containerObj.findObject("country")
-    if (!checkObj(countryObj))
+    if (!::check_obj(countryObj))
       return
 
     countryObj["background-image"] = getCustomViewCountryData(sideInfo.country).icon
 
     let maxPlayersTextObj = containerObj.findObject("max_players_text")
-    if (!checkObj(maxPlayersTextObj))
+    if (!::check_obj(maxPlayersTextObj))
       return
 
     maxPlayersTextObj.setValue(sideInfo.maxPlayers.tostring())
@@ -136,21 +127,21 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   function getPlayersCountFromBattleQueueInfo(battleQueueInfo, teamName, field)
   {
     if (!battleQueueInfo)
-      return loc("ui/hyphen")
+      return ::loc("ui/hyphen")
 
-    let teamData = getTblValue(teamName, battleQueueInfo, null)
+    let teamData = ::getTblValue(teamName, battleQueueInfo, null)
     if (field == "playersInClans")
     {
       local clanPlayerCount = 0
-      let clanPlayers = getTblValue(field, teamData, [])
+      let clanPlayers = ::getTblValue(field, teamData, [])
       foreach(clanPlayerData in clanPlayers)
-        clanPlayerCount += getTblValue("count", clanPlayerData, 0)
+        clanPlayerCount += ::getTblValue("count", clanPlayerData, 0)
 
       return clanPlayerCount.tostring()
     }
     else if (field == "playersOther")
     {
-      let count = getTblValue(field, teamData, 0)
+      let count = ::getTblValue(field, teamData, 0)
       return count.tostring()
     }
 

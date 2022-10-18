@@ -1,13 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let platformModule = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/leaderboard/leaderboardTable"
@@ -79,7 +73,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         }
         headerRow.append(block)
       }
-      data += ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+      data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
     }
 
     isLastPage = false
@@ -92,15 +86,15 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (rowIdx < rowsInPage)
       {
         for(local i = rowIdx; i < rowsInPage; i++)
-          data += ::buildTableRow("row_" + i, [], i % 2 == 0, "inactive:t='yes';")
+          data += buildTableRow("row_" + i, [], i % 2 == 0, "inactive:t='yes';")
         isLastPage = true
       }
 
       data += generateSelfRow(selfRow)
     }
 
-    let lbTable = this.scene.findObject("lb_table")
-    this.guiScene.replaceContentFromText(lbTable, data, data.len(), this)
+    let lbTable = scene.findObject("lb_table")
+    guiScene.replaceContentFromText(lbTable, data, data.len(), this)
 
     if (hasTable)
       onRowSelect(lbTable)
@@ -117,7 +111,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let playerName = platformModule.getPlayerName(row?.name ?? "")
     let rowData = [
       {
-        text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
+        text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
       }
       {
         id = "name"
@@ -137,7 +131,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     let highlightRow = selfPos == row.pos && row.pos >= 0
     let rowParamsText = $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
-    let data = ::buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
+    let data = buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
 
     return data
   }
@@ -156,7 +150,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!selfRow || selfRow.len() <= 0)
       return ""
 
-    let emptyRow = ::buildTableRow("row_"+rowsInPage, ["..."], null,
+    let emptyRow = buildTableRow("row_"+rowsInPage, ["..."], null,
       "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;'; ")
 
     return emptyRow + generateRowTableData(selfRow[0], rowsInPage + 1, selfRow)
@@ -170,7 +164,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let playerName = platformModule.getPlayerName(row?.name ?? "")
     let rowData = [
       {
-        text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
+        text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
       },
       {
         id = "name"
@@ -190,7 +184,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     let highlightRow = selfRow == row.pos && row.pos >= 0
-    let data = ::buildTableRow(rowName, rowData, rowIdx % 2 == 0,
+    let data = buildTableRow(rowName, rowData, rowIdx % 2 == 0,
       $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}")
 
     return data
@@ -200,7 +194,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     if (::show_console_buttons)
       return
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     let dataIdx = obj.getValue() - 1 // skiping header row
@@ -211,7 +205,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     if (!::show_console_buttons)
       return
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     let isHover = obj.isHovered()

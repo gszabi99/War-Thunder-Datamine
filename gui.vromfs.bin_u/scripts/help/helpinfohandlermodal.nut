@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 //wndInfoConfig = {
 //  textsBlk - blk with texts for this window
 //  links = [
@@ -16,9 +10,8 @@ from "%scripts/dagui_library.nut" import *
 //  ]
 //}
 
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
@@ -42,19 +35,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen()
   {
     if (!config)
-      return this.goBack()
+      return goBack()
 
-    objContainer = getTblValue("objContainer", config, ownerScene)
+    objContainer = ::getTblValue("objContainer", config, ownerScene)
     if (!checkObj(objContainer))
-      return this.goBack()
+      return goBack()
 
-    let links = getTblValue("links", config)
+    let links = ::getTblValue("links", config)
     if (!links)
-      return this.goBack()
+      return goBack()
 
     let textsBlk = config?.textsBlk
     if (textsBlk)
-      this.guiScene.replaceContent(this.scene.findObject("texts_screen"), textsBlk, null)
+      guiScene.replaceContent(scene.findObject("texts_screen"), textsBlk, null)
 
     //update messages visibility to correct update other messages positions
     let highlightList = []
@@ -65,8 +58,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (!link?.msgId)
         link.msgId <- null
 
-      let msgObj = link.msgId ? this.scene.findObject(link.msgId) : null
-      if (checkObj(msgObj))
+      let msgObj = link.msgId ? scene.findObject(link.msgId) : null
+      if (::check_obj(msgObj))
       {
         msgObj.show(!!objBlock)
         if ("text" in link)
@@ -77,16 +70,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         highlightList.append(objBlock.__merge({id = "lightObj_" + idx}))
     }
 
-    this.guiScene.setUpdatesEnabled(true, true) //need to recount sizes and positions
+    guiScene.setUpdatesEnabled(true, true) //need to recount sizes and positions
 
-    ::guiTutor.createHighlight(this.scene.findObject("dark_screen"), highlightList, this, { onClick = "goBack" })
+    ::guiTutor.createHighlight(scene.findObject("dark_screen"), highlightList, this, { onClick = "goBack" })
 
     let linesData = ::LinesGenerator.getLinkLinesMarkup(getLinesGeneratorConfig())
-    this.guiScene.replaceContentFromText(this.scene.findObject("lines_block"), linesData, linesData.len(), this)
+    guiScene.replaceContentFromText(scene.findObject("lines_block"), linesData, linesData.len(), this)
   }
 
   getLinesGeneratorConfig = @() {
-    startObjContainer = this.scene
+    startObjContainer = scene
     endObjContainer = objContainer
     lineInterval = config?.lineInterval
     links = ::u.keysReplace(config.links, { msgId = "start", obj = "end" })
@@ -94,6 +87,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function consoleNext()
   {
-    this.goBack()
+    goBack()
   }
 }

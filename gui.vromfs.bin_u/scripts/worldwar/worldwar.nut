@@ -1,7 +1,121 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+global const WW_SKIP_BATTLE_WARNINGS_SAVE_ID = "worldWar/skipBattleWarnings"
+
+global enum WW_ARMY_ACTION_STATUS
+{
+  IDLE = 0
+  IN_MOVE = 1
+  ENTRENCHED = 2
+  IN_BATTLE = 3
+
+  UNKNOWN = 100
+}
+
+global enum WW_ARMY_RELATION_ID
+{
+  CLAN,
+  ALLY
+}
+
+global enum WW_GLOBAL_STATUS_TYPE //bit enum
+{
+  QUEUE              = 0x0001
+  ACTIVE_OPERATIONS  = 0x0002
+  MAPS               = 0x0004
+  OPERATIONS_GROUPS  = 0x0008
+
+  //masks
+  ALL                = 0x000F
+}
+
+global enum WW_BATTLE_ACCESS
+{
+  NONE     = 0
+  OBSERVER = 0x0001
+  MANAGER  = 0x0002
+
+  SUPREME  = 0xFFFF
+}
+
+global enum WW_UNIT_CLASS
+{
+  FIGHTER    = 0x0001
+  BOMBER     = 0x0002
+  ASSAULT    = 0x0004
+  HELICOPTER = 0x0008
+  UNKNOWN    = 0x0010
+
+  NONE     = 0x0000
+  COMBINED = 0x0003
+}
+
+global enum WW_BATTLE_UNITS_REQUIREMENTS
+{
+  NO_REQUIREMENTS   = "allow"
+  BATTLE_UNITS      = "battle"
+  OPERATION_UNITS   = "global"
+  NO_MATCHING_UNITS = "deny"
+}
+
+global enum WW_BATTLE_CANT_JOIN_REASON
+{
+  CAN_JOIN
+  NO_WW_ACCESS
+  NOT_ACTIVE
+  UNKNOWN_SIDE
+  WRONG_SIDE
+  EXCESS_PLAYERS
+  NO_TEAM
+  NO_COUNTRY_IN_TEAM
+  NO_COUNTRY_BY_SIDE
+  NO_TEAM_NAME_BY_SIDE
+  NO_AVAILABLE_UNITS
+  TEAM_FULL
+  QUEUE_FULL
+  UNITS_NOT_ENOUGH_AVAILABLE
+  SQUAD_NOT_LEADER
+  SQUAD_WRONG_SIDE
+  SQUAD_TEAM_FULL
+  SQUAD_QUEUE_FULL
+  SQUAD_NOT_ALL_READY
+  SQUAD_MEMBER_ERROR
+  SQUAD_UNITS_NOT_ENOUGH_AVAILABLE
+  SQUAD_HAVE_UNACCEPTED_INVITES
+  SQUAD_NOT_ALL_CREWS_READY
+  SQUAD_MEMBERS_NO_WW_ACCESS
+}
+
+global enum mapObjectSelect {
+  NONE,
+  ARMY,
+  REINFORCEMENT,
+  AIRFIELD,
+  BATTLE,
+  LOG_ARMY
+}
+
+global enum WW_ARMY_GROUP_ICON_SIZE {
+  BASE   = "base",
+  SMALL  = "small",
+  MEDIUM = "medium"
+}
+
+global enum WW_MAP_HIGHLIGHT {
+  LAYER_0,
+  LAYER_1,
+  LAYER_2,
+  LAYER_3
+}
+
+global enum WW_UNIT_SORT_CODE {
+  AIR,
+  HELICOPTER,
+  GROUND,
+  WATER,
+  ARTILLERY,
+  INFANTRY,
+  TRANSPORT,
+  UNKNOWN
+}
 
 ::strength_unit_expclass_group <- {
   bomber = "bomber"
@@ -81,6 +195,7 @@ foreach (fn in [
                  "handler/wwQueueInfo.nut"
                  "handler/wwSquadList.nut"
                  "handler/wwBattleDescription.nut"
+                 "handler/wwGlobalBattlesModal.nut"
                  "handler/wwAirfieldFlyOut.nut"
                  "handler/wwObjectivesInfo.nut"
                  "handler/wwMyClanSquadInviteModal.nut"
@@ -100,6 +215,7 @@ require("%scripts/worldWar/wwPromo.nut")
 foreach(bhvName, bhvClass in ::ww_gui_bhv)
   ::replace_script_gui_behaviour(bhvName, bhvClass)
 
-::ww_event <- function ww_event(name, params = {}) {
+::ww_event <- function ww_event(name, params = {})
+{
   ::broadcastEvent("WW" + name, params || {})
 }

@@ -1,12 +1,105 @@
 {
-  "Weapon": [
+  "hideNodes": {
+    "node": [
+      "pylon_e_l_upor",
+      "pylon_i_l",
+      "pylon_i_l_upor",
+      "pylon_dlt_l",
+      "pylon_c",
+      "pylon_c_upor",
+      "pylon_i_r",
+      "pylon_i_r_upor",
+      "pylon_dlt_r",
+      "pylon_e_r_upor",
+      "dlt_pylon_l",
+      "dlt_pylon_l_upor1",
+      "dlt_pylon_l_upor2",
+      "dlt_pylon_r",
+      "dlt_pylon_r_upor1",
+      "dlt_pylon_r_upor2",
+      "lau_5003_b001",
+      "lau_5003_b002",
+      "lau_5003_b003",
+      "lau_5003_b004",
+      "lau_5003_dlt_b001",
+      "lau_5003_dlt_b002",
+      "lau_5003_dlt_b003",
+      "lau_5003_dlt_b004",
+      "matra_155_pod_b001",
+      "matra_155_pod_b002",
+      "matra_155_pod_b003",
+      "matra_155_pod_b004",
+      "matra_155_pod_dlt_b001",
+      "matra_155_pod_dlt_b002",
+      "matra_155_pod_dlt_b003",
+      "matra_155_pod_dlt_b004"
+    ]
+  },
+  "RocketCap": [
     {
-      "slot": 1,
-      "preset": "sraam_left"
+      "name": "cap_b001",
+      "part": "launcher_sraam_l_cap1"
     },
     {
-      "slot": 5,
-      "preset": "sraam_right"
+      "name": "cap_b002",
+      "part": "launcher_sraam_l_cap2"
+    },
+    {
+      "name": "cap_b003",
+      "part": "launcher_sraam_r_cap1"
+    },
+    {
+      "name": "cap_b004",
+      "part": "launcher_sraam_r_cap2"
     }
-  ]
+  ],
+  "Weapon": [
+    {
+      "trigger": "aam",
+      "blk": "gameData/Weapons/rocketGuns/uk_sraam.blk",
+      "emitter": "rocket_sraam_001",
+      "bullets": 1,
+      "external": true,
+      "separate": true,
+      "capName": "cap_b001"
+    },
+    {
+      "trigger": "aam",
+      "blk": "gameData/Weapons/rocketGuns/uk_sraam.blk",
+      "emitter": "rocket_sraam_004",
+      "bullets": 1,
+      "external": true,
+      "separate": true,
+      "capName": "cap_b004"
+    },
+    {
+      "trigger": "aam",
+      "blk": "gameData/Weapons/rocketGuns/uk_sraam.blk",
+      "emitter": "rocket_sraam_002",
+      "bullets": 1,
+      "external": true,
+      "separate": true,
+      "capName": "cap_b002"
+    },
+    {
+      "trigger": "aam",
+      "blk": "gameData/Weapons/rocketGuns/uk_sraam.blk",
+      "emitter": "rocket_sraam_003",
+      "bullets": 1,
+      "external": true,
+      "separate": true,
+      "capName": "cap_b003"
+    }
+  ],
+  "WeaponContainers": {
+    "blk": "gameData/Weapons/rocketGuns/uk_sraam.blk",
+    "node": [
+      "launcher_sraam_l",
+      "launcher_sraam_r",
+      "launcher_sraam_l_cap1",
+      "launcher_sraam_l_cap2",
+      "launcher_sraam_r_cap1",
+      "launcher_sraam_r_cap2"
+    ]
+  }
 }

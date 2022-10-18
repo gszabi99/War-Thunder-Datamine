@@ -1,8 +1,3 @@
-#explicit-this
-#no-root-fallback
-
-let { get_time_msec } = require("dagor.time")
-let { abs } = require("math")
 let { markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCentering
 } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
@@ -15,8 +10,8 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 ::gui_bhv.posNavigator <- class
 {
   bhvId = "posNavigator"
-  eventMask = EV_JOYSTICK | EV_PROCESS_SHORTCUTS | EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_DBL_CLICK
-    | EV_ON_FOCUS_SET | EV_ON_FOCUS_LOST | EV_ON_CMD | EV_ON_INSERT_REMOVE | EV_TIMER | EV_MOUSE_NOT_ON_OBJ
+  eventMask = ::EV_JOYSTICK | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_L_BTN | ::EV_MOUSE_EXT_BTN | ::EV_MOUSE_DBL_CLICK
+    | ::EV_ON_FOCUS_SET | ::EV_ON_FOCUS_LOST | ::EV_ON_CMD | ::EV_ON_INSERT_REMOVE | ::EV_TIMER | ::EV_MOUSE_NOT_ON_OBJ
   valuePID                 = ::dagui_propid.add_name_id("value")
   selectedPID              = ::dagui_propid.add_name_id("value") //value = selected
   moveTypeXPID             = ::dagui_propid.add_name_id("moveX")
@@ -41,7 +36,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     obj.timer_interval_msec = "100"
     markChildrenInteractive(obj, true)
     markObjShortcutOnHover(obj, true)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function onDetach(obj) {
@@ -49,18 +44,18 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     markObjShortcutOnHover(obj, false)
     if (obj.getIntProp(this.activatePushedIdxPID, -1) >= 0)
       this.onActivateUnpushed(obj)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function onFocus(obj, event)
   {
-    if (event == EV_ON_FOCUS_SET)
+    if (event == ::EV_ON_FOCUS_SET)
     {
       if (!this.isOnlyHover(obj))
         this.selectCurItem(obj)
       obj.getScene().playSound("focus")
     }
-    else if (event == EV_ON_FOCUS_LOST)
+    else if (event == ::EV_ON_FOCUS_LOST)
     {
       if (this.canSelectOnlyFocused(obj))
         this.clearSelect(obj)
@@ -72,7 +67,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       selObj.markObjChanged()
 
     obj.sendNotify("set_focus")
-    return (obj?.disableFocusParent == "yes")? RETCODE_HALT : RETCODE_NOTHING
+    return (obj?.disableFocusParent == "yes")? ::RETCODE_HALT : ::RETCODE_NOTHING
   }
 
   function canSelectOnlyFocused(obj)
@@ -225,7 +220,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       obj.getScene().playSound(obj?.snd_select ? obj.snd_select : "choose")
   }
 
-  function chooseItem(_obj, _idx, _needSound = true) {}
+  function chooseItem(obj, idx, needSound = true) {}
 
   function onSelectAction(obj)
   {
@@ -242,18 +237,18 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
   function onShortcutActivate(obj, is_down)
   {
     if (is_down) {
-      ::set_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
+      ::set_script_gui_behaviour_events(this.bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
       this.onActivatePushed(obj, this.getValue(obj))
-      return RETCODE_HALT
+      return ::RETCODE_HALT
     }
 
     let pushedIdx = obj.getIntProp(this.activatePushedIdxPID, -1)
     if (pushedIdx < 0)
-      return RETCODE_HALT
+      return ::RETCODE_HALT
     let wasHoldStarted = this.onActivateUnpushed(obj)
     if ((!wasHoldStarted || this.needActionAfterHold(obj)) && this.getValue(obj) == pushedIdx)
       this.activateAction(obj)
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function findClickedObj(obj, mx, my)
@@ -285,17 +280,17 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
   function onLMouse(obj, mx, my, is_up, bits) {
     if (!is_up) {
-      let isOnObj = !(bits & (is_up ? BITS_MOUSE_OUTSIDE : BITS_MOUSE_NOT_ON_OBJ))
+      let isOnObj = !(bits & (is_up ? ::BITS_MOUSE_OUTSIDE : ::BITS_MOUSE_NOT_ON_OBJ))
       if (!isOnObj)
-        return RETCODE_NOTHING
+        return ::RETCODE_NOTHING
       let { idx = -1 } = this.findClickedObj(obj, mx, my)
       if (idx < 0)
-        return RETCODE_NOTHING
+        return ::RETCODE_NOTHING
 
-      if (!(bits & BITS_MOUSE_TAP))
+      if (!(bits & ::BITS_MOUSE_TAP))
         obj.getScene().setProtectedMouseCapture(obj)
       this.onActivatePushed(obj, idx)
-      return RETCODE_HALT
+      return ::RETCODE_HALT
     }
 
     if (obj.isMouseCaptured())
@@ -303,28 +298,28 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
     let pushedIdx = obj.getIntProp(this.activatePushedIdxPID, -1)
     if (pushedIdx < 0)
-      return RETCODE_NOTHING
+      return ::RETCODE_NOTHING
 
     let wasHoldStarted = this.onActivateUnpushed(obj)
     if (wasHoldStarted && !this.needActionAfterHold(obj))
-      return RETCODE_HALT
+      return ::RETCODE_HALT
     let { idx = -1 } = this.findClickedObj(obj, mx, my)
     if (idx != pushedIdx)
-      return RETCODE_HALT
+      return ::RETCODE_HALT
 
-    if (bits & BITS_MOUSE_DBL_CLICK) {
+    if (bits & ::BITS_MOUSE_DBL_CLICK) {
       let curValue = this.getValue(obj)
       if (curValue  == -1)
         this.selectItemByClick(obj, mx, my, false)
       else if (idx != curValue)
-        return RETCODE_NOTHING
+        return ::RETCODE_NOTHING
 
       this.activateAction(obj)
-      return RETCODE_HALT
+      return ::RETCODE_HALT
     }
 
     this.selectItemByClick(obj, mx, my)
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function onModalChange(obj, isModal) {
@@ -336,47 +331,47 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       this.onActivateUnpushed(obj)
   }
 
-  function onExtMouse(obj, mx, my, btn_id, is_up, _bits)
+  function onExtMouse(obj, mx, my, btn_id, is_up, bits)
   {
     if (btn_id != 2)  //right mouse button
-      return RETCODE_NOTHING
+      return ::RETCODE_NOTHING
     if (is_up)
     {
       if (this.findClickedObj(obj, mx, my))
         obj.sendNotify("r_click")
-      return RETCODE_PROCESSED
+      return ::RETCODE_PROCESSED
     }
     if (this.findClickedObj(obj, mx, my)?.idx == this.getValue(obj))
-      return RETCODE_PROCESSED
-    return this.selectItemByClick(obj, mx, my, false) >= 0 ? RETCODE_HALT : RETCODE_NOTHING
+      return ::RETCODE_PROCESSED
+    return this.selectItemByClick(obj, mx, my, false) >= 0 ? ::RETCODE_HALT : ::RETCODE_NOTHING
   }
 
   function onShortcutLeft(obj, is_down)
   {
     if (is_down)
       return this.moveSelect(obj, 0, -1)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function onShortcutRight(obj, is_down)
   {
     if (is_down)
       return this.moveSelect(obj, 0, 1)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function onShortcutDown(obj, is_down)
   {
     if (is_down)
       return this.moveSelect(obj, 1, 1)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function onShortcutUp(obj, is_down)
   {
     if (is_down)
       return this.moveSelect(obj, 1, -1)
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function onShortcutSelect(obj, is_down)
@@ -384,25 +379,25 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     let { hoveredObj, hoveredIdx } = this.getHoveredChild(obj)
     if (is_down) {
       if (hoveredIdx == null)
-        return RETCODE_NOTHING
-      ::set_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
+        return ::RETCODE_NOTHING
+      ::set_script_gui_behaviour_events(this.bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
       this.onActivatePushed(obj, hoveredIdx)
-      return RETCODE_HALT
+      return ::RETCODE_HALT
     }
 
     let pushedIdx = obj.getIntProp(this.activatePushedIdxPID, -1)
     if (pushedIdx < 0)
-      return RETCODE_HALT
+      return ::RETCODE_HALT
     let wasHoldStarted = this.onActivateUnpushed(obj)
     if (pushedIdx != hoveredIdx)
-      return RETCODE_HALT
+      return ::RETCODE_HALT
 
     if (!wasHoldStarted || this.needActionAfterHold(obj))
       if (hoveredIdx == this.getSelectedValue(obj))
         this.activateAction(obj)
       else
         this.selectItem(obj, hoveredIdx, hoveredObj, true, true)
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function moveSelect(obj, axis, dir)
@@ -420,7 +415,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     else
       this.selectItem(obj, foundIdx, foundObj, true, true)
 
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function sendNotifyWrap(obj, axis, dir)
@@ -443,7 +438,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       return newPos
 
     local fixedAxis = -1
-    let timeMsec = get_time_msec()
+    let timeMsec = ::dagor.getCurTime()
     if (timeMsec - obj.getIntProp(this.lastMoveTimeMsecPID, 0) < this.fixedCoordTimeoutMsec)
       fixedAxis = obj.getIntProp(this.fixedAxisPID, -1)
     obj.setIntProp(this.lastMoveTimeMsecPID, timeMsec)
@@ -525,13 +520,13 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       if (valueObj?.isEqual(cObj))
         return
       let pos2 = this.getClosestCoordsByAxis(cObj, pos, 1-axis)
-      let distSubAxis = abs(pos[1-axis] - pos2[1-axis])
+      let distSubAxis = ::abs(pos[1-axis] - pos2[1-axis])
       if ((pos2[axis] - pos[axis]) * dir <= 0
           || distSubAxis > posDiv)
         return
 
       //we trying to keep choosen line, so distance in other line has much lower priority
-      let distAxis = abs(pos[axis] - pos2[axis])
+      let distAxis = ::abs(pos[axis] - pos2[axis])
       let cDistRating = distAxis + 100 * distSubAxis
       if (distRating < 0 || cDistRating < distRating)
       {
@@ -567,7 +562,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
   {
     if (!is_down)
       obj.sendNotify("cancel_edit")
-    return RETCODE_HALT
+    return ::RETCODE_HALT
   }
 
   function getHoveredChild(obj) {
@@ -604,7 +599,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
   function onActivateUnpushed(obj) {
     obj.setIntProp(this.activatePushedIdxPID, -1)
-    ::del_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
+    ::del_script_gui_behaviour_events(this.bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
 
     let isHoldFulfilled = obj.sendSceneEvent("hold_stop")
     return isHoldFulfilled && obj.getFloatProp(this.holdTimePID, 0.0) >= this.getHoldStartDelay(obj)
@@ -613,7 +608,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
   function onMouseHover(obj, isHover) {
     if (!isHover && obj.getIntProp(this.activatePushedIdxPID, -1) >= 0)
       this.onActivateUnpushed(obj)
-    return RETCODE_NOTHING;
+    return ::RETCODE_NOTHING;
   }
 
   function onTimer(obj, dt) {
@@ -630,7 +625,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       obj.sendSceneEvent("hold_start")
   }
 
-  onInsert = @(_obj, child, _index) markInteractive(child, true)
+  onInsert = @(obj, child, index) markInteractive(child, true)
   isOnlyHover = @(obj) obj.getFinalProp("move-only-hover") == "yes"
   needActionAfterHold = @(obj) obj.getFinalProp("need-action-after-hold") == "yes"
 }

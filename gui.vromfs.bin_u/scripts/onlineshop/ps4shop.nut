@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 require("ingameConsoleStore.nut")
 let statsd = require("statsd")
 let psnStore = require("sony.store")
@@ -51,7 +46,7 @@ let defaultsSheetData = {
 let fillSheetsArray = function(bcEventParams = {}) {
   if (!shopData.getData().blockCount())
   {
-    log("PS4: Ingame Shop: Don't init sheets. CategoriesData is empty")
+    ::dagor.debug("PS4: Ingame Shop: Don't init sheets. CategoriesData is empty")
     return
   }
 
@@ -109,7 +104,7 @@ subscriptions.addListenersWithoutEnv({
 
   function initScreen()
   {
-    if (this.canDisplayStoreContents())
+    if (canDisplayStoreContents())
     {
       psnStore.show_icon(psnStore.IconPosition.LEFT)
       base.initScreen()
@@ -118,21 +113,21 @@ subscriptions.addListenersWithoutEnv({
     }
 
     statsd.send_counter("sq.ingame_store.contents", 1, {callsite = "init_screen", status = "empty"})
-    this.goBack()
+    goBack()
   }
 
   function loadCurSheetItemsList()
   {
-    this.itemsList = []
-    let itemsLinks = shopData.getData().getBlockByName(this.curSheet?.categoryId ?? "")?.links ?? ::DataBlock()
+    itemsList = []
+    let itemsLinks = shopData.getData().getBlockByName(curSheet?.categoryId ?? "")?.links ?? ::DataBlock()
     for (local i = 0; i < itemsLinks.blockCount(); i++)
     {
       let itemId = itemsLinks.getBlock(i).getBlockName()
       let block = shopData.getShopItem(itemId)
       if (block)
-        this.itemsList.append(block)
+        itemsList.append(block)
       else
-        log($"PS4: Ingame Shop: Skip missing info of item {itemId}")
+        ::dagor.debug($"PS4: Ingame Shop: Skip missing info of item {itemId}")
     }
   }
 
@@ -146,7 +141,7 @@ subscriptions.addListenersWithoutEnv({
 
   function canDisplayStoreContents()
   {
-    let isStoreEmpty = !this.isLoadingInProgress && !this.itemsCatalog.len()
+    let isStoreEmpty = !isLoadingInProgress && !itemsCatalog.len()
     if (isStoreEmpty)
       psnSystem.show_message(psnSystem.Message.EMPTY_STORE, "", {})
     return !isStoreEmpty
@@ -154,44 +149,44 @@ subscriptions.addListenersWithoutEnv({
 
   function onEventPS4ShopSheetsInited(p)
   {
-    this.isLoadingInProgress = p?.isLoadingInProgress ?? false
-    if (!this.canDisplayStoreContents())
+    isLoadingInProgress = p?.isLoadingInProgress ?? false
+    if (!canDisplayStoreContents())
     {
       statsd.send_counter("sq.ingame_store.contents", 1,
         {callsite = "on_event_shop_sheets_inited", status = "empty"})
-      this.goBack()
+      goBack()
       return
     }
     statsd.send_counter("sq.ingame_store.contents", 1,
       {callsite = "on_event_shop_sheets_inited", status = "ok"})
 
-    this.fillItemsList()
-    this.updateItemInfo()
+    fillItemsList()
+    updateItemInfo()
   }
 
-  function onEventPS4IngameShopUpdate(_p)
+  function onEventPS4IngameShopUpdate(p)
   {
-    this.curItem = this.getCurItem()
-    let wasBought = this.curItem?.isBought
-    this.curItem?.updateIsBoughtStatus()
-    if (wasBought != this.curItem?.isBought)
+    curItem = getCurItem()
+    let wasBought = curItem?.isBought
+    curItem?.updateIsBoughtStatus()
+    if (wasBought != curItem?.isBought)
       ENTITLEMENTS_PRICE.checkUpdate()
 
-    this.updateSorting()
-    this.fillItemsList()
+    updateSorting()
+    fillItemsList()
     ::g_discount.updateOnlineShopDiscounts()
   }
 
-  function onEventSignOut(_p)
+  function onEventSignOut(p)
   {
     psnStore.hide_icon()
   }
 }
 
-let isChapterSuitable = @(chapter) isInArray(chapter, [null, "", "eagles"])
+let isChapterSuitable = @(chapter) ::isInArray(chapter, [null, "", "eagles"])
 let getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/ps4IngameShop" : "#msgbox/btn_onlineShop"
 
-let openIngameStoreImpl = kwarg(
+let openIngameStoreImpl = ::kwarg(
   function (chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown", forceExternalShop = false) {
     if (!isChapterSuitable(chapter))
       return false
@@ -218,7 +213,7 @@ let openIngameStoreImpl = kwarg(
     }
 
     ::queues.checkAndStart(function() {
-      ::get_gui_scene().performDelayed(getroottable(),
+      ::get_gui_scene().performDelayed(::getroottable(),
         function() {
           if (item)
             item.showDescription(statsdMetric)
@@ -239,20 +234,20 @@ let openIngameStoreImpl = kwarg(
 )
 
 let function openIngameStore(params = {}) {
-  if (hasFeature("PSNAllowShowQRCodeStore")
+  if (::has_feature("PSNAllowShowQRCodeStore")
     && isChapterSuitable(params?.chapter)
     && ::g_language.getLanguageName() == "Russian"
     && isPlayerRecommendedEmailRegistration()) {
     ::add_big_query_record("ingame_store_qr", targetPlatform)
     openQrWindow({
-      headerText = params?.chapter == "eagles" ? loc("charServer/chapter/eagles") : ""
-      infoText = loc("eagles/rechargeUrlNotification")
-      baseUrl = "{0}{1}".subst(loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")
+      headerText = params?.chapter == "eagles" ? ::loc("charServer/chapter/eagles") : ""
+      infoText = ::loc("eagles/rechargeUrlNotification")
+      baseUrl = "{0}{1}".subst(::loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")
       needUrlWithQrRedirect = true
       needShowUrlLink = false
       buttons = [{
         shortcut = "Y"
-        text = loc(getEntStoreLocId())
+        text = ::loc(getEntStoreLocId())
         onClick = "goBack"
       }]
       onEscapeCb = @() openIngameStoreImpl(params)
@@ -270,5 +265,5 @@ return shopData.__merge({
   isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !::isInMenu()
   getEntStoreUnseenIcon = @() SEEN.EXT_PS4_SHOP
   needEntStoreDiscountIcon = true
-  openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({statsdMetric = "topmenu"})
+  openEntStoreTopMenuFunc = @(obj, handler) openIngameStore({statsdMetric = "topmenu"})
 })

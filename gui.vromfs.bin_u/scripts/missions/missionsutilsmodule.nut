@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001
   KILLS_GROUND        = 0x0002
@@ -38,7 +33,7 @@ let getMissionLocIdsArray = function(missionInfo) {
   else
     res.append($"missions/{misInfoName}")
 
-  if ("".join(res.filter(@(id) id.len() > 1).map(@(id) loc(id))) == "") {
+  if ("".join(res.filter(@(id) id.len() > 1).map(@(id) ::loc(id))) == "") {
     let misInfoPostfix = missionInfo?.postfix ?? ""
     if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
       let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
@@ -65,7 +60,7 @@ let function getRewardValue(dataBlk, misDataBlk, diff, key) {
 let function addRewardText(rewardTextArray, reward, titleLocId) {
   let isEmptyRewardText = rewardTextArray.findvalue(@(text) text != "") == null
   if (isEmptyRewardText)
-    rewardTextArray.append($"{loc(titleLocId)}{loc("ui/colon")}{reward}")
+    rewardTextArray.append($"{::loc(titleLocId)}{::loc("ui/colon")}{reward}")
   else
     rewardTextArray.append(reward)
 
@@ -75,7 +70,7 @@ let function addRewardText(rewardTextArray, reward, titleLocId) {
 let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
   let misDataBlk = dataBlk?[misName]
   let rewards = rewardsConfig.map(function(reward) {
-    local { locId = "reward", diff = DIFFICULTY_ARCADE, highlighted = false, isComplete = false,
+    local { locId = "reward", diff = ::DIFFICULTY_ARCADE, highlighted = false, isComplete = false,
       isAdditionalReward = false, hasRewardImage = true, rewardMoney = null, isBaseReward = false,
       needVerticalAlign = false, slotReward = "" } = reward
 
@@ -86,9 +81,9 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
         getRewardValue(dataBlk, misDataBlk, diff, "xp") * muls.xpMultiplier)
     }
 
-    local rewardTextArray = [::buildRewardText(loc(locId), rewardMoney, highlighted, true, isAdditionalReward)]
+    local rewardTextArray = [::buildRewardText(::loc(locId), rewardMoney, highlighted, true, isAdditionalReward)]
     if (slotReward != "")
-      rewardTextArray = addRewardText(rewardTextArray, $"{loc("options/crewName")}{slotReward}", locId)
+      rewardTextArray = addRewardText(rewardTextArray, $"{::loc("options/crewName")}{slotReward}", locId)
 
     local resourceImage = null
     local resourceImageSize = "0, 0"
@@ -117,7 +112,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
 }
 
 let getMissionLocName = @(config, key = "locId") "".join(::g_localization.getLocIdsArray(config?[key])
-  .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
+  .map(@(locId) locId.len() == 1 ? locId : ::loc(locId)))
 
 return {
   getMissionLocIdsArray

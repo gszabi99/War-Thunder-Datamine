@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 //show info about WwMap, WwOperation or WwOperationgroup
 ::gui_handlers.WwMapDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -38,10 +30,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen()
   {
-    this.scene.setUserData(this) //to not unload handler even when scene not loaded
+    scene.setUserData(this) //to not unload handler even when scene not loaded
     updateView()
 
-    let timerObj = this.scene.findObject("ww_map_description_timer")
+    let timerObj = scene.findObject("ww_map_description_timer")
     if (timerObj)
       timerObj.setUserData(this)
   }
@@ -55,7 +47,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initCustomHandlerScene()
   {
     //this handler dosnt replace content in scene.
-    this.guiScene = this.scene.getScene()
+    guiScene = scene.getScene()
     return true
   }
 
@@ -80,23 +72,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateVisibilities(isShow)
   {
-    if (this.scene.id == rootDescId)
-      this.scene.show(isShow)
+    if (scene.id == rootDescId)
+      scene.show(isShow)
     else
       this.showSceneBtn(rootDescId, isShow)
   }
 
   function updateName()
   {
-    let nameObj = this.scene.findObject("item_name")
-    if (checkObj(nameObj))
+    let nameObj = scene.findObject("item_name")
+    if (::checkObj(nameObj))
       nameObj.setValue(descItem.getNameText())
   }
 
   function updateDescription()
   {
-    let desctObj = this.scene.findObject("item_desc")
-    if (checkObj(desctObj))
+    let desctObj = scene.findObject("item_desc")
+    if (::checkObj(desctObj))
       desctObj.setValue(descItem.getDescription())
   }
 
@@ -113,8 +105,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateCountriesList()
   {
-    let obj = this.scene.findObject("div_before_text")
-    if (!checkObj(obj))
+    let obj = scene.findObject("div_before_text")
+    if (!::checkObj(obj))
       return
 
     let cuntriesByTeams = descItem.getCountriesByTeams()
@@ -123,18 +115,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       sides.append(mapCountriesToView(cuntriesByTeams?[side] ?? []))
     let view = {
       sides = sides
-      vsText = loc("country/VS") + "\n "
+      vsText = ::loc("country/VS") + "\n "
     }
 
     let data = ::handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo", view)
-    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
+    guiScene.replaceContentFromText(obj, data, data.len(), this)
     obj.show(true)
   }
 
   function updateTotalClansText()
   {
-    let obj = this.scene.findObject("total_members_text")
-    if (!checkObj(obj))
+    let obj = scene.findObject("total_members_text")
+    if (!::check_obj(obj))
       return
 
     obj.setValue(descItem.getClansNumberInQueueText())
@@ -142,14 +134,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateAvailableText()
   {
-    let obj = this.scene.findObject("available_text")
-    if (!checkObj(obj) || !descItem)
+    let obj = scene.findObject("available_text")
+    if (!::check_obj(obj) || !descItem)
       return
 
     obj.setValue(descItem.getMapChangeStateTimeText())
   }
 
-  function onTimerDescriptionUpdate(_obj, _dt)
+  function onTimerDescriptionUpdate(obj, dt)
   {
     updateAvailableText()
   }

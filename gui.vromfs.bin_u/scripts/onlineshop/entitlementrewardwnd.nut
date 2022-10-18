@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
 {
@@ -23,18 +16,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   viewParams = null
 
   function openChest() {
-    if (this.opened)
+    if (opened)
       return false
 
-    this.opened = true
-    this.updateWnd()
+    opened = true
+    updateWnd()
     return true
   }
 
   function checkConfigsArray() {
     let unitNames = entitlementConfig?.aircraftGift ?? []
     if (unitNames.len())
-      this.unit = ::getAircraftByName(unitNames[0])
+      unit = ::getAircraftByName(unitNames[0])
 
     let decalsNames = entitlementConfig?.decalGift ?? []
     let attachablesNames = entitlementConfig?.attachableGift ?? []
@@ -58,11 +51,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     if (resource != "")
-      this.updateResourceData(resource, resourceType)
+      updateResourceData(resource, resourceType)
   }
 
   function getIconData() {
-    if (!this.opened)
+    if (!opened)
       return ""
 
     return "{0}{1}".subst(
@@ -72,20 +65,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function updateRewardText() {
-    if (!this.opened)
+    if (!opened)
       return
 
-    let obj = this.scene.findObject("prize_desc_div")
-    if (!checkObj(obj))
+    let obj = scene.findObject("prize_desc_div")
+    if (!::checkObj(obj))
       return
 
     let data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__merge({
-      header = loc("mainmenu/you_received")
+      header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
     }))
 
-    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
+    guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
   checkSkipAnim = @() false
@@ -99,7 +92,7 @@ return {
     let config = getEntitlementConfig(entitlementId)
     if (!config)
     {
-      logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
+      ::dagor.logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
       return
     }
 

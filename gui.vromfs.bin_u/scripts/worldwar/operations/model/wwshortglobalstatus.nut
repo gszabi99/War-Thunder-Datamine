@@ -1,27 +1,21 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { get_time_msec } = require("dagor.time")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 
 local refreshMinTimeSec = 600
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
-let curData = persist("curData", @() Watched(null))
-let validListsMask = persist("validListsMask", @() Watched(0))
-let lastUpdatetTime = persist("lastUpdatetTime", @() Watched(-1))
-let lastRequestTime = persist("lastRequestTime", @() Watched(-1))
-let lastRequestUid = persist("lastRequestUid", @() Watched(-1))
+let curData = persist("curData", @() ::Watched(null))
+let validListsMask = persist("validListsMask", @() ::Watched(0))
+let lastUpdatetTime = persist("lastUpdatetTime", @() ::Watched(-1))
+let lastRequestTime = persist("lastRequestTime", @() ::Watched(-1))
+let lastRequestUid = persist("lastRequestUid", @() ::Watched(-1))
 
 let function pushStatusChangedEvent(changedListsMask) {
   ::ww_event("ShortGlobalStatusChanged", { changedListsMask = changedListsMask })
 }
 
 let function canRefreshData() {
-  if (!hasFeature("WorldWar"))
+  if (!::has_feature("WorldWar"))
     return false
   if (lastRequestUid.value != ::my_user_id_int64) //force request if user changed. Instead force request after relogin
     return true
@@ -30,15 +24,15 @@ let function canRefreshData() {
   let refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
   let requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
   if (lastRequestTime.value > lastUpdatetTime.value
-      && lastRequestTime.value + requestTimeoutMsec > get_time_msec())
+      && lastRequestTime.value + requestTimeoutMsec > ::dagor.getCurTime())
     return false
-  if (lastUpdatetTime.value > 0 && lastUpdatetTime.value + refreshMinTime > get_time_msec())
+  if (lastUpdatetTime.value > 0 && lastUpdatetTime.value + refreshMinTime > ::dagor.getCurTime())
     return false
   return true
 }
 
 let function onGlobalStatusReceived(newData) {
-  lastUpdatetTime(get_time_msec())
+  lastUpdatetTime(::dagor.getCurTime())
   local changedListsMask = 0
   foreach(gsType in ::g_ww_global_status_type.types)
     if (gsType.isAvailableInShortStatus
@@ -55,16 +49,16 @@ let function onGlobalStatusReceived(newData) {
 
 //special actions with short global status in successCb
 let function actionWithGlobalStatusRequest(actionName, requestBlk) {
-  lastRequestTime(get_time_msec())
+  lastRequestTime(::dagor.getCurTime())
   lastRequestUid(::my_user_id_int64)
-  let cb = Callback(function(data) {
+  let cb = ::Callback(function(data) {
     onGlobalStatusReceived(data)
   }, this)
 
   ::g_tasker.charRequestJson(actionName, requestBlk, null, cb)
 }
 
-let function onEventMyClanIdChanged(_p) {
+let function onEventMyClanIdChanged(p) {
   foreach(op in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getShortStatusList())
     op.resetCache()
   pushStatusChangedEvent(WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS

@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { get_game_version_str = @() ::get_game_version_str() //compatibility with 2.15.1.X
 } = require("app")
 let { canUseIngameShop,
@@ -39,7 +33,6 @@ let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMar
 let { openESportListWnd } = require("%scripts/events/eSportModal.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { gui_do_debug_unlock, debug_open_url } = require("%scripts/debugTools/dbgUtils.nut")
 
 let template = {
   id = ""
@@ -51,9 +44,9 @@ let template = {
   isFeatured = @() false
   needDiscountIcon = false
   unseenIcon = null
-  onClickFunc = @(_obj, _handler = null) null
-  onChangeValueFunc = @(_value) null
-  isHidden = @(_handler = null) false
+  onClickFunc = @(obj, handler = null) null
+  onChangeValueFunc = @(value) null
+  isHidden = @(handler = null) false
   isVisualDisabled = @() false
   isInactiveInQueue = false
   elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
@@ -69,11 +62,11 @@ let list = {
   UNKNOWN = {}
   SKIRMISH = {
     text = @() "#mainmenu/btnSkirmish"
-    onClickFunc = function(_obj, handler)
+    onClickFunc = function(obj, handler)
     {
       if (!::is_custom_battles_enabled())
         return ::show_not_available_msg_box()
-      if (!::check_gamemode_pkg(GM_SKIRMISH))
+      if (!::check_gamemode_pkg(::GM_SKIRMISH))
         return
 
       if (!isMultiplayerPrivilegeAvailable.value) {
@@ -82,7 +75,7 @@ let list = {
       }
 
       ::queues.checkAndStart(
-        Callback(@() this.goForwardIfOnline(::gui_start_skirmish, false), handler),
+        ::Callback(@() goForwardIfOnline(::gui_start_skirmish, false), handler),
         null,
         "isCanNewflight"
       )
@@ -93,19 +86,19 @@ let list = {
     isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
     tooltip = function() {
       if (!isMultiplayerPrivilegeAvailable.value)
-        return loc("xbox/noMultiplayer")
+        return ::loc("xbox/noMultiplayer")
       return ""
     }
   }
   WORLDWAR = {
-    text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("mainmenu/btnWorldwar"))
-    onClickFunc = function(_obj, handler)
+    text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("mainmenu/btnWorldwar"))
+    onClickFunc = function(obj, handler)
     {
       if (!::g_world_war.checkPlayWorldwarAccess())
         return
 
       ::queues.checkAndStart(
-        Callback(@() this.goForwardIfOnline(@() ::g_world_war.openOperationsOrQueues(), false), handler),
+        ::Callback(@() goForwardIfOnline(@() ::g_world_war.openOperationsOrQueues(), false), handler),
         null,
         "isCanNewflight"
       )
@@ -119,41 +112,41 @@ let list = {
   }
   TUTORIAL = {
     text = @() "#mainmenu/btnTutorial"
-    onClickFunc = @(_obj, handler) handler.checkedNewFlight(::gui_start_tutorial)
-    isHidden = @(...) !hasFeature("Tutorials")
+    onClickFunc = @(obj, handler) handler.checkedNewFlight(::gui_start_tutorial)
+    isHidden = @(...) !::has_feature("Tutorials")
     isInactiveInQueue = true
   }
   SINGLE_MISSION = {
     text = @() "#mainmenu/btnSingleMission"
-    onClickFunc = @(_obj, handler) ::checkAndCreateGamemodeWnd(handler, GM_SINGLE_MISSION)
-    isHidden = @(...) !hasFeature("ModeSingleMissions")
+    onClickFunc = @(obj, handler) ::checkAndCreateGamemodeWnd(handler, ::GM_SINGLE_MISSION)
+    isHidden = @(...) !::has_feature("ModeSingleMissions")
     isInactiveInQueue = true
   }
   DYNAMIC = {
     text = @() "#mainmenu/btnDynamic"
-    onClickFunc = @(_obj, handler) ::checkAndCreateGamemodeWnd(handler, GM_DYNAMIC)
-    isHidden = @(...) !hasFeature("ModeDynamic")
+    onClickFunc = @(obj, handler) ::checkAndCreateGamemodeWnd(handler, ::GM_DYNAMIC)
+    isHidden = @(...) !::has_feature("ModeDynamic")
     isInactiveInQueue = true
   }
   CAMPAIGN = {
     text = @() "#mainmenu/btnCampaign"
-    onClickFunc = function(_obj, handler) {
+    onClickFunc = function(obj, handler) {
       if (contentStateModule.isHistoricalCampaignDownloading())
-        return ::showInfoMsgBox(loc("mainmenu/campaignDownloading"), "question_wait_download")
+        return ::showInfoMsgBox(::loc("mainmenu/campaignDownloading"), "question_wait_download")
 
       if (::is_any_campaign_available())
         return handler.checkedNewFlight(@() ::gui_start_campaign())
 
-      if (!hasFeature("OnlineShopPacks"))
+      if (!::has_feature("OnlineShopPacks"))
         return ::show_not_available_msg_box()
 
-      ::scene_msg_box("question_buy_campaign", null, loc("mainmenu/questionBuyHistorical"),
+      ::scene_msg_box("question_buy_campaign", null, ::loc("mainmenu/questionBuyHistorical"),
         [
           ["yes", ::purchase_any_campaign],
           ["no", function() {}]
         ], "yes", { cancel_fn = function() {}})
     }
-    isHidden = @(...) !hasFeature("HistoricalCampaign")
+    isHidden = @(...) !::has_feature("HistoricalCampaign")
     isVisualDisabled = @() contentStateModule.isHistoricalCampaignDownloading()
     isInactiveInQueue = true
   }
@@ -167,65 +160,65 @@ let list = {
 
       openESportListWnd()
     }
-    isHidden = @(...) !hasFeature("ESport")
+    isHidden = @(...) !::has_feature("ESport")
     isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
     isInactiveInQueue = true
   }
   BENCHMARK = {
     text = @() "#mainmenu/btnBenchmark"
-    onClickFunc = @(_obj, handler) handler.checkedNewFlight(::gui_start_benchmark)
-    isHidden = @(...) !hasFeature("Benchmark")
+    onClickFunc = @(obj, handler) handler.checkedNewFlight(::gui_start_benchmark)
+    isHidden = @(...) !::has_feature("Benchmark")
     isInactiveInQueue = true
   }
   USER_MISSION = {
     text = @() "#mainmenu/btnUserMission"
-    onClickFunc = @(_obj, handler) ::checkAndCreateGamemodeWnd(handler, GM_USER_MISSION)
-    isHidden = @(...) !hasFeature("UserMissions")
+    onClickFunc = @(obj, handler) ::checkAndCreateGamemodeWnd(handler, ::GM_USER_MISSION)
+    isHidden = @(...) !::has_feature("UserMissions")
     isInactiveInQueue = true
   }
   PERSONAL_UNLOCKS = {
     text = @() "#mainmenu/btnPersonalUnlocks"
-    onClickFunc = @(_obj, _handler) openPersonalUnlocksModal()
-    isHidden = @(...) !hasFeature("PersonalUnlocks")
+    onClickFunc = @(obj, handler) openPersonalUnlocksModal()
+    isHidden = @(...) !::has_feature("PersonalUnlocks")
   }
   OPTIONS = {
     text = @() "#mainmenu/btnGameplay"
-    onClickFunc = @(_obj, _handler) openOptionsWnd()
+    onClickFunc = @(obj, handler) openOptionsWnd()
   }
   CONTROLS = {
     text = @() "#mainmenu/btnControls"
     onClickFunc = @(...) ::gui_start_controls()
-    isHidden = @(...) !hasFeature("ControlsAdvancedSettings")
+    isHidden = @(...) !::has_feature("ControlsAdvancedSettings")
   }
   LEADERBOARDS = {
     text = @() "#mainmenu/btnLeaderboards"
-    onClickFunc = @(_obj, handler) handler.goForwardIfOnline(::gui_modal_leaderboards, false, true)
-    isHidden = @(...) !hasFeature("Leaderboards")
+    onClickFunc = @(obj, handler) handler.goForwardIfOnline(::gui_modal_leaderboards, false, true)
+    isHidden = @(...) !::has_feature("Leaderboards")
   }
   CLANS = {
     text = @() "#mainmenu/btnClans"
-    onClickFunc = @(...) hasFeature("Clans")? ::gui_modal_clans() : ::show_not_available_msg_box()
-    isHidden = @(...) !hasFeature("Clans")
+    onClickFunc = @(...) ::has_feature("Clans")? ::gui_modal_clans() : ::show_not_available_msg_box()
+    isHidden = @(...) !::has_feature("Clans")
   }
   REPLAY = {
     text = @() "#mainmenu/btnReplays"
-    onClickFunc = @(_obj, handler) isPlatformSony? ::show_not_available_msg_box() : handler.checkedNewFlight(::gui_start_replays)
-    isHidden = @(...) !hasFeature("ClientReplay")
+    onClickFunc = @(obj, handler) isPlatformSony? ::show_not_available_msg_box() : handler.checkedNewFlight(::gui_start_replays)
+    isHidden = @(...) !::has_feature("ClientReplay")
   }
   VIRAL_AQUISITION = {
     text = @() "#mainmenu/btnGetLink"
     onClickFunc = @(...) showViralAcquisitionWnd()
-    isHidden = @(...) !hasFeature("Invites")
+    isHidden = @(...) !::has_feature("Invites")
   }
   CHANGE_LOG = {
     text = @() "#mainmenu/btnChangelog"
     onClickFunc = @(...) openChangelog()
-    isHidden = @(...) !hasFeature("Changelog") || !::isInMenu()
+    isHidden = @(...) !::has_feature("Changelog") || !::isInMenu()
   }
   EXIT = {
     text = @() "#mainmenu/btnExit"
     onClickFunc = function(...) {
-      ::add_msg_box("topmenu_question_quit_game", loc("mainmenu/questionQuitGame"),
+      ::add_msg_box("topmenu_question_quit_game", ::loc("mainmenu/questionQuitGame"),
         [
           ["yes", exitGame],
           ["no", @() null ]
@@ -235,94 +228,94 @@ let list = {
   }
   DEBUG_UNLOCK = {
     text = @() "#mainmenu/btnDebugUnlock"
-    onClickFunc = @(_obj, _handler) ::add_msg_box("debug unlock", "Debug unlock enabled", [["ok", gui_do_debug_unlock]], "ok")
+    onClickFunc = @(obj, handler) ::add_msg_box("debug unlock", "Debug unlock enabled", [["ok", ::gui_do_debug_unlock]], "ok")
     isHidden = @(...) !::is_dev_version
   }
   DEBUG_URL = {
     text = @() "Debug: Enter Url"
-    onClickFunc = @(_obj, _handler) debug_open_url()
-    isHidden = @(...) !hasFeature("DebugEnterUrl")
+    onClickFunc = @(obj, handler) ::debug_open_url()
+    isHidden = @(...) !::has_feature("DebugEnterUrl")
   }
   ENCYCLOPEDIA = {
     text = @() "#mainmenu/btnEncyclopedia"
     onClickFunc = @(...) encyclopedia.open()
-    isHidden = @(...) !hasFeature("Encyclopedia")
+    isHidden = @(...) !::has_feature("Encyclopedia")
   }
   CREDITS = {
     text = @() "#mainmenu/btnCredits"
-    onClickFunc = @(_obj, handler) handler.checkedForward(::gui_start_credits)
-    isHidden = @(handler = null) !hasFeature("Credits") || !(handler instanceof topMenuHandlerClass.getHandler())
+    onClickFunc = @(obj, handler) handler.checkedForward(::gui_start_credits)
+    isHidden = @(handler = null) !::has_feature("Credits") || !(handler instanceof topMenuHandlerClass.getHandler())
   }
   TSS = {
-    text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("topmenu/tss"))
-    onClickFunc = function(obj, _handler) {
+    text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("topmenu/tss"))
+    onClickFunc = function(obj, handler) {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrlByObj(obj)
       else if (!isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
       else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
-        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
+        ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
     }
     isDelayed = false
     link = "#url/tss"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || !hasFeature("Tournaments") || ::is_vendor_tencent() || ::is_me_newbie()
+    isHidden = @(...) !::has_feature("AllowExternalLink") || !::has_feature("Tournaments") || ::is_vendor_tencent() || ::is_me_newbie()
   }
   REPORT_AN_ISSUE = {
-    text = @() loc("topmenu/reportAnIssue")
-    onClickFunc = @(obj, _handler) !isPlatformPC
+    text = @() ::loc("topmenu/reportAnIssue")
+    onClickFunc = @(obj, handler) !isPlatformPC
       ? openQrWindow({
-          headerText = loc("topmenu/reportAnIssue")
-          additionalInfoText = loc("qrWindow/info/reportAnIssue")
-          baseUrl = loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
+          headerText = ::loc("topmenu/reportAnIssue")
+          additionalInfoText = ::loc("qrWindow/info/reportAnIssue")
+          baseUrl = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj, true)
     isDelayed = false
-    link = loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
+    link = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
     isLink = @() isPlatformPC
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || ::is_vendor_tencent() || !::isInMenu()
+    isHidden = @(...) !::has_feature("ReportAnIssue") || (!::has_feature("AllowExternalLink") && isPlatformPC) || ::is_vendor_tencent() || !::isInMenu()
   }
   STREAMS_AND_REPLAYS = {
     text = @() "#topmenu/streamsAndReplays"
-    onClickFunc = @(obj, _handler) hasFeature("ShowUrlQrCode")
+    onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
       ? openQrWindow({
-          headerText = loc("topmenu/streamsAndReplays")
-          baseUrl = loc("url/streamsAndReplays")
+          headerText = ::loc("topmenu/streamsAndReplays")
+          baseUrl = ::loc("url/streamsAndReplays")
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj)
     isDelayed = false
     link = "#url/streamsAndReplays"
-    isLink = @() !hasFeature("ShowUrlQrCode")
-    isFeatured = @() !hasFeature("ShowUrlQrCode")
-    isHidden = @(...) !hasFeature("ServerReplay") || (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
+    isLink = @() !::has_feature("ShowUrlQrCode")
+    isFeatured = @() !::has_feature("ShowUrlQrCode")
+    isHidden = @(...) !::has_feature("ServerReplay") || (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
        || ::is_vendor_tencent() || !::isInMenu()
   }
   EAGLES = {
     text = @() "#charServer/chapter/eagles"
-    onClickFunc = @(_obj, handler) hasFeature("EnableGoldPurchase")
+    onClickFunc = @(obj, handler) ::has_feature("EnableGoldPurchase")
       ? handler.startOnlineShop("eagles", null, "topmenu")
-      : ::showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
+      : ::showInfoMsgBox(::loc("msgbox/notAvailbleGoldPurchase"))
     image = @() "#ui/gameuiskin#shop_warpoints_premium.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("SpendGold") || !::isInMenu()
+    isHidden = @(...) !::has_feature("SpendGold") || !::isInMenu()
   }
   PREMIUM = {
     text = @() "#charServer/chapter/premium"
-    onClickFunc = @(_obj, handler) handler.startOnlineShop("premium")
+    onClickFunc = @(obj, handler) handler.startOnlineShop("premium")
     image = @() "#ui/gameuiskin#sub_premiumaccount.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("EnablePremiumPurchase") || !::isInMenu()
+    isHidden = @(...) !::has_feature("EnablePremiumPurchase") || !::isInMenu()
   }
   WARPOINTS = {
     text = @() "#charServer/chapter/warpoints"
-    onClickFunc = @(_obj, handler) handler.startOnlineShop("warpoints")
+    onClickFunc = @(obj, handler) handler.startOnlineShop("warpoints")
     image = @() "#ui/gameuiskin#shop_warpoints.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("SpendGold") || !::isInMenu()
+    isHidden = @(...) !::has_feature("SpendGold") || !::isInMenu()
   }
   INVENTORY = {
     text = @() "#items/inventory"
@@ -335,7 +328,7 @@ let list = {
     text = @() "#items/shop"
     onClickFunc = @(...) ::gui_start_itemsShop()
     image = @() "#ui/gameuiskin#store_icon.svg"
-    isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu() || !hasFeature("ItemsShopInTopMenu")
+    isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu() || !::has_feature("ItemsShopInTopMenu")
     unseenIcon = @() SEEN.ITEMS_SHOP
   }
   WORKSHOP = {
@@ -367,7 +360,7 @@ let list = {
   }
   MARKETPLACE = {
     text = @() "#mainmenu/marketplace"
-    onClickFunc = @(_obj, _handler) goToMarketplace()
+    onClickFunc = @(obj, handler) goToMarketplace()
     link = ""
     isLink = @() true
     isFeatured = @() true
@@ -382,68 +375,68 @@ let list = {
   }
   WINDOW_HELP = {
     text = @() "#flightmenu/btnControlsHelp"
-    onClickFunc = function(_obj, handler) {
+    onClickFunc = function(obj, handler) {
       if (!("getWndHelpConfig" in handler))
         return
 
       ::gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
     }
-    isHidden = @(handler = null) !("getWndHelpConfig" in handler) || !hasFeature("HangarWndHelp")
+    isHidden = @(handler = null) !("getWndHelpConfig" in handler) || !::has_feature("HangarWndHelp")
   }
   FAQ = {
     text = @() "#mainmenu/faq"
-    onClickFunc = @(obj, _handler) openUrlByObj(obj)
+    onClickFunc = @(obj, handler) openUrlByObj(obj)
     isDelayed = false
     link = "#url/faq"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || ::is_vendor_tencent() || !::isInMenu()
+    isHidden = @(...) !::has_feature("AllowExternalLink") || ::is_vendor_tencent() || !::isInMenu()
   }
   SUPPORT = {
     text = @() "#mainmenu/support"
-    onClickFunc = @(obj, _handler) hasFeature("ShowUrlQrCode")
+    onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
       ? openQrWindow({
-          headerText = loc("mainmenu/support")
-          baseUrl = loc("url/support")
+          headerText = ::loc("mainmenu/support")
+          baseUrl = ::loc("url/support")
         })
       : openUrlByObj(obj)
     isDelayed = false
     link = "#url/support"
-    isLink = @() !hasFeature("ShowUrlQrCode")
-    isFeatured = @() !hasFeature("ShowUrlQrCode")
-    isHidden = @(...) (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
+    isLink = @() !::has_feature("ShowUrlQrCode")
+    isFeatured = @() !::has_feature("ShowUrlQrCode")
+    isHidden = @(...) (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
       || ::is_vendor_tencent() || !::isInMenu()
   }
   WIKI = {
     text = @() "#mainmenu/wiki"
-    onClickFunc = @(obj, _handler) openUrlByObj(obj)
+    onClickFunc = @(obj, handler) openUrlByObj(obj)
     isDelayed = false
     link = "#url/wiki"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || ::is_vendor_tencent() || !::isInMenu()
+    isHidden = @(...) !::has_feature("AllowExternalLink") || ::is_vendor_tencent() || !::isInMenu()
   }
   EULA = {
     text = @() "#mainmenu/licenseAgreement"
-    onClickFunc = @(_obj, _handler) ::gui_start_eula(::TEXT_EULA, true)
+    onClickFunc = @(obj, handler) ::gui_start_eula(::TEXT_EULA, true)
     isDelayed = false
-    isHidden = @(...) !hasFeature("EulaInMenu") || !::isInMenu()
+    isHidden = @(...) !::has_feature("EulaInMenu") || !::isInMenu()
   }
   DEBUG_PS4_SHOP_DATA = {
     text = @() "Debug PS4 Data" //intentionally without localization
-    onClickFunc = function(_obj, _handler) {
+    onClickFunc = function(obj, handler) {
       let itemInfo = []
-      foreach (_id, item in getShopItemsTable())
+      foreach (id, item in getShopItemsTable())
       {
         itemInfo.append(item.id)
         itemInfo.append(item.imagePath)
         itemInfo.append(item.getDescription())
       }
       let data = ::g_string.implode(itemInfo, "\n")
-      log(data)
+      ::dagor.debug(data)
       ::script_net_assert("PS4 Internal debug shop data")
     }
-    isHidden = @(...) !hasFeature("DebugLogPS4ShopData")
+    isHidden = @(...) !::has_feature("DebugLogPS4ShopData")
   }
   EMPTY = {
     elementType = TOP_MENU_ELEMENT_TYPE.EMPTY_BUTTON

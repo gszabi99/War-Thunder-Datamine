@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 
 let function loadUnitsFromBlk(blk, aiUnitsBlk = null)
@@ -23,7 +16,7 @@ let function loadUnitsFromBlk(blk, aiUnitsBlk = null)
 
     if (aiUnitsBlk)
     {
-      let aiUnitData = getTblValue(unitBlk.getBlockName(), aiUnitsBlk)
+      let aiUnitData = ::getTblValue(unitBlk.getBlockName(), aiUnitsBlk)
       if (aiUnitData)
       {
         let aiUnit = ::WwUnit(unitBlk)
@@ -123,6 +116,6 @@ return {
   loadWWUnitsFromUnitsArray
   getFakeUnitsArray
   unitsCount
-  getUnitsListViewParams = kwarg(getUnitsListViewParams)
+  getUnitsListViewParams = ::kwarg(getUnitsListViewParams)
   getMaxFlyTime
 }

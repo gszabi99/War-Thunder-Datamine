@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
 ::items_classes.ModOverdrive <- class extends BaseItemModClass
@@ -25,16 +19,16 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
   }
 
   getConditionsBlk = @(configBlk) configBlk?.modOverdriveParams
-  canActivate = @() this.isInventoryItem && !isActive()
+  canActivate = @() isInventoryItem && !isActive()
   isActive = @(...) isActiveOverdrive
 
   getIconMainLayer = @() ::LayersIcon.findLayerCfg("mod_overdrive")
 
   function getMainActionData(isShort = false, params = {})
   {
-    if (this.amount && canActivate())
+    if (amount && canActivate())
       return {
-        btnName = loc("item/activate")
+        btnName = ::loc("item/activate")
       }
 
     return base.getMainActionData(isShort, params)
@@ -47,9 +41,9 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
     return base.doMainAction(cb, handler, params)
   }
 
-  function activate(cb, _handler = null)
+  function activate(cb, handler = null)
   {
-    let uid = this.uids?[0]
+    let uid = uids?[0]
     if (uid == null)
       return false
 

@@ -1,10 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { is_stereo_mode } = require_native("vr")
+let { is_stereo_mode } = ::require_native("vr")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { sin, cos, pow, atan2, abs, sqrt } = require("math")
 
@@ -41,7 +35,7 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
         if (axisName in res)
           continue
 
-        res[axisName] <- getTblValue(idx, axisData[idxPair], 0)
+        res[axisName] <- ::getTblValue(idx, axisData[idxPair], 0)
       }
     }
     return res
@@ -97,7 +91,7 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
       return result
 
     local maxDeviationSq=0, rawX=0, rawY=0
-    foreach(_idx, data in axisData)
+    foreach(idx, data in axisData)
     {
       let deviationSq = pow(data[0], 2) + pow(data[1], 2)
       if (deviationSq > maxDeviationSq)

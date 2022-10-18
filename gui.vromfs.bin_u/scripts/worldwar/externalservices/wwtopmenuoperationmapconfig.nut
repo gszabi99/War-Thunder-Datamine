@@ -1,9 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-require("%scripts/worldWar/externalServices/worldWarTopMenuButtons.nut") //Independed Module. Need for init buttons configs
+require("scripts/worldWar/externalServices/worldWarTopMenuButtons.nut") //Independed Module. Need for init buttons configs
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
@@ -22,8 +17,8 @@ enums.addTypesByGlobalName("g_ww_top_menu_operation_map", [
   {
     name = "ww_menu"
     btnName = "ww_menu"
-    getText = @(_totalSections = 0) ::is_low_width_screen() ? null : "#worldWar/menu"
-    getImage = @(_totalSections = 0) ::is_low_width_screen() ? "#ui/gameuiskin#menu.svg" : null
+    getText = @(totalSections = 0) ::is_low_width_screen() ? null : "#worldWar/menu"
+    getImage = @(totalSections = 0) ::is_low_width_screen() ? "#ui/gameuiskin#menu.svg" : null
     buttons = [
       [
         buttonsList.WW_LEADERBOARDS

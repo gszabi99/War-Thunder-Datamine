@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let focusFrame = require("%sqDagui/focusFrame/focusFrame.nut")
 let stdMath = require("%sqstd/math.nut")
 let { abs } = require("math")

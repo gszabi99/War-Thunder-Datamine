@@ -1,12 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const PRESET_MIN_USAGE = 2
 
@@ -43,10 +36,10 @@ const PRESET_MIN_USAGE = 2
   {
     ::enableHangarControls(true)
 
-    let objCombobox = this.scene.findObject("master_skin")
+    let objCombobox = scene.findObject("master_skin")
     let selIdx = getIndexBySkinId(masterSkinId)
     let markup = ::create_option_combobox(null, skinList.items, selIdx, null, false)
-    this.guiScene.replaceContentFromText(objCombobox, markup, markup.len(), this)
+    guiScene.replaceContentFromText(objCombobox, markup, markup.len(), this)
     updateMasterPreset()
   }
 
@@ -73,14 +66,14 @@ const PRESET_MIN_USAGE = 2
   function updateSkinsPresets()
   {
     foreach (idx, skinId in skinList.values)
-      this.scene.findObject("preset_of_" + skinId).setValue(presetBySkinIdx[idx])
+      scene.findObject("preset_of_" + skinId).setValue(presetBySkinIdx[idx])
   }
 
   function updateLinkedSkins()
   {
-    let listObj = this.scene.findObject("destination_skins")
+    let listObj = scene.findObject("destination_skins")
     listObj.setValue(linkedSkinsCurrent)
-    foreach (_idx, skinId in skinList.values)
+    foreach (idx, skinId in skinList.values)
       listObj.findObject(skinId).enable(skinId != masterSkinId)
   }
 
@@ -92,7 +85,7 @@ const PRESET_MIN_USAGE = 2
 
   function updateButtons()
   {
-    ::showBtnTable(this.scene, {
+    ::showBtnTable(scene, {
         btn_rename = isPreset
         btn_apply  = linkedSkinsCurrent != linkedSkinsInitial
     })
@@ -100,7 +93,7 @@ const PRESET_MIN_USAGE = 2
 
   function onMasterSkinSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
     masterSkinId = skinList.values?[obj.getValue()] ?? ""
 
@@ -114,20 +107,20 @@ const PRESET_MIN_USAGE = 2
 
   function onDestinationSkinSelect(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
     linkedSkinsCurrent = obj.getValue()
     updateButtons()
   }
 
-  function onBtnRename(_obj)
+  function onBtnRename(obj)
   {
     if (!isPreset)
       return
     let validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
     let oldName = masterPresetId
     ::gui_modal_editbox_wnd({
-      title = loc("customization/decorLayout/layoutName")
+      title = ::loc("customization/decorLayout/layoutName")
       maxLen = 16
       value = oldName
       owner = this
@@ -141,15 +134,15 @@ const PRESET_MIN_USAGE = 2
   {
     if (newName == oldName)
       return
-    if (isInArray(newName, presetBySkinIdx))
-      return ::showInfoMsgBox(loc("rename/cant/nameAlreadyTaken"))
+    if (::isInArray(newName, presetBySkinIdx))
+      return ::showInfoMsgBox(::loc("rename/cant/nameAlreadyTaken"))
 
     ::hangar_customization_preset_set_name(oldName, newName)
     ::save_profile(false)
     updateMasterPreset(false)
   }
 
-  function onStart(_obj)
+  function onStart(obj)
   {
     if (linkedSkinsCurrent == linkedSkinsInitial)
       return
@@ -171,7 +164,7 @@ const PRESET_MIN_USAGE = 2
     if (!isPreset && listAttach.len())
       for (local i = 0; i < skinList.values.len(); i++)
       {
-        presetId = loc("customization/decorLayout/defaultName", { number = i + 1 })
+        presetId = ::loc("customization/decorLayout/defaultName", { number = i + 1 })
         if (::hangar_customization_preset_calc_usage(presetId) == 0)
         {
           ::hangar_customization_preset_create(presetId)
@@ -201,10 +194,10 @@ const PRESET_MIN_USAGE = 2
 return {
   open = function (unit, skinId)
   {
-    if (!hasFeature("CustomizationLayoutPresets"))
+    if (!::has_feature("CustomizationLayoutPresets"))
       return
     let skinList = ::g_decorator.getSkinsOption(unit?.name, false, false)
-    if (!isInArray(skinId, skinList.values))
+    if (!::isInArray(skinId, skinList.values))
       return
     ::handlersManager.loadHandler(::gui_handlers.DecorLayoutPresets, {
       unit = unit

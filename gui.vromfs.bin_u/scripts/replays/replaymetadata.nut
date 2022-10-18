@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { split_by_chars } = require("string")
 let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 let { get_replay_info } = require("replays")
@@ -37,7 +32,7 @@ let buildReplayMpTable = function(replayPath)
       name = b?.name ?? ""
       clanTag = b?.clanTag ?? ""
       team = b?.team ?? Team.none
-      state = PLAYER_HAS_LEAVED_GAME
+      state = ::PLAYER_HAS_LEAVED_GAME
       isLocal = userId == authorUserId
       isInHeroSquad = ::SessionLobby.isEqualSquadId(b?.squadId, authorSquadId)
       isBot = userId < 0
@@ -55,7 +50,7 @@ let buildReplayMpTable = function(replayPath)
     }
 
     if (mplayer?.isBot && mplayer?.name.indexof("/") != null)
-      mplayer.name = loc(mplayer.name)
+      mplayer.name = ::loc(mplayer.name)
 
     foreach(p in ::g_mplayer_param_type.types)
       if (!(p.id in mplayer) && p != ::g_mplayer_param_type.UNKNOWN)
@@ -83,7 +78,7 @@ let restoreReplayScriptCommentsBlk = function(replayPath)
   // Works for Server replays
   if (!playersInfo.len())
   {
-    let mplayersList = ::get_mplayers_list(GET_MPLAYERS_LIST, true)
+    let mplayersList = ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
     foreach (mplayer in mplayersList)
     {
       if (mplayer?.isBot || mplayer?.userId == null)
@@ -103,7 +98,7 @@ let restoreReplayScriptCommentsBlk = function(replayPath)
 }
 
 // Creates global func, which is called from client.
-getroottable()["save_replay_script_comments_blk"] <- @(blk) saveReplayScriptCommentsBlk(blk)
+::getroottable()["save_replay_script_comments_blk"] <- @(blk) saveReplayScriptCommentsBlk(blk)
 
 return {
   buildReplayMpTable = buildReplayMpTable

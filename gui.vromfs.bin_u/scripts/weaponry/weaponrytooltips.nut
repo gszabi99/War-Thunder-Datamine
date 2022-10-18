@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -39,22 +33,22 @@ let lockedTimerHandler = {
 
 let tooltipTypes = {
   SINGLE_BULLET = {
-    getTooltipId = function(unitName, bulletName = "", params = null, _p3 = null)
+    getTooltipId = function(unitName, bulletName = "", params = null, p3 = null)
     {
       let p = params ? clone params : {}
       p.bulletName <- bulletName
-      return this._buildId(unitName, p)
+      return _buildId(unitName, p)
     }
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
     {
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
       let { modName = "", bulletName = "", bulletParams = {}, bSet = {} } = params
 
-      let locName =" ".concat(format(loc("caliber/mm"), bSet.caliber),
-        getModificationName(unit, modName), loc($"{bulletName}/name/short"))
+      let locName =" ".concat(format(::loc("caliber/mm"), bSet.caliber),
+        getModificationName(unit, modName), ::loc($"{bulletName}/name/short"))
       let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip"),
         getSingleBulletParamToDesc(unit, locName, bulletName, bSet, bulletParams))
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
@@ -62,16 +56,16 @@ let tooltipTypes = {
     }
   }
   MODIFICATION = { //by unitName, modName
-    getTooltipId = function(unitName, modName = "", params = null, _p3 = null)
+    getTooltipId = function(unitName, modName = "", params = null, p3 = null)
     {
       let p = params ? clone params : {}
       p.modName <- modName
-      return this._buildId(unitName, p)
+      return _buildId(unitName, p)
     }
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
     {
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
       let { modName = "" } = params
@@ -86,12 +80,12 @@ let tooltipTypes = {
   }
 
   PRIMARY_WEAPON = {
-    getTooltipId = @(unitName, modName = "", params = null, _p3 = null)
-      this._buildId(unitName, (params ?? {}).__merge({ modName }))
+    getTooltipId = @(unitName, modName = "", params = null, p3 = null)
+      _buildId(unitName, (params ?? {}).__merge({ modName }))
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
     {
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
       let { modName = "" } = params
@@ -112,7 +106,7 @@ let tooltipTypes = {
       if (!obj?.isValid())
         return false
 
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
 
@@ -123,18 +117,18 @@ let tooltipTypes = {
   }
 
   WEAPON = { //by unitName
-    getTooltipId = function(unitName, weaponName = "", params = null, _p3 = null)
+    getTooltipId = function(unitName, weaponName = "", params = null, p3 = null)
     {
       let p = params ? clone params : {}
       p.weaponName <- weaponName
-      return this._buildId(unitName, p)
+      return _buildId(unitName, p)
     }
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params) {
       if (!obj?.isValid())
         return false
 
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
 
@@ -149,7 +143,7 @@ let tooltipTypes = {
       updateWeaponTooltip(obj, unit, weapon, handler, {
         hasPlayerInfo
         curEdiff
-        weaponsFilterFunc = params?.weaponBlkPath ? (@(path, _blk) path == params.weaponBlkPath) : null
+        weaponsFilterFunc = params?.weaponBlkPath ? (@(path, blk) path == params.weaponBlkPath) : null
       }, effect)
 
       return true
@@ -160,11 +154,11 @@ let tooltipTypes = {
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, ...)
     {
-      if (!checkObj(obj))
+      if (!::checkObj(obj))
         return false
 
-      let unit = ::getAircraftByName(unitName)
-      let spare = getTblValue("spare", unit)
+      let unit = getAircraftByName(unitName)
+      let spare = ::getTblValue("spare", unit)
       if (!spare)
         return false
 
@@ -176,15 +170,15 @@ let tooltipTypes = {
 
   WEAPON_PRESET_TIER = {
     getTooltipId = @(unitName, params)
-      this._buildId(unitName, params)
+      _buildId(unitName, params)
 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
     {
-      if (!checkObj(obj))
+      if (!::check_obj(obj))
         return false
 
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
       let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip"),
@@ -196,12 +190,12 @@ let tooltipTypes = {
   }
 
   MODIFICATION_DELAYED_TIER = { //by unitName, modName
-    getTooltipId = @(unitName, modName = "", params = null, _p3 = null)
-      this._buildId(unitName, (params ?? {}).__merge({ modName }))
+    getTooltipId = @(unitName, modName = "", params = null, p3 = null)
+      _buildId(unitName, (params ?? {}).__merge({ modName }))
     isCustomTooltipFill = true
 
     function fillTooltip(obj, handler, unitName, params) {
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
       let { modName = "" } = params
@@ -226,7 +220,7 @@ let tooltipTypes = {
       return true
     }
 
-    function onClose(_obj) {
+    function onClose(obj) {
       infoHandler = null
       infoMod = null
     }

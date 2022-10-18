@@ -1,11 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = require_native("hudActionBarConst")
+let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = ::require_native("hudActionBarConst")
 
 local cachedUnitId = ""
 let cache = {}
@@ -18,7 +13,7 @@ let cacheActionDescs = function(unitId) {
   cachedUnitId = unitId
   cache.clear()
   if (unit == null ||
-      (unit.esUnitType != ES_UNIT_TYPE_SHIP && unit.esUnitType != ES_UNIT_TYPE_BOAT))
+      (unit.esUnitType != ::ES_UNIT_TYPE_SHIP && unit.esUnitType != ::ES_UNIT_TYPE_BOAT))
     return
 
   foreach (triggerGroup in [ "torpedoes", "bombs", "rockets", "mines" ])
@@ -43,13 +38,13 @@ let function getActionItemAmountText(modData, isFull = false) {
   {
     let countEx = modData?.countEx ?? 0
     let countStr = count.tostring()
-    local countExText = modData?.isStreakEx ? loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
+    local countExText = modData?.isStreakEx ? ::loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
     if (countExText.len() > 0 && countExText.len() > (LONG_ACTIONBAR_TEXT_LEN - countStr.len()))
-      countExText = loc("weapon/bigAmountNumberIcon")
+      countExText = ::loc("weapon/bigAmountNumberIcon")
     text = countExText.len() > 0 ? $"{countStr}/{countExText}" : countStr
   }
 
-  return isFull ? $"{loc("options/count")}{loc("ui/colon")}{text}" : text
+  return isFull ? $"{::loc("options/count")}{::loc("ui/colon")}{text}" : text
 }
 
 let function getActionItemModificationName(item, unit) {

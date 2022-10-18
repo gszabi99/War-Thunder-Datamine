@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { floor } = require("math")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let guidParser = require("%scripts/guidParser.nut")
@@ -42,33 +35,33 @@ let function memoizeByProfile(func, hashFunc = null) {
     prizeTypeIcon = "#ui/gameuiskin#item_type_unlock.svg"
     defaultStyle = ""
 
-    getAvailableSlots = function(_unit) { return 0 }
+    getAvailableSlots = function(unit) { return 0 }
     getMaxSlots = function() {return 1 }
 
-    getImage = function(_decorator) { return "" }
-    getRatio = function(_decorator) { return 1 }
-    getImageSize = function(_decorator) { return "0, 0" }
+    getImage = function(decorator) { return "" }
+    getRatio = function(decorator) { return 1 }
+    getImageSize = function(decorator) { return "0, 0" }
 
     getSmallIcon = @(decorator) decorator ? prizeTypeIcon : ""
 
-    getLocName = function(decoratorName, _addUnitName = false) { return loc(decoratorName) }
-    getLocDesc = function(decoratorName) { return loc(decoratorName + "/desc", "") }
-    hasLocations = @(_decoratorName) false
-    getLocParamsDesc = @(_decorator) ""
+    getLocName = function(decoratorName, addUnitName = false) { return ::loc(decoratorName) }
+    getLocDesc = function(decoratorName) { return ::loc(decoratorName + "/desc", "") }
+    hasLocations = @(decoratorName) false
+    getLocParamsDesc = @(decorator) ""
 
     function getTypeDesc(decorator)
     {
-      local text = loc("trophy/unlockables_names/" + resourceType)
+      local text = ::loc("trophy/unlockables_names/" + resourceType)
       if (decorator.category != "" && categoryPathPrefix != "")
-        text += loc("ui/comma") + loc(categoryPathPrefix + decorator.category)
+        text += ::loc("ui/comma") + ::loc(categoryPathPrefix + decorator.category)
       if (decorator.group != "" && groupPathPrefix != "")
-        text += loc("ui/comma") + loc(groupPathPrefix + decorator.group)
+        text += ::loc("ui/comma") + ::loc(groupPathPrefix + decorator.group)
       return text
     }
 
-    getCost = function(_decoratorName) { return ::Cost() }
-    getDecoratorNameInSlot = function(_slotIdx, _unitName, _skinId, _checkPremium = false) { return "" }
-    getDecoratorGroupInSlot = function(_slotIdx, _unitName, _skinId, _checkPremium = false) { return "" }
+    getCost = function(decoratorName) { return ::Cost() }
+    getDecoratorNameInSlot = function(slotIdx, unitName, skinId, checkPremium = false) { return "" }
+    getDecoratorGroupInSlot = function(slotIdx, unitName, skinId, checkPremium = false) { return "" }
 
     hasFreeSlots = @(unit, skinId = null, checkPremium = false) getFreeSlotIdx(unit, skinId, checkPremium) != -1
     getFreeSlotIdx = function(unit, skinId = null, checkPremium = false)
@@ -81,8 +74,8 @@ let function memoizeByProfile(func, hashFunc = null) {
       return -1
     }
 
-    isAvailable = @(_unit, _checkUnitUsable = true) false
-    isAllowed = function(_decoratorName) { return true }
+    isAvailable = @(unit, checkUnitUsable = true) false
+    isAllowed = function(decoratorName) { return true }
     isVisible = function(block, decorator)
     {
       if (!block)
@@ -98,10 +91,10 @@ let function memoizeByProfile(func, hashFunc = null) {
       if ((block % "hideForLang").indexof(::g_language.getLanguageName()) != null)
         return false
       foreach (feature in block % "reqFeature")
-        if (!hasFeature(feature))
+        if (!::has_feature(feature))
           return false
       foreach (feature in block % "hideFeature")
-        if (hasFeature(feature))
+        if (::has_feature(feature))
           return false
 
       if (!isPlayerHaveDecorator(decorator.id))
@@ -114,28 +107,28 @@ let function memoizeByProfile(func, hashFunc = null) {
       }
       return true
     }
-    isPlayerHaveDecorator = function(_decoratorName) { return false }
+    isPlayerHaveDecorator = function(decoratorName) { return false }
 
     getBlk = function() { return ::DataBlock() }
-    getSpecialDecorator = function(_id) { return null }
-    getLiveDecorator = @(_id, _cache) null
+    getSpecialDecorator = function(id) { return null }
+    getLiveDecorator = @(id, cache) null
     canPreviewLiveDecorator = @() true
 
-    specifyEditableSlot = @(_slotIdx, _needFocus = true) null
-    addDecorator = function(_decoratorName) {}
-    exitEditMode = function(_apply, _save = false, _callback = function (){}) {}
-    enterEditMode = function(_decoratorName) {}
-    removeDecorator = @(_slotIdx, _save) false
-    replaceDecorator = function(_slotIdx, _decoratorName) {}
+    specifyEditableSlot = @(slotIdx, needFocus = true) null
+    addDecorator = function(decoratorName) {}
+    exitEditMode = function(apply, save = false, callback = function (){}) {}
+    enterEditMode = function(decoratorName) {}
+    removeDecorator = @(slotIdx, save) false
+    replaceDecorator = function(slotIdx, decoratorName) {}
 
-    buyFunc = function(_unitName, _id) {}
-    save = function(_unitName, _showProgressBox) {}
+    buyFunc = function(unitName, id) {}
+    save = function(unitName, showProgressBox) {}
 
     canRotate = function() { return false }
     canResize = function() { return false }
     canMirror = function() { return false }
     canToggle = function() { return false }
-    updateDownloadableDecoratorsInfo = function(_decorator) {}
+    updateDownloadableDecoratorsInfo = function(decorator) {}
   }
 }
 
@@ -144,7 +137,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
   }
 
   DECALS = {
-    unlockedItemType = UNLOCKABLE_DECAL
+    unlockedItemType = ::UNLOCKABLE_DECAL
     resourceType = "decal"
     listId = "slots_list"
     listHeaderLocId = "decals"
@@ -169,10 +162,10 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     getRatio = function(decorator) { return decorator?.aspect_ratio ?? 1 }
-    getImageSize = function(decorator) { return format("256@sf/@pf, %d@sf/@pf", floor(256.0 / getRatio(decorator) + 0.5)) }
+    getImageSize = function(decorator) { return format("256@sf/@pf, %d@sf/@pf", ::floor(256.0 / getRatio(decorator) + 0.5)) }
 
-    getLocName = function(decoratorName, ...) { return loc("decals/" + decoratorName) }
-    getLocDesc = function(decoratorName) { return loc("decals/" + decoratorName + "/desc", "") }
+    getLocName = function(decoratorName, ...) { return ::loc("decals/" + decoratorName) }
+    getLocDesc = function(decoratorName) { return ::loc("decals/" + decoratorName + "/desc", "") }
 
     getCost = function(decoratorName)
     {
@@ -185,7 +178,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     isAllowed = function(decoratorName) { return ::is_decal_allowed(decoratorName, "") }
-    isAvailable = @(unit, checkUnitUsable = true) !!unit && hasFeature("DecalsUse")
+    isAvailable = @(unit, checkUnitUsable = true) !!unit && ::has_feature("DecalsUse")
       && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(::player_have_decal)
 
@@ -233,13 +226,13 @@ enums.addTypesByGlobalName("g_decorator_type", {
       blk["costGold"] = cost.gold
 
       let taskId = ::char_send_blk("cln_buy_resource", blk)
-      let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
+      let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
       ::g_tasker.addTask(taskId, taskOptions, afterSuccessFunc)
     }
 
     save = function(unitName, showProgressBox)
     {
-      if (!hasFeature("DecalsUse"))
+      if (!::has_feature("DecalsUse"))
         return
 
       let taskId = ::save_decals(unitName)
@@ -252,11 +245,11 @@ enums.addTypesByGlobalName("g_decorator_type", {
     canMirror = @() true
     canToggle = @() true
 
-    canPreviewLiveDecorator = @() hasFeature("EnableLiveDecals")
+    canPreviewLiveDecorator = @() ::has_feature("EnableLiveDecals")
   }
 
   ATTACHABLES = {
-    unlockedItemType = UNLOCKABLE_ATTACHABLE
+    unlockedItemType = ::UNLOCKABLE_ATTACHABLE
     resourceType = "attachable"
     defaultLimitUsage = 1
     listId = "slots_attachable_list"
@@ -278,8 +271,8 @@ enums.addTypesByGlobalName("g_decorator_type", {
         : ""
     getImageSize = function(...) { return "128@sf/@pf, 128@sf/@pf" }
 
-    getLocName = function(decoratorName, ...) { return loc("attachables/" + decoratorName) }
-    getLocDesc = function(decoratorName) { return loc("attachables/" + decoratorName + "/desc", "") }
+    getLocName = function(decoratorName, ...) { return ::loc("attachables/" + decoratorName) }
+    getLocDesc = function(decoratorName) { return ::loc("attachables/" + decoratorName + "/desc", "") }
     getLocParamsDesc = function(decorator)
     {
       let paramPathPrefix = "attachables/param/"
@@ -287,7 +280,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       if (!angle)
         return ""
 
-      return loc(paramPathPrefix + "maxSurfaceAngle", {value = angle})
+      return ::loc(paramPathPrefix + "maxSurfaceAngle", {value = angle})
     }
 
     getCost = function(decoratorName)
@@ -298,7 +291,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getDecoratorNameInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_name(slotIdx) }
     getDecoratorGroupInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_group(slotIdx) }
 
-    isAvailable = @(unit, checkUnitUsable = true) !!unit && hasFeature("AttachablesUse")
+    isAvailable = @(unit, checkUnitUsable = true) !!unit && ::has_feature("AttachablesUse")
       && (unit.isTank() || unit.isShipOrBoat())
       && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(::player_have_attachable)
@@ -311,7 +304,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       exitEditMode(true, save)
     }
 
-    specifyEditableSlot = @(slotIdx, _needFocus = true) ::hangar_select_attachable_slot(slotIdx)
+    specifyEditableSlot = @(slotIdx, needFocus = true) ::hangar_select_attachable_slot(slotIdx)
     enterEditMode = function(decoratorName) { return ::hangar_add_attachable(decoratorName) }
     exitEditMode = function(apply, save, callback = function () {}) {
       let res = ::hangar_exit_attachables_mode(apply, save)
@@ -330,13 +323,13 @@ enums.addTypesByGlobalName("g_decorator_type", {
       blk["costGold"] =-cost.gold
 
       let taskId = ::char_send_blk("cln_buy_resource", blk)
-      let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
+      let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
       ::g_tasker.addTask(taskId, taskOptions, afterSuccessFunc)
     }
 
     save = function(unitName, showProgressBox)
     {
-      if (!hasFeature("AttachablesUse"))
+      if (!::has_feature("AttachablesUse"))
         return
 
       let taskId = ::save_attachables(unitName)
@@ -347,7 +340,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     canRotate = @() true
   }
   SKINS = {
-    unlockedItemType = UNLOCKABLE_SKIN
+    unlockedItemType = ::UNLOCKABLE_SKIN
     resourceType = "skin"
     userlogPurchaseIcon = "#ui/gameuiskin#unlock_skin.png"
     prizeTypeIcon = "#ui/gameuiskin#item_type_skin.svg"
@@ -374,7 +367,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getLocName = function(decoratorName, addUnitName = false)
     {
       if (guidParser.isGuid(decoratorName))
-        return loc(decoratorName, loc("default_live_skin_loc"))
+        return ::loc(decoratorName, ::loc("default_live_skin_loc"))
 
       local name = ""
 
@@ -385,19 +378,19 @@ enums.addTypesByGlobalName("g_decorator_type", {
         let skinNameId = ::g_unlocks.getSkinNameBySkinId(decoratorName)
         let skinBlock = unit.getSkinBlockById(skinNameId)
         if (skinBlock && (skinBlock?.nameLocId ?? "") != "")
-          name = loc(skinBlock.nameLocId)
+          name = ::loc(skinBlock.nameLocId)
       }
 
       if (name == "")
       {
         if (::g_unlocks.isDefaultSkin(decoratorName))
-          decoratorName = loc(unitName + "/default", loc("default_skin_loc"))
+          decoratorName = ::loc(unitName + "/default", ::loc("default_skin_loc"))
 
-        name = loc(decoratorName)
+        name = ::loc(decoratorName)
       }
 
       if (addUnitName && !::u.isEmpty(unitName))
-        name += loc("ui/parentheses/space", { text = ::getUnitName(unit) })
+        name += ::loc("ui/parentheses/space", { text = ::getUnitName(unit) })
 
       return name
     }
@@ -411,11 +404,11 @@ enums.addTypesByGlobalName("g_decorator_type", {
         let skinNameId = ::g_unlocks.getSkinNameBySkinId(decoratorName)
         let skinBlock = unit.getSkinBlockById(skinNameId)
         if (skinBlock && (skinBlock?.descLocId ?? "") != "")
-          return loc(skinBlock.descLocId)
+          return ::loc(skinBlock.descLocId)
       }
 
       let defaultLocId = guidParser.isGuid(decoratorName) ? "default_live_skin_loc/desc" : "default_skin_loc/desc"
-      return loc(decoratorName + "/desc", loc(defaultLocId))
+      return ::loc(decoratorName + "/desc", ::loc(defaultLocId))
     }
 
     hasLocations = function(decoratorName)
@@ -429,9 +422,9 @@ enums.addTypesByGlobalName("g_decorator_type", {
     {
       let unit = ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id))
       if (!unit)
-        return loc("trophy/unlockables_names/skin")
-      return loc("reward/skin_for") + " " +
-        ::getUnitName(unit) + loc("ui/comma") + loc(::getUnitCountry(unit))
+        return ::loc("trophy/unlockables_names/skin")
+      return ::loc("reward/skin_for") + " " +
+        ::getUnitName(unit) + ::loc("ui/comma") + ::loc(::getUnitCountry(unit))
     }
 
     getCost = function(decoratorName)
@@ -466,7 +459,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       blk["costGold"] = cost.gold
 
       let taskId = ::char_send_blk("cln_buy_resource", blk)
-      let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
+      let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
       ::g_tasker.addTask(taskId, taskOptions, afterSuccessFunc)
     }
 
@@ -491,7 +484,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       return cache[id]
     }
 
-    canPreviewLiveDecorator = @() hasFeature("EnableLiveSkins")
+    canPreviewLiveDecorator = @() ::has_feature("EnableLiveSkins")
 
     updateDownloadableDecoratorsInfo = function(decorator) {
       let unitName = ::g_unlocks.getPlaneBySkinId(decorator.id)
@@ -504,17 +497,17 @@ enums.addTypesByGlobalName("g_decorator_type", {
   }
 }, null, "name")
 
-::g_decorator_type.getTypeByListId <- function getTypeByListId(listId)
+g_decorator_type.getTypeByListId <- function getTypeByListId(listId)
 {
   return enums.getCachedType("listId", listId, ::g_decorator_type.cache.byListId, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
 }
 
-::g_decorator_type.getTypeByUnlockedItemType <- function getTypeByUnlockedItemType(UnlockedItemType)
+g_decorator_type.getTypeByUnlockedItemType <- function getTypeByUnlockedItemType(UnlockedItemType)
 {
   return enums.getCachedType("unlockedItemType", UnlockedItemType, ::g_decorator_type.cache.byUnlockedItemType, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
 }
 
-::g_decorator_type.getTypeByResourceType <- function getTypeByResourceType(resourceType)
+g_decorator_type.getTypeByResourceType <- function getTypeByResourceType(resourceType)
 {
   return enums.getCachedType("resourceType", resourceType, ::g_decorator_type.cache.byResourceType, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
 }

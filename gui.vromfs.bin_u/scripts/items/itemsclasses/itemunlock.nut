@@ -1,17 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.Unlock <- class extends ItemCouponBase {
   static iType = itemType.UNLOCK
   static typeIcon = "#ui/gameuiskin#item_type_unlock.svg"
 
-  getUnlockId          = @() this.metaBlk?.unlock ?? this.metaBlk?.unlockAddProgress
-  canConsume           = @() this.isInventoryItem && canReceivePrize()
+  getUnlockId          = @() metaBlk?.unlock ?? metaBlk?.unlockAddProgress
+  canConsume           = @() isInventoryItem && canReceivePrize()
 
   function canReceivePrize() {
     let unlockId = getUnlockId()

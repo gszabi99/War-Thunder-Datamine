@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 //
 // Unit crew data cache.
 // Used to speed up 'get_aircraft_crew_by_id' calls.
@@ -20,40 +14,40 @@ from "%scripts/dagui_library.nut" import *
   }
 }
 
-::g_unit_crew_cache.getUnitCrewDataById <- function getUnitCrewDataById(crewId, unit)
+g_unit_crew_cache.getUnitCrewDataById <- function getUnitCrewDataById(crewId, unit)
 {
   if (crewId == null)
     return null
 
   let unitName = unit?.name ?? ""
-  if (crewId != this.lastUnitCrewId || unitName != this.lastUnitName)
+  if (crewId != lastUnitCrewId || unitName != lastUnitName)
   {
-    this.lastUnitCrewId = crewId
-    this.lastUnitName = unitName
-    let unitCrewBlk = ::get_aircraft_crew_blk(this.lastUnitCrewId, this.lastUnitName)
-    this.lastUnitCrewData = ::buildTableFromBlk(unitCrewBlk)
+    lastUnitCrewId = crewId
+    lastUnitName = unitName
+    let unitCrewBlk = ::get_aircraft_crew_blk(lastUnitCrewId, lastUnitName)
+    lastUnitCrewData = ::buildTableFromBlk(unitCrewBlk)
   }
-  return this.lastUnitCrewData
+  return lastUnitCrewData
 }
 
-::g_unit_crew_cache.initCache <- function initCache()
+g_unit_crew_cache.initCache <- function initCache()
 {
-  ::add_event_listener("CrewSkillsChanged", this.onEventCrewSkillsChanged,
+  ::add_event_listener("CrewSkillsChanged", onEventCrewSkillsChanged,
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
-  ::add_event_listener("QualificationIncreased", @(_p) this.invalidateCache(),
+  ::add_event_listener("QualificationIncreased", @(p) invalidateCache(),
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
-  ::add_event_listener("CrewChanged", this.onEventCrewChanged,
+  ::add_event_listener("CrewChanged", onEventCrewChanged,
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
 }
 
-::g_unit_crew_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(_params)
+g_unit_crew_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(params)
 {
-  this.invalidateCache()
+  invalidateCache()
 }
 
-::g_unit_crew_cache.onEventCrewChanged <- function onEventCrewChanged(_params)
+g_unit_crew_cache.onEventCrewChanged <- function onEventCrewChanged(params)
 {
-  this.invalidateCache()
+  invalidateCache()
 }
 
 ::g_unit_crew_cache.initCache()

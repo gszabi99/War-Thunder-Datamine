@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let interopGen = require("%rGui/interopGen.nut")
 
 let Speed = Watched(0)

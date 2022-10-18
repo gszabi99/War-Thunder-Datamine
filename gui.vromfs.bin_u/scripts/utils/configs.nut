@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let ConfigBase = require("configBase.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -52,7 +47,7 @@ let configs = {
   .map(@(cData, id) ConfigBase(cData.__merge({ id })))
 
 addListenersWithoutEnv({
-  AuthorizeComplete = @(_p) configs.each(@(cfg) cfg.invalidateCache())
+  AuthorizeComplete = @(p) configs.each(@(cfg) cfg.invalidateCache())
 },
   ::g_listener_priority.CONFIG_VALIDATION)
 

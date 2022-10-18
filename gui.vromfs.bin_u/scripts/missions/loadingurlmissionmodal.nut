@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 ::gui_handlers.LoadingUrlMissionModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -30,14 +22,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen()
   {
     if (!curMission?.urlMission)
-      return this.goBack()
+      return goBack()
 
     urlMission = curMission.urlMission
     createButton(buttonCancelId, "#msgbox/btn_cancel" ,"onCancel")
     createButton(buttonOkId, "#msgbox/btn_ok" ,"goBack")
 
-    this.scene.findObject("msgWaitAnimation").show(true)
-    this.scene.findObject("msg_box_timer").setUserData(this)
+    scene.findObject("msgWaitAnimation").show(true)
+    scene.findObject("msg_box_timer").setUserData(this)
 
     resetTimer()
     loadUrlMission()
@@ -47,21 +39,21 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function createButton(btnId, text, callbackName)
   {
     let data = format("Button_text { id:t='%s'; btnName:t='AB'; text:t='%s'; on_click:t='%s' }", btnId, text, callbackName)
-    let holderObj = this.scene.findObject("buttons_holder")
+    let holderObj = scene.findObject("buttons_holder")
     if (!holderObj)
       return
 
-    this.guiScene.appendWithBlk(holderObj, data, this)
+    guiScene.appendWithBlk(holderObj, data, this)
     this.showSceneBtn(btnId, false)
   }
 
   function loadUrlMission()
   {
-    let requestCallback = Callback(function(success, blk) {
+    let requestCallback = ::Callback(function(success, blk) {
                                           onLoadingEnded(success, blk)
                                         }, this)
 
-    let progressCallback = Callback(function(dltotal, dlnow) {
+    let progressCallback = ::Callback(function(dltotal, dlnow) {
                                           onProgress(dltotal, dlnow)
                                         }, this)
 
@@ -79,14 +71,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.showSceneBtn(buttonCancelId, false)
   }
 
-  function onUpdate(_obj, dt)
+  function onUpdate(obj, dt)
   {
     if (progressChanged)
     {
       progressChanged = false
       if (loadingProgress >= 0)
       {
-        updateText(loc("wait/missionDownload", {name = urlMission.name, progress = loadingProgress.tostring()}))
+        updateText(::loc("wait/missionDownload", {name = urlMission.name, progress = loadingProgress.tostring()}))
       }
     }
 
@@ -104,9 +96,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     requestSuccess = success
     progressChanged = false
     if (isCancel)
-      return this.goBack()
+      return goBack()
 
-    local errorText = loc("wait/ugm_download_failed")
+    local errorText = ::loc("wait/ugm_download_failed")
     if (success)
     {
       ::upgrade_url_mission(blk)
@@ -114,23 +106,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       requestSuccess = ::u.isEmpty(errorText)
       success = requestSuccess
       if (!success)
-        errorText = loc("wait/ugm_not_valid", {errorText = errorText})
+        errorText = ::loc("wait/ugm_not_valid", {errorText = errorText})
     }
 
     ::g_url_missions.setLoadingCompeteState(urlMission, !success, blk)
 
     if (success)
-      return this.goBack()
+      return goBack()
 
     updateText(errorText)
-    this.scene.findObject("msgWaitAnimation").show(false)
+    scene.findObject("msgWaitAnimation").show(false)
     this.showSceneBtn(buttonCancelId, false)
     this.showSceneBtn(buttonOkId, true)
   }
 
   function updateText(text)
   {
-    this.scene.findObject("msgText").setValue(text)
+    scene.findObject("msgText").setValue(text)
   }
 
   function onProgress(dltotal, dlnow)

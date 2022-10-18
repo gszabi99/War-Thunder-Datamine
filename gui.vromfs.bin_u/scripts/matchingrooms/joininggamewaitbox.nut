@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
@@ -17,17 +10,17 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function initScreen()
   {
-    this.scene.findObject("msgWaitAnimation").show(true)
-    this.scene.findObject("msg_box_timer").setUserData(this)
+    scene.findObject("msgWaitAnimation").show(true)
+    scene.findObject("msg_box_timer").setUserData(this)
     updateInfo()
   }
 
-  function onEventLobbyStatusChange(_params)
+  function onEventLobbyStatusChange(params)
   {
     updateInfo()
   }
 
-  function onEventEventsDataUpdated(_params)
+  function onEventEventsDataUpdated(params)
   {
     updateInfo()
   }
@@ -35,20 +28,20 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
   function updateInfo()
   {
     if (!::SessionLobby.isInJoiningGame())
-      return this.goBack()
+      return goBack()
 
     resetTimer() //statusChanged
     checkGameMode()
 
     let misData = ::SessionLobby.getMissionParams()
-    local msg = loc("wait/sessionJoin")
+    local msg = ::loc("wait/sessionJoin")
     if (::SessionLobby.status == lobbyStates.UPLOAD_CONTENT)
-      msg = loc("wait/sessionUpload")
+      msg = ::loc("wait/sessionUpload")
     if (misData)
-      msg = "".concat(msg, "\n\n", colorize("activeTextColor", getCurrentMissionGameMode()),
-        "\n", colorize("userlogColoredText", getCurrentMissionName()))
+      msg = "".concat(msg, "\n\n", ::colorize("activeTextColor", getCurrentMissionGameMode()),
+        "\n", ::colorize("userlogColoredText", getCurrentMissionName()))
 
-    this.scene.findObject("msgText").setValue(msg)
+    scene.findObject("msgText").setValue(msg)
   }
 
   function getCurrentMissionGameMode()
@@ -63,12 +56,12 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       if (::events.getEventDisplayType(event) != ::g_event_display_type.RANDOM_BATTLE)
         gameModeName = "event"
     }
-    return loc("multiplayer/" + gameModeName + "Mode")
+    return ::loc("multiplayer/" + gameModeName + "Mode")
   }
 
   function getCurrentMissionName()
   {
-    if (::get_game_mode() == GM_DOMINATION)
+    if (::get_game_mode() == ::GM_DOMINATION)
     {
       let event = ::SessionLobby.getRoomEvent()
       if (event)
@@ -91,14 +84,14 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       return
 
     ::set_mp_mode(gm)
-    if (this.mainGameMode < 0)
-      this.mainGameMode = curGm  //to restore gameMode after close window
+    if (mainGameMode < 0)
+      mainGameMode = curGm  //to restore gameMode after close window
   }
 
   function showCancelButton(show)
   {
     let btnId = "btn_cancel"
-    local obj = this.scene.findObject(btnId)
+    local obj = scene.findObject(btnId)
     if (obj)
     {
       obj.show(show)
@@ -113,12 +106,12 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     let data = format(
       "Button_text{id:t='%s'; btnName:t='AB'; text:t='#msgbox/btn_cancel'; on_click:t='onCancel'}",
       btnId)
-    let holderObj = this.scene.findObject("buttons_holder")
+    let holderObj = scene.findObject("buttons_holder")
     if (!holderObj)
       return
 
-    this.guiScene.appendWithBlk(holderObj, data, this)
-    obj = this.scene.findObject(btnId)
+    guiScene.appendWithBlk(holderObj, data, this)
+    obj = scene.findObject(btnId)
     ::move_mouse_on_obj(obj)
   }
 
@@ -128,7 +121,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     showCancelButton(false)
   }
 
-  function onUpdate(_obj, dt)
+  function onUpdate(obj, dt)
   {
     if (timer < 0)
       return
@@ -139,7 +132,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function onCancel()
   {
-    this.guiScene.performDelayed(this, function()
+    guiScene.performDelayed(this, function()
     {
       if (timer >= 0)
         return

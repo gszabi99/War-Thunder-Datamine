@@ -1,17 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
-let { get_time_msec } = require("dagor.time")
 
 ::WwBattleJoinProcess <- class
 {
   wwBattle = null
-  side = SIDE_NONE
+  side = ::SIDE_NONE
 
   static PROCESS_TIME_OUT = 60000
 
@@ -24,13 +17,13 @@ let { get_time_msec } = require("dagor.time")
       return
 
     if (activeJoinProcesses.len())
-      if (get_time_msec() - activeJoinProcesses[0].processStartTime < PROCESS_TIME_OUT)
-        return assert(false, "Error: trying to use 2 join world war operation battle processes at once")
+      if (::dagor.getCurTime() - activeJoinProcesses[0].processStartTime < PROCESS_TIME_OUT)
+        return ::dagor.assertf(false, "Error: trying to use 2 join world war operation battle processes at once")
       else
         activeJoinProcesses[0].remove()
 
     activeJoinProcesses.append(this)
-    processStartTime = get_time_msec()
+    processStartTime = ::dagor.getCurTime()
 
     wwBattle = v_wwBattle
     side = v_side
@@ -85,14 +78,14 @@ let { get_time_msec } = require("dagor.time")
     let availableUnitTypes = wwBattle.getAvailableUnitTypes()
     if (availableUnitTypes.len() > 0)
     {
-      foreach(_idx, unitType in availableUnitTypes)
-        if (checkDiffTutorial(DIFFICULTY_REALISTIC, unitType))
+      foreach(idx, unitType in availableUnitTypes)
+        if (checkDiffTutorial(::DIFFICULTY_REALISTIC, unitType))
           return remove()
     }
 
     ::queues.checkAndStart(
-      Callback(joinStep4_repairInfo, this),
-      Callback(remove, this),
+      ::Callback(joinStep4_repairInfo, this),
+      ::Callback(remove, this),
       "isCanNewflight"
     )
   }

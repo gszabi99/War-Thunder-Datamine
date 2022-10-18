@@ -1,26 +1,20 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_chat_thread_tag <- {
   types = []
 }
 
-::g_chat_thread_tag._setThreadInfoPropertyForBoolTag <- function _setThreadInfoPropertyForBoolTag(threadInfo, _valueString)
+g_chat_thread_tag._setThreadInfoPropertyForBoolTag <- function _setThreadInfoPropertyForBoolTag(threadInfo, valueString)
 {
-  threadInfo[this.threadInfoParamName] = true
+  threadInfo[threadInfoParamName] = true
 }
-::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag <- function _updateThreadWhenNoTagForBoolTag(threadInfo)
+g_chat_thread_tag._updateThreadWhenNoTagForBoolTag <- function _updateThreadWhenNoTagForBoolTag(threadInfo)
 {
-  threadInfo[this.threadInfoParamName] = false
+  threadInfo[threadInfoParamName] = false
 }
-::g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBoolTag(threadInfo)
+g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBoolTag(threadInfo)
 {
-  if (threadInfo[this.threadInfoParamName])
-    return this.prefix
+  if (threadInfo[threadInfoParamName])
+    return prefix
   return ""
 }
 
@@ -46,8 +40,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     setThreadInfoProperty(threadInfo, ::g_string.slice(tag, prefix.len()))
     return true
   }
-  updateThreadWhenNoTag = function(_threadInfo) {}
-  updateThreadBeforeTagsUpdate = function(_threadInfo) {}
+  updateThreadWhenNoTag = function(threadInfo) {}
+  updateThreadBeforeTagsUpdate = function(threadInfo) {}
 
   getTagString = function(threadInfo)
   {

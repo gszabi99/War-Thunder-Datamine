@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::g_clan_tag_decorator <- {
 
 
@@ -69,7 +63,7 @@ from "%scripts/dagui_library.nut" import *
 
     if (decoratorsBlk != null)
       foreach (decoratorString in decoratorsBlk % "decor")
-        decorators.append(::ClanTagDecorator(decoratorString, free))
+        decorators.append(ClanTagDecorator(decoratorString, free))
 
     return decorators
   }

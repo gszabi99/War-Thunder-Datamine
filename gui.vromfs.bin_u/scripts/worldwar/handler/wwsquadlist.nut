@@ -1,14 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-
-::gui_handlers.WwSquadList <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwSquadList <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/worldWar/wwBattleSquadList"
@@ -21,13 +14,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getSceneTplView()
   {
-    return { members = array(::g_squad_manager.MAX_SQUAD_SIZE, {}) }
+    return { members = ::array(::g_squad_manager.MAX_SQUAD_SIZE, {}) }
   }
 
   function initScreen()
   {
-    this.scene.setUserData(this)
-    squadListObj = this.scene.findObject("squad_list")
+    scene.setUserData(this)
+    squadListObj = scene.findObject("squad_list")
     updateSquadInfoPanel()
   }
 
@@ -41,7 +34,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         continue
 
       let memberObj = squadListObj.getChild(memberIdx)
-      if (!checkObj(memberObj))
+      if (!::check_obj(memberObj))
         break
 
       updateSquadMember(memberData, memberObj)
@@ -51,7 +44,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     for (local i = memberIdx; i < squadListObj.childrenCount(); i++)
     {
       let memberObj = squadListObj.getChild(i)
-      if (checkObj(memberObj))
+      if (::check_obj(memberObj))
         updateSquadMember(null, memberObj)
     }
   }
@@ -75,24 +68,24 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local alertText = ""
     local fullAlertText = ""
     if (!memberData.isWorldWarAvailable)
-      alertText = loc("worldWar/noAccess")
+      alertText = ::loc("worldWar/noAccess")
     else if (!memberData.canPlayWorldWar)
     {
-      alertText = loc("worldWar/noAccess")
+      alertText = ::loc("worldWar/noAccess")
       fullAlertText = ::g_world_war.getPlayWorldwarConditionText()
     }
     else if (!memberData.isReady)
-      alertText = loc("multiplayer/state/player_is_not_ready")
+      alertText = ::loc("multiplayer/state/player_is_not_ready")
     else if (memberUnitsData.joinStatus != memberStatus.READY)
-      alertText = loc(::g_squad_utils.getMemberStatusLocId(memberUnitsData.joinStatus))
+      alertText = ::loc(::g_squad_utils.getMemberStatusLocId(memberUnitsData.joinStatus))
     else if (!memberData.isCrewsReady)
-      alertText = loc("multiplayer/state/crews_not_ready")
+      alertText = ::loc("multiplayer/state/crews_not_ready")
 
     memberObj.findObject("cant_join_text").setValue(alertText)
     memberObj.findObject("member_name").setValue(memberData.name)
 
     let alertIconObj =  memberObj.findObject("alert_icon")
-    if (!checkObj(alertIconObj))
+    if (!::check_obj(alertIconObj))
       return
 
     alertIconObj.show(!::u.isEmpty(fullAlertText))
@@ -106,7 +99,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     updateSquadInfoPanel()
   }
 
-  function onEventSquadDataUpdated(_params)
+  function onEventSquadDataUpdated(params)
   {
     updateSquadInfoPanel()
   }
@@ -118,7 +111,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let curMemberObj = squadListObj.getChild(curMemberIdx)
-    if (!checkObj(curMemberObj) || !curMemberObj?.uid)
+    if (!::check_obj(curMemberObj) || !curMemberObj?.uid)
       return
 
     let position = curMemberObj.getPosRC()

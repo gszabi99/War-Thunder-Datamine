@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let planeMfd = require("planeMfd.nut")
 let planeIls = require("planeIls.nut")
 
@@ -31,7 +29,7 @@ let paramsTableWidthAircraft = hdpx(600)
 let arbiterParamsTableWidthAircraft = hdpx(200)
 let paramsTableHeightAircraft = hdpx(22)
 
-let aircraftParamsTablePos = Computed(@() [max(bw.value, sw(20) - hdpx(660)), max(bh.value, sh(10) - hdpx(100))])
+let aircraftParamsTablePos = Computed(@() [max(bw.value, sw(20) - hdpx(660)), sh(10) - hdpx(100)])
 
 let aircraftArbiterParamsTablePos = Computed(@() [max(bw.value, sw(17.5)), sh(12)])
 
@@ -165,12 +163,12 @@ let function aircraftRoot() {
     children
 
     function onAttach() {
-      gui_scene.addPanel(0, planeMfd)
-      gui_scene.addPanel(1, planeIls)
+      ::gui_scene.addPanel(0, planeMfd)
+      ::gui_scene.addPanel(1, planeIls)
     }
     function onDetach() {
-      gui_scene.removePanel(0)
-      gui_scene.removePanel(1)
+      ::gui_scene.removePanel(0)
+      ::gui_scene.removePanel(1)
     }
 
   }

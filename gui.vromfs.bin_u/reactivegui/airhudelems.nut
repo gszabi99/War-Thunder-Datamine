@@ -1,8 +1,4 @@
-from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
-
 let {floor, round_by_value} = require("%sqstd/math.nut")
-let string = require("string")
 
 let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCount, IsCannonEmpty,
   OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
@@ -141,7 +137,7 @@ let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBack
           size = [scaleWidth*4,SIZE_TO_CONTENT]
           watch = [DistanceToGround, IsMfdEnabled]
           text = IsMfdEnabled.value ? floor(DistanceToGround.value).tostring() :
-            cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(DistanceToGround.value)
+            ::cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(DistanceToGround.value)
         })
       }
       @(){
@@ -161,7 +157,7 @@ let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBack
               watch = [VerticalSpeed, IsMfdEnabled]
               text = IsMfdEnabled.value ?
                 round_by_value(VerticalSpeed.value, 1).tostring() :
-                cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.value)
+                ::cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.value)
             })
           }
         ]
@@ -173,7 +169,7 @@ let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBack
 let function generateBulletsTextFunction(count, seconds, salvo = 0, actualCount = -1) {
   local txts = []
   if (seconds >= 0) {
-    txts = [string.format("%d:%02d", floor(seconds / 60), seconds % 60)]
+    txts = [::string.format("%d:%02d", floor(seconds / 60), seconds % 60)]
     if (count > 0)
       txts.append(" (", count, ")  ")
     return "".join(txts)
@@ -193,7 +189,7 @@ let function generateBulletsTextFunction(count, seconds, salvo = 0, actualCount 
 let generateRpmTitleFunction = function(trtMode) {
   local txts = []
   if (trtMode < AirThrottleMode.AIRCRAFT_DEFAULT_MODE)
-    txts = [loc("HUD/PROP_RPM_SHORT")]
+    txts = [::loc("HUD/PROP_RPM_SHORT")]
 
   return "".join(txts)
 }
@@ -202,7 +198,7 @@ let generateRpmTitleFunction = function(trtMode) {
 let generateRpmTextFunction = function(trtMode, rpmValue) {
   local txts = []
   if (trtMode < AirThrottleMode.AIRCRAFT_DEFAULT_MODE)
-    txts = [string.format("%d %%", rpmValue)]
+    txts = [::string.format("%d %%", rpmValue)]
 
   return "".join(txts)
 }
@@ -210,7 +206,7 @@ let generateRpmTextFunction = function(trtMode, rpmValue) {
 let generateAgmBulletsTextFunction = function(count, seconds, timeToHit, _timeToWarning, actualCount = 0) {
   local txts = []
   if (seconds >= 0) {
-    txts = [string.format("%d:%02d", floor(seconds / 60), seconds % 60)]
+    txts = [::string.format("%d:%02d", floor(seconds / 60), seconds % 60)]
     if (count > 0)
       txts.append(" (", count, ")")
     return "".join(txts)
@@ -220,19 +216,19 @@ let generateAgmBulletsTextFunction = function(count, seconds, timeToHit, _timeTo
   if (actualCount >= 0)
     txts.append("/", actualCount)
   if (timeToHit > 0)
-    txts.append(string.format("[%d]", timeToHit))
+    txts.append(::string.format("[%d]", timeToHit))
   return "".join(txts)
 }
 
 let generateTemperatureTextFunction = function(temperature, state) {
   if (state == TemperatureState.OVERHEAT)
-    return (temperature + cross_call.measureTypes.TEMPERATURE.getMeasureUnitsName())
+    return (temperature + ::cross_call.measureTypes.TEMPERATURE.getMeasureUnitsName())
   else if (state == TemperatureState.EMPTY_TANK)
-    return (loc("HUD_TANK_IS_EMPTY"))
+    return (::loc("HUD_TANK_IS_EMPTY"))
   else if (state == TemperatureState.FUEL_LEAK)
-    return (loc("HUD_FUEL_LEAK"))
+    return (::loc("HUD_FUEL_LEAK"))
   else if (state == TemperatureState.FUEL_SEALING)
-    return  (loc("HUD_TANK_IS_SEALING"))
+    return  (::loc("HUD_TANK_IS_SEALING"))
   else if (state == TemperatureState.BLANK)
     return ""
 
@@ -241,9 +237,9 @@ let generateTemperatureTextFunction = function(temperature, state) {
 
 let generateTransmissionStateTextFunction = function(oilState) {
   if(oilState > 0.01)
-    return loc("HUD_FUEL_LEAK")
+    return ::loc("HUD_FUEL_LEAK")
   else
-  return loc("HUD_TANK_IS_EMPTY")
+  return ::loc("HUD_TANK_IS_EMPTY")
   return ""
 }
 
@@ -251,13 +247,13 @@ let function getThrottleText(mode, trt) {
   if ( mode == AirThrottleMode.DEFAULT_MODE
     || mode == AirThrottleMode.CLIMB
     || mode == AirThrottleMode.AIRCRAFT_DEFAULT_MODE)
-    return string.format("%d %%", trt)
+    return ::string.format("%d %%", trt)
   else if (mode == AirThrottleMode.BRAKE
     || mode == AirThrottleMode.AIRCRAFT_BRAKE)
-    return loc("HUD/BRAKE_SHORT")
+    return ::loc("HUD/BRAKE_SHORT")
   else if (mode == AirThrottleMode.WEP
     || mode == AirThrottleMode.AIRCRAFT_WEP)
-    return loc("HUD/WEP_SHORT")
+    return ::loc("HUD/WEP_SHORT")
   return ""
 }
 
@@ -267,115 +263,115 @@ let function getThrottleCaption(mode, isControled, idx) {
   if (mode == AirThrottleMode.AIRCRAFT_DEFAULT_MODE
   || mode == AirThrottleMode.AIRCRAFT_WEP
   || mode == AirThrottleMode.AIRCRAFT_BRAKE)
-    texts.append( loc("HUD/THROTTLE_SHORT"))
+    texts.append( ::loc("HUD/THROTTLE_SHORT"))
   else if (mode == AirThrottleMode.CLIMB)
-    texts.append(loc("HUD/CLIMB_SHORT"))
+    texts.append(::loc("HUD/CLIMB_SHORT"))
   else
-    texts.append(loc("HUD/PROP_PITCH_SHORT"))
+    texts.append(::loc("HUD/PROP_PITCH_SHORT"))
   if (isControled == true)
-    texts.append(string.format("_%d", (idx + 1)))
+    texts.append(::string.format("_%d", (idx + 1)))
   return "".join(texts)
 }
 
 let function getAGCaption(guidanceLockState, pointIsTarget) {
   let texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
-    texts.append(loc("HUD/TXT_AGM_SHORT"))
+    texts.append(::loc("HUD/TXT_AGM_SHORT"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
-    texts.append(loc("HUD/TXT_AGM_STANDBY"))
+    texts.append(::loc("HUD/TXT_AGM_STANDBY"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
-    texts.append(loc("HUD/TXT_AGM_WARM_UP"))
+    texts.append(::loc("HUD/TXT_AGM_WARM_UP"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
-    texts.append(loc("HUD/TXT_AGM_LOCK"))
+    texts.append(::loc("HUD/TXT_AGM_LOCK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
-    texts.append(loc(!pointIsTarget ? "HUD/TXT_AGM_TRACK" : "HUD/TXT_AGM_TRACK_POINT"))
+    texts.append(::loc(!pointIsTarget ? "HUD/TXT_AGM_TRACK" : "HUD/TXT_AGM_TRACK_POINT"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
-    texts.append(loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH"))
+    texts.append(::loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH"))
   return "".join(texts)
 }
 
 let function getAACaption(guidanceLockState) {
   let texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
-    texts.append(loc("HUD/TXT_AAM_SHORT"))
+    texts.append(::loc("HUD/TXT_AAM_SHORT"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
-    texts.append(loc("HUD/TXT_AAM_STANDBY"))
+    texts.append(::loc("HUD/TXT_AAM_STANDBY"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
-    texts.append(loc("HUD/TXT_AAM_WARM_UP"))
+    texts.append(::loc("HUD/TXT_AAM_WARM_UP"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
-    texts.append(loc("HUD/TXT_AAM_LOCK"))
+    texts.append(::loc("HUD/TXT_AAM_LOCK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
-    texts.append(loc("HUD/TXT_AAM_TRACK"))
+    texts.append(::loc("HUD/TXT_AAM_TRACK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
-    texts.append(loc("HUD/TXT_AAM_LOCK_AFTER_LAUNCH"))
+    texts.append(::loc("HUD/TXT_AAM_LOCK_AFTER_LAUNCH"))
   return "".join(texts)
 }
 
 let function getGBCaption(guidanceLockState, pointIsTarget) {
   let texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_SHORT"))
+    texts.append(::loc("HUD/TXT_GUIDED_BOMBS_SHORT"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_STANDBY"))
+    texts.append(::loc("HUD/TXT_GUIDED_BOMBS_STANDBY"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_WARM_UP"))
+    texts.append(::loc("HUD/TXT_GUIDED_BOMBS_WARM_UP"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_LOCK"))
+    texts.append(::loc("HUD/TXT_GUIDED_BOMBS_LOCK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
-    texts.append(loc(!pointIsTarget ? "HUD/TXT_GUIDED_BOMBS_TRACK" : "HUD/TXT_GUIDED_BOMBS_POINT_TRACK"))
+    texts.append(::loc(!pointIsTarget ? "HUD/TXT_GUIDED_BOMBS_TRACK" : "HUD/TXT_GUIDED_BOMBS_POINT_TRACK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_LOCK_AFTER_LAUNCH"))
+    texts.append(::loc("HUD/TXT_GUIDED_BOMBS_LOCK_AFTER_LAUNCH"))
   return "".join(texts)
 }
 
 let function getCountermeasuresCaption(isFlare ,mode) {
-  let texts = isFlare ? [loc("HUD/FLARES_SHORT")," "] : [loc("HUD/CHAFFS_SHORT")," "]
+  let texts = isFlare ? [::loc("HUD/FLARES_SHORT")," "] : [::loc("HUD/CHAFFS_SHORT")," "]
   if (mode & CountermeasureMode.PERIODIC_COUNTERMEASURE)
-    texts.append(loc("HUD/COUNTERMEASURE_PERIODIC"))
+    texts.append(::loc("HUD/COUNTERMEASURE_PERIODIC"))
   if (mode == (CountermeasureMode.PERIODIC_COUNTERMEASURE | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE))
-    texts.append(loc("HUD/INDICATION_MODE_SEPARATION"))
+    texts.append(::loc("HUD/INDICATION_MODE_SEPARATION"))
   if (mode & CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE)
-    texts.append(loc("HUD/COUNTERMEASURE_MLWS"))
+    texts.append(::loc("HUD/COUNTERMEASURE_MLWS"))
   return "".join(texts)
 }
 
 let function getModeCaption(mode) {
   let texts = []
   if ((mode & (1 << WeaponMode.CCIP_MODE)) && (mode & (1 << WeaponMode.CCRP_MODE)))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP_CCRP"))
+    texts.append(::loc("HUD/WEAPON_MODE_CCIP_CCRP"))
   else if (mode & (1 << WeaponMode.CCIP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP"))
+    texts.append(::loc("HUD/WEAPON_MODE_CCIP"))
   else if (mode & (1 << WeaponMode.CCRP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_CCRP"))
+    texts.append(::loc("HUD/WEAPON_MODE_CCRP"))
   return "".join(texts)
 }
 
 let function getMachineGunCaption(mode){
-  let texts = [loc("HUD/MACHINE_GUNS_SHORT")," "]
+  let texts = [::loc("HUD/MACHINE_GUNS_SHORT")," "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
 let function getAdditionalCannonCaption(mode){
-  let texts = [loc("HUD/ADDITIONAL_GUNS_SHORT")," "]
+  let texts = [::loc("HUD/ADDITIONAL_GUNS_SHORT")," "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
 let function getRocketCaption(mode){
-  let texts = [loc("HUD/RKT")," "]
+  let texts = [::loc("HUD/RKT")," "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
 let function getBombCaption(mode){
-  let texts = [loc("HUD/BOMBS_SHORT")," "]
+  let texts = [::loc("HUD/BOMBS_SHORT")," "]
   if ((mode & (1 << WeaponMode.CCIP_MODE)) && (mode & (1 << WeaponMode.CCRP_MODE)))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP_CCRP"))
+    texts.append(::loc("HUD/WEAPON_MODE_CCIP_CCRP"))
   else if (mode & (1 << WeaponMode.CCIP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP"))
+    texts.append(::loc("HUD/WEAPON_MODE_CCIP"))
   else if (mode & (1 << WeaponMode.CCRP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_CCRP"))
+    texts.append(::loc("HUD/WEAPON_MODE_CCRP"))
 
   //check both ccip/rp and bombBay
   let ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
@@ -383,32 +379,32 @@ let function getBombCaption(mode){
     texts.append("  ")
 
   if (mode & (1 << WeaponMode.BOMB_BAY_OPEN))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
+    texts.append(::loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
   if (mode & (1 << WeaponMode.BOMB_BAY_CLOSED))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
+    texts.append(::loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
   if (mode & (1 << WeaponMode.BOMB_BAY_OPENING))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
+    texts.append(::loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
   if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
+    texts.append(::loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
   return "".join(texts)
 }
 
 let function getTorpedoCaption(mode) {
-  let texts = [loc("HUD/TORPEDOES_SHORT")," "]
+  let texts = [::loc("HUD/TORPEDOES_SHORT")," "]
 
   if (mode & (1 << WeaponMode.BOMB_BAY_OPEN))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
+    texts.append(::loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
   if (mode & (1 << WeaponMode.BOMB_BAY_CLOSED))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
+    texts.append(::loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
   if (mode & (1 << WeaponMode.BOMB_BAY_OPENING))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
+    texts.append(::loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
   if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
+    texts.append(::loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
   return "".join(texts)
 }
 
 let function getCannonsCaption(mode){
-  let texts = [loc("HUD/CANNONS_SHORT"), " "]
+  let texts = [::loc("HUD/CANNONS_SHORT"), " "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
@@ -416,16 +412,16 @@ let function getCannonsCaption(mode){
 let function getIRCMCaption(state){
   let texts = []
   if (state == IRCMMode.IRCM_ENABLED)
-    texts.append(loc("controls/on"))
+    texts.append(::loc("controls/on"))
   else if (state == IRCMMode.IRCM_DAMAGED)
-    texts.append(loc("controls/dmg"))
+    texts.append(::loc("controls/dmg"))
   else if (state == IRCMMode.IRCM_DISABLED)
-    texts.append(loc("controls/off"))
+    texts.append(::loc("controls/off"))
   return "".join(texts)
 }
 
 let function getInstructorCaption(isInstructorForced){
-  return isInstructorForced ? loc("HUD_INSTRUCTOR_FORCED") : loc("HUD_INSTRUCTOR")
+  return isInstructorForced ? ::loc("HUD_INSTRUCTOR_FORCED") : ::loc("HUD_INSTRUCTOR")
 }
 
 let function getThrottleValueState(state, controled){
@@ -437,17 +433,17 @@ let function getThrottleState(controled){
 }
 
 let function getStaminaValue(stamina) {
-  return string.format("%d %%", stamina)
+  return ::string.format("%d %%", stamina)
 }
 
 let function getFuelState(fuel, fuelState){
   if (fuelState == TemperatureState.FUEL_LEAK)
-    return loc("HUD_FUEL_LEAK")
+    return ::loc("HUD_FUEL_LEAK")
   if (fuelState == TemperatureState.FUEL_SEALING)
-    return loc("HUD_TANK_IS_SEALING")
+    return ::loc("HUD_TANK_IS_SEALING")
   if (fuelState == TemperatureState.EMPTY_TANK)
-    return loc("HUD_TANK_IS_EMPTY")
-  return string.format("%d:%02d", floor(fuel / 60), fuel % 60)
+    return ::loc("HUD_TANK_IS_EMPTY")
+  return ::string.format("%d:%02d", floor(fuel / 60), fuel % 60)
 }
 
 let function getFuelAlertState(fuelState){
@@ -458,7 +454,7 @@ let function getFuelAlertState(fuelState){
 
 let function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false) {
   let {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
-    additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed} = param
+    additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed, titleSizeFactor} = param
 
   let selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor) {
     return (state == HudColorState.PASSIV) ? passivColor
@@ -482,6 +478,9 @@ let function createParam(param, width, height, isBackground, style, needCaption 
     : fontOutlineFxFactor * factor
   }
 
+  let captionSizeX = @() ::calc_comp_size({rendObj = ROBJ_TEXT, size = SIZE_TO_CONTENT, text = titleComputed.value, watch = titleComputed})[0]
+  let finalTitleSizeX = max(captionSizeX() + 0.06 * width, 0.2 * width)
+
   let colorAlertCaptionW = Computed(@() fadeColor(selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value), 255))
 
@@ -492,9 +491,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
   let captionComponent = @() style.__merge({
     watch = [titleComputed, colorAlertCaptionW, alertStateCaptionComputed, colorFxCaption, factorFxCaption]
     rendObj = ROBJ_TEXT
-    size = [SIZE_TO_CONTENT, height]
-    margin = [0, 0.06 * width, 0, 0]
-    minWidth = 0.2 * width
+    size = [finalTitleSizeX * titleSizeFactor, height]
     text = titleComputed.value
     color = colorAlertCaptionW.value
     fontFxColor = colorFxCaption.value
@@ -513,7 +510,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
     opacity =  alertStateCaptionComputed.value >= HudColorState.LOW_ALERT ? 0.7 : 1.0
   })
 
-  let valueSizeX = @() calc_comp_size({rendObj = ROBJ_TEXT, size = SIZE_TO_CONTENT, text = valueComputed.value, watch = valueComputed})[0]
+  let valueSizeX = @() ::calc_comp_size({rendObj = ROBJ_TEXT, size = SIZE_TO_CONTENT, text = valueComputed.value, watch = valueComputed})[0]
 
   let valueColor = Computed(@() for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value))
@@ -567,7 +564,7 @@ let TrtModeForRpm = TrtMode[0]
 let agmBlinkComputed = Computed(@() (IsSightHudVisible.value && IsAgmLaunchZoneVisible.value &&
   (!IsInsideLaunchZoneYawPitch.value || (IsRangefinderEnabled.value && !IsInsideLaunchZoneDist.value))))
 let agmBlinkTrigger = {}
-agmBlinkComputed.subscribe(@(v) v ? anim_start(agmBlinkTrigger) : anim_request_stop(agmBlinkTrigger))
+agmBlinkComputed.subscribe(@(v) v ? ::anim_start(agmBlinkTrigger) : ::anim_request_stop(agmBlinkTrigger))
 
 let textParamsMapMain = {
   [AirParamsMain.RPM] = {
@@ -577,38 +574,43 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsRpmCritical.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsRpmCritical.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.IAS_HUD] = {
-    titleComputed = Computed (@() loc("HUD/INDICATED_AIR_SPEED_SHORT"))
-    valueComputed = Computed (@()  !isInitializedMeasureUnits.value ? "" : " ".concat(Ias.value, cross_call.measureTypes.SPEED.getMeasureUnitsName()))
+    titleComputed = Computed (@() ::loc("HUD/INDICATED_AIR_SPEED_SHORT"))
+    valueComputed = Computed (@()  !isInitializedMeasureUnits.value ? "" : " ".concat(Ias.value, ::cross_call.measureTypes.SPEED.getMeasureUnitsName()))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() CritIas.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() CritIas.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.SPEED] = {
-    titleComputed = Computed (@() loc("HUD/REAL_SPEED_SHORT"))
-    valueComputed = Computed (@() !isInitializedMeasureUnits.value ? "" : " ".concat(Spd.value, cross_call.measureTypes.SPEED.getMeasureUnitsName()))
+    titleComputed = Computed (@() ::loc("HUD/REAL_SPEED_SHORT"))
+    valueComputed = Computed (@() !isInitializedMeasureUnits.value ? "" : " ".concat(Spd.value, ::cross_call.measureTypes.SPEED.getMeasureUnitsName()))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.MACH] = {
-    titleComputed = Computed(@() loc("HUD/TXT_MACH_SHORT"))
-    valueComputed = Computed (@() string.format("%.2f", Mach.value))
+    titleComputed = Computed(@() ::loc("HUD/TXT_MACH_SHORT"))
+    valueComputed = Computed (@() ::string.format("%.2f", Mach.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() CritMach.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() CritMach.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.ALTITUDE] = {
-    titleComputed = Computed(@() loc("HUD/ALTITUDE_SHORT"))
-    valueComputed = Computed (@() !isInitializedMeasureUnits.value ? "" : " ".concat(floor(DistanceToGround.value), cross_call.measureTypes.ALTITUDE.getMeasureUnitsName()))
+    titleComputed = Computed(@() ::loc("HUD/ALTITUDE_SHORT"))
+    valueComputed = Computed (@() !isInitializedMeasureUnits.value ? "" : " ".concat(floor(DistanceToGround.value), ::cross_call.measureTypes.ALTITUDE.getMeasureUnitsName()))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.CANNON_ADDITIONAL] = {
     titleComputed = Computed(@() getAdditionalCannonCaption(CannonsAdditionalMode.value))
@@ -617,96 +619,107 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsCanAdditionalEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsCanAdditionalEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.ROCKET] = {
     titleComputed = Computed(@() getRocketCaption(RocketsMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(RocketsCount.value, RocketsSeconds.value,
       RocketsSalvo.value, RocketsActualCount.value))
     selectedComputed = Computed(@() RocketsSelected.value ? ">" : "")
-    additionalComputed = Computed(@() loc(RocketsName.value))
+    additionalComputed = Computed(@() ::loc(RocketsName.value))
     alertStateCaptionComputed = Computed(@() IsRktEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsRktEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.AGM] = {
-    titleComputed = Computed(@() AgmCount.value <= 0 ? loc("HUD/TXT_AGM_SHORT") :
+    titleComputed = Computed(@() AgmCount.value <= 0 ? ::loc("HUD/TXT_AGM_SHORT") :
       getAGCaption(agmGuidanceLockState.value, agmGuidancePointIsTarget.value))
     valueComputed = Computed(@() generateAgmBulletsTextFunction(AgmCount.value, AgmSeconds.value,
        AgmTimeToHit.value, AgmTimeToWarning.value, AgmActualCount.value))
     selectedComputed = Computed(@() AgmSelected.value ? ">" : "")
-    additionalComputed = Computed(@() loc(AgmName.value))
+    additionalComputed = Computed(@() ::loc(AgmName.value))
     alertStateCaptionComputed = Computed(@() IsAgmEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsAgmEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     blinkComputed = agmBlinkComputed
     blinkTrigger = agmBlinkTrigger
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.BOMBS] = {
     titleComputed = Computed(@() getBombCaption(BombsMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(BombsCount.value, BombsSeconds.value,
       BombsSalvo.value, BombsActualCount.value))
     selectedComputed = Computed(@() BombsSelected.value ? ">" : "")
-    additionalComputed = Computed(@() loc(BombsName.value))
+    additionalComputed = Computed(@() ::loc(BombsName.value))
     alertStateCaptionComputed = Computed(@() IsBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.TORPEDO] = {
     titleComputed = Computed(@() getTorpedoCaption(TorpedoesMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(TorpedoesCount.value, TorpedoesSeconds.value,
       TorpedoesSalvo.value, TorpedoesActualCount.value))
     selectedComputed = Computed(@() TorpedoesSelected.value ? ">" : "")
-    additionalComputed = Computed(@() loc(TorpedoesName.value))
+    additionalComputed = Computed(@() ::loc(TorpedoesName.value))
     alertStateCaptionComputed = Computed(@() IsTrpEmpty.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsTrpEmpty.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.RATE_OF_FIRE] = {
-    titleComputed = Computed(@() loc("HUD/RATE_OF_FIRE_SHORT"))
-    valueComputed = Computed(@() IsHighRateOfFire.value ? loc("HUD/HIGHFREQ_SHORT") : loc("HUD/LOWFREQ_SHORT"))
+    titleComputed = Computed(@() ::loc("HUD/RATE_OF_FIRE_SHORT"))
+    valueComputed = Computed(@() IsHighRateOfFire.value ? ::loc("HUD/HIGHFREQ_SHORT") : ::loc("HUD/LOWFREQ_SHORT"))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.AAM] = {
-    titleComputed = Computed(@() AamCount.value <= 0 ? loc("HUD/TXT_AAM_SHORT") : getAACaption(aamGuidanceLockState.value))
+    titleComputed = Computed(@() AamCount.value <= 0 ? ::loc("HUD/TXT_AAM_SHORT") : getAACaption(aamGuidanceLockState.value))
     valueComputed = Computed(@() generateBulletsTextFunction(AamCount.value, AamSeconds.value, 0, AamActualCount.value))
     selectedComputed = Computed(@() AamSelected.value ? ">" : "")
-    additionalComputed = Computed(@() loc(AamName.value))
+    additionalComputed = Computed(@() ::loc(AamName.value))
     alertStateCaptionComputed = Computed(@() (IsAamEmpty.value || aamGuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING) ?
       HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsAamEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.GUIDED_BOMBS] = {
-    titleComputed = Computed(@() GuidedBombsCount.value <= 0 ? loc("HUD/TXT_GUIDED_BOMBS_SHORT") :
+    titleComputed = Computed(@() GuidedBombsCount.value <= 0 ? ::loc("HUD/TXT_GUIDED_BOMBS_SHORT") :
       getGBCaption(guidedBombsGuidanceLockState.value, guidedBombsGuidancePointIsTarget.value))
     valueComputed = Computed(@() generateBulletsTextFunction(GuidedBombsCount.value, GuidedBombsSeconds.value, 0, GuidedBombsActualCount.value))
     selectedComputed = Computed(@() GuidedBombsSelected.value ? ">" : "")
-    additionalComputed = Computed(@() loc(GuidedBombsName.value))
+    additionalComputed = Computed(@() ::loc(GuidedBombsName.value))
     alertStateCaptionComputed = Computed(@() IsGuidedBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsGuidedBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.FLARES] = {
-    titleComputed = Computed(@() FlaresCount.value <= 0 ? loc("HUD/FLARES_SHORT") : getCountermeasuresCaption(true, FlaresMode.value))
+    titleComputed = Computed(@() FlaresCount.value <= 0 ? ::loc("HUD/FLARES_SHORT") : getCountermeasuresCaption(true, FlaresMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(FlaresCount.value, FlaresSeconds.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsFlrEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsFlrEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.CHAFFS] = {
-    titleComputed = Computed(@() ChaffsCount.value <= 0 ? loc("HUD/CHAFFS_SHORT") : getCountermeasuresCaption(false, ChaffsMode.value))
+    titleComputed = Computed(@() ChaffsCount.value <= 0 ? ::loc("HUD/CHAFFS_SHORT") : getCountermeasuresCaption(false, ChaffsMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(ChaffsCount.value, ChaffsSeconds.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsChaffsEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsChaffsEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.IRCM] = {
-    titleComputed = Computed(@() loc("HUD/IRCM_SHORT"))
+    titleComputed = Computed(@() ::loc("HUD/IRCM_SHORT"))
     valueComputed = Computed(@() getIRCMCaption(IRCMState.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
     valuesWatched = IRCMState
+    titleSizeFactor = 1.0
   },
 }
 
@@ -723,6 +736,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed( @() getThrottleState(isEngineControledComputed.value))
     alertValueStateComputed = Computed (@() getThrottleValueState(throttleStateComputed.value, isEngineControledComputed.value))
+    titleSizeFactor = 1.0
   }
 }
 
@@ -738,6 +752,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsMachineGunsEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsMachineGunsEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   }
 }
 
@@ -747,7 +762,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   let CannonAmmoReloadTime = CannonReloadTime[idx]
   let blinkComputed = Computed(@() GunInDeadZone.value)
   let blinkTrigger = {}
-  blinkComputed.subscribe(@(v) v ? anim_start(blinkTrigger) : anim_request_stop(blinkTrigger))
+  blinkComputed.subscribe(@(v) v ? ::anim_start(blinkTrigger) : ::anim_request_stop(blinkTrigger))
   textParamsMapMain[AirParamsMain.CANNON_1 + idx] <- {
     titleComputed = Computed(@() getCannonsCaption(CannonMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonAmmoCount.value, CannonAmmoReloadTime.value))
@@ -755,6 +770,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsCannonEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsCannonEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
     blinkComputed
     blinkTrigger
   }
@@ -770,36 +786,39 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   let oilTemperatureComputed = OilTemperature[i]
   let oilAlertComputed = OilAlert[i]
   textParamsMapSecondary[AirParamsSecondary.OIL_1 + (i * numParamPerEngine)] <- {
-    titleComputed = Computed(@() loc($"HUD/OIL_TEMPERATURE_SHORT{indexStr}"))
+    titleComputed = Computed(@() ::loc($"HUD/OIL_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() oilAlertComputed.value)
     alertValueStateComputed = Computed (@() oilAlertComputed.value)
+    titleSizeFactor = 1.0
   }
 
   let waterStateComputed = WaterState[i]
   let waterTemperatureComputed = WaterTemperature[i]
   let waterAlertComputed = WaterAlert[i]
   textParamsMapSecondary[AirParamsSecondary.WATER_1 + (i * numParamPerEngine)] <- {
-    titleComputed = Computed(@() loc($"HUD/WATER_TEMPERATURE_SHORT{indexStr}"))
+    titleComputed = Computed(@() ::loc($"HUD/WATER_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() waterAlertComputed.value)
     alertValueStateComputed = Computed (@() waterAlertComputed.value)
+    titleSizeFactor = 1.0
   }
 
   let engineStateComputed = EngineState[i]
   let engineTemperatureComputed = EngineTemperature[i]
   let engineAlertComputed = EngineAlert[i]
   textParamsMapSecondary[AirParamsSecondary.ENGINE_1 + (i * numParamPerEngine)] <- {
-    titleComputed = Computed(@() loc($"HUD/ENGINE_TEMPERATURE_SHORT{indexStr}"))
+    titleComputed = Computed(@() ::loc($"HUD/ENGINE_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() engineAlertComputed.value)
     alertValueStateComputed = Computed (@() engineAlertComputed.value)
+    titleSizeFactor = 1.0
   }
 }
 
@@ -809,31 +828,34 @@ for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
   let transmissionOilStateComputed = TransmissionOilState[i]
   let isTransmissionAlertComputed = IsTransmissionOilAlert[i]
   textParamsMapSecondary[AirParamsSecondary.TRANSMISSION_1 + i] <- {
-    titleComputed = Computed(@() loc($"HUD/TRANSMISSION_OIL_SHORT{indexStr}"))
+    titleComputed = Computed(@() ::loc($"HUD/TRANSMISSION_OIL_SHORT{indexStr}"))
    valueComputed = Computed(@() generateTransmissionStateTextFunction(transmissionOilStateComputed.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() isTransmissionAlertComputed.value ?  HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() isTransmissionAlertComputed.value ?  HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   }
 }
 
 textParamsMapSecondary[AirParamsSecondary.FUEL] <- {
-  titleComputed = Computed(@() loc("HUD/FUEL_SHORT"))
+  titleComputed = Computed(@() ::loc("HUD/FUEL_SHORT"))
   valueComputed = Computed(@() getFuelState(Fuel.value, FuelState.value))
   selectedComputed = Computed (@() "")
   additionalComputed = Computed (@() "")
   alertStateCaptionComputed = Computed(@() getFuelAlertState(FuelState.value))
   alertValueStateComputed = Computed(@() getFuelAlertState(FuelState.value))
+  titleSizeFactor = 1.0
 }
 
 textParamsMapSecondary[AirParamsSecondary.STAMINA] <- {
-  titleComputed = Computed(@() loc("HUD/TXT_STAMINA_SHORT"))
+  titleComputed = Computed(@() ::loc("HUD/TXT_STAMINA_SHORT"))
   valueComputed = Computed(@() getStaminaValue(StaminaValue.value))
   selectedComputed = Computed (@() "")
   additionalComputed = Computed (@() "")
   alertStateCaptionComputed = Computed(@() StaminaState.value)
   alertValueStateComputed = Computed(@() StaminaState.value)
+  titleSizeFactor = 1.0
 }
 
 textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
@@ -843,6 +865,7 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
   additionalComputed = Computed (@() "")
   alertStateCaptionComputed = Computed(@() InstructorState.value)
   alertValueStateComputed = Computed(@() InstructorState.value)
+  titleSizeFactor = 2.0
 }
 
 let fuelKeyId = AirParamsSecondary.FUEL
@@ -1040,10 +1063,10 @@ let function turretAngles(colorWatch, width, height, aspect, _isBackground, blin
   let isAtgmAngularRangeVisible = Computed(@() (IsAgmLaunchZoneVisible.value && AgmLaunchZoneYawMin.value > 0.0 && AgmLaunchZoneYawMax.value < 1.0 && AgmLaunchZonePitchMin.value > 0.0 && AgmLaunchZonePitchMax.value < 1.0))
   let atgmLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.value)
   let atgmLaunchZoneTrigger = {}
-  atgmLaunchZoneBlinking.subscribe(@(v) v ? anim_start(atgmLaunchZoneTrigger) : anim_request_stop(atgmLaunchZoneTrigger))
+  atgmLaunchZoneBlinking.subscribe(@(v) v ? ::anim_start(atgmLaunchZoneTrigger) : ::anim_request_stop(atgmLaunchZoneTrigger))
   let atgmLaunchDistanceblinking = Computed(@() IsRangefinderEnabled.value && !IsInsideLaunchZoneDist.value)
   let atgmLaunchDistanceTrigger = {}
-  atgmLaunchDistanceblinking.subscribe(@(v) v ? anim_start(atgmLaunchDistanceTrigger) : anim_request_stop(atgmLaunchDistanceTrigger))
+  atgmLaunchDistanceblinking.subscribe(@(v) v ? ::anim_start(atgmLaunchDistanceTrigger) : ::anim_request_stop(atgmLaunchDistanceTrigger))
 
   return @() styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -1269,7 +1292,7 @@ let function launchDistanceMaxComponent(colorWatch, width, height, posX, posY, _
 
   let getAgmLaunchDistanceMax = function() {
     return IsAgmLaunchZoneVisible.value ?
-      cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(AgmLaunchZoneDistMax.value) : ""
+      ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(AgmLaunchZoneDistMax.value) : ""
   }
 
   let launchDistanceMax = @() styleText.__merge({
@@ -1301,7 +1324,7 @@ let function rangeFinderComponent(colorWatch, posX, posY, _isBackground) {
   let rangefinder = @() styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
-    text = cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(RangefinderDist.value)
+    text = ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(RangefinderDist.value)
     opacity = IsRangefinderEnabled.value ? 100 : 0
     color = colorWatch.value
     watch = [RangefinderDist, IsRangefinderEnabled, colorWatch]
@@ -1318,7 +1341,7 @@ let function rangeFinderComponent(colorWatch, posX, posY, _isBackground) {
 }
 
 let triggerTATarget = {}
-TargetAge.subscribe(@(v) v < 0.2 ? anim_request_stop(triggerTATarget) : anim_start(triggerTATarget))
+TargetAge.subscribe(@(v) v < 0.2 ? ::anim_request_stop(triggerTATarget) : ::anim_start(triggerTATarget))
 let HelicopterTATarget = @(w, h, _isBackground) function() {
 
   let res = {
@@ -1383,9 +1406,9 @@ let detectAllyComponent = @(posX, posY, _isBackground) function(){
 
   return res.__update(styleText.__merge({
     rendObj = ROBJ_TEXT
-    text = DetectAllyProgress.value < 1.0 ? loc("detect_ally_progress")
-      : (DetectAllyState.value ? loc("detect_ally_success")
-      : loc("detect_ally_fail"))
+    text = DetectAllyProgress.value < 1.0 ? ::loc("detect_ally_progress")
+      : (DetectAllyState.value ? ::loc("detect_ally_success")
+      : ::loc("detect_ally_fail"))
     pos = [posX, posY]
     size = SIZE_TO_CONTENT
   }))

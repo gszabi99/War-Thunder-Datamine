@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -14,16 +7,16 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!queue)
       return ""
     // Add new line of extended text about wait time if it is not default message text.
-    let addLine = txt ? $"\n{loc("yn1/waiting_time")}" : ""
-    local msg = txt ? txt : loc("yn1/wait_for_session")
+    let addLine = txt ? $"\n{::loc("yn1/waiting_time")}" : ""
+    local msg = txt ? txt : ::loc("yn1/wait_for_session")
     let waitTime = queue ? queue.getActiveTime().tointeger() : 0
     if (waitTime > 0)
-      msg = "".concat(msg, addLine, loc("ui/colon"), time.secondsToString(waitTime, false))
+      msg = "".concat(msg, addLine, ::loc("ui/colon"), time.secondsToString(waitTime, false))
     return msg
   }
 }
 
-::g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj, queue, event)
+g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj, queue, event)
 {
   let needRankInfo = ::events.needRankInfoInQueue(event)
   let headerColumns = []
@@ -44,7 +37,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   }
 
   //fillheader
-  foreach(_i, countryName in shopCountriesList)
+  foreach(i, countryName in shopCountriesList)
     headerColumns.append({
       image = ::get_country_icon(countryName, false, !::events.isCountryAvailable(event, countryName))
     })
@@ -56,7 +49,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   local canMeetCountries = {}
   foreach(cSet in countriesSets)
     if (myCountry in cSet.allCountries)
-      canMeetCountries = ::u.tablesCombine(canMeetCountries, cSet.allCountries, function(_a, _b) { return true })
+      canMeetCountries = ::u.tablesCombine(canMeetCountries, cSet.allCountries, function(a, b) { return true })
 
   if (needRankInfo)
   {
@@ -69,7 +62,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
         isEven = rank % 2 == 0
       }
 
-      foreach(_i, country in shopCountriesList)
+      foreach(i, country in shopCountriesList)
         row.columns.append({
           id = country + "_" + rank
           text = ::events.isCountryAvailable(event, country) ? "0" : "-"
@@ -86,7 +79,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   nestObj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
 }
 
-::g_qi_view_utils.updateViewByCountries <- function updateViewByCountries(nestObj, queue, curCluster)
+g_qi_view_utils.updateViewByCountries <- function updateViewByCountries(nestObj, queue, curCluster)
 {
   let queueStats = queue && queue.queueStats
   if (!queueStats)
@@ -106,7 +99,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       for(local rank = 1; rank <= ::max_country_rank; ++rank)
       {
         let tdTextObj = nestObj.findObject(countryName + "_" + rank)
-        if (!checkObj(tdTextObj))
+        if (!::check_obj(tdTextObj))
           continue
         let val = ranksQueueTable?[rank.tostring()] ?? 0
         tdTextObj.setValue(val.tostring())
@@ -116,22 +109,22 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   else
   {
     let totalTextObj = nestObj.findObject("total_in_queue")
-    if (checkObj(totalTextObj))
-      totalTextObj.setValue(loc("multiplayer/playersInQueue") + loc("ui/colon")
+    if (::check_obj(totalTextObj))
+      totalTextObj.setValue(::loc("multiplayer/playersInQueue") + ::loc("ui/colon")
         + queueStats.getPlayersCountOfAllRanks())
   }
 }
 
 //update text and icon of queue each second until all queues finish.
-::g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, textObj, iconObj, txt=null)
+g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, textObj, iconObj, txt=null)
 {
-  if (!checkObj(timerObj))
+  if (!::check_obj(timerObj))
     return
-  SecondsUpdater(timerObj, (@(textObj, iconObj) function(_obj, _p) {
+  SecondsUpdater(timerObj, (@(textObj, iconObj) function(obj, p) {
     let queue = ::queues.findQueue({}) //first active queue
-    if (checkObj(textObj))
+    if (::check_obj(textObj))
       textObj.setValue(::g_qi_view_utils.getQueueInfo(queue, txt))
-    if (checkObj(iconObj))
+    if (::check_obj(iconObj))
       iconObj.show(!!queue)
     return !queue
   })(textObj, iconObj))

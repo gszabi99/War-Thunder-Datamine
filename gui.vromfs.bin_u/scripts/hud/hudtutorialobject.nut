@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { get_time_msec } = require("dagor.time")
-
 ::dagui_propid.add_name_id("_set_aabb_by_object")
 
 ::HudTutorialObject <- class
@@ -31,12 +23,12 @@ let { get_time_msec } = require("dagor.time")
 
   function isValid()
   {
-    return checkObj(obj)
+    return ::checkObj(obj)
   }
 
   function show(value)
   {
-    if (checkObj(obj))
+    if (::checkObj(obj))
       obj.show(value)
     isVisible = value
   }
@@ -44,12 +36,12 @@ let { get_time_msec } = require("dagor.time")
   function setTime(timeSec)
   {
     if (timeSec > 0)
-      showUpTo = get_time_msec() + 1000 * timeSec
+      showUpTo = ::dagor.getCurTime() + 1000 * timeSec
   }
 
   function getTimeLeft()
   {
-    return 0.001 * (showUpTo - get_time_msec())
+    return 0.001 * (showUpTo - ::dagor.getCurTime())
   }
 
   function hasTimer()
@@ -59,7 +51,7 @@ let { get_time_msec } = require("dagor.time")
 
   function isVisibleByTime()
   {
-    return isVisible && (!hasTimer() || showUpTo < get_time_msec())
+    return isVisible && (!hasTimer() || showUpTo < ::dagor.getCurTime())
   }
 
   function initAabb()

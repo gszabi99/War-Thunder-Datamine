@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 //script used for common script between Helicopter and aircraft
 let { bw, bh, rw, rh } = require("style/screenState.nut")
 let {IsTwsActivated, CollapsedIcon, IsRwrHudVisible, IsMlwsLwsHudVisible} = require("twsState.nut")

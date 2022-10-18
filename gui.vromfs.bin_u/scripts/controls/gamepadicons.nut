@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
@@ -161,12 +156,12 @@ let getCssString = function()
     return cssString
 
   cssString = ""
-  foreach(name, _value in controlsList)
+  foreach(name, value in controlsList)
     cssString += format("@const control_%s:%s;", name, getTexture(name))
   return cssString
 }
 
-let getGamepadAxisTexture = @(axisVal, _preset = curPreset) getTexture(gamepadAxesImages?[axisVal])
+let getGamepadAxisTexture = @(axisVal, preset = curPreset) getTexture(gamepadAxesImages?[axisVal])
 
 let getMouseTexture = function(idx, preset = curPreset)
 {
@@ -181,6 +176,8 @@ let getMouseTexture = function(idx, preset = curPreset)
 
 let getMouseAxisTexture = @(axisVal)
   axisVal in mouseAxesImages ? $"#ui/gameuiskin#{mouseAxesImages[axisVal]}.png" : ""
+
+::cross_call_api.getTextureName <- getTexture
 
 return {
   TOTAL_BUTTON_INDEXES = btnNameByIndex.len()

@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getLocTextForLang } = require("dagor.localize")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
@@ -25,24 +17,24 @@ let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 
   function initScreen()
   {
-    fillUserNick(this.scene.findObject("usernick_place"))
-    let textObj = this.scene.findObject("eulaText")
+    fillUserNick(scene.findObject("usernick_place"))
+    let textObj = scene.findObject("eulaText")
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
     let isEULA = eulaType == ::TEXT_EULA
-    ::load_text_content_to_gui_object(textObj, isEULA ? loc("eula_filename") : loc("nda_filename"))
+    ::load_text_content_to_gui_object(textObj, isEULA ? ::loc("eula_filename") : ::loc("nda_filename"))
     if (isEULA && isPlatformSony)
     {
       local regionTextRootMainPart = "scee"
-      if (::ps4_get_region() == SCE_REGION_SCEA)
+      if (::ps4_get_region() == ::SCE_REGION_SCEA)
         regionTextRootMainPart = "scea"
 
       local eulaText = textObj.getValue()
       let locId = "sony/" + regionTextRootMainPart
-      let legalLocText = loc(locId, "")
+      let legalLocText = ::loc(locId, "")
       if (legalLocText == "")
       {
-        log("Cannot find '" + locId + "' text for " + ::get_current_language() + " language.")
-        eulaText += getLocTextForLang(locId, "English")
+        ::dagor.debug("Cannot find '" + locId + "' text for " + ::get_current_language() + " language.")
+        eulaText += ::dagor.getLocTextForLang(locId, "English")
       }
       else
         eulaText += legalLocText
@@ -57,9 +49,9 @@ let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 
   function onAcceptEula()
   {
-    ::set_agreed_eula_version(eulaType == ::TEXT_NDA ? ::nda_version : ::eula_version, eulaType)
+    set_agreed_eula_version(eulaType == ::TEXT_NDA ? ::nda_version : ::eula_version, eulaType)
     sendEulaStatistic("accept")
-    this.goBack()
+    goBack()
   }
 
   function afterModalDestroy()

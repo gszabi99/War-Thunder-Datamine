@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::gui_handlers.UniversalSpareApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
 {
   sceneTplName = "%gui/items/universalSpareApplyWnd"
@@ -22,7 +16,7 @@ from "%scripts/dagui_library.nut" import *
     list = ::u.filter(list, @(item) item.canActivateOnUnit(unitToActivate))
     if (!list.len())
     {
-      ::showInfoMsgBox(loc("msg/noUniversalSpareForUnit"))
+      ::showInfoMsgBox(::loc("msg/noUniversalSpareForUnit"))
       return
     }
     ::handlersManager.loadHandler(::gui_handlers.UniversalSpareApplyWnd,
@@ -36,13 +30,13 @@ from "%scripts/dagui_library.nut" import *
 
   function initScreen()
   {
-    sliderObj = this.scene.findObject("amount_slider")
-    amountTextObj = this.scene.findObject("amount_text")
+    sliderObj = scene.findObject("amount_slider")
+    amountTextObj = scene.findObject("amount_text")
 
     base.initScreen()
 
-    if (this.itemsList.findindex(@(i) i.hasTimer()) != null)
-      this.scene.findObject("update_timer").setUserData(this)
+    if (itemsList.findindex(@(i) i.hasTimer()) != null)
+      scene.findObject("update_timer").setUserData(this)
   }
 
   function setCurItem(item)
@@ -54,12 +48,12 @@ from "%scripts/dagui_library.nut" import *
 
   function updateAmountSlider()
   {
-    let itemsAmount = this.curItem.getAmount()
+    let itemsAmount = curItem.getAmount()
     let availableAmount = ::g_weaponry_types.SPARE.getMaxAmount(unit, null)  - ::g_weaponry_types.SPARE.getAmount(unit, null)
     maxAmount = min(itemsAmount, availableAmount)
     curAmount = 1
 
-    let canChangeAmount = maxAmount > minAmount && !this.curItem.isExpired()
+    let canChangeAmount = maxAmount > minAmount && !curItem.isExpired()
     this.showSceneBtn("slider_block", canChangeAmount)
     this.showSceneBtn("buttonMax", canChangeAmount)
     if (!canChangeAmount)
@@ -73,24 +67,24 @@ from "%scripts/dagui_library.nut" import *
 
   function updateText()
   {
-    amountTextObj.setValue(curAmount + loc("icon/universalSpare"))
-    this.scene.findObject("buttonMax").enable(curAmount != maxAmount)
+    amountTextObj.setValue(curAmount + ::loc("icon/universalSpare"))
+    scene.findObject("buttonMax").enable(curAmount != maxAmount)
   }
 
   function updateButtons()
   {
-    this.scene.findObject("buttonActivate").enable(!this.curItem.isExpired())
+    scene.findObject("buttonActivate").enable(!curItem.isExpired())
   }
 
-  function onTimer(_obj, _dt)
+  function onTimer(obj, dt)
   {
-    let listObj = this.scene.findObject("items_list")
+    let listObj = scene.findObject("items_list")
     if (!listObj?.isValid())
       return
 
-    for (local i = 0; i < this.itemsList.len(); ++i)
+    for (local i = 0; i < itemsList.len(); ++i)
     {
-      let item = this.itemsList[i]
+      let item = itemsList[i]
       if (!item.hasTimer())
         continue
 
@@ -129,10 +123,10 @@ from "%scripts/dagui_library.nut" import *
 
   function onActivate()
   {
-    let text = loc("msgbox/wagerActivate", { name = this.curItem.getNameWithCount(true, curAmount) })
-    let goBackSaved = Callback(this.goBack, this)
+    let text = ::loc("msgbox/wagerActivate", { name = curItem.getNameWithCount(true, curAmount) })
+    let goBackSaved = ::Callback(goBack, this)
     let aUnit= unit
-    let item = this.curItem
+    let item = curItem
     let amount = curAmount
     let onOk = @() item.activateOnUnit(aUnit, amount, goBackSaved)
     ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes", { cancel_fn=@()null })

@@ -1,5 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
 let parseDargHotkeys = require("parseDargHotkeys.nut")
 
 local function gamepadHotkeys(hotkeys, skipDescription = null) {

@@ -1,14 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_time_msec } = require("dagor.time")
-
 /*
   config = [
     {
@@ -34,11 +24,11 @@ global enum RCLICK_MENU_ORIENT
   if (typeof config == "array")
     config = { actions = config }
   ::handlersManager.loadHandler(::gui_handlers.RightClickMenu, {
-    config
-    owner
-    position
-    orientation
-    onClose
+    config = config,
+    owner = owner,
+    position = position,
+    orientation = orientation,
+    onClose = onClose,
   })
 }
 
@@ -67,36 +57,36 @@ global enum RCLICK_MENU_ORIENT
       actions = []
     }
 
-    this.isListEmpty = true
-    if (!("actions" in this.config))
+    isListEmpty = true
+    if (!("actions" in config))
       return view
 
-    foreach(idx, item in this.config.actions)
+    foreach(idx, item in config.actions)
     {
-      if ("show" in item && !((typeof(item.show) == "function") ? item.show.call(this.owner) : item.show))
+      if ("show" in item && !((typeof(item.show) == "function") ? item.show.call(owner) : item.show))
         continue
 
       local actionData = null //lineDiv
       local enabled = true
       if ("enabled" in item)
         enabled = typeof(item.enabled) == "function"
-                  ? item.enabled.call(this.owner)
+                  ? item.enabled.call(owner)
                   : item.enabled
 
       let text = item?.text
       actionData = {
-        id = this.idPrefix + idx.tostring()
+        id = idPrefix + idx.tostring()
         text = text
         textUncolored = text != null ? ::g_dagui_utils.removeTextareaTags(text) : ""
-        tooltip = getTblValue("tooltip", item, "")
+        tooltip = ::getTblValue("tooltip", item, "")
         enabled = enabled
         isVisualDisabled = item?.isVisualDisabled ?? false
-        needTimer = ::u.isFunction(getTblValue("onUpdateButton", item))
+        needTimer = ::u.isFunction(::getTblValue("onUpdateButton", item))
         hasSeparator = item?.hasSeparator ?? false
       }
 
       view.actions.append(actionData)
-      this.isListEmpty = false
+      isListEmpty = false
     }
 
     return view
@@ -104,18 +94,18 @@ global enum RCLICK_MENU_ORIENT
 
   function initScreen()
   {
-    if (this.isListEmpty)
-      return this.goBack()
+    if (isListEmpty)
+      return goBack()
 
-    this.timeOpen = get_time_msec()
-    let listObj = this.scene.findObject("rclick_menu_div")
+    timeOpen = ::dagor.getCurTime()
+    let listObj = scene.findObject("rclick_menu_div")
 
-    this.guiScene.setUpdatesEnabled(false, false)
-    this.initTimers(listObj, this.config.actions)
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(false, false)
+    initTimers(listObj, config.actions)
+    guiScene.setUpdatesEnabled(true, true)
 
-    let rootSize = this.guiScene.getRoot().getSize()
-    let cursorPos = this.position ? this.position : ::get_dagui_mouse_cursor_pos_RC()
+    let rootSize = guiScene.getRoot().getSize()
+    let cursorPos = position ? position : ::get_dagui_mouse_cursor_pos_RC()
     let menuSize = listObj.getSize()
     let menuPos =  [cursorPos[0], cursorPos[1]]
     for(local i = 0; i < 2; i++)
@@ -125,10 +115,10 @@ global enum RCLICK_MENU_ORIENT
         else
           menuPos[i] = ((rootSize[i] - menuSize[i]) / 2).tointeger()
 
-    let shift = this.orientation == RCLICK_MENU_ORIENT.RIGHT? menuSize[0] : 0
+    let shift = orientation == RCLICK_MENU_ORIENT.RIGHT? menuSize[0] : 0
     listObj.pos = menuPos[0] - shift + ", " + menuPos[1]
     listObj.width = listObj.getSize()[0]
-    this.guiScene.applyPendingChanges(false)
+    guiScene.applyPendingChanges(false)
     ::move_mouse_on_child(listObj, 0)
   }
 
@@ -136,17 +126,18 @@ global enum RCLICK_MENU_ORIENT
   {
     foreach(idx, item in actions)
     {
-      let onUpdateButton = getTblValue("onUpdateButton", item)
+      let onUpdateButton = ::getTblValue("onUpdateButton", item)
       if (!::u.isFunction(onUpdateButton))
         continue
 
-      let btnObj = listObj.findObject(this.idPrefix + idx.tostring())
-      if (!checkObj(btnObj))
+      let btnObj = listObj.findObject(idPrefix + idx.tostring())
+      if (!::check_obj(btnObj))
         continue
 
-      SecondsUpdater(btnObj, function(obj, params) {
+      SecondsUpdater(btnObj, function(obj, params)
+      {
         let data = onUpdateButton(params)
-        this.updateBtnByTable(obj, data)
+        updateBtnByTable(obj, data)
         return data?.stopUpdate ?? false
       }.bindenv(this))
     }
@@ -154,14 +145,14 @@ global enum RCLICK_MENU_ORIENT
 
   function updateBtnByTable(btnObj, data)
   {
-    let text = getTblValue("text", data)
+    let text = ::getTblValue("text", data)
     if (!::u.isEmpty(text))
     {
       btnObj.setValue(::g_dagui_utils.removeTextareaTags(text))
       btnObj.findObject("text").setValue(text)
     }
 
-    let enable = getTblValue("enable", data)
+    let enable = ::getTblValue("enable", data)
     if (::u.isBool(enable))
       btnObj.enable(enable)
   }
@@ -171,13 +162,13 @@ global enum RCLICK_MENU_ORIENT
     if (!obj || obj.id.len() < 5)
       return
 
-    this.choosenValue = obj.id.slice(4).tointeger()
-    this.goBack()
+    choosenValue = obj.id.slice(4).tointeger()
+    goBack()
   }
 
   function goBack()
   {
-    if (this.scene && (get_time_msec() - this.timeOpen) < 100 && !this.isListEmpty)
+    if (scene && (::dagor.getCurTime() - timeOpen) < 100 && !isListEmpty)
       return
 
     base.goBack()
@@ -185,10 +176,10 @@ global enum RCLICK_MENU_ORIENT
 
   function afterModalDestroy()
   {
-    if (this.choosenValue in this.config.actions) {
-      let applyFunc = getTblValue("action", this.config.actions[this.choosenValue])
-      ::call_for_handler(this.owner, applyFunc)
+    if (choosenValue in config.actions) {
+      let applyFunc = ::getTblValue("action", config.actions[choosenValue])
+      ::call_for_handler(owner, applyFunc)
     }
-    this.onClose?()
+    onClose?()
   }
 }

@@ -1,34 +1,31 @@
-from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
-
 let {speed, portSideMachine, sideboardSideMachine, stopping } = require("%rGui/shipState.nut")
 let { isInitializedMeasureUnits } = require("%rGui/options/optionsMeasureUnits.nut")
 
 let machineDirectionLoc = [
-  loc("HUD/ENGINE_REV_BACK_SHORT")
-  loc("HUD/ENGINE_REV_BACK_SHORT")
-  loc("HUD/ENGINE_REV_BACK_SHORT")
+  ::loc("HUD/ENGINE_REV_BACK_SHORT")
+  ::loc("HUD/ENGINE_REV_BACK_SHORT")
+  ::loc("HUD/ENGINE_REV_BACK_SHORT")
   ""
-  loc("HUD/ENGINE_REV_AHEAD_SHORT")
-  loc("HUD/ENGINE_REV_AHEAD_SHORT")
-  loc("HUD/ENGINE_REV_AHEAD_SHORT")
-  loc("HUD/ENGINE_REV_AHEAD_SHORT")
-  loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
   ""
   ""
   ""
 ]
 
 let machineSpeedLoc = [
-  loc("HUD/ENGINE_REV_FULL_SHORT")
-  loc("HUD/ENGINE_REV_TWO_THIRDS_SHORT")
-  loc("HUD/ENGINE_REV_ONE_THIRD_SHORT")
-  loc("HUD/ENGINE_REV_STOP_SHORT")
-  loc("HUD/ENGINE_REV_ONE_THIRD_SHORT")
-  loc("HUD/ENGINE_REV_TWO_THIRDS_SHORT")
-  loc("HUD/ENGINE_REV_STANDARD_SHORT")
-  loc("HUD/ENGINE_REV_FULL_SHORT")
-  loc("HUD/ENGINE_REV_FLANK_SHORT")
+  ::loc("HUD/ENGINE_REV_FULL_SHORT")
+  ::loc("HUD/ENGINE_REV_TWO_THIRDS_SHORT")
+  ::loc("HUD/ENGINE_REV_ONE_THIRD_SHORT")
+  ::loc("HUD/ENGINE_REV_STOP_SHORT")
+  ::loc("HUD/ENGINE_REV_ONE_THIRD_SHORT")
+  ::loc("HUD/ENGINE_REV_TWO_THIRDS_SHORT")
+  ::loc("HUD/ENGINE_REV_STANDARD_SHORT")
+  ::loc("HUD/ENGINE_REV_FULL_SHORT")
+  ::loc("HUD/ENGINE_REV_FLANK_SHORT")
   "1"
   "2"
   "R"
@@ -49,9 +46,9 @@ let machineSpeedDirection = [
   "back"
 ]
 
-local fitTextToBox = kwarg(function(box, text, font, fontSize=null, minSize = 8){
-  local sz = calc_comp_size({rendObj = ROBJ_TEXT, text, font, fontSize})
-  fontSize = fontSize ?? calc_comp_size({rendObj = ROBJ_TEXT, text = "A", font, fontSize})
+local fitTextToBox = ::kwarg(function(box, text, font, fontSize=null, minSize = 8){
+  local sz = ::calc_comp_size({rendObj = ROBJ_TEXT, text, font, fontSize})
+  fontSize = fontSize ?? ::calc_comp_size({rendObj = ROBJ_TEXT, text = "A", font, fontSize})
   sz = [sz[0] > 1 ? sz[0] : 1, sz[1] > 1 ? sz[1] : 1]
   let scale = min(box[0]/sz[0], box[1]/sz[1])
   if (scale >= 1.0)
@@ -79,7 +76,7 @@ let function speedValue(params = {}) {
 let function speedUnits(params = {}) {
   let { fontSize = null, box = null, font = defFont } = params
   return function() {
-    let text = isInitializedMeasureUnits.value ? cross_call.measureTypes.SPEED.getMeasureUnitsName() : ""
+    let text = isInitializedMeasureUnits.value ? ::cross_call.measureTypes.SPEED.getMeasureUnitsName() : ""
     return {
       watch = isInitializedMeasureUnits
       rendObj = ROBJ_TEXT

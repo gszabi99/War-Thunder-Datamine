@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local isVisibleHint = false
@@ -90,8 +85,8 @@ let function showBackgroundModelHint(params) {
 }
 
 addListenersWithoutEnv({
-  ActiveHandlersChanged = @(_p) hideHint()
-  HangarModelLoading = @(_p) hideHint()
+  ActiveHandlersChanged = @(p) hideHint()
+  HangarModelLoading = @(p) hideHint()
 })
 
 return {

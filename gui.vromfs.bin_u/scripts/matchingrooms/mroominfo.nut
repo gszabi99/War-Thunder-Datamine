@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { get_time_msec } = require("dagor.time")
-
 const MROOM_INFO_UPDATE_DELAY    = 5000
 const MROOM_INFO_REQUEST_TIMEOUT = 15000
 const MROOM_INFO_OUTDATE_TIME    = 600000
@@ -32,19 +24,19 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
 
   function isOutdated()
   {
-    return lastUpdateTime + MROOM_INFO_OUTDATE_TIME < get_time_msec()
+    return lastUpdateTime + MROOM_INFO_OUTDATE_TIME < ::dagor.getCurTime()
   }
 
   function isRequestInProgress()
   {
     return lastAnswerTime < lastRequestTime
-        && lastRequestTime + MROOM_INFO_REQUEST_TIMEOUT > get_time_msec()
+        && lastRequestTime + MROOM_INFO_REQUEST_TIMEOUT > ::dagor.getCurTime()
   }
 
   function canRequest()
   {
     return !isRoomDestroyed && !isRequestInProgress()
-        && lastAnswerTime + MROOM_INFO_UPDATE_DELAY < get_time_msec()
+        && lastAnswerTime + MROOM_INFO_UPDATE_DELAY < ::dagor.getCurTime()
   }
 
   function checkRefresh()
@@ -52,8 +44,8 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
     if (!canRequest())
       return
 
-    lastRequestTime = get_time_msec()
-    let cb = Callback(onRefreshCb, this)
+    lastRequestTime = ::dagor.getCurTime()
+    let cb = ::Callback(onRefreshCb, this)
     ::matching_api_func("mrooms.get_room",
       function(p) { cb(p) },
       { roomId = roomId }
@@ -62,7 +54,7 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
 
   function onRefreshCb(params)
   {
-    lastAnswerTime = get_time_msec()
+    lastAnswerTime = ::dagor.getCurTime()
 
     if (params.error == SERVER_ERROR_ROOM_NOT_FOUND)
     {

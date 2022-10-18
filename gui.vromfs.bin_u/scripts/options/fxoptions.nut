@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
 ::gui_handlers.fxOptions <- class extends ::BaseGuiHandler
@@ -28,11 +23,11 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
       rows = []
     }
 
-    foreach (_idx, s in this.settings)
+    foreach (idx, s in this.settings)
     {
       s.min *= s.scale
       s.max *= s.scale
-      local val = getroottable()?[$"get_{s.id}"]() ?? 0
+      local val = ::getroottable()?[$"get_{s.id}"]() ?? 0
       if (s?.recScale)
         val *= s.scale
 
@@ -59,7 +54,7 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
   function onSettingChanged(obj)
   {
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
       return
 
     let curSetting = this.settings.findvalue(@(s) s.id == obj.id)
@@ -71,15 +66,15 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
       val /= curSetting.scale
 
     this.updateSliderTextValue(obj.id, val)
-    getroottable()?[$"set_{curSetting.id}"](val, true)
+    ::getroottable()?[$"set_{curSetting.id}"](val, true)
   }
 
   function onResetToDefaults()
   {
     foreach (s in this.settings)
     {
-      local defVal = getroottable()?[$"get_default_{s.id}"]() ?? 0
-      getroottable()?[$"set_{s.id}"](defVal, true)
+      local defVal = ::getroottable()?[$"get_default_{s.id}"]() ?? 0
+      ::getroottable()?[$"set_{s.id}"](defVal, true)
       this.updateSliderTextValue(s.id, defVal)
       if (s?.recScale)
         defVal *= s.scale
@@ -92,14 +87,14 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
   function updateSliderValue(name, value)
   {
     let valueObj = this.scene.findObject(name)
-    if (checkObj(valueObj))
+    if (::check_obj(valueObj))
       valueObj.setValue(value)
   }
 
   function updateSliderTextValue(name, value)
   {
     let valueObj = this.scene.findObject($"value_{name}")
-    if (checkObj(valueObj))
+    if (::check_obj(valueObj))
       valueObj.setValue(value.tostring())
   }
 

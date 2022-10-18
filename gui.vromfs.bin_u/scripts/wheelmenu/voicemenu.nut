@@ -1,12 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voiceMessages.nut")
 
 ::gui_start_voicemenu <- function gui_start_voicemenu(config)
@@ -17,9 +9,9 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
   let joyParams = ::joystick_get_cur_settings()
   let params = {
     menu         = config?.menu ?? []
-    callbackFunc = getTblValue("callbackFunc", config)
-    squadMsg     = getTblValue("squadMsg", config, false)
-    category     = getTblValue("category", config, "")
+    callbackFunc = ::getTblValue("callbackFunc", config)
+    squadMsg     = ::getTblValue("squadMsg", config, false)
+    category     = ::getTblValue("category", config, "")
     mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage
     axisEnabled  = true
   }
@@ -62,11 +54,11 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
 
   function updateChannelInfo()
   {
-    let objTitle = this.scene.findObject("wheel_menu_category")
-    if (checkObj(objTitle))
+    let objTitle = scene.findObject("wheel_menu_category")
+    if (::checkObj(objTitle))
     {
-      local text = loc(squadMsg ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD" : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
-        + loc("ui/colon")
+      local text = ::loc(squadMsg ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD" : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
+        + ::loc("ui/colon")
       if (category != "")
         text += getCategoryLoc(category)
 
@@ -74,7 +66,7 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
       objTitle.setValue(text)
     }
 
-    let canUseButtons = this.mouseEnabled || ::show_console_buttons
+    let canUseButtons = mouseEnabled || ::show_console_buttons
     this.showSceneBtn("btnSwitchChannel", canUseButtons && ::g_squad_manager.isInSquad(true))
   }
 
@@ -89,7 +81,7 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
     let isConsoleMode = ::get_is_console_mode_enabled()
     let textRawParam = format("chatMode:t='%s'; padding-left:t='1@bw'", getChatMode())
     let messagesArray = []
-    for (local i = 0; i < NUM_FAST_VOICE_MESSAGES; i++)
+    for (local i = 0; i < ::NUM_FAST_VOICE_MESSAGES; i++)
     {
       let messageIndex = ::get_option_favorite_voice_message(i)
       if (messageIndex < 0)
@@ -103,18 +95,18 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
 
       let cells = [
         {id = "name", textType = "text", textRawParam = textRawParam,
-         text = format(loc(getVoiceMessageNames()[messageIndex].name + "_0"),
-                         loc("voice_message_target_placeholder"))}
+         text = format(::loc(getVoiceMessageNames()[messageIndex].name + "_0"),
+                         ::loc("voice_message_target_placeholder"))}
       ]
 
       let shortcutInputs = shortcutType.getInputs({ shortcutId = fastShortcutId})
       local shortcutInput = null
-      foreach(_idx, input in shortcutInputs)
+      foreach(idx, input in shortcutInputs)
       {
         if (!shortcutInput)
           shortcutInput = input
 
-        if (isConsoleMode && input.getDeviceId() == JOYSTICK_DEVICE_0_ID)
+        if (isConsoleMode && input.getDeviceId() == ::JOYSTICK_DEVICE_0_ID)
         {
           shortcutInput = input
           break
@@ -123,7 +115,7 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
 
       if (shortcutInput)
       {
-        if (shortcutInput.getDeviceId() == JOYSTICK_DEVICE_0_ID)
+        if (shortcutInput.getDeviceId() == ::JOYSTICK_DEVICE_0_ID)
           cells.append({rawParam = shortcutInput.getMarkup()})
         else
           cells.append({text = shortcutInput.getText(),
@@ -136,15 +128,15 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
 
     this.showSceneBtn("empty_messages_warning", messagesArray.len() == 0)
     let data = ::g_string.implode(messagesArray, "\n")
-    let tblObj = this.scene.findObject("fast_voice_messages_table")
-    if (checkObj(tblObj))
-      this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
+    let tblObj = scene.findObject("fast_voice_messages_table")
+    if (::checkObj(tblObj))
+      guiScene.replaceContentFromText(tblObj, data, data.len(), this)
   }
 
-  function onVoiceMessageSwitchChannel(_obj)
+  function onVoiceMessageSwitchChannel(obj)
   {
     ::switch_voice_message_list_in_squad()
   }
 
-  function onWheelmenuSwitchPage(_obj) {}
+  function onWheelmenuSwitchPage(obj) {}
 }

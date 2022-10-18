@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
 ::g_hud_tank_debuffs <- {
@@ -26,12 +20,12 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
   function init(nest)
   {
-    if (!hasFeature("TankDetailedDamageIndicator"))
+    if (!::has_feature("TankDetailedDamageIndicator"))
       return
 
     scene = nest.findObject("tank_debuffs")
 
-    if (!scene && !checkObj(scene))
+    if (!scene && !::checkObj(scene))
       return
 
     guiScene = scene.getScene()
@@ -98,13 +92,13 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
     foreach (debuffName, on in debuffs_data)
     {
       if (on && debuffName in tooltips)
-        res += (res.len() ? "\n\n" : "") + loc(tooltips[debuffName])
+        res += (res.len() ? "\n\n" : "") + ::loc(tooltips[debuffName])
     }
     return res
   }
 
   function isValid()
   {
-    return checkObj(scene)
+    return ::checkObj(scene)
   }
 }

@@ -1,18 +1,14 @@
-#explicit-this
-#no-root-fallback
-
 let u = require("%sqStdLibs/helpers/u.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let elemEvents = require("%sqDagui/elemUpdater/elemUpdaterEvents.nut")
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
-local assertOnce = function(_uniqId, errorText) { throw(errorText) }
+local assertOnce = function(uniqId, errorText) { throw(errorText) }
 
 let BhvUpdater = class
 {
-  eventMask    = EV_ON_CMD
+  eventMask    = ::EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
 
   function onAttach(obj)
@@ -21,15 +17,15 @@ let BhvUpdater = class
     {
       try //script crash will cause game crash, because we nee retcode here.
       {
-        this.setNewConfig(obj, elemViewType.buildBhvConfig(obj.value))
+        setNewConfig(obj, elemViewType.buildBhvConfig(obj.value))
       }
       catch (errorMessage)
       {
         assertOnce("bhvUpdater failed attach", "bhvUpdater: failed to attach value: " + errorMessage)
       }
     }
-    this.updateView(obj)
-    return RETCODE_NOTHING
+    updateView(obj)
+    return ::RETCODE_NOTHING
   }
 
   function setValue(obj, valueTbl)
@@ -37,8 +33,8 @@ let BhvUpdater = class
     let value = type(valueTbl) == "integer"
       ? popBhvValueConfig(valueTbl)
       : valueTbl
-    if (this.setNewConfig(obj, elemViewType.buildBhvConfig(value)))
-      this.updateView(obj)
+    if (setNewConfig(obj, elemViewType.buildBhvConfig(value)))
+      updateView(obj)
     return u.isString(value) || u.isTable(value)
   }
 
@@ -51,7 +47,7 @@ let BhvUpdater = class
     if (config)
     {
       let subscriptions = config.viewType.model.makeFullPath(config.subscriptions)
-      elemEvents.subscribe(subscriptions, Callback(this.getOnChangedCb(obj), config))
+      elemEvents.subscribe(subscriptions, Callback(getOnChangedCb(obj), config))
       config.lastEventId <- -1
     }
     return true
@@ -60,7 +56,7 @@ let BhvUpdater = class
   function getOnChangedCb(obj)
   {
     let bhvClass = this
-    return @(eventId) check_obj(obj) && bhvClass.updateView(obj, eventId)
+    return @(eventId) ::check_obj(obj) && bhvClass.updateView(obj, eventId)
   }
 
   function updateView(obj, eventId = -2)

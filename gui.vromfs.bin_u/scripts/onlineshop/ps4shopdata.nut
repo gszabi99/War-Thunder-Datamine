@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let datablock = require("DataBlock")
 
@@ -28,7 +23,7 @@ let visibleSeenIds = []
 
 let getShopItem = @(id) persistent.itemsList?[id]
 
-let canUseIngameShop = @() isPlatformSony && hasFeature("PS4IngameShop")
+let canUseIngameShop = @() isPlatformSony && ::has_feature("PS4IngameShop")
 
 local haveItemDiscount = null
 
@@ -50,12 +45,12 @@ let onFinishCollectData = function(v_categoriesData = null)
   invalidateSeenList = false
 
   local itemIndex = 0
-  foreach (_category, categoryInfo in persistent.categoriesData)
+  foreach (category, categoryInfo in persistent.categoriesData)
     foreach (label, itemInfo in (categoryInfo?.links ?? datablock()))
       persistent.itemsList[label] <- psnStoreItem(itemInfo, itemIndex++)
 
   //Must call in the end
-  log("PSN: Shop Data: Finish update items info")
+  ::dagor.debug("PSN: Shop Data: Finish update items info")
   ::broadcastEvent("Ps4ShopDataUpdated", {isLoadingInProgress = false})
 }
 
@@ -164,14 +159,14 @@ let updateSpecificItemInfo = function(id)
 
 subscriptions.addListenersWithoutEnv({
   PS4ItemUpdate = @(p) updateSpecificItemInfo(p.id)
-  ProfileUpdated = @(_p) initPs4CategoriesAfterLogin()
-  ScriptsReloaded = function(_p) {
+  ProfileUpdated = @(p) initPs4CategoriesAfterLogin()
+  ScriptsReloaded = function(p) {
     visibleSeenIds.clear()
     persistent.itemsList.clear()
     isCategoriesInitedOnce = false
     initPs4CategoriesAfterLogin()
   }
-  SignOut = function(_p) {
+  SignOut = function(p) {
     isCategoriesInitedOnce = false
     isFinishedUpdateItems = false
     persistent.categoriesData.reset()

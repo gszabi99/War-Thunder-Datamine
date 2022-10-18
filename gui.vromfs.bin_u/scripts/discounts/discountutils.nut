@@ -1,24 +1,18 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-
-
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 
 //you can use array in any path part - in result will be max discount from them.
-::getDiscountByPath <- function getDiscountByPath(path, blk = null, _idx = 0)
+::getDiscountByPath <- function getDiscountByPath(path, blk = null, idx = 0)
 {
   if (blk == null)
-    blk = ::get_price_blk()
+    blk = get_price_blk()
   let result = {
     maxDiscount = 0
   }
   ::invoke_multi_array(path, function (arr) {
     let block = get_blk_by_path_array(arr, blk)
-    let discountValue = getTblValue("discount", block, 0)
+    let discountValue = ::getTblValue("discount", block, 0)
     result.maxDiscount = max(result.maxDiscount, discountValue)
     local personalDiscountValue = personalDiscount.getDiscountByPath(arr)
     result.maxDiscount = max(result.maxDiscount, personalDiscountValue)
@@ -38,7 +32,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
     eachBlock(unitTable?.weapons, function(table, name) {
       if (!::shop_is_weapon_purchased(unitName, name))
         discount = max(discount,
-          getTblValue("discount", table, 0),
+          ::getTblValue("discount", table, 0),
           ::item_get_personal_discount_for_weapon(unitName, name))
     })
 
@@ -46,12 +40,12 @@ let { eachBlock } = require("%sqstd/datablock.nut")
     eachBlock(unitTable?.mods, function(table, name) {
       if (!::shop_is_modification_purchased(unitName, name))
         discount = max(discount,
-          getTblValue("discount", table, 0),
+          ::getTblValue("discount", table, 0),
           ::item_get_personal_discount_for_mod(unitName, name))
     })
 
   if (discountTypes.contains("spare") && unitTable?.spare)
-    discount = max(discount, getTblValue("discount", unitTable.spare, 0))
+    discount = max(discount, ::getTblValue("discount", unitTable.spare, 0))
 
   return discount
 }
@@ -64,7 +58,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
     path.append(group)
   if (groupValue)
     path.append(groupValue)
-  let discount = ::getDiscountByPath(path)
+  let discount = getDiscountByPath(path)
   ::showCurBonus(obj, discount, group? group : "buy", true, fullUpdate)
 }
 
@@ -83,6 +77,6 @@ let { eachBlock } = require("%sqstd/datablock.nut")
     path.append(group)
   if (groupValue)
     path.append(groupValue)
-  let discount = ::getDiscountByPath(path)
+  let discount = getDiscountByPath(path)
   ::showCurBonus(obj, discount, name, true, fullUpdate)
 }

@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::EventChapter <- class
 {
   name = ""
@@ -20,7 +14,7 @@ from "%scripts/dagui_library.nut" import *
 
   function getLocName()
   {
-    return loc("events/chapter/" + name)
+    return ::loc("events/chapter/" + name)
   }
 
   function getEvents()
@@ -136,7 +130,7 @@ from "%scripts/dagui_library.nut" import *
 
   function addChapter(chapter_name)
   {
-    chapters.append(::EventChapter(chapter_name))
+    chapters.append(EventChapter(chapter_name))
     sortChapters()
   }
 
@@ -158,7 +152,7 @@ from "%scripts/dagui_library.nut" import *
     return chapters
   }
 
-  function onEventGameLocalizationChanged(_params)
+  function onEventGameLocalizationChanged(params)
   {
     foreach (chapter in chapters)
       chapter.sortValid = false

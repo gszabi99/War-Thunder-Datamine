@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 // warning disable: -file:forbidden-function
 
 /**
@@ -17,7 +12,7 @@ let EXPORT_PARAMS = { //const
   resultFilePath  = "export/file.blk" // Resulting blk filename to write results to.
   itemsPerFrame   = 1                 // Num of items to process per single frame.
   list            = []                // Array of items to process.
-  itemProcessFunc = @(_value) null     // Function, takes value from list, returns processed result -
+  itemProcessFunc = @(value) null     // Function, takes value from list, returns processed result -
                                       // table { key="id", value = DataBlock }, or null.
                                       // If it returns table, its keys will be written to resulting
                                       // blk this way: resBlk[table.key] <- table.value
@@ -26,7 +21,7 @@ let EXPORT_PARAMS = { //const
 
 let function export_impl(params, resBlk, idx)
 {
-  let exportImplFunc = callee()
+  let exportImplFunc = ::callee()
   for(local i = idx; i != params.list.len(); i++)
   {
     if (i != idx && !(i % params.itemsPerFrame)) //avoid freeze

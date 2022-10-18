@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 ::WwOperationArmies <- class
 {
   armiesByNameCache = null
@@ -17,13 +11,13 @@ from "%scripts/dagui_library.nut" import *
 
   function getArmiesByStatus(status)
   {
-    return getTblValue(status, armiesByStatusCache, {})
+    return ::getTblValue(status, armiesByStatusCache, {})
   }
 
   function updateArmyStatus(armyName)
   {
     let army = ::g_world_war.getArmyByName(armyName)
-    let cachedArmy = getTblValue(armyName, armiesByNameCache, null)
+    let cachedArmy = ::getTblValue(armyName, armiesByNameCache, null)
     let hasChanged = !cachedArmy || !cachedArmy.isStatusEqual(army)
 
     if (!hasChanged)
@@ -55,7 +49,7 @@ from "%scripts/dagui_library.nut" import *
       if (!army.hasManageAccess())
         continue
 
-      let cachedArmy = getTblValue(armyName, armiesByNameCache)
+      let cachedArmy = ::getTblValue(armyName, armiesByNameCache)
       if (cachedArmy)
         findedCachedArmies[armyName] <- cachedArmy
 
@@ -72,12 +66,12 @@ from "%scripts/dagui_library.nut" import *
       })(findedCachedArmies)
     )
 
-    foreach(_armyName, cachedArmy in deletingCachedArmiesNames)
+    foreach(armyName, cachedArmy in deletingCachedArmiesNames)
       ::u.removeFrom(armiesByNameCache, cachedArmy)
 
     if (changedArmies.len() > 0 || armiesCountChanged)
     {
-      foreach(_status, cacheData in armiesByStatusCache)
+      foreach(status, cacheData in armiesByStatusCache)
       {
         cacheData.common.sort(::WwArmy.sortArmiesByUnitType)
         cacheData.surrounded.sort(::WwArmy.sortArmiesByUnitType)
@@ -89,7 +83,7 @@ from "%scripts/dagui_library.nut" import *
 
   function addArmyToCache(army, needSort = false)
   {
-    let cacheByStatus = getTblValue(army.getActionStatus(), armiesByStatusCache)
+    let cacheByStatus = ::getTblValue(army.getActionStatus(), armiesByStatusCache)
     if (!cacheByStatus)
       return
 
@@ -111,7 +105,7 @@ from "%scripts/dagui_library.nut" import *
 
   function removeArmyFromCache(cachedArmy)
   {
-    let cacheByStatus = getTblValue(cachedArmy.getActionStatus(), armiesByStatusCache, null)
+    let cacheByStatus = ::getTblValue(cachedArmy.getActionStatus(), armiesByStatusCache, null)
     if (cacheByStatus != null)
     {
       let cachedArr = cachedArmy.isSurrounded() ? cacheByStatus.surrounded : cacheByStatus.common

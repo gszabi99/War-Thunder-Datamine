@@ -1,12 +1,6 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let api = require("dagor.webpoll")
-let { get_time_msec } = require("dagor.time")
 
 const WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS = 3000000
 const REQUEST_AUTHORIZATION_TIMEOUT_MS = 3600000
@@ -33,7 +27,7 @@ let function canRequestAuthorization(pollId) {
   if (requestTimeOut == null)
     return true
 
-  return requestTimeOut < get_time_msec()
+  return requestTimeOut < ::dagor.getCurTime()
 }
 
 let function loadVotedPolls() {
@@ -64,7 +58,7 @@ local function webpollEvent(id, token, voted) {
   cachedTokenById[id] <- token
   let isInvalidateToken = token == ""
   tokenInvalidationTimeById[id] <- isInvalidateToken ? -1
-    : get_time_msec() + WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS
+    : ::dagor.getCurTime() + WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS
   authorizedPollsRequestTimeOut[id] <- isInvalidateToken ? null : 0
 
   let idString = id.tostring()
@@ -103,7 +97,7 @@ let function invalidateTokensCache(pollId = null) {
 
 let function checkTokensCacheTimeout(pollId) {
   if((cachedTokenById?[pollId] ?? "") != ""
-    && (tokenInvalidationTimeById?[pollId] ?? -1) < get_time_msec())
+    && (tokenInvalidationTimeById?[pollId] ?? -1) < ::dagor.getCurTime())
     invalidateTokensCache(pollId)
 }
 
@@ -121,7 +115,7 @@ let function requestPolls() {
   foreach (pollId, baseUrl in pollBaseUrlById) {
     let pollIdInt = pollId.tointeger()
     if (canRequestAuthorization(pollIdInt)) {
-      authorizedPollsRequestTimeOut[pollIdInt] <- get_time_msec() + REQUEST_AUTHORIZATION_TIMEOUT_MS
+      authorizedPollsRequestTimeOut[pollIdInt] <- ::dagor.getCurTime() + REQUEST_AUTHORIZATION_TIMEOUT_MS
       pollsForRequestByBaseUrl[baseUrl] <- (pollsForRequestByBaseUrl?[baseUrl] ?? []).append(pollIdInt)
     }
   }
@@ -145,7 +139,7 @@ let function generatePollUrl(pollId, needAuthorization = true) {
   }
 
   if (authorizedPollsRequestTimeOut?[pollIdInt] == 0) {
-    let url = loc("url/webpoll_url",
+    let url = ::loc("url/webpoll_url",
       { base_url = pollBaseUrl, survey_id = pollId, disposable_token = cachedToken })
     pollIdByFullUrl[url] <- pollId
     return url
@@ -176,21 +170,21 @@ let function invalidateData() {
 }
 
 subscriptions.addListenersWithoutEnv({
-  LoginComplete = @(_p) invalidateData()
-  SignOut = @(_p) invalidateData()
+  LoginComplete = @(p) invalidateData()
+  SignOut = @(p) invalidateData()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
-::web_rpc.register_handler("survey_vote_result", onSurveyVoteResult)
+web_rpc.register_handler("survey_vote_result", onSurveyVoteResult)
 
 ::webpoll_event <- function webpoll_event(id, token, voted) { //use in native code
   webpollEvent(id, token, voted)
 }
 
 return {
-  setPollBaseUrl
-  getPollIdByFullUrl
-  generatePollUrl
-  isPollVoted
-  clearOldVotedPolls
-  invalidateTokensCache
+  setPollBaseUrl = setPollBaseUrl
+  getPollIdByFullUrl = getPollIdByFullUrl
+  generatePollUrl = generatePollUrl
+  isPollVoted = isPollVoted
+  clearOldVotedPolls = clearOldVotedPolls
+  invalidateTokensCache = invalidateTokensCache
 }

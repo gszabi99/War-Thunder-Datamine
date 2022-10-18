@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 local isCrewUnlockErrorShowed = false
 
 let function getCrewUnlockTime(crew) {
@@ -17,11 +12,11 @@ let function getCrewUnlockTime(crew) {
   let { lockTimeMaxLimitSec = timeLeft } = ::get_warpoints_blk()
   if (timeLeft > lockTimeMaxLimitSec) {
     timeLeft = lockTimeMaxLimitSec
-    log("crew.lockedTillSec " + lockTime)
-    log("::get_charserver_time_sec() " + ::get_charserver_time_sec())
+    ::dagor.debug("crew.lockedTillSec " + lockTime)
+    ::dagor.debug("::get_charserver_time_sec() " + ::get_charserver_time_sec())
     if (!isCrewUnlockErrorShowed)
-      debugTableData(::g_crews_list.get())
-    assert(isCrewUnlockErrorShowed, "Too big locked crew wait time")
+      ::debugTableData(::g_crews_list.get())
+    ::dagor.assertf(isCrewUnlockErrorShowed, "Too big locked crew wait time")
     isCrewUnlockErrorShowed = true
   }
 

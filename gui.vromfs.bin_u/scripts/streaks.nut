@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { format } = require("string")
 let { loading_play_voice } = require("loading")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -28,84 +22,75 @@ enum hudStreakState {
   scene = null
 }
 
-let function updateAnimTimer() {
-  let obj = ::g_streaks.getSceneObj()
-  if (!obj)
-    return
-
-  let animTime = 1000 * STREAK_LIFE_TIME / ::g_streaks.getTimeMultiplier()
-  obj.findObject("streak_content")["transp-time"] = animTime.tointeger().tostring()
-}
-
-::g_streaks.addStreak <- function addStreak(id, header, score)
+g_streaks.addStreak <- function addStreak(id, header, score)
 {
-  if (!this.isStreaksAvailable())
+  if (!isStreaksAvailable())
     return
   if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.STREAKS))
   {
-    this.streakQueue.clear()
+    streakQueue.clear()
     return
   }
 
-  this.streakQueue.append({ id = id, header = header, score = score })
-  this.checkNextState()
+  streakQueue.append({ id = id, header = header, score = score })
+  checkNextState()
 
-  if (this.streakQueue.len() == 1)
+  if (streakQueue.len() == 1)
     updateAnimTimer()
 }
 
-::g_streaks.isStreaksAvailable <- function isStreaksAvailable()
+g_streaks.isStreaksAvailable <- function isStreaksAvailable()
 {
   return !is_replay_playing()
 }
 
-::g_streaks.checkNextState <- function checkNextState()
+g_streaks.checkNextState <- function checkNextState()
 {
-  if (this.stateTimeLeft > 0)
+  if (stateTimeLeft > 0)
     return
 
-  let wasState = this.state
-  if (this.state == hudStreakState.ACTIVE)
+  let wasState = state
+  if (state == hudStreakState.ACTIVE)
   {
-    this.state = hudStreakState.DELAY_BETWEEN_STREAKS
-    this.stateTimeLeft = STREAK_DELAY_TIME
+    state = hudStreakState.DELAY_BETWEEN_STREAKS
+    stateTimeLeft = STREAK_DELAY_TIME
   }
-  else if (this.state == hudStreakState.EMPTY || this.state == hudStreakState.DELAY_BETWEEN_STREAKS)
+  else if (state == hudStreakState.EMPTY || state == hudStreakState.DELAY_BETWEEN_STREAKS)
   {
-    if (this.showNextStreak())
+    if (showNextStreak())
     {
-      this.state = hudStreakState.ACTIVE
-      this.stateTimeLeft = STREAK_LIFE_TIME
+      state = hudStreakState.ACTIVE
+      stateTimeLeft = STREAK_LIFE_TIME
     } else
-      this.state = hudStreakState.EMPTY
+      state = hudStreakState.EMPTY
   }
 
-  if (wasState == this.state)
+  if (wasState == state)
     return
 
-  this.updateSceneObj()
-  this.updatePlaceObj()
+  updateSceneObj()
+  updatePlaceObj()
 }
 
-::g_streaks.getSceneObj <- function getSceneObj()
+g_streaks.getSceneObj <- function getSceneObj()
 {
-  if (checkObj(this.scene))
-    return this.scene
+  if (::checkObj(scene))
+    return scene
 
   let guiScene = ::get_gui_scene()
   if (!guiScene)
     return null
   let obj = guiScene["hud_streaks"]
-  if (!checkObj(obj))
+  if (!::checkObj(obj))
     return null
 
-  this.scene = obj
+  scene = obj
   return obj
 }
 
-::g_streaks.showNextStreak <- function showNextStreak()
+g_streaks.showNextStreak <- function showNextStreak()
 {
-  if (!this.streakQueue.len())
+  if (!streakQueue.len())
     return false
 
   let obj = getSceneObj()
@@ -115,7 +100,7 @@ let function updateAnimTimer() {
   let guiScene = obj.getScene()
   guiScene.setUpdatesEnabled(false, false)
 
-  let streak = this.streakQueue.remove(0)
+  let streak = streakQueue.remove(0)
 
   let contentObj = obj.findObject("streak_content")
   contentObj.show(true) //need to correct update textarea positions and sizes
@@ -128,33 +113,43 @@ let function updateAnimTimer() {
   updateAnimTimer()
 
   guiScene.setUpdatesEnabled(true, true)
-  this.updatePlaceObjHeight(contentObj.getSize()[1])
+  updatePlaceObjHeight(contentObj.getSize()[1])
 
-  this.streakPlaySound(streak.id)
+  streakPlaySound(streak.id)
   return true
 }
 
-::g_streaks.updateSceneObj <- function updateSceneObj()
+::updateAnimTimer <- function updateAnimTimer()
 {
   let obj = getSceneObj()
   if (!obj)
     return
 
-  ::showBtn("streak_content", this.state == hudStreakState.ACTIVE, obj)
+  let animTime = 1000 * STREAK_LIFE_TIME / getTimeMultiplier()
+  obj.findObject("streak_content")["transp-time"] = animTime.tointeger().tostring()
 }
 
-::g_streaks.updatePlaceObj <- function updatePlaceObj()
+g_streaks.updateSceneObj <- function updateSceneObj()
 {
   let obj = getSceneObj()
   if (!obj)
     return
 
-  let show = this.state == hudStreakState.ACTIVE
-               || (this.state == hudStreakState.DELAY_BETWEEN_STREAKS && this.streakQueue.len() > 0)
+  ::showBtn("streak_content", state == hudStreakState.ACTIVE, obj)
+}
+
+g_streaks.updatePlaceObj <- function updatePlaceObj()
+{
+  let obj = getSceneObj()
+  if (!obj)
+    return
+
+  let show = state == hudStreakState.ACTIVE
+               || (state == hudStreakState.DELAY_BETWEEN_STREAKS && streakQueue.len() > 0)
   obj.animation = show ? "show" : "hide"
 }
 
-::g_streaks.updatePlaceObjHeight <- function updatePlaceObjHeight(newHeight)
+g_streaks.updatePlaceObjHeight <- function updatePlaceObjHeight(newHeight)
 {
   let obj = getSceneObj()
   if (!obj || !newHeight)
@@ -167,9 +162,9 @@ let function updateAnimTimer() {
   obj["height-end"] = newHeight.tostring()
 }
 
-::g_streaks.streakPlaySound <- function streakPlaySound(streakId)
+g_streaks.streakPlaySound <- function streakPlaySound(streakId)
 {
-  if (!hasFeature("streakVoiceovers"))
+  if (!::has_feature("streakVoiceovers"))
     return
   let unlockBlk = ::g_unlocks.getUnlockById(streakId)
   if (!unlockBlk)
@@ -181,27 +176,27 @@ let function updateAnimTimer() {
     loading_play_voice(unlockBlk.sound, true)
 }
 
-::g_streaks.getTimeMultiplier <- function getTimeMultiplier()
+g_streaks.getTimeMultiplier <- function getTimeMultiplier()
 {
-  return this.streakQueue.len() > 0 ? STREAK_QUEUE_TIME_FACTOR : 1.0
+  return streakQueue.len() > 0 ? STREAK_QUEUE_TIME_FACTOR : 1.0
 }
 
-::g_streaks.onUpdate <- function onUpdate(dt)
+g_streaks.onUpdate <- function onUpdate(dt)
 {
-  if (this.stateTimeLeft <= 0)
+  if (stateTimeLeft <= 0)
     return
 
-  this.stateTimeLeft -= dt * getTimeMultiplier()
+  stateTimeLeft -= dt * getTimeMultiplier()
 
-  if (this.stateTimeLeft <= 0)
+  if (stateTimeLeft <= 0)
     checkNextState()
 }
 
-::g_streaks.clear <- function clear()
+g_streaks.clear <- function clear()
 {
-  this.stateTimeLeft = 0;
-  this.state = hudStreakState.EMPTY
-  this.streakQueue.clear()
+  stateTimeLeft = 0;
+  state = hudStreakState.EMPTY
+  streakQueue.clear()
 }
 
 
@@ -213,29 +208,29 @@ let function updateAnimTimer() {
 {
   let messageArr = []
   if (wp)
-    messageArr.append(loc("warpoints/received/by_param", {
+    messageArr.append(::loc("warpoints/received/by_param", {
       sign  = "+"
       value =::g_language.decimalFormat(wp)
     }))
   if (exp)
-    messageArr.append(loc("exp_received/by_param", { value = ::g_language.decimalFormat(exp) }))
+    messageArr.append(::loc("exp_received/by_param", { value = ::g_language.decimalFormat(exp) }))
 
   ::broadcastEvent("StreakArrived", { id = id })
-  ::g_streaks.addStreak(id, header, ::g_string.implode(messageArr, loc("ui/comma")))
+  ::g_streaks.addStreak(id, header, ::g_string.implode(messageArr, ::loc("ui/comma")))
 }
 
 ::get_loc_for_streak <- function get_loc_for_streak(StreakNameType, name, stageparam, playerNick = "", colorId = 0)
 {
   let stageId = ::g_unlocks.getMultiStageId(name, stageparam)
-  let isMyStreak = StreakNameType == SNT_MY_STREAK_HEADER
+  let isMyStreak = StreakNameType == ::SNT_MY_STREAK_HEADER
   local text = ""
   if (isMyStreak)
-    text = loc("streaks/" + stageId)
+    text = ::loc("streaks/" + stageId)
   else //SNT_OTHER_STREAK_TEXT
   {
-    text = loc("streaks/" + stageId + "/other")
+    text = ::loc("streaks/" + stageId + "/other")
     if (text == "")
-      text = format(loc("streaks/default/other"), loc("streaks/" + stageId))
+      text = format(::loc("streaks/default/other"), ::loc("streaks/" + stageId))
   }
 
   if (stageparam)

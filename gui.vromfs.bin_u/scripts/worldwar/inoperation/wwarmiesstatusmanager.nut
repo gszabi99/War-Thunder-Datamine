@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { get_time_msec } = require("dagor.time")
-
 ::g_ww_map_armies_status_manager <- {
   UPDATE_REFRESH_DELAY = 1000
 
@@ -14,21 +7,21 @@ let { get_time_msec } = require("dagor.time")
   requestUpdated = false
 }
 
-::g_ww_map_armies_status_manager.requestUpdate <- function requestUpdate()
+g_ww_map_armies_status_manager.requestUpdate <- function requestUpdate()
 {
-  this.requestUpdated = true
+  requestUpdated = true
 }
 
-::g_ww_map_armies_status_manager.updateArmiesByStatus <- function updateArmiesByStatus()
+g_ww_map_armies_status_manager.updateArmiesByStatus <- function updateArmiesByStatus()
 {
-  if (!this.requestUpdated)
+  if (!requestUpdated)
     return
 
-  let curTime = get_time_msec()
-  if (curTime - this.lastUpdateTime < UPDATE_REFRESH_DELAY)
+  let curTime = ::dagor.getCurTime()
+  if (curTime - lastUpdateTime < UPDATE_REFRESH_DELAY)
     return
 
-  this._resetCache()
+  _resetCache()
 
   foreach(armyName in ::ww_get_armies_names())
   {
@@ -36,7 +29,7 @@ let { get_time_msec } = require("dagor.time")
     if (!army.hasManageAccess())
       continue
 
-    let cacheByStatus = getTblValue(army.getActionStatus(), this.armiesStateCache, null)
+    let cacheByStatus = ::getTblValue(army.getActionStatus(), armiesStateCache, null)
     if (cacheByStatus == null)
       continue
 
@@ -46,26 +39,26 @@ let { get_time_msec } = require("dagor.time")
       cacheByStatus.common.append(army)
   }
 
-  foreach(_status, cache in this.armiesStateCache)
+  foreach(status, cache in armiesStateCache)
   {
     cache.surrounded.sort(::WwArmy.sortArmiesByUnitType)
     cache.common.sort(::WwArmy.sortArmiesByUnitType)
   }
 
-  this.lastUpdateTime = curTime
-  this.requestUpdated = false
+  lastUpdateTime = curTime
+  requestUpdated = false
 
   ::ww_event("MapArmiesByStatusUpdated")
 }
 
-::g_ww_map_armies_status_manager.getArmiesByStatus <- function getArmiesByStatus(status)
+g_ww_map_armies_status_manager.getArmiesByStatus <- function getArmiesByStatus(status)
 {
-  return getTblValue(status, this.armiesStateCache, {})
+  return ::getTblValue(status, armiesStateCache, {})
 }
 
-::g_ww_map_armies_status_manager._resetCache <- function _resetCache()
+g_ww_map_armies_status_manager._resetCache <- function _resetCache()
 {
-  this.armiesStateCache = {}
+  armiesStateCache = {}
   let statusesByCaching = [
       WW_ARMY_ACTION_STATUS.IDLE,
       WW_ARMY_ACTION_STATUS.IN_MOVE,
@@ -74,7 +67,7 @@ let { get_time_msec } = require("dagor.time")
     ]
 
   foreach(status in statusesByCaching)
-    this.armiesStateCache[status] <- {
+    armiesStateCache[status] <- {
       common = []
       surrounded = []
     }

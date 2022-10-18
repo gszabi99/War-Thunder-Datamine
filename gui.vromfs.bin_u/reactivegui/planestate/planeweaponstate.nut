@@ -1,6 +1,3 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let {interop} = require("%rGui/globals/interop.nut")
 let interopGen = require("%rGui/interopGen.nut")
 
 let OpticAtgmSightVisible = Watched(false)
@@ -47,12 +44,12 @@ let planeState = {
   BulletImpactLineEnable
 }
 
-interop.updateLaserPoint <- function(x, y) {
+::interop.updateLaserPoint <- function(x, y) {
   LaserPoint[0] = x
   LaserPoint[1] = y
 }
 
-interop.updateAdlPoint <- function(x, y) {
+::interop.updateAdlPoint <- function(x, y) {
   AdlPoint[0] = x
   AdlPoint[1] = y
 }

@@ -1,13 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 local { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY
 } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 
 global enum WW_MAP_TOOLTIP_TYPE
 {
@@ -36,7 +28,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
   function initScreen()
   {
-    this.scene.setUserData(this) //to not unload handler even when scene not loaded
+    scene.setUserData(this) //to not unload handler even when scene not loaded
     updateScreen(getUpdatedSpecs())
   }
 
@@ -58,9 +50,9 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     updateScreen(newSpecs)
   }
 
-  function onEventWWLoadOperation(_params = {})
+  function onEventWWLoadOperation(params = {})
   {
-    this.scene.lastCurrentId = ""
+    scene.lastCurrentId = ""
     if (specs.currentType != WW_MAP_TOOLTIP_TYPE.NONE)
       show()
   }
@@ -73,7 +65,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     }
     for (local i = 0; i < WW_MAP_TOOLTIP_TYPE.TOTAL; i++)
     {
-      let key = getTblValue("paramsKey", specifyTypeOrder[i])
+      let key = ::getTblValue("paramsKey", specifyTypeOrder[i])
       if (key in p)
       {
         res.currentType = i
@@ -87,13 +79,13 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
   function hideTooltip()
   {
     specs = getUpdatedSpecs()
-    this.onTooltipObjClose(this.scene)
+    onTooltipObjClose(scene)
   }
 
   function startShowTooltipTimer()
   {
-    this.onTooltipObjClose(this.scene)
-    if (!checkObj(controllerScene))
+    onTooltipObjClose(scene)
+    if (!::checkObj(controllerScene))
       return
 
     if (showTooltipTimer)
@@ -108,21 +100,21 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
   function show()
   {
-    if (!checkObj(this.scene))
+    if (!::checkObj(scene))
       return
 
-    let isShow = specs.currentType != WW_MAP_TOOLTIP_TYPE.NONE && this.isSceneActiveNoModals()
+    let isShow = specs.currentType != WW_MAP_TOOLTIP_TYPE.NONE && isSceneActiveNoModals()
 
-    this.scene.show(isShow)
+    scene.show(isShow)
     if (!isShow)
       return
 
-    if (this.scene.lastCurrentId == specs.currentId)
+    if (scene.lastCurrentId == specs.currentId)
       return
 
-    this.scene.lastCurrentId = specs.currentId
-    this.scene.tooltipId = getWWMapIdHoveredObjectId()
-    this.onGenericTooltipOpen(this.scene)
+    scene.lastCurrentId = specs.currentId
+    scene.tooltipId = getWWMapIdHoveredObjectId()
+    onGenericTooltipOpen(scene)
     updatePos()
 
     if (specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY)
@@ -131,20 +123,20 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
       destroyDescriptionTimer()
 
       descriptionTimer = ::Timer(
-        this.scene, 1, @() updateSelectedArmy(hoveredArmy), this, true
+        scene, 1, @() updateSelectedArmy(hoveredArmy), this, true
       )
     }
 
     if (specs.currentType == WW_MAP_TOOLTIP_TYPE.BATTLE)
     {
-      let battleDescObj = this.scene.findObject("battle_desc")
-      if (checkObj(battleDescObj))
+      let battleDescObj = scene.findObject("battle_desc")
+      if (::checkObj(battleDescObj))
       {
         local maxTeamContentWidth = 0
         foreach(teamName in ["teamA", "teamB"])
         {
-          let teamInfoObj = this.scene.findObject(teamName)
-          if (checkObj(teamInfoObj))
+          let teamInfoObj = scene.findObject(teamName)
+          if (::checkObj(teamInfoObj))
             maxTeamContentWidth = max(teamInfoObj.getSize()[0], maxTeamContentWidth)
         }
 
@@ -154,7 +146,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
         destroyDescriptionTimer()
 
         descriptionTimer = ::Timer(
-          this.scene, 1, @() updateSelectedBattle(hoveredBattle), this, true
+          scene, 1, @() updateSelectedBattle(hoveredBattle), this, true
         )
         updateSelectedBattle(hoveredBattle)
       }
@@ -172,32 +164,32 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
   function updateSelectedArmy(hoveredArmy)
   {
-    if (!checkObj(this.scene) || !hoveredArmy)
+    if (!::checkObj(scene) || !hoveredArmy)
       return
 
     hoveredArmy.update(hoveredArmy.name)
     let armyView = hoveredArmy.getView()
     foreach (fieldId, func in armyView.getRedrawArmyStatusData())
     {
-      let redrawFieldObj = this.scene.findObject(fieldId)
-      if (checkObj(redrawFieldObj))
+      let redrawFieldObj = scene.findObject(fieldId)
+      if (::check_obj(redrawFieldObj))
         redrawFieldObj.setValue(func.call(armyView))
     }
   }
 
   function updateSelectedBattle(hoveredBattle)
   {
-    if (!checkObj(this.scene) || !hoveredBattle)
+    if (!::checkObj(scene) || !hoveredBattle)
       return
 
-    let battleTimerObj = this.scene.findObject("battle_timer")
-    if (!checkObj(battleTimerObj))
+    let battleTimerObj = scene.findObject("battle_timer")
+    if (!::check_obj(battleTimerObj))
       return
     let battleTimerDescObj = battleTimerObj.findObject("battle_timer_desc")
-    if (!checkObj(battleTimerDescObj))
+    if (!::check_obj(battleTimerDescObj))
       return
     let battleTimerValueObj = battleTimerObj.findObject("battle_timer_value")
-    if (!checkObj(battleTimerValueObj))
+    if (!::check_obj(battleTimerValueObj))
       return
 
     let battleView = hoveredBattle.getView()
@@ -205,20 +197,20 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     let hasActivateLeftTime = battleView.hasBattleActivateLeftTime()
     let timeStartAutoBattle = battleView.getTimeStartAutoBattle()
 
-    let descText = hasDurationTime ? loc("debriefing/BattleTime")
-      : hasActivateLeftTime ? loc("worldWar/can_join_countdown")
-      : timeStartAutoBattle != "" ? loc("worldWar/will_start_auto_battle")
+    let descText = hasDurationTime ? ::loc("debriefing/BattleTime")
+      : hasActivateLeftTime ? ::loc("worldWar/can_join_countdown")
+      : timeStartAutoBattle != "" ? ::loc("worldWar/will_start_auto_battle")
       : ""
     let descValue = hasDurationTime ? battleView.getBattleDurationTime()
       : hasActivateLeftTime ? battleView.getBattleActivateLeftTime()
       : timeStartAutoBattle
 
-    battleTimerDescObj.setValue(descText + loc("ui/colon"))
+    battleTimerDescObj.setValue(descText + ::loc("ui/colon"))
     battleTimerValueObj.setValue(descValue)
     battleTimerObj.show(hasDurationTime || hasActivateLeftTime || timeStartAutoBattle != "")
 
-    let statusObj = this.scene.findObject("battle_status_text")
-    if (checkObj(statusObj))
+    let statusObj = scene.findObject("battle_status_text")
+    if (::check_obj(statusObj))
       statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
 
     let needShowWinChance = battleView.needShowWinChance()
@@ -227,7 +219,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
       return
     let winCahnceTextObj = winCahnceObj.findObject("win_chance_text")
     let percent = battleView.getAutoBattleWinChancePercentText()
-    if (checkObj(winCahnceTextObj) && percent != "")
+    if (::check_obj(winCahnceTextObj) && percent != "")
       winCahnceTextObj.setValue(percent)
     else
       winCahnceObj.show(false)
@@ -244,9 +236,9 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     return ""
   }
 
-  function onUpdateTooltip(_obj, _dt)
+  function onUpdateTooltip(obj, dt)
   {
-    if (!this.isSceneActiveNoModals())
+    if (!isSceneActiveNoModals())
       return
 
     updatePos()
@@ -256,6 +248,6 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
   {
     let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     cursorPos[0] = cursorPos[0]  + "+1@wwMapTooltipOffset"
-    ::g_dagui_utils.setObjPosition(this.scene, cursorPos, ["@bw", "@bh"])
+    ::g_dagui_utils.setObjPosition(scene, cursorPos, ["@bw", "@bh"])
   }
 }

@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { pow } = require("math")
-let { subscribe, send } = require("eventbus")
 let { format } = require("string")
 let persistent = {
   unitsCfg = null
@@ -51,7 +44,7 @@ let function init()
     }
     persistent.unitsCfg.append(units)
   }
-  send("updateExtWatched", { isInitializedMeasureUnits = isInitialized()})
+  ::call_darg("updateExtWatched", { isInitializedMeasureUnits = isInitialized()})
 }
 
 let function getOption(useroptId)
@@ -93,12 +86,12 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
     val = val * unit.koef
     if (shouldRoundValue && isPresize)
       return format("%d", ((val / unit.roundAfterBy + 0.5).tointeger() * unit.roundAfterBy).tointeger())
-    let roundPrecision = (unit.round == 0 || !isPresize) ? 1 : pow(0.1, unit.round)
+    let roundPrecision = (unit.round == 0 || !isPresize) ? 1 : ::pow(0.1, unit.round)
     return ::g_string.floatToStringRounded(val, roundPrecision)
   })
   local result = separator.join(valuesList)
   if (addMeasureUnits)
-    result = "{0} {1}".subst(result, loc($"measureUnits/{unit.name}"))
+    result = "{0} {1}".subst(result, ::loc($"measureUnits/{unit.name}"))
   return result
 }
 
@@ -108,9 +101,9 @@ let function isMetricSystem(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 
-subscribe("updateIsInitializedMeasureUnits", @(_) send("updateExtWatched", {
-  isInitializedMeasureUnits = isInitialized()
-}))
+::cross_call_api.measureUnits <- {
+  isInitialized = @() isInitialized()
+}
 
 return {
   init = init

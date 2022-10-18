@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurLoadingBgData } = require("%scripts/loading/loadingBgData.nut")
 
@@ -25,7 +20,7 @@ let function initOnce()
   bannedScreens = ::buildTableFromBlk(blk)
 
   // validation
-  foreach (screenId, _w in getCurLoadingBgData().list)
+  foreach (screenId, w in getCurLoadingBgData().list)
     if (screenId not in bannedScreens)
       return
 
@@ -60,8 +55,8 @@ let function isLoadingScreenBanned(screenId)
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_p) invalidateCache()
-  GameLocalizationChanged = @(_p) invalidateCache()
+  SignOut = @(p) invalidateCache()
+  GameLocalizationChanged = @(p) invalidateCache()
 })
 
 return {

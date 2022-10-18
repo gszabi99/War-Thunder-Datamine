@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -110,9 +104,9 @@ let function getEntitlementAmount(ent)
 let function getEntitlementTimeText(ent)
 {
   if ("ttl" in ent)
-    return ent.ttl + loc("measureUnits/days")
+    return ent.ttl + ::loc("measureUnits/days")
   if ("httl" in ent)
-    return ent.httl + loc("measureUnits/hours")
+    return ent.httl + ::loc("measureUnits/hours")
   return ""
 }
 
@@ -121,15 +115,15 @@ let function getEntitlementName(ent)
   local name = ""
   if (("useGroupAmount" in ent) && ent.useGroupAmount && ("group" in ent))
   {
-    name = loc("charServer/entitlement/" + ent.group)
+    name = ::loc("charServer/entitlement/" + ent.group)
     let amountStr = ::g_language.decimalFormat(getEntitlementAmount(ent))
     if(name.indexof("%d") != null)
       name = ::stringReplace(name, "%d", amountStr)
     else
-      name = loc("charServer/entitlement/" + ent.group, {amount = amountStr})
+      name = ::loc("charServer/entitlement/" + ent.group, {amount = amountStr})
   }
   else
-    name = loc("charServer/entitlement/" + getEntitlementLocId(ent))
+    name = ::loc("charServer/entitlement/" + getEntitlementLocId(ent))
 
   let timeText = getEntitlementTimeText(ent)
   if (timeText!="")
@@ -140,7 +134,7 @@ let function getEntitlementName(ent)
 let function getFirstPurchaseAdditionalAmount(ent)
 {
   if (!::has_entitlement(ent.name))
-    return getTblValue("goldIncomeFirstBuy", ent, 0)
+    return ::getTblValue("goldIncomeFirstBuy", ent, 0)
 
   return 0
 }
@@ -150,19 +144,19 @@ let function getEntitlementPrice(ent)
   if (ent?.onlinePurchase ?? false) {
     let info = bundlesShopInfo.value?[ent.name]
     if (info)
-      return loc($"priceText/{info?.shop_price_curr}", { price = info?.shop_price ?? 0 }, "")
+      return ::loc($"priceText/{info?.shop_price_curr}", { price = info?.shop_price ?? 0 }, "")
 
-    let priceText = loc("price/" + ent.name, "")
+    let priceText = ::loc("price/" + ent.name, "")
     if (priceText == "")
       return ""
 
-    let markup = ::steam_is_running() ? 1.0 + ::getSteamMarkUp()/100.0 : 1.0
+    let markup = ::steam_is_running() ? 1.0 + getSteamMarkUp()/100.0 : 1.0
     local totalPrice = priceText.tofloat() * markup
     let discount = ::g_discount.getEntitlementDiscount(ent.name)
     if (discount)
       totalPrice -= totalPrice * discount * 0.01
 
-    return format(loc("price/common"),
+    return format(::loc("price/common"),
       ent?.chapter == "eagles" ? totalPrice.tostring() : ::g_language.decimalFormat(totalPrice))
   }
   else if ("goldCost" in ent)
@@ -177,9 +171,9 @@ let function getEntitlementPriceFloat(ent) {
   if (ent?.onlinePurchase) {
     local costText = ""
     if (::steam_is_running())
-      costText = loc($"price/steam/{ent.name}", "")
+      costText = ::loc($"price/steam/{ent.name}", "")
     if (costText == "")
-      costText = loc($"price/{ent.name}", "")
+      costText = ::loc($"price/{ent.name}", "")
 
     if (costText != "")
       cost = costText.tofloat()
@@ -240,7 +234,7 @@ let function isBoughtEntitlement(ent) {
   {
     let isBought = callee()
     foreach(name in bundles[ent.name])
-      if (!this.goods?[name] || !isBought(this.goods[name]))
+      if (!goods?[name] || !isBought(goods[name]))
         return false
     return true
   }
@@ -248,7 +242,7 @@ let function isBoughtEntitlement(ent) {
   return (canBuyEntitlement(ent) && ::has_entitlement(realname))
 }
 
-let function getEntitlementDescription(product, _productId) {
+let function getEntitlementDescription(product, productId) {
   if (product == null)
     return ""
 
@@ -257,7 +251,7 @@ let function getEntitlementDescription(product, _productId) {
   let entLocId = getEntitlementLocId(product)
   if (entLocId == "PremiumAccount")
   {
-    let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge({text = loc(d.locId, paramTbl)}))
+    let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge({text = ::loc(d.locId, paramTbl)}))
 
     return formatLocalizationArrayToDescription(locArr)
   }
@@ -267,32 +261,32 @@ let function getEntitlementDescription(product, _productId) {
     paramTbl.amount <- getEntitlementAmount(product).tointeger()
 
   let locId = $"charServer/entitlement/{entLocId}/desc"
-  resArr.append(loc(locId, paramTbl))
+  resArr.append(::loc(locId, paramTbl))
 
   foreach(giftName in product?.entitlementGift ?? [])
   {
     let config = giftName.slice(0, 4) == "Rate" ? getEntitlementConfig(product.name) : getEntitlementConfig(giftName)
-    resArr.append(format(loc("charServer/gift/entitlement"), getEntitlementName(config)))
+    resArr.append(format(::loc("charServer/gift/entitlement"), getEntitlementName(config)))
   }
 
   foreach(airName in product?.aircraftGift ?? [])
-    resArr.append(format(loc("charServer/gift/aircraft"), ::getUnitName(airName)))
+    resArr.append(format(::loc("charServer/gift/aircraft"), ::getUnitName(airName)))
 
   if (product?.goldIncome && product?.chapter!="eagles")
-    resArr.append(format(loc("charServer/gift"), "".concat(product.goldIncome, loc("gold/short/colored"))))
+    resArr.append(format(::loc("charServer/gift"), "".concat(product.goldIncome, ::loc("gold/short/colored"))))
 
   if ("afterGiftsDesc" in product)
-    resArr.append("\n{0}".subst(loc(product.afterGiftsDesc)))
+    resArr.append("\n{0}".subst(::loc(product.afterGiftsDesc)))
 
   if (product?.onlinePurchase && !isBoughtEntitlement(product) && ::steam_is_running())
-    resArr.append(loc("charServer/web_purchase"))
+    resArr.append(::loc("charServer/web_purchase"))
 
   if (product?.chapter == "warpoints")
   {
     let days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
     if (days > 0)
-      resArr.append(colorize("warningTextColor",
-        loc("charServer/chapter/warpoints/expireWarning", { days = days })))
+      resArr.append(::colorize("warningTextColor",
+        ::loc("charServer/chapter/warpoints/expireWarning", { days = days })))
   }
 
   return "\n".join(resArr)

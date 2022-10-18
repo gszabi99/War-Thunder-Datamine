@@ -1,11 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { ceil } = require("math")
-
 let BhvHelpFrame = class
 {
   isUpdateInProgressPID  = ::dagui_propid.add_name_id("_isUpdateInProgress")
@@ -18,7 +10,7 @@ let BhvHelpFrame = class
         if (obj.isValid())
           updateView(obj)
       })
-    return RETCODE_NOTHING
+    return ::RETCODE_NOTHING
   }
 
   function setValue(obj, newValue)
@@ -35,7 +27,7 @@ let BhvHelpFrame = class
 
     if (obj?.value)
     {
-      let markup = ::g_hints.buildHintMarkup(loc(obj.value), {})
+      let markup = ::g_hints.buildHintMarkup(::loc(obj.value), {})
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), null)
     }
 
@@ -44,7 +36,7 @@ let BhvHelpFrame = class
       needToFlow = true;
 
     if (obj.getParent().getSize()[0] < obj.getSize()[0])
-      obj.getParent().width = "0.02@sf+" + ceil(obj.getSize()[0])
+      obj.getParent().width = "0.02@sf+" + ::ceil(obj.getSize()[0])
 
     obj.getParent()["verticalFlow"] = needToFlow ? "yes":"no"
 

@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format } = require("string")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -17,6 +12,9 @@ let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut
 let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams
 } = require("%scripts/weaponry/weaponryPresets.nut")
 
+global const UNIT_WEAPONS_ZERO    = 0
+global const UNIT_WEAPONS_WARNING = 1
+global const UNIT_WEAPONS_READY   = 2
 const KGF_TO_NEWTON = 9.807
 
 let weaponsStatusNameByStatusCode = {
@@ -286,15 +284,15 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       currentTypeName = WEAPON_TYPE.TORPEDOES
       weaponTag = WEAPON_TAG.TORPEDO
     }
-    else if (unitType == ES_UNIT_TYPE_TANK ||
-      isInArray(weapon.trigger, [ TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON,
+    else if (unitType == ::ES_UNIT_TYPE_TANK ||
+      ::isInArray(weapon.trigger, [ TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON,
         TRIGGER_TYPE.ADD_GUN, TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.AGM, TRIGGER_TYPE.AAM,
         TRIGGER_TYPE.GUIDED_BOMBS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE,
         TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES]))
     { //not a turret
       currentTypeName = weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && typeof(weaponBlk?.bullet) == "instance"
-          && isCaliberCannon(1000 * getTblValue("caliber", weaponBlk?.bullet, 0)))
+          && isCaliberCannon(1000 * ::getTblValue("caliber", weaponBlk?.bullet, 0)))
         currentTypeName = WEAPON_TYPE.CANNON
     }
     else if (!(weapon?.showInWeaponMenu ?? false)
@@ -369,13 +367,13 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         })
       }
     }
-    let needBulletParams = !isInArray(currentTypeName,
+    let needBulletParams = !::isInArray(currentTypeName,
       [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES])
 
     if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag])
     {
       let itemBlk = weaponBlk[weaponTag]
-      let isGun = isInArray(currentTypeName, [WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNON])
+      let isGun = ::isInArray(currentTypeName, [WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNON])
       item.isGun = isGun
       item.caliber = itemBlk?.caliber ?? item.caliber
       item.massKg = itemBlk?.mass ?? item.massKg
@@ -389,7 +387,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       item.bulletType = itemBlk?.bulletType
       item.blk = weaponBlkPath
 
-      if (isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM, WEAPON_TYPE.GUIDED_BOMBS ]))
+      if (::isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM, WEAPON_TYPE.GUIDED_BOMBS ]))
       {
         item.machMax  <- itemBlk?.machMax ?? 0
         item.maxSpeed <- (itemBlk?.maxSpeed ?? 0) || (itemBlk?.endSpeed ?? 0)
@@ -596,17 +594,17 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
 {
   let res = []
-  let colon = loc("ui/colon")
+  let colon = ::loc("ui/colon")
 
   local massText = null
   if (weapon.massLbs > 0)
-    massText = format(loc("mass/lbs"), weapon.massLbs)
+    massText = format(::loc("mass/lbs"), weapon.massLbs)
   else if (weapon.massKg > 0)
-    massText = format(loc("mass/kg"), weapon.massKg)
+    massText = format(::loc("mass/kg"), weapon.massKg)
   if (massText)
-    res.append("".concat(loc("shop/tank_mass"), " ", massText))
+    res.append("".concat(::loc("shop/tank_mass"), " ", massText))
 
-  if (isInArray(weaponType, [ "rockets", "agm", "aam", "guided bombs" ]))
+  if (::isInArray(weaponType, [ "rockets", "agm", "aam", "guided bombs" ]))
   {
     if (weapon?.guidanceType != null || weapon?.autoAiming != null)
     {
@@ -615,60 +613,60 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
         : weapon.autoAiming ? "semiautomatic"
         : "manual"
       let guidanceTxt = aimingType != ""
-        ? loc($"missile/aiming/{aimingType}")
-        : loc($"missile/guidance/{weapon.guidanceType}")
-      res.append("".concat(loc("missile/guidance"), colon, guidanceTxt))
+        ? ::loc($"missile/aiming/{aimingType}")
+        : ::loc($"missile/guidance/{weapon.guidanceType}")
+      res.append("".concat(::loc("missile/guidance"), colon, guidanceTxt))
       if (weapon?.guidanceECCM)
-        res.append("".concat(loc("missile/eccm"), colon, loc("options/yes")))
+        res.append("".concat(::loc("missile/eccm"), colon, ::loc("options/yes")))
     }
     if (weapon?.allAspect != null)
-      res.append("".concat(loc("missile/aspect"), colon,
-        loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))))
+      res.append("".concat(::loc("missile/aspect"), colon,
+        ::loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))))
     if (weapon?.radarSignal)
     {
-      let radarSignalTxt = loc($"missile/radarSignal/{weapon.radarSignal}")
-      res.append("".concat(loc("missile/radarSignal"), colon, radarSignalTxt))
+      let radarSignalTxt = ::loc($"missile/radarSignal/{weapon.radarSignal}")
+      res.append("".concat(::loc("missile/radarSignal"), colon, radarSignalTxt))
     }
     if (weapon?.seekerRangeRearAspect)
-      res.append("".concat(loc("missile/seekerRange/rearAspect"), colon,
+      res.append("".concat(::loc("missile/seekerRange/rearAspect"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRangeRearAspect)))
     if (weapon?.seekerRangeAllAspect)
-      res.append("".concat(loc("missile/seekerRange/allAspect"), colon,
+      res.append("".concat(::loc("missile/seekerRange/allAspect"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRangeAllAspect)))
     if (weapon?.seekerRange)
-      res.append("".concat(loc("missile/seekerRange"), colon,
+      res.append("".concat(::loc("missile/seekerRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRange)))
     if (weapon?.seekerECCM)
-      res.append("".concat(loc("missile/eccm"), colon, loc("options/yes")))
+      res.append("".concat(::loc("missile/eccm"), colon, ::loc("options/yes")))
     if (weapon?.launchRange)
-      res.append("".concat(loc("missile/launchRange"), colon,
+      res.append("".concat(::loc("missile/launchRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.launchRange)))
     if (weapon?.machMax)
-      res.append("".concat(loc("rocket/maxSpeed"), colon,
-        format("%.1f %s", weapon.machMax, loc("measureUnits/machNumber"))))
+      res.append("".concat(::loc("rocket/maxSpeed"), colon,
+        format("%.1f %s", weapon.machMax, ::loc("measureUnits/machNumber"))))
     else if (weapon?.maxSpeed)
-      res.append("".concat(loc("rocket/maxSpeed"), colon,
+      res.append("".concat(::loc("rocket/maxSpeed"), colon,
         ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(weapon.maxSpeed)))
     if (weapon?.loadFactorMax)
-      res.append("".concat(loc("missile/loadFactorMax"), colon,
+      res.append("".concat(::loc("missile/loadFactorMax"), colon,
         ::g_measure_type.GFORCE.getMeasureUnitsText(weapon.loadFactorMax)))
     if (weapon?.loadFactorLimit)
-      res.append("".concat(loc("missile/loadFactorLimit"), colon,
+      res.append("".concat(::loc("missile/loadFactorLimit"), colon,
         ::g_measure_type.GFORCE.getMeasureUnitsText(weapon.loadFactorLimit)))
     if (weapon?.operatedDist)
-      res.append("".concat(loc("firingRange"), colon,
+      res.append("".concat(::loc("firingRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.operatedDist)))
     if (weapon?.guaranteedRange)
-      res.append("".concat(loc("guaranteedRange"), colon,
+      res.append("".concat(::loc("guaranteedRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.guaranteedRange)))
     if (weapon?.timeLife)
     {
       if (weapon?.guidanceType != null || weapon?.autoAiming != null)
-        res.append("".concat(loc("missile/timeGuidance"), colon,
-          format("%.1f %s", weapon.timeLife, loc("measureUnits/seconds"))))
+        res.append("".concat(::loc("missile/timeGuidance"), colon,
+          format("%.1f %s", weapon.timeLife, ::loc("measureUnits/seconds"))))
       else
-        res.append("".concat(loc("missile/timeSelfdestruction"), colon,
-          format("%.1f %s", weapon.timeLife, loc("measureUnits/seconds"))))
+        res.append("".concat(::loc("missile/timeSelfdestruction"), colon,
+          format("%.1f %s", weapon.timeLife, ::loc("measureUnits/seconds"))))
     }
   }
   else if (weaponType == "torpedoes")
@@ -700,44 +698,44 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     }
 
     if (weapon?.maxSpeedInWater)
-      res.append("".concat(loc("torpedo/maxSpeedInWater"), colon,
+      res.append("".concat(::loc("torpedo/maxSpeedInWater"), colon,
         ::g_measure_type.SPEED.getMeasureUnitsText(weapon?.maxSpeedInWater)))
 
     if (weapon?.distToLive)
-      res.append("".concat(loc("torpedo/distanceToLive"), colon,
+      res.append("".concat(::loc("torpedo/distanceToLive"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon?.distToLive)))
 
     if (weapon?.diveDepth) {
       let diveDepth = unit.unitType == unitTypes.SHIP && !::get_option_torpedo_dive_depth_auto()
           ? ::get_option_torpedo_dive_depth()
           : weapon?.diveDepth
-      res.append("".concat(loc("bullet_properties/diveDepth"), colon,
+      res.append("".concat(::loc("bullet_properties/diveDepth"), colon,
         ::g_measure_type.DEPTH.getMeasureUnitsText(diveDepth)))
     }
 
     if (weapon?.armDistance)
-      res.append("".concat(loc("torpedo/armingDistance"), colon,
+      res.append("".concat(::loc("torpedo/armingDistance"), colon,
         ::g_measure_type.DEPTH.getMeasureUnitsText(weapon?.armDistance)))
   }
 
   if (weapon?.machLimit)
-    res.append("".concat(loc("bombProperties/machLimit"), colon,
-      format("%.1f %s", weapon.machLimit, loc("measureUnits/machNumber"))))
+    res.append("".concat(::loc("bombProperties/machLimit"), colon,
+      format("%.1f %s", weapon.machLimit, ::loc("measureUnits/machNumber"))))
 
   if (weapon.explosiveType != null)
   {
     let { explosiveType, explosiveMass, massKg, hasAdditionalExplosiveInfo } = weapon
-    res.append("".concat(loc("bullet_properties/explosiveType"), colon,
-      loc($"explosiveType/{explosiveType}")))
+    res.append("".concat(::loc("bullet_properties/explosiveType"), colon,
+      ::loc($"explosiveType/{explosiveType}")))
     if (explosiveMass)
     {
       let measureType = ::g_measure_type.getTypeByName("kg", true)
-      res.append("".concat(loc("bullet_properties/explosiveMass"), colon,
+      res.append("".concat(::loc("bullet_properties/explosiveMass"), colon,
         measureType.getMeasureUnitsText(explosiveMass)))
       if (hasAdditionalExplosiveInfo) {
         let tntEqText = ::g_dmg_model.getTntEquivalentText(explosiveType, explosiveMass)
         if (tntEqText.len())
-          res.append("".concat(loc("bullet_properties/explosiveMassInTNTEquivalent"), colon, tntEqText))
+          res.append("".concat(::loc("bullet_properties/explosiveMassInTNTEquivalent"), colon, tntEqText))
 
         if (weaponType == "bombs" && unit.unitType != unitTypes.SHIP)
         {
@@ -746,15 +744,15 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
           {
             let valueText = destrTexts[$"{key}Text"]
             if (valueText.len())
-              res.append("".concat(loc($"bombProperties/{key}"), colon, valueText))
+              res.append("".concat(::loc($"bombProperties/{key}"), colon, valueText))
           }
         }
       }
     }
   }
   if (weapon?.warhead)
-    res.append("".concat(loc("rocket/warhead"), colon,
-      loc("rocket/warhead/{0}".subst(weapon.warhead))))
+    res.append("".concat(::loc("rocket/warhead"), colon,
+      ::loc("rocket/warhead/{0}".subst(weapon.warhead))))
   return "".concat(res.len() ? newLine : "", newLine.join(res))
 }
 

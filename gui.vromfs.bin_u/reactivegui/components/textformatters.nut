@@ -1,17 +1,14 @@
-from "%rGui/globals/ui_library.nut" import *
-
-let cross_call = require("%rGui/globals/cross_call.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 let colors = require("%rGui/style/colors.nut")
 let {toIntegerSafe} = require("%sqstd/string.nut")
 
-let blockInterval = fpx(6)
+let blockInterval = ::fpx(6)
 let headerMargin = 2*blockInterval
-let borderWidth = dp(1)
+let borderWidth = ::dp(1)
 
 let defStyle = {
   defTextColor = colors.menu.commonTextColor
-  ulSpacing = fpx(15)
+  ulSpacing = ::fpx(15)
   ulGap = blockInterval
   ulBullet = {rendObj = ROBJ_TEXT, font = fontsState.get("normal"), text=" • "}
   ulNoBullet= { rendObj = ROBJ_TEXT, font = fontsState.get("normal"), text="   " }
@@ -47,7 +44,7 @@ let function url(data, fmtFunc=noTextFormatFunc, style=defStyle){
   if (data?.url==null)
     return textArea(data, fmtFunc, style)
   let stateFlags = Watched(0)
-  let onClick = @() cross_call.openUrl(data.url)
+  let onClick = @() ::cross_call.openUrl(data.url)
   return function() {
     let color = stateFlags.value & S_HOVER ? style.urlHoverColor : style.urlColor
     return {
@@ -119,7 +116,7 @@ let hangingIndent = calc_comp_size(defStyle.ulNoBullet)[0]
 
 let bullets = mkList(mkUlElement(defStyle.ulBullet))
 let indent = mkList(mkUlElement(defStyle.ulNoBullet))
-let separatorCmp = {rendObj = ROBJ_FRAME borderWidth = [0,0,borderWidth, 0] size = [flex(),blockInterval], opacity=0.2, margin=[blockInterval, blockInterval, fpx(20), 0]}
+let separatorCmp = {rendObj = ROBJ_FRAME borderWidth = [0,0,borderWidth, 0] size = [flex(),blockInterval], opacity=0.2, margin=[blockInterval, blockInterval, ::fpx(20), 0]}
 
 let function textParsed(params, formatTextFunc=noTextFormatFunc, style=defStyle){
   if (params?.v == "----")
@@ -158,19 +155,19 @@ let function columns(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
 
 let function video(obj, _formatTextFunc, style=defStyle) {
   let stateFlags = Watched(0)
-  let width = fpx(obj?.imageWidth ?? 300)
-  let height = fpx(obj?.imageHeight ?? 80)
+  let width = ::fpx(obj?.imageWidth ?? 300)
+  let height = ::fpx(obj?.imageHeight ?? 80)
   return @() {
     borderColor = stateFlags.value & S_HOVER ? style.urlHoverColor : Color(25,25,25)
-    borderWidth = fpx(1)
+    borderWidth = ::fpx(1)
     watch = stateFlags
     onElemState = @(sf) stateFlags(sf)
     behavior = Behaviors.Button
     fillColor = Color(12,12,12,255)
     rendObj = ROBJ_BOX
     size = [width, height]
-    padding= fpx(1)
-    margin = fpx(5)
+    padding= ::fpx(1)
+    margin = ::fpx(5)
     valign = ALIGN_BOTTOM
     hplace = ALIGN_CENTER
     keepAspect = true image = obj?.image
@@ -180,11 +177,11 @@ let function video(obj, _formatTextFunc, style=defStyle) {
       halign = ALIGN_CENTER
       size = [flex(), SIZE_TO_CONTENT]
       children = {rendObj = ROBJ_TEXT text = obj?.caption
-        ?? loc("Watch video") padding = fpx(5)}
+        ?? ::loc("Watch video") padding = ::fpx(5)}
     })
     onClick = function() {
       if (obj?.v)
-        cross_call.openUrl(obj.v)
+        ::cross_call.openUrl(obj.v)
     }
   }.__update(obj)
 }
@@ -192,16 +189,16 @@ let function video(obj, _formatTextFunc, style=defStyle) {
 let function image(obj, _formatTextFunc=noTextFormatFunc, style=defStyle) {
   return {
     rendObj = ROBJ_IMAGE
-    image=Picture(obj.v)
+    image=::Picture(obj.v)
     maxWidth = pw(100)
     size = [obj?.width!=null
-      ? fpx(obj.width) : flex(), obj?.height != null
-        ? fpx(obj.height) : fpx(200)]
+      ? ::fpx(obj.width) : flex(), obj?.height != null
+        ? ::fpx(obj.height) : ::fpx(200)]
     keepAspect=true padding=style.padding
     children = {
       rendObj = ROBJ_TEXT text = obj?.caption vplace = ALIGN_BOTTOM
       fontFxColor = Color(0,0,0,150)
-      fontFxFactor = min(64, fpx(64))
+      fontFxFactor = min(64, ::fpx(64))
       fontFx = FFT_GLOW
     }
     hplace = ALIGN_CENTER

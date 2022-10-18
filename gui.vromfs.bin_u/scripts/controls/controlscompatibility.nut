@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 // DEPRECATED
 // Interface of ControlsPreset and ControlsManager for controls.nut
 // TODO: Rewrite controls with new ControlsPreset and ControlsManager classes
@@ -78,7 +73,7 @@ let joystick_params_template = {
 
     let curPreset = ::g_controls_manager.getCurPreset()
     foreach (axisName, axis in curPreset.axes)
-      if (getTblValue("mouseAxisId", axis, -1) == idx)
+      if (::getTblValue("mouseAxisId", axis, -1) == idx)
         return axisName
 
     return ""
@@ -89,8 +84,8 @@ let joystick_params_template = {
       return
 
     let curPreset = ::g_controls_manager.getCurPreset()
-    foreach (_axisName, axis in curPreset.axes)
-      if (getTblValue("mouseAxisId", axis, -1) == idx)
+    foreach (axisName, axis in curPreset.axes)
+      if (::getTblValue("mouseAxisId", axis, -1) == idx)
         axis["mouseAxisId"] <- -1
 
     if (name == "")
@@ -109,7 +104,7 @@ let joystick_params_template = {
     ::g_controls_manager.commitControls()
   }
 
-  applyParams = function(_joy) {
+  applyParams = function(joy) {
     ::g_controls_manager.commitControls()
   }
 
@@ -159,12 +154,12 @@ let joystick_params_template = {
     ::g_controls_manager.notifyPresetModified()
 }
 
-::restore_default_controls <- function restore_default_controls(_preset)
+::restore_default_controls <- function restore_default_controls(preset)
 {
   // Dummy. Preset loading performed by set_controls_preset later
 }
 
-::joystick_set_cur_values <- function joystick_set_cur_values(_settings)
+::joystick_set_cur_values <- function joystick_set_cur_values(settings)
 {
   // Settings already changed by JoystickParams
   ::g_controls_manager.commitControls()

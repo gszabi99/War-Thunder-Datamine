@@ -1,8 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 /*
 !!!!!
 This is bad module cause it depends on loc global function and on specific localization keys
@@ -21,7 +16,7 @@ let math = require("math")
 
 let {TIME_MINUTE_IN_SECONDS, TIME_HOUR_IN_SECONDS} = timeBase
 
-local function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = loc) {
+local function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = ::loc) {
   let res = []
   let sign = time >= 0 ? "" : i18n("ui/minus")
   time = math.fabs(time.tofloat())
@@ -69,7 +64,7 @@ local function hoursToString(time, full = true, useSeconds = false, dontShowZero
 }
 
 
-local function secondsToString(value, useAbbreviations = true, dontShowZeroParam = false, secondsFraction = 0, i18n = loc) {
+local function secondsToString(value, useAbbreviations = true, dontShowZeroParam = false, secondsFraction = 0, i18n = ::loc) {
   value = value != null ? value.tofloat() : 0.0
   let s = (math.fabs(value) + 0.5).tointeger()
   let res = []
@@ -114,11 +109,11 @@ local function secondsToString(value, useAbbreviations = true, dontShowZeroParam
 let function buildDateStr(timeTable) {
   let year = timeTable?.year ?? -1
   let locId = year > 0 ? "date_format" : "date_format_short"
-  return loc(locId, {
+  return ::loc(locId, {
     year = year
     day = timeTable?.day ?? -1
-    month = loc("sm_month_{0}".subst((timeTable?.month ?? -1)+1))
-    dayOfWeek = loc("weekday_{0}".subst((timeTable?.dayOfWeek ?? -1)+1))
+    month = ::loc("sm_month_{0}".subst((timeTable?.month ?? -1)+1))
+    dayOfWeek = ::loc("weekday_{0}".subst((timeTable?.dayOfWeek ?? -1)+1))
   })
 }
 

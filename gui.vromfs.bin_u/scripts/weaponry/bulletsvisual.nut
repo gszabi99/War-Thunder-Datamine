@@ -1,10 +1,4 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { file_exists } = require("dagor.fs")
-let { floor, round_by_value, roundToDigits, round } = require("%sqstd/math.nut")
+let stdMath = require("%sqstd/math.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getBulletsSetData,
         getBulletAnnotation,
@@ -39,7 +33,7 @@ let function resetBulletIcons() {
 }
 
 addListenersWithoutEnv({
-  GuiSceneCleared = @(_p) resetBulletIcons() // Resolution or UI Scale could change
+  GuiSceneCleared = @(p) resetBulletIcons() // Resolution or UI Scale could change
 })
 
 let function initBulletIcons(blk = null)
@@ -96,7 +90,7 @@ let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = f
           ? 1 : min(MAX_BULLETS_ON_ICON, (1.0 / ratio).tointeger())
         if (bulletsSet.catridge)
           maxAmountInView = min(bulletsSet.catridge, maxAmountInView)
-        count = length * max(1, floor(maxAmountInView / length))
+        count = length * max(1, ::floor(maxAmountInView / length))
       }
 
       let totalWidth = 100.0
@@ -167,17 +161,17 @@ let function getArmorPiercingViewData(armorPiercing, dist)
       angles.sort(@(a,b) a <=> b)
       let headRow = {
         text = ""
-        values = ::u.map(angles, function(v) { return { value = v + loc("measureUnits/deg") } })
+        values = ::u.map(angles, function(v) { return { value = v + ::loc("measureUnits/deg") } })
       }
       res.append(headRow)
     }
 
     let row = {
-      text = dist[ind] + loc("measureUnits/meters_alt")
+      text = dist[ind] + ::loc("measureUnits/meters_alt")
       values = []
     }
     foreach(angle in angles)
-      row.values.append({ value = $"{armorTbl?[angle] ?? 0}{loc("measureUnits/mm")}" })
+      row.values.append({ value = $"{armorTbl?[angle] ?? 0}{::loc("measureUnits/mm")}" })
     res.append(row)
   }
   return res
@@ -194,11 +188,11 @@ let function addArmorPiercingToDesc(bulletsData, descTbl)
     ? getWeaponNameByBlkPath(bulletsData.weaponBlkPath)
     : ""
 
-  let bulletName = currWeaponName != "" ? loc($"weapons/{currWeaponName}") : ""
+  let bulletName = currWeaponName != "" ? ::loc($"weapons/{currWeaponName}") : ""
   let header = "\n".concat(
-    "".concat(loc("bullet_properties/armorPiercing"),
-      bulletName != "" ? $"{loc("ui/colon")}{bulletName}" : "")
-    format("(%s / %s)", loc("distance"), loc("bullet_properties/hitAngle"))
+    "".concat(::loc("bullet_properties/armorPiercing"),
+      bulletName != "" ? $"{::loc("ui/colon")}{bulletName}" : "")
+    format("(%s / %s)", ::loc("distance"), ::loc("bullet_properties/hitAngle"))
   )
 
   descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({props, header})
@@ -218,15 +212,15 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
     let { distance, speed, horAngles, verAngles } = bulletsData.sonicDamage
     let props = []
     if (distance != null)
-      addProp(props, loc("sonicDamage/distance"), ::g_measure_type.DEPTH.getMeasureUnitsText(distance))
+      addProp(props, ::loc("sonicDamage/distance"), ::g_measure_type.DEPTH.getMeasureUnitsText(distance))
     if (speed != null)
-      addProp(props, loc("sonicDamage/speed"), ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(speed))
-    let degText = loc("measureUnits/deg")
+      addProp(props, ::loc("sonicDamage/speed"), ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(speed))
+    let degText = ::loc("measureUnits/deg")
     if (horAngles != null)
-      addProp(props, loc("sonicDamage/horAngles"),
+      addProp(props, ::loc("sonicDamage/horAngles"),
         format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
     if (verAngles != null)
-      addProp(props, loc("sonicDamage/verAngles"),
+      addProp(props, ::loc("sonicDamage/verAngles"),
         format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
     descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props })
   }
@@ -235,27 +229,27 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
     return
 
   if (bulletsData.caliber > 0)
-    addProp(p, loc("bullet_properties/caliber"), round_by_value(bulletsData.caliber,
-      isCaliberCannon(bulletsData.caliber) ? 1 : 0.01) + " " + loc("measureUnits/mm"))
+    addProp(p, ::loc("bullet_properties/caliber"), stdMath.round_by_value(bulletsData.caliber,
+      isCaliberCannon(bulletsData.caliber) ? 1 : 0.01) + " " + ::loc("measureUnits/mm"))
   if (bulletsData.mass > 0)
-    addProp(p, loc("bullet_properties/mass"),
+    addProp(p, ::loc("bullet_properties/mass"),
       ::g_measure_type.getTypeByName("kg", true).getMeasureUnitsText(bulletsData.mass))
   if (bulletsData.speed > 0)
-    addProp(p, loc("bullet_properties/speed"),
-      format("%.0f %s", bulletsData.speed, loc("measureUnits/metersPerSecond_climbSpeed")))
+    addProp(p, ::loc("bullet_properties/speed"),
+      format("%.0f %s", bulletsData.speed, ::loc("measureUnits/metersPerSecond_climbSpeed")))
 
   let maxSpeed = (bulletsData?.maxSpeed ?? 0) || (bulletsData?.endSpeed ?? 0)
   if (bulletsData?.machMax)
-    addProp(p, loc("rocket/maxSpeed"),
-      format("%.1f %s", bulletsData.machMax, loc("measureUnits/machNumber")))
+    addProp(p, ::loc("rocket/maxSpeed"),
+      format("%.1f %s", bulletsData.machMax, ::loc("measureUnits/machNumber")))
   else if (maxSpeed)
-    addProp(p, loc("rocket/maxSpeed"),
+    addProp(p, ::loc("rocket/maxSpeed"),
       ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))
 
   if (bulletsData?.bulletType == "aam" || bulletsData?.bulletType == "sam_tank")
   {
     if ("loadFactorMax" in bulletsData)
-      addProp(p, loc("missile/loadFactorMax"),
+      addProp(p, ::loc("missile/loadFactorMax"),
         ::g_measure_type.GFORCE.getMeasureUnitsText(bulletsData.loadFactorMax))
   }
 
@@ -266,118 +260,118 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       !bulletsData.autoAiming ? "handAim"
       : isBeamRider ? "beamRider"
       : "semiAuto")
-    addProp(p, loc("guidanceSystemType/header"), loc(aimingTypeLocId))
+    addProp(p, ::loc("guidanceSystemType/header"), ::loc(aimingTypeLocId))
     if ("irBeaconBand" in bulletsData)
       if (bulletsData.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
-        addProp(p, loc("missile/eccm"), loc("options/yes"))
+        addProp(p, ::loc("missile/eccm"), ::loc("options/yes"))
   }
 
   if ("guidanceType" in bulletsData)
   {
     if (bulletsData.guidanceType == "ir" || bulletsData.guidanceType == "optical" )
     {
-      addProp(p, loc("missile/guidance"),
-        loc($"missile/guidance/{bulletsData?.visibilityType == "optic" ? "tv" : "ir"}"))
+      addProp(p, ::loc("missile/guidance"),
+        ::loc($"missile/guidance/{bulletsData?.visibilityType == "optic" ? "tv" : "ir"}"))
       if (bulletsData?.bulletType == "aam" || bulletsData?.bulletType == "sam_tank")
       {
         if (bulletsData.bandMaskToReject != 0)
-          addProp(p, loc("missile/eccm"), loc("options/yes"))
-        addProp(p, loc("missile/aspect"), bulletsData.rangeBand1 > 0 ?
-          loc("missile/aspect/allAspect") : loc("missile/aspect/rearAspect"))
-        addProp(p, loc("missile/seekerRange/rearAspect"),
+          addProp(p, ::loc("missile/eccm"), ::loc("options/yes"))
+        addProp(p, ::loc("missile/aspect"), bulletsData.rangeBand1 > 0 ?
+          ::loc("missile/aspect/allAspect") : ::loc("missile/aspect/rearAspect"))
+        addProp(p, ::loc("missile/seekerRange/rearAspect"),
           ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.rangeBand0))
         if (bulletsData.rangeBand1 > 0)
-          addProp(p, loc("missile/seekerRange/allAspect"),
+          addProp(p, ::loc("missile/seekerRange/allAspect"),
             ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.rangeBand1))
       }
       else
       {
         if(bulletsData.rangeBand0 > 0 && bulletsData.rangeBand1 > 0)
-          addProp(p, loc("missile/seekerRange"),
+          addProp(p, ::loc("missile/seekerRange"),
             ::g_measure_type.DISTANCE.getMeasureUnitsText(min(bulletsData.rangeBand0, bulletsData.rangeBand1)))
       }
     }
     else if (bulletsData.guidanceType == "radar")
     {
-      addProp(p, loc("missile/guidance"),
-        loc($"missile/guidance/{bulletsData.activeRadar ? "ARH" : "SARH"}"))
+      addProp(p, ::loc("missile/guidance"),
+        ::loc($"missile/guidance/{bulletsData.activeRadar ? "ARH" : "SARH"}"))
       if (bulletsData.distanceGate || bulletsData.dopplerSpeedGate)
-        addProp(p, loc("missile/radarSignal"),
-          loc($"missile/radarSignal/{bulletsData.dopplerSpeedGate ? (bulletsData.distanceGate ? "pulse_doppler" : "CW") : "pulse"}"))
+        addProp(p, ::loc("missile/radarSignal"),
+          ::loc($"missile/radarSignal/{bulletsData.dopplerSpeedGate ? (bulletsData.distanceGate ? "pulse_doppler" : "CW") : "pulse"}"))
       if ("radarRange" in bulletsData)
-        addProp(p, loc("missile/seekerRange"),
+        addProp(p, ::loc("missile/seekerRange"),
           ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.radarRange))
     }
     else
     {
-      addProp(p, loc("missile/guidance"),
-        loc($"missile/guidance/{bulletsData.guidanceType}"))
+      addProp(p, ::loc("missile/guidance"),
+        ::loc($"missile/guidance/{bulletsData.guidanceType}"))
       if ("laserRange" in bulletsData)
-        addProp(p, loc("missile/seekerRange"),
+        addProp(p, ::loc("missile/seekerRange"),
           ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.laserRange))
     }
   }
 
   let operatedDist = bulletsData?.operatedDist ?? 0
   if (operatedDist)
-    addProp(p, loc("firingRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(operatedDist))
+    addProp(p, ::loc("firingRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(operatedDist))
 
   if ("guaranteedRange" in bulletsData)
-    addProp(p, loc("guaranteedRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.guaranteedRange))
+    addProp(p, ::loc("guaranteedRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.guaranteedRange))
 
   if ("timeLife" in bulletsData)
   {
     if ("guidanceType" in bulletsData || "autoAiming" in bulletsData)
-      addProp(p, loc("missile/timeGuidance"),
-        format("%.1f %s", bulletsData.timeLife, loc("measureUnits/seconds")))
+      addProp(p, ::loc("missile/timeGuidance"),
+        format("%.1f %s", bulletsData.timeLife, ::loc("measureUnits/seconds")))
     else
-      addProp(p, loc("missile/timeSelfdestruction"),
-        format("%.1f %s", bulletsData.timeLife, loc("measureUnits/seconds")))
+      addProp(p, ::loc("missile/timeSelfdestruction"),
+        format("%.1f %s", bulletsData.timeLife, ::loc("measureUnits/seconds")))
   }
 
   let explosiveType = bulletsData?.explosiveType
   if (explosiveType)
-    addProp(p, loc("bullet_properties/explosiveType"), loc("explosiveType/" + explosiveType))
+    addProp(p, ::loc("bullet_properties/explosiveType"), ::loc("explosiveType/" + explosiveType))
   let explosiveMass = bulletsData?.explosiveMass
   if (explosiveMass)
-    addProp(p, loc("bullet_properties/explosiveMass"),
+    addProp(p, ::loc("bullet_properties/explosiveMass"),
       ::g_dmg_model.getMeasuredExplosionText(explosiveMass))
 
   if (explosiveType && explosiveMass)
   {
     let tntEqText = ::g_dmg_model.getTntEquivalentText(explosiveType, explosiveMass)
     if (tntEqText.len())
-      addProp(p, loc("bullet_properties/explosiveMassInTNTEquivalent"), tntEqText)
+      addProp(p, ::loc("bullet_properties/explosiveMassInTNTEquivalent"), tntEqText)
   }
 
-  let fuseDelayDist = roundToDigits(bulletsData.fuseDelayDist, 2)
+  let fuseDelayDist = stdMath.roundToDigits(bulletsData.fuseDelayDist, 2)
   if (fuseDelayDist > 0)
-    addProp(p, loc("bullet_properties/fuseDelayDist"),
-      $"{fuseDelayDist} {loc("measureUnits/meters_alt")}")
-  let fuseDelay = roundToDigits(bulletsData.fuseDelay, 2)
+    addProp(p, ::loc("bullet_properties/fuseDelayDist"),
+      $"{fuseDelayDist} {::loc("measureUnits/meters_alt")}")
+  let fuseDelay = stdMath.roundToDigits(bulletsData.fuseDelay, 2)
   if (fuseDelay > 0)
-    addProp(p, loc("bullet_properties/fuseDelayDist"),
-     $"{fuseDelay} {loc("measureUnits/seconds")}")
-  let explodeTreshold = roundToDigits(bulletsData.explodeTreshold, 2)
+    addProp(p, ::loc("bullet_properties/fuseDelayDist"),
+     $"{fuseDelay} {::loc("measureUnits/seconds")}")
+  let explodeTreshold = stdMath.roundToDigits(bulletsData.explodeTreshold, 2)
   if (explodeTreshold)
-    addProp(p, loc("bullet_properties/explodeTreshold"),
-               explodeTreshold + " " + loc("measureUnits/mm"))
+    addProp(p, ::loc("bullet_properties/explodeTreshold"),
+               explodeTreshold + " " + ::loc("measureUnits/mm"))
 
-  let proximityFuseArmDistance = round(bulletsData?.proximityFuseArmDistance ?? 0)
+  let proximityFuseArmDistance = stdMath.round(bulletsData?.proximityFuseArmDistance ?? 0)
   if (proximityFuseArmDistance)
-    addProp(p, loc("torpedo/armingDistance"),
-      proximityFuseArmDistance + " " + loc("measureUnits/meters_alt"))
-  let proximityFuseRadius = round(bulletsData?.proximityFuseRadius ?? 0)
+    addProp(p, ::loc("torpedo/armingDistance"),
+      proximityFuseArmDistance + " " + ::loc("measureUnits/meters_alt"))
+  let proximityFuseRadius = stdMath.round(bulletsData?.proximityFuseRadius ?? 0)
   if (proximityFuseRadius)
-    addProp(p, loc("bullet_properties/proximityFuze/triggerRadius"),
-      proximityFuseRadius + " " + loc("measureUnits/meters_alt"))
+    addProp(p, ::loc("bullet_properties/proximityFuze/triggerRadius"),
+      proximityFuseRadius + " " + ::loc("measureUnits/meters_alt"))
 
   let ricochetData = !bulletsData.isCountermeasure && ::g_dmg_model.getRicochetData(bulletsData?.ricochetPreset)
   if (ricochetData)
     foreach(item in ricochetData.angleProbabilityMap)
-      addProp(p, loc("bullet_properties/angleByProbability",
-        { probability = roundToDigits(100.0 * item.probability, 2) }),
-          roundToDigits(item.angle, 2) + loc("measureUnits/deg"))
+      addProp(p, ::loc("bullet_properties/angleByProbability",
+        { probability = stdMath.roundToDigits(100.0 * item.probability, 2) }),
+          stdMath.roundToDigits(item.angle, 2) + ::loc("measureUnits/deg"))
 
   if ("reloadTimes" in bulletsData)
   {
@@ -385,24 +379,24 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       : ::get_current_shop_difficulty().diffCode
     let reloadTime = bulletsData.reloadTimes[currentDiffficulty]
     if(reloadTime > 0)
-      addProp(p, colorize("badTextColor", loc("bullet_properties/cooldown")),
-        colorize("badTextColor", roundToDigits(reloadTime, 2)
-          + " " + loc("measureUnits/seconds")))
+      addProp(p, ::colorize("badTextColor", ::loc("bullet_properties/cooldown")),
+        ::colorize("badTextColor", stdMath.roundToDigits(reloadTime, 2)
+          + " " + ::loc("measureUnits/seconds")))
   }
 
   if ("smokeShellRad" in bulletsData)
-    addProp(p, loc("bullet_properties/smokeShellRad"),
-      roundToDigits(bulletsData.smokeShellRad, 2) + " " + loc("measureUnits/meters_alt"))
+    addProp(p, ::loc("bullet_properties/smokeShellRad"),
+      stdMath.roundToDigits(bulletsData.smokeShellRad, 2) + " " + ::loc("measureUnits/meters_alt"))
 
   if ("smokeActivateTime" in bulletsData)
-    addProp(p, loc("bullet_properties/smokeActivateTime"),
-      roundToDigits(bulletsData.smokeActivateTime, 2) + " " + loc("measureUnits/seconds"))
+    addProp(p, ::loc("bullet_properties/smokeActivateTime"),
+      stdMath.roundToDigits(bulletsData.smokeActivateTime, 2) + " " + ::loc("measureUnits/seconds"))
 
   if ("smokeTime" in bulletsData)
-    addProp(p, loc("bullet_properties/smokeTime"),
-               roundToDigits(bulletsData.smokeTime, 2) + " " + loc("measureUnits/seconds"))
+    addProp(p, ::loc("bullet_properties/smokeTime"),
+               stdMath.roundToDigits(bulletsData.smokeTime, 2) + " " + ::loc("measureUnits/seconds"))
 
-  let bTypeDesc = loc(bulletsData.bulletType, "")
+  let bTypeDesc = ::loc(bulletsData.bulletType, "")
   if (bTypeDesc != "")
     descTbl.bulletsDesc <- bTypeDesc
 
@@ -472,7 +466,7 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
             continue
 
           if (d == idist || (d < idist && !i))
-            armor = ::u.map(bullet_params.armorPiercing[i], @(f) round(f).tointeger())
+            armor = ::u.map(bullet_params.armorPiercing[i], @(f) stdMath.round(f).tointeger())
           else if (d < idist && i)
           {
             let prevDist = bullet_params.armorPiercingDist[i-1].tointeger()
@@ -529,11 +523,11 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
 }
 
 let function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
-  if (!hasFeature("BulletAnimation") || bulletAnimations == null)
+  if (!::has_feature("BulletAnimation") || bulletAnimations == null)
     return
 
   descTbl.bulletAnimations <- bulletAnimations
-    .filter(@(fileName) file_exists(fileName))
+    .filter(@(fileName) ::dd_file_exist(fileName))
     .map(@(fileName, idx) {
       fileName
       loadIdPosfix = idx == 0 ? "" : idx.tostring()
@@ -543,7 +537,7 @@ let function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
 
 let function addBulletsParamToDesc(descTbl, unit, item)
 {
-  if (!unit.unitType.canUseSeveralBulletsForGun && !hasFeature("BulletParamsForAirs"))
+  if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
     return
 
   let modName = getModifIconItem(unit, item)?.name ?? item.name
@@ -569,7 +563,7 @@ let function addBulletsParamToDesc(descTbl, unit, item)
 
       setClone.bIconParam = { [p] = value }
       descTbl.bulletActions.append({
-        text = loc("bulletAction/" + p)
+        text = ::loc("bulletAction/" + p)
         visual = getBulletsIconData(setClone)
       })
     }
@@ -595,13 +589,13 @@ let function addBulletsParamToDesc(descTbl, unit, item)
 
 let function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams)
 {
-  let descTbl = { name = colorize("activeTextColor", locName), desc = "", bulletActions = []}
+  let descTbl = { name = ::colorize("activeTextColor", locName), desc = "", bulletActions = []}
   addBulletAnimationsToDesc(descTbl, bulletsSet?.bulletAnimations)
   let part = bulletName.indexof("@")
     descTbl.desc = part == null ? getBulletAnnotation(bulletName)
       : getBulletAnnotation(bulletName.slice(0, part), bulletName.slice(part+1))
 
-  if (!unit.unitType.canUseSeveralBulletsForGun && !hasFeature("BulletParamsForAirs"))
+  if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
     return descTbl
 
   descTbl.bulletActions = [{ visual = getBulletsIconData(bulletsSet) }]

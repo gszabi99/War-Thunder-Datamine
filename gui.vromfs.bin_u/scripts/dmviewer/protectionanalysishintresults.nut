@@ -1,10 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//-file:undefined-const
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 let results = {
@@ -14,14 +7,14 @@ let results = {
 results.template <- {
   id = "" //used from type name
   checkOrder = -1
-  checkParams = @(_params) false
+  checkParams = @(params) false
 }
 
 local checkOrder = 0
 enums.addTypes(results, {
   RICOCHETED = {
     checkOrder = checkOrder++
-    checkParams = @(params) params?.lower?.ricochet == CHECK_PROT_RICOCHET_GUARANTEED &&
+    checkParams = @(params) params?.lower?.ricochet == ::CHECK_PROT_RICOCHET_GUARANTEED &&
                             !params?.lower?.effectiveHit &&
                             !params?.upper?.effectiveHit
     color = "minorTextColor"
@@ -32,7 +25,7 @@ enums.addTypes(results, {
   POSSIBLEEFFECTIVE = {
     checkOrder = checkOrder++
     checkParams = @(params) (params?.upper?.effectiveHit ?? false)
-      || ((params?.lower?.effectiveHit ?? false) && params?.lower?.ricochet == CHECK_PROT_RICOCHET_POSSIBLE)
+      || ((params?.lower?.effectiveHit ?? false) && params?.lower?.ricochet == ::CHECK_PROT_RICOCHET_POSSIBLE)
     color = "cardProgressTextBonusColor"
     loc = "protection_analysis/result/possible_effective"
     infoSrc = [ "lower", "upper" ]
@@ -41,7 +34,7 @@ enums.addTypes(results, {
   EFFECTIVE = {
     checkOrder = checkOrder++
     checkParams = @(params) (params?.lower?.effectiveHit ?? false)
-      && params?.lower?.ricochet != CHECK_PROT_RICOCHET_POSSIBLE
+      && params?.lower?.ricochet != ::CHECK_PROT_RICOCHET_POSSIBLE
     color = "goodTextColor"
     loc = "protection_analysis/result/effective"
     infoSrc = [ "lower", "upper"]
@@ -61,7 +54,7 @@ enums.addTypes(results, {
   }
   INEFFECTIVE = {
     checkOrder = checkOrder++
-    checkParams = @(_params) true
+    checkParams = @(params) true
     color = "minorTextColor"
     loc = "protection_analysis/result/ineffective"
     infoSrc = [ "max"]
@@ -72,7 +65,7 @@ results.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
 results.getResultTypeByParams <- function(params)
 {
-  foreach (t in this.types)
+  foreach (t in types)
     if (t.checkParams(params))
       return t
   return INEFFECTIVE

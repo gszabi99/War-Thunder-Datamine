@@ -1,12 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-let { get_time_msec } = require("dagor.time")
-let { get_gui_option } = require("guiOptions")
-let { ceil } = require("math")
 let { format } = require("string")
 let { is_has_multiplayer = @() ::is_has_multiplayer() //compatibility with 2.16.0.X
 } = require_optional("multiplayer")
@@ -56,7 +47,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
 ::before_first_flight_in_session <- false
 
-::g_script_reloader.registerPersistentData("RespawnGlobals", getroottable(),
+::g_script_reloader.registerPersistentData("RespawnGlobals", ::getroottable(),
   ["last_ca_aircraft","used_planes", "need_race_finish_results", "before_first_flight_in_session"])
 
 ::COLORED_DROPRIGHT_TEXT_STYLE <- "textStyle:t='textarea';"
@@ -68,7 +59,7 @@ enum ESwitchSpectatorTarget
   E_PREV
 }
 
-::gui_start_respawn <- function gui_start_respawn(_is_match_start = false)
+::gui_start_respawn <- function gui_start_respawn(is_match_start = false)
 {
   ::mp_stat_handler = ::handlersManager.loadHandler(::gui_handlers.RespawnHandler)
   ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_respawn)
@@ -146,7 +137,7 @@ enum ESwitchSpectatorTarget
   spectator_switch_direction = ESwitchSpectatorTarget.E_DO_NOTHING
   lastSpectatorTargetName = ""
 
-  bulletsDescr = array(BULLETS_SETS_QUANTITY, null)
+  bulletsDescr = array(::BULLETS_SETS_QUANTITY, null)
 
   optionsFilled = null
 
@@ -183,21 +174,21 @@ enum ESwitchSpectatorTarget
 
     ::disable_flight_menu(true)
 
-    this.needPlayersTbl = false
-    this.isApplyPressed = false
+    needPlayersTbl = false
+    isApplyPressed = false
     doRespawnCalled = false
     let wasIsRespawn = isRespawn
     isRespawn = ::is_respawn_screen()
     needRefreshSlotbarOnReinit = isRespawn || wasIsRespawn
 
-    this.initStatsMissionParams()
+    initStatsMissionParams()
 
-    isFriendlyUnitsExists = isModeWithFriendlyUnits(this.gameType)
+    isFriendlyUnitsExists = isModeWithFriendlyUnits(gameType)
 
-    this.updateCooldown = -1
-    this.wasTimeLeft = -1000
-    this.mplayerTable = ::get_local_mplayer() || {}
-    this.missionTable = missionRules.missionParams
+    updateCooldown = -1
+    wasTimeLeft = -1000
+    mplayerTable = ::get_local_mplayer() || {}
+    missionTable = missionRules.missionParams
 
     readyForRespawn = readyForRespawn && isRespawn
     recountStayOnRespScreen()
@@ -210,18 +201,18 @@ enum ESwitchSpectatorTarget
     autostartShowTime = blk.autostartShowTime;
     autostartShowInColorTime = blk.autostartShowInColorTime;
 
-    log($"stayOnRespScreen = {stayOnRespScreen}")
+    ::dagor.debug($"stayOnRespScreen = {stayOnRespScreen}")
 
     let spectator = isSpectator()
-    haveSlotbar = (this.gameType & (GT_VERSUS | GT_COOPERATIVE)) &&
-                  (this.gameMode != GM_SINGLE_MISSION && this.gameMode != GM_DYNAMIC) &&
+    haveSlotbar = (gameType & (::GT_VERSUS | ::GT_COOPERATIVE)) &&
+                  (gameMode != ::GM_SINGLE_MISSION && gameMode != ::GM_DYNAMIC) &&
                   !spectator
-    isGTCooperative = (this.gameType & GT_COOPERATIVE) != 0
+    isGTCooperative = (gameType & ::GT_COOPERATIVE) != 0
     canChangeAircraft = haveSlotbar && !stayOnRespScreen && isRespawn
 
     if (fetchChangeAircraftOnStart() && !stayOnRespScreen && !spectator)
     {
-      log("fetchChangeAircraftOnStart() true")
+      ::dagor.debug("fetchChangeAircraftOnStart() true")
       isRespawn = true
       stayOnRespScreen = false
       canChangeAircraft = true
@@ -238,7 +229,7 @@ enum ESwitchSpectatorTarget
 
     updateRespawnBasesStatus()
     initAircraftSelect()
-    ::init_options() //for disable menu only
+    init_options() //for disable menu only
 
     updateApplyText()
     updateButtons()
@@ -247,7 +238,7 @@ enum ESwitchSpectatorTarget
     this.showSceneBtn("screen_button_back", useTouchscreen && !isRespawn)
     this.showSceneBtn("gamercard_bottom", isRespawn)
 
-    if (this.gameType & GT_RACE)
+    if (gameType & ::GT_RACE)
     {
       let finished = ::race_finished_by_local_player()
       if (finished && ::need_race_finish_results)
@@ -256,12 +247,12 @@ enum ESwitchSpectatorTarget
     }
 
     ::g_orders.collectOrdersToActivate()
-    let ordersButton = this.scene.findObject("btn_activateorder")
-    if (checkObj(ordersButton))
+    let ordersButton = scene.findObject("btn_activateorder")
+    if (::checkObj(ordersButton))
       ordersButton.setUserData(this)
 
     updateControlsAllowMask()
-    this.updateVoiceChatWidget(!isRespawn)
+    updateVoiceChatWidget(!isRespawn)
     checkInRoomMembers()
   }
 
@@ -269,7 +260,7 @@ enum ESwitchSpectatorTarget
   {
     if (gt == null)
       gt = ::get_game_type()
-    return !!(gt & GT_RACE) || !(gt & (GT_FFA_DEATHMATCH | GT_FFA))
+    return !!(gt & ::GT_RACE) || !(gt & (::GT_FFA_DEATHMATCH | ::GT_FFA))
   }
 
   function recountStayOnRespScreen() //return isChanged
@@ -292,31 +283,31 @@ enum ESwitchSpectatorTarget
 
     isFirstUnitOptionsInSession = ::before_first_flight_in_session
 
-    this.scene.findObject("stat_update").setUserData(this)
+    scene.findObject("stat_update").setUserData(this)
 
-    this.subHandlers.append(
-      ::gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   true, 1 << OBJECTIVE_TYPE_PRIMARY),
-      ::gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), true, 1 << OBJECTIVE_TYPE_SECONDARY)
+    subHandlers.append(
+      ::gui_load_mission_objectives(scene.findObject("primary_tasks_list"),   true, 1 << ::OBJECTIVE_TYPE_PRIMARY),
+      ::gui_load_mission_objectives(scene.findObject("secondary_tasks_list"), true, 1 << ::OBJECTIVE_TYPE_SECONDARY)
     )
 
-    let navBarObj = this.scene.findObject("gamercard_bottom_navbar_place")
-    if (checkObj(navBarObj))
+    let navBarObj = scene.findObject("gamercard_bottom_navbar_place")
+    if (::checkObj(navBarObj))
     {
       navBarObj.show(true)
       navBarObj["id"] = "nav-help"
-      this.guiScene.replaceContent(navBarObj, "%gui/navRespawn.blk", this)
+      guiScene.replaceContent(navBarObj, "%gui/navRespawn.blk", this)
     }
 
-    this.includeMissionInfoBlocksToGamercard()
+    includeMissionInfoBlocksToGamercard()
     updateLeftPanelBlock()
     initTeamUnitsLeftView()
     getMplayersList()
 
-    tmapBtnObj  = this.scene.findObject("tmap_btn")
-    tmapHintObj = this.scene.findObject("tmap_hint")
-    tmapIconObj = this.scene.findObject("tmap_icon")
-    tmapRespawnBaseTimerObj = this.scene.findObject("tmap_respawn_base_timer")
-    SecondsUpdater(tmapRespawnBaseTimerObj, (@(_obj, _params) updateRespawnBaseTimerText()).bindenv(this))
+    tmapBtnObj  = scene.findObject("tmap_btn")
+    tmapHintObj = scene.findObject("tmap_hint")
+    tmapIconObj = scene.findObject("tmap_icon")
+    tmapRespawnBaseTimerObj = scene.findObject("tmap_respawn_base_timer")
+    SecondsUpdater(tmapRespawnBaseTimerObj, (@(obj, params) updateRespawnBaseTimerText()).bindenv(this))
   }
 
   function updateRespawnBaseTimerText()
@@ -326,7 +317,7 @@ enum ESwitchSpectatorTarget
     {
       let timeLeft = curRespawnBase ? getRespawnBaseTimeLeftById(curRespawnBase.id) : -1
       if (timeLeft > 0)
-        text = loc("multiplayer/respawnBaseAvailableTime", { time = time.secondsToString(timeLeft) })
+        text = ::loc("multiplayer/respawnBaseAvailableTime", { time = time.secondsToString(timeLeft) })
     }
     tmapRespawnBaseTimerObj.setValue(text)
   }
@@ -337,14 +328,14 @@ enum ESwitchSpectatorTarget
       return
 
     let handler = ::handlersManager.loadHandler(::gui_handlers.teamUnitsLeftView,
-      { scene = this.scene.findObject("team_units_left_respawns"), missionRules = missionRules })
-    this.registerSubHandler(handler)
+      { scene = scene.findObject("team_units_left_respawns"), missionRules = missionRules })
+    registerSubHandler(handler)
     teamUnitsLeftWeak = handler?.weakref()
   }
 
   /*override*/ function onSceneActivate(show)
   {
-    setOrdersEnabled(show && this.isSpectate)
+    setOrdersEnabled(show && isSpectate)
     updateSpectatorRotationForced(show)
     updateTacticalMapUnitType(show ? null : false)
     base.onSceneActivate(show)
@@ -352,13 +343,13 @@ enum ESwitchSpectatorTarget
 
   function getOrderStatusObj()
   {
-    let statusObj = this.scene.findObject("respawn_order_status")
-    return checkObj(statusObj) ? statusObj : null
+    let statusObj = scene.findObject("respawn_order_status")
+    return ::checkObj(statusObj) ? statusObj : null
   }
 
   function isSpectator()
   {
-    return getTblValue("spectator", this.mplayerTable, false)
+    return ::getTblValue("spectator", mplayerTable, false)
   }
 
   function updateRespawnBasesStatus() //return is isNoRespawns changed
@@ -376,7 +367,7 @@ enum ESwitchSpectatorTarget
     {
       isNoRespawns = true
       readyForRespawn = false
-      noRespText = loc("multiplayer/loadingMissionData")
+      noRespText = ::loc("multiplayer/loadingMissionData")
     } else
     {
       let isAnyBases = missionRules.isAnyUnitHaveRespawnBases()
@@ -384,13 +375,13 @@ enum ESwitchSpectatorTarget
 
       isNoRespawns = true
       if (!isAnyBases)
-        noRespText = loc("multiplayer/noRespawnBasesLeft")
+        noRespText = ::loc("multiplayer/noRespawnBasesLeft")
       else if (missionRules.isScoreRespawnEnabled && curSpawnScore < missionRules.getMinimalRequiredSpawnScore())
-        noRespText = isRespawn? loc("multiplayer/noSpawnScore") : ""
+        noRespText = isRespawn? ::loc("multiplayer/noSpawnScore") : ""
       else if (leftRespawns == 0)
-        noRespText = loc("multiplayer/noRespawnsInMission")
+        noRespText = ::loc("multiplayer/noRespawnsInMission")
       else if (!haveSlots)
-        noRespText = loc("multiplayer/noCrewsLeft")
+        noRespText = ::loc("multiplayer/noCrewsLeft")
       else
         isNoRespawns = false
     }
@@ -401,9 +392,9 @@ enum ESwitchSpectatorTarget
 
   function updateCurSpawnScoreText()
   {
-    let scoreObj = this.scene.findObject("gc_spawn_score")
-    if (checkObj(scoreObj) && missionRules.isScoreRespawnEnabled)
-      scoreObj.setValue(::getCompoundedText("".concat(loc("multiplayer/spawnScore"), " "), curSpawnScore, "activeTextColor"))
+    let scoreObj = scene.findObject("gc_spawn_score")
+    if (::checkObj(scoreObj) && missionRules.isScoreRespawnEnabled)
+      scoreObj.setValue(::getCompoundedText("".concat(::loc("multiplayer/spawnScore"), " "), curSpawnScore, "activeTextColor"))
   }
 
   function updateSpawnScore(isOnInit = false)
@@ -463,22 +454,22 @@ enum ESwitchSpectatorTarget
     if (!updateRespawnBases())
       return
 
-    this.reinitSlotbar()
+    reinitSlotbar()
     updateOptions(RespawnOptUpdBit.RESPAWN_BASES)
     updateButtons()
     updateApplyText()
     checkReady()
   }
 
-  function onEventChangedMissionRespawnBasesStatus(_params)
+  function onEventChangedMissionRespawnBasesStatus(params)
   {
-    this.doWhenActiveOnce("updateRespawnWhenChangedMissionRespawnBasesStatus")
+    doWhenActiveOnce("updateRespawnWhenChangedMissionRespawnBasesStatus")
   }
 
   function updateNoRespawnText()
   {
-    let noRespObj = this.scene.findObject("txt_no_respawn_bases")
-    if (checkObj(noRespObj))
+    let noRespObj = scene.findObject("txt_no_respawn_bases")
+    if (::checkObj(noRespObj))
     {
       noRespObj.setValue(noRespText)
       noRespObj.show(isNoRespawns)
@@ -487,7 +478,7 @@ enum ESwitchSpectatorTarget
 
   function reinitScreen(params = {})
   {
-    this.setParams(params)
+    setParams(params)
     initScreen()
   }
 
@@ -507,12 +498,12 @@ enum ESwitchSpectatorTarget
           isCheckbox = o.cType == optionControlType.CHECKBOX
         })
     let markup = ::handyman.renderCached("%gui/respawn/respawnOptions", { cells })
-    this.guiScene.replaceContentFromText(this.scene.findObject("respawn_options_table"), markup, markup.len(), this)
+    guiScene.replaceContentFromText(scene.findObject("respawn_options_table"), markup, markup.len(), this)
   }
 
   function getOptionsParams()
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     return {
       handler = this
       unit
@@ -535,11 +526,11 @@ enum ESwitchSpectatorTarget
   function initAircraftSelect()
   {
     if (showedUnit.value == null)
-      showedUnit(::getAircraftByName(::last_ca_aircraft))
+      showedUnit(getAircraftByName(::last_ca_aircraft))
 
-    log($"initScreen aircraft {::last_ca_aircraft} showedUnit {showedUnit.value}")
+    ::dagor.debug($"initScreen aircraft {::last_ca_aircraft} showedUnit {showedUnit.value}")
 
-    this.scene.findObject("CA_div").show(haveSlotbar)
+    scene.findObject("CA_div").show(haveSlotbar)
     updateSessionWpBalance()
 
     if (haveSlotbar)
@@ -547,11 +538,11 @@ enum ESwitchSpectatorTarget
       let needWaitSlotbar = !::g_mis_loading_state.isReadyToShowRespawn() && !isSpectator()
       this.showSceneBtn("slotbar_load_wait", needWaitSlotbar)
       if (!isSpectator() && ::g_mis_loading_state.isReadyToShowRespawn()
-          && (needRefreshSlotbarOnReinit || !this.slotbarWeak))
+          && (needRefreshSlotbarOnReinit || !slotbarWeak))
       {
         slotbarInited = false
         beforeRefreshSlotbar()
-        this.createSlotbar(getSlotbarParams()
+        createSlotbar(getSlotbarParams()
           .__update({ slotbarHintText = getEventSlotbarHint(
             ::SessionLobby.getRoomEvent(), ::get_local_player_country()) }),
           "flight_menu_bgd")
@@ -564,26 +555,26 @@ enum ESwitchSpectatorTarget
           readyForRespawn = false
 
         if (isRespawn)
-          setMousePointerInitialPos(this.getSlotbar()?.getCurrentCrewSlot().findObject("extra_info_block"))
+          setMousePointerInitialPos(getSlotbar()?.getCurrentCrewSlot().findObject("extra_info_block"))
       }
     }
     else
     {
-      this.destroySlotbar()
+      destroySlotbar()
       local airName = ::last_ca_aircraft
       if (isGTCooperative)
-        airName = getTblValue("aircraftName", this.mplayerTable, "")
+        airName = ::getTblValue("aircraftName", mplayerTable, "")
       let air = ::getAircraftByName(airName)
       if (air)
       {
         showedUnit(air)
-        this.scene.findObject("air_info_div").show(true)
+        scene.findObject("air_info_div").show(true)
         let data = ::build_aircraft_item(air.name, air, {
-          showBR        = hasFeature("SlotbarShowBattleRating")
+          showBR        = ::has_feature("SlotbarShowBattleRating")
           getEdiffFunc  = getCurrentEdiff.bindenv(this)
         })
-        this.guiScene.replaceContentFromText(this.scene.findObject("air_item_place"), data, data.len(), this)
-        ::fill_unit_item_timers(this.scene.findObject("air_item_place").findObject(air.name), air)
+        guiScene.replaceContentFromText(scene.findObject("air_item_place"), data, data.len(), this)
+        ::fill_unit_item_timers(scene.findObject("air_item_place").findObject(air.name), air)
       }
     }
 
@@ -614,7 +605,7 @@ enum ESwitchSpectatorTarget
 
       beforeSlotbarSelect = beforeSlotbarSelect
       afterSlotbarSelect = onChangeUnit
-      onSlotDblClick = Callback(@(_crew) onApply(), this)
+      onSlotDblClick = ::Callback(@(crew) onApply(), this)
       beforeFullUpdate = beforeRefreshSlotbar
       afterFullUpdate = afterRefreshSlotbar
       onSlotBattleBtn = onApply
@@ -654,26 +645,26 @@ enum ESwitchSpectatorTarget
           color = "@badTextColor"
         }
         else if (info.cur_award_negative != 0)
-          curNegativeDecrease = colorize("@badTextColor",
+          curNegativeDecrease = ::colorize("@badTextColor",
             ::Cost(-1 * info.cur_award_negative).toStringWithParams({isWpAlwaysShown = true}))
 
         if (curDifference != 0)
-          curPositiveIncrease = colorize(color, "".concat(curDifference > 0 ? "+" : "",
+          curPositiveIncrease = ::colorize(color, "".concat(curDifference > 0 ? "+" : "",
             ::Cost(curDifference).toStringWithParams({isWpAlwaysShown = true})))
 
-        let totalString = "".concat(" = ", colorize("@activeTextColor",
+        let totalString = "".concat(" = ", ::colorize("@activeTextColor",
           ::Cost(total).toStringWithParams({isWpAlwaysShown = true})))
 
         wpBalance = "".concat(curWpBalanceString, curPositiveIncrease, curNegativeDecrease, totalString)
       }
     }
 
-    let balanceObj = this.getObj("gc_wp_respawn_balance")
-    if (checkObj(balanceObj))
+    let balanceObj = getObj("gc_wp_respawn_balance")
+    if (::checkObj(balanceObj))
     {
       local text = ""
       if (wpBalance != "")
-        text = ::getCompoundedText(loc("multiplayer/wp_header"), wpBalance, "activeTextColor")
+        text = ::getCompoundedText(::loc("multiplayer/wp_header"), wpBalance, "activeTextColor")
       balanceObj.setValue(text)
     }
   }
@@ -683,7 +674,7 @@ enum ESwitchSpectatorTarget
     if(!missionRules.isWarpointsRespawnEnabled)
       return 0
 
-    let air = this.getCurSlotUnit()
+    let air = getCurSlotUnit()
     let airRespawnCost = air ? ::get_unit_wp_to_respawn(air.name) : 0
     let weaponPrice = air ? getWeaponPrice(air.name, getSelWeapon()) : 0
     return airRespawnCost + weaponPrice
@@ -691,20 +682,20 @@ enum ESwitchSpectatorTarget
 
   function isInAutoChangeDelay()
   {
-    return get_time_msec() - prevUnitAutoChangeTimeMsec < delayAfterAutoChangeUnitMsec
+    return ::dagor.getCurTime() - prevUnitAutoChangeTimeMsec < delayAfterAutoChangeUnitMsec
   }
 
   function beforeRefreshSlotbar()
   {
     if (!isInAutoChangeDelay())
-      prevAutoChangedUnit = this.getCurSlotUnit()
+      prevAutoChangedUnit = getCurSlotUnit()
   }
 
   function afterRefreshSlotbar()
   {
-    let curUnit = this.getCurSlotUnit()
+    let curUnit = getCurSlotUnit()
     if (curUnit && curUnit != prevAutoChangedUnit)
-      prevUnitAutoChangeTimeMsec = get_time_msec()
+      prevUnitAutoChangeTimeMsec = ::dagor.getCurTime()
 
     updateApplyText()
 
@@ -718,7 +709,7 @@ enum ESwitchSpectatorTarget
   //hack: to check slotready changed
   function checkCrewAccessChange()
   {
-    if (!this.getSlotbar()?.singleCountry || !slotbarInited)
+    if (!getSlotbar()?.singleCountry || !slotbarInited)
       return
 
     local needReinitSlotbar = false
@@ -726,7 +717,7 @@ enum ESwitchSpectatorTarget
     let newMask = getCrewSlotReadyMask()
     if (newMask != slotReadyAtHostMask)
     {
-      log("Error: is_crew_slot_was_ready_at_host or is_crew_available_in_session have changed without cb. force reload slots")
+      ::dagor.debug("Error: is_crew_slot_was_ready_at_host or is_crew_available_in_session have changed without cb. force reload slots")
       statsd.send_counter("sq.errors.change_disabled_slots", 1, {mission = ::get_current_mission_name()})
       needReinitSlotbar = true
     }
@@ -734,13 +725,13 @@ enum ESwitchSpectatorTarget
     let newSlotsCostSum = getSlotsSpawnCostSumNoWeapon()
     if (newSlotsCostSum != slotsCostSum)
     {
-      log("Error: slots spawn cost have changed without cb. force reload slots")
+      ::dagor.debug("Error: slots spawn cost have changed without cb. force reload slots")
       statsd.send_counter("sq.errors.changed_slots_spawn_cost", 1, {mission = ::get_current_mission_name()})
       needReinitSlotbar = true
     }
 
-    if (needReinitSlotbar && this.getSlotbar())
-      this.getSlotbar().forceUpdate()
+    if (needReinitSlotbar && getSlotbar())
+      getSlotbar().forceUpdate()
   }
 
   function getCrewSlotReadyMask()
@@ -759,7 +750,7 @@ enum ESwitchSpectatorTarget
   function getSlotsSpawnCostSumNoWeapon()
   {
     local res = 0
-    let crewsCountry = ::g_crews_list.get()?[this.getCurCrew()?.idCountry]
+    let crewsCountry = ::g_crews_list.get()?[getCurCrew()?.idCountry]
     if (!crewsCountry)
       return res
 
@@ -814,7 +805,7 @@ enum ESwitchSpectatorTarget
 
   function onChangeUnit()
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     if (!unit)
       return
 
@@ -828,12 +819,12 @@ enum ESwitchSpectatorTarget
 
   function updateWeaponsSelector(isUnitChanged)
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     let isRandomUnit = isUnitRandom(unit)
     let shouldShowWeaponry = (!isRandomUnit || !isRespawn) && !getOverrideBullets(unit)
     let canChangeWeaponry = canChangeAircraft && shouldShowWeaponry
 
-    let weaponsSelectorObj = this.scene.findObject("unit_weapons_selector")
+    let weaponsSelectorObj = scene.findObject("unit_weapons_selector")
     if (weaponsSelectorWeak)
     {
       weaponsSelectorWeak.setUnit(unit)
@@ -850,7 +841,7 @@ enum ESwitchSpectatorTarget
                                        })
 
     weaponsSelectorWeak = handler.weakref()
-    this.registerSubHandler(handler)
+    registerSubHandler(handler)
     weaponsSelectorObj.show(shouldShowWeaponry)
   }
 
@@ -859,7 +850,7 @@ enum ESwitchSpectatorTarget
     if(missionRules.isWarpointsRespawnEnabled
        && isRespawn
        && airName in ::used_planes
-       && isInArray(weapon, ::used_planes[airName]))
+       && ::isInArray(weapon, ::used_planes[airName]))
     {
       let unit = ::getAircraftByName(airName)
       let count = getAmmoMaxAmountInSession(unit, weapon, AMMO.WEAPON) - getAmmoAmount(unit, weapon, AMMO.WEAPON)
@@ -879,13 +870,13 @@ enum ESwitchSpectatorTarget
     if (!isRespawn)
       return
 
-    let idx = checkObj(obj) ? obj.getValue() : 0
+    let idx = ::checkObj(obj) ? obj.getValue() : 0
     let spawn = respawnBasesList?[idx]
     if (!spawn)
       return
 
     if (curRespawnBase != spawn) //selected by user
-      respawnBases.selectBase(this.getCurSlotUnit(), spawn)
+      respawnBases.selectBase(getCurSlotUnit(), spawn)
     curRespawnBase = spawn
     selectRespawnBase(curRespawnBase.mapId)
     updateRespawnBaseTimerText()
@@ -898,7 +889,7 @@ enum ESwitchSpectatorTarget
     local hintIcon = ::show_console_buttons ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left.png"
     local highlightSpawnMapId = -1
     if (!isRespawn)
-      hint = colorize("activeTextColor", loc("voice_message_attention_to_point_2"))
+      hint = ::colorize("activeTextColor", ::loc("voice_message_attention_to_point_2"))
     else
     {
       let coords = ::get_mouse_relative_coords_on_obj(tmapBtnObj)
@@ -906,7 +897,7 @@ enum ESwitchSpectatorTarget
         hintIcon = ""
       else if (!canChooseRespawnBase)
       {
-        hint = colorize("commonTextColor", loc("guiHints/respawn_base/choice_disabled"))
+        hint = ::colorize("commonTextColor", ::loc("guiHints/respawn_base/choice_disabled"))
         hintIcon = ""
       }
       else
@@ -917,16 +908,16 @@ enum ESwitchSpectatorTarget
             if (spawn.id == spawnId && spawn.isMapSelectable)
             {
               highlightSpawnMapId = spawn.mapId
-              hint = colorize("userlogColoredText", spawn.getTitle())
+              hint = ::colorize("userlogColoredText", spawn.getTitle())
               if (spawnId == curRespawnBase?.id)
-                hint = "".concat(hint, colorize("activeTextColor", loc("ui/parentheses/space",
-                  { text = loc(curRespawnBase.isAutoSelected ? "ui/selected_auto" : "ui/selected") })))
+                hint = "".concat(hint, ::colorize("activeTextColor", ::loc("ui/parentheses/space",
+                  { text = ::loc(curRespawnBase.isAutoSelected ? "ui/selected_auto" : "ui/selected") })))
               break
             }
 
         if (!hint.len())
         {
-          hint = colorize("activeTextColor", loc("guiHints/respawn_base/choice_enabled"))
+          hint = ::colorize("activeTextColor", ::loc("guiHints/respawn_base/choice_enabled"))
           hintIcon = ""
         }
       }
@@ -938,9 +929,9 @@ enum ESwitchSpectatorTarget
     tmapIconObj["background-image"] = hintIcon
   }
 
-  function onTacticalmapClick(_obj)
+  function onTacticalmapClick(obj)
   {
-    if (!isRespawn || !checkObj(this.scene) || !canChooseRespawnBase)
+    if (!isRespawn || !::checkObj(scene) || !canChooseRespawnBase)
       return
 
     let coords = ::get_mouse_relative_coords_on_obj(tmapBtnObj)
@@ -965,8 +956,8 @@ enum ESwitchSpectatorTarget
 
     if (selIdx != -1)
     {
-      let optionObj = this.scene.findObject("respawn_base")
-      if (checkObj(optionObj))
+      let optionObj = scene.findObject("respawn_base")
+      if (::checkObj(optionObj))
         optionObj.setValue(selIdx)
     }
   }
@@ -977,7 +968,7 @@ enum ESwitchSpectatorTarget
     if (!obj)
       return
 
-    let air = this.getCurSlotUnit()
+    let air = getCurSlotUnit()
     if (!air) return
 
     ::aircraft_for_weapons = air.name
@@ -993,7 +984,7 @@ enum ESwitchSpectatorTarget
 
   function updateRespawnBases()
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     if (!unit)
       return false
 
@@ -1001,7 +992,7 @@ enum ESwitchSpectatorTarget
 
     if (canChangeAircraft)
     {
-      let crew = this.getCurCrew()
+      let crew = getCurCrew()
       setSelectedUnitInfo(unit.name, crew.idInCountry)
       let rbData = respawnBases.getRespawnBasesData(unit)
       curRespawnBase = rbData.selBase
@@ -1022,14 +1013,14 @@ enum ESwitchSpectatorTarget
 
   function showRespawnTr(show)
   {
-    let obj = this.scene.findObject("respawn_base_tr")
-    if (checkObj(obj))
+    let obj = scene.findObject("respawn_base_tr")
+    if (::checkObj(obj))
       obj.show(show)
   }
 
   function updateUnitOptions()
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     local isUnitChanged = false
     if (unit)
     {
@@ -1074,12 +1065,12 @@ enum ESwitchSpectatorTarget
 
   function updateTacticalMapUnitType(isMapForSelectedUnit = null)
   {
-    local hudType = HUD_TYPE_UNKNOWN
+    local hudType = ::HUD_TYPE_UNKNOWN
     if (isRespawn)
     {
       if (isMapForSelectedUnit == null)
-        isMapForSelectedUnit = !this.isSpectate
-      let unit = isMapForSelectedUnit ? this.getCurSlotUnit() : null
+        isMapForSelectedUnit = !isSpectate
+      let unit = isMapForSelectedUnit ? getCurSlotUnit() : null
       if (unit)
         hudType = unit.unitType.hudTypeCode
     }
@@ -1099,7 +1090,7 @@ enum ESwitchSpectatorTarget
 
   function getSelWeapon()
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     if (unit)
       return getLastWeapon(unit.name)
     return null
@@ -1107,7 +1098,7 @@ enum ESwitchSpectatorTarget
 
   function getSelBulletsList()
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     if (unit)
       return getUnitLastBullets(unit)
     return null
@@ -1115,9 +1106,9 @@ enum ESwitchSpectatorTarget
 
   function getSelSkin()
   {
-    let unit = this.getCurSlotUnit()
-    let obj = this.scene.findObject("skin")
-    if (unit == null || !checkObj(obj))
+    let unit = getCurSlotUnit()
+    let obj = scene.findObject("skin")
+    if (unit == null || !::check_obj(obj))
       return null
     return ::g_decorator.getSkinsOption(unit.name).values?[obj.getValue()]
   }
@@ -1141,7 +1132,7 @@ enum ESwitchSpectatorTarget
       return
 
     requestAircraftAndWeapon(requestData)
-    if (this.scene.findObject("skin").getValue() > 0)
+    if (scene.findObject("skin").getValue() > 0)
       ::req_unlock_by_client("non_standard_skin", false)
 
     actionBarInfo.cacheActionDescs(requestData.name)
@@ -1151,10 +1142,10 @@ enum ESwitchSpectatorTarget
 
   function getSelectedRequestData(silent = true)
   {
-    let air = this.getCurSlotUnit()
+    let air = getCurSlotUnit()
     if (!air)
     {
-      log("getCurSlotUnit() returned null?")
+      ::dagor.debug("getCurSlotUnit() returned null?")
       return null
     }
 
@@ -1170,13 +1161,13 @@ enum ESwitchSpectatorTarget
       return null
     }
 
-    let crew = this.getCurCrew()
+    let crew = getCurCrew()
     let weapon = getLastWeapon(air.name)
     let skin = ::g_decorator.getRealSkin(air.name)
     ::g_decorator.setCurSkinToHangar(air.name)
     if (!weapon || !skin)
     {
-      log("no weapon or skin selected?")
+      ::dagor.debug("no weapon or skin selected?")
       return null
     }
 
@@ -1198,7 +1189,7 @@ enum ESwitchSpectatorTarget
 
     local bulletInd = 0;
     let bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
-    foreach(_groupIndex, bulGroup in bulletGroups)
+    foreach(groupIndex, bulGroup in bulletGroups)
     {
       if (!bulGroup.active)
         continue
@@ -1217,7 +1208,7 @@ enum ESwitchSpectatorTarget
       res[$"bulletCount{bulletInd}"] <- count
       bulletInd++;
     }
-    while(bulletInd < BULLETS_SETS_QUANTITY)
+    while(bulletInd < ::BULLETS_SETS_QUANTITY)
     {
       res[$"bullets{bulletInd}"] <- ""
       res[$"bulletCount{bulletInd}"] <- 0
@@ -1226,7 +1217,7 @@ enum ESwitchSpectatorTarget
 
     let editSlotbarBullets = getOverrideBullets(air);
     if (editSlotbarBullets)
-      for (local i = 0; i < BULLETS_SETS_QUANTITY; i++)
+      for (local i = 0; i < ::BULLETS_SETS_QUANTITY; i++)
       {
         res[$"bullets{i}"] = editSlotbarBullets?[$"bullets{i}"] ?? ""
         res[$"bulletCount{i}"] = editSlotbarBullets?[$"bulletsCount{i}"] ?? 0
@@ -1261,31 +1252,31 @@ enum ESwitchSpectatorTarget
 
     if (isRespawn && !missionRules.isUnitEnabledBySessionRank(unit))
       return {
-        text = loc("multiplayer/lowVehicleRank",
+        text = ::loc("multiplayer/lowVehicleRank",
           { minSessionRank = ::calc_battle_rating_from_rank(missionRules.getMinSessionRank()) })
         id = "low_vehicle_rank"
       }
 
     if (! haveRespawnBases)
-      return { text = loc("multiplayer/noRespawnBasesLeft"), id = "no_respawn_bases" }
+      return { text = ::loc("multiplayer/noRespawnBasesLeft"), id = "no_respawn_bases" }
 
     if (missionRules.isWarpointsRespawnEnabled && isRespawn)
     {
       let respawnPrice = getRespawnWpTotalCost()
       if (respawnPrice > 0 && respawnPrice > sessionWpBalance)
-        return { text = loc("msg/not_enought_warpoints_for_respawn"), id = "not_enought_wp" }
+        return { text = ::loc("msg/not_enought_warpoints_for_respawn"), id = "not_enought_wp" }
     }
 
     if (missionRules.isScoreRespawnEnabled && isRespawn &&
       (curSpawnScore < ::shop_get_spawn_score(unit.name, getSelWeapon() ?? "", getSelBulletsList() ?? [])))
-        return { text = loc("multiplayer/noSpawnScore"), id = "not_enought_score" }
+        return { text = ::loc("multiplayer/noSpawnScore"), id = "not_enought_score" }
 
     if (missionRules.isSpawnDelayEnabled && isRespawn)
     {
       let slotDelay = ::get_slot_delay(unit.name)
       if (slotDelay > 0)
       {
-        let text = loc("multiplayer/slotDelay", { time = time.secondsToString(slotDelay) })
+        let text = ::loc("multiplayer/slotDelay", { time = time.secondsToString(slotDelay) })
         return { text = text, id = "wait_for_slot_delay" }
       }
     }
@@ -1295,18 +1286,18 @@ enum ESwitchSpectatorTarget
       local locId = "not_available_aircraft"
       if ((::SessionLobby.getUnitTypesMask() & (1 << ::get_es_unit_type(unit))) != 0)
         locId = "crew_not_available"
-      return { text = ::SessionLobby.getNotAvailableUnitByBRText(unit) || loc(locId),
+      return { text = ::SessionLobby.getNotAvailableUnitByBRText(unit) || ::loc(locId),
         id = "crew_not_available" }
     }
 
     if (!silent)
-      log($"Try to select aircraft {unit.name}")
+      ::dagor.debug($"Try to select aircraft {unit.name}")
 
     if (!::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, !silent))
     {
       if (!silent)
-        log($"is_crew_slot_was_ready_at_host return false for {crew.idInCountry} - {unit.name}")
-      return { text = loc("aircraft_not_repaired"), id = "aircraft_not_repaired" }
+        ::dagor.debug($"is_crew_slot_was_ready_at_host return false for {crew.idInCountry} - {unit.name}")
+      return { text = ::loc("aircraft_not_repaired"), id = "aircraft_not_repaired" }
     }
 
     return null
@@ -1324,7 +1315,7 @@ enum ESwitchSpectatorTarget
     else
     {
       requestInProgress = true
-      this.showTaskProgressBox(loc("charServer/purchase0"), function() { requestInProgress = false })
+      showTaskProgressBox(::loc("charServer/purchase0"), function() { requestInProgress = false })
 
       lastRequestData = requestData
     }
@@ -1333,31 +1324,31 @@ enum ESwitchSpectatorTarget
   function aircraftAcceptedCb(result)
   {
     ::set_aircraft_accepted_cb(null, null)
-    this.destroyProgressBox()
+    destroyProgressBox()
     requestInProgress = false
 
-    if (!this.isValid())
+    if (!isValid())
       return
 
     reset_mp_autostart_countdown()
 
     switch (result)
     {
-      case ERR_ACCEPT:
+      case ::ERR_ACCEPT:
         onApplyAircraft(lastRequestData)
         ::update_gamercards() //update balance
         break;
 
-      case ERR_REJECT_SESSION_FINISHED:
-      case ERR_REJECT_DISCONNECTED:
+      case ::ERR_REJECT_SESSION_FINISHED:
+      case ::ERR_REJECT_DISCONNECTED:
         break;
 
       default:
-        log($"Respawn Erorr: aircraft accepted cb result = {result}, on request:")
-        debugTableData(lastRequestData)
+        ::dagor.debug($"Respawn Erorr: aircraft accepted cb result = {result}, on request:")
+        ::debugTableData(lastRequestData)
         lastRequestData = null
-        if (!checkObj(this.guiScene["char_connecting_error"]))
-          ::showInfoMsgBox(loc($"changeAircraftResult/{result}"), "char_connecting_error")
+        if (!::checkObj(guiScene["char_connecting_error"]))
+          ::showInfoMsgBox(::loc($"changeAircraftResult/{result}"), "char_connecting_error")
         break
     }
   }
@@ -1378,17 +1369,17 @@ enum ESwitchSpectatorTarget
 
     readyForRespawn = lastRequestData != null && ::u.isEqual(lastRequestData, getSelectedRequestData())
 
-    if (!readyForRespawn && this.isApplyPressed)
+    if (!readyForRespawn && isApplyPressed)
       if (!doRespawnCalled)
-        this.isApplyPressed = false
+        isApplyPressed = false
       else
-        log("Something has changed in the aircraft selection, but too late - do_respawn was called before.")
+        ::dagor.debug("Something has changed in the aircraft selection, but too late - do_respawn was called before.")
     updateApplyText()
   }
 
   function updateApplyText()
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     local isAvailResp = haveRespawnBases || isGTCooperative
     local tooltipText = ""
     local tooltipEndText = ""
@@ -1396,14 +1387,14 @@ enum ESwitchSpectatorTarget
     let costTextArr = []
     local shortCostText = "" //for slot battle button
 
-    if (this.isApplyPressed)
-      applyText = loc("mainmenu/btnCancel")
+    if (isApplyPressed)
+      applyText = ::loc("mainmenu/btnCancel")
     else
     {
-      applyText = loc("mainmenu/toBattle")
-      tooltipText = loc("mainmenu/selectAircraftTooltip")
-      if (is_platform_pc)
-        tooltipEndText = format(" [%s]", loc("key/Enter"))
+      applyText = ::loc("mainmenu/toBattle")
+      tooltipText = ::loc("mainmenu/selectAircraftTooltip")
+      if (::is_platform_pc)
+        tooltipEndText = format(" [%s]", ::loc("key/Enter"))
 
       if (haveSlotbar)
       {
@@ -1419,11 +1410,11 @@ enum ESwitchSpectatorTarget
           let curScore = ::shop_get_spawn_score(unit.name, getSelWeapon() ?? "", getSelBulletsList() ?? [])
           isAvailResp = isAvailResp && (curScore <= curSpawnScore)
           if (curScore > 0)
-            costTextArr.append(loc("shop/spawnScore", { cost = curScore }))
+            costTextArr.append(::loc("shop/spawnScore", { cost = curScore }))
         }
 
         if (leftRespawns > 0)
-          infoTextsArr.append(loc("respawn/leftRespawns", { num = leftRespawns.tostring() }))
+          infoTextsArr.append(::loc("respawn/leftRespawns", { num = leftRespawns.tostring() }))
 
         infoTextsArr.append(missionRules.getRespawnInfoTextForUnit(unit))
         isAvailResp = isAvailResp && missionRules.isRespawnAvailable(unit)
@@ -1440,35 +1431,35 @@ enum ESwitchSpectatorTarget
     //******************** combine final texts ********************************
 
     local applyTextShort = applyText //for slot battle button
-    let comma = loc("ui/comma")
+    let comma = ::loc("ui/comma")
 
     if (shortCostText.len())
-      applyTextShort = format("%s<b> %s</b>", loc("mainmenu/toBattle/short"), shortCostText)
+      applyTextShort = format("%s<b> %s</b>", ::loc("mainmenu/toBattle/short"), shortCostText)
 
     let costText = comma.join(costTextArr, true)
     if (costText.len())
-      applyText = "".concat(applyText, loc("ui/parentheses/space", { text = costText }))
+      applyText = "".concat(applyText, ::loc("ui/parentheses/space", { text = costText }))
 
     let infoText = comma.join(infoTextsArr, true)
     if (infoText.len())
-      applyText = "".concat(applyText, loc("ui/parentheses/space", { text = infoText }))
+      applyText = "".concat(applyText, ::loc("ui/parentheses/space", { text = infoText }))
 
     //******************  uodate buttons objects ******************************
 
     foreach (btnId in mainButtonsId)
     {
-      let buttonSelectObj = setColoredDoubleTextToButton(this.scene.findObject("nav-help"), btnId, applyText)
-      buttonSelectObj.tooltip = this.isSpectate ? tooltipText : "".concat(tooltipText, tooltipEndText)
-      buttonSelectObj.isCancel = this.isApplyPressed ? "yes" : "no"
+      let buttonSelectObj = setColoredDoubleTextToButton(scene.findObject("nav-help"), btnId, applyText)
+      buttonSelectObj.tooltip = isSpectate ? tooltipText : "".concat(tooltipText, tooltipEndText)
+      buttonSelectObj.isCancel = isApplyPressed ? "yes" : "no"
       buttonSelectObj.inactiveColor = (isAvailResp && !isCrewDelayed) ? "no" : "yes"
     }
 
-    let crew = this.getCurCrew()
-    let slotObj = crew && ::get_slot_obj(this.scene, crew.idCountry, crew.idInCountry)
+    let crew = getCurCrew()
+    let slotObj = crew && ::get_slot_obj(scene, crew.idCountry, crew.idInCountry)
     let slotBtnObj = setColoredDoubleTextToButton(slotObj, "slotBtn_battle", applyTextShort)
     if (slotBtnObj)
     {
-      slotBtnObj.isCancel = this.isApplyPressed ? "yes" : "no"
+      slotBtnObj.isCancel = isApplyPressed ? "yes" : "no"
       slotBtnObj.inactiveColor = (isAvailResp && !isCrewDelayed) ? "no" : "yes"
     }
 
@@ -1477,7 +1468,7 @@ enum ESwitchSpectatorTarget
 
   function setApplyPressed()
   {
-    this.isApplyPressed = !this.isApplyPressed
+    isApplyPressed = !isApplyPressed
     updateApplyText()
   }
 
@@ -1495,7 +1486,7 @@ enum ESwitchSpectatorTarget
     reset_mp_autostart_countdown()
     if (readyForRespawn)
       setApplyPressed()
-    else if (canChangeAircraft && !this.isApplyPressed && canRequestAircraftNow())
+    else if (canChangeAircraft && !isApplyPressed && canRequestAircraftNow())
       doSelectAircraft()
   }
 
@@ -1506,9 +1497,9 @@ enum ESwitchSpectatorTarget
       return true
 
     if (bulletsManager.canChangeBulletsCount())
-      return bulletsManager.checkChosenBulletsCount(true, Callback(@() applyFunc(), this))
+      return bulletsManager.checkChosenBulletsCount(true, ::Callback(@() applyFunc(), this))
 
-    let air = this.getCurSlotUnit()
+    let air = getCurSlotUnit()
     if (!air)
       return true
 
@@ -1521,7 +1512,7 @@ enum ESwitchSpectatorTarget
       let weaponText = getAmmoAmountData(air, weapon, AMMO.WEAPON)
       if (weaponText.warning)
       {
-        textArr.append("".concat(getWeaponNameText(air.name, false, -1, loc("ui/comma")), weaponText.text))
+        textArr.append("".concat(getWeaponNameText(air.name, false, -1, ::loc("ui/comma")), weaponText.text))
         if (!weaponText.amount)
           zero = true
       }
@@ -1529,7 +1520,7 @@ enum ESwitchSpectatorTarget
 
 
     let bulletGroups = bulletsManager.getBulletsGroups()
-    foreach(_groupIndex, bulGroup in bulletGroups)
+    foreach(groupIndex, bulGroup in bulletGroups)
     {
       if (!bulGroup.active)
         continue
@@ -1549,12 +1540,12 @@ enum ESwitchSpectatorTarget
     if (!zero && !::is_game_mode_with_spendable_weapons())
       return true
 
-    if (textArr.len() && (zero || !get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))) //skip warning only
+    if (textArr.len() && (zero || !::get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))) //skip warning only
     {
       ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
         {
           parentHandler = this
-          message = loc(zero ? "msgbox/zero_ammo_warning" : "controls/no_ammo_left_warning")
+          message = ::loc(zero ? "msgbox/zero_ammo_warning" : "controls/no_ammo_left_warning")
           list = "\n".join(textArr)
           ableToStartAndSkip = !zero
           onStartPressed = applyFunc
@@ -1566,7 +1557,7 @@ enum ESwitchSpectatorTarget
 
   function checkCurUnitSkin(applyFunc)
   {
-    let unit = this.getCurSlotUnit()
+    let unit = getCurSlotUnit()
     if (!unit)
       return true
 
@@ -1591,26 +1582,26 @@ enum ESwitchSpectatorTarget
         applyFunc()
       }
       message = " ".concat(
-        loc("msgbox/optionWillBeChanged/content_allowed_preset"),
-        loc("msgbox/optionWillBeChanged", {
-          name     = colorize("userlogColoredText", loc("options/content_allowed_preset"))
-          oldValue = colorize("userlogColoredText", loc($"content/tag/{curPresetId}"))
-          newValue = colorize("userlogColoredText", loc($"content/tag/{newPresetId}"))
+        ::loc("msgbox/optionWillBeChanged/content_allowed_preset"),
+        ::loc("msgbox/optionWillBeChanged", {
+          name     = ::colorize("userlogColoredText", ::loc("options/content_allowed_preset"))
+          oldValue = ::colorize("userlogColoredText", ::loc($"content/tag/{curPresetId}"))
+          newValue = ::colorize("userlogColoredText", ::loc($"content/tag/{newPresetId}"))
         }),
-        loc("msgbox/optionWillBeChanged/comment"))
+        ::loc("msgbox/optionWillBeChanged/comment"))
     })
     return false
   }
 
   function use_autostart()
   {
-    if (!(::get_game_type() & GT_AUTO_SPAWN))
+    if (!(::get_game_type() & ::GT_AUTO_SPAWN))
       return false;
-    let crew = this.getCurCrew()
-    if (this.isSpectate || !crew || !::before_first_flight_in_session || missionRules.isWarpointsRespawnEnabled)
+    let crew = getCurCrew()
+    if (isSpectate || !crew || !::before_first_flight_in_session || missionRules.isWarpointsRespawnEnabled)
       return false;
 
-    let air = this.getCurSlotUnit()
+    let air = getCurSlotUnit()
     if (!air)
       return false
 
@@ -1618,7 +1609,7 @@ enum ESwitchSpectatorTarget
       ::is_crew_slot_was_ready_at_host(crew.idInCountry, air.name, false)
   }
 
-  function onUpdate(_obj, dt)
+  function onUpdate(obj, dt)
   {
     if (needCheckSlotReady)
       checkCrewAccessChange()
@@ -1634,19 +1625,19 @@ enum ESwitchSpectatorTarget
     let countdown = ::get_mp_respawn_countdown()
     updateCountdown(countdown)
 
-    this.updateTimeToKick(dt)
-    this.updateTables(dt)
-    this.setInfo()
+    updateTimeToKick(dt)
+    updateTables(dt)
+    setInfo()
 
     updateTacticalMapHint()
 
-    if (use_autostart() && get_mp_autostart_countdown() <= 0 && !this.isApplyPressed)
+    if (use_autostart() && get_mp_autostart_countdown() <= 0 && !isApplyPressed)
     {
       onApply()
       return
     }
 
-    if (this.isApplyPressed)
+    if (isApplyPressed)
     {
       if (checkSpawnInterrupt())
         return
@@ -1664,22 +1655,22 @@ enum ESwitchSpectatorTarget
       }
     }
 
-    if (isRespawn && this.isSpectate)
+    if (isRespawn && isSpectate)
       updateSpectatorName()
 
-    if (isRespawn && ::get_mission_status() > MISSION_STATUS_RUNNING)
+    if (isRespawn && ::get_mission_status() > ::MISSION_STATUS_RUNNING)
       ::quit_to_debriefing()
   }
 
   function doRespawn()
   {
-    log("doRespawnPlayer called")
+    ::dagor.debug("doRespawnPlayer called")
     ::before_first_flight_in_session = false
     doRespawnCalled = doRespawnPlayer()
     if (!doRespawnCalled)
     {
       onApply()
-      ::showInfoMsgBox(loc("msg/error_when_try_to_respawn"), "error_when_try_to_respawn", true)
+      ::showInfoMsgBox(::loc("msg/error_when_try_to_respawn"), "error_when_try_to_respawn", true)
       return
     }
 
@@ -1690,7 +1681,7 @@ enum ESwitchSpectatorTarget
       let requestedWeapon = lastRequestData.weapon
       if (!(lastSpawnUnitName in ::used_planes))
         ::used_planes[lastSpawnUnitName] <- []
-      if (!isInArray(requestedWeapon, ::used_planes[lastSpawnUnitName]))
+      if (!::isInArray(requestedWeapon, ::used_planes[lastSpawnUnitName]))
         ::used_planes[lastSpawnUnitName].append(requestedWeapon)
       lastRequestData = null
     }
@@ -1707,12 +1698,12 @@ enum ESwitchSpectatorTarget
     if (!unit || missionRules.getUnitLeftRespawns(unit) != 0)
       return false
 
-    this.guiScene.performDelayed(this, function()
+    guiScene.performDelayed(this, function()
     {
       if (!doRespawnCalled)
         return
 
-      let msg = loc("multiplayer/noTeamUnitLeft",
+      let msg = ::loc("multiplayer/noTeamUnitLeft",
                         { unitName = lastSpawnUnitName.len() ? ::getUnitName(lastSpawnUnitName) : "" })
       reinitScreen()
       ::g_popups.add(null, msg)
@@ -1722,11 +1713,11 @@ enum ESwitchSpectatorTarget
 
   function updateSlotDelays()
   {
-    if (!checkObj(this.scene))
+    if (!::checkObj(scene))
       return
 
     let crews = ::get_crews_list_by_country(::get_local_player_country())
-    let currentIdInCountry = this.getCurCrew()?.idInCountry
+    let currentIdInCountry = getCurCrew()?.idInCountry
     foreach(crew in crews)
     {
       let idInCountry = crew.idInCountry
@@ -1734,12 +1725,12 @@ enum ESwitchSpectatorTarget
         slotDelayDataByCrewIdx[idInCountry] <- { slotDelay = -1, updateTime = 0 }
       let slotDelayData = slotDelayDataByCrewIdx[idInCountry]
 
-      let prevSlotDelay = getTblValue("slotDelay", slotDelayData, -1)
+      let prevSlotDelay = ::getTblValue("slotDelay", slotDelayData, -1)
       let curSlotDelay = ::get_slot_delay_by_slot(idInCountry)
       if (prevSlotDelay != curSlotDelay)
       {
         slotDelayData.slotDelay = curSlotDelay
-        slotDelayData.updateTime = get_time_msec()
+        slotDelayData.updateTime = ::dagor.getCurTime()
       }
       else if (curSlotDelay < 0)
         continue
@@ -1759,7 +1750,7 @@ enum ESwitchSpectatorTarget
 
     let idInCountry = crew.idInCountry
     let countryId = crew.idCountry
-    let slotObj = ::get_slot_obj(this.scene, countryId, idInCountry)
+    let slotObj = ::get_slot_obj(scene, countryId, idInCountry)
     if (!slotObj)
       return
 
@@ -1772,7 +1763,7 @@ enum ESwitchSpectatorTarget
       params.slotDelayData <- slotDelayDataByCrewIdx[idInCountry]
 
     let priceTextObj = slotObj.findObject("bottom_item_price_text")
-    if (checkObj(priceTextObj))
+    if (::checkObj(priceTextObj))
     {
       let bottomText = ::get_unit_item_price_text(unit, params)
       priceTextObj.tinyFont = ::is_unit_price_text_long(bottomText) ? "yes" : "no"
@@ -1780,7 +1771,7 @@ enum ESwitchSpectatorTarget
     }
 
     let nameObj = slotObj.findObject($"{::get_slot_obj_id(countryId, idInCountry)}_txt")
-    if (checkObj(nameObj))
+    if (::checkObj(nameObj))
       nameObj.setValue(::get_slot_unit_name_text(unit, params))
 
     if (!missionRules.isRespawnAvailable(unit))
@@ -1796,7 +1787,7 @@ enum ESwitchSpectatorTarget
   function get_mp_autostart_countdown()
   {
     let countdown = autostartTime - autostartTimer;
-    return ceil(countdown);
+    return ::ceil(countdown);
   }
   function reset_mp_autostart_countdown()
   {
@@ -1805,8 +1796,8 @@ enum ESwitchSpectatorTarget
 
   function showLoadAnim(show)
   {
-    if (checkObj(this.scene))
-      this.scene.findObject("loadanim").show(show)
+    if (::checkObj(scene))
+      scene.findObject("loadanim").show(show)
 
     if (show)
       reset_mp_autostart_countdown();
@@ -1814,27 +1805,27 @@ enum ESwitchSpectatorTarget
 
   function updateButtons(show = null, checkShowChange = false)
   {
-    if ((checkShowChange && show == showButtons) || !checkObj(this.scene))
+    if ((checkShowChange && show == showButtons) || !::check_obj(scene))
       return
 
     if (show != null)
       showButtons = show
 
     let buttons = {
-      btn_select =          showButtons && isRespawn && !isNoRespawns && !stayOnRespScreen && !doRespawnCalled && !this.isSpectate
-      btn_select_no_enter = showButtons && isRespawn && !isNoRespawns && !stayOnRespScreen && !doRespawnCalled && this.isSpectate
-      btn_spectator =       showButtons && isRespawn && isFriendlyUnitsExists && (!this.isSpectate || is_has_multiplayer())
+      btn_select =          showButtons && isRespawn && !isNoRespawns && !stayOnRespScreen && !doRespawnCalled && !isSpectate
+      btn_select_no_enter = showButtons && isRespawn && !isNoRespawns && !stayOnRespScreen && !doRespawnCalled && isSpectate
+      btn_spectator =       showButtons && isRespawn && isFriendlyUnitsExists && (!isSpectate || is_has_multiplayer())
       btn_mpStat =          showButtons && isRespawn && is_has_multiplayer()
       btn_QuitMission =     showButtons && isRespawn && isNoRespawns && ::g_mis_loading_state.isReadyToShowRespawn()
       btn_back =            showButtons && useTouchscreen && !isRespawn
-      btn_activateorder =   showButtons && isRespawn && ::g_orders.showActivateOrderButton() && (!this.isSpectate || !::show_console_buttons)
+      btn_activateorder =   showButtons && isRespawn && ::g_orders.showActivateOrderButton() && (!isSpectate || !::show_console_buttons)
     }
     foreach(id, value in buttons)
       this.showSceneBtn(id, value)
 
-    let crew = this.getCurCrew()
-    let slotObj = crew && ::get_slot_obj(this.scene, crew.idCountry, crew.idInCountry)
-    ::showBtn("buttonsDiv", show && isRespawn, slotObj)
+    let crew = getCurCrew()
+    let slotObj = crew && ::get_slot_obj(scene, crew.idCountry, crew.idInCountry)
+    showBtn("buttonsDiv", show && isRespawn, slotObj)
   }
 
   function updateCountdown(countdown)
@@ -1851,21 +1842,21 @@ enum ESwitchSpectatorTarget
       return
 
     local btnText = applyText
-    if (countdown > 0 && readyForRespawn && this.isApplyPressed)
-      btnText = "".concat(btnText, loc("ui/parentheses/space", { text = "".concat(countdown, loc("mainmenu/seconds")) }))
+    if (countdown > 0 && readyForRespawn && isApplyPressed)
+      btnText = "".concat(btnText, ::loc("ui/parentheses/space", { text = "".concat(countdown, ::loc("mainmenu/seconds")) }))
 
     foreach (btnId in mainButtonsId)
-      setColoredDoubleTextToButton(this.scene, btnId, btnText)
+      setColoredDoubleTextToButton(scene, btnId, btnText)
 
-    let textObj = this.scene.findObject("autostart_countdown_text")
-    if (!checkObj(textObj))
+    let textObj = scene.findObject("autostart_countdown_text")
+    if (!::checkObj(textObj))
       return
 
     let autostartCountdown = get_mp_autostart_countdown()
     local text = ""
     if (use_autostart() && autostartCountdown > 0 && autostartCountdown <= autostartShowTime)
-      text = colorize(autostartCountdown <= autostartShowInColorTime ? "@warningTextColor" : "@activeTextColor",
-        "".concat(loc("mainmenu/autostartCountdown"), " ", autostartCountdown, loc("mainmenu/seconds")))
+      text = ::colorize(autostartCountdown <= autostartShowInColorTime ? "@warningTextColor" : "@activeTextColor",
+        "".concat(::loc("mainmenu/autostartCountdown"), " ", autostartCountdown, ::loc("mainmenu/seconds")))
     textObj.setValue(text)
   }
 
@@ -1873,74 +1864,74 @@ enum ESwitchSpectatorTarget
   curChatData = null
   function loadChat()
   {
-    let chatBlkName = this.isSpectate? "%gui/chat/gameChat.blk" : "%gui/chat/gameChatRespawn.blk"
+    let chatBlkName = isSpectate? "%gui/chat/gameChat.blk" : "%gui/chat/gameChatRespawn.blk"
     if (!curChatData || chatBlkName != curChatBlk)
       loadChatScene(chatBlkName)
     if (curChatData)
-      ::hide_game_chat_scene_input(curChatData, !isRespawn && !this.isSpectate)
+      ::hide_game_chat_scene_input(curChatData, !isRespawn && !isSpectate)
   }
 
   function loadChatScene(chatBlkName)
   {
-    let chatObj = this.scene.findObject(this.isSpectate ? "mpChatInSpectator" : "mpChatInRespawn")
-    if (!checkObj(chatObj))
+    let chatObj = scene.findObject(isSpectate ? "mpChatInSpectator" : "mpChatInRespawn")
+    if (!::checkObj(chatObj))
       return
 
     if (curChatData)
     {
-      if (checkObj(curChatData.scene))
-        this.guiScene.replaceContentFromText(curChatData.scene, "", 0, null)
+      if (::checkObj(curChatData.scene))
+        guiScene.replaceContentFromText(curChatData.scene, "", 0, null)
       ::detachGameChatSceneData(curChatData)
     }
 
     curChatData = ::loadGameChatToObj(chatObj, chatBlkName, this,
-      { selfHideInput = this.isSpectate, isInSpectateMode = this.isSpectate, isInputSelected = this.isSpectate })
+      { selfHideInput = isSpectate, isInSpectateMode = isSpectate, isInputSelected = isSpectate })
     curChatBlk = chatBlkName
 
-    if (!this.isSpectate)
+    if (!isSpectate)
       return
 
     let voiceChatNestObj = chatObj.findObject("voice_chat_nest")
-    if (checkObj(voiceChatNestObj))
-      this.guiScene.replaceContent(voiceChatNestObj, "%gui/chat/voiceChatWidget.blk", this)
+    if (::check_obj(voiceChatNestObj))
+      guiScene.replaceContent(voiceChatNestObj, "%gui/chat/voiceChatWidget.blk", this)
   }
 
   function updateSpectatorRotationForced(isRespawnSceneActive = null)
   {
     if (isRespawnSceneActive == null)
-      isRespawnSceneActive = this.isSceneActive()
-    ::force_spectator_camera_rotation(isRespawnSceneActive && this.isSpectate)
+      isRespawnSceneActive = isSceneActive()
+    ::force_spectator_camera_rotation(isRespawnSceneActive && isSpectate)
   }
 
   function setSpectatorMode(is_spectator, forceShowInfo = false)
   {
-    if (this.isSpectate == is_spectator && !forceShowInfo)
+    if (isSpectate == is_spectator && !forceShowInfo)
       return
 
-    this.isSpectate = is_spectator
+    isSpectate = is_spectator
     showSpectatorInfo(is_spectator)
-    setOrdersEnabled(this.isSpectate)
+    setOrdersEnabled(isSpectate)
     updateSpectatorRotationForced()
 
-    shouldBlurSceneBg = !this.isSpectate ? needUseHangarDof() : false
+    shouldBlurSceneBg = !isSpectate ? needUseHangarDof() : false
     ::handlersManager.updateSceneBgBlur()
 
-    shouldFadeSceneInVr = !this.isSpectate
+    shouldFadeSceneInVr = !isSpectate
     ::handlersManager.updateSceneVrParams()
 
     updateTacticalMapUnitType()
 
     if (is_spectator)
     {
-      this.scene.findObject("btn_spectator").setValue(canChangeAircraft? loc("multiplayer/changeAircraft") : loc("multiplayer/backToMap"))
+      scene.findObject("btn_spectator").setValue(canChangeAircraft? ::loc("multiplayer/changeAircraft") : ::loc("multiplayer/backToMap"))
       updateSpectatorName()
     }
     else
-      this.scene.findObject("btn_spectator").setValue(loc("multiplayer/spectator"))
+      scene.findObject("btn_spectator").setValue(::loc("multiplayer/spectator"))
 
     loadChat()
 
-    this.updateListsButtons()
+    updateListsButtons()
 
     onSpectatorMode(is_spectator)
 
@@ -1950,12 +1941,12 @@ enum ESwitchSpectatorTarget
 
   function updateControlsAllowMask()
   {
-    this.switchControlsAllowMask(
+    switchControlsAllowMask(
       !isRespawn ? (
         CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP |
         CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD |
         CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY)
-      : this.isSpectate ? CtrlsInGui.CTRL_ALLOW_SPECTATOR
+      : isSpectate ? CtrlsInGui.CTRL_ALLOW_SPECTATOR
       : CtrlsInGui.CTRL_ALLOW_NONE)
   }
 
@@ -1972,36 +1963,36 @@ enum ESwitchSpectatorTarget
 
   function showSpectatorInfo(status)
   {
-    if (!checkObj(this.scene))
+    if (!::checkObj(scene))
       return
 
-    this.setSceneTitle(status ? "" : ::getCurMpTitle(), this.scene, "respawn_title")
+    setSceneTitle(status ? "" : getCurMpTitle(), scene, "respawn_title")
 
-    this.scene.findObject("spectator_mode_title").show(status)
-    this.scene.findObject("flight_menu_bgd").show(!status)
-    this.scene.findObject("spectator_controls").show(status)
-    this.scene.findObject("btn_show_hud").enable(status)
+    scene.findObject("spectator_mode_title").show(status)
+    scene.findObject("flight_menu_bgd").show(!status)
+    scene.findObject("spectator_controls").show(status)
+    scene.findObject("btn_show_hud").enable(status)
     updateButtons()
   }
 
   function getEndTimeObj()
   {
-    return this.scene.findObject("respawn_time_end")
+    return scene.findObject("respawn_time_end")
   }
 
   function getScoreLimitObj()
   {
-    return this.scene.findObject("respawn_score_limit")
+    return scene.findObject("respawn_score_limit")
   }
 
   function getTimeToKickObj()
   {
-    return this.scene.findObject("respawn_time_to_kick")
+    return scene.findObject("respawn_time_to_kick")
   }
 
   function updateSpectatorName()
   {
-    if (!checkObj(this.scene))
+    if (!::checkObj(scene))
       return
 
     let name = getSpectatorTargetName()
@@ -2016,7 +2007,7 @@ enum ESwitchSpectatorTarget
     let player = ::get_mplayers_list(GET_MPLAYERS_LIST, true).findvalue(@(p) p.id == targetId)
     let color = player != null ? ::get_mplayer_color(player) : "teamBlueColor"
 
-    this.scene.findObject("spectator_name").setValue(colorize(color, text))
+    scene.findObject("spectator_name").setValue(::colorize(color, text))
   }
 
   function onChatCancel()
@@ -2028,11 +2019,11 @@ enum ESwitchSpectatorTarget
 
   function onEmptyChatEntered()
   {
-    if (!this.isSpectate)
+    if (!isSpectate)
       onApply()
   }
 
-  function onGamemenu(_obj)
+  function onGamemenu(obj)
   {
     if (showHud())
       return; //was hidden, ignore menu opening
@@ -2040,34 +2031,34 @@ enum ESwitchSpectatorTarget
     if (!isRespawn || !canRequestAircraftNow())
       return
 
-    if (this.isSpectate && onSpectator() && ::has_available_slots())
+    if (isSpectate && onSpectator() && ::has_available_slots())
       return
 
-    this.guiScene.performDelayed(this, function() {
+    guiScene.performDelayed(this, function() {
       ::disable_flight_menu(false)
-      ::gui_start_flight_menu()
+      gui_start_flight_menu()
     })
   }
 
-  function onSpectator(_obj = null)
+  function onSpectator(obj = null)
   {
     if (!canRequestAircraftNow() || !isRespawn)
       return false
-    setSpectatorMode(!this.isSpectate)
+    setSpectatorMode(!isSpectate)
     return true
   }
 
-  function setHudVisibility(_obj)
+  function setHudVisibility(obj)
   {
-    if(!this.isSpectate)
+    if(!isSpectate)
       return
 
-    ::show_hud(!this.scene.findObject("respawn_screen").isVisible())
+    ::show_hud(!scene.findObject("respawn_screen").isVisible())
   }
 
   function showHud()
   {
-    if (!checkObj(this.scene) || this.scene.findObject("respawn_screen").isVisible())
+    if (!::checkObj(scene) || scene.findObject("respawn_screen").isVisible())
       return false
     ::show_hud(true)
     return true
@@ -2111,20 +2102,20 @@ enum ESwitchSpectatorTarget
     spectator_switch_direction = ESwitchSpectatorTarget.E_PREV;
   }
 
-  function onHideHUD(_obj)
+  function onHideHUD(obj)
   {
     ::show_hud(false)
   }
 
-  function onShowHud(show = true, _needApplyPending = false) //return - was changed
+  function onShowHud(show = true, needApplyPending = false) //return - was changed
   {
-    if (!this.isSceneActive())
+    if (!isSceneActive())
       return
 
-    if (!checkObj(this.scene))
+    if (!::checkObj(scene))
       return
 
-    let obj = this.scene.findObject("respawn_screen")
+    let obj = scene.findObject("respawn_screen")
     let isHidden = obj?.display == "hide" //until scene recount obj.isVisible will return false, because it was full hidden
     if (isHidden != show)
       return
@@ -2132,28 +2123,28 @@ enum ESwitchSpectatorTarget
     obj.show(show)
   }
 
-  function onSpectatorNext(_obj)
+  function onSpectatorNext(obj)
   {
     if (!canRequestAircraftNow())
       return
-    if (isRespawn && this.isSpectate)
+    if (isRespawn && isSpectate)
       switchSpectatorTargetToNext();
   }
 
-  function onSpectatorPrev(_obj)
+  function onSpectatorPrev(obj)
   {
     if (!canRequestAircraftNow())
       return
-    if (isRespawn && this.isSpectate)
+    if (isRespawn && isSpectate)
       switchSpectatorTargetToPrev();
   }
 
-  function onMpStatScreen(_obj)
+  function onMpStatScreen(obj)
   {
     if (!canRequestAircraftNow())
       return
 
-    this.guiScene.performDelayed(this, function() {
+    guiScene.performDelayed(this, function() {
       ::disable_flight_menu(false)
       guiStartMPStatScreen()
     })
@@ -2164,7 +2155,7 @@ enum ESwitchSpectatorTarget
     return ::get_mission_mode()
   }
 
-  function onQuitMission(_obj)
+  function onQuitMission(obj)
   {
     ::quit_mission()
   }
@@ -2175,15 +2166,15 @@ enum ESwitchSpectatorTarget
       ::close_ingame_gui()
   }
 
-  function onEventUpdateEsFromHost(_p)
+  function onEventUpdateEsFromHost(p)
   {
-    if (this.isSceneActive())
+    if (isSceneActive())
       reinitScreen({})
   }
 
-  function onEventUnitWeaponChanged(_p)
+  function onEventUnitWeaponChanged(p)
   {
-    let crew = this.getCurCrew()
+    let crew = getCurCrew()
     let unit = ::g_crew.getCrewUnit(crew)
     if (!unit)
       return
@@ -2195,36 +2186,36 @@ enum ESwitchSpectatorTarget
     checkReady()
   }
 
-  function onEventBulletsGroupsChanged(_p)
+  function onEventBulletsGroupsChanged(p)
   {
-    let crew = this.getCurCrew()
+    let crew = getCurCrew()
     if (missionRules.hasRespawnCost)
       updateCrewSlot(crew)
 
     checkReady()
   }
 
-  function onEventBulletsCountChanged(_p)
+  function onEventBulletsCountChanged(p)
   {
     checkReady()
   }
 
   function updateLeftPanelBlock()
   {
-    let objectivesObj = this.scene.findObject("objectives")
-    let separateObj = this.scene.findObject("separate_block")
-    let chatObj = this.scene.findObject("mpChatInRespawn")
-    let unitOptionsObj = this.scene.findObject("unit_options")
+    let objectivesObj = scene.findObject("objectives")
+    let separateObj = scene.findObject("separate_block")
+    let chatObj = scene.findObject("mpChatInRespawn")
+    let unitOptionsObj = scene.findObject("unit_options")
     objectivesObj.height = ""
     separateObj.height = ""
     unitOptionsObj.height = ""
     chatObj.height = "fh"
 
     // scene update needed to all objects has right size values
-    this.guiScene.applyPendingChanges(false)
+    guiScene.applyPendingChanges(false)
 
-    let leftPanelObj = this.scene.findObject("panel-left")
-    let minChatHeight = ::g_dagui_utils.toPixels(this.guiScene, "1@minChatHeight")
+    let leftPanelObj = scene.findObject("panel-left")
+    let minChatHeight = ::g_dagui_utils.toPixels(guiScene, "1@minChatHeight")
     let hOversize = unitOptionsObj.getSize()[1] + objectivesObj.getSize()[1] +
       minChatHeight - leftPanelObj.getSize()[1]
 
@@ -2236,9 +2227,9 @@ enum ESwitchSpectatorTarget
       unitOptionsObj.height = unitOptionsHeight
     }
 
-    let maxChatHeight = ::g_dagui_utils.toPixels(this.guiScene, "1@maxChatHeight")
+    let maxChatHeight = ::g_dagui_utils.toPixels(guiScene, "1@maxChatHeight")
     canSwitchChatSize = chatObj.getSize()[1] < maxChatHeight
-      && objectivesObj.getSize()[1] > ::g_dagui_utils.toPixels(this.guiScene, "1@minMisObjHeight")
+      && objectivesObj.getSize()[1] > ::g_dagui_utils.toPixels(guiScene, "1@minMisObjHeight")
 
     this.showSceneBtn("mis_obj_text_header", !canSwitchChatSize)
     this.showSceneBtn("mis_obj_button_header", canSwitchChatSize)
@@ -2268,13 +2259,13 @@ enum ESwitchSpectatorTarget
   {
     isChatFullSize = newIsChatFullSize
 
-    this.scene.findObject("mis_obj_button_header").direction = isChatFullSize ? "down" : "up"
-    this.scene.findObject("objectives").height = canSwitchChatSize && isChatFullSize ? "1@minMisObjHeight" : ""
+    scene.findObject("mis_obj_button_header").direction = isChatFullSize ? "down" : "up"
+    scene.findObject("objectives").height = canSwitchChatSize && isChatFullSize ? "1@minMisObjHeight" : ""
   }
 
   function checkUpdateCustomStateRespawns()
   {
-    if (!this.isSceneActive())
+    if (!isSceneActive())
       return //when scene become active again there will be full update on reinitScreen
 
     let newRespawnMask = missionRules.getCurCrewsRespawnMask()
@@ -2288,22 +2279,22 @@ enum ESwitchSpectatorTarget
       return updateApplyText() //unit left respawn text
 
     updateLeftRespawns()
-    this.reinitSlotbar()
+    reinitSlotbar()
   }
 
-  function onEventMissionCustomStateChanged(_p)
+  function onEventMissionCustomStateChanged(p)
   {
-    this.doWhenActiveOnce("checkUpdateCustomStateRespawns")
-    this.doWhenActiveOnce("updateAllCrewSlots")
+    doWhenActiveOnce("checkUpdateCustomStateRespawns")
+    doWhenActiveOnce("updateAllCrewSlots")
   }
 
-  function onEventMyCustomStateChanged(_p)
+  function onEventMyCustomStateChanged(p)
   {
-    this.doWhenActiveOnce("checkUpdateCustomStateRespawns")
-    this.doWhenActiveOnce("updateAllCrewSlots")
+    doWhenActiveOnce("checkUpdateCustomStateRespawns")
+    doWhenActiveOnce("updateAllCrewSlots")
   }
 
-  function onEventMissionObjectiveUpdated(_p)
+  function onEventMissionObjectiveUpdated(p)
   {
     updateLeftPanelBlock()
   }
@@ -2317,7 +2308,7 @@ enum ESwitchSpectatorTarget
 
 ::get_mouse_relative_coords_on_obj <- function get_mouse_relative_coords_on_obj(obj)
 {
-  if (!checkObj(obj))
+  if (!::checkObj(obj))
     return null
 
   let objPos  = obj.getPosRC()
@@ -2334,10 +2325,10 @@ enum ESwitchSpectatorTarget
 
 ::has_available_slots <- function has_available_slots()
 {
-  if (!(::get_game_type() & (GT_VERSUS | GT_COOPERATIVE)))
+  if (!(::get_game_type() & (::GT_VERSUS | ::GT_COOPERATIVE)))
     return true
 
-  if (::get_game_mode() == GM_SINGLE_MISSION || ::get_game_mode() == GM_DYNAMIC)
+  if (::get_game_mode() == ::GM_SINGLE_MISSION || ::get_game_mode() == ::GM_DYNAMIC)
     return true
 
   if (!::g_mis_loading_state.isCrewsListReceived())
@@ -2349,7 +2340,7 @@ enum ESwitchSpectatorTarget
   if (!crews)
     return false
 
-  log($"Looking for country {country} in team {team}")
+  ::dagor.debug($"Looking for country {country} in team {team}")
 
   let missionRules = ::g_mis_custom_state.getCurMissionRules()
   let leftRespawns = missionRules.getLeftRespawns()
@@ -2376,9 +2367,9 @@ enum ESwitchSpectatorTarget
       && curSpawnScore < air.getMinimumSpawnScore())
       continue
 
-    log($"has_available_slots true: unit {air.name} in slot {c.idInCountry}")
+    ::dagor.debug($"has_available_slots true: unit {air.name} in slot {c.idInCountry}")
     return true
   }
-  log("has_available_slots false")
+  ::dagor.debug("has_available_slots false")
   return false
 }

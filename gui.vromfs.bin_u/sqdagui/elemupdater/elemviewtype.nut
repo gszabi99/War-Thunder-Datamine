@@ -1,6 +1,3 @@
-#explicit-this
-#no-root-fallback
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 
@@ -14,12 +11,12 @@ viewType.template <- {
 
   bhvParamsToString = function(params)
   {
-    params.viewId <- this.id
+    params.viewId <- id
     return ::save_to_json(params)
   }
 
-  createMarkup = @(_params) ""
-  updateView = @(_obj, _bhvConfig) null
+  createMarkup = @(params) ""
+  updateView = @(obj, bhvConfig) null
 }
 
 viewType.addTypes <- function(typesTable)
@@ -32,18 +29,18 @@ viewType.addTypes({
 })
 
 //save get type by id. return EMPTY if not found
-viewType.get <- @(typeId) this?[typeId] ?? this.EMPTY
+viewType.get <- @(typeId) this?[typeId] ?? EMPTY
 
 viewType.buildBhvConfig <- function(params) {
   local tbl = (type(params)=="table") ? params : null
-  local vt = this.get(tbl?.viewId ?? params)
+  local vt = get(tbl?.viewId ?? params)
   if (type(params)=="string")
-    tbl = vt == this.EMPTY ? ::parse_json(params) : { viewId = params }
+    tbl = vt == EMPTY ? ::parse_json(params) : { viewId = params }
 
   if (!tbl?.viewId)
     return null
 
-  vt = this.get(tbl.viewId)
+  vt = get(tbl.viewId)
   let res = tbl
   res.viewType <- vt
   if (!res?.subscriptions)

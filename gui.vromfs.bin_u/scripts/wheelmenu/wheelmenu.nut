@@ -1,18 +1,8 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
-// TEST: ::gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? ::close_cur_wheelmenu() })
+// TEST: gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? close_cur_wheelmenu() })
 
 let { getGamepadAxisTexture } = require("%scripts/controls/gamepadIcons.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getComplexAxesId } = require("%scripts/controls/shortcutsUtils.nut")
-let { PI } = require("math")
 
 const ITEMS_PER_PAGE = 8
 
@@ -110,12 +100,12 @@ const ITEMS_PER_PAGE = 8
 
   function initScreen()
   {
-    if (!menu || !checkObj(this.scene))
+    if (!menu || !::checkObj(scene))
       return close()
 
     ::close_cur_wheelmenu()
 
-    this.guiScene = this.scene.getScene()
+    guiScene = scene.getScene()
     showScene(true)
     fill(true)
     updateSelectShortcutImage()
@@ -126,10 +116,10 @@ const ITEMS_PER_PAGE = 8
       joystickSelection = null
       isKbdShortcutDown = false
 
-      this.scene.findObject("wheelmenu_axis_input_timer").setUserData(this)
+      scene.findObject("wheelmenu_axis_input_timer").setUserData(this)
       onWheelmenuAxisInputTimer()
     }
-    let wheelmenu = this.scene.findObject("wheelmenu")
+    let wheelmenu = scene.findObject("wheelmenu")
     wheelmenu["total-input-transparent"] = mouseEnabled ? "no" : "yes"
     this.showSceneBtn("fast_shortcuts_block", false)
     this.showSceneBtn("wheelmenu_bg_shade", shouldShadeBackground)
@@ -141,14 +131,14 @@ const ITEMS_PER_PAGE = 8
 
   function reinitScreen(params = {})
   {
-    this.setParams(params)
+    setParams(params)
     initScreen()
   }
 
   function updateContent(params = {})
   {
-    this.setParams(params)
-    if ((menu?.len() ?? 0) == 0 || !checkObj(this.scene))
+    setParams(params)
+    if ((menu?.len() ?? 0) == 0 || !::check_obj(scene))
       return close()
 
     fill()
@@ -194,7 +184,7 @@ const ITEMS_PER_PAGE = 8
       let enabled = isShow && (item?.wheelmenuEnabled ?? true)
       let bObj = this.showSceneBtn($"wheelmenuItem{suffix}", isShow)
 
-      if (checkObj(bObj))
+      if (::checkObj(bObj))
       {
         let buttonType = item?.buttonType ?? ""
         if (buttonType != "")
@@ -204,7 +194,7 @@ const ITEMS_PER_PAGE = 8
         {
           let content = bObj.findObject("content")
           let blk = ::handyman.renderCached(contentTemplate, item, contentPartails)
-          this.guiScene.replaceContentFromText(content, blk, blk.len(), this)
+          guiScene.replaceContentFromText(content, blk, blk.len(), this)
         }
 
         bObj.index = index
@@ -217,16 +207,16 @@ const ITEMS_PER_PAGE = 8
   function updatePageInfo()
   {
     let shouldShowPages = pagesTotal > 1
-    let objPageInfo = this.scene.findObject("wheel_menu_page")
+    let objPageInfo = scene.findObject("wheel_menu_page")
     objPageInfo.setValue(shouldShowPages
-      ? loc("mainmenu/pageNumOfPages", { num = pageIdx + 1, total = pagesTotal })
+      ? ::loc("mainmenu/pageNumOfPages", { num = pageIdx + 1, total = pagesTotal })
       : "")
     this.showSceneBtn("btnSwitchPage", shouldShowPages)
   }
 
   function updateTitlePos()
   {
-    let obj = this.scene.findObject("wheel_menu_title")
+    let obj = scene.findObject("wheel_menu_title")
     let startIdx = pageIdx * ITEMS_PER_PAGE
     let hasTopItem = menu?[startIdx + 7] != null
     obj.top = hasTopItem ? obj?.topWithTopMenuItem : obj?.topWithoutTopMenuItem
@@ -234,14 +224,14 @@ const ITEMS_PER_PAGE = 8
 
   function updateSelectShortcutImage()
   {
-    let obj = this.scene.findObject("wheelmenu_select_shortcut")
+    let obj = scene.findObject("wheelmenu_select_shortcut")
     local isShow = ::show_console_buttons && axisEnabled
     if (isShow)
     {
       let shortcuts = getPlayerCurUnit()?.unitType.wheelmenuAxis ?? []
       let shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
       isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
-      let axesId = getComplexAxesId(shortcuts)
+      let axesId = shortcutType.getComplexAxesId(shortcuts)
       obj["background-image"] = getGamepadAxisTexture(axesId)
     }
     obj.show(isShow)
@@ -256,7 +246,7 @@ const ITEMS_PER_PAGE = 8
     sendAvailableAnswerDelayed(index)
   }
 
-  function onWheelmenuAxisInputTimer(_obj=null, _dt=null)
+  function onWheelmenuAxisInputTimer(obj=null, dt=null)
   {
     if (!axisEnabled || isKbdShortcutDown)
       return
@@ -275,11 +265,11 @@ const ITEMS_PER_PAGE = 8
     if (selection == joystickSelection && !isForced)
       return
 
-    local bObj = joystickSelection && this.scene.findObject("wheelmenuItem" + joystickSelection)
+    local bObj = joystickSelection && scene.findObject("wheelmenuItem" + joystickSelection)
     if (bObj)
       bObj.selected = "no"
 
-    bObj = selection && this.scene.findObject("wheelmenuItem" + selection)
+    bObj = selection && scene.findObject("wheelmenuItem" + selection)
     if (bObj)
       bObj.selected = "yes"
 
@@ -296,28 +286,28 @@ const ITEMS_PER_PAGE = 8
   {
     if (! joystickSelection) return
 
-    let bObj = this.scene.findObject("wheelmenuItem" + joystickSelection)
+    let bObj = scene.findObject("wheelmenuItem" + joystickSelection)
     let index = bObj && bObj.index.tointeger()
     sendAvailableAnswerDelayed(index)
   }
 
-  function onWheelmenuAccesskeyApply(_obj)
+  function onWheelmenuAccesskeyApply(obj)
   {
     activateSelectedItem()
   }
 
-  function onWheelmenuAccesskeyCancel(_obj)
+  function onWheelmenuAccesskeyCancel(obj)
   {
     sendAnswerAndClose(invalidIndex)
   }
 
-  function onWheelmenuSwitchPage(_obj)
+  function onWheelmenuSwitchPage(obj)
   {
     pageIdx = (pageIdx + 1) % pagesTotal
     fill()
   }
 
-  function onVoiceMessageSwitchChannel(_obj) {}
+  function onVoiceMessageSwitchChannel(obj) {}
 
   function onShortcutSelectCallback(btnIdx, isDown)
   {
@@ -344,8 +334,8 @@ const ITEMS_PER_PAGE = 8
   function sendAvailableAnswerDelayed(index)
   {
     if (isItemAvailable(index))
-      this.guiScene.performDelayed(this, function() {
-        if (this.isValid())
+      guiScene.performDelayed(this, function() {
+        if (isValid())
           sendAnswerAndClose(index)
       })
   }
@@ -359,10 +349,10 @@ const ITEMS_PER_PAGE = 8
 
   function showScene(show)
   {
-    this.scene.show(show)
-    this.scene.enable(show)
+    scene.show(show)
+    scene.enable(show)
     isActive = show
-    this.switchControlsAllowMask(isActive ? wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
+    switchControlsAllowMask(isActive ? wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
   }
 
   function close()

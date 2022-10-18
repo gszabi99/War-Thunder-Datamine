@@ -1,12 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { read_text_from_file } = require("dagor.fs")
-let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
+::debug_wnd <- function debug_wnd(blkName = null, tplParams = {}, callbacksContext = null)
+{
+  ::gui_start_modal_wnd(::gui_handlers.debugWndHandler, { blkName = blkName, tplParams = tplParams, callbacksContext = callbacksContext })
+}
 
 ::gui_handlers.debugWndHandler <- class extends ::BaseGuiHandler
 {
@@ -24,94 +19,87 @@ let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
 
   function initScreen()
   {
-    this.isExist = this.blkName ? ::is_existing_file(this.blkName, false) : false
-    this.tplName = ::g_string.endsWith(this.blkName, ".tpl") ? ::g_string.slice(this.blkName, 0, -4) : null
-    this.tplParams = this.tplParams || {}
+    isExist = blkName ? ::is_existing_file(blkName, false) : false
+    tplName = ::g_string.endsWith(blkName, ".tpl") ? ::g_string.slice(blkName, 0, -4) : null
+    tplParams = tplParams || {}
 
-    this.scene.findObject("debug_wnd_update").setUserData(this)
-    this.updateWindow()
+    scene.findObject("debug_wnd_update").setUserData(this)
+    updateWindow()
   }
 
   function reinitScreen(params)
   {
-    let _blkName = getTblValue("blkName", params, this.blkName)
-    let _tplParams = getTblValue("tplParams", params, this.tplParams)
-    if (_blkName == this.blkName && ::u.isEqual(_tplParams, this.tplParams))
+    let _blkName = ::getTblValue("blkName", params, blkName)
+    let _tplParams = ::getTblValue("tplParams", params, tplParams)
+    if (_blkName == blkName && ::u.isEqual(_tplParams, tplParams))
       return
 
-    this.blkName = _blkName
-    this.isExist = this.blkName ? ::is_existing_file(this.blkName, false) : false
-    this.tplName = ::g_string.endsWith(this.blkName, ".tpl") ? ::g_string.slice(this.blkName, 0, -4) : null
-    this.tplParams = _tplParams || {}
+    blkName = _blkName
+    isExist = blkName ? ::is_existing_file(blkName, false) : false
+    tplName = ::g_string.endsWith(blkName, ".tpl") ? ::g_string.slice(blkName, 0, -4) : null
+    tplParams = _tplParams || {}
 
-    this.lastModified = -1
-    this.updateWindow()
+    lastModified = -1
+    updateWindow()
   }
 
   function updateWindow()
   {
-    if (!checkObj(this.scene))
+    if (!::checkObj(scene))
       return
 
-    let obj = this.scene.findObject("debug_wnd_content_box")
-    if (!this.isExist)
+    let obj = scene.findObject("debug_wnd_content_box")
+    if (!isExist)
     {
-      let txt = (this.blkName == null ? "No file specified." :
-        ("File not found: \"" + colorize("userlogColoredText", this.blkName) + "\""))
+      let txt = (blkName == null ? "No file specified." :
+        ("File not found: \"" + ::colorize("userlogColoredText", blkName) + "\""))
         + "~nUsage examples:"
         + "~ndebug_wnd(\"%gui/debriefing/debriefing.blk\")"
         + "~ndebug_wnd(\"%gui/menuButton.tpl\", {buttonText=\"Test\"})" // warning disable: -forgot-subst
       let data = "textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2' position:t='absolute' text='" + txt + "' }"
-      return this.guiScene.replaceContentFromText(obj, data, data.len(), this.callbacksContext)
+      return guiScene.replaceContentFromText(obj, data, data.len(), callbacksContext)
     }
 
-    if (this.tplName)
+    if (tplName)
     {
-      let data = ::handyman.render(loadTemplateText(this.tplName), this.tplParams)
-      this.guiScene.replaceContentFromText(obj, data, data.len(), this.callbacksContext)
+      let data = ::handyman.render(::load_template_text(tplName), tplParams)
+      guiScene.replaceContentFromText(obj, data, data.len(), callbacksContext)
     }
     else
-      this.guiScene.replaceContent(obj, this.blkName, this.callbacksContext)
+      guiScene.replaceContent(obj, blkName, callbacksContext)
 
-    if ("onCreate" in this.callbacksContext)
-      this.callbacksContext.onCreate(obj)
+    if ("onCreate" in callbacksContext)
+      callbacksContext.onCreate(obj)
   }
 
   function checkModify()
   {
-    if (!this.isExist)
+    if (!isExist)
       return
-    let modified = ::get_file_modify_time_sec(this.blkName)
+    let modified = ::get_file_modify_time_sec(blkName)
     if (modified < 0)
       return
 
-    if (this.lastModified < 0)
+    if (lastModified < 0)
     {
-      this.lastModified = modified
+      lastModified = modified
       return
     }
 
-    if (this.lastModified != modified)
+    if (lastModified != modified)
     {
-      this.lastModified = modified
-      this.updateWindow()
+      lastModified = modified
+      updateWindow()
     }
   }
 
-  function onUpdate(_obj, dt)
+  function onUpdate(obj, dt)
   {
-    this.checkTimer -= dt
-    if (this.checkTimer < 0)
+    checkTimer -= dt
+    if (checkTimer < 0)
     {
-      this.checkTimer += 0.5
-      this.checkModify()
+      checkTimer += 0.5
+      checkModify()
     }
   }
 }
-
-let function debugWnd(blkName = null, tplParams = {}, callbacksContext = null) {
-  ::handlersManager.loadHandler(::gui_handlers.debugWndHandler,
-    { blkName = blkName, tplParams = tplParams, callbacksContext = callbacksContext })
-}
-
-return debugWnd

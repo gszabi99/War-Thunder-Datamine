@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -61,7 +55,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
     if (preset == null)
       return false
-    let currentPresetIndex = getTblValue(currentCountry, ::slotbarPresets.selected, -1)
+    let currentPresetIndex = ::getTblValue(currentCountry, ::slotbarPresets.selected, -1)
     validPresetIndex = getPresetIndex(preset)
     if (currentPresetIndex == validPresetIndex)
       if (isNewUnitTypeToBattleTutorial)
@@ -81,7 +75,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
         text = createMessageWhithUnitType()
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::SHORTCUT.GAMEPAD_X
-        cb = Callback(onSlotbarPresetSelect, this)
+        cb = ::Callback(onSlotbarPresetSelect, this)
         keepEnv = true
       }]
     }
@@ -93,10 +87,10 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       currentStepsName = "openSlotbarPresetWnd"
       steps = [{
         obj = [presetsButtonObj]
-        text = loc("slotbarPresetsTutorial/openWindow")
+        text = ::loc("slotbarPresetsTutorial/openWindow")
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::SHORTCUT.GAMEPAD_X
-        cb = Callback(onChooseSlotbarPresetWnd_Open, this)
+        cb = ::Callback(onChooseSlotbarPresetWnd_Open, this)
         keepEnv = true
       }]
     }
@@ -128,24 +122,24 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       return
     let itemsListObj = chooseSlotbarPresetHandler.scene.findObject("items_list")
     let presetObj = itemsListObj.getChild(chooseSlotbarPresetIndex)
-    if (!checkObj(presetObj))
+    if (!::checkObj(presetObj))
       return
     let applyButtonObj = chooseSlotbarPresetHandler.scene.findObject("btn_preset_load")
-    if (!checkObj(applyButtonObj))
+    if (!::checkObj(applyButtonObj))
       return
     let steps = [{
       obj = [presetObj]
       text = createMessageWhithUnitType()
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::SHORTCUT.GAMEPAD_X
-      cb = Callback(onChooseSlotbarPresetWnd_Select, this)
+      cb = ::Callback(onChooseSlotbarPresetWnd_Select, this)
       keepEnv = true
     } {
       obj = [applyButtonObj]
-      text = loc("slotbarPresetsTutorial/pressApplyButton")
+      text = ::loc("slotbarPresetsTutorial/pressApplyButton")
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::SHORTCUT.GAMEPAD_X
-      cb = Callback(onChooseSlotbarPresetWnd_Apply, this)
+      cb = ::Callback(onChooseSlotbarPresetWnd_Apply, this)
       keepEnv = true
     }]
     currentStepsName = "applySlotbarPresetWnd"
@@ -169,7 +163,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     chooseSlotbarPresetHandler.onBtnPresetLoad(null)
   }
 
-  function onEventSlotbarPresetLoaded(_params)
+  function onEventSlotbarPresetLoaded(params)
   {
     if (checkCurrentTutorialCanceled())
       return
@@ -205,18 +199,18 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     let types = ::game_mode_manager.getRequiredUnitTypes(tutorialGameMode)
     let unitType = unitTypes.getByEsUnitType(::u.max(types))
     let unitTypeLocId = "options/chooseUnitsType/" + unitType.lowerName
-    return loc("slotbarPresetsTutorial/" + partLocId, { unitType = loc(unitTypeLocId) })
+    return ::loc("slotbarPresetsTutorial/" + partLocId, { unitType = ::loc(unitTypeLocId) })
   }
 
   function createMessage_pressToBattleButton()
   {
-    return loc("slotbarPresetsTutorial/pressToBattleButton",
+    return ::loc("slotbarPresetsTutorial/pressToBattleButton",
       { gameModeName = tutorialGameMode.text })
   }
 
   function getPresetIndex(prst)
   {
-    let presets = getTblValue(currentCountry, ::slotbarPresets.presets, null)
+    let presets = ::getTblValue(currentCountry, ::slotbarPresets.presets, null)
     return ::find_in_array(presets, prst, -1)
   }
 
@@ -235,8 +229,8 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (currentPreset == null)
       return false
     let index = getAllowedUnitIndexByPreset(currentPreset)
-    let crews = getTblValue("crews", currentPreset, null)
-    let crewId = getTblValue(index, crews, -1)
+    let crews = ::getTblValue("crews", currentPreset, null)
+    let crewId = ::getTblValue(index, crews, -1)
     if (crewId == -1)
       return false
     let crew = ::get_crew_by_id(crewId)
@@ -246,10 +240,10 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     crewIdInCountry = crew.idInCountry
     let steps = [{
       obj = ::get_slot_obj(slotbarHandler.scene, crew.idCountry, crew.idInCountry)
-      text = loc("slotbarPresetsTutorial/selectUnit")
+      text = ::loc("slotbarPresetsTutorial/selectUnit")
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::SHORTCUT.GAMEPAD_X
-      cb = Callback(onUnitSelect, this)
+      cb = ::Callback(onUnitSelect, this)
       keepEnv = true
     }]
     currentStepsName = "selectUnit"
@@ -297,7 +291,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       text = createMessage_pressToBattleButton()
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::SHORTCUT.GAMEPAD_X
-      cb = Callback(onStartPress, this)
+      cb = ::Callback(onStartPress, this)
     }]
     currentStepsName = "pressToBattleButton"
     currentTutorial = ::gui_modal_tutor(steps, currentHandler, true)
@@ -311,14 +305,14 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (currentGameMode == tutorialGameMode)
       return false
     let gameModeChangeButtonObj = currentHandler?.gameModeChangeButtonObj
-    if (!checkObj(gameModeChangeButtonObj))
+    if (!::check_obj(gameModeChangeButtonObj))
       return false
     let steps = [{
       obj = [gameModeChangeButtonObj]
-      text = loc("slotbarPresetsTutorial/openGameModeSelect")
+      text = ::loc("slotbarPresetsTutorial/openGameModeSelect")
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::SHORTCUT.GAMEPAD_X
-      cb = Callback(onOpenGameModeSelect, this)
+      cb = ::Callback(onOpenGameModeSelect, this)
       keepEnv = true
     }]
     currentStepsName = "openGameModeSelect"
@@ -331,13 +325,13 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (checkCurrentTutorialCanceled())
       return
     let gameModeChangeButtonObj = currentHandler?.gameModeChangeButtonObj
-    if (!checkObj(gameModeChangeButtonObj))
+    if (!::check_obj(gameModeChangeButtonObj))
       return
     ::add_event_listener("GamercardDrawerOpened", onEventGamercardDrawerOpened, this)
     currentHandler.openGameModeSelect()
   }
 
-  function onEventGamercardDrawerOpened(_params)
+  function onEventGamercardDrawerOpened(params)
   {
     if (checkCurrentTutorialCanceled())
       return
@@ -355,7 +349,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       return
     let gameModeItemId = ::game_mode_manager.getGameModeItemId(tutorialGameMode.id)
     let gameModeObj = gameModeSelectHandler.scene.findObject(gameModeItemId)
-    if (!checkObj(gameModeObj))
+    if (!::check_obj(gameModeObj))
       return
 
     let steps = [{
@@ -363,7 +357,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       text = createMessageWhithUnitType("selectGameMode")
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::SHORTCUT.GAMEPAD_X
-      cb = Callback(onSelectGameMode, this)
+      cb = ::Callback(onSelectGameMode, this)
       keepEnv = true
     }]
     currentStepsName = "selectGameMode"
@@ -380,12 +374,12 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       return
     let gameModeItemId = ::game_mode_manager.getGameModeItemId(tutorialGameMode.id)
     let gameModeObj = gameModeSelectHandler.scene.findObject(gameModeItemId)
-    if (!checkObj(gameModeObj))
+    if (!::check_obj(gameModeObj))
       return
     gameModeSelectHandler.onGameModeSelect(gameModeObj)
   }
 
-  function onEventCurrentGameModeIdChanged(_params)
+  function onEventCurrentGameModeIdChanged(params)
   {
     if (checkCurrentTutorialCanceled())
       return
@@ -403,7 +397,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
    */
   function checkCurrentTutorialCanceled(removeCurrentTutorial = true)
   {
-    let canceled = getTblValue("canceled", currentTutorial, false)
+    let canceled = ::getTblValue("canceled", currentTutorial, false)
     if (removeCurrentTutorial)
       currentTutorial = null
     if (canceled)

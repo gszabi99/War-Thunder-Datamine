@@ -1,9 +1,3 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let { getRoleText, getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -35,7 +29,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getRespawnsLeftText()
   {
-    return respawnsLeft == ::RESPAWNS_UNLIMITED ? loc("options/resp_unlimited") : respawnsLeft
+    return respawnsLeft == ::RESPAWNS_UNLIMITED ? ::loc("options/resp_unlimited") : respawnsLeft
   }
 
   function getText()
@@ -48,23 +42,23 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let unitName = this.nameLocId != null ? loc(this.nameLocId) : ::getUnitName(this.name)
-    local res = unitName + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
+    let unitName = nameLocId != null ? ::loc(nameLocId) : ::getUnitName(name)
+    local res = unitName + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
     let weaponPresetIconsText = ::get_weapon_icons_text(
-      this.name, getTblValue("weaponPresetId", this.presetInfo)
+      name, ::getTblValue("weaponPresetId", presetInfo)
     )
 
     if (!::u.isEmpty(weaponPresetIconsText))
-      res += loc("ui/parentheses/space", {
-        text = weaponPresetIconsText + getTblValue("teamUnitPresetAmount", this.presetInfo, 0)
+      res += ::loc("ui/parentheses/space", {
+        text = weaponPresetIconsText + ::getTblValue("teamUnitPresetAmount", presetInfo, 0)
       })
 
-    if (this.distributed != null && this.distributed != ::RESPAWNS_UNLIMITED)
+    if (distributed != null && distributed != ::RESPAWNS_UNLIMITED)
     {
-      local text = this.distributed > 0 ? colorize("userlogColoredText", this.distributed) : this.distributed
+      local text = distributed > 0 ? ::colorize("userlogColoredText", distributed) : distributed
       if (!::u.isEmpty(weaponPresetIconsText))
-        text += loc("ui/parentheses/space", {
-          text = weaponPresetIconsText + getTblValue("userUnitPresetAmount", this.presetInfo, 0)
+        text += ::loc("ui/parentheses/space", {
+          text = weaponPresetIconsText + ::getTblValue("userUnitPresetAmount", presetInfo, 0)
         })
       res += " + " + text
     }
@@ -77,8 +71,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let fontIcon = colorize("activeTextColor", getUnitRoleIcon(this.name))
-    return fontIcon + getRoleText(this.name) + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
+    let fontIcon = ::colorize("activeTextColor", getUnitRoleIcon(name))
+    return fontIcon + getRoleText(name) + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
   }
 }
 
@@ -86,9 +80,9 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let expClassType = getUnitClassTypeByExpClass(this.name)
-    let fontIcon = colorize("activeTextColor", expClassType.getFontIcon())
-    return fontIcon + expClassType.getName() + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
+    let expClassType = getUnitClassTypeByExpClass(name)
+    let fontIcon = ::colorize("activeTextColor", expClassType.getFontIcon())
+    return fontIcon + expClassType.getName() + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
   }
 }
 
@@ -96,17 +90,17 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let expClassType = getUnitClassTypeByExpClass(this.name)
-    let fontIcon = colorize("activeTextColor", expClassType.getFontIcon())
+    let expClassType = getUnitClassTypeByExpClass(name)
+    let fontIcon = ::colorize("activeTextColor", expClassType.getFontIcon())
     local amountText = ""
-    if (this.distributed == ::RESPAWNS_UNLIMITED || this.respawnsLeft == ::RESPAWNS_UNLIMITED)
-      amountText = colorize("activeTextColor", this.getRespawnsLeftText())
+    if (distributed == ::RESPAWNS_UNLIMITED || respawnsLeft == ::RESPAWNS_UNLIMITED)
+      amountText = ::colorize("activeTextColor", getRespawnsLeftText())
     else
     {
-      let color = (this.distributed < this.respawnsLeft) ? "userlogColoredText" : "activeTextColor"
-      amountText = colorize(color, this.distributed) + "/" + this.getRespawnsLeftText()
+      let color = (distributed < respawnsLeft) ? "userlogColoredText" : "activeTextColor"
+      amountText = ::colorize(color, distributed) + "/" + getRespawnsLeftText()
     }
-    return loc("multiplayer/active_at_once", { nameOrIcon = fontIcon }) + loc("ui/colon") + amountText
+    return ::loc("multiplayer/active_at_once", { nameOrIcon = fontIcon }) + ::loc("ui/colon") + amountText
   }
 }
 
@@ -114,8 +108,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let unitType = unitTypes[this.name]
-    let fontIcon = colorize("activeTextColor", unitType.fontIcon)
-    return fontIcon + unitType.getArmyLocName() + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
+    let unitType = unitTypes[name]
+    let fontIcon = ::colorize("activeTextColor", unitType.fontIcon)
+    return fontIcon + unitType.getArmyLocName() + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
   }
 }

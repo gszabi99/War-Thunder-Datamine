@@ -1,25 +1,11 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 from "soundOptions" import *
 
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
-
-let function get_country_by_team(team_index) {
-  local countries = null
-  if (::mission_settings && ::mission_settings.layout)
-    countries = ::get_mission_team_countries(::mission_settings.layout)
-  return countries?[team_index] ?? ""
-}
 
 ::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -29,7 +15,7 @@ let function get_country_by_team(team_index) {
 
   currentContainerName = "generic_options"
   options = null
-  optionsConfig = null //config forwarded to ::get_option
+  optionsConfig = null //config forwarded to get_option
   optionsContainers = null
   applyFunc = null
   cancelFunc = null
@@ -51,21 +37,21 @@ let function get_country_by_team(team_index) {
     if (options)
       loadOptions(options, currentContainerName)
 
-    this.setSceneTitle(titleText, this.scene, "menu-title")
+    setSceneTitle(titleText, scene, "menu-title")
   }
 
   function loadOptions(opt, optId)
   {
-    let optListObj = this.scene.findObject("optionslist")
-    if (!checkObj(optListObj))
-      return assert(false, "Error: cant load options when no optionslist object.")
+    let optListObj = scene.findObject("optionslist")
+    if (!::checkObj(optListObj))
+      return ::dagor.assertf(false, "Error: cant load options when no optionslist object.")
 
     let container = ::create_options_container(optId, opt, true, columnsRatio, true, optionsConfig)
-    this.guiScene.setUpdatesEnabled(false, false);
+    guiScene.setUpdatesEnabled(false, false);
     optionIdToObjCache.clear()
-    this.guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
+    guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
     optionsContainers.append(container.descr)
-    this.guiScene.setUpdatesEnabled(true, true)
+    guiScene.setUpdatesEnabled(true, true)
 
     updateLinkedOptions()
   }
@@ -90,18 +76,18 @@ let function get_country_by_team(team_index) {
   {
     foreach (container in optionsContainers)
     {
-      let objTbl = this.getObj(container.name)
+      let objTbl = getObj(container.name)
       if (objTbl == null)
         continue
 
-      foreach(_idx, option in container.data)
+      foreach(idx, option in container.data)
       {
         if(option.controlType == optionControlType.HEADER ||
            option.controlType == optionControlType.BUTTON)
           continue
 
-        let obj = this.getObj(option.id)
-        if (!checkObj(obj))
+        let obj = getObj(option.id)
+        if (!::checkObj(obj))
         {
           ::script_net_assert_once("Bad option",
             "Error: not found obj for option " + option.id + ", type = " + option.type)
@@ -128,7 +114,7 @@ let function get_country_by_team(team_index) {
     base.goBack()
   }
 
-  function onApply(_obj)
+  function onApply(obj)
   {
     applyOptions(true)
   }
@@ -140,9 +126,9 @@ let function get_country_by_team(team_index) {
       applyReturn()
   }
 
-  function onApplyOffline(_obj)
+  function onApplyOffline(obj)
   {
-    let coopObj = this.getObj("coop_mode")
+    let coopObj = getObj("coop_mode")
     if (coopObj) coopObj.setValue(2)
     applyOptions()
   }
@@ -156,7 +142,7 @@ let function get_country_by_team(team_index) {
       {
         if (container.data[i].id == obj?.id)
         {
-          newDescr = func(this.guiScene, obj, container.data[i])
+          newDescr = func(guiScene, obj, container.data[i])
           break
         }
       }
@@ -191,9 +177,9 @@ let function get_country_by_team(team_index) {
 
   function updateOptionDelayed(optionType)
   {
-    this.guiScene.performDelayed(this, function()
+    guiScene.performDelayed(this, function()
     {
-      if (this.isValid())
+      if (isValid())
         updateOption(optionType)
     })
   }
@@ -214,21 +200,21 @@ let function get_country_by_team(team_index) {
 
   function updateOptionImpl(option)
   {
-    let obj = this.scene.findObject(option.id)
-    if (!checkObj(obj))
+    let obj = scene.findObject(option.id)
+    if (!::check_obj(obj))
       return
 
     isOptionInUpdate = true
     if (option.controlType == optionControlType.LIST)
     {
       let markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
-      this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+      guiScene.replaceContentFromText(obj, markup, markup.len(), this)
     } else
       obj.setValue(option.value)
     isOptionInUpdate = false
   }
 
-  function onEventQueueChangeState(_p) {
+  function onEventQueueChangeState(p) {
     let opt = findOptionInContainers(::USEROPT_PS4_CROSSPLAY)
     if (opt == null)
       return
@@ -238,10 +224,10 @@ let function get_country_by_team(team_index) {
 
   function getOptionObj(option) {
     local obj = optionIdToObjCache?[option.id]
-    if (!checkObj(obj))
+    if (!::check_obj(obj))
     {
-      obj = this.getObj(option.getTrId())
-      if (!checkObj(obj))
+      obj = getObj(option.getTrId())
+      if (!::check_obj(obj))
         return null
       optionIdToObjCache[option.id] <- obj
     }
@@ -273,7 +259,7 @@ let function get_country_by_team(team_index) {
     if (obj != null)
     {
       let numPlayers = obj.getValue() + 2
-      let objPriv = this.getObj("numPrivateSlots")
+      let objPriv = getObj("numPrivateSlots")
       if (objPriv != null)
       {
         let numPriv = objPriv.getValue()
@@ -288,7 +274,7 @@ let function get_country_by_team(team_index) {
     if (obj != null)
     {
       let numPriv = obj.getValue()
-      let objPlayers = this.getObj("numPlayers")
+      let objPlayers = getObj("numPlayers")
       if (objPlayers != null)
       {
         let numPlayers = objPlayers.getValue() + 2
@@ -335,11 +321,11 @@ let function get_country_by_team(team_index) {
 
   function onPTTChange(obj)
   {
-    ::set_option_ptt(::get_option(::USEROPT_PTT).value ? 0 : 1);
-    ::showBtn("ptt_buttons_block", obj.getValue(), this.scene)
+    ::set_option_ptt(get_option(::USEROPT_PTT).value ? 0 : 1);
+    ::showBtn("ptt_buttons_block", obj.getValue(), scene)
   }
 
-  function onVoicechatChange(_obj)
+  function onVoicechatChange(obj)
   {
     ::set_option(::USEROPT_VOICE_CHAT, !::get_option(::USEROPT_VOICE_CHAT).value)
     ::broadcastEvent("VoiceChatOptionUpdated")
@@ -359,11 +345,11 @@ let function get_country_by_team(team_index) {
     {
       let unit = getPlayerCurUnit()
       let success = ::add_tank_alt_crosshair_template()
-      let message = success && unit ? format(loc("hud/successUserSight"), unit.name) : loc("hud/failUserSight")
+      let message = success && unit ? format(::loc("hud/successUserSight"), unit.name) : ::loc("hud/failUserSight")
 
-      this.guiScene.performDelayed(this, function()
+      guiScene.performDelayed(this, function()
       {
-        if (!this.isValid())
+        if (!isValid())
           return
 
         ::showInfoMsgBox(message)
@@ -401,7 +387,7 @@ let function get_country_by_team(team_index) {
 
     this.msgBox(
       "crossnetwork_changes_warning",
-      loc("guiHints/ps4_crossnetwork_chat"),
+      ::loc("guiHints/ps4_crossnetwork_chat"),
       [
         ["ok", @() setCrossNetworkChatValue(null, false, true)], //Send notification of changed value
         ["no", @() setCrossNetworkChatValue(obj, true, false)] //Silently return value
@@ -413,7 +399,7 @@ let function get_country_by_team(team_index) {
 
   function setCrossNetworkChatValue(obj, value, needSendNotification = false)
   {
-    if (checkObj(obj))
+    if (::check_obj(obj))
       obj.setValue(value)
 
     if (needSendNotification)
@@ -429,11 +415,11 @@ let function get_country_by_team(team_index) {
           ::set_option(::USEROPT_VOICE_CHAT, false)
       }
 
-      let listObj = this.scene.findObject("groups_list")
-      if (checkObj(listObj))
+      let listObj = scene.findObject("groups_list")
+      if (::check_obj(listObj))
       {
         let voiceTabObj = listObj.findObject("voicechat")
-        if (checkObj(voiceTabObj))
+        if (::check_obj(voiceTabObj))
           voiceTabObj.inactive = value? "no" : "yes"
       }
     }
@@ -456,7 +442,7 @@ let function get_country_by_team(team_index) {
       return res
     foreach (container in optionsContainers)
       for (local i = 0; i < container.data.len(); ++i)
-        if (isInArray(container.data[i].type, optTypeList))
+        if (::isInArray(container.data[i].type, optTypeList))
           res.append(container.data[i])
     return res
   }
@@ -479,7 +465,7 @@ let function get_country_by_team(team_index) {
     let option = get_option_by_id(optName) || ::get_option(optName)
     if (option.values.len() == 0)
       return null
-    let obj = this.scene.findObject(option.id)
+    let obj = scene.findObject(option.id)
     let value = obj? obj.getValue() : option.value
     if (value in option.values)
       return option.values[value]
@@ -492,33 +478,33 @@ let function get_country_by_team(team_index) {
     ::set_option_gamma(gamma, false)
   }
 
-  function onControls(_obj)
+  function onControls(obj)
   {
-    this.goForward(::gui_start_controls);
+    goForward(::gui_start_controls);
   }
 
-  function onProfileChange(_obj)
+  function onProfileChange(obj)
   {
-    this.fillGamercard()
+    fillGamercard()
   }
 
-  function onLayoutChange(_obj)
+  function onLayoutChange(obj)
   {
-    let countryOption = ::get_option(::USEROPT_MP_TEAM_COUNTRY);
-    let cobj = this.getObj(countryOption.id);
+    let countryOption = get_option(::USEROPT_MP_TEAM_COUNTRY);
+    let cobj = getObj(countryOption.id);
     local country = ""
-    if(checkObj(cobj))
+    if(::checkObj(cobj))
     {
       country = get_country_by_team(cobj.getValue())
       ::set_option(::USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
-    let yearOption = ::get_option(::USEROPT_YEAR)
-    let unitsByYears = ::get_number_of_units_by_years(country, yearOption.valuesInt)
-    let yearObj = this.getObj(yearOption.id)
+    let yearOption = get_option(::USEROPT_YEAR)
+    let unitsByYears = get_number_of_units_by_years(country, yearOption.valuesInt)
+    let yearObj = getObj(yearOption.id)
     if (!yearObj)
       return;
 
-    assert(yearObj.childrenCount() == yearOption.values.len())
+    ::dagor.assert(yearObj.childrenCount() == yearOption.values.len())
     for (local i = 0; i < yearObj.childrenCount(); i++)
     {
       let line = yearObj.getChild(i);
@@ -536,7 +522,7 @@ let function get_country_by_team(team_index) {
         let unlockBlk = ::g_unlocks.getUnlockById(yearId)
         if (unlockBlk)
         {
-          enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
+          enabled = ::is_unlocked_scripted(::UNLOCKABLE_YEAR, yearId)
           tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlockBlk))
         }
       }
@@ -544,7 +530,7 @@ let function get_country_by_team(team_index) {
       line.enable(enabled)
       line.tooltip = tooltip
       let year = yearOption.valuesInt[i]
-      text.setValue(format(loc("options/year_text"), year,
+      text.setValue(format(::loc("options/year_text"), year,
         unitsByYears[$"year{year}"], unitsByYears[$"beforeyear{year}"]))
     }
 
@@ -555,7 +541,7 @@ let function get_country_by_team(team_index) {
   function getOptValue(optName, return_default_when_no_obj = true)
   {
     let option = ::get_option(optName)
-    let obj = this.scene.findObject(option.id)
+    let obj = scene.findObject(option.id)
     if (!obj && !return_default_when_no_obj)
       return null
     let value = obj? obj.getValue() : option.value
@@ -572,17 +558,17 @@ let function get_country_by_team(team_index) {
     ::set_option(option.type, obj.getValue(), option)
 
     ::update_volume_for_music();
-    this.updateInternerRadioButtons()
+    updateInternerRadioButtons()
   }
 
-  function onMissionCountriesType(_obj)
+  function onMissionCountriesType(obj)
   {
     checkMissionCountries()
   }
 
   function checkMissionCountries()
   {
-    if (getTblValue("isEventRoom", optionsConfig, false))
+    if (::getTblValue("isEventRoom", optionsConfig, false))
       return
 
     let optList = find_options_in_containers([::USEROPT_BIT_COUNTRIES_TEAM_A, ::USEROPT_BIT_COUNTRIES_TEAM_B])
@@ -598,7 +584,7 @@ let function get_country_by_team(team_index) {
     }
   }
 
-  function onUseKillStreaks(_obj)
+  function onUseKillStreaks(obj)
   {
     checkAllowedUnitTypes()
   }
@@ -608,8 +594,8 @@ let function get_country_by_team(team_index) {
     let option = findOptionInContainers(::USEROPT_BIT_UNIT_TYPES)
     if (!option)
       return
-    let optionTrObj = this.getObj(option.getTrId())
-    if (!checkObj(optionTrObj))
+    let optionTrObj = getObj(option.getTrId())
+    if (!::check_obj(optionTrObj))
       return
 
     let missionBlk = ::get_mission_meta_info(optionsConfig?.missionName ?? "")
@@ -623,18 +609,18 @@ let function get_country_by_team(team_index) {
         continue
       let isShow = !!(allowedUnitTypesMask & unitType.bit)
       let itemObj = optionTrObj.findObject("bit_" + unitType.tag)
-      if (!checkObj(itemObj))
+      if (!::check_obj(itemObj))
         continue
       itemObj.show(isShow)
       itemObj.enable(isShow)
     }
 
     let itemObj = optionTrObj.findObject("text_after")
-      if (checkObj(itemObj))
+      if (::check_obj(itemObj))
         itemObj.show(useKillStreaks)
   }
 
-  function onOptionBotsAllowed(_obj)
+  function onOptionBotsAllowed(obj)
   {
     checkBotsOption()
   }
@@ -660,18 +646,18 @@ let function get_country_by_team(team_index) {
 
   function updateOptionValueText(option, value)
   {
-    let obj = this.scene.findObject("value_" + option.id)
-    if (checkObj(obj))
+    let obj = scene.findObject("value_" + option.id)
+    if (::check_obj(obj))
       obj.setValue(option.getValueLocText(value))
   }
 
-  function onMissionChange(_obj) {}
-  function onSectorChange(_obj) {}
-  function onYearChange(_obj) {}
-  function onGamemodeChange(_obj) {}
-  function onOptionsListboxDblClick(_obj) {}
-  function onGroupSelect(_obj) {}
-  function onDifficultyChange(_obj) {}
+  function onMissionChange(obj) {}
+  function onSectorChange(obj) {}
+  function onYearChange(obj) {}
+  function onGamemodeChange(obj) {}
+  function onOptionsListboxDblClick(obj) {}
+  function onGroupSelect(obj) {}
+  function onDifficultyChange(obj) {}
 }
 
 ::gui_handlers.GenericOptionsModal <- class extends ::gui_handlers.GenericOptions
@@ -694,31 +680,31 @@ let function get_country_by_team(team_index) {
     initNavigation()
 
     if (needMoveMouseOnButtonApply)
-      ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
+      ::move_mouse_on_obj(scene.findObject("btn_apply"))
   }
 
   function initNavigation()
   {
     let handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
-      { scene = this.scene.findObject("control_navigation")
-        onSelectCb = Callback(doNavigateToSection, this)
+      { scene = scene.findObject("control_navigation")
+        onSelectCb = ::Callback(doNavigateToSection, this)
         panelWidth        = "0.4@sf, ph"
         // Align to helpers_mode and table first row
         headerHeight      = "1@buttonHeight"
       })
-    this.registerSubHandler(navigationHandlerWeak)
+    registerSubHandler(navigationHandlerWeak)
     navigationHandlerWeak = handler.weakref()
   }
 
   function doNavigateToSection(navItem)
   {
-    let objTbl = this.scene.findObject(this.currentContainerName)
-    if ( ! checkObj(objTbl))
+    let objTbl = scene.findObject(currentContainerName)
+    if ( ! ::check_obj(objTbl))
       return
 
     local trId = ""
-    foreach(_idx, option in getCurrentOptionsList())
+    foreach(idx, option in getCurrentOptionsList())
     {
       if(option.controlType == optionControlType.HEADER
         && option.id == navItem.id)
@@ -731,7 +717,7 @@ let function get_country_by_team(team_index) {
       return
 
     let rowObj = objTbl.findObject(trId)
-    if (checkObj(rowObj))
+    if (::check_obj(rowObj))
       rowObj.scrollToView(true)
   }
 
@@ -741,7 +727,7 @@ let function get_country_by_team(team_index) {
       navigationHandlerWeak.setNavItems([])
   }
 
-  function onTblSelect(_obj)
+  function onTblSelect(obj)
   {
     checkCurrentNavigationSection()
 
@@ -750,7 +736,7 @@ let function get_country_by_team(team_index) {
 
     let option = getSelectedOption()
     if (option.controlType == optionControlType.EDITBOX)
-      ::select_editbox(this.getObj(option.id))
+      ::select_editbox(getObj(option.id))
   }
 
   function checkCurrentNavigationSection()
@@ -779,8 +765,8 @@ let function get_country_by_team(team_index) {
 
   function getSelectedOption()
   {
-    let objTbl = this.scene.findObject(this.currentContainerName)
-    if (!checkObj(objTbl))
+    let objTbl = scene.findObject(currentContainerName)
+    if (!::check_obj(objTbl))
       return null
 
     let idx = objTbl.getValue()
@@ -802,9 +788,9 @@ let function get_country_by_team(team_index) {
 
   function getCurrentOptionsList()
   {
-    let containerName = this.currentContainerName
-    let container = ::u.search(this.optionsContainers, @(c) c.name == containerName)
-    return getTblValue("data", container, [])
+    let containerName = currentContainerName
+    let container = ::u.search(optionsContainers, @(c) c.name == containerName)
+    return ::getTblValue("data", container, [])
   }
 
   function setNavigationItems()
@@ -834,18 +820,18 @@ let function get_country_by_team(team_index) {
   function goBack()
   {
     if (applyAtClose)
-      this.applyOptions(true)
+      applyOptions(true)
     else
     {
       base.goBack()
-      this.restoreMainOptions()
+      restoreMainOptions()
     }
   }
 
   function applyReturn()
   {
-    if (!this.applyFunc)
-      this.restoreMainOptions()
+    if (!applyFunc)
+      restoreMainOptions()
     base.applyReturn()
   }
 }

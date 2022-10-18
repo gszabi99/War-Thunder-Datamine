@@ -1,15 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 foreach (notificationName, callback in
           {
             ["mrpc.generic_notify"] = function (params)
               {
-                let from = getTblValue("from", params)
+                let from = ::getTblValue("from", params)
                 if (from == "web-service")
                   ::handle_web_rpc(params)
                 else if (from == "inventory")
@@ -18,7 +13,7 @@ foreach (notificationName, callback in
 
             ["mrpc.generic_rpc"] = function (params, cb)
               {
-                let from = getTblValue("from", params)
+                let from = ::getTblValue("from", params)
                 if (from == "web-service")
                 {
                   let res = ::handle_web_rpc(params)

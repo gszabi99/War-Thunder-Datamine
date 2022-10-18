@@ -1,13 +1,7 @@
-from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
-
 let { format, split_by_chars } = require("string")
 let psn = require("%sonyLib/webApi.nut")
 let statsd = require("statsd")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 
 let requestsTable = {
   player = "$USER_NAME_OR_ID",
@@ -24,10 +18,10 @@ let function getActivityFeedImageByParam(feed, imagesConfig)
 {
   let config = imagesConfig.other?[feed.blkParamName]
 
-  if (::u.isString(config))
+  if (u.isString(config))
     return imagesConfig.mainPart + config
 
-  if (::u.isDataBlock(config) && config?.name)
+  if (u.isDataBlock(config) && config?.name)
   {
     local url = imagesConfig.mainPart + config.name + feed.imgSuffix
     if (config?.variations)
@@ -35,8 +29,8 @@ let function getActivityFeedImageByParam(feed, imagesConfig)
     return url
   }
 
-  log("getActivityFeedImagesByParam: no image name in '"+feed.blkParamName)
-  debugTableData(config)
+  ::dagor.debug("getActivityFeedImagesByParam: no image name in '"+feed.blkParamName)
+  ::debugTableData(config)
   return ""
 }
 
@@ -47,20 +41,20 @@ let function getActivityFeedImageByCountry(feed, imagesConfig) {
   let country = feed.country
 
   let variants = imagesConfig?[country]?[unit]
-  if (::u.isDataBlock(variants))
+  if (u.isDataBlock(variants))
     return imagesConfig.mainPart + variants.getParamValue(::math.rnd() % variants.paramCount())
 
-  log("getActivityFeedImagesByCountry: no config for '"+country+"/"+unit+" ("+feed.unitNameId+")")
-  debugTableData(imagesConfig)
+  ::dagor.debug("getActivityFeedImagesByCountry: no config for '"+country+"/"+unit+" ("+feed.unitNameId+")")
+  ::debugTableData(imagesConfig)
   return ""
 }
 
 let function getActivityFeedImages(feed) {
   let guiBlk = GUI.get()
   let imagesConfig = guiBlk?.activity_feed_image_url
-  if (::u.isEmpty(imagesConfig))
+  if (u.isEmpty(imagesConfig))
   {
-    log("getActivityFeedImages: empty or missing activity_feed_image_url block in gui.blk")
+    ::dagor.debug("getActivityFeedImages: empty or missing activity_feed_image_url block in gui.blk")
     return null
   }
 
@@ -68,8 +62,8 @@ let function getActivityFeedImages(feed) {
   let imgExt = imagesConfig?.fileExtension
   if (!feedUrl || !imgExt)
   {
-    log("getActivityFeedImages: invalid feed config, url base '"+feedUrl+"', image extension '"+imgExt)
-    debugTableData(imagesConfig)
+    ::dagor.debug("getActivityFeedImages: invalid feed config, url base '"+feedUrl+"', image extension '"+imgExt)
+    ::debugTableData(imagesConfig)
     return null
   }
 
@@ -77,35 +71,35 @@ let function getActivityFeedImages(feed) {
   let big = imagesConfig?.bigLogoEnd || ""
   let ext = imagesConfig.fileExtension
   local url = ""
-  if (!::u.isEmpty(feed?.blkParamName) && !::u.isEmpty(imagesConfig?.other))
+  if (!u.isEmpty(feed?.blkParamName) && !u.isEmpty(imagesConfig?.other))
     url = getActivityFeedImageByParam(feed, imagesConfig)
-  else if (!::u.isEmpty(feed?.country) && !::u.isEmpty(feed?.unitNameId))
+  else if (!u.isEmpty(feed?.country) && !u.isEmpty(feed?.unitNameId))
     url = getActivityFeedImageByCountry(feed, imagesConfig)
 
-  if (!::u.isEmpty(url))
+  if (!u.isEmpty(url))
     return {
       small = url + (feed?.shouldForceLogo ? logo : "") + ext
       large = url + big + ext
     }
 
-  log("getActivityFeedImages: could not select method to build image URLs from gui.blk and feed config")
-  debugTableData(feed)
+  ::dagor.debug("getActivityFeedImages: could not select method to build image URLs from gui.blk and feed config")
+  ::debugTableData(feed)
   return null
 }
 
 return function(config, customFeedParams) {
   let sendStat = function(tags) {
-    let qualifiedNameParts = split_by_chars(getEnumValName("ps4_activity_feed", config.subType, true), ".")
+    let qualifiedNameParts = split_by_chars(::getEnumValName("ps4_activity_feed", config.subType, true), ".")
     tags["type"] <- qualifiedNameParts[1]
     statsd.send_counter("sq.activityfeed", 1, tags)
   }
 
-  let locId = getTblValue("locId", config, "")
-  if (locId == "" && ::u.isEmpty(customFeedParams?.captions))
+  let locId = ::getTblValue("locId", config, "")
+  if (locId == "" && u.isEmpty(customFeedParams?.captions))
   {
     sendStat({action = "abort", reason = "no_loc_id"})
-    log("ps4PostActivityFeed, Not found locId in config")
-    debugTableData(config)
+    ::dagor.debug("ps4PostActivityFeed, Not found locId in config")
+    ::debugTableData(config)
     return
   }
 

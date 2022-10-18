@@ -1,6 +1,3 @@
-#no-root-fallback
-#explicit-this
-
 let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isTable, isArray } = require("%sqStdLibs/helpers/u.nut")
 
@@ -10,28 +7,28 @@ let { isTable, isArray } = require("%sqStdLibs/helpers/u.nut")
     updateFunc - method for update object by watched value
 */
 
-local function assertOnce(_uniqId, errorText) {
+local function assertOnce(uniqId, errorText) {
   throw(errorText)
 }
 
 let bhvUpdateByWatched = class {
-  eventMask    = EV_ON_CMD
+  eventMask    = ::EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
 
   function onAttach(obj) {
     if ((obj?.value ?? "") != "")
-      this.updateSubscriptions(obj, obj.value.tointeger())
-    return RETCODE_NOTHING
+      updateSubscriptions(obj, obj.value.tointeger())
+    return ::RETCODE_NOTHING
   }
 
   function onDetach(obj) {
-    this.removeSubscriptions(obj)
-    return RETCODE_NOTHING
+    removeSubscriptions(obj)
+    return ::RETCODE_NOTHING
   }
 
   function setValue(obj, value) {
-    this.removeSubscriptions(obj)
-    this.updateSubscriptions(obj, value)
+    removeSubscriptions(obj)
+    updateSubscriptions(obj, value)
   }
 
   function removeSubscriptions(obj) {

@@ -1,16 +1,10 @@
-from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-#no-root-fallback
-#implicit-this
-
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 
 ::queue_classes.WwBattle <- class extends ::queue_classes.Base
 {
   function init()
   {
-    this.name = getName(this.params)
+    name = getName(params)
   }
 
   function join(successCallback, errorCallback)
@@ -41,31 +35,31 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
 
   static function getName(params)
   {
-    return getTblValue("operationId", params, "") + "_" + getTblValue("battleId", params, "")
+    return ::getTblValue("operationId", params, "") + "_" + ::getTblValue("battleId", params, "")
   }
 
   function getBattleName()
   {
-    return loc("mainmenu/btnWorldwar")
+    return ::loc("mainmenu/btnWorldwar")
   }
 
   function getQueueWwBattleId()
   {
-    return this.params?.battleId ?? ""
+    return params?.battleId ?? ""
   }
 
-  getQueueWwOperationId = @() this.params?.operationId ?? -1
+  getQueueWwOperationId = @() params?.operationId ?? -1
 
   function getQueryParams() {
     let qp = {
-      clusters     = this.params.clusters
-      operationId  = this.params.operationId
-      battleId     = this.params.battleId
-      country      = this.params.country
-      team         = this.params.team
+      clusters     = params.clusters
+      operationId  = params.operationId
+      battleId     = params.battleId
+      country      = params.country
+      team         = params.team
     }
 
-    if (!(this.params?.isBattleByUnitsGroup ?? false))
+    if (!(params?.isBattleByUnitsGroup ?? false))
       return qp
 
     let queueMembersParams = ::g_squad_manager.isSquadLeader()
