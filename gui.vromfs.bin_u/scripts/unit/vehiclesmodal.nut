@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { get_time_msec } = require("dagor.time")
+
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -36,20 +45,20 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       unitsList = getUnitsListData()
 
       wndTitle = getWndTitle()
-      needCloseBtn = canQuitByGoBack
+      needCloseBtn = this.canQuitByGoBack
       navBar = getNavBarView()
     }
   }
 
   function initScreen()
   {
-    let listObj = scene.findObject("units_list")
+    let listObj = this.scene.findObject("units_list")
     restoreLastUnitSelection(listObj)
     initPopupFilter()
   }
 
   function initPopupFilter() {
-    let nestObj = scene.findObject("filter_nest")
+    let nestObj = this.scene.findObject("filter_nest")
     openPopupFilter({
       scene = nestObj
       onChangeFn = onChangeFilterItem.bindenv(this)
@@ -57,7 +66,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     })
   }
 
-  getWndTitle = @() ::loc(wndTitleLocId)
+  getWndTitle = @() loc(wndTitleLocId)
   getNavBarView = @() null
   updateButtons = @() null
 
@@ -113,7 +122,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           id = isUnitType ? $"unit_{inst.unitType.esUnitType}" : inst.id
           idx = isUnitType ? inst.unitType.esUnitType : inst.idx
           image = isUnitType ? inst.unitType.testFlightIcon : ::get_country_icon(inst.id)
-          text = isUnitType ? inst.unitType.getArmyLocName() : ::loc(inst.id)
+          text = isUnitType ? inst.unitType.getArmyLocName() : loc(inst.id)
           value = false
         })
       }
@@ -153,12 +162,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillUnitsList()
   {
-    let listObj = scene.findObject("units_list")
-    if (!::check_obj(listObj))
+    let listObj = this.scene.findObject("units_list")
+    if (!checkObj(listObj))
       return
 
     let data = getUnitsListData()
-    guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     foreach(unit in units)
     {
@@ -175,7 +184,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function selectCell()
   {
-    let listObj = scene.findObject("units_list")
+    let listObj = this.scene.findObject("units_list")
     if (!listObj?.isValid())
       return
 
@@ -209,13 +218,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function getUnitItemParams(unit)
+  function getUnitItemParams(_unit)
   {
     return {
       hasActions         = true
       isInTable          = false
       fullBlock          = false
-      showBR             = ::has_feature("GlobalShowBattleRating")
+      showBR             = hasFeature("GlobalShowBattleRating")
       tooltipParams      = { needShopInfo = true }
     }
   }
@@ -227,17 +236,17 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!unit)
       return
 
-    updateUnitItem(unit, scene.findObject("cont_" + unit.name))
+    updateUnitItem(unit, this.scene.findObject("cont_" + unit.name))
     ::updateAirAfterSwitchMod(unit)
   }
 
   function updateUnitItem(unit, placeObj)
   {
-    if (!::check_obj(placeObj))
+    if (!checkObj(placeObj))
       return
 
     let unitBlock = ::build_aircraft_item(unit.name, unit, getUnitItemParams(unit))
-    guiScene.replaceContentFromText(placeObj, unitBlock, unitBlock.len(), this)
+    this.guiScene.replaceContentFromText(placeObj, unitBlock, unitBlock.len(), this)
     updateAdditionalProp(unit, placeObj)
   }
 
@@ -253,7 +262,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function getCurSlotObj() {
-    let listObj = scene.findObject("units_list")
+    let listObj = this.scene.findObject("units_list")
     let idx = ::get_obj_valid_index(listObj)
     if (idx < 0)
       return null
@@ -261,28 +270,28 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     return listObj.getChild(idx).getChild(0)
   }
 
-  function onUnitSelect(obj)
+  function onUnitSelect(_obj)
   {
     lastSelectedUnit = null
     let slotObj = getCurSlotObj()
-    if (::check_obj(slotObj))
+    if (checkObj(slotObj))
       lastSelectedUnit = ::getAircraftByName(slotObj.unit_name)
 
     updateButtons()
   }
 
-  function onUnitAction(obj) {
+  function onUnitAction(_obj) {
     selectCell()
-    openUnitActionsList(getCurSlotObj())
+    this.openUnitActionsList(getCurSlotObj())
   }
 
   function onUnitClick(obj) {
-    actionsListOpenTime = ::dagor.getCurTime()
+    actionsListOpenTime = get_time_msec()
     onUnitAction(obj)
   }
 
   function onUnitRightClick(obj) {
-    if (::dagor.getCurTime() - actionsListOpenTime
+    if (get_time_msec() - actionsListOpenTime
         < OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME)
       return
     onUnitAction(obj)
@@ -305,7 +314,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     checkUnitItemAndUpdate(::getAircraftByName(p?.unitName))
   }
 
-  function onEventFlushSquadronExp(p)
+  function onEventFlushSquadronExp(_p)
   {
     fillUnitsList()
   }

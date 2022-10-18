@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { floor } = require("math")
+
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
@@ -23,12 +32,12 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       showEntitlementsTable = getPurchaseAvailable()
     }
     let data = ::handyman.renderCached("%gui/vehicleRequireFeatureWindow", view)
-    guiScene.replaceContentFromText(scene, data, data.len(), this)
+    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
-    let timerObj = getObj("vehicle_require_feature_timer")
-    if (::checkObj(timerObj)) timerObj.setUserData(this)
+    let timerObj = this.getObj("vehicle_require_feature_timer")
+    if (checkObj(timerObj)) timerObj.setUserData(this)
 
-    let tblObj = getObj("items_list")
+    let tblObj = this.getObj("items_list")
     if (tblObj?.isValid() ?? false) {
       tblObj.setValue(purchases.len() > 0 ? 0 : -1)
       ::move_mouse_on_child_by_value(tblObj)
@@ -51,17 +60,17 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
     local text = ""
     if (featureLockAction == CheckFeatureLockAction.BUY)
-      text += ::loc(locPrefix + "warning/buy")
+      text += loc(locPrefix + "warning/buy")
     else // CheckFeatureLockAction.RESEARCH
-      text += ::loc(locPrefix + "warning/research")
+      text += loc(locPrefix + "warning/research")
     let mainLocParams = {
       specialPackPart = getPurchaseAvailable()
-        ? ::loc(locPrefix + "warning/specialPackPart")
+        ? loc(locPrefix + "warning/specialPackPart")
         : ""
     }
-    text += " " + ::loc(locPrefix + "warning/main", mainLocParams)
+    text += " " + loc(locPrefix + "warning/main", mainLocParams)
     if (getPurchaseAvailable())
-      text += "\n" + ::colorize("userlogColoredText", ::loc(locPrefix + "advise"))
+      text += "\n" + colorize("userlogColoredText", loc(locPrefix + "advise"))
     return text
   }
 
@@ -88,7 +97,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   function onRowBuy(obj)
   {
     if( ! ::OnlineShopModel.getPurchaseData(obj.entitlementId).openBrowser())
-      ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
+      ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
   }
 
   function createEntitlementsView(purchasesList)
@@ -112,19 +121,19 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return view
   }
 
-  function onTimerUpdate(obj, dt)
+  function onTimerUpdate(_obj, _dt)
   {
     if (!::is_app_active() || ::steam_is_overlay_active() || ::is_builtin_browser_active())
       needFullUpdate = true
     else if (needFullUpdate && ::is_online_available())
     {
       needFullUpdate = false
-      taskId = ::update_entitlements_limited()
-      if (taskId < 0)
+      this.taskId = ::update_entitlements_limited()
+      if (this.taskId < 0)
         return
-      ::set_char_cb(this, slotOpCb)
-      showTaskProgressBox(::loc("charServer/checking"))
-      afterSlotOp = function()
+      ::set_char_cb(this, this.slotOpCb)
+      this.showTaskProgressBox(loc("charServer/checking"))
+      this.afterSlotOp = function()
       {
         if (!::isUnitFeatureLocked(this.unit))
           this.goBack()
@@ -134,7 +143,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getEntitlementPrice(entitlementItem)
   {
-    let priceText = ::loc("price/" + entitlementItem.name, "")
+    let priceText = loc("price/" + entitlementItem.name, "")
     // Empty string is valid and means we won't show price at all.
     if (priceText == "")
       return ""
@@ -148,13 +157,13 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       return formatPrice("0")
     }
     let realPrice = (100 - getDiscountValue(entitlementItem)) * basePrice / 100
-    let roundedPrice = ::floor(100 * realPrice) / 100
+    let roundedPrice = floor(100 * realPrice) / 100
     return formatPrice(roundedPrice.tostring())
   }
 
   function formatPrice(priceText)
   {
-    return format(::loc("price/common"), priceText)
+    return format(loc("price/common"), priceText)
   }
 
   function getDiscountText(entitlementItem)
@@ -167,12 +176,12 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getDiscountValue(entitlementItem)
   {
-    return ::getTblValue("goldDiscount", entitlementItem, 0)
+    return getTblValue("goldDiscount", entitlementItem, 0)
   }
 
-  function onEventModalWndDestroy(params)
+  function onEventModalWndDestroy(_params)
   {
-    if (isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(getObj("items_list"))
+    if (this.isSceneActiveNoModals())
+      ::move_mouse_on_child_by_value(this.getObj("items_list"))
   }
 }

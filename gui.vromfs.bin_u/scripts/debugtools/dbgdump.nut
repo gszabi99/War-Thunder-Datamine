@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 /**
  *  dbg_dump is a tool for debugging complex scripts, which have
@@ -80,27 +85,24 @@ let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 let persistent = {
   backup = null
 }
+
 ::g_script_reloader.registerPersistentData("dbgDump", persistent, [ "backup" ])
 
-let isLoaded = function()
-{
+let function isLoaded() {
   return persistent.backup != null
 }
 
-let getOriginal = function(id)
-{
+let function getOriginal(id) {
   if (persistent.backup && (id in persistent.backup))
     return (persistent.backup[id] != "__destroy") ? persistent.backup[id] : null
-  return (id in ::getroottable()) ? ::getroottable()[id] : null
+  return (id in getroottable()) ? getroottable()[id] : null
 }
 
-let getFuncResult = function(func, a = [])
-{
+let function getFuncResult(func, a = []) {
   return func.acall([null].extend(a))
 }
 
-local pathGet = function(env, path, defVal)
-{
+local function pathGet(env, path, defVal) {
   let keys = split_by_chars(path, ".")
   foreach(key in keys)
     if (key in env)
@@ -110,8 +112,7 @@ local pathGet = function(env, path, defVal)
   return env
 }
 
-local pathSet = function(env, path, val)
-{
+local function pathSet(env, path, val) {
   let keys = split_by_chars(path, ".")
   let lastIdx = keys.len() - 1
   foreach(idx, key in keys)
@@ -122,8 +123,7 @@ local pathSet = function(env, path, val)
   }
 }
 
-local pathDelete = function(env, path)
-{
+local function pathDelete(env, path) {
   let keys = split_by_chars(path, ".")
   let lastIdx = keys.len() - 1
   foreach(idx, key in keys)
@@ -131,14 +131,13 @@ local pathDelete = function(env, path)
     if (!(key in env))
       return
     if (idx == lastIdx)
-      return env.rawdelete(key)
+      return env.rawdelete(key) //warning disable: -unwanted-modification
     env = env[key]
   }
 }
 
-let save = function(filename, list)
-{
-  let rootTable = ::getroottable()
+let function save(filename, list) {
+  let rootTable = getroottable()
   let blk = ::DataBlock()
   foreach (itemSrc in list)
   {
@@ -168,13 +167,28 @@ let save = function(filename, list)
   return blk.saveToTextFile(filename)
 }
 
-let load = function(filename, needUnloadPrev = true)
-{
+let function unload() {
+  if (!isLoaded())
+    return false
+  let rootTable = getroottable()
+  foreach (id, v in persistent.backup)
+  {
+    if (v == "__destroy")
+      pathDelete(rootTable, id)
+    else
+      pathSet(rootTable, id, v)
+  }
+  persistent.backup = null
+  return true
+}
+
+
+let function load(filename, needUnloadPrev = true) {
   if (needUnloadPrev)
     unload()
   persistent.backup = persistent.backup || {}
 
-  let rootTable = ::getroottable()
+  let rootTable = getroottable()
   let blk = ::DataBlock()
   if (!blk.tryLoad(filename))
     return false
@@ -218,15 +232,13 @@ let load = function(filename, needUnloadPrev = true)
   return true
 }
 
-let loadFuncs = function(functions, needUnloadPrev = true)
-{
+let function loadFuncs(functions, needUnloadPrev = true) {
   if (needUnloadPrev)
     unload()
   persistent.backup = persistent.backup || {}
 
-  let rootTable = ::getroottable()
-  foreach (id, func in functions)
-  {
+  let rootTable = getroottable()
+  foreach (id, func in functions) {
     if (!(id in persistent.backup))
       persistent.backup[id] <- pathGet(rootTable, id, "__destroy")
     pathSet(rootTable, id, func)
@@ -234,27 +246,11 @@ let loadFuncs = function(functions, needUnloadPrev = true)
   return true
 }
 
-let unload = function()
-{
-  if (!isLoaded())
-    return false
-  let rootTable = ::getroottable()
-  foreach (id, v in persistent.backup)
-  {
-    if (v == "__destroy")
-      pathDelete(rootTable, id)
-    else
-      pathSet(rootTable, id, v)
-  }
-  persistent.backup = null
-  return true
-}
-
 return {
-  save = save
-  load = load
-  loadFuncs = loadFuncs
-  unload = unload
-  isLoaded = isLoaded
-  getOriginal = getOriginal
+  save
+  load
+  loadFuncs
+  unload
+  isLoaded
+  getOriginal
 }

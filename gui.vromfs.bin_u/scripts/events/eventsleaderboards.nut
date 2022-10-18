@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
+let { get_time_msec } = require("dagor.time")
 
 ::events._leaderboards = {
   cashLifetime = 60000
@@ -60,7 +67,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       return
     }
 
-    requestData.callBack <- ::Callback(callback, context)
+    requestData.callBack <- Callback(callback, context)
     updateEventLb(requestData, id)
   }
 
@@ -91,16 +98,16 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       return
     }
 
-    requestData.callBack <- ::Callback(callback, context)
+    requestData.callBack <- Callback(callback, context)
     updateEventLbSelfRow(requestData, id)
   }
 
   function updateEventLbInternal(requestData, id, requestFunc, handleFunc)
   {
-    let requestAction = ::Callback(function() {
+    let requestAction = Callback(function() {
       requestFunc(
         requestData,
-        ::Callback(function(successData) {
+        Callback(function(successData) {
           canRequestEventLb = false
           handleFunc(requestData, id, successData)
 
@@ -109,7 +116,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
           else
             canRequestEventLb = true
         }, this),
-        ::Callback(function(errorId) {
+        Callback(function(_errorId) {
           canRequestEventLb = true
         }, this)
       )}, this)
@@ -158,7 +165,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       let start = blk.start  // warning disable: -declared-never-used
       let count = blk.count  // warning disable: -declared-never-used
       ::script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
-      ::dagor.debug($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
+      log($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
 
       blk.start = 0
     }
@@ -168,7 +175,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       let count = blk.count  // warning disable: -declared-never-used
       let start = blk.start  // warning disable: -declared-never-used
       ::script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
-      ::dagor.debug($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
+      log($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
 
       blk.count = 49  // unusual value indicate problem
     }
@@ -212,11 +219,11 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
   {
     local res = ""
     res += request_data.lbField
-    res += ::getTblValue("rowsInPage", request_data, "")
-    res += ::getTblValue("inverse", request_data, false)
-    res += ::getTblValue("rowsInPage", request_data, "")
-    res += ::getTblValue("pos", request_data, "")
-    res += ::getTblValue("tournament_mode", request_data, "")
+    res += getTblValue("rowsInPage", request_data, "")
+    res += getTblValue("inverse", request_data, false)
+    res += getTblValue("rowsInPage", request_data, "")
+    res += getTblValue("pos", request_data, "")
+    res += getTblValue("tournament_mode", request_data, "")
     return res
   }
 
@@ -229,7 +236,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
     __cache.leaderboards[requestData.economicName][hashLbRequest(requestData)] <- {
       data = lbData
-      timestamp = ::dagor.getCurTime()
+      timestamp = get_time_msec()
     }
 
     if (id)
@@ -253,7 +260,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
     __cache.selfRow[requestData.economicName][hashLbRequest(requestData)] <- {
       data = lbData
-      timestamp = ::dagor.getCurTime()
+      timestamp = get_time_msec()
     }
 
     if (id)
@@ -280,7 +287,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (!(hash in __cache[storage_name][request_data.economicName]))
       return null
 
-    if (::dagor.getCurTime() - __cache[storage_name][request_data.economicName][hash].timestamp > cashLifetime)
+    if (get_time_msec() - __cache[storage_name][request_data.economicName][hash].timestamp > cashLifetime)
     {
       __cache[storage_name][request_data.economicName].rawdelete(hash)
       return null
@@ -297,12 +304,12 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (!event)
       return newRequest
 
-    newRequest.economicName <- events.getEventEconomicName(event)
-    newRequest.tournament <- ::getTblValue("tournament", event, false)
+    newRequest.economicName <- ::events.getEventEconomicName(event)
+    newRequest.tournament <- getTblValue("tournament", event, false)
     newRequest.tournament_mode <- ::events.getEventTournamentMode(event)
     newRequest.forClans <- isClanLeaderboard(event)
 
-    let sortLeaderboard = ::getTblValue("sort_leaderboard", event, null)
+    let sortLeaderboard = getTblValue("sort_leaderboard", event, null)
     let shortRow = (sortLeaderboard != null)
                       ? ::g_lb_category.getTypeByField(sortLeaderboard)
                       : ::events.getTableConfigShortRowByEvent(event)
@@ -314,7 +321,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function isClanLbRequest(requestData)
   {
-    return ::getTblValue("forClans", requestData, false)
+    return getTblValue("forClans", requestData, false)
   }
 
   function validateRequestData(requestData)
@@ -327,7 +334,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function compareRequests(req1, req2)
   {
-    foreach(name, field in defaultRequest)
+    foreach(name, _field in defaultRequest)
     {
       if ((name in req1) != (name in req2))
         return false
@@ -394,7 +401,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function isClanLeaderboard(event)
   {
-    if (!::getTblValue("tournament", event, false))
+    if (!getTblValue("tournament", event, false))
       return ::events.isEventForClan(event)
     return ::events.getEventTournamentMode(event) == GAME_EVENT_TYPE.TM_ELO_GROUP
   }
@@ -405,7 +412,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     //new leaderboards name param is in forma  "<tag> <name>"
     //old only "<name>"
     //but even with old leaderboards we need something to write in tag for short lb
-    let name = ::getTblValue("name", lbRow)
+    let name = getTblValue("name", lbRow)
     if (!::u.isString(name) || !name.len())
       return
 

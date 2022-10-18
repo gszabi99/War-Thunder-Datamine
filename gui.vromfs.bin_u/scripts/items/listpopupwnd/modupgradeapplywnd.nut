@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
 ::gui_handlers.ModUpgradeApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
@@ -13,7 +19,7 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
     list = ::u.filter(list, @(item) item.canActivateOnMod(unitToActivate, modToActivate))
     if (!list.len())
     {
-      ::showInfoMsgBox(::loc("msg/noUpgradeItemsForMod"))
+      ::showInfoMsgBox(loc("msg/noUpgradeItemsForMod"))
       return
     }
     ::handlersManager.loadHandler(::gui_handlers.ModUpgradeApplyWnd,
@@ -33,7 +39,7 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
     let newLevel = ::get_modification_level(unit.name, mod.name) + 1
     ::calculate_mod_or_weapon_effect_with_level(unit.name, mod.name, newLevel, true, this,
       function(effect, ...) {
-        if (isValid())
+        if (this.isValid())
           showEffects(effect)
       },
       null)
@@ -41,15 +47,15 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
   function showEffects(effect)
   {
-    scene.findObject("effects_wait_icon").show(false)
-    scene.findObject("effects_text").setValue(
+    this.scene.findObject("effects_wait_icon").show(false)
+    this.scene.findObject("effects_text").setValue(
       weaponryEffects.getDesc(unit, effect?.withLevel ?? {}, { needComment = false }))
-    guiScene.applyPendingChanges(false)
-    updateWndAlign()
+    this.guiScene.applyPendingChanges(false)
+    this.updateWndAlign()
   }
 
   function onActivate()
   {
-    curItem.activateOnMod(unit, mod, ::Callback(goBack, this))
+    this.curItem.activateOnMod(unit, mod, Callback(this.goBack, this))
   }
 }

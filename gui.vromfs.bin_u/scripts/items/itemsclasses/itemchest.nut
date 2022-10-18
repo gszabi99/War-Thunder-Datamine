@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
@@ -24,7 +30,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     if (!_isInitialized)
     {
       _isInitialized = true
-      let genIds = inventoryClient.getChestGeneratorItemdefIds(id)
+      let genIds = inventoryClient.getChestGeneratorItemdefIds(this.id)
       let genId = genIds.findvalue(@(genId) (ItemGenerators.get(genId)?.bundle ?? "") != "")
       generator = ItemGenerators.get(genId)
     }
@@ -43,14 +49,14 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     if (base.consume(cb, params))
       return true
 
-    if (!uids || !uids.len() || !canConsume() || !hasUsableRecipe())
+    if (!this.uids || !this.uids.len() || !canConsume() || !hasUsableRecipe())
       return false
 
-    if (shouldAutoConsume)
+    if (this.shouldAutoConsume)
     {
       params.cb <- cb
       params.shouldSkipMsgBox <- true
-      ExchangeRecipes.tryUse(getRelatedRecipes(), this, params)
+      ExchangeRecipes.tryUse(this.getRelatedRecipes(), this, params)
       return true
     }
 
@@ -59,20 +65,20 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
   function getMainActionData(isShort = false, params = {})
   {
-    if (canOpenForGold() && isInventoryItem && amount > 0) {
+    if (canOpenForGold() && this.isInventoryItem && this.amount > 0) {
       let openCost = getOpenForGoldRecipe()?.getOpenCost(this)
       if (openCost != null)
         return {
-          btnName = getBuyText(false, isShort, "item/open", openCost)
-          btnColoredName = getBuyText(true, isShort, "item/open", openCost)
+          btnName = this.getBuyText(false, isShort, "item/open", openCost)
+          btnColoredName = this.getBuyText(true, isShort, "item/open", openCost)
       }
     }
     let res = base.getMainActionData(isShort, params)
     if (res)
       return res
-    if (isInventoryItem && amount)
+    if (this.isInventoryItem && this.amount)
       return {
-        btnName = ::loc("item/open")
+        btnName = loc("item/open")
       }
 
     return null
@@ -80,10 +86,10 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
   skipRoulette              = @() isContentPack()
   isContentPack             = @() getGenerator()?.isPack ?? false
-  isAllowSkipOpeningAnim    = @() itemDef?.tags.isAllowSkipOpeningAnim || ::is_dev_version
-  getOpeningAnimId          = @() itemDef?.tags?.isLongOpenAnim ? "LONG" : "DEFAULT"
-  getConfirmMessageData    = @(recipe) getEmptyConfirmMessageData().__update({
-    text = ::loc(getLocIdsList().msgBoxConfirm, { itemName = ::colorize("activeTextColor", getName()) })
+  isAllowSkipOpeningAnim    = @() this.itemDef?.tags.isAllowSkipOpeningAnim || ::is_dev_version
+  getOpeningAnimId          = @() this.itemDef?.tags?.isLongOpenAnim ? "LONG" : "DEFAULT"
+  getConfirmMessageData    = @(recipe) this.getEmptyConfirmMessageData().__update({
+    text = loc(this.getLocIdsList().msgBoxConfirm, { itemName = colorize("activeTextColor", this.getName()) })
     headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
     needRecipeMarkup = recipe.isMultipleItems
   })
@@ -93,8 +99,8 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     return getGenerator()?.getContent() ?? []
   }
 
-  getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(getRelatedRecipes(), this, params)
-  getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(getRelatedRecipes(), this, params)
+  getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(this.getRelatedRecipes(), this, params)
+  getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(this.getRelatedRecipes(), this, params)
 
   function getDescription()
   {
@@ -104,9 +110,9 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     local hasContent = content.len() != 0
 
     return ::g_string.implode([
-      getTransferText(),
-      getMarketablePropDesc(),
-      getCurExpireTimeText(),
+      this.getTransferText(),
+      this.getMarketablePropDesc(),
+      this.getCurExpireTimeText(),
       getDescRecipesText(params),
       (hasContent ? ::PrizesView.getPrizesListText(content, getDescHeaderFunction()) : ""),
       getHiddenItemsDesc() || "",
@@ -116,11 +122,11 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
   function getLongDescription()
   {
-    return itemDef?.tags?.hideDesc ? "" : (itemDef?.description ?? "")
+    return this.itemDef?.tags?.hideDesc ? "" : (this.itemDef?.description ?? "")
   }
 
   function getDescHeaderFunction() {
-    return isContentPack() ? (@(fixedAmount = 1) ::loc("trophy/chest_contents/all"))
+    return isContentPack() ? (@(_fixedAmount = 1) loc("trophy/chest_contents/all"))
       : _getDescHeader
   }
 
@@ -132,9 +138,9 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     let content = getContent()
     let hasContent = content.len() != 0
 
-    let prizeMarkupArray = [::PrizesView.getPrizesListView([], { header = getTransferText() }),
-      ::PrizesView.getPrizesListView([], { header = getMarketablePropDesc() }),
-      (hasTimer() ? ::PrizesView.getPrizesListView([], { header = getCurExpireTimeText(), timerId = "expire_timer" }) : ""),
+    let prizeMarkupArray = [::PrizesView.getPrizesListView([], { header = this.getTransferText() }),
+      ::PrizesView.getPrizesListView([], { header = this.getMarketablePropDesc() }),
+      (this.hasTimer() ? ::PrizesView.getPrizesListView([], { header = this.getCurExpireTimeText(), timerId = "expire_timer" }) : ""),
       getDescRecipesMarkup(clone params)
     ]
 
@@ -154,15 +160,15 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
   function _getDescHeader(fixedAmount = 1)
   {
     let locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
-    let headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
-    return ::colorize("grayOptionColor", headerText)
+    let headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
+    return colorize("grayOptionColor", headerText)
   }
 
   function getHiddenItemsDesc()
   {
     if (!getGenerator()?.hasHiddenItems || !getContent().len())
       return null
-    return ::colorize("grayOptionColor", ::loc("trophy/chest_contents/other"))
+    return colorize("grayOptionColor", loc("trophy/chest_contents/other"))
   }
 
   function getHiddenTopPrizeParams()
@@ -189,15 +195,15 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
   function doMainAction(cb, handler, params = null)
   {
-    if (buy(cb, handler, params))
+    if (this.buy(cb, handler, params))
       return true
-    if (!uids || !uids.len())
+    if (!this.uids || !this.uids.len())
       return false
 
     if (openForGold(cb, params))
       return true
 
-    return ExchangeRecipes.tryUse(getRelatedRecipes(), this, params)
+    return ExchangeRecipes.tryUse(this.getRelatedRecipes(), this, params)
   }
 
   getContentNoRecursion = @() getContent()
@@ -209,8 +215,8 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     openingRewardTitle           = "mainmenu/chestConsumed/title"
   })
 
-  needShowDropChance = @() ::has_feature("ShowDropChanceInTrophy")
-    && ((itemDef?.tags?.showDropChance ?? false)
+  needShowDropChance = @() hasFeature("ShowDropChanceInTrophy")
+    && ((this.itemDef?.tags?.showDropChance ?? false)
       || getCategoryWeight().len() > 0)
 
   function getTableData() {
@@ -224,14 +230,14 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     return markup
   }
 
-  canOpenForGold = @() itemDef?.tags.openForGoldByFeature != null
-    && ::has_feature(itemDef.tags.openForGoldByFeature)
-  hasUsableRecipe = @() getRelatedRecipes().findvalue(@(recipe) recipe.isUsable) != null
-  getOpenForGoldRecipe = @() getRelatedRecipes().findvalue(
+  canOpenForGold = @() this.itemDef?.tags.openForGoldByFeature != null
+    && hasFeature(this.itemDef.tags.openForGoldByFeature)
+  hasUsableRecipe = @() this.getRelatedRecipes().findvalue(@(recipe) recipe.isUsable) != null
+  getOpenForGoldRecipe = @() this.getRelatedRecipes().findvalue(
     (@(recipe) recipe.getOpenCost(this) != null).bindenv(this))
 
-  function openForGold(cb, params = null) {
-    if (!canOpenForGold() || !isInventoryItem || amount == 0)
+  function openForGold(_cb, _params = null) {
+    if (!canOpenForGold() || !this.isInventoryItem || this.amount == 0)
       return false
 
     let openForGoldRecipe = getOpenForGoldRecipe()
@@ -244,7 +250,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
     let item = this
     let text = ::warningIfGold(
-      ::loc("item/openForGold/needMoneyQuestion", { itemName = getName(), cost = cost.getTextAccordingToBalance() }),
+      loc("item/openForGold/needMoneyQuestion", { itemName = this.getName(), cost = cost.getTextAccordingToBalance() }),
       cost)
     ::scene_msg_box("open_ches_for_gold", null, text, [
       [ "yes", @() openForGoldRecipe.buyAllRequiredComponets(item) ],
@@ -255,7 +261,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
   }
 
   function getCost(ignoreCanBuy = false) {
-    if (canOpenForGold() && isInventoryItem && amount > 0)
+    if (canOpenForGold() && this.isInventoryItem && this.amount > 0)
       return getOpenForGoldRecipe()?.getOpenCost(this) ?? ::Cost()
 
     return base.getCost(ignoreCanBuy)
@@ -263,7 +269,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
   function getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes = false, timeText = "") {
     if (canOpenForGold())
-      return ::loc($"{getLocIdsList().descReceipesListHeaderPrefix}item")
+      return loc($"{this.getLocIdsList().descReceipesListHeaderPrefix}item")
 
     return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
   }
@@ -290,10 +296,10 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
       return categoryWeight
 
     categoryWeight = []
-    if (itemDef?.tags.categoryWeight == null)
+    if (this.itemDef?.tags.categoryWeight == null)
       return categoryWeight
 
-    foreach (category in (itemDef.tags % "categoryWeight")) {
+    foreach (category in (this.itemDef.tags % "categoryWeight")) {
       local paramsArray = category.split("_")
       if (paramsArray.len() < 2)
         continue

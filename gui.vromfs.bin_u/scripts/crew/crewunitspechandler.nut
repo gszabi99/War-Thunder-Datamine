@@ -1,8 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
   crew = null
@@ -14,8 +20,8 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
   function setHandlerVisible(value)
   {
     isHandlerVisible = value
-    scene.show(value)
-    scene.enable(value)
+    this.scene.show(value)
+    this.scene.enable(value)
   }
 
   function setHandlerData(newCrew, newCrewLevel, newUnits, newCrewUnitType)
@@ -28,19 +34,19 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
     loadSceneTpl()
     updateDiscounts()
 
-    let totalRows = scene.childrenCount()
-    if (totalRows > 0 && totalRows <= scene.getValue())
-      scene.setValue(0)
+    let totalRows = this.scene.childrenCount()
+    if (totalRows > 0 && totalRows <= this.scene.getValue())
+      this.scene.setValue(0)
   }
 
   function loadSceneTpl()
   {
     let rows = []
-    foreach(i, unit in units)
+    foreach(i, _unit in units)
       rows.append(getSpecRowConfig(i))
 
     local data = ::handyman.renderCached("%gui/crew/crewAirRow", { rows = rows })
-    guiScene.replaceContentFromText(scene, data, data.len(), this)
+    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 
   function getRowName(rowIndex)
@@ -53,11 +59,11 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
     // Here 'scene' is table object with id "specs_table".
     if (!checkObj(obj) || obj?.id != "buttonRowApply")
     {
-      if (!::checkObj(scene))
+      if (!checkObj(this.scene))
         return
-      let idx = scene.getValue()
-      let rowObj = scene.getChild(idx)
-      if (!::checkObj(rowObj))
+      let idx = this.scene.getValue()
+      let rowObj = this.scene.getChild(idx)
+      if (!checkObj(rowObj))
         return
       obj = rowObj.findObject("buttonRowApply")
     }
@@ -65,8 +71,8 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
     if (!checkObj(obj) || !obj.isEnabled())
       return
 
-    let rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
-    let rowUnit = ::getTblValue(rowIndex, units)
+    let rowIndex = ::g_crew.getButtonRow(obj, this.scene, this.scene)
+    let rowUnit = getTblValue(rowIndex, units)
     if (rowUnit == null)
       return
 
@@ -87,8 +93,8 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
 
   function increaseSpec(nextSpecType, obj = null)
   {
-    let rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
-    let rowUnit = ::getTblValue(rowIndex, units)
+    let rowIndex = ::g_crew.getButtonRow(obj, this.scene, this.scene)
+    let rowUnit = getTblValue(rowIndex, units)
     if (rowUnit)
       ::g_crew.upgradeUnitSpec(crew, rowUnit, null, nextSpecType)
   }
@@ -145,9 +151,9 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
       buttonRowText = hasNextType
         ? enableForBuy
           ? specType.getButtonLabel()
-          : ::loc("crew/qualifyRequirement", { reqLevel = reqLevel })
-        : canCrewTrainUnit ? ::loc("mainmenu/btnTrainCrew")
-        : isRecrutedCrew && !isUsableUnit ? ::loc("weaponry/unit_not_bought")
+          : loc("crew/qualifyRequirement", { reqLevel = reqLevel })
+        : canCrewTrainUnit ? loc("mainmenu/btnTrainCrew")
+        : isRecrutedCrew && !isUsableUnit ? loc("weaponry/unit_not_bought")
         : ""
       progressBarDisplay = isProgressBarVisible ? "show" : "hide"
       progressBarValue = progressBarValue
@@ -174,8 +180,8 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
   {
     foreach(idx, unit in units)
     {
-      let rowObj = scene.findObject(getRowName(idx))
-      if (!::checkObj(rowObj))
+      let rowObj = this.scene.findObject(getRowName(idx))
+      if (!checkObj(rowObj))
         return
 
       let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)

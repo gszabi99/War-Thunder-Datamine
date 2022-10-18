@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let workshop = require("%scripts/items/workshop/workshop.nut")
 
 let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
@@ -37,7 +42,7 @@ let checkOfferToBuyAtExpiration = function()
     return
 
   local hasChanges = false
-  foreach(itemId, value in needOfferBuyItemsList)
+  foreach(itemId, _value in needOfferBuyItemsList)
   {
     let id = ::to_integer_safe(itemId, itemId, false)
     let inventoryItem = ::ItemsManager.getInventoryItemById(id)
@@ -61,7 +66,7 @@ let checkOfferToBuyAtExpiration = function()
     }
 
     ::scene_msg_box("offer_buy_item", null,
-      ::loc("msgBox/offerToBuyAtExpiration", { itemName = shopItem.getName() }),
+      loc("msgBox/offerToBuyAtExpiration", { itemName = shopItem.getName() }),
         [
           ["yes", @() ::gui_start_items_list(itemsTab.WORKSHOP,
             { curSheet = { id = wSet.getShopTabId() }
@@ -84,7 +89,7 @@ let checkOfferToBuyAtExpiration = function()
   }
 }
 
-::add_event_listener("InventoryUpdate", function(p) {
+::add_event_listener("InventoryUpdate", function(_p) {
   checkOfferToBuyAtExpiration()
   addItemsInOfferBuyList()
 })

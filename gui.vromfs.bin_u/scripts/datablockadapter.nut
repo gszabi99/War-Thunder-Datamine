@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { isDataBlock } = require("%sqstd/underscore.nut")
 
 //to use table by DataBlock api
@@ -46,7 +52,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
   function _nexti(prevKey)
   {
     local isFound = prevKey == null
-    foreach (key, val in ___originData___)
+    foreach (key, _val in ___originData___)
     {
       if (isFound)
         return key
@@ -166,7 +172,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
   function formatAsString()
   {
     let res = []
-    ::debugTableData(___originData___, {
+    debugTableData(___originData___, {
       recursionLevel = 4,
       showBlockBrackets = true,
       silentMode = true,

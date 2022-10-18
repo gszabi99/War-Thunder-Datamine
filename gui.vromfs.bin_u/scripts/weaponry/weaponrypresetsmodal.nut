@@ -1,6 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
   getWeaponryByPresetInfo, getCustomWeaponryPresetView
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getLastWeapon, setLastWeapon, getWeaponDisabledMods
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -12,7 +20,7 @@ let { weaponsPurchase, canBuyItem } = require("%scripts/weaponry/weaponsPurchase
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { TIERS_NUMBER, MAX_PRESETS_NUM, CHAPTER_ORDER, CHAPTER_NEW_IDX, CHAPTER_FAVORITE_IDX,
+let { MAX_PRESETS_NUM, CHAPTER_ORDER, CHAPTER_NEW_IDX, CHAPTER_FAVORITE_IDX,
   CUSTOM_PRESET_PREFIX, isCustomPreset, getDefaultCustomPresetParams
 } = require("%scripts/weaponry/weaponryPresets.nut")
 let { renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets
@@ -56,23 +64,22 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   filterObj            = null
   myFilters            = null
   chosenPresetName     = null
-
   customIdx            = 0
   presetNest           = null
   availableWeapons     = null
 
   function getSceneTplView()
   {
-    let tiersWidth = ::to_pixels("".concat(TIERS_NUMBER, "@tierIconSize"))
-    let iconWidth = ::show_console_buttons ? ::to_pixels("1@cIco") : 0
-    let tiersAndDescWidth = ::to_pixels("".concat(
+    weaponryByPresetInfo = getWeaponryByPresetInfo(unit, chooseMenuList)
+    let tiersWidth = to_pixels("".concat(weaponryByPresetInfo.weaponsSlotCount, "@tierIconSize"))
+    let iconWidth = ::show_console_buttons ? to_pixels("1@cIco") : 0
+    let tiersAndDescWidth = to_pixels("".concat(
       "1@narrowTooltipWidth+4@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
         + tiersWidth + iconWidth
-    presetTextWidth = min(::to_pixels("1@srw") - tiersAndDescWidth,
-      ::to_pixels("1@modPresetTextMaxWidth"))
+    presetTextWidth = min(to_pixels("1@srw") - tiersAndDescWidth,
+      to_pixels("1@modPresetTextMaxWidth"))
     let wndWidth = tiersAndDescWidth + presetTextWidth
     chapterPos = presetTextWidth + 0.5 * tiersWidth + iconWidth
-    weaponryByPresetInfo = getWeaponryByPresetInfo(unit, chooseMenuList)
     presets = weaponryByPresetInfo.presets
     favoriteArr = weaponryByPresetInfo.favoriteArr
     let unitName = unit.name
@@ -82,8 +89,8 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     chosenPresetName = lastWeapon
     presetsMarkup = getPresetsMarkup(presets)
     return {
-      headerText = "".concat(::loc("modification/category/secondaryWeapon"), " ",
-        ::loc("ui/mdash"), " ", ::getUnitName(unit))
+      headerText = "".concat(loc("modification/category/secondaryWeapon"), " ",
+        loc("ui/mdash"), " ", ::getUnitName(unit))
       wndWidth
       chapterPos = chapterPos
       presets = presetsMarkup
@@ -96,14 +103,14 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     multiPurchaseList = []
     let chpn = chosenPresetName
     chosenPresetIdx = presets.findindex(@(w) w.name == chpn) ?? 0
-    presetNest = scene.findObject("presetNest")
+    presetNest = this.scene.findObject("presetNest")
     selectPreset(chosenPresetIdx)
     updateCustomIdx()
     updatePresetsByRanks()
     updateMultiPurchaseList()
-    ::move_mouse_on_obj(scene.findObject($"presetHeader_{chosenPresetIdx}"))
+    ::move_mouse_on_obj(this.scene.findObject($"presetHeader_{chosenPresetIdx}"))
 
-    filterObj = scene.findObject("filter_nest")
+    filterObj = this.scene.findObject("filter_nest")
     myFilters = ::load_local_account_settings($"{MY_FILTERS}/{unit.name}", ::DataBlock())
     fillFilterTypesList()
     // No need to update items if no stored filters for current unit
@@ -143,7 +150,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
         curChapterOrd = preset.chapterOrd
         res.append({
           isCollapsable = true
-          chapterName = ::loc($"weapons/purposeType/{CHAPTER_ORDER[curChapterOrd]}")
+          chapterName = loc($"weapons/purposeType/{CHAPTER_ORDER[curChapterOrd]}")
         })
       }
 
@@ -152,7 +159,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       params.__update({
           collapsable = true
           showButtons = true
-          actionBtnText = onChangeValueCb != null ? ::loc("mainmenu/btnSelect") : null
+          actionBtnText = onChangeValueCb != null ? loc("mainmenu/btnSelect") : null
         })
       let idx = presets.findindex(@(p) p.name == preset.name)
       presetIdxToChildIdx[idx] <- res.len()
@@ -188,7 +195,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     if (childIdx != null)
       presetNest.getChild(childIdx).selected = "no"
 
-    let row = scene.findObject($"tiersNest_{curPresetIdx}")
+    let row = this.scene.findObject($"tiersNest_{curPresetIdx}")
     if (row?.isValid())
       row.setValue(-1)
 
@@ -264,7 +271,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   function updateTierDesc()
   {
     local data = ""
-    let descObj = scene.findObject("tierDesc")
+    let descObj = this.scene.findObject("tierDesc")
     if (curTierIdx >= 0 && curPresetIdx != null)
     {
       let item = presets[curPresetIdx]
@@ -272,10 +279,10 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       data = weaponry ? ::handyman.renderCached(("%gui/weaponry/weaponTooltip"),
         getTierDescTbl(unit, getTierTooltipParams(weaponry, item.name, curTierIdx))) : ""
     }
-    guiScene.replaceContentFromText(descObj, data, data.len())
+    this.guiScene.replaceContentFromText(descObj, data, data.len())
   }
 
-  function onModItemDblClick(obj)
+  function onModItemDblClick(_obj)
   {
     let idx = curPresetIdx
     let params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
@@ -283,7 +290,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       onModActionBtn()
   }
 
-  function onModActionBtn(obj = null)
+  function onModActionBtn(_obj = null)
   {
     if (curPresetIdx == null)
       return
@@ -291,7 +298,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     doItemAction(presets[curPresetIdx].weaponPreset)
   }
 
-  function onAltModAction(obj)
+  function onAltModAction(_obj)
   {
     if (curPresetIdx == null)
       return
@@ -300,7 +307,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function doItemAction(item)
   {
-    guiScene.playSound("check")
+    this.guiScene.playSound("check")
     if (onChangeValueCb)
       onChangeValueCb(item)
     else
@@ -324,30 +331,30 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       ::check_secondary_weapon_mods_recount(unit)
       checkSaveBulletsAndDo()
     }
-    guiScene.performDelayed(this, @()goBack())
+    this.guiScene.performDelayed(this, @()this.goBack())
   }
 
   function showReqModsMsg(disabledMods)
   {
     let aUnit = unit
-    let modNames = disabledMods.map(@(n) ::colorize("userlogColoredText", getModificationName(aUnit, n)))
-    let text = ::loc("weaponry/require_mod_install", {
-      modNames = ::loc("ui/colon").join(modNames)
+    let modNames = disabledMods.map(@(n) colorize("userlogColoredText", getModificationName(aUnit, n)))
+    let text = loc("weaponry/require_mod_install", {
+      modNames = loc("ui/colon").join(modNames)
       numMods = disabledMods.len()
     })
-    let onOk = ::Callback(@() installMods(disabledMods), this)
+    let onOk = Callback(@() installMods(disabledMods), this)
     ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes")
   }
 
   function installMods(disabledMods)
   {
     let aUnit = unit
-    let onSuccess = ::Callback(function() {
+    let onSuccess = Callback(function() {
       disabledMods.each(@(n) ::updateAirAfterSwitchMod(aUnit, n))
       ::broadcastEvent("ModificationChanged")
     }, this)
 
-    let taskId = enable_modifications(unit.name, disabledMods, true)
+    let taskId = ::enable_modifications(unit.name, disabledMods, true)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
   }
 
@@ -355,7 +362,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   {
     if (!::shop_is_weapon_available(unit.name, item.name, false, true))
       return
-    checkSaveBulletsAndDo(::Callback((@(unit, item) function() {
+    checkSaveBulletsAndDo(Callback((@(unit, item) function() {
       weaponsPurchase(unit, {modItem = item, open = false})
     })(unit, item), this))
   }
@@ -365,18 +372,18 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     local needSave = false
     if (lastWeapon != "" && lastWeapon != getLastWeapon(unit.name))
     {
-      ::dagor.debug($"force cln_update due lastWeapon '{lastWeapon}' != {getLastWeapon(unit.name)}")
+      log($"force cln_update due lastWeapon '{lastWeapon}' != {getLastWeapon(unit.name)}")
       needSave = true
       lastWeapon = getLastWeapon(unit.name)
     }
 
     if (needSave)
     {
-      taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
-      if (taskId >= 0 && func)
+      this.taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
+      if (this.taskId >= 0 && func)
       {
-        let cb = ::u.isFunction(func) ? ::Callback(func, this) : func
-        ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
+        let cb = ::u.isFunction(func) ? Callback(func, this) : func
+        ::g_tasker.addTask(this.taskId, {showProgressBox = true}, cb)
       }
     }
     else if (func)
@@ -386,9 +393,9 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function updateDesc()
   {
-    let descObj = scene.findObject("desc")
+    let descObj = this.scene.findObject("desc")
     if (curPresetIdx == null) {
-      guiScene.replaceContentFromText(descObj, "", 0, this)
+      this.guiScene.replaceContentFromText(descObj, "", 0, this)
       return
     }
     updateWeaponTooltip(descObj, unit, presets[curPresetIdx].weaponPreset, this, {
@@ -407,22 +414,22 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
     return [
       { // rename
-        text = ::loc("msgbox/btn_rename")
+        text = loc("msgbox/btn_rename")
         show = canEditCurPreset
         action = @() onPresetRename()
       }
       { // edit
-        text = ::loc("msgbox/btn_edit")
+        text = loc("msgbox/btn_edit")
         show = canEditCurPreset
         action = @() onPresetEdit()
       }
       { // copy
-        text = ::loc("gblk/saveError/copy")
+        text = loc("gblk/saveError/copy")
         show = canCopyCurPreset
         action = @() onPresetCopy()
       }
       { // delete
-        text = ::loc("msgbox/btn_delete")
+        text = loc("msgbox/btn_delete")
         show = canEditCurPreset
         action = @() onPresetDelete()
       }
@@ -442,7 +449,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   }
 
   isCustomPresetsAvailable = @() unit.hasWeaponSlots  && availableWeapons.len() > 0
-    && ::has_feature("WeaponryCustomPresets")
+    && hasFeature("WeaponryCustomPresets")
 
   isCustomPresetsEditAvailable = @() isCustomPresetsAvailable()
      && !::is_in_flight() && unit.isUsable()
@@ -469,7 +476,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       if (actions.len() == 1)
         bObj.setValue(actions[0].text)
       else
-        bObj.setValue(::loc("msgbox/presetActions"))
+        bObj.setValue(loc("msgbox/presetActions"))
     }
 
     let idx = curPresetIdx
@@ -488,7 +495,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       altActionBtnObj.tooltip = params?.weaponryItem.altBtnTooltip ?? ""
     }
     let favoriteBtnObj = this.showSceneBtn("favoriteBtn", true)
-    favoriteBtnObj.setValue(::loc(curPreset.chapterOrd != 1
+    favoriteBtnObj.setValue(loc(curPreset.chapterOrd != 1
       ? "mainmenu/btnFavorite" : "mainmenu/btnFavoriteUnmark"))
   }
 
@@ -506,10 +513,10 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       presets = presetsMarkup
       isShowConsoleBtn = ::show_console_buttons
     })
-    guiScene.replaceContentFromText(presetNest, data, data.len(), this)
+    this.guiScene.replaceContentFromText(presetNest, data, data.len(), this)
     // Select chosen or first preset
     local firstIdx = null
-    foreach (idx, v in presetIdxToChildIdx){
+    foreach (idx, _v in presetIdxToChildIdx){
       firstIdx = idx
       break
     }
@@ -532,7 +539,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     }
   }
 
-  function onEventWeaponPurchased(p) { updateAll(); updateMultiPurchaseList() }
+  function onEventWeaponPurchased(_p) { updateAll(); updateMultiPurchaseList() }
 
   function onCollapse(obj)
   {
@@ -596,7 +603,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     }
   }
 
-  function onChangeFavorite(obj)
+  function onChangeFavorite(_obj)
   {
     let preset = presets[curPresetIdx]
     let isFavorite = preset.chapterOrd == CHAPTER_FAVORITE_IDX
@@ -648,8 +655,8 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
         idx   = idx
         isDisable = (key == FILTER_OPTIONS[0] && !isFavoritesExist())
           || (key == FILTER_OPTIONS[1] && !isAvailablesExist())
-        text  = isRank ? $"{::loc("conditions/rank")} {::get_roman_numeral(key)}"
-          : ::loc($"mainmenu/only{key}")
+        text  = isRank ? $"{loc("conditions/rank")} {::get_roman_numeral(key)}"
+          : loc($"mainmenu/only{key}")
       }
     }
   }
@@ -693,7 +700,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     updateAll(pList)
   }
 
-  function onFilterCbChange(objId, tName, value) {
+  function onFilterCbChange(objId, _tName, value) {
     let isReset = objId == RESET_ID
     foreach (key, inst in filterTypes)
     {
@@ -742,7 +749,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
     let curUnit = unit
     this.msgBox("question_delete_preset",
-      ::loc("msgbox/genericRequestDelete", { item = curPreset.customNameText }),
+      loc("msgbox/genericRequestDelete", { item = curPreset.customNameText }),
       [
         ["delete", @() deleteCustomPreset(curUnit, curPreset.name)],
         ["cancel", function() {} ]
@@ -760,17 +767,17 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   {
     let isShow = multiPurchaseList.len() > 0
     if (isShow)
-      placePriceTextToButton(scene, "btn_buyAll", ::loc("mainmenu/btnBuyAll"), totalCost)
+      placePriceTextToButton(this.scene, "btn_buyAll", loc("mainmenu/btnBuyAll"), totalCost)
 
     this.showSceneBtn("btn_buyAll", isShow)
   }
 
   onBuyAll = @() buyAll()
-  onEventProfileUpdated = @ (p) updateBuyAllBtn()
+  onEventProfileUpdated = @ (_p) updateBuyAllBtn()
 
   function updateMultiPurchaseList()
   {
-    if (isAllBuyProcess || !::has_feature("BuyAllPresets"))
+    if (isAllBuyProcess || !hasFeature("BuyAllPresets"))
       return
 
     multiPurchaseList = []
@@ -808,7 +815,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     totalCost -= getItemCost(unit, item).multiply(statusTbl.maxAmount - statusTbl.amount)
     isAllBuyProcess = true
     weaponsPurchase(unit, {modItem = item, open = false, silent = true, isAllPresetPurchase = true,
-      afterSuccessfullPurchaseCb = ::Callback(@() buyAll(), this)})
+      afterSuccessfullPurchaseCb = Callback(@() buyAll(), this)})
   }
 
   onTierClick = @() null

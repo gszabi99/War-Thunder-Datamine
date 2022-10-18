@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { ceil } = require("math")
 
 local CollectionsSet = class {
   id = "" //name of config blk. not unique
@@ -31,13 +38,13 @@ local CollectionsSet = class {
 
   getDecoratorObjId = @(collectionIdx, decoratorId) $"{collectionIdx};{decoratorId}"
   isValid           = @() collectionItems.len() > 0 && prize != null
-  isVisible         = @() reqFeature == null || ::has_feature(reqFeature)
-  getLocName        = @() ::loc(locId)
+  isVisible         = @() reqFeature == null || hasFeature(reqFeature)
+  getLocName        = @() loc(locId)
   _tostring         = @() $"CollectionSet {id} (collectionItemsAmount = {collectionItems.len()})"
 
   function getView(countItemsInRow, collectionTopPos, collectionHeight, collectionNum) {
     let collectionItemsTopPos = $"{collectionTopPos} + 1@buttonHeight + 1@blockInterval"
-    let rowCount = ::ceil(collectionItems.len() / (countItemsInRow*1.0))
+    let rowCount = ceil(collectionItems.len() / (countItemsInRow*1.0))
     let deltaTopPos = "".concat("0.5*(", collectionHeight, "-1@buttonHeight+1@blockInterval-",
       rowCount, "@collectionItemSizeWithIndent)")
     local unlockedItemsCount = 0
@@ -87,7 +94,7 @@ local CollectionsSet = class {
 
     return {
       items = itemsView
-      title = ::loc(locId)
+      title = loc(locId)
       titlePos = $"1@blockInterval, 1@blockInterval + {collectionTopPos}"
     }
   }

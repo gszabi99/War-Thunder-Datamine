@@ -1,60 +1,66 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let vehicleModel = require("vehicleModel")
 let { is_bit_set, number_of_set_bits } = require("%sqstd/math.nut")
 let { getCantUseVoiceMessagesReason } = require("%scripts/wheelmenu/voiceMessages.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
-let { emulateShortcut } = ::require_native("controls")
+let { emulateShortcut } = require_native("controls")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 
-let function memoizeByMission(func, hashFunc = null) {
-  return memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
-}
+let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
+let memoizeBySpawn = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange", "PlayerSpawn" ])
 
-let hasFlaps = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasFlapsControl ?? false)
-let hasGear  = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasGearControl ?? false)
-let hasAirbrake = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasAirbrake ?? false)
-let hasChite = ::memoize(@(unitId) ::get_full_unit_blk(unitId)?.parachutes != null)
-let hasCockpitDoor = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
-let hasBayDoor = memoizeByMission(@(unitId) vehicleModel.hasBayDoor())
-let hasSchraegeMusik = ::memoize(@(unitId) vehicleModel.hasSchraegeMusik())
-let hasCountermeasureFlareGuns = ::memoize(@(unitId) vehicleModel.hasCountermeasureFlareGuns())
-let hasCountermeasureSystemIRCM = ::memoize(@(unitId) vehicleModel.hasCountermeasureSystemIRCM())
+let hasFlaps = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasFlapsControl ?? false)
+let hasGear  = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasGearControl ?? false)
+let hasAirbrake = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasAirbrake ?? false)
+let hasChite = memoize(@(unitId) ::get_full_unit_blk(unitId)?.parachutes != null)
+let hasCockpitDoor = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
+let hasBayDoor = memoizeByMission(@(_unitId) vehicleModel.hasBayDoor())
+let hasSchraegeMusik = memoize(@(_unitId) vehicleModel.hasSchraegeMusik())
+let hasCountermeasureFlareGuns = memoize(@(_unitId) vehicleModel.hasCountermeasureFlareGuns())
+let hasCountermeasureSystemIRCM = memoize(@(_unitId) vehicleModel.hasCountermeasureSystemIRCM())
 
-let hasCollimatorSight = ::memoize(@(unitId) vehicleModel.hasCollimatorSight())
-let hasSightStabilization = ::memoize(@(unitId) vehicleModel.hasSightStabilization())
-let hasCCIPSightMode = ::memoize(@(unitId) vehicleModel.hasCCIPSightMode())
-let hasCCRPSightMode = ::memoize(@(unitId) vehicleModel.hasCCRPSightMode())
-let hasBallisticComputer = ::memoize(@(unitId) vehicleModel.hasBallisticComputer())
-let hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator())
-let hasNightVision = memoizeByMission(@(unitId) vehicleModel.hasNightVision())
-let hasInfraredProjector = ::memoize(@(unitId) vehicleModel.hasInfraredProjector())
-let isTerraformAvailable = ::memoize(@(unitId) vehicleModel.isTerraformAvailable())
-let canUseRangefinder = memoizeByMission(@(unitId) vehicleModel.canUseRangefinder())
-let hasMissileLaunchWarningSystem = ::memoize(@(unitId) vehicleModel.hasMissileLaunchWarningSystem())
-let getDisplaysWithTogglablePagesBitMask = ::memoize(@(unitId) vehicleModel.getDisplaysWithTogglablePagesBitMask())
+let hasCollimatorSight = memoize(@(_unitId) vehicleModel.hasCollimatorSight())
+let hasSightStabilization = memoize(@(_unitId) vehicleModel.hasSightStabilization())
+let hasCCIPSightMode = memoize(@(_unitId) vehicleModel.hasCCIPSightMode())
+let hasCCRPSightMode = memoize(@(_unitId) vehicleModel.hasCCRPSightMode())
+let hasBallisticComputer = memoize(@(_unitId) vehicleModel.hasBallisticComputer())
+let hasLaserDesignator = memoize(@(_unitId) vehicleModel.hasLaserDesignator())
+let hasNightVision = memoizeByMission(@(_unitId) vehicleModel.hasNightVision())
+let hasInfraredProjector = memoize(@(_unitId) vehicleModel.hasInfraredProjector())
+let isTerraformAvailable = memoize(@(_unitId) vehicleModel.isTerraformAvailable())
+let canUseRangefinder = memoizeByMission(@(_unitId) vehicleModel.canUseRangefinder())
+let hasMissileLaunchWarningSystem = memoize(@(_unitId) vehicleModel.hasMissileLaunchWarningSystem())
+let getDisplaysWithTogglablePagesBitMask = memoize(@(_unitId) vehicleModel.getDisplaysWithTogglablePagesBitMask())
 
-let hasAiGunners = memoizeByMission(@(unitId) vehicleModel.hasAiGunners())
-let hasGunStabilizer = ::memoize(@(unitId) vehicleModel.hasGunStabilizer())
-let hasAlternativeShotFrequency = ::memoize(@(unitId) vehicleModel.hasAlternativeShotFrequency())
+let hasPrimaryWeapons = memoize(@(_unitId) vehicleModel?.hasPrimaryWeapons() ?? true)
+let hasSecondaryWeapons = memoizeBySpawn(@(_unitId) vehicleModel?.hasSecondaryWeapons() ?? true)
+let hasAiGunners = memoizeByMission(@(_unitId) vehicleModel.hasAiGunners())
+let hasGunStabilizer = memoize(@(_unitId) vehicleModel.hasGunStabilizer())
+let hasAlternativeShotFrequency = memoize(@(_unitId) vehicleModel.hasAlternativeShotFrequency())
 
-let getWeapTgMask = ::memoize(@(unitId) vehicleModel.getWeaponsTriggerGroupsMask())
-let hasMultipleWeaponTriggers = ::memoize(@(unitId) number_of_set_bits(getWeapTgMask(unitId)) > 1)
-let hasWeaponPrimary    = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_PRIMARY))
-let hasWeaponSecondary  = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_SECONDARY))
-let hasWeaponMachinegun = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_MACHINE_GUN))
+let getWeapTgMask = memoize(@(_unitId) vehicleModel.getWeaponsTriggerGroupsMask())
+let hasMultipleWeaponTriggers = memoize(@(unitId) number_of_set_bits(getWeapTgMask(unitId)) > 1)
+let hasWeaponPrimary    = memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_PRIMARY))
+let hasWeaponSecondary  = memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_SECONDARY))
+let hasWeaponMachinegun = memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_MACHINE_GUN))
 
-let hasCameraCockpit  = ::memoize(@(unitId) vehicleModel.hasCockpit())
-let hasCameraExternal       = @(unitId) ::get_mission_difficulty_int() < ::DIFFICULTY_HARDCORE
-let hasCameraVirtualCockpit = @(unitId) ::get_mission_difficulty_int() < ::DIFFICULTY_HARDCORE
-let hasCameraGunner   = ::memoize(@(unitId) vehicleModel.hasGunners())
-let hasCameraBombview = ::memoize(@(unitId) vehicleModel.hasBombview())
+let hasCameraCockpit  = memoize(@(_unitId) vehicleModel.hasCockpit())
+let hasCameraExternal       = @(_unitId) ::get_mission_difficulty_int() < DIFFICULTY_HARDCORE
+let hasCameraVirtualCockpit = @(_unitId) ::get_mission_difficulty_int() < DIFFICULTY_HARDCORE
+let hasCameraGunner   = memoize(@(_unitId) vehicleModel.hasGunners())
+let hasCameraBombview = memoize(@(_unitId) vehicleModel.hasBombview())
 
-let hasMissionBombingZones = memoizeByMission(@(unitId) vehicleModel.hasMissionBombingZones())
+let hasMissionBombingZones = memoizeByMission(@(_unitId) vehicleModel.hasMissionBombingZones())
 
-let hasEnginesWithFeatheringControl = ::memoize(function(unitId) {
+let hasEnginesWithFeatheringControl = memoize(function(_unitId) {
   for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
     if (vehicleModel.hasFeatheringControl(idx))
       return true
@@ -100,9 +106,9 @@ let function voiceMessagesMenuFunc() {
   let shouldUseSquadMsg = ::is_last_voice_message_list_for_squad()
     && getCantUseVoiceMessagesReason(true) == ""
   return {
-    action = ::Callback(@() ::request_voice_message_list(shouldUseSquadMsg,
+    action = Callback(@() ::request_voice_message_list(shouldUseSquadMsg,
       @() emulateShortcut("ID_SHOW_MULTIFUNC_WHEEL_MENU")), this)
-    label  = ::loc(shouldUseSquadMsg
+    label  = loc(shouldUseSquadMsg
       ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD"
       : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
   }
@@ -184,7 +190,7 @@ let cfg = {
 
   ["radar"] = {
     title = "hotkeys/ID_SENSORS_HEADER"
-    enable = ::memoize(function(unitId) {
+    enable = memoize(function(unitId) {
       let unitBlk = ::get_full_unit_blk(unitId)
       if (unitBlk?.sensors)
         foreach (sensor in (unitBlk.sensors % "sensor")) {
@@ -275,14 +281,19 @@ let cfg = {
 
   ["weapon_selector"] = {
     title = "hotkeys/ID_WEAPON_SELECTOR_HEADER"
+    enable = @(unitId) hasPrimaryWeapons(unitId) || hasSecondaryWeapons(unitId)
     items = [
-      { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_PRIMARY", "ID_SWITCH_SHOOTING_CYCLE_PRIMARY_HELICOPTER" ] }
-      { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_SECONDARY", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER" ] }
+      { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_PRIMARY", "ID_SWITCH_SHOOTING_CYCLE_PRIMARY_HELICOPTER" ],
+          enable = hasPrimaryWeapons }
+      { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_SECONDARY", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER" ],
+          enable = hasSecondaryWeapons }
       null
-      { shortcut = [ "ID_JETTISON_SECONDARY", "ID_JETTISON_SECONDARY_HELICOPTER" ] }
-      { action = resizeSecondaryWeaponSeries, label  = ::loc("hotkeys/ID_RESIZE_SECONDARY_WEAPON_SERIES") }
+      { shortcut = [ "ID_JETTISON_SECONDARY", "ID_JETTISON_SECONDARY_HELICOPTER" ],
+          enable = hasSecondaryWeapons }
+      { action = resizeSecondaryWeaponSeries, label  = loc("hotkeys/ID_RESIZE_SECONDARY_WEAPON_SERIES"),
+          enable = hasSecondaryWeapons }
       null
-      { shortcut = [ "ID_EXIT_SHOOTING_CYCLE_MODE" ] }
+      { shortcut = [ "ID_EXIT_SHOOTING_CYCLE_MODE", "ID_EXIT_SHOOTING_CYCLE_MODE_HELICOPTER" ] }
       null
     ]
   },
@@ -331,7 +342,7 @@ let cfg = {
 
   ["engine_air"] = {
     title = "armor_class/engine"
-    enable = @(unitId) ::get_mission_difficulty_int() >= ::DIFFICULTY_REALISTIC
+    enable = @(_unitId) ::get_mission_difficulty_int() >= DIFFICULTY_REALISTIC
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE", "ID_TOGGLE_ENGINE_HELICOPTER" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ], enable = hasEnginesWithFeatheringControl }
@@ -346,7 +357,7 @@ let cfg = {
 
   ["engine_heli"] = {
     title = "armor_class/engine"
-    enable = @(unitId) ::get_mission_difficulty_int() >= ::DIFFICULTY_REALISTIC
+    enable = @(_unitId) ::get_mission_difficulty_int() >= DIFFICULTY_REALISTIC
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE", "ID_TOGGLE_ENGINE_HELICOPTER" ] }
       { shortcut = [ "ID_FBW_MODE", "ID_FBW_MODE_HELICOPTER" ] }
@@ -361,8 +372,8 @@ let cfg = {
 
   ["control_engines_separately"] = {
     title = "hotkeys/ID_SEPARATE_ENGINE_CONTROL_HEADER"
-    enable = @(unitId) vehicleModel.getEnginesCount() > 1
-      && ::get_mission_difficulty_int() >= ::DIFFICULTY_REALISTIC
+    enable = @(_unitId) vehicleModel.getEnginesCount() > 1
+      && ::get_mission_difficulty_int() >= DIFFICULTY_REALISTIC
     onEnter = enableManualEngineControl
     onExit  = restoreManualEngineControl
     items = [
@@ -378,14 +389,14 @@ let cfg = {
   },
 
   ["control_engine_1"] = {
-    getTitle = @() "{0} {1}{2}".subst(::loc("armor_class/engine"), ::loc("ui/number_sign"), 1)
-    enable = @(unitId) vehicleModel.getEnginesCount() >= 1
+    getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 1)
+    enable = @(_unitId) vehicleModel.getEnginesCount() >= 1
     onEnter = @() selectControlEngine(1)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(0), @(unitId) $"{unitId}/0") }
+        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(0), @(unitId) $"{unitId}/0") }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -396,14 +407,14 @@ let cfg = {
   },
 
   ["control_engine_2"] = {
-    getTitle = @() "{0} {1}{2}".subst(::loc("armor_class/engine"), ::loc("ui/number_sign"), 2)
-    enable = @(unitId) vehicleModel.getEnginesCount() >= 2
+    getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 2)
+    enable = @(_unitId) vehicleModel.getEnginesCount() >= 2
     onEnter = @() selectControlEngine(2)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(1), @(unitId) $"{unitId}/1") }
+        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(1), @(unitId) $"{unitId}/1") }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -414,14 +425,14 @@ let cfg = {
   },
 
   ["control_engine_3"] = {
-    getTitle = @() "{0} {1}{2}".subst(::loc("armor_class/engine"), ::loc("ui/number_sign"), 3)
-    enable = @(unitId) vehicleModel.getEnginesCount() >= 3
+    getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 3)
+    enable = @(_unitId) vehicleModel.getEnginesCount() >= 3
     onEnter = @() selectControlEngine(3)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(2), @(unitId) $"{unitId}/2") }
+        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(2), @(unitId) $"{unitId}/2") }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -432,14 +443,14 @@ let cfg = {
   },
 
   ["control_engine_4"] = {
-    getTitle = @() "{0} {1}{2}".subst(::loc("armor_class/engine"), ::loc("ui/number_sign"), 4)
-    enable = @(unitId) vehicleModel.getEnginesCount() >= 4
+    getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 4)
+    enable = @(_unitId) vehicleModel.getEnginesCount() >= 4
     onEnter = @() selectControlEngine(4)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(3), @(unitId) $"{unitId}/3") }
+        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(3), @(unitId) $"{unitId}/3") }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -450,14 +461,14 @@ let cfg = {
   },
 
   ["control_engine_5"] = {
-    getTitle = @() "{0} {1}{2}".subst(::loc("armor_class/engine"), ::loc("ui/number_sign"), 5)
-    enable = @(unitId) vehicleModel.getEnginesCount() >= 5
+    getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 5)
+    enable = @(_unitId) vehicleModel.getEnginesCount() >= 5
     onEnter = @() selectControlEngine(5)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(4), @(unitId) $"{unitId}/4") }
+        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(4), @(unitId) $"{unitId}/4") }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -468,14 +479,14 @@ let cfg = {
   },
 
   ["control_engine_6"] = {
-    getTitle = @() "{0} {1}{2}".subst(::loc("armor_class/engine"), ::loc("ui/number_sign"), 6)
-    enable = @(unitId) vehicleModel.getEnginesCount() >= 6
+    getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 6)
+    enable = @(_unitId) vehicleModel.getEnginesCount() >= 6
     onEnter = @() selectControlEngine(6)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(5), @(unitId) $"{unitId}/5") }
+        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(5), @(unitId) $"{unitId}/5") }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -580,8 +591,8 @@ let cfg = {
       { shortcut = [ "ID_SHIP_WEAPON_PRIMARY" ],    enable = hasWeaponPrimary    }
       { shortcut = [ "ID_SHIP_WEAPON_SECONDARY" ],  enable = hasWeaponSecondary  }
       { shortcut = [ "ID_SHIP_WEAPON_MACHINEGUN" ], enable = hasWeaponMachinegun }
-      null // TODO: Toggle USEROPT_SINGLE_SHOT_BY_TURRET off
-      null // TODO: Toggle USEROPT_SINGLE_SHOT_BY_TURRET on
+      null // TODO: Toggle ::USEROPT_SINGLE_SHOT_BY_TURRET off
+      null // TODO: Toggle ::USEROPT_SINGLE_SHOT_BY_TURRET on
       null
       null
       null

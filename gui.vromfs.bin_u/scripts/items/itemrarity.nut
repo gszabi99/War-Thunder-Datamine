@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 const ITEM_RARITY_DEFAULT = 1
 const ITEM_RARITY_COLOR_DEFAULT = "f1f1d6"
 
@@ -19,7 +25,7 @@ local Rarity = class {
   }
 
   function updateTag() {
-    tag = isRare ? ::colorize(color, ::loc("item/rarity" + value)) : null
+    tag = isRare ? colorize(color, loc("item/rarity" + value)) : null
   }
 
   _cmp = @(other) value <=> other.value
@@ -38,7 +44,7 @@ let onGameLocalizationChanged = function() {
     r.updateTag()
 }
 
-::add_event_listener("GameLocalizationChanged", @(p) onGameLocalizationChanged(),
+::add_event_listener("GameLocalizationChanged", @(_p) onGameLocalizationChanged(),
   null, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

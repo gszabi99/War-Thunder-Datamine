@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
 /*
@@ -49,7 +56,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
 
   static function openChecked(config)
   {
-    if (!::gui_handlers.InfoWnd.canShowAgain(::getTblValue("checkId", config)))
+    if (!::gui_handlers.InfoWnd.canShowAgain(getTblValue("checkId", config)))
       return false
 
     ::handlersManager.loadHandler(::gui_handlers.InfoWnd, config)
@@ -73,15 +80,15 @@ const INFO_WND_SAVE_PATH = "infoWnd"
 
   function initScreen()
   {
-    scene.findObject("header").setValue(header)
-    scene.findObject("message").setValue(message)
+    this.scene.findObject("header").setValue(header)
+    this.scene.findObject("message").setValue(message)
     if (!checkId)
       this.showSceneBtn("do_not_show_me_again", false)
     createButtons()
     buttonsContext = null //remove permanent link to context
 
     if (!canCloseByEsc)
-      scene.findObject("close_btn").have_shortcut = "BNotEsc"
+      this.scene.findObject("close_btn").have_shortcut = "BNotEsc"
   }
 
   function createButtons()
@@ -95,7 +102,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
       {
         local cb = null
         if ("onClick" in btn)
-          cb = ::Callback(btn.onClick, buttonsContext)
+          cb = Callback(btn.onClick, buttonsContext)
 
         let cbName = "onClickBtn" + idx
         buttonsCbs[cbName] <- (@(cb, infoHandler) function() {
@@ -107,24 +114,24 @@ const INFO_WND_SAVE_PATH = "infoWnd"
         btn.funcName <- cbName
         markup += ::handyman.renderCached("%gui/commonParts/button", btn)
 
-        hasBigButton = hasBigButton || ::getTblValue("isToBattle", btn, false)
+        hasBigButton = hasBigButton || getTblValue("isToBattle", btn, false)
       }
-    guiScene.replaceContentFromText(scene.findObject("buttons_place"), markup, markup.len(), buttonsCbs)
+    this.guiScene.replaceContentFromText(this.scene.findObject("buttons_place"), markup, markup.len(), buttonsCbs)
 
     //update navBar
     if (!markup.len())
     {
-      scene.findObject("info_wnd_frame")["class"] = "wnd"
+      this.scene.findObject("info_wnd_frame")["class"] = "wnd"
       this.showSceneBtn("nav-help", false)
     }
     else if (hasBigButton)
-      scene.findObject("info_wnd_frame").largeNavBarHeight = "yes"
+      this.scene.findObject("info_wnd_frame").largeNavBarHeight = "yes"
   }
 
   function onButtonClick()
   {
     isCanceled = false
-    goBack()
+    this.goBack()
   }
 
   function onDoNotShowMeAgain(obj)
@@ -141,7 +148,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
 }
 
 subscriptions.addListenersWithoutEnv({
-  AccountReset = function(p) {
+  AccountReset = function(_p) {
     ::gui_handlers.InfoWnd.clearAllSaves()
   }
 }, ::g_listener_priority.CONFIG_VALIDATION)

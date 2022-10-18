@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
   closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality,
   getPresetForMaxFPS, isGpuBenchmarkRunning } = require("gpuBenchmark")
@@ -37,13 +44,13 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
   function updateProgressText() {
     let timeLeft = timeEndBenchmark - ::get_charserver_time_sec()
     if (timeLeft < 0) {
-      scene.findObject("progressText").setValue("")
+      this.scene.findObject("progressText").setValue("")
       return
     }
 
     let timeText = secondsToString(timeLeft, true, true)
-    let progressText = ::loc("gpuBenchmark/progress", { timeLeft = timeText })
-    scene.findObject("progressText").setValue(progressText)
+    let progressText = loc("gpuBenchmark/progress", { timeLeft = timeText })
+    this.scene.findObject("progressText").setValue(progressText)
   }
 
   function getPresetsView() {
@@ -68,14 +75,14 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
       + getGpuBenchmarkDuration().tointeger()
     updateProgressText()
 
-    scene.findObject("progress_timer").setUserData(this)
+    this.scene.findObject("progress_timer").setUserData(this)
 
     startGpuBenchmark()
   }
 
   function onUpdate(_, __) {
     if (timeEndBenchmark <= ::get_charserver_time_sec() && !isGpuBenchmarkRunning()) {
-      scene.findObject("progress_timer").setUserData(null)
+      this.scene.findObject("progress_timer").setUserData(null)
       onBenchmarkComplete()
       return
     }
@@ -89,7 +96,7 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
 
     let view = { presets = getPresetsView() }
     let blk = ::handyman.renderCached("%gui/options/gpuBenchmarkPreset", view)
-    guiScene.replaceContentFromText("resultsList", blk, blk.len(), this)
+    this.guiScene.replaceContentFromText("resultsList", blk, blk.len(), this)
   }
 
   function presetApplyImpl(presetName) {
@@ -107,9 +114,9 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     ::scene_msg_box("msg_sysopt_compatibility", null,
-      ::loc("msgbox/compatibilityMode"),
+      loc("msgbox/compatibilityMode"),
       [
-        ["yes", ::Callback(@() presetApplyImpl(presetName), this)],
+        ["yes", Callback(@() presetApplyImpl(presetName), this)],
         ["no", @() null],
       ], "no",
       { cancel_fn = @() null, checkDuplicateId = true })

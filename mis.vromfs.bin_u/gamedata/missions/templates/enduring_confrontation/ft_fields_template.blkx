@@ -204,17 +204,6 @@
       },
       "conditions": {},
       "actions": {
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "all_bomb_targets_squad",
-          "targetableByAi": false,
-          "isImmortal": true,
-          "stealthRadius": 0.0,
-          "calmDetection": true
-        },
         "comment": [
           {
             "value": "zadaem kolichestvo obnaruzhennyh aerodromov"
@@ -768,15 +757,6 @@
               "value": "zapolnyaem peremenuyu"
             },
             {
-              "value": "sozdaem peremennuyu dlya hraneniya targeta"
-            },
-            {
-              "value": "sozdaem imya targeta"
-            },
-            {
-              "value": "zapolnyaem peremenuyu"
-            },
-            {
               "value": "poluchaem imya zony frontlajna v kotorom nahoditsya aerodrom"
             },
             {
@@ -806,14 +786,6 @@
             {
               "value": "ft_t1_airfield_",
               "var": "ft_generate_t1_area_name"
-            },
-            {
-              "value": "ft_t1_airfield_",
-              "var": "ft_generate_t1_target_var_name"
-            },
-            {
-              "value": "ft_t1_airfield_",
-              "var": "ft_generate_t1_target_name"
             },
             {
               "value": "",
@@ -883,36 +855,6 @@
               "var": "ft_generate_t1_area_name"
             },
             {
-              "value": "@ft_generate_t1_idx",
-              "digits": 2,
-              "var": "ft_generate_t1_target_var_name"
-            },
-            {
-              "value": "_bomb_target",
-              "digits": 0,
-              "var": "ft_generate_t1_target_var_name"
-            },
-            {
-              "value": "@ft_generate_t1_cur_idx",
-              "digits": 2,
-              "var": "ft_generate_t1_target_name"
-            },
-            {
-              "value": "_",
-              "digits": 0,
-              "var": "ft_generate_t1_target_name"
-            },
-            {
-              "value": "@ft_generate_t1_add_idx",
-              "digits": 2,
-              "var": "ft_generate_t1_target_name"
-            },
-            {
-              "value": "_bomb_target",
-              "digits": 0,
-              "var": "ft_generate_t1_target_name"
-            },
-            {
               "value": "_state",
               "digits": 0,
               "var": "ft_generate_t1_own_state_name"
@@ -926,10 +868,6 @@
             {
               "from_var_name": "ft_generate_t1_area_name",
               "var": "@ft_generate_t1_area_var_name"
-            },
-            {
-              "from_var_name": "ft_generate_t1_target_name",
-              "var": "@ft_generate_t1_target_var_name"
             }
           ],
           "getOwnArea": {
@@ -1107,7 +1045,7 @@
               "var": "ft_distance_check_t1_airfield_var_name"
             },
             {
-              "value": "_bomb_target",
+              "value": "_bomb_zone",
               "digits": 0,
               "var": "ft_distance_check_t1_airfield_var_name"
             }
@@ -1149,8 +1087,8 @@
               "type": "unit"
             },
             {
-              "target": "@ft_generate_t1_target_name",
-              "type": "unit"
+              "target": "@ft_generate_t1_area_name",
+              "type": "area"
             }
           ]
         },
@@ -1205,7 +1143,7 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "@ft_distance_check_t1_airfield_name",
-            "target": "@ft_generate_t1_target_name",
+            "target": "@ft_generate_t1_area_name",
             "var": "ft_generate_distance_between",
             "compareCenters": false
           },
@@ -1216,16 +1154,8 @@
           }
         },
         "actions": {
-          "comment": [
-            {
-              "value": "pryachem proveryaemuyu cel' nazad"
-            },
-            {
-              "value": "proveryaem sleduyushchij aerodrom"
-            }
-          ],
-          "unitPutToSleep": {
-            "target": "@ft_generate_t1_target_name"
+          "comment": {
+            "value": "proveryaem sleduyushchij aerodrom"
           },
           "triggerEnable": {
             "target": "ft_generate_t1_distance_rotator"
@@ -1257,18 +1187,12 @@
               "value": "govorim chto proverka distancii ne proshla"
             },
             {
-              "value": "pryachem proveryaemuyu cel' nazad"
-            },
-            {
               "value": "generiruem zanovo"
             }
           ],
           "varSetBool": {
             "value": true,
             "var": "ft_generate_t1_distance_check_fail"
-          },
-          "unitPutToSleep": {
-            "target": "@ft_generate_t1_target_name"
           },
           "triggerEnable": {
             "target": "ft_generate_t1_airfield_rotator"
@@ -1320,14 +1244,9 @@
             "value": 0,
             "var": "ft_generate_t1_try_count"
           },
-          "unitWakeUp": [
-            {
-              "target": "@ft_generate_t1_airfield_name"
-            },
-            {
-              "target": "@ft_generate_t1_target_name"
-            }
-          ],
+          "unitWakeUp": {
+            "target": "@ft_generate_t1_airfield_name"
+          },
           "objectGroupSetAirfield": {
             "army": 1,
             "target": "@ft_generate_t1_airfield_name"
@@ -1335,62 +1254,6 @@
           "airfieldSetVisibility": {
             "target": "@ft_generate_t1_airfield_name",
             "team": "A"
-          },
-          "__missionMarkAsRespawnPoint": {
-            "loc_name": "@ft_generate_t1_loc_name",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "radius": -1.0,
-            "useExisting": false,
-            "canSpawnOnNeutral": false,
-            "removeAreas": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": true,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@ft_generate_t1_airfield_name",
-            "team": "A",
-            "separate_fuel_time": true,
-            "modular_airfield": true,
-            "respawnAirBackup": "missions/t1_backup_zone",
-            "tags": {
-              "none_can_spawn": false,
-              "helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
-            }
-          },
-          "__airfieldSetProperties": {
-            "object": "@ft_generate_t1_airfield_name",
-            "repairMul": 1.0,
-            "fuelMul": 1.0,
-            "reloadMul": 1.0,
-            "enemySurrenderOnLanding": true,
-            "airfield": {
-              "hp_var": "ft_airfield_module_spawn_hp"
-            },
-            "storage": {
-              "hp_var": "ft_airfield_module_hp"
-            },
-            "parking": {
-              "hp_var": "ft_airfield_module_hp"
-            },
-            "dwelling": {
-              "hp_var": "ft_airfield_module_hp"
-            }
-          },
-          "__airfieldGetModuleHP": {
-            "object": "@ft_generate_t1_airfield_name",
-            "module": "airfield",
-            "var": "ft_damage_t1_airfield_cur_hp"
           },
           "triggerEnable": {
             "target": "ft_generate_t1_airfield_set_respawn"
@@ -2327,22 +2190,7 @@
               "value": "sozdaem imya lokalizacii"
             },
             {
-              "value": "sozdaem imya peremennoj dlya hraneniya imeni zony"
-            },
-            {
               "value": "sozdaem imya bombovoj zony"
-            },
-            {
-              "value": "zapolnyaem peremenuyu"
-            },
-            {
-              "value": "sozdaem peremennuyu dlya hraneniya targeta"
-            },
-            {
-              "value": "sozdaem imya targeta"
-            },
-            {
-              "value": "zapolnyaem peremenuyu"
             },
             {
               "value": "poluchaem imya zony frontlajna v kotorom nahoditsya aerodrom"
@@ -2369,19 +2217,7 @@
             },
             {
               "value": "ft_t2_airfield_",
-              "var": "ft_generate_t2_target_var_name"
-            },
-            {
-              "value": "ft_t2_airfield_",
               "var": "ft_generate_t2_area_name"
-            },
-            {
-              "value": "ft_t2_airfield_",
-              "var": "ft_generate_t2_var_name"
-            },
-            {
-              "value": "ft_t2_airfield_",
-              "var": "ft_generate_t2_target_name"
             },
             {
               "value": "",
@@ -2421,16 +2257,6 @@
               "var": "ft_generate_t2_loc_name"
             },
             {
-              "value": "@ft_generate_t2_idx",
-              "digits": 2,
-              "var": "ft_generate_t2_target_var_name"
-            },
-            {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_generate_t2_target_var_name"
-            },
-            {
               "value": "@ft_generate_t2_cur_idx",
               "digits": 2,
               "var": "ft_generate_t2_area_name"
@@ -2449,36 +2275,6 @@
               "value": "_bomb_zone",
               "digits": 0,
               "var": "ft_generate_t2_area_name"
-            },
-            {
-              "value": "@ft_generate_t2_idx",
-              "digits": 2,
-              "var": "ft_generate_t2_var_name"
-            },
-            {
-              "value": "_bomb_target",
-              "digits": 0,
-              "var": "ft_generate_t2_var_name"
-            },
-            {
-              "value": "@ft_generate_t2_cur_idx",
-              "digits": 2,
-              "var": "ft_generate_t2_target_name"
-            },
-            {
-              "value": "_",
-              "digits": 0,
-              "var": "ft_generate_t2_target_name"
-            },
-            {
-              "value": "@ft_generate_t2_add_idx",
-              "digits": 2,
-              "var": "ft_generate_t2_target_name"
-            },
-            {
-              "value": "_bomb_target",
-              "digits": 0,
-              "var": "ft_generate_t2_target_name"
             },
             {
               "value": "_state",
@@ -2486,20 +2282,10 @@
               "var": "ft_generate_t2_own_state_name"
             }
           ],
-          "varGetStringValue": [
-            {
-              "from_var_name": "ft_generate_t2_airfield_name",
-              "var": "@ft_generate_t2_var_name"
-            },
-            {
-              "from_var_name": "ft_generate_t2_area_name",
-              "var": "@ft_generate_t2_target_var_name"
-            },
-            {
-              "from_var_name": "ft_generate_t2_target_name",
-              "var": "@ft_generate_t2_var_name"
-            }
-          ],
+          "varGetStringValue": {
+            "from_var_name": "ft_generate_t2_airfield_name",
+            "var": "@ft_generate_t2_var_name"
+          },
           "getOwnArea": {
             "name": "@ft_generate_t2_area_name",
             "template": "flt_area_",
@@ -2668,7 +2454,7 @@
               "var": "ft_distance_check_t2_airfield_var_name"
             },
             {
-              "value": "_bomb_target",
+              "value": "_bomb_zone",
               "digits": 0,
               "var": "ft_distance_check_t2_airfield_var_name"
             }
@@ -2710,22 +2496,14 @@
               "type": "unit"
             },
             {
-              "target": "@ft_generate_t2_target_name",
+              "target": "@ft_generate_t2_area_name",
               "type": "unit"
             }
           ]
         },
         "actions": {
-          "comment": [
-            {
-              "value": "probuzhdaem vremenno  proveryaemuyu cel'"
-            },
-            {
-              "value": "vse sushchnosti est'. proveryaem distanciyu"
-            }
-          ],
-          "unitWakeUp": {
-            "target": "@ft_generate_t2_target_name"
+          "comment": {
+            "value": "vse sushchnosti est'. proveryaem distanciyu"
           },
           "triggerEnable": {
             "target": "ft_generate_t2_distance_check"
@@ -2766,7 +2544,7 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "@ft_distance_check_t2_airfield_name",
-            "target": "@ft_generate_t2_target_name",
+            "target": "@ft_generate_t2_area_name",
             "var": "ft_generate_distance_between",
             "compareCenters": false
           },
@@ -2777,16 +2555,8 @@
           }
         },
         "actions": {
-          "comment": [
-            {
-              "value": "pryachem proveryaemuyu cel' nazad"
-            },
-            {
-              "value": "proveryaem sleduyushchij aerodrom"
-            }
-          ],
-          "unitPutToSleep": {
-            "target": "@ft_generate_t2_target_name"
+          "comment": {
+            "value": "proveryaem sleduyushchij aerodrom"
           },
           "triggerEnable": {
             "target": "ft_generate_t2_distance_rotator"
@@ -2818,18 +2588,12 @@
               "value": "govorim chto proverka distancii ne proshla"
             },
             {
-              "value": "pryachem proveryaemuyu cel' nazad"
-            },
-            {
               "value": "zapuskaem generaciyu zanovo"
             }
           ],
           "varSetBool": {
             "value": true,
             "var": "ft_generate_t2_distance_check_fail"
-          },
-          "unitPutToSleep": {
-            "target": "@ft_generate_t2_target_name"
           },
           "triggerEnable": {
             "target": "ft_generate_t2_airfield_rotator"
@@ -2874,9 +2638,6 @@
               "value": "vystavlyaem aerodrom na kartu"
             },
             {
-              "value": ""
-            },
-            {
               "value": "setting different spawns for bombers and other planes"
             }
           ],
@@ -2884,14 +2645,9 @@
             "value": 0,
             "var": "ft_generate_t2_try_count"
           },
-          "unitWakeUp": [
-            {
-              "target": "@ft_generate_t2_airfield_name"
-            },
-            {
-              "target": "@ft_generate_t2_target_name"
-            }
-          ],
+          "unitWakeUp": {
+            "target": "@ft_generate_t2_airfield_name"
+          },
           "objectGroupSetAirfield": {
             "army": 2,
             "target": "@ft_generate_t2_airfield_name"
@@ -2899,62 +2655,6 @@
           "airfieldSetVisibility": {
             "target": "@ft_generate_t2_airfield_name",
             "team": "B"
-          },
-          "__missionMarkAsRespawnPoint": {
-            "loc_name": "@ft_generate_t2_loc_name",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "radius": -1.0,
-            "useExisting": false,
-            "canSpawnOnNeutral": false,
-            "removeAreas": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": true,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@ft_generate_t2_airfield_name",
-            "team": "B",
-            "separate_fuel_time": true,
-            "modular_airfield": true,
-            "respawnAirBackup": "missions/t2_backup_zone",
-            "tags": {
-              "none_can_spawn": false,
-              "helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
-            }
-          },
-          "__airfieldSetProperties": {
-            "object": "@ft_generate_t2_airfield_name",
-            "repairMul": 1.0,
-            "fuelMul": 1.0,
-            "reloadMul": 1.0,
-            "enemySurrenderOnLanding": true,
-            "airfield": {
-              "hp_var": "ft_airfield_module_spawn_hp"
-            },
-            "storage": {
-              "hp_var": "ft_airfield_module_hp"
-            },
-            "parking": {
-              "hp_var": "ft_airfield_module_hp"
-            },
-            "dwelling": {
-              "hp_var": "ft_airfield_module_hp"
-            }
-          },
-          "__airfieldGetModuleHP": {
-            "object": "@ft_generate_t2_airfield_name",
-            "module": "airfield",
-            "var": "ft_damage_t2_airfield_cur_hp"
           },
           "triggerEnable": {
             "target": "ft_generate_t2_airfield_set_respawn"
@@ -5835,9 +5535,6 @@
               "value": "poluchaem imya peremennoj gde hranitsya imya filda"
             },
             {
-              "value": "sostavlyaem imya bombovogo targera"
-            },
-            {
               "value": "poluchaem imya peremennoj gde hranitsya unichtozhen li fild"
             },
             {
@@ -5845,6 +5542,9 @@
             },
             {
               "value": "sostavlyaem imya peremennoj statusa aktiven li aerodrom"
+            },
+            {
+              "value": "zone name"
             },
             {
               "value": "proveryaem izmenenie distancii obnaruzheniya pri aktivnyh razvedchikah"
@@ -5862,10 +5562,6 @@
             },
             {
               "value": "ft_t1_airfield_",
-              "var": "ft_detect_t1_bomb_target_name"
-            },
-            {
-              "value": "ft_t1_airfield_",
               "var": "ft_detect_t1_destroyed_name"
             },
             {
@@ -5875,6 +5571,11 @@
             {
               "value": "ft_t1_airfield_",
               "var": "ft_detect_t1_active_name"
+            },
+            {
+              "value": "",
+              "var": "ft_detect_t1_zone_name",
+              "input_var": "ft_detect_t1_airfield_name"
             }
           ],
           "varAddString": [
@@ -5887,16 +5588,6 @@
               "value": "_name",
               "digits": 0,
               "var": "ft_detect_t1_airfield_name"
-            },
-            {
-              "value": "@ft_detect_t1_cur_field_idx",
-              "digits": 2,
-              "var": "ft_detect_t1_bomb_target_name"
-            },
-            {
-              "value": "_bomb_target",
-              "digits": 0,
-              "var": "ft_detect_t1_bomb_target_name"
             },
             {
               "value": "@ft_detect_t1_cur_field_idx",
@@ -5927,18 +5618,17 @@
               "value": "_active",
               "digits": 0,
               "var": "ft_detect_t1_active_name"
-            }
-          ],
-          "varGetStringValue": [
-            {
-              "from_var_name": "@ft_detect_t1_airfield_name",
-              "var": "ft_detect_t1_airfield_name"
             },
             {
-              "from_var_name": "@ft_detect_t1_bomb_target_name",
-              "var": "ft_detect_t1_bomb_target_name"
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_detect_t1_zone_name"
             }
           ],
+          "varGetStringValue": {
+            "from_var_name": "@ft_detect_t1_airfield_name",
+            "var": "ft_detect_t1_airfield_name"
+          },
           "triggerEnable": {
             "target": "ft_detect_t1_lpt_change_range"
           }
@@ -5980,7 +5670,7 @@
               "ft_detect_t1_lpt_change_range",
               "ft_detect_t1_is_alive_check",
               "ft_detect_t1_enemy_players_check",
-              "ft_detect_t1_enemy_ai_check",
+              "ft_detect_t1_ai_check",
               "ft_detect_t1_detect_off_check",
               "ft_detect_t1_found_players_check",
               "ft_detect_t1_found_ai_check",
@@ -6110,24 +5800,23 @@
         },
         "conditions": {
           "objectExists": {
-            "target": "@ft_detect_t1_bomb_target_name",
-            "type": "unit"
+            "target": "@ft_detect_t1_zone_name",
+            "type": "area"
           },
           "unitDistanceBetween": {
             "value": 4500.0,
             "math": "2D",
-            "object_type": "isActive",
+            "object_type": "isOnline",
             "object_marking": 0,
-            "target_type": "isOnline",
+            "target_type": "any",
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "@ft_detect_t1_bomb_target_name",
-            "target": "t2_players_squad",
+            "object": "t2_players_squad",
+            "target": "@ft_detect_t1_zone_name",
             "var": "ft_t2_detection_range",
-            "object_var_value": 0,
             "compareCenters": false
           }
         },
@@ -6153,11 +5842,11 @@
             "value": "nad aerodromom net igrokov proveryaem ai"
           },
           "triggerEnable": {
-            "target": "ft_detect_t1_enemy_ai_check"
+            "target": "ft_detect_t1_ai_check"
           }
         }
       },
-      "ft_detect_t1_enemy_ai_check": {
+      "ft_detect_t1_ai_check": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -6172,21 +5861,24 @@
         },
         "conditions": {
           "objectExists": {
-            "target": "@ft_detect_t1_bomb_target_name",
-            "type": "unit"
+            "target": "@ft_detect_t1_zone_name",
+            "type": "area"
           },
-          "unitWhenEnemyNear": {
-            "object_type": "isAlive",
+          "unitDistanceBetween": {
+            "value": 4500.0,
+            "math": "2D",
+            "object_type": "isActive",
             "object_marking": 0,
+            "target_type": "any",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "enemy_type": "isActive",
-            "distance": 4500.0,
-            "check_objects": "any",
-            "object": "@ft_detect_t1_bomb_target_name",
-            "use_variable": true,
-            "distance_var": "ft_t2_detection_range"
+            "object": "t1_enemy_planes_squad",
+            "target": "@ft_detect_t1_zone_name",
+            "var": "ft_t2_detection_range",
+            "compareCenters": false
           }
         },
         "actions": {
@@ -6207,14 +5899,9 @@
           }
         },
         "else_actions": {
-          "comment": [
-            {
-              "value": "nad aerodromom net protivnika - vyklyuchaem miganie aerodroma"
-            },
-            {
-              "value": "zapuskaem proverku ne nado li vse-ravno pokazat' aerodrom "
-            }
-          ],
+          "comment": {
+            "value": "nad aerodromom net igrokov proveryaem ai"
+          },
           "airfieldSetIndication": {
             "set": false,
             "target": "@ft_detect_t1_airfield_name"
@@ -6507,12 +6194,8 @@
               "type": "objectGroup"
             },
             {
-              "target": "@ft_detect_t1_bomb_target_name",
-              "type": "unit"
-            },
-            {
               "target": "@ft_detect_t1_zone_name",
-              "type": "objectGroup"
+              "type": "area"
             }
           ]
         },
@@ -6523,9 +6206,6 @@
             },
             {
               "value": "govorim, chto aerodrom aktiven"
-            },
-            {
-              "value": "sostavlyaem imya bombovoj zony"
             },
             {
               "value": "sozdaem bombovuyu zonu"
@@ -6544,32 +6224,6 @@
             "value": true,
             "var": "@ft_detect_t1_active_name"
           },
-          "varSetString": {
-            "value": "ft_t1_airfield_",
-            "var": "ft_detect_t1_zone_name"
-          },
-          "varAddString": [
-            {
-              "value": "@ft_detect_t1_cur_field_idx",
-              "digits": 2,
-              "var": "ft_detect_t1_zone_name"
-            },
-            {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_detect_t1_zone_name"
-            }
-          ],
-          "varGetStringValue": [
-            {
-              "from_var_name": "@ft_detect_t1_zone_name",
-              "var": "ft_detect_t1_zone_name"
-            },
-            {
-              "from_var_name": "ft_detect_t1_zone_name",
-              "var": "ft_add_objective_t1_zone_name"
-            }
-          ],
           "missionSetBombingArea": {
             "army": 1,
             "target": "@ft_detect_t1_zone_name",
@@ -6582,22 +6236,10 @@
             "target": "@ft_detect_t1_airfield_name",
             "team": "Both"
           },
-          "__varSetString": {
-            "value": "ft_t1_airfield_",
+          "varGetStringValue": {
+            "from_var_name": "ft_detect_t1_zone_name",
             "var": "ft_add_objective_t1_zone_name"
           },
-          "__varAddString": [
-            {
-              "value": "@ft_detect_t1_cur_field_idx",
-              "digits": 2,
-              "var": "ft_add_objective_t1_zone_name"
-            },
-            {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_add_objective_t1_zone_name"
-            }
-          ],
           "varSetInt": {
             "value": 0,
             "var": "ft_add_objective_t1_idx"
@@ -6663,9 +6305,6 @@
               "value": "poluchaem imya peremennoj gde hranitsya imya filda"
             },
             {
-              "value": "sostavlyaem imya bombovogo targera"
-            },
-            {
               "value": "poluchaem imya peremennoj gde hranitsya unichtozhen li fild"
             },
             {
@@ -6673,6 +6312,9 @@
             },
             {
               "value": "sostavlyaem imya peremennoj statusa aktiven li aerodrom"
+            },
+            {
+              "value": "zone name"
             },
             {
               "value": "proveryaem izmenenie distancii obnaruzheniya pri aktivnyh razvedchikah"
@@ -6690,10 +6332,6 @@
             },
             {
               "value": "ft_t2_airfield_",
-              "var": "ft_detect_t2_bomb_target_name"
-            },
-            {
-              "value": "ft_t2_airfield_",
               "var": "ft_detect_t2_destroyed_name"
             },
             {
@@ -6703,6 +6341,11 @@
             {
               "value": "ft_t2_airfield_",
               "var": "ft_detect_t2_active_name"
+            },
+            {
+              "value": "",
+              "var": "ft_detect_t2_zone_name",
+              "input_var": "ft_detect_t2_airfield_name"
             }
           ],
           "varAddString": [
@@ -6715,16 +6358,6 @@
               "value": "_name",
               "digits": 0,
               "var": "ft_detect_t2_airfield_name"
-            },
-            {
-              "value": "@ft_detect_t2_cur_field_idx",
-              "digits": 2,
-              "var": "ft_detect_t2_bomb_target_name"
-            },
-            {
-              "value": "_bomb_target",
-              "digits": 0,
-              "var": "ft_detect_t2_bomb_target_name"
             },
             {
               "value": "@ft_detect_t2_cur_field_idx",
@@ -6755,18 +6388,17 @@
               "value": "_active",
               "digits": 0,
               "var": "ft_detect_t2_active_name"
-            }
-          ],
-          "varGetStringValue": [
-            {
-              "from_var_name": "@ft_detect_t2_airfield_name",
-              "var": "ft_detect_t2_airfield_name"
             },
             {
-              "from_var_name": "@ft_detect_t2_bomb_target_name",
-              "var": "ft_detect_t2_bomb_target_name"
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_detect_t2_zone_name"
             }
           ],
+          "varGetStringValue": {
+            "from_var_name": "@ft_detect_t2_airfield_name",
+            "var": "ft_detect_t2_airfield_name"
+          },
           "triggerEnable": {
             "target": "ft_detect_t2_lpt_change_range"
           }
@@ -6808,7 +6440,7 @@
               "ft_detect_t2_lpt_change_range",
               "ft_detect_t2_is_alive_check",
               "ft_detect_t2_enemy_players_check",
-              "ft_detect_t2_enemy_ai_check",
+              "ft_detect_t2_ai_check",
               "ft_detect_t2_detect_off_check",
               "ft_detect_t2_found_players_check",
               "ft_detect_t2_found_ai_check",
@@ -6938,24 +6570,23 @@
         },
         "conditions": {
           "objectExists": {
-            "target": "@ft_detect_t2_bomb_target_name",
-            "type": "unit"
+            "target": "@ft_detect_t2_zone_name",
+            "type": "area"
           },
           "unitDistanceBetween": {
             "value": 4500.0,
             "math": "2D",
-            "object_type": "isActive",
+            "object_type": "isOnline",
             "object_marking": 0,
-            "target_type": "isOnline",
+            "target_type": "any",
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "@ft_detect_t2_bomb_target_name",
-            "target": "t1_players_squad",
+            "object": "t1_players_squad",
+            "target": "@ft_detect_t2_zone_name",
             "var": "ft_t1_detection_range",
-            "object_var_value": 0,
             "compareCenters": false
           }
         },
@@ -6981,11 +6612,11 @@
             "value": "nad aerodromom net igrkov - proveryaem AI"
           },
           "triggerEnable": {
-            "target": "ft_detect_t2_enemy_ai_check"
+            "target": "ft_detect_t2_ai_check"
           }
         }
       },
-      "ft_detect_t2_enemy_ai_check": {
+      "ft_detect_t2_ai_check": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -7000,21 +6631,24 @@
         },
         "conditions": {
           "objectExists": {
-            "target": "@ft_detect_t2_bomb_target_name",
-            "type": "unit"
+            "target": "@ft_detect_t2_zone_name",
+            "type": "area"
           },
-          "unitWhenEnemyNear": {
-            "object_type": "isAlive",
+          "unitDistanceBetween": {
+            "value": 4500.0,
+            "math": "2D",
+            "object_type": "isActive",
             "object_marking": 0,
+            "target_type": "any",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "enemy_type": "isActive",
-            "distance": 4500.0,
-            "check_objects": "any",
-            "object": "@ft_detect_t2_bomb_target_name",
-            "use_variable": true,
-            "distance_var": "ft_t1_detection_range"
+            "object": "t2_enemy_planes_squad",
+            "target": "@ft_detect_t2_zone_name",
+            "var": "ft_t1_detection_range",
+            "compareCenters": false
           }
         },
         "actions": {
@@ -7035,14 +6669,9 @@
           }
         },
         "else_actions": {
-          "comment": [
-            {
-              "value": "nad aerodromom net protivnika - vyklyuchaem miganie aerodroma"
-            },
-            {
-              "value": "zapuskaem proverku ne nado li vse-ravno pokazat' aerodrom "
-            }
-          ],
+          "comment": {
+            "value": "nad aerodromom net igrkov - proveryaem AI"
+          },
           "airfieldSetIndication": {
             "set": false,
             "target": "@ft_detect_t2_airfield_name"
@@ -7335,12 +6964,8 @@
               "type": "objectGroup"
             },
             {
-              "target": "@ft_detect_t2_bomb_target_name",
-              "type": "unit"
-            },
-            {
               "target": "@ft_detect_t2_zone_name",
-              "type": "objectGroup"
+              "type": "area"
             }
           ]
         },
@@ -7351,9 +6976,6 @@
             },
             {
               "value": "govorim, chto aerodrom aktiven"
-            },
-            {
-              "value": "sostavlyaem imya bombovoj zony"
             },
             {
               "value": "sozdaem bombovuyu zonu"
@@ -7372,32 +6994,6 @@
             "value": true,
             "var": "@ft_detect_t2_active_name"
           },
-          "varSetString": {
-            "value": "ft_t2_airfield_",
-            "var": "ft_detect_t2_zone_name"
-          },
-          "varAddString": [
-            {
-              "value": "@ft_detect_t2_cur_field_idx",
-              "digits": 2,
-              "var": "ft_detect_t2_zone_name"
-            },
-            {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_detect_t2_zone_name"
-            }
-          ],
-          "varGetStringValue": [
-            {
-              "from_var_name": "@ft_detect_t2_zone_name",
-              "var": "ft_detect_t2_zone_name"
-            },
-            {
-              "from_var_name": "ft_detect_t2_zone_name",
-              "var": "ft_add_objective_t2_zone_name"
-            }
-          ],
           "missionSetBombingArea": {
             "army": 2,
             "target": "@ft_detect_t2_zone_name",
@@ -7410,22 +7006,10 @@
             "target": "@ft_detect_t2_airfield_name",
             "team": "Both"
           },
-          "__varSetString": {
-            "value": "ft_t2_airfield_",
+          "varGetStringValue": {
+            "from_var_name": "ft_detect_t2_zone_name",
             "var": "ft_add_objective_t2_zone_name"
           },
-          "__varAddString": [
-            {
-              "value": "@ft_detect_t2_cur_field_idx",
-              "digits": 2,
-              "var": "ft_add_objective_t2_zone_name"
-            },
-            {
-              "value": "_bomb_zone",
-              "digits": 0,
-              "var": "ft_add_objective_t2_zone_name"
-            }
-          ],
           "varSetInt": {
             "value": 0,
             "var": "ft_add_objective_t2_idx"
@@ -11708,24 +11292,6 @@
     "ft_t2_airfield_07_found": false,
     "ft_t2_airfield_08_found": false,
     "ft_t2_airfield_09_found": false,
-    "ft_t1_airfield_01_bomb_target": "",
-    "ft_t1_airfield_02_bomb_target": "",
-    "ft_t1_airfield_03_bomb_target": "",
-    "ft_t1_airfield_04_bomb_target": "",
-    "ft_t1_airfield_05_bomb_target": "",
-    "ft_t1_airfield_06_bomb_target": "",
-    "ft_t1_airfield_07_bomb_target": "",
-    "ft_t1_airfield_08_bomb_target": "",
-    "ft_t1_airfield_09_bomb_target": "",
-    "ft_t2_airfield_01_bomb_target": "",
-    "ft_t2_airfield_02_bomb_target": "",
-    "ft_t2_airfield_03_bomb_target": "",
-    "ft_t2_airfield_04_bomb_target": "",
-    "ft_t2_airfield_05_bomb_target": "",
-    "ft_t2_airfield_06_bomb_target": "",
-    "ft_t2_airfield_07_bomb_target": "",
-    "ft_t2_airfield_08_bomb_target": "",
-    "ft_t2_airfield_09_bomb_target": "",
     "ft_t1_airfield_01_destroyed": false,
     "ft_t1_airfield_02_destroyed": false,
     "ft_t1_airfield_03_destroyed": false,
@@ -11808,13 +11374,11 @@
     "ft_detect_t1_cur_field_idx": 0,
     "ft_detect_t2_cur_field_idx": 0,
     "ft_detect_t1_airfield_name": "",
-    "ft_detect_t1_bomb_target_name": "",
     "ft_detect_t1_found_name": "",
     "ft_detect_t1_destroyed_name": "",
     "ft_detect_t1_active_name": "",
     "ft_detect_t1_zone_name": "",
     "ft_detect_t2_airfield_name": "",
-    "ft_detect_t2_bomb_target_name": "",
     "ft_detect_t2_found_name": "",
     "ft_detect_t2_destroyed_name": "",
     "ft_detect_t2_active_name": "",
@@ -11961,8 +11525,6 @@
     "ft_generate_t2_cur_idx_var_name": "",
     "ft_generate_t1_aaa_field_var_name": "",
     "ft_generate_t2_aaa_field_var_name": "",
-    "ft_generate_t1_target_var_name": "",
-    "ft_generate_t2_target_var_name": "",
     "ft_generate_t1_area_var_name": "",
     "ft_generate_t2_area_var_name": "",
     "ft_generate_distance_between": 10000.0,

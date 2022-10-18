@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { getAvailableRespawnBases } = require("guiRespawn")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -35,12 +41,12 @@ let { GUI } = require("%scripts/utils/configs.nut")
     ::get_current_mission_desc(missionParams)
 
     let isVersus = isGameModeVersus(::get_game_mode())
-    isSpawnDelayEnabled = isVersus && ::getTblValue("useSpawnDelay", missionParams, false)
-    isTeamScoreRespawnEnabled = isVersus && ::getTblValue("useTeamSpawnScore", missionParams, false)
-    isScoreRespawnEnabled = isTeamScoreRespawnEnabled || (isVersus && ::getTblValue("useSpawnScore", missionParams, false))
-    isWarpointsRespawnEnabled = isVersus && ::getTblValue("multiRespawn", missionParams, false)
+    isSpawnDelayEnabled = isVersus && getTblValue("useSpawnDelay", missionParams, false)
+    isTeamScoreRespawnEnabled = isVersus && getTblValue("useTeamSpawnScore", missionParams, false)
+    isScoreRespawnEnabled = isTeamScoreRespawnEnabled || (isVersus && getTblValue("useSpawnScore", missionParams, false))
+    isWarpointsRespawnEnabled = isVersus && getTblValue("multiRespawn", missionParams, false)
     hasRespawnCost = isScoreRespawnEnabled || isWarpointsRespawnEnabled
-    isWorldWar = isVersus && ::getTblValue("isWorldWar", missionParams, false)
+    isWorldWar = isVersus && getTblValue("isWorldWar", missionParams, false)
     needShowLockedSlots = missionParams?.needShowLockedSlots ?? true
   }
 
@@ -62,7 +68,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   function getLeftRespawns()
   {
     local res = ::RESPAWNS_UNLIMITED
-    if (!isScoreRespawnEnabled && ::getTblValue("maxRespawns", missionParams, 0) > 0)
+    if (!isScoreRespawnEnabled && getTblValue("maxRespawns", missionParams, 0) > 0)
       res = ::get_respawns_left() //code return spawn score here when spawn score enabled instead of respawns left
     return res
   }
@@ -82,7 +88,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   function getUnitLeftWeaponShortText(unit)
   {
     let weaponsLimits = getWeaponsLimitsBlk()
-    let unitWeaponLimit = ::getTblValue(unit.name, weaponsLimits, null)
+    let unitWeaponLimit = getTblValue(unit.name, weaponsLimits, null)
     if (!unitWeaponLimit)
       return ""
 
@@ -102,7 +108,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     let unitLeftRespawns = getUnitLeftRespawns(unit)
     if (unitLeftRespawns == ::RESPAWNS_UNLIMITED || isUnitAvailableBySpawnScore(unit))
       return ""
-    return ::loc("respawn/leftTeamUnit", { num = unitLeftRespawns })
+    return loc("respawn/leftTeamUnit", { num = unitLeftRespawns })
   }
 
   function getRespawnInfoTextForUnitInfo(unit)
@@ -110,10 +116,10 @@ let { GUI } = require("%scripts/utils/configs.nut")
     let unitLeftRespawns = getUnitLeftRespawns(unit)
     if (unitLeftRespawns == ::RESPAWNS_UNLIMITED)
       return ""
-    return ::loc("unitInfo/team_left_respawns") + ::loc("ui/colon") + unitLeftRespawns
+    return loc("unitInfo/team_left_respawns") + loc("ui/colon") + unitLeftRespawns
   }
 
-  function getSpecialCantRespawnMessage(unit)
+  function getSpecialCantRespawnMessage(_unit)
   {
     return null
   }
@@ -163,7 +169,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return fullEnemyUnitsLimitData
   }
 
-  function getEventDescByRulesTbl(rulesTbl)
+  function getEventDescByRulesTbl(_rulesTbl)
   {
     return ""
   }
@@ -200,8 +206,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
   function getCurSpawnScore()
   {
     if (isTeamScoreRespawnEnabled)
-      return ::getTblValue("teamSpawnScore", ::get_local_mplayer(), 0)
-    return isScoreRespawnEnabled ? ::getTblValue("spawnScore", ::get_local_mplayer(), 0) : 0
+      return getTblValue("teamSpawnScore", ::get_local_mplayer(), 0)
+    return isScoreRespawnEnabled ? getTblValue("spawnScore", ::get_local_mplayer(), 0) : 0
   }
 
   function canRespawnOnUnitBySpawnScore(unit)
@@ -247,9 +253,9 @@ let { GUI } = require("%scripts/utils/configs.nut")
   function getAvailableToSpawnUnitsData()
   {
     let res = []
-    if (!(::get_game_type() & (::GT_VERSUS | ::GT_COOPERATIVE)))
+    if (!(::get_game_type() & (GT_VERSUS | GT_COOPERATIVE)))
       return res
-    if (::get_game_mode() == ::GM_SINGLE_MISSION || ::get_game_mode() == ::GM_DYNAMIC)
+    if (::get_game_mode() == GM_SINGLE_MISSION || ::get_game_mode() == GM_DYNAMIC)
       return res
     if (!::g_mis_loading_state.isCrewsListReceived())
       return res
@@ -282,7 +288,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
         if (curSpawnScore < unit.getMinimumSpawnScore())
           continue
         else
-          comment = ::loc("respawn/withCheaperWeapon")
+          comment = loc("respawn/withCheaperWeapon")
       }
 
       res.append({
@@ -296,8 +302,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getUnitFuelPercent(unitName) //return 0 when fuel amount not fixed
   {
-    let unitsFuelPercentList = ::getTblValue("unitsFuelPercentList", getCustomRulesBlk())
-    return ::getTblValue(unitName, unitsFuelPercentList, 0)
+    let unitsFuelPercentList = getTblValue("unitsFuelPercentList", getCustomRulesBlk())
+    return getTblValue(unitName, unitsFuelPercentList, 0)
   }
 
   function hasWeaponLimits()
@@ -337,16 +343,16 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getCustomRulesBlk()
   {
-    return ::getTblValue("customRules", ::get_current_mission_info_cached())
+    return getTblValue("customRules", ::get_current_mission_info_cached())
   }
 
   function getTeamDataBlk(team, keyName)
   {
-    let teamsBlk = ::getTblValue(keyName, getMisStateBlk())
+    let teamsBlk = getTblValue(keyName, getMisStateBlk())
     if (!teamsBlk)
       return null
 
-    let res = ::getTblValue(::get_team_name_by_mp_team(team), teamsBlk)
+    let res = getTblValue(::get_team_name_by_mp_team(team), teamsBlk)
     return ::u.isDataBlock(res) ? res : null
   }
 
@@ -365,12 +371,12 @@ let { GUI } = require("%scripts/utils/configs.nut")
   }
 
   //return -1 when unlimited
-  function getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk)
+  function getUnitLeftRespawnsByTeamDataBlk(_unit, _teamDataBlk)
   {
     return ::RESPAWNS_UNLIMITED
   }
 
-  function calcFullUnitLimitsData(isTeamMine = true)
+  function calcFullUnitLimitsData(_isTeamMine = true)
   {
     return {
       defaultUnitRespawnsLeft = ::RESPAWNS_UNLIMITED
@@ -389,7 +395,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getWeaponsLimitsBlk()
   {
-    return ::getTblValue("weaponList", getMyStateBlk())
+    return getTblValue("weaponList", getMyStateBlk())
   }
 
   //return -1 when unlimited
@@ -424,7 +430,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!randomUnitsGroup)
       return unitsList
 
-    foreach (unitName, u in randomUnitsGroup)
+    foreach (unitName, _u in randomUnitsGroup)
     {
       unitsList.append(unitName)
     }
@@ -433,8 +439,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getRandomUnitsGroupLocName(groupName)
   {
-    return ::loc("icon/dice/transparent") +
-      ::loc(GUI.get()?.randomSpawnUnitPresets?[groupName]?.name
+    return loc("icon/dice/transparent") +
+      loc(GUI.get()?.randomSpawnUnitPresets?[groupName]?.name
       ?? "respawn/randomUnitsGroup/name")
   }
 
@@ -495,7 +501,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   {
     local minValue
     local maxValue
-    foreach(name, u in randomGroups)
+    foreach(name, _u in randomGroups)
     {
       let unit = ::getAircraftByName(name)
 
@@ -527,7 +533,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return isWorldWar && getMyStateBlk()?.ownAvailableUnits?[unitName] == false
   }
 
-  function isUnitAvailableBySpawnScore(unit)
+  function isUnitAvailableBySpawnScore(_unit)
   {
     return false
   }

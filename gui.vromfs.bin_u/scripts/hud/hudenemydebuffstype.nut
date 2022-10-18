@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -24,7 +30,7 @@ let getStateByBrokenDmAny = function(unitInfo, partName, partsArray)
 {
   if (unitInfo.isKilled)
     return PART_STATE.KILLED
-  if (partName && ::isInArray(partName, partsArray))
+  if (partName && isInArray(partName, partsArray))
     return PART_STATE.KILLED
   foreach (partId in partsArray)
   {
@@ -40,7 +46,7 @@ let getStateByBrokenDmMain = function(unitInfo, partName, partsArray, mainDmArra
 {
   if (unitInfo.isKilled)
     return PART_STATE.KILLED
-  if (partName && !::isInArray(partName, partsArray))
+  if (partName && !isInArray(partName, partsArray))
     return PART_STATE.OFF
   foreach (partId in partsArray)
   {
@@ -48,7 +54,7 @@ let getStateByBrokenDmMain = function(unitInfo, partName, partsArray, mainDmArra
     let isSingleDm = dmParts.len() == 1
     let mainDms = isSingleDm ? [] : mainDmArray
     foreach (dmPart in dmParts)
-      if ((isSingleDm || ::isInArray(dmPart.partDmName, mainDms)) && dmPart._hp == 0)
+      if ((isSingleDm || isInArray(dmPart.partDmName, mainDms)) && dmPart._hp == 0)
         return PART_STATE.KILLED
   }
   return PART_STATE.OFF
@@ -95,7 +101,7 @@ let getStateByValue = function(cur, vMax, crit, vMin)
   unitTypesMask = 0
   parts         = []
   isUpdateByEnemyDamageState = false
-  getInfo = @(camInfo, unitInfo, partName = null, dmgParams = null) null
+  getInfo = @(_camInfo, _unitInfo, _partName = null, _dmgParams = null) null
 }
 
 enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
@@ -105,7 +111,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   TANK_ENGINE = {
     unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_engine", "tank_transmission" ]
-    getInfo  = @(camInfo, unitInfo, partName = null, dmgParams = null) {
+    getInfo  = @(_camInfo, unitInfo, partName = null, _dmgParams = null) {
       state = getStateByBrokenDmAny(unitInfo, partName, parts)
       label = ""
     }
@@ -115,7 +121,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
     unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_gun_barrel", "tank_cannon_breech" ]
     mainDm   = [ "gun_barrel_dm", "gun_barrel_01_dm", "cannon_breech_dm", "cannon_breech_01_dm" ]
-    getInfo  = @(camInfo, unitInfo, partName = null, dmgParams = null) {
+    getInfo  = @(_camInfo, unitInfo, partName = null, _dmgParams = null) {
       state = getStateByBrokenDmMain(unitInfo, partName, parts, mainDm)
       label = ""
     }
@@ -125,7 +131,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
     unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_drive_turret_h", "tank_drive_turret_v" ]
     mainDm   = [ "drive_turret_h_dm", "drive_turret_h_01_dm", "drive_turret_v_dm", "drive_turret_v_01_dm" ]
-    getInfo  = @(camInfo, unitInfo, partName = null, dmgParams = null) {
+    getInfo  = @(_camInfo, unitInfo, partName = null, _dmgParams = null) {
       state = getStateByBrokenDmMain(unitInfo, partName, parts, mainDm)
       label = ""
     }
@@ -134,7 +140,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   TANK_TRACKS = {
     unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_track" ]
-    getInfo  = @(camInfo, unitInfo, partName = null, dmgParams = null) {
+    getInfo  = @(_camInfo, unitInfo, partName = null, _dmgParams = null) {
       state = getStateByBrokenDmAny(unitInfo, partName, parts)
       label = ""
     }
@@ -143,7 +149,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   TANK_CREW = {
     unitTypesMask = unitTypes.TANK.bit
     isUpdateByEnemyDamageState = true
-    getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
+    getInfo = function(camInfo, unitInfo, _partName = null, dmgParams = null)
     {
       let total = dmgParams?.crewTotalCount ?? camInfo?.crewTotal ?? 0
       if (!total)
@@ -151,9 +157,9 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
       let alive = dmgParams?.crewAliveCount ?? camInfo?.crewAlive ?? 0
       let aliveMin = dmgParams?.crewAliveMin ?? camInfo?.crewAliveMin ?? 0
       let isKill = unitInfo.isKilled
-      local totalText = ::loc("ui/slash") + total
+      local totalText = loc("ui/slash") + total
       if (!isKill)
-        totalText = ::colorize("hitCamFadedColor", totalText)
+        totalText = colorize("hitCamFadedColor", totalText)
 
       return {
         state = isKill ? PART_STATE.KILLED : getStateByValue(alive, total, aliveMin + 1, aliveMin)
@@ -165,7 +171,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   SHIP_BUOYANCY = {
     unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     isUpdateByEnemyDamageState = true
-    getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
+    getInfo = function(camInfo, _unitInfo, _partName = null, dmgParams = null)
     {
       let value = dmgParams?.buoyancy ?? camInfo?.buoyancy
       if (value == null)
@@ -182,15 +188,15 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   SHIP_COMPARTMENTS = {
     unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     parts = [ "ship_compartment" ]
-    getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
+    getInfo = function(camInfo, unitInfo, _partName = null, dmgParams = null)
     {
-      let total = ::getTblValue("compartmentsTotal", camInfo, 0)
+      let total = getTblValue("compartmentsTotal", camInfo, 0)
       if (!total)
         return null
       let canUpdateFromParts = dmgParams != null && countPartsTotal(parts, unitInfo.parts) == total
       let alive = canUpdateFromParts ? countPartsAlive(parts, unitInfo.parts)
-        : ::getTblValue("compartmentsAlive", camInfo, 0)
-      let aliveMin = ::getTblValue("compartmentsAliveMin", camInfo, 0)
+        : getTblValue("compartmentsAlive", camInfo, 0)
+      let aliveMin = getTblValue("compartmentsAliveMin", camInfo, 0)
       if (aliveMin > total)
         return null
 
@@ -205,7 +211,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   SHIP_CREW = {
     unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     isUpdateByEnemyDamageState = true
-    getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
+    getInfo = function(camInfo, _unitInfo, _partName = null, dmgParams = null)
     {
       let total = dmgParams?.crewTotalCount ?? camInfo?.crewTotal ?? 0
       if (!total)
@@ -224,26 +230,23 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 }, null, "id")
 
-g_hud_enemy_debuffs.getTypeById <- function getTypeById(id)
-{
-  return enums.getCachedType("id", id, cache.byId, this, UNKNOWN)
+::g_hud_enemy_debuffs.getTypeById <- function getTypeById(id) {
+  return enums.getCachedType("id", id, this.cache.byId, this, this.UNKNOWN)
 }
 
-g_hud_enemy_debuffs.getTypesArrayByUnitType <- function getTypesArrayByUnitType(unitType)
-{
+::g_hud_enemy_debuffs.getTypesArrayByUnitType <- function getTypesArrayByUnitType(unitType) {
   let unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
   let list = []
-  foreach (item in types)
+  foreach (item in this.types)
     if (unitTypeBit & item.unitTypesMask)
       list.append(item)
   return list
 }
 
-g_hud_enemy_debuffs.getTrackedPartNamesByUnitType <- function getTrackedPartNamesByUnitType(unitType)
-{
+::g_hud_enemy_debuffs.getTrackedPartNamesByUnitType <- function getTrackedPartNamesByUnitType(unitType) {
   let unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
   let list = []
-  foreach (item in types)
+  foreach (item in this.types)
     if (unitTypeBit & item.unitTypesMask)
       foreach (partName in item.parts)
         ::u.appendOnce(partName, list)

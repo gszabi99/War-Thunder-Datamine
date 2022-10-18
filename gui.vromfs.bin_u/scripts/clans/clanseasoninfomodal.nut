@@ -1,6 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::show_clan_season_info <- function show_clan_season_info(difficulty)
 {
@@ -23,12 +30,12 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
   function initScreen()
   {
     if (!::g_clan_seasons.isEnabled())
-      return goBack()
-    rewardsListObj = scene.findObject("rewards_list")
-    if (!::checkObj(rewardsListObj))
-      return goBack()
+      return this.goBack()
+    rewardsListObj = this.scene.findObject("rewards_list")
+    if (!checkObj(rewardsListObj))
+      return this.goBack()
 
-    scene.findObject("wnd_title").setValue(::loc("clan/battle_season/title") + " - " + ::loc("mainmenu/rewardsList"))
+    this.scene.findObject("wnd_title").setValue(loc("clan/battle_season/title") + " - " + loc("mainmenu/rewardsList"))
 
     fillRewardsList()
     selectListItem()
@@ -38,7 +45,7 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
   {
     let view = getRewardsView(difficulty)
     let markup = ::handyman.renderCached("%gui/clans/clanSeasonInfoListItem", view)
-    guiScene.appendWithBlk(rewardsListObj, markup, this)
+    this.guiScene.appendWithBlk(rewardsListObj, markup, this)
   }
 
   function getRewardsView(diff)
@@ -56,15 +63,15 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
       switch(reward.rType)
       {
         case CLAN_SEASON_MEDAL_TYPE.PLACE:
-          title = ::loc("clan/season_award/place/place" + reward.place)
+          title = loc("clan/season_award/place/place" + reward.place)
           medal = "place" + reward.place
           break
         case CLAN_SEASON_MEDAL_TYPE.TOP:
-          title = ::loc("clan/season_award/place/top", { top = reward.place })
+          title = loc("clan/season_award/place/top", { top = reward.place })
           medal = "top" + reward.place
           break
         case CLAN_SEASON_MEDAL_TYPE.RATING:
-          title = ::loc("clan/season_award/rating", { ratingValue = reward.rating })
+          title = loc("clan/season_award/rating", { ratingValue = reward.rating })
           medal = reward.rating + "rating"
           break
       }
@@ -73,19 +80,19 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
       local condition = ""
       if (reward.placeMin)
-        condition = ::loc("multiplayer/place") + ::loc("ui/colon") + reward.placeMin + ::loc("ui/mdash") + reward.placeMax
+        condition = loc("multiplayer/place") + loc("ui/colon") + reward.placeMin + loc("ui/mdash") + reward.placeMax
       else if (reward.place)
-        condition = ::loc("multiplayer/place") + ::loc("ui/colon") + reward.place
+        condition = loc("multiplayer/place") + loc("ui/colon") + reward.place
       else if (reward.rating)
-        condition = ::loc("userLog/clanDuelRewardClanRating") + " " + reward.rating
+        condition = loc("userLog/clanDuelRewardClanRating") + " " + reward.rating
 
       local gold = ""
       if (reward.gold)
       {
         let value = reward.goldMin ?
-          (::Cost(0, reward.goldMin).tostring() + ::loc("ui/mdash") + ::Cost(0, reward.goldMax).tostring()) :
+          (::Cost(0, reward.goldMin).tostring() + loc("ui/mdash") + ::Cost(0, reward.goldMax).tostring()) :
           ::Cost(0, reward.gold).tostring()
-        gold = ::loc("charServer/chapter/eagles") + ::loc("ui/colon") + value
+        gold = loc("charServer/chapter/eagles") + loc("ui/colon") + value
       }
 
       let prizesList = {}
@@ -99,15 +106,15 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
         if (prizeType == "clanTag")
         {
           let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
-          let tagTxt = ::u.isEmpty(myClanTagUndecorated) ? ::loc("clan/clan_tag/short") : myClanTagUndecorated
-          let tooltipBase = ::loc("clan/clan_tag_decoration") + ::loc("ui/colon")
+          let tagTxt = ::u.isEmpty(myClanTagUndecorated) ? loc("clan/clan_tag/short") : myClanTagUndecorated
+          let tooltipBase = loc("clan/clan_tag_decoration") + loc("ui/colon")
           let tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)
           foreach (decorator in tagDecorators)
             collection.append({
               start = decorator.start
               tag   = tagTxt
               end   = decorator.end
-              tooltip = tooltipBase + ::colorize("activeTextColor", decorator.start + tagTxt + decorator.end)
+              tooltip = tooltipBase + colorize("activeTextColor", decorator.start + tagTxt + decorator.end)
             })
         }
         else if (prizeType == "decal")
@@ -125,7 +132,7 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
           }
         }
 
-        let uniqueCount = ::getTblValue(prizeType, limits, 0) || collection.len()
+        let uniqueCount = getTblValue(prizeType, limits, 0) || collection.len()
         let splitList = {
           unique = []
           bonus  = []
@@ -164,15 +171,15 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
   function onShowBonuses(obj)
   {
-    let bonusesObj = ::checkObj(obj) ? obj.getParent().findObject("bonuses_panel") : null
-    if (!::checkObj(bonusesObj))
+    let bonusesObj = checkObj(obj) ? obj.getParent().findObject("bonuses_panel") : null
+    if (!checkObj(bonusesObj))
       return
     let isShow = bonusesObj["toggled"] != "yes"
     bonusesObj["toggled"] = isShow ? "yes" : "no"
     bonusesObj.show(isShow)
 
-    obj.setValue(isShow ? ::loc("mainmenu/btnCollapse") : (::loc("clan/season_award/desc/lower_places_awards_included") + ::loc("ui/ellipsis")))
-    obj["tooltip"] = isShow ? "" : ::loc("mainmenu/btnExpand")
+    obj.setValue(isShow ? loc("mainmenu/btnCollapse") : (loc("clan/season_award/desc/lower_places_awards_included") + loc("ui/ellipsis")))
+    obj["tooltip"] = isShow ? "" : loc("mainmenu/btnExpand")
   }
 
   function selectListItem()
@@ -201,7 +208,7 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
       onShowBonuses(btnObj)
   }
 
-  function onBtnMoreInfo(obj)
+  function onBtnMoreInfo(_obj)
   {
   }
 }

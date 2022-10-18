@@ -1,9 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode
-    getTooltipContent = function(id, params)
+    getTooltipContent = function(_id, params)
     {
       if (!::is_worldwar_enabled())
         return ""
@@ -16,7 +21,7 @@ let wwTooltipTypes = {
   }
 
   WW_MAP_TOOLTIP_TYPE_BATTLE = {
-    getTooltipContent = function(id, params)
+    getTooltipContent = function(_id, params)
     {
       if (!::is_worldwar_enabled())
         return ""
@@ -34,7 +39,7 @@ let wwTooltipTypes = {
   }
 
   WW_LOG_BATTLE_TOOLTIP = {
-    getTooltipContent = function(id, params)
+    getTooltipContent = function(_id, params)
     {
       let battle = ::g_world_war.getBattleById(params.currentId)
       let battleView = battle.isValid() ? battle.getView() : ::WwBattleView()
@@ -44,7 +49,7 @@ let wwTooltipTypes = {
 
   WW_MAP_TOOLTIP_TYPE_GROUP = {
     isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, id, params)
+    fillTooltip = function(obj, handler, id, _params)
     {
       if (!::is_worldwar_enabled())
         return false
@@ -56,7 +61,7 @@ let wwTooltipTypes = {
       let clanId = group.clanId
       let clanTag = group.name
       let afterUpdate = function(updatedClanInfo){
-        if (!::check_obj(obj))
+        if (!checkObj(obj))
           return
         let content = ::handyman.renderCached("%gui/worldWar/worldWarClanTooltip", updatedClanInfo)
         obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
@@ -77,7 +82,7 @@ let wwTooltipTypes = {
 
       let taskId = ::clan_request_info(clanId, "", "")
       let onTaskSuccess = function() {
-        if (!::check_obj(obj))
+        if (!checkObj(obj))
           return
 
         let clanInfo = ::get_clan_info_table()
@@ -88,7 +93,7 @@ let wwTooltipTypes = {
       }
 
       let onTaskError = function(errorCode) {
-        if (!::check_obj(obj))
+        if (!checkObj(obj))
           return
 
         let content = ::handyman.renderCached("%gui/commonParts/errorFrame", {errorNum = errorCode})

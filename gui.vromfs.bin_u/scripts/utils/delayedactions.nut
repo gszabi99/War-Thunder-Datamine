@@ -1,5 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { rnd_int } = require("dagor.random")
+let { get_time_msec } = require("dagor.time")
 
 /*
 
@@ -18,7 +24,7 @@ local runDelayedActionsTaskId = null
 
 
 let function runDelayedActions(...) {
-  let curTime = ::dagor.getCurTime()
+  let curTime = get_time_msec()
   let callActions = []
 
   // actions is sorted by call time from last to first
@@ -57,7 +63,7 @@ let function runInstantActions(...) {
 
 let function addDelayedAction(action, delay_ms) {
   if (delay_ms > 0) {
-    let callTime = ::dagor.getCurTime() + delay_ms
+    let callTime = get_time_msec() + delay_ms
     delayedActionsList.append({action = action, time = callTime})
     delayedActionsList.sort(function (a, b) {
       return (b.time - a.time).tointeger()
@@ -73,8 +79,8 @@ let function addDelayedAction(action, delay_ms) {
     if (runInstantActionsTaskId == null) {
       runInstantActionsTaskId = ::periodic_task_register_ex(this,
                                                                runInstantActions, 1,
-                                                             ::EPTF_EXECUTE_IMMEDIATELY,
-                                                             ::EPTT_BEST_EFFORT, true)
+                                                             EPTF_EXECUTE_IMMEDIATELY,
+                                                             EPTT_BEST_EFFORT, true)
     }
   }
 }
@@ -84,12 +90,12 @@ let function add(action, delay_ms = 0) {
 }
 
 let function test() {
-  let curTime = ::dagor.getCurTime()
+  let curTime = get_time_msec()
   for (local i = 0; i < 100; ++i) {
     let rndDelay = rnd_int(0, 9)
 
     add((@(i, rndDelay, curTime) function() {
-          ::dagor.debug(format("[%d] %d run action with delay %d seconds", curTime, i, rndDelay))
+          log(format("[%d] %d run action with delay %d seconds", curTime, i, rndDelay))
         })(i, rndDelay, curTime),
     rndDelay * 1000)
   }

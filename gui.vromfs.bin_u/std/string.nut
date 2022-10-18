@@ -1,4 +1,5 @@
 #no-plus-concat
+#explicit-this
 
 let { regexp, format, startswith, endswith, strip }=require("string")
 let math=require("math")
@@ -240,6 +241,10 @@ local function tostring_any(input, tostringfunc=null, compact=true) {
   }
   return input.tostring()
 }
+let FOO = {}
+let function tableLen(t){
+  return FOO.len.call(t)
+}
 
 local table_types = ["table","class","instance"]
 local function tostring_r(input, params=defTostringParams) {
@@ -257,7 +262,7 @@ local function tostring_r(input, params=defTostringParams) {
       tostring = @(val) tostring_any(val, null, compact)
     }
     {
-      compare = @(val,typ) (typ=="table" && val.len()==0 )
+      compare = @(val,typ) (typ=="table" && tableLen(val)==0 )
       tostring = @(_val) "{}"
     }
     {
@@ -862,11 +867,11 @@ local function splitStringBySize(str, maxSize) {
     assert(false, $"maxSize = {maxSize}")
     return [str]
   }
-  local result = []
+  let result = []
   local start = 0
-  local len = str.len()
-  while (start < len) {
-    local pieceSize = min(len - start, maxSize)
+  let l = str.len()
+  while (start < l) {
+    let pieceSize = min(l - start, maxSize)
     result.append(str.slice(start, start + pieceSize))
     start += pieceSize
   }

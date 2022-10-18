@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 let stdSubscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let function isArray(v) {return type(v)=="array"}
 
@@ -125,7 +128,7 @@ clearInvalidSubscriptions = function(subs) //this function will never remove fro
 
 //all subscriptions for dagui objects, so we can clear all on full scene reload.
 stdSubscriptions.addEventListener("GuiSceneCleared",
-  @(p) clearInvalidSubscriptions(subscriptions),
+  @(_p) clearInvalidSubscriptions(subscriptions),
   null,
   stdSubscriptions.CONFIG_VALIDATION)
 

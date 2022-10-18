@@ -1,40 +1,40 @@
-::WwArmyOwner <- class
-{
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+::WwArmyOwner <- class {
   side         = null
   country      = null
   armyGroupIdx = null
 
-  constructor(blk = null)
-  {
-    clear()
-    update(blk)
+  constructor(blk = null) {
+    this.clear()
+    this.update(blk)
   }
 
-  function update(blk)
-  {
+  function update(blk){
     if (!blk)
       return
 
-    side         = ::ww_side_name_to_val(::getTblValue("side", blk, ""))
-    country      = ::getTblValue("country",      blk, "")
-    armyGroupIdx = ::getTblValue("armyGroupIdx", blk, -1)
+    this.side         = ::ww_side_name_to_val(getTblValue("side", blk, ""))
+    this.country      = getTblValue("country",      blk, "")
+    this.armyGroupIdx = getTblValue("armyGroupIdx", blk, -1)
   }
 
-  function clear()
-  {
-    side         = ::SIDE_NONE
-    country      = ""
-    armyGroupIdx = -1
+  function clear() {
+    this.side         = SIDE_NONE
+    this.country      = ""
+    this.armyGroupIdx = -1
   }
 
-  function isValid()
-  {
-    return side != ::SIDE_NONE && country != "" && armyGroupIdx >= 0
+  function isValid() {
+    return this.side != SIDE_NONE && this.country != "" && this.armyGroupIdx >= 0
   }
 
-  function getCountry() { return country }
+  function getCountry() { return this.country }
 
-  function getArmyGroupIdx() { return armyGroupIdx }
+  function getArmyGroupIdx() { return this.armyGroupIdx }
 
-  function getSide() { return side }
+  function getSide() { return this.side }
 }

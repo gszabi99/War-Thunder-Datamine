@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_ww_map_reinforcement_tab_type <- {
@@ -9,7 +15,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
 
 ::g_ww_map_reinforcement_tab_type.template <- {
-  getHandler = function (placeObj) { return null }
+  getHandler = function (_placeObj) { return null }
   needAutoSwitch = @() false
   getTabTextPostfix = function() { return "" }
 }
@@ -44,7 +50,7 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
     getTabTextPostfix = function() {
       let availReinf = ::g_world_war.getMyReadyReinforcementsArray().len()
       if (availReinf > 0)
-        return ::loc("ui/parentheses/space", {text = availReinf})
+        return loc("ui/parentheses/space", {text = availReinf})
       return ""
     }
     getHandler = function (placeObj)
@@ -89,9 +95,9 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
       }
 
       let countText = commonCount.tostring() +
-        (surroundedCount > 0 ? "+" + ::colorize("armySurroundedColor", surroundedCount) : "")
+        (surroundedCount > 0 ? "+" + colorize("armySurroundedColor", surroundedCount) : "")
 
-      return ::loc("ui/parentheses/space", { text = countText })
+      return loc("ui/parentheses/space", { text = countText })
     }
     getHandler = function (placeObj) {
       return ::handlersManager.loadHandler(
@@ -105,13 +111,12 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
 }, null, "name")
 
 
-g_ww_map_reinforcement_tab_type.getTypeByCode <- function getTypeByCode(code)
-{
+::g_ww_map_reinforcement_tab_type.getTypeByCode <- function getTypeByCode(code) {
   return enums.getCachedType(
     "code",
     code,
-    cache.byCode,
+    this.cache.byCode,
     this,
-    UNKNOWN
+    this.UNKNOWN
   )
 }

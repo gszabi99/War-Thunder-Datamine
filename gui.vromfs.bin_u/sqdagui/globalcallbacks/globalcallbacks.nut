@@ -1,6 +1,8 @@
-let { format } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+#no-root-fallback
+#explicit-this
 
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let {assertf} =require("dagor.debug")
 let callbacks = {
   types = []
 }
@@ -10,25 +12,27 @@ let cbTbl = {}
 callbacks.template <- {
   id = "" //filled automatically by typeName
   cbName = "" // filled automatically
-  onCb = @(obj, params) null
+  onCb = @(_obj, _params) null
   paramsKey = "actionData"
-  getParamsMarkup = @(params) format("%s:t='%s';", paramsKey, ::save_to_json(params))
-  cbFromObj = @(obj) onCb(obj, obj?.isValid() && (obj?[paramsKey] ?? "") != "" ? ::parse_json(obj[paramsKey]) : {})
+  getParamsMarkup = @(params) $"{this.paramsKey}:t='{::save_to_json(params)}';"
+  cbFromObj = @(obj) this.onCb(obj, obj?.isValid() && (obj?[this.paramsKey] ?? "") != "" ? ::parse_json(obj[this.paramsKey]) : {})
 }
 
 callbacks.addTypes <- function(typesTable)
 {
   enums.addTypes(this, typesTable,
     function() {
-      cbName = "::gcb." + id
-      ::dagor.assertf(!(id in cbTbl), "globalCallbacks: Found duplicating id: " + id)
-      cbTbl[id] <- cbFromObj.bindenv(this)
+      this.cbName = $"::gcb.{this.id}"
+      assertf(!(this.id in cbTbl), $"globalCallbacks: Found duplicating id: {this.id}")
+      cbTbl[this.id] <- this.cbFromObj.bindenv(this)
     },
     "id")
 }
 
+let EMPTY = {}
+
 callbacks.addTypes({
-  EMPTY = {}
+  EMPTY
 })
 
 callbacks.get <- @(typeId) this?[typeId] ?? EMPTY

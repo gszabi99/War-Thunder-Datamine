@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let workshopCraftTree = require("workshopCraftTree.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
@@ -96,13 +102,13 @@ local WorkshopSet = class {
   }
 
   isValid                   = @() id.len() > 0 && itemdefs.len() > 0
-  isVisible                 = @() !reqFeature || ::has_feature(reqFeature) || isForcedDisplayByDate
+  isVisible                 = @() !reqFeature || hasFeature(reqFeature) || isForcedDisplayByDate
   isItemDefAlwaysVisible    = @(itemdef) itemdef in alwaysVisibleItemdefs
   getItemdefs               = @() itemdefsSorted
-  getLocName                = @() ::loc(locId)
+  getLocName                = @() loc(locId)
   getShopTabId              = @() "WORKSHOP_SET_" + uid
   getSeenId                 = @() "##workshop_set_" + uid
-  isVisibleSubset           = @(subset) !subset.reqFeature || ::has_feature(subset.reqFeature)
+  isVisibleSubset           = @(subset) !subset.reqFeature || hasFeature(subset.reqFeature)
   isVisibleSubsetId         = @(subsetId) subsetsList?[subsetId] != null && isVisibleSubset(subsetsList[subsetId])
 
   isItemInSet               = @(item) item.id in itemdefs
@@ -234,7 +240,7 @@ local WorkshopSet = class {
     updateKnownItems(itemsListCache)
     itemsListCache = itemsListCache.filter((@(item) !isVisibleOnlyInCraftTree(item.id)).bindenv(this))
 
-    let visibleKnownItemdefs = knownItemdefs.filter((@(value, itemId) !isVisibleOnlyInCraftTree(itemId)).bindenv(this))
+    let visibleKnownItemdefs = knownItemdefs.filter((@(_value, itemId) !isVisibleOnlyInCraftTree(itemId)).bindenv(this))
     let requiredList = alwaysVisibleItemdefs.__merge(visibleKnownItemdefs)
 
     //add all craft parts recipes result to visible items.
@@ -254,12 +260,12 @@ local WorkshopSet = class {
       if (item.id in requiredList)
         delete requiredList[item.id]
 
-    foreach(itemdef, sortId in requiredList)
+    foreach(itemdef, _sortId in requiredList)
     {
       if (isItemIdHidden(itemdef))
         continue
 
-      let item = ItemsManager.getItemOrRecipeBundleById(itemdef)
+      let item = ::ItemsManager.getItemOrRecipeBundleById(itemdef)
       if (!item
           || (item.iType == itemType.RECIPES_BUNDLE && !item.getMyRecipes().len()))
         continue
@@ -450,7 +456,7 @@ local WorkshopSet = class {
       subsetId = curSubsetId
 
     let subsetItems = subsetsList?[subsetId].items ?? []
-    return fullItemsList.filter(@(item) ::isInArray(item.id, subsetItems))
+    return fullItemsList.filter(@(item) isInArray(item.id, subsetItems))
   }
 
   function getSubsetsList()
@@ -515,7 +521,7 @@ local WorkshopSet = class {
   }
 
   hasAmountFunc = @(itemsList, itemId) (itemsList?[itemId].getAmount() ?? 0) > 0
-  isItemIdKnownFunc = @(itemsList, itemId) isItemIdKnown(itemId)
+  isItemIdKnownFunc = @(_itemsList, itemId) isItemIdKnown(itemId)
 
   isRequireItemsForCrafting = @(itemBlock, itemsList)
     isRequireCondition(itemBlock?.reqItemForCrafting, itemsList, hasAmountFunc)
@@ -583,7 +589,7 @@ local WorkshopSet = class {
     if(currentTime >= startTime && currentTime < endTime)
     {
       isForcedDisplayByDate = true
-      ::g_delayed_actions.add(::Callback(function() {
+      ::g_delayed_actions.add(Callback(function() {
           isForcedDisplayByDate = false
           ::broadcastEvent("WorkshopAvailableChanged")
         }, this), (endTime - currentTime)*1000)
@@ -591,7 +597,7 @@ local WorkshopSet = class {
       return
     }
 
-    ::g_delayed_actions.add(::Callback(function() {
+    ::g_delayed_actions.add(Callback(function() {
         isForcedDisplayByDate = true
         ::broadcastEvent("WorkshopAvailableChanged")
       }, this), (startTime - currentTime)*1000)

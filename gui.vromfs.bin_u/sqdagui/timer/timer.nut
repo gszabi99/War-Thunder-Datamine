@@ -1,5 +1,10 @@
+#explicit-this
+#no-root-fallback
+
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
-::g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")
 
 ::Timer <- class
 {
@@ -14,7 +19,7 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
   constructor(parentObj, delay, onTimeOut_, handler = null, cycled_ = false, isDelayed_ = false)
   {
     if (!onTimeOut_)
-      return ::dagor.assertf(false, "Error: no onTimeOut in Timer.")
+      return assert(false, "Error: no onTimeOut in Timer.")
 
     this.onTimeOut = handler ? Callback(onTimeOut_, handler) : onTimeOut_
     this.cycled    = cycled_
@@ -27,7 +32,7 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
     this.timerGuiObj.setUserData(this)
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, _dt)
   {
     this.performAction()
 
@@ -45,7 +50,7 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
   function setDelay(newDelay)
   {
-    if (::check_obj(this.timerGuiObj))
+    if (check_obj(this.timerGuiObj))
     {
       this.timerGuiObj.timer_interval_msec = (newDelay * 1000.0).tointeger().tostring()
       this.timerGuiObj.setIntProp(this.timeNowPID, 0)
@@ -59,7 +64,7 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
   function destroy()
   {
-    if (::check_obj(this.timerGuiObj))
+    if (check_obj(this.timerGuiObj))
     {
       this.timerGuiObj.setUserData(null)
       this.guiScene.destroyElement(this.timerGuiObj)
@@ -68,6 +73,6 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
   function isValid()
   {
-    return ::check_obj(this.timerGuiObj)
+    return check_obj(this.timerGuiObj)
   }
 }

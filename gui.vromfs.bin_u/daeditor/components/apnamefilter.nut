@@ -16,5 +16,14 @@ return @(filterString, selectedCompName) nameFilter(filterString, {
   function onEscape() {
     set_kb_focus(null)
   }
+
+  function onReturn() {
+    set_kb_focus(null)
+  }
+
+  function onClear() {
+    filterString.update("")
+    set_kb_focus(null)
+  }
 })
 

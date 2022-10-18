@@ -1,11 +1,18 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let globalEnv = require("globalEnv")
 let avatars = require("%scripts/user/avatars.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)
 {
-  if (!::has_feature("ControlsDeviceChoice"))
+  if (!hasFeature("ControlsDeviceChoice"))
     return
 
   ::gui_start_modal_wnd(::gui_handlers.ControlType, {onlyDevicesChoice = onlyDevicesChoice})
@@ -22,14 +29,14 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function initScreen()
   {
-    mainOptionsMode = getGuiOptionsMode()
+    this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
-    let txt = scene.findObject("txt_icon")
+    let txt = this.scene.findObject("txt_icon")
     txt.show(!onlyDevicesChoice)
-    showBtn("btn_pref_img", !onlyDevicesChoice)
-    showBtn("btn_back", onlyDevicesChoice)
-    showBtn("btn_cancel", onlyDevicesChoice)
+    ::showBtn("btn_pref_img", !onlyDevicesChoice)
+    ::showBtn("btn_back", onlyDevicesChoice)
+    ::showBtn("btn_cancel", onlyDevicesChoice)
 
     if (!onlyDevicesChoice)
       updateProfileIcon(true)
@@ -51,21 +58,21 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function updateProfileIcon(isOnInit = false)
   {
-    if (!::check_obj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let obj = scene.findObject("prefIcon")
-    if (::check_obj(obj))
+    let obj = this.scene.findObject("prefIcon")
+    if (checkObj(obj))
     {
       obj.setValue(::get_profile_info().icon)
       if (isOnInit)
-        scene.findObject("unseen_avatar").setValue(SEEN.AVATARS)
+        this.scene.findObject("unseen_avatar").setValue(SEEN.AVATARS)
     }
   }
 
   function afterModalDestroy()
   {
-    restoreMainOptions()
+    this.restoreMainOptions()
     if (startControlsWizard)
       ::gui_modal_controlsWizard()
     ::preset_changed = true
@@ -75,8 +82,8 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   function onControlTypeApply()
   {
     local ct_id = "ct_mouse"
-    let obj = scene.findObject("controlType")
-    if (::check_obj(obj))
+    let obj = this.scene.findObject("controlType")
+    if (checkObj(obj))
     {
       let value = obj.getValue()
       if (value>=0 && value<obj.childrenCount())
@@ -89,8 +96,8 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       return
     }
 
-    let text = ::loc("msgbox/controlPresetApply")
-    let onOk = ::Callback(@() doControlTypeApply(ct_id), this)
+    let text = loc("msgbox/controlPresetApply")
+    let onOk = Callback(@() doControlTypeApply(ct_id), this)
     this.msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
   }
 
@@ -98,7 +105,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   {
     ::setControlTypeByID(ctId)
     startControlsWizard = ctId == "ct_own"
-    goBack()
+    this.goBack()
   }
 }
 
@@ -118,23 +125,23 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   {
     // This case is only for gui_handlers.ControlType, it starts ControlsWizard scene after that.
     ct_preset = "keyboard"
-    set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
+    ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
     ::save_profile(false)
     return
   }
   else if (ct_id == "ct_xinput")
   {
     ct_preset = "pc_xinput_ma"
-    if (::is_platform_android || ::is_platform_shield_tv())
+    if (is_platform_android || ::is_platform_shield_tv())
       ct_preset = "tegra4_gamepad"
-    set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
+    ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
   }
   else if (ct_id == "ct_mouse")
   {
     ct_preset = ""
-    if (::is_platform_android)
+    if (is_platform_android)
       ct_preset = "tegra4_gamepad";
-    set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
+    ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
   }
 
   local preset = null
@@ -145,7 +152,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   {
     if (isPlatformSony)
       preset = ::g_controls_presets.parsePresetName("dualshock4")
-    else if (::is_platform_xbox)
+    else if (is_platform_xbox)
       preset = ::g_controls_presets.parsePresetName("xboxone_ma")
     else if (isPlatformSteamDeck)
       preset = ::g_controls_presets.parsePresetName("steamdeck_ma")
@@ -163,9 +170,9 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     local realisticPresetNames = ["default", "xboxone_simulator", "stimdeck_simulator"]
     local mouseAimPresetNames = ["dualshock4", "xboxone_ma", "stimdeck_ma"]
     if (ct_preset.name in realisticPresetNames)
-      set_helpers_mode_and_option(globalEnv.EM_REALISTIC)
+      ::set_helpers_mode_and_option(globalEnv.EM_REALISTIC)
     else if (ct_preset.name in mouseAimPresetNames)
-      set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
+      ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
   }
 
   ::save_profile(false)

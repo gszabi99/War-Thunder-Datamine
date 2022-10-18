@@ -1,6 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 ::g_hud_tutorial_elements <- {
   [PERSISTENT_DATA_PARAMS] = ["visibleHTObjects", "isDebugMode", "debugBlkName"]
@@ -20,70 +27,70 @@ let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
   debugLastModified = -1
 }
 
-g_hud_tutorial_elements.init <- function init(v_nest)
+::g_hud_tutorial_elements.init <- function init(v_nest)
 {
-  let blkPath = getCurBlkName()
-  active = !!blkPath
+  let blkPath = this.getCurBlkName()
+  this.active = !!blkPath
 
-  if (!::checkObj(v_nest))
+  if (!checkObj(v_nest))
     return
-  nest  = v_nest
+  this.nest  = v_nest
 
-  initNestObjects()
-  if (!::checkObj(scene))
+  this.initNestObjects()
+  if (!checkObj(this.scene))
     return
 
-  scene.show(active)
-  if (!active)
+  this.scene.show(this.active)
+  if (!this.active)
     return
 
   if (::u.isEmpty(blkOptFromPath(blkPath)))
   {
     let msg = $"Hud_tutorial_elements: blk file is empty. (blkPath = {blkPath})"
-    ::dagor.debug(msg)
-    ::dagor.assertf(false, msg)
+    log(msg)
+    assert(false, msg)
     return
   }
 
-  ::dagor.debug($"Hud_tutorial_elements: loaded {blkPath}")
+  log($"Hud_tutorial_elements: loaded {blkPath}")
 
-  let guiScene = scene.getScene()
-  guiScene.replaceContent(scene, blkPath, this)
+  let guiScene = this.scene.getScene()
+  guiScene.replaceContent(this.scene, blkPath, this)
 
-  for (local i = 0; i < scene.childrenCount(); i++)
+  for (local i = 0; i < this.scene.childrenCount(); i++)
   {
-    let childObj = scene.getChild(i)
-    if (isDebugMode && childObj?.id)
-      updateVisibleObject(childObj.id, childObj.isVisible(), -1)
+    let childObj = this.scene.getChild(i)
+    if (this.isDebugMode && childObj?.id)
+      this.updateVisibleObject(childObj.id, childObj.isVisible(), -1)
     else
       childObj.show(false)
   }
 
-  guiScene.performDelayed(this, function() { refreshObjects() })
+  guiScene.performDelayed(this, function() { this.refreshObjects() })
 
-  if (isDebugMode)
-    addDebugTimer()
+  if (this.isDebugMode)
+    this.addDebugTimer()
   else
     ::g_hud_event_manager.subscribe("hudElementShow", function(data) {
-      onElementToggle(data)
+      this.onElementToggle(data)
     }, this)
 }
 
-g_hud_tutorial_elements.initNestObjects <- function initNestObjects()
+::g_hud_tutorial_elements.initNestObjects <- function initNestObjects()
 {
-  scene = nest.findObject("tutorial_elements_nest")
-  timersNest = nest.findObject("hud_message_timers")
+  this.scene = this.nest.findObject("tutorial_elements_nest")
+  this.timersNest = this.nest.findObject("hud_message_timers")
 }
 
-g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName()
+::g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName()
 {
-  if (isDebugMode)
-    return debugBlkName
+  if (this.isDebugMode)
+    return this.debugBlkName
 
-  return getBlkNameByCurMission()
+  return this.getBlkNameByCurMission()
 }
 
-g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission()
+::g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission()
 {
   let misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
@@ -93,35 +100,35 @@ g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMissio
   return ::u.isString(res) ? res : null
 }
 
-g_hud_tutorial_elements.reinit <- function reinit()
+::g_hud_tutorial_elements.reinit <- function reinit()
 {
-  if (!active || !::checkObj(nest))
+  if (!this.active || !checkObj(this.nest))
     return
 
   initNestObjects()
-  refreshObjects()
+  this.refreshObjects()
 }
 
-g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1)
+::g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1)
 {
-  local htObj = ::getTblValue(id, visibleHTObjects)
+  local htObj = getTblValue(id, this.visibleHTObjects)
   if (!show)
   {
     if (htObj)
     {
       htObj.show(false)
-      delete visibleHTObjects[id]
+      delete this.visibleHTObjects[id]
     }
     return null
   }
 
   if (!htObj || !htObj.isValid())
   {
-    htObj = ::HudTutorialObject(id, scene)
+    htObj = ::HudTutorialObject(id, this.scene)
     if (!htObj.isValid())
       return null
 
-    visibleHTObjects[id] <- htObj
+    this.visibleHTObjects[id] <- htObj
   }
 
   if (timeSec >= 0)
@@ -129,15 +136,15 @@ g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, 
   return htObj
 }
 
-g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
+::g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
 {
-  let curTimer = ::getTblValue(objId, timers)
+  let curTimer = getTblValue(objId, this.timers)
   if (!htObj || !htObj.hasTimer() || !htObj.isVisibleByTime())
   {
     if (curTimer)
     {
       curTimer.destroy()
-      delete timers[objId]
+      delete this.timers[objId]
     }
     return
   }
@@ -149,44 +156,44 @@ g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
     return
   }
 
-  if (!::checkObj(timersNest))
+  if (!checkObj(this.timersNest))
     return
 
-  timers[objId] <- ::Timer(timersNest, timeLeft, (@(objId) function () {
+  this.timers[objId] <- ::Timer(this.timersNest, timeLeft, (@(objId) function () {
     updateVisibleObject(objId, false)
-    if (objId in timers)
-      delete timers[objId]
+    if (objId in this.timers)
+      delete this.timers[objId]
   })(objId), this)
 }
 
-g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data)
+::g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data)
 {
-  if (!active || !::checkObj(scene))
+  if (!this.active || !checkObj(this.scene))
     return
 
-  let objId   = ::getTblValue("element", data, null)
-  let show  = ::getTblValue("show", data, false)
-  let timeSec = ::getTblValue("time", data, 0)
+  let objId   = getTblValue("element", data, null)
+  let show  = getTblValue("show", data, false)
+  let timeSec = getTblValue("time", data, 0)
 
   let htObj = updateVisibleObject(objId, show, timeSec)
   updateObjTimer(objId, htObj)
 }
 
-g_hud_tutorial_elements.getAABB <- function getAABB(name)
+::g_hud_tutorial_elements.getAABB <- function getAABB(name)
 {
   return hudElementsAabb(name)
 }
 
-g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
+::g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
 {
   let invalidObjects = []
-  foreach(id, htObj in visibleHTObjects)
+  foreach(id, htObj in this.visibleHTObjects)
   {
     let isVisible = htObj.isVisibleByTime()
     if (isVisible)
       if (!htObj.isValid())
-        htObj.refreshObj(id, scene)
-      else if (needUpdateAabb)
+        htObj.refreshObj(id, this.scene)
+      else if (this.needUpdateAabb)
         htObj.updateAabb()
 
     if (!isVisible || !htObj.isValid())
@@ -195,33 +202,33 @@ g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
 
   foreach(id in invalidObjects)
   {
-    let htObj = visibleHTObjects[id]
-    delete visibleHTObjects[id]
+    let htObj = this.visibleHTObjects[id]
+    delete this.visibleHTObjects[id]
     updateObjTimer(id, htObj)
   }
 
-  needUpdateAabb = false
+  this.needUpdateAabb = false
 }
 
-g_hud_tutorial_elements.onEventHudIndicatorChangedSize <- function onEventHudIndicatorChangedSize(params)
+::g_hud_tutorial_elements.onEventHudIndicatorChangedSize <- function onEventHudIndicatorChangedSize(_params)
 {
-  needUpdateAabb = true
+  this.needUpdateAabb = true
 }
 
-g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(params)
+::g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(_params)
 {
   if (::is_in_flight())
     return
 
   //all guiScenes destroy on loading so no need check objects one by one
-  visibleHTObjects.clear()
-  timers.clear()
-  isDebugMode = false
+  this.visibleHTObjects.clear()
+  this.timers.clear()
+  this.isDebugMode = false
 }
 
-g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer()
+::g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer()
 {
-  SecondsUpdater(scene,
+  SecondsUpdater(this.scene,
                    function(...)
                    {
                      return ::g_hud_tutorial_elements.onDbgUpdate()
@@ -229,38 +236,38 @@ g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer()
                    false)
 }
 
-g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate()
+::g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate()
 {
-  if (!isDebugMode)
+  if (!this.isDebugMode)
     return true
-  let modified = ::get_file_modify_time_sec(debugBlkName)
+  let modified = ::get_file_modify_time_sec(this.debugBlkName)
   if (modified < 0)
     return
 
-  if (debugLastModified < 0)
+  if (this.debugLastModified < 0)
   {
-    debugLastModified = modified
+    this.debugLastModified = modified
     return
   }
 
-  if (debugLastModified == modified)
+  if (this.debugLastModified == modified)
     return
 
-  debugLastModified = modified
-  init(nest)
+  this.debugLastModified = modified
+  init(this.nest)
 }
 
  //blkName = null to switchOff, blkName = "" to autodetect
-g_hud_tutorial_elements.debug <- function debug(blkName = "")
+::g_hud_tutorial_elements.debug <- function debug(blkName = "")
 {
   if (blkName == "")
     blkName = getBlkNameByCurMission()
 
-  isDebugMode = ::u.isString(blkName) && blkName.len()
-  debugBlkName = blkName
-  debugLastModified = -1
-  init(nest)
-  return debugBlkName
+  this.isDebugMode = ::u.isString(blkName) && blkName.len()
+  this.debugBlkName = blkName
+  this.debugLastModified = -1
+  init(this.nest)
+  return this.debugBlkName
 }
 
 ::g_script_reloader.registerPersistentDataFromRoot("g_hud_tutorial_elements")

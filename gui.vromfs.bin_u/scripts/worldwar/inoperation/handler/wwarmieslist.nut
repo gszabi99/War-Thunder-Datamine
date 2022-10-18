@@ -1,5 +1,11 @@
-::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapArmiesList"
   sceneBlkName = null
@@ -25,16 +31,16 @@
     itemsPerPageWithPaginator = getArmiesPerPage()
     itemsPerPageWithoutPaginator = getArmiesPerPage(true)
 
-    let tabListObj = scene.findObject("armies_by_status_list")
+    let tabListObj = this.scene.findObject("armies_by_status_list")
     fillContent()
-    if (::check_obj(tabListObj))
+    if (checkObj(tabListObj))
       tabListObj.setValue(0)
   }
 
   function fillContent()
   {
-    let contentObj = scene.findObject("armies_tab_content")
-    if (!::check_obj(contentObj))
+    let contentObj = this.scene.findObject("armies_tab_content")
+    if (!checkObj(contentObj))
       return
 
     let emptyViewData = ::g_ww_map_armies_status_tab_type.UNKNOWN.getEmptyContentViewData()
@@ -42,21 +48,21 @@
       emptyViewData.army.append({})
 
     let markUpData = ::handyman.renderCached(contentBlockTplName, emptyViewData)
-    guiScene.replaceContentFromText(contentObj, markUpData, markUpData.len(), this)
+    this.guiScene.replaceContentFromText(contentObj, markUpData, markUpData.len(), this)
   }
 
   function getArmiesPerPage(withoutPaginator = false)
   {
-    let contentObj = scene.findObject("armies_tab_content")
-    if (!::check_obj(contentObj))
+    let contentObj = this.scene.findObject("armies_tab_content")
+    if (!checkObj(contentObj))
       return 0
 
     let armiesContentSize = contentObj.getSize()
-    let armyIconSize = guiScene.calcString("1@wwArmyIco", contentObj)
+    let armyIconSize = this.guiScene.calcString("1@wwArmyIco", contentObj)
     local contentHeight = armiesContentSize[1]
     if (withoutPaginator)
     {
-      let paginatorNestObj = scene.findObject("paginator_nest_obj")
+      let paginatorNestObj = this.scene.findObject("paginator_nest_obj")
       contentHeight += paginatorNestObj.getSize()[1]
     }
     return (armiesContentSize[0] / armyIconSize).tointeger()
@@ -65,7 +71,7 @@
 
   function getSceneTplContainerObj()
   {
-    return scene
+    return this.scene
   }
 
   function getSceneTplView()
@@ -75,7 +81,7 @@
 
   function isValid()
   {
-    return ::check_obj(scene) && ::check_obj(scene.findObject("armies_object"))
+    return checkObj(this.scene) && checkObj(this.scene.findObject("armies_object"))
   }
 
   function getArmiesStateTabs()
@@ -105,8 +111,8 @@
   {
     foreach(tab in tabOrder)
     {
-      let tabCountObj = scene.findObject("army_by_state_title_count_" + tab.status)
-      if (::check_obj(tabCountObj))
+      let tabCountObj = this.scene.findObject("army_by_state_title_count_" + tab.status)
+      if (checkObj(tabCountObj))
         tabCountObj.setValue(tab.getArmiesCountText())
     }
   }
@@ -116,8 +122,8 @@
     updateCurItemsPerPage()
     updatePaginator()
 
-    let contentObj = scene.findObject("armies_tab_content")
-    if (!::check_obj(contentObj))
+    let contentObj = this.scene.findObject("armies_tab_content")
+    if (!checkObj(contentObj))
       return
 
     let contentViewData = lastTabSelected.getContentViewData(curItemsPerPage, currentPage)
@@ -154,7 +160,7 @@
   function updateScene(contentObj, viewData, index)
   {
     let viewObj = contentObj.getChild(index)
-    if (!::check_obj(viewObj))
+    if (!checkObj(viewObj))
       return
 
     let isShow = viewData != null
@@ -170,14 +176,14 @@
     viewObj["selected"] = viewData.name == selectedArmyName ? "yes" : "no"
 
     let armyIconObj = viewObj.findObject("armyIcon")
-    if (::check_obj(armyIconObj))
+    if (checkObj(armyIconObj))
     {
       armyIconObj["team"] = viewData.getTeamColor()
       armyIconObj["isBelongsToMyClan"] = viewData.isBelongsToMyClan() ? "yes" : "no"
       armyIconObj.findObject("entrenchIcon").show(viewData.isEntrenched())
 
       let armyUnitTypeObj = armyIconObj.findObject("armyUnitType")
-      if (::check_obj(armyUnitTypeObj))
+      if (checkObj(armyUnitTypeObj))
         armyUnitTypeObj.setValue(viewData.getUnitTypeCustomText())
     }
   }
@@ -209,7 +215,7 @@
     ::ww_update_hover_army_name(obj.armyName)
   }
 
-  function onHoverLostArmyItem(obj)
+  function onHoverLostArmyItem(_obj)
   {
     ::ww_update_hover_army_name("")
   }
@@ -226,9 +232,9 @@
 
     ::ww_event("ShowLogArmy", { wwArmy = wwArmy })
 
-    let mapObj = guiScene["worldwar_map"]
+    let mapObj = this.guiScene["worldwar_map"]
     ::ww_gui_bhv.worldWarMapControls.selectArmy.call(::ww_gui_bhv.worldWarMapControls, mapObj, obj.armyName)
-    guiScene.playSound("ww_unit_select")
+    this.guiScene.playSound("ww_unit_select")
   }
 
   function setArmyViewSelection(armyName, isSelected)
@@ -236,12 +242,12 @@
     if (armyName == selectedArmyName && isSelected)
       return
 
-    let contentObj = scene.findObject("armies_tab_content")
-    if (::check_obj(contentObj))
+    let contentObj = this.scene.findObject("armies_tab_content")
+    if (checkObj(contentObj))
       for(local i = 0; i < itemsPerPageWithoutPaginator; i++)
       {
         let viewObj = contentObj.getChild(i)
-        if (!::check_obj(viewObj))
+        if (!checkObj(viewObj))
           break
 
         if (viewObj.armyName == selectedArmyName)
@@ -255,10 +261,10 @@
 
   function onEventWWMapArmiesByStatusUpdated(params)
   {
-    if (!isSceneActiveNoModals())
-      return doWhenActiveOnce("fullViewUpdate")
+    if (!this.isSceneActiveNoModals())
+      return this.doWhenActiveOnce("fullViewUpdate")
 
-    let armies = ::getTblValue("armies", params)
+    let armies = getTblValue("armies", params)
     if (::u.isEmpty(armies))
       return
 
@@ -277,7 +283,7 @@
     updateTabContent(::u.indexBy(curTabArmies, "name"))
   }
 
-  function onEventWWMapArmySelected(params)
+  function onEventWWMapArmySelected(_params)
   {
     let selectedArmyNames = ::ww_get_selected_armies_names()
     if (::u.isEmpty(selectedArmyNames))
@@ -290,7 +296,7 @@
     setArmyViewSelection(armyName, true)
   }
 
-  function onEventWWMapClearSelection(params)
+  function onEventWWMapClearSelection(_params)
   {
     setArmyViewSelection(selectedArmyName, false)
   }

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 ::Input.Axis <- class extends ::Input.InputBase
@@ -37,12 +43,12 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
       view = {}
     }
 
-    if (deviceId == ::JOYSTICK_DEVICE_0_ID)
+    if (deviceId == JOYSTICK_DEVICE_0_ID)
     {
       data.view.buttonImage <- getImage()
       data.template = "%gui/shortcutAxis"
     }
-    else if (deviceId == ::STD_MOUSE_DEVICE_ID)
+    else if (deviceId == STD_MOUSE_DEVICE_ID)
     {
       data.view.buttonImage <- getImage()
       data.template = "%gui/shortcutAxis"
@@ -72,14 +78,14 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
   function getImage()
   {
-    if (deviceId == ::JOYSTICK_DEVICE_0_ID)
+    if (deviceId == JOYSTICK_DEVICE_0_ID)
     {
       local axis = GAMEPAD_AXIS.NOT_AXIS
       if (axisId >= 0)
         axis = 1 << axisId
       return gamepadIcons.getGamepadAxisTexture(axis | axisModifyer)
     }
-    else if (deviceId == ::STD_MOUSE_DEVICE_ID)
+    else if (deviceId == STD_MOUSE_DEVICE_ID)
       return gamepadIcons.getMouseAxisTexture(mouseAxis | axisModifyer)
 
     return null

@@ -1,9 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { get_gui_option } = require("guiOptions")
 ::dynamic_req_country_rank <- 1
 
-::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts()
-{
+::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts() {
   ::handlersManager.loadHandler(::gui_handlers.DynamicLayouts)
 }
 
@@ -14,7 +21,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
 
   wndOptionsMode = ::OPTIONS_MODE_DYNAMIC
-  wndGameMode = ::GM_DYNAMIC
+  wndGameMode = GM_DYNAMIC
 
   descItems = ["name", "maintext"]
   yearsArray = []
@@ -23,30 +30,30 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
 
   function initScreen()
   {
-    guiScene.replaceContent("mission_desc", "%gui/missionDescr.blk")
-    let headerTitle = scene.findObject("chapter_name")
-    headerTitle.setValue(::loc("mainmenu/btnDynamic"))
-    ::showBtn("btn_back", false, scene.findObject("nav-help"))
+    this.guiScene.replaceContent("mission_desc", "%gui/missionDescr.blk")
+    let headerTitle = this.scene.findObject("chapter_name")
+    headerTitle.setValue(loc("mainmenu/btnDynamic"))
+    ::showBtn("btn_back", false, this.scene.findObject("nav-help"))
     yearsArray = ::get_option(::USEROPT_YEAR).values
 
-    scene.findObject("optionlist-container").mislist = "yes"
+    this.scene.findObject("optionlist-container").mislist = "yes"
 
-    updateMouseMode()
-    initDescHandler()
+    this.updateMouseMode()
+    this.initDescHandler()
     initMissionsList()
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
+    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initMissionsList(...)
   {
     missions = []
     add_missions()
-    let listObj = scene.findObject("items_list")
+    let listObj = this.scene.findObject("items_list")
     let missionsList = generateMissionsList()
 
-    guiScene.replaceContentFromText(listObj, missionsList, missionsList.len(), this)
+    this.guiScene.replaceContentFromText(listObj, missionsList, missionsList.len(), this)
     for (local i = 0; i < listObj.childrenCount(); i++)
-      listObj.getChild(i).setIntProp(listIdxPID, i)
+      listObj.getChild(i).setIntProp(this.listIdxPID, i)
     listObj.setValue(missions.len() ? 0 : -1)
 
     refreshMissionDesc()
@@ -85,10 +92,10 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       local isAnyCountryUnlocked = false
       local isAnyYearUnlocked = false
       local lockReason = ""
-      foreach (idx, country in misDescr.countries)
+      foreach (_idx, country in misDescr.countries)
       {
         let countryId = misDescr.id + "_" + country
-        local isCountryUnlocked = ::is_unlocked_scripted(::UNLOCKABLE_DYNCAMPAIGN, countryId)
+        local isCountryUnlocked = ::is_unlocked_scripted(UNLOCKABLE_DYNCAMPAIGN, countryId)
         if (!isCountryUnlocked)
           lockReason += (lockReason.len() ? "\n" : "") + getFullUnlockDescByName(countryId) + "\n"
         else
@@ -97,7 +104,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
           {
             local is_unlocked = false
             let yearId = "country_" + country + "_" + year
-            if (::is_unlocked_scripted(::UNLOCKABLE_YEAR, yearId))
+            if (::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId))
             {
               isAnyYearUnlocked = true
               is_unlocked = true
@@ -171,8 +178,8 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     let missionBlock = missions?[getSelectedMission()]
     if (missionBlock != null && missionBlock?.descConfig == null)
       missionBlock.descConfig <- buildMissionDescConfig(missionBlock)
-    if (missionDescWeak)
-      missionDescWeak.applyDescConfig(missionBlock?.descConfig ?? {})
+    if (this.missionDescWeak)
+      this.missionDescWeak.applyDescConfig(missionBlock?.descConfig ?? {})
     updateButtons()
   }
 
@@ -182,9 +189,9 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     local isAnyCountryUnlocked = false
     if (missionBlock)
     {
-      config.name <- ::loc(missionBlock.locName)
+      config.name <- loc(missionBlock.locName)
       local reqText = missionBlock.unlockText
-      foreach(idx, country in missionBlock.countries)
+      foreach(_idx, country in missionBlock.countries)
       {
         let countryUnlocked = checkCountry(country) && missionBlock.unlocks.country[missionBlock.id + "_" + country]
         config.countries += format("optionImg{ background-image:t='%s'; enable:t='%s' } ",
@@ -194,9 +201,9 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       }
 
       if(reqText != "")
-        reqText = "<color=@badTextColor>" + ::loc("dynamic/requireForUnlock") + ::loc("ui/colon") + "\n" + reqText + "</color>\n"
+        reqText = "<color=@badTextColor>" + loc("dynamic/requireForUnlock") + loc("ui/colon") + "\n" + reqText + "</color>\n"
 
-      config.maintext <- reqText + ::loc("dynamic/"+ missionBlock.id + "/desc", "")
+      config.maintext <- reqText + loc("dynamic/"+ missionBlock.id + "/desc", "")
       config.canStart <- isAnyCountryUnlocked
     }
     return config
@@ -208,8 +215,8 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     let countryId = missionBlock.id + "_" + country
     if(!(countryId in missionBlock.unlocks.country))
     {
-      ::dagor.assertf(false, "Not found unlock " + countryId)
-      ::debugTableData(missionBlock.countries)
+      assert(false, "Not found unlock " + countryId)
+      debugTableData(missionBlock.countries)
       return false
     }
     return true
@@ -219,30 +226,30 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
   {
     let selectedMission = missions?[getSelectedMission()]
 
-    let hoveredMission = isMouseMode ? null : missions?[hoveredIdx]
-    let isCurItemInFocus = isMouseMode || (hoveredMission != null && hoveredMission == selectedMission)
+    let hoveredMission = this.isMouseMode ? null : missions?[this.hoveredIdx]
+    let isCurItemInFocus = this.isMouseMode || (hoveredMission != null && hoveredMission == selectedMission)
 
     this.showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
 
     let canStart = isCurItemInFocus && (selectedMission?.descConfig.canStart ?? false)
-    ::showBtn("btn_start", isCurItemInFocus && selectedMission != null, scene)
-    scene.findObject("btn_start").enable(canStart)
+    ::showBtn("btn_start", isCurItemInFocus && selectedMission != null, this.scene)
+    this.scene.findObject("btn_start").enable(canStart)
   }
 
-  function onEventSquadStatusChanged(params)
+  function onEventSquadStatusChanged(_params)
   {
-    doWhenActiveOnce("updateButtons")
+    this.doWhenActiveOnce("updateButtons")
   }
 
   function getSelectedMission()
   {
-    let list = scene.findObject("items_list")
-    if(::checkObj(list))
+    let list = this.scene.findObject("items_list")
+    if(checkObj(list))
       return list.getValue()
     return -1
   }
 
-  function onItemSelect(obj)
+  function onItemSelect(_obj)
   {
     refreshMissionDesc()
   }
@@ -256,10 +263,10 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     let missionBlock = missions[index]
     local isAnyCountryUnlocked = false
 
-    foreach (cName, countryUnlocked in missionBlock.unlocks.country)
+    foreach (_cName, countryUnlocked in missionBlock.unlocks.country)
     {
       if (countryUnlocked && missionBlock.unlocks.years.len())
-        foreach (yName, yearUnlocked in missionBlock.unlocks.years)
+        foreach (_yName, yearUnlocked in missionBlock.unlocks.years)
           if (yearUnlocked)
           {
             isAnyCountryUnlocked = true
@@ -286,17 +293,29 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       [::USEROPT_DIFFICULTY, "spinner"]
     ]
 
-    createModalOptions(options, function()
-      {
-        if (owner)
-        {
-          owner.finalApply.call(owner)
+    this.createModalOptions(options, Callback(checkCustomDifficulty, this))
+  }
 
-          if (::mission_settings.dynlist.len() == 0)
-            this.msgBox("no_missions_error", ::loc("msgbox/appearError"),
-                   [["ok", goBack ]], "ok", { cancel_fn = goBack});
-        }
-      })
+  function finalApplyCallback()
+  {
+    finalApply()
+    if (::mission_settings.dynlist.len() == 0)
+      this.msgBox("no_missions_error", loc("msgbox/appearError"),
+        [["ok", goBack ]], "ok", { cancel_fn = goBack});
+  }
+
+  function checkCustomDifficulty()
+  {
+    let diffCode = ::mission_settings.diff
+    if (!::check_diff_pkg(diffCode))
+      return
+
+    this.checkedNewFlight(function() {
+      if (get_gui_option(::USEROPT_DIFFICULTY) == "custom")
+        ::gui_start_cd_options(finalApplyCallback, this)
+      else
+        finalApplyCallback()
+    })
   }
 
   function finalApply()
@@ -331,7 +350,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     settings.setInt("difficulty", desc.value);
 
     ::dynamic_init(settings, map);
-    let dynListBlk = DataBlock();
+    let dynListBlk = ::DataBlock();
     ::mission_settings.dynlist <- ::dynamic_get_list(dynListBlk, false)
 
     local playerCountry = ""
@@ -348,10 +367,10 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       if (playerCountry == "")
         playerCountry = misblk.getStr(team == 1 ? "country_allies" : "country_axis","ussr")
     }
-    ::add_mission_list_full(::GM_DYNAMIC, add, ::mission_settings.dynlist)
+    ::add_mission_list_full(GM_DYNAMIC, add, ::mission_settings.dynlist)
     ::first_generation <- true
 
-    goForwardCheckEntitlement(::gui_start_dynamic_summary, {
+    this.goForwardCheckEntitlement(::gui_start_dynamic_summary, {
       minRank = ::dynamic_req_country_rank
       rankCountry = playerCountry
       silentFeature = "ModeDynamic"
@@ -364,7 +383,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
   }
 
   function afterModalDestroy() {
-    restoreMainOptions()
+    this.restoreMainOptions()
   }
 
   function onFav(){}

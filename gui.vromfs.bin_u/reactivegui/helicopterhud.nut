@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let mfdHud = require("mfd.nut")
 let heliIlsHud = require("heliIls.nut")
 
@@ -191,12 +193,12 @@ let helicopterRoot = {
   ]
 
   function onAttach() {
-    ::gui_scene.addPanel(0, mfdHud)
-    ::gui_scene.addPanel(1, heliIlsHud)
+    gui_scene.addPanel(0, mfdHud)
+    gui_scene.addPanel(1, heliIlsHud)
   }
   function onDetach() {
-    ::gui_scene.removePanel(0)
-    ::gui_scene.removePanel(1)
+    gui_scene.removePanel(0)
+    gui_scene.removePanel(1)
   }
 }
 

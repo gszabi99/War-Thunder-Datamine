@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -24,7 +29,7 @@ let function formatSessionInfo(data, isCreateRequest=true)
   let info = {
     sessionPrivacy = data.isPrivate ? "private" : "public"
     sessionMaxUser = data.maxUsers
-    sessionName = data.locIdsArray.map(@(id) ::loc(id, "")).reduce(@(res,str) res+str)
+    sessionName = data.locIdsArray.map(@(id) loc(id, "")).reduce(@(res,str) res+str)
     localizedSessionNames = names.map(@(n) {npLanguage = n.abbreviation, sessionName = n.text})
     sessionLockFlag = false
   }
@@ -44,7 +49,7 @@ let sessionParams = {
       let defaultLoc = ["missions/" + ::SessionLobby.getMissionName(true)]
       return {
         index = 0
-        locIdsArray = u.isEmpty(missionLoc) ? defaultLoc : missionLoc
+        locIdsArray = ::u.isEmpty(missionLoc) ? defaultLoc : missionLoc
         maxUsers = ::SessionLobby.getMaxMembersCount()
         isPrivate = ::SessionLobby.getPublicParam("friendOnly", false)
                  || !::SessionLobby.getPublicParam("allowJip", true)
@@ -89,7 +94,7 @@ let function create(sType, cb = psn.noOpCb) {
     cb(response, err)
   }
   psn.send(psn.session.create(formatSessionInfo(params.info()), params.image(), params.data()),
-           ::Callback(saveSession, this))
+           Callback(saveSession, this))
 }
 
 let function invite(session, invitee, cb=psn.noOpCb) {
@@ -110,7 +115,7 @@ let function join(session, invitation=null, cb=psn.noOpCb) {
       if (err)
         sessions.update(@(v) delete v[session])
       else // Mark all invitations to this particular session as used
-        psn.send(psn.invitation.list(), function(r, e) {
+        psn.send(psn.invitation.list(), function(r, _e) {
               let all = r?.invitations ?? []
               let toMark = all.filter(@(i) !i.usedFlag && i.sessionId == session)
               toMark.apply(@(i) psn.send(psn.invitation.use(i.invitationId)))
@@ -118,17 +123,17 @@ let function join(session, invitation=null, cb=psn.noOpCb) {
 
       cb(response, err)
     }
-    psn.send(psn.session.join(session), ::Callback(afterJoin, this))
+    psn.send(psn.session.join(session), Callback(afterJoin, this))
   }
 }
 
 let function update(session, info) {
   let psnSession = sessions.value?[session]
-  let shouldUpdate = !u.isEqual((psnSession && psnSession?.info) || {}, info)
-  ::dagor.debug("[PSSI] update "+ session+" ("+psnSession+"): "+ shouldUpdate)
+  let shouldUpdate = !::u.isEqual((psnSession && psnSession?.info) || {}, info)
+  log("[PSSI] update "+ session+" ("+psnSession+"): "+ shouldUpdate)
 
   if (shouldUpdate)
-    psn.send(psn.session.update(session, formatSessionInfo(info, false)), function(r,e) {
+    psn.send(psn.session.update(session, formatSessionInfo(info, false)), function(_r,e) {
           if (!e)
             psnSession.info <- info
         })
@@ -142,7 +147,7 @@ let function leave(session, cb=psn.noOpCb) {
         sessions.update(@(v) delete v[session])
       cb(response, err)
     }
-    psn.send(psn.session.leave(session), ::Callback(afterLeave, this))
+    psn.send(psn.session.leave(session), Callback(afterLeave, this))
   }
   else
     cb({}, 0)
@@ -158,39 +163,39 @@ let function checkAfterFlight() {
 }
 
 subscriptions.addListenersWithoutEnv({
-  RoomJoined = function(p) {
-    if (!isPlatformSony || ::get_game_mode() != ::GM_SKIRMISH)
+  RoomJoined = function(_p) {
+    if (!isPlatformSony || ::get_game_mode() != GM_SKIRMISH)
       return
 
     let session = ::SessionLobby.getExternalId()
-    ::dagor.debug("[PSSI] onEventRoomJoined: "+session)
-    if (u.isEmpty(session) && ::SessionLobby.isRoomOwner)
-      create(PSN_SESSION_TYPE.SKIRMISH, @(r,e) ::SessionLobby.setExternalId(r?.sessionId))
+    log("[PSSI] onEventRoomJoined: "+session)
+    if (::u.isEmpty(session) && ::SessionLobby.isRoomOwner)
+      create(PSN_SESSION_TYPE.SKIRMISH, @(r,_e) ::SessionLobby.setExternalId(r?.sessionId))
     else if (session && !(session in sessions.value))
       join(session, {key=PSN_SESSION_TYPE.SKIRMISH})
   }
-  LobbyStatusChange = function(p)
+  LobbyStatusChange = function(_p)
   {
-    ::dagor.debug("[PSSI] onEventLobbyStatusChange in room "+::SessionLobby.isInRoom())
+    log("[PSSI] onEventLobbyStatusChange in room "+::SessionLobby.isInRoom())
     // Leave psn session, join has its own event. Actually leave all skirmishes,
     // we can have only one in game but we no longer know it's psn Id in Lobby
     if (isPlatformSony && !::SessionLobby.isInRoom())
-      foreach(id,s in sessions.value.filter(@(s) s.type == PSN_SESSION_TYPE.SKIRMISH))
+      foreach(id,_s in sessions.value.filter(@(s) s.type == PSN_SESSION_TYPE.SKIRMISH))
         leave(id)
   }
-  LobbySettingsChange = function(p)
+  LobbySettingsChange = function(_p)
   {
     let session = ::SessionLobby.getExternalId()
-    if (!isPlatformSony || u.isEmpty(session))
+    if (!isPlatformSony || ::u.isEmpty(session))
       return
 
-    ::dagor.debug("[PSSI] onEventLobbySettingsChange for " + session)
+    log("[PSSI] onEventLobbySettingsChange for " + session)
     if (::SessionLobby.isRoomOwner)
       update(session, sessionParams[PSN_SESSION_TYPE.SKIRMISH].info())
     else if (!(session in sessions.value))
       join(session, {key=PSN_SESSION_TYPE.SKIRMISH})
   }
-  SquadStatusChanged = function(p)
+  SquadStatusChanged = function(_p)
   {
     if (!isPlatformSony)
       return
@@ -198,9 +203,9 @@ subscriptions.addListenersWithoutEnv({
     let session = ::g_squad_manager.getPsnSessionId()
     let isLeader = ::g_squad_manager.isSquadLeader()
     let isInPsnSession = session in sessions.value
-    ::dagor.debug("[PSSI] onEventSquadStatusChanged " + ::g_squad_manager.state + " for " + session)
-    ::dagor.debug("[PSSI] onEventSquadStatusChanged leader: " + isLeader + ", psnSessions: " + sessions.value.len())
-    ::dagor.debug("[PSSI] onEventSquadStatusChanged session bound to PSN: " + isInPsnSession)
+    log("[PSSI] onEventSquadStatusChanged " + ::g_squad_manager.state + " for " + session)
+    log("[PSSI] onEventSquadStatusChanged leader: " + isLeader + ", psnSessions: " + sessions.value.len())
+    log("[PSSI] onEventSquadStatusChanged session bound to PSN: " + isInPsnSession)
 
     let bindSquadSession = function(r,e) {
       if (!e && r?.sessionId)
@@ -217,9 +222,9 @@ subscriptions.addListenersWithoutEnv({
           join(session, {key = PSN_SESSION_TYPE.SQUAD})
         if (!isLeader && sessions.value[session]?.info) // Leadership transfer
           sessions.update(@(v) delete v[session].info)
-        else if (isLeader && u.isEmpty(session)) // Squad implicitly created
+        else if (isLeader && ::u.isEmpty(session)) // Squad implicitly created
           create(PSN_SESSION_TYPE.SQUAD, bindSquadSession)
-        else if (isLeader && u.isEmpty(sessions.value)) // Autotransfer on login
+        else if (isLeader && ::u.isEmpty(sessions.value)) // Autotransfer on login
           create(PSN_SESSION_TYPE.SQUAD, bindSquadSession)
         else if (isLeader && sessions.value?[session] && !sessions.value[session]?.info) // Leadership transfer
         {
@@ -237,42 +242,42 @@ subscriptions.addListenersWithoutEnv({
 })
 
 let function onPsnInvitation(invitation) {
-  ::dagor.debug("[PSSI] PSN invite "+invitation.invitationId+" to "+invitation.sessionId)
+  log("[PSSI] PSN invite "+invitation.invitationId+" to "+invitation.sessionId)
   let delayInvitation = function(i, cb) {
     i.processDelayed <- cb
     invitations.update(@(v) v.append(i))
   }
   let isInPsnSession = invitation.sessionId in sessions.value
 
-  if (u.isEmpty(invitation.sessionId) || isInPsnSession)
+  if (::u.isEmpty(invitation.sessionId) || isInPsnSession)
     return // Most-likely we are joining from PS4 Blue Screen
 
   if (!::g_login.isLoggedIn() || ::is_in_loading_screen())
   {
-    ::dagor.debug("[PSSI] delaying PSN invite until logged in and loaded")
+    log("[PSSI] delaying PSN invite until logged in and loaded")
     delayInvitation(invitation, ::on_ps4_session_invitation)
     return
   }
 
   if (isInPsnSession)
   {
-    ::dagor.debug("[PSSI] stale PSN invite: already joined")
+    log("[PSSI] stale PSN invite: already joined")
     psn.send(psn.invitation.use(invitation.invitationId)) // Stale PSN-invitation
     return
   }
 
   if (!::isInMenu())
   {
-    ::dagor.debug("[PSSI] delaying PSN invite until in menu")
+    log("[PSSI] delaying PSN invite until in menu")
     delayInvitation(invitation, ::on_ps4_session_invitation)
     ::get_cur_gui_scene().performDelayed(this, function() {
-      ::showInfoMsgBox(::loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
+      ::showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
     })
     return
   }
 
   let acceptInvitation = function(response, err) {
-    ::dagor.debug("[PSSI] ready to accept PSN invite, error " + err)
+    log("[PSSI] ready to accept PSN invite, error " + err)
     if (!err)
     {
       let fullInfo = ::u.extend(response, invitation)

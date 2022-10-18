@@ -550,6 +550,9 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -1908,6 +1911,122 @@
         "wheel_l_03": 0.3,
         "wheel_r_03": 0.3
       }
+    }
+  },
+  "PhysSys": {
+    "find": "bone_suspension_(\\w)_(\\d+)$",
+    "points": {
+      "lever": {
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2"
+      },
+      "suspension_01_03": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_03"
+      },
+      "suspension_01_04": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_04"
+      },
+      "suspension_01_05": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_05"
+      },
+      "wheel": {
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "parent": "lever",
+          "find": "bone_wheel_"
+        }
+      }
+    },
+    "constraints": {
+      "edge": [
+        {
+          "from": "lever",
+          "to": "wheel"
+        },
+        {
+          "moveOnly": true,
+          "from": "suspension_01_05",
+          "to": "suspension_01_03",
+          "rotateSecond": true
+        },
+        {
+          "from": "suspension_01_03",
+          "to": "suspension_01_04",
+          "moveNodes": false,
+          "moveOnly": true
+        },
+        {
+          "moveNodes": false,
+          "from": "suspension_01_04",
+          "to": "suspension_01_05"
+        }
+      ],
+      "projection": [
+        {
+          "moveEdge": true,
+          "point": "lever",
+          "from": "suspension_01_05",
+          "to": "wheel",
+          "movePoint": false,
+          "moveEdgeNodes": false
+        },
+        {
+          "movePoint": false,
+          "moveEdge": true,
+          "point": "lever",
+          "from": "suspension_01_03",
+          "to": "suspension_01_05"
+        }
+      ]
     }
   },
   "repairParts": {

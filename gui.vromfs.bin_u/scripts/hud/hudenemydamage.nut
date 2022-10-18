@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 
 ::hudEnemyDamage <- {
@@ -80,7 +86,7 @@ let { format } = require("string")
   enabled = true
   lastTargetId = null
   lastTargetVersion = null
-  lastTargetType = ::ES_UNIT_TYPE_INVALID
+  lastTargetType = ES_UNIT_TYPE_INVALID
   lastTargetKilled = false
   partsConfig = {}
 
@@ -88,7 +94,7 @@ let { format } = require("string")
 
   function init(nest)
   {
-    if (!::checkObj(nest))
+    if (!checkObj(nest))
       return
 
     scene = nest
@@ -111,7 +117,7 @@ let { format } = require("string")
   {
     enabled = ::get_show_destroyed_parts()
 
-    if (::checkObj(listObj))
+    if (checkObj(listObj))
       listObj.pos = ::get_option_xray_kill() ? listObj.posHitcamOn : listObj.posHitcamOff
   }
 
@@ -119,7 +125,7 @@ let { format } = require("string")
   {
     lastTargetId = null
     lastTargetVersion = null
-    lastTargetType = ::ES_UNIT_TYPE_INVALID
+    lastTargetType = ES_UNIT_TYPE_INVALID
     lastTargetKilled = false
 
     partsConfig = {}
@@ -135,16 +141,16 @@ let { format } = require("string")
 
   function rebuildWidgets()
   {
-    if (!::check_obj(listObj))
+    if (!checkObj(listObj))
       return
 
     local markup = ""
-    foreach (sectionIdx, section in partsOrder)
+    foreach (_sectionIdx, section in partsOrder)
     {
       foreach (partId in section.parts)
         markup += ::handyman.renderCached(("%gui/hud/hudEnemyDamage"), {
           id = partId
-          text = ::loc($"dmg_msg_short/{partId}")
+          text = loc($"dmg_msg_short/{partId}")
         })
     }
     guiScene.replaceContentFromText(listObj, markup, markup.len(), this)
@@ -152,14 +158,14 @@ let { format } = require("string")
 
   function resetWidgets()
   {
-    foreach (sectionIdx, section in partsOrder)
+    foreach (_sectionIdx, section in partsOrder)
       foreach (partId in section.parts)
         hidePart(partId)
   }
 
   function onEnemyPartDamage(data)
   {
-    if (!enabled || !::checkObj(listObj))
+    if (!enabled || !checkObj(listObj))
       return
 
     /*
@@ -193,7 +199,7 @@ let { format } = require("string")
       resetTargetData()
       lastTargetId = unitId
       lastTargetVersion = unitVersion
-      lastTargetType = data?.unitType ?? ::ES_UNIT_TYPE_INVALID
+      lastTargetType = data?.unitType ?? ES_UNIT_TYPE_INVALID
       lastTargetKilled = data?.unitKilled ?? false
     }
     else
@@ -212,7 +218,7 @@ let { format } = require("string")
     cfg.dmParts[data.partDmName].partHp <- showHp
 
     let isHit = partKilled || partDmg > 0
-    let isTank = lastTargetType == ::ES_UNIT_TYPE_TANK
+    let isTank = lastTargetType == ES_UNIT_TYPE_TANK
     let thresholdShowHealthBelow = isTank ? tankThresholdShowHp : 1.0
     let brightnessKill = isTank ? tankBrightnessKill : 0.0
     cfg.show = isHit && showHp < thresholdShowHealthBelow
@@ -231,8 +237,8 @@ let { format } = require("string")
     if (::is_multiplayer() || lastTargetKilled)
       return
 
-    let unitId      = ::getTblValue("unitId", params)
-    let unitVersion = ::getTblValue("unitVersion", params)
+    let unitId      = getTblValue("unitId", params)
+    let unitVersion = getTblValue("unitVersion", params)
     if (unitId == null || unitId != lastTargetId || unitVersion != lastTargetVersion)
       return
 
@@ -246,10 +252,10 @@ let { format } = require("string")
 
   function showPart(partId, color, isKilled)
   {
-    if (!::checkObj(listObj))
+    if (!checkObj(listObj))
       return
     let obj = listObj.findObject(partId)
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
     obj.color = color
     obj.partKilled = isKilled ? "yes" : "no"
@@ -258,16 +264,16 @@ let { format } = require("string")
 
   function hidePart(partId)
   {
-    if (!::checkObj(listObj))
+    if (!checkObj(listObj))
       return
     let obj = listObj.findObject(partId)
-    if (::checkObj(obj) && obj?._blink != "no")
+    if (checkObj(obj) && obj?._blink != "no")
       obj._blink = "no"
   }
 
   function onEnemyDamageAnimationFinish(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
     if (!(obj?.id in partsConfig))
       return
@@ -278,7 +284,7 @@ let { format } = require("string")
 
   function isAllAnimationsFinished()
   {
-    foreach (partName, cfg in partsConfig)
+    foreach (_partName, cfg in partsConfig)
       if (cfg.show)
         return false
     return true

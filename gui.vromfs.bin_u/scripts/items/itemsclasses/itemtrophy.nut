@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let { hoursToString, secondsToHours, getTimestampFromStringUtc,
   TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
@@ -48,7 +54,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
     showCountryFlag = blk?.showCountryFlag ?? ""
     numTotal = blk?.numTotal ?? 0
     isGroupTrophy = numTotal > 0 && !blk?.repeatable //for repeatable work as usual
-    groupTrophyStyle = blk?.groupTrophyStyle ?? iconStyle
+    groupTrophyStyle = blk?.groupTrophyStyle ?? this.iconStyle
     openingCaptionLocId = blk?.captionLocId
     showDropChance = blk?.showDropChance ?? false
     showTillValue = blk?.showTillValue ?? false
@@ -114,15 +120,15 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       return ""
 
     if (t == 0)
-      return ::loc(itemExpiredLocId)
+      return loc(this.itemExpiredLocId)
 
     let res = "".concat(
-      ::loc("icon/hourglass"),
+      loc("icon/hourglass"),
       ::nbsp,
       ::stringReplace(hoursToString(secondsToHours(t), false, true, true), " ", ::nbsp))
 
-    return t <= TIME_DAY_IN_SECONDS  ? ::colorize("@red", res)
-         : t <= TIME_WEEK_IN_SECONDS ? ::colorize("@itemSoonExpireColor", res)
+    return t <= TIME_DAY_IN_SECONDS  ? colorize("@red", res)
+         : t <= TIME_WEEK_IN_SECONDS ? colorize("@itemSoonExpireColor", res)
          : res
   }
 
@@ -140,7 +146,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
     let t = getRemainingLifetime()
     if (t == -1)
       return false
-    if ((::get_trophy_info(id)?.openCount ?? 0) == 0)
+    if ((::get_trophy_info(this.id)?.openCount ?? 0) == 0)
       return false
 
     if (!(::getAircraftByName(getTopPrize()?.unit)?.isBought() ?? false))
@@ -157,16 +163,16 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
 
   function _unpackContent(recursionUsedIds, useRecursion = true)
   {
-    if (::isInArray(id, recursionUsedIds))
+    if (isInArray(this.id, recursionUsedIds))
     {
-      ::dagor.debug("id = " + id)
-      ::debugTableData(recursionUsedIds)
+      log("id = " + this.id)
+      debugTableData(recursionUsedIds)
       ::script_net_assert_once("trophy recursion",
-                               "Infinite recursion detected in trophy: " + id + ". Array " + ::toString(recursionUsedIds))
+                               "Infinite recursion detected in trophy: " + this.id + ". Array " + toString(recursionUsedIds))
       return null
     }
 
-    recursionUsedIds.append(id)
+    recursionUsedIds.append(this.id)
     let content = []
     foreach (i in contentRaw)
     {
@@ -180,7 +186,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       let countMul = i?.count ?? 1
       if (subTrophy)
       {
-        if (::getTblValue("subtrophyShowAsPack", subTrophy) || !useRecursion)
+        if (getTblValue("subtrophyShowAsPack", subTrophy) || !useRecursion)
           content.append(i)
         else
         {
@@ -216,16 +222,16 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
 
   function _extractTopPrize(recursionUsedIds)
   {
-    if (::isInArray(id, recursionUsedIds))
+    if (isInArray(this.id, recursionUsedIds))
     {
-      ::dagor.debug("id = " + id)
-      ::debugTableData(recursionUsedIds)
+      log("id = " + this.id)
+      debugTableData(recursionUsedIds)
       ::script_net_assert_once("trophy recursion",
-                               "Infinite recursion detected in trophy: " + id + ". Array " + ::toString(recursionUsedIds))
+                               "Infinite recursion detected in trophy: " + this.id + ". Array " + toString(recursionUsedIds))
       return
     }
 
-    recursionUsedIds.append(id)
+    recursionUsedIds.append(this.id)
     local topPrizeBlk = null
     foreach(prize in contentRaw)
     {
@@ -260,8 +266,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
 
   function getCost(ignoreCanBuy = false)
   {
-    if (isCanBuy() || ignoreCanBuy)
-      return ::Cost(::wp_get_trophy_cost(id), ::wp_get_trophy_cost_gold(id))
+    if (this.isCanBuy() || ignoreCanBuy)
+      return ::Cost(::wp_get_trophy_cost(this.id), ::wp_get_trophy_cost_gold(this.id))
     return ::Cost()
   }
 
@@ -271,17 +277,17 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
     if (layerStyle)
       return ::LayersIcon.genDataFromLayer(layerStyle)
 
-    return ::LayersIcon.getIconData(id, defaultIcon, 1.0, defaultIconStyle)
+    return ::LayersIcon.getIconData(id, this.defaultIcon, 1.0, defaultIconStyle)
   }
 
   function getUsingStyle()
   {
     if (needOpenTrophyGroupOnBuy())
       return groupTrophyStyle
-    return iconStyle
+    return this.iconStyle
   }
 
-  function getIcon(addItemName = true)
+  function getIcon(_addItemName = true)
   {
     return getTrophyImage(getUsingStyle())
   }
@@ -308,14 +314,14 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       let awardCount = content[0]?.count ?? 1
       let awardType = ::PrizesView.getPrizeTypeName(content[0], false)
       return (awardCount > 1)
-        ? ::loc("multiAward/name/count/singleType", { awardType, awardCount })
-        : ::loc(awardType)
+        ? loc("multiAward/name/count/singleType", { awardType, awardCount })
+        : loc(awardType)
     }
 
-    local name = locId ? "".join(::g_localization.getLocIdsArray(locId).map(@(id) ::loc(id))) : ::loc(("item/" + id), "")
+    local name = this.locId ? "".join(::g_localization.getLocIdsArray(this.locId).map(@(id) loc(id))) : loc(("item/" + this.id), "")
     let hasCustomName = name != ""
     if (!hasCustomName)
-      name = ::loc("item/" + defaultLocId)
+      name = loc("item/" + defaultLocId)
 
     let showType = showTypeInName != null ? showTypeInName : !hasCustomName
     if (showType)
@@ -326,8 +332,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       else
         prizeTypeName = ::PrizesView.getPrizeTypeName(getTopPrize(), colored)
 
-      local comment = prizeTypeName.len() ? ::loc("ui/parentheses/space", { text = prizeTypeName }) : ""
-      comment = colored ? ::colorize("commonTextColor", comment) : comment
+      local comment = prizeTypeName.len() ? loc("ui/parentheses/space", { text = prizeTypeName }) : ""
+      comment = colored ? colorize("commonTextColor", comment) : comment
       name += comment
     }
     return name
@@ -341,8 +347,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
   function _getDescHeader(fixedAmount = 1)
   {
     let locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
-    local headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
-    return ::colorize("grayOptionColor", headerText)
+    local headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
+    return colorize("grayOptionColor", headerText)
   }
 
   function getLongDescription()
@@ -388,8 +394,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
   function _requestBuy(params = {})
   {
     let blk = ::DataBlock()
-    blk["name"] = id
-    blk["index"] = ::getTblValue("index", params, -1)
+    blk["name"] = this.id
+    blk["index"] = getTblValue("index", params, -1)
     blk["cost"] = params.cost
     blk["costGold"] = params.costGold
     return ::char_send_blk("cln_buy_trophy", blk)
@@ -397,15 +403,15 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
 
   function getMainActionData(isShort = false, params = {})
   {
-    if (!isInventoryItem && needOpenTrophyGroupOnBuy())
-      return { btnName = ::loc("mainmenu/btnExpand") }
+    if (!this.isInventoryItem && needOpenTrophyGroupOnBuy())
+      return { btnName = loc("mainmenu/btnExpand") }
 
     return base.getMainActionData(isShort, params)
   }
 
   function doMainAction(cb, handler, params = null)
   {
-    if (!isInventoryItem && needOpenTrophyGroupOnBuy())
+    if (!this.isInventoryItem && needOpenTrophyGroupOnBuy())
       return ::gui_start_open_trophy_group_shop_wnd(this)
     return base.doMainAction(cb, handler, params)
   }
@@ -427,13 +433,13 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
 
   function getOpeningCaption()
   {
-    return ::loc(openingCaptionLocId || "mainmenu/trophyReward/title")
+    return loc(openingCaptionLocId || "mainmenu/trophyReward/title")
   }
 
   function getHiddenTopPrizeParams() { return null }
-  function isHiddenTopPrize(prize) { return false }
+  function isHiddenTopPrize(_prize) { return false }
 
-  needShowDropChance = @() ::has_feature("ShowDropChanceInTrophy") && showDropChance
+  needShowDropChance = @() hasFeature("ShowDropChanceInTrophy") && showDropChance
 
   function getTableData() {
     if (!needShowDropChance())
@@ -450,7 +456,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
     if (!showTillValue)
       return ""
 
-    return ::PrizesView.getTrophyOpenCountTillPrize(getContent(), ::get_trophy_info(id))
+    return ::PrizesView.getTrophyOpenCountTillPrize(getContent(), ::get_trophy_info(this.id))
   }
 
   function getDescriptionUnderTable() {
@@ -459,10 +465,10 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       return timeText
 
     return "".concat(
-      ::loc("items/expireTimeBeforeActivation"),
-      ::loc("ui/colon"),
-      ::colorize("activeTextColor", timeText))
+      loc("items/expireTimeBeforeActivation"),
+      loc("ui/colon"),
+      colorize("activeTextColor", timeText))
   }
 
-  canBuyTrophyByLimit = @() numTotal == 0 || numTotal > (::get_trophy_info(id)?.openCount ?? 0)
+  canBuyTrophyByLimit = @() numTotal == 0 || numTotal > (::get_trophy_info(this.id)?.openCount ?? 0)
 }

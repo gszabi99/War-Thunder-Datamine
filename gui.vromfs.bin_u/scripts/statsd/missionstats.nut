@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let statsd = require("statsd")
+let { get_time_msec } = require("dagor.time")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 ::MissionStats <- {
   [PERSISTENT_DATA_PARAMS] = ["sendDelaySec", "_spawnTime"]
@@ -8,37 +16,37 @@ let statsd = require("statsd")
   _spawnTime = -1
 }
 
-MissionStats.init <- function init()
+::MissionStats.init <- function init()
 {
   ::subscribe_handler(this)
+  this.reset()
+}
+
+::MissionStats.reset <- function reset()
+{
+  this._spawnTime = -1
+}
+
+::MissionStats.onEventRoomJoined <- function onEventRoomJoined(_p)
+{
   reset()
 }
 
-MissionStats.reset <- function reset()
+::MissionStats.onEventPlayerSpawn <- function onEventPlayerSpawn(_p)
 {
-  _spawnTime = -1
+  this._spawnTime = get_time_msec()
 }
 
-MissionStats.onEventRoomJoined <- function onEventRoomJoined(p)
+::MissionStats.onEventPlayerQuitMission <- function onEventPlayerQuitMission(_p)
 {
-  reset()
-}
-
-MissionStats.onEventPlayerSpawn <- function onEventPlayerSpawn(p)
-{
-  _spawnTime = ::dagor.getCurTime()
-}
-
-MissionStats.onEventPlayerQuitMission <- function onEventPlayerQuitMission(p)
-{
-  if (_spawnTime >= 0 && (::dagor.getCurTime() - _spawnTime > 1000 * sendDelaySec))
+  if (this._spawnTime >= 0 && (get_time_msec() - this._spawnTime > 1000 * this.sendDelaySec))
     return
-  if (::get_game_mode() != ::GM_DOMINATION)
+  if (::get_game_mode() != GM_DOMINATION)
     return
   if (!::is_multiplayer())
     return
 
-  statsd.send_counter("sq.early_session_leave", 1, {mission = get_current_mission_name()})
+  statsd.send_counter("sq.early_session_leave", 1, {mission = ::get_current_mission_name()})
 }
 
 //!!must be atthe end of the file

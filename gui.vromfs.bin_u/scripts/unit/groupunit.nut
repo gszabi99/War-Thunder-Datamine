@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { UNIT_GROUP } = require("%scripts/utils/genericTooltipTypes.nut")
 
 local function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
@@ -38,15 +45,15 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
 
   static function getUidByParams(params) //must be uniq between invites classes
   {
-    return "ERR_" + ::getTblValue("inviterName", params, "")
+    return "ERR_" + getTblValue("inviterName", params, "")
   }
 
   function updateParams(params, initial = false)
   {
     reloadParams = params
-    receivedTime = ::dagor.getCurTime()
-    inviterName = ::getTblValue("inviterName", params, inviterName)
-    inviterUid = ::getTblValue("inviterUid", params, inviterUid)
+    receivedTime = get_time_msec()
+    inviterName = getTblValue("inviterName", params, inviterName)
+    inviterUid = getTblValue("inviterUid", params, inviterUid)
 
     updateCustomParams(params, initial)
 
@@ -58,7 +65,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
     receivedTime = inviteBeforeReload.receivedTime
   }
 
-  function updateCustomParams(params, initial = false) {}
+  function updateCustomParams(_params, _initial = false) {}
 
   function isValid()
   {
@@ -69,7 +76,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
   {
     if ( !isValid() )
       return true
-    if ( receivedTime + lifeTimeMsec < ::dagor.getCurTime() )
+    if ( receivedTime + lifeTimeMsec < get_time_msec() )
       return true
     if ( timedExpireStamp > 0 && timedExpireStamp <= ::get_charserver_time_sec() )
       return true
@@ -171,7 +178,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
     if (!msg.len())
       return
 
-    msg = [::colorize(inviteColor, msg)]
+    msg = [colorize(inviteColor, msg)]
     msg.append(getRestrictionText())
 
     let buttons = []
@@ -179,11 +186,11 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
     {
       buttons.append(
         { id = "reject_invite",
-          text = ::loc("invite/reject"),
+          text = loc("invite/reject"),
           func = reject
         }
         { id = "accept_invite",
-          text = ::loc("contacts/accept_invitation"),
+          text = loc("contacts/accept_invitation"),
           func = accept
         }
       )

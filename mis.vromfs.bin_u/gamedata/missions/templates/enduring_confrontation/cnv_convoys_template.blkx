@@ -305,34 +305,6 @@
             "value": "net konvoev"
           },
           "triggerDisable": {
-            "object": "cnv_all_convoys_squad",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "targetAir": true,
-            "targetGnd": false,
-            "accuracy": 0.75,
-            "airAccuracy": 0.75,
-            "maxDeviationAngle": 10.0,
-            "checkVisibilityTarget": true,
-            "visibilityTreeTransparencyThreshold": 0.01,
-            "airEffShootingRate": 0.5,
-            "adaptiveAccuracyTime": 10.0,
-            "moveSpeedKAtShooting": 0.5,
-            "slowWhenEnemyNear": 0.7,
-            "slowWhenEnemyNearDistance": 2500.0,
-            "minDistBetween": 50.0,
-            "ignoresObstaclesAfterTime": true,
-            "allowOvertakeMode": true,
-            "keep_leader_dist": true,
-            "movementTraceRI": true,
-            "fireRandom": true,
-            "targetChangeInterval": 6.0,
-            "targetChangeProb": 0.25,
-            "ignoreGunSpeedLimits": true,
-            "ChainfireTime": 2.0,
-            "DelayAfterShoot": 2.0,
             "target": [
               "cnv_t1_gen_rotator",
               "cnv_t1_gen_restart"
@@ -3137,10 +3109,6 @@
           }
         },
         "actions": {
-          "__missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": false
-          },
           "comment": [
             {
               "value": "increasing active convoys num"
@@ -4057,10 +4025,6 @@
                 "cnv_t2_gen_check_own_limit_7"
               ]
             },
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            },
             "varSetInt": {
               "value": 1,
               "var": "cnv_t2_own_limit"
@@ -4110,10 +4074,6 @@
                 "cnv_t2_gen_check_own_limit_6",
                 "cnv_t2_gen_check_own_limit_7"
               ]
-            },
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
             },
             "varSetInt": {
               "value": 2,
@@ -4165,10 +4125,6 @@
                 "cnv_t2_gen_check_own_limit_7"
               ]
             },
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            },
             "varSetInt": {
               "value": 3,
               "var": "cnv_t2_own_limit"
@@ -4218,10 +4174,6 @@
                 "cnv_t2_gen_check_own_limit_6",
                 "cnv_t2_gen_check_own_limit_7"
               ]
-            },
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
             },
             "varSetInt": {
               "value": 4,
@@ -4273,10 +4225,6 @@
                 "cnv_t2_gen_check_own_limit_7"
               ]
             },
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            },
             "varSetInt": {
               "value": 5,
               "var": "cnv_t2_own_limit"
@@ -4327,10 +4275,6 @@
                 "cnv_t2_gen_check_own_limit_7"
               ]
             },
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            },
             "varSetInt": {
               "value": 6,
               "var": "cnv_t2_own_limit"
@@ -4372,10 +4316,6 @@
                 "cnv_t2_gen_check_own_limit_5",
                 "cnv_t2_gen_check_own_limit_6"
               ]
-            },
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
             },
             "varSetInt": {
               "value": 7,
@@ -6764,10 +6704,6 @@
             ]
           },
           "actions": {
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            },
             "comment": {
               "value": "one of armies are team A - we can spawn convoy."
             },
@@ -7286,10 +7222,6 @@
           "actions": {
             "comment": {
               "value": "one of armies are team A - we can spawn convoy."
-            },
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
             },
             "triggerEnable": {
               "target": "cnv_t2_gen_check_frontline"
@@ -8544,6 +8476,9 @@
             },
             {
               "value": "turning indeication on"
+            },
+            {
+              "value": "setting objectives if it's possible and needs"
             }
           ],
           "varSetBool": {
@@ -8565,9 +8500,6 @@
             "object_var_value": 0,
             "object": "@cnv_t1_detect_convoy_name",
             "stealthRadius": 128000.0
-          },
-          "__comment": {
-            "value": "setting objectives if it's possible and needs"
           },
           "triggerEnable": {
             "target": "cnv_t1_objective_set"
@@ -8645,10 +8577,6 @@
           }
         },
         "else_actions": {
-          "__missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": false
-          },
           "comment": {
             "value": "going further by rotation"
           },
@@ -12890,6 +12818,7 @@
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "object_marking": 0,
+              "extendedEnding": true,
               "team": "A"
             },
             {
@@ -12975,6 +12904,7 @@
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "object_marking": 0,
+              "extendedEnding": true,
               "team": "B"
             },
             {
@@ -13575,6 +13505,7 @@
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "object_marking": 0,
+              "extendedEnding": true,
               "team": "B"
             },
             {
@@ -13660,6 +13591,7 @@
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "object_marking": 0,
+              "extendedEnding": true,
               "team": "A"
             },
             {

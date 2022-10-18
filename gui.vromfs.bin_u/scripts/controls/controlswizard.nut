@@ -1,7 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
+let { abs, ceil, fabs, floor } = require("math")
 let globalEnv = require("globalEnv")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id="helpers_mode"
@@ -11,14 +20,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     skipAllBefore = [null, "msg/use_mouse_for_control", "msg/use_mouse_for_control", "msg/use_mouse_for_control"]
   }
     { id="msg_defaults",
-      text=::loc("msg/mouseAimDefaults"),
+      text=loc("msg/mouseAimDefaults"),
       type= CONTROL_TYPE.MSG_BOX,
       options = ["#options/resetToDefaults", "#options/no"],
       defValue = 1,
       skipAllBefore = [null, "ID_BASIC_CONTROL_HEADER"]
     }
     { id="msg_wasd_type",
-      text=::loc("controls/askKeyboardWasdType"),
+      text=loc("controls/askKeyboardWasdType"),
       type= CONTROL_TYPE.MSG_BOX
       options = ::recomended_control_presets.map(@(name) "#msgbox/btn_" + name)
       defValue = 1,
@@ -26,7 +35,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       {
         let cType = ::recomended_control_presets[value]
         let preset = ::get_controls_preset_by_selected_type(cType)
-        applyPreset(preset.fileName)
+        this.applyPreset(preset.fileName)
       }
     }
   { id="msg/use_mouse_for_control", type= CONTROL_TYPE.MSG_BOX
@@ -36,9 +45,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     skip = [null, null, ["msg/mouseWheelAction", "ID_CAMERA_NEUTRAL"]]
     onButton = function(value)
     {
-      curJoyParams.setMouseAxis(0, ["ailerons", "camx", ""][value])
-      curJoyParams.setMouseAxis(1, ["elevator", "camy", ""][value])
-      curJoyParams.mouseJoystick = value == 0;
+      this.curJoyParams.setMouseAxis(0, ["ailerons", "camx", ""][value])
+      this.curJoyParams.setMouseAxis(1, ["elevator", "camy", ""][value])
+      this.curJoyParams.mouseJoystick = value == 0;
     }
   }
 
@@ -57,24 +66,24 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
         {
           if (isSkipped)
           {
-            skipList.append("msg/holdThrottleForWEP")
+            this.skipList.append("msg/holdThrottleForWEP")
             return
           }
           if (isAxis)
           {
-            curJoyParams.holdThrottleForWEP = false
-            skipList.append("msg/holdThrottleForWEP")
+            this.curJoyParams.holdThrottleForWEP = false
+            this.skipList.append("msg/holdThrottleForWEP")
           }
-          let axis = curJoyParams.getAxis(::get_axis_index("throttle"))
+          let axis = this.curJoyParams.getAxis(::get_axis_index("throttle"))
           axis.relative = !isAxis
           let device = ::joystick_get_default()
-          curJoyParams.applyParams(device)
+          this.curJoyParams.applyParams(device)
         }
       skip = ["msg/holdThrottleForWEP"] //dont work in axis, but need to correct prevItem work, when skipList used in onAxisDone
     }
     { id="msg/holdThrottleForWEP", type= CONTROL_TYPE.MSG_BOX
       options = ["#options/yes", "#options/no", "options/skip"],
-      onButton = function(value) { if (value<2) curJoyParams.holdThrottleForWEP = value==0 }
+      onButton = function(value) { if (value<2) this.curJoyParams.holdThrottleForWEP = value==0 }
     }
     "ID_IGNITE_BOOSTERS"
     "ID_FIRE_MGUNS"
@@ -137,12 +146,12 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       {
         foreach(a in ["camx", "camy", "turret_x", "turret_y"])
         {
-          let axis = curJoyParams.getAxis(::get_axis_index(a))
+          let axis = this.curJoyParams.getAxis(::get_axis_index(a))
           axis.relative = value !=0
           axis.innerDeadzone = (value!=0)? 0.25 : 0.05
         }
         let device = ::joystick_get_default()
-        curJoyParams.applyParams(device)
+        this.curJoyParams.applyParams(device)
       }
     }
       { id="neutral_cam_pos", type= CONTROL_TYPE.SHORTCUT_GROUP
@@ -156,7 +165,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
         options = ["controls/none", "controls/zoom", "controls/throttle"], defValue = 1
         onButton = function(value)
         {
-          curJoyParams.setMouseAxis(2, ["", "zoom", "throttle"][value])
+          this.curJoyParams.setMouseAxis(2, ["", "zoom", "throttle"][value])
         }
       }
       "ID_CAMERA_NEUTRAL" //mouse look
@@ -172,7 +181,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       { id = "trackIrZoom", type= CONTROL_TYPE.MSG_BOX
         filterHide = [globalEnv.EM_MOUSE_AIM]
         options = ["#options/yes", "#options/no"]
-        onButton = function(value) { if (value<2) curJoyParams.trackIrZoom = value==0 }
+        onButton = function(value) { if (value<2) this.curJoyParams.trackIrZoom = value==0 }
       }
 
 
@@ -304,9 +313,20 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 ::gui_modal_controlsWizard <- function gui_modal_controlsWizard()
 {
-  if (!::has_feature("ControlsPresets"))
+  if (!hasFeature("ControlsPresets"))
     return
   ::gui_start_modal_wnd(::gui_handlers.controlsWizardModalHandler)
+}
+
+let function isInArrayRecursive(v, arr) {
+  foreach(i in arr) {
+    if (v==i)
+      return true
+    else
+      if (typeof(i)=="array" && isInArrayRecursive(v, i))
+        return true
+  }
+  return false
 }
 
 ::gui_handlers.controlsWizardModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -315,7 +335,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   sceneBlkName = "%gui/controlsWizard.blk"
   sceneNavBlkName = null
 
-  unitType = ::ES_UNIT_TYPE_AIRCRAFT
+  unitType = ES_UNIT_TYPE_AIRCRAFT
   controls_wizard_config = null
 
   filter = null
@@ -377,8 +397,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function initScreen()
   {
-    scene.findObject("input-listener").setUserData(this)
-    scene.findObject("update-timer").setUserData(this)
+    this.scene.findObject("input-listener").setUserData(this)
+    this.scene.findObject("update-timer").setUserData(this)
 
     skipList = []
     optionsToSave = []
@@ -413,7 +433,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       else if (item.type== CONTROL_TYPE.SHORTCUT_GROUP)
       {
         item.shortcutId = []
-        foreach(idx, name in item.shortcuts)
+        foreach(_idx, name in item.shortcuts)
         {
           item.shortcutId.append(shortcutNames.len())
           shortcutNames.append(name)
@@ -460,7 +480,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function nextItem()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
     isButtonsListenInCurBox = false
@@ -503,12 +523,12 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
           let config = ::get_option(curItem.optionType)
           filter = config.values[config.value]
         } else
-          ::dagor.assertf(false, "Error: not found optionType in wizard filterObj.")
+          assert(false, "Error: not found optionType in wizard filterObj.")
         return nextItem()
       }
       if (filter!=null &&
-           ((("filterShow" in curItem) && !::isInArray(filter, curItem.filterShow))
-             || (("filterHide" in curItem) && ::isInArray(filter, curItem.filterHide))))
+           ((("filterShow" in curItem) && !isInArray(filter, curItem.filterShow))
+             || (("filterHide" in curItem) && isInArray(filter, curItem.filterHide))))
         return nextItem()
 
       if ("needSkip" in curItem && curItem.needSkip && curItem.needSkip())
@@ -517,7 +537,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
     if (curItem.type== CONTROL_TYPE.HEADER)
     {
-      scene.findObject("wizard-title").setValue(::loc(getItemText(curItem)))
+      this.scene.findObject("wizard-title").setValue(loc(getItemText(curItem)))
       isItemOk = false
       nextItem()
     }
@@ -604,7 +624,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       let lastItem = controls_wizard_config[lastIdx]
       if ("skip" in lastItem)
         for(local i=skipList.len()-1; i>=0; i--)
-          if (::isInArrayRecursive(skipList[i], lastItem.skip))
+          if (isInArrayRecursive(skipList[i], lastItem.skip))
             skipList.remove(i)
 
       nextItem()
@@ -615,13 +635,13 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function switchToDiv(divName)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
     foreach(name in ["msgBox-wnd", "shortcut-wnd", "listbox-wnd", "options-wnd", "msg-wnd"])
     {
-      let divObj = scene.findObject(name)
-      if (!::checkObj(divObj))
+      let divObj = this.scene.findObject(name)
+      if (!checkObj(divObj))
         continue
 
       divObj.show(divName == name)
@@ -642,18 +662,18 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function askShortcut()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
     axisMaxChoosen = false
-    scene.findObject("shortcut_text").setValue(::loc(getItemText(curItem)))
-    let textObj = scene.findObject("hold_axis")
-    if (::checkObj(textObj))
+    this.scene.findObject("shortcut_text").setValue(loc(getItemText(curItem)))
+    let textObj = this.scene.findObject("hold_axis")
+    if (checkObj(textObj))
     {
-      textObj.setValue(::loc("hotkeys/msg/press_a_key"))
+      textObj.setValue(loc("hotkeys/msg/press_a_key"))
       textObj.show(true)
     }
-    scene.findObject("shortcut_image")["background-image"] = ""
+    this.scene.findObject("shortcut_image")["background-image"] = ""
     this.showSceneBtn("btn-reset-axis-input", false)
     clearShortcutInfo()
 
@@ -666,10 +686,10 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   {
     switchToDiv("shortcut-wnd")
     axisApplyParams = null
-    scene.findObject("shortcut_text").setValue(::loc(getItemText(curItem)))
+    this.scene.findObject("shortcut_text").setValue(loc(getItemText(curItem)))
 
     isButtonsListenInCurBox = !axisMaxChoosen || axisTypeButtons
-    scene.findObject("shortcut_current_button").setValue(isButtonsListenInCurBox? "?" : "")
+    this.scene.findObject("shortcut_current_button").setValue(isButtonsListenInCurBox? "?" : "")
     clearShortcutInfo()
     switchListenButton(isButtonsListenInCurBox)
 
@@ -711,11 +731,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
         cantBeEmpty = false
       })
 
-    local assignText = axisAssignText + ((buttonAssignText == "" || axisAssignText == "")? "" : ::loc("ui/semicolon")) + buttonAssignText
+    local assignText = axisAssignText + ((buttonAssignText == "" || axisAssignText == "")? "" : loc("ui/semicolon")) + buttonAssignText
     if (assignText == "")
       assignText = "---"
 
-    scene.findObject("curAssign_text").setValue(::loc("controls/currentAssign") + ::loc("ui/colon") + assignText)
+    this.scene.findObject("curAssign_text").setValue(loc("controls/currentAssign") + loc("ui/colon") + assignText)
   }
 
   function updateAxisPressKey()
@@ -736,17 +756,17 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     if ("msgType" in curItem)
       msgLocId += curItem.msgType
 
-    let textObj = scene.findObject("hold_axis")
-    if (::checkObj(textObj))
+    let textObj = this.scene.findObject("hold_axis")
+    if (checkObj(textObj))
     {
-      textObj.setValue(::loc(msgLocId))
+      textObj.setValue(loc(msgLocId))
       textObj.show(true)
     }
 
     local image = ""
     if (("images" in curItem) && (imgId in curItem.images))
       image = $"#ui/images/wizard/{curItem.images[imgId]}.png"
-    scene.findObject("shortcut_image")["background-image"] = image
+    this.scene.findObject("shortcut_image")["background-image"] = image
   }
 
   function setAxisType(isButtons)
@@ -766,14 +786,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   function switchListenButton(value)
   {
     isListenButton = value
-    let obj = scene.findObject("shortcut_current_button")
-    if (::checkObj(obj))
+    let obj = this.scene.findObject("shortcut_current_button")
+    if (checkObj(obj))
     {
       obj.show(value)
       obj.setValue("?")
     }
 
-    guiScene.sleepKeyRepeat(value)
+    this.guiScene.sleepKeyRepeat(value)
     ::set_bind_mode(value)
   }
 
@@ -782,9 +802,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     isListenAxis = value
 
     isAxisVertical = ("isVertical" in curItem)? curItem.isVertical : false
-    scene.findObject("test-axis").show(value && !isAxisVertical)
-    scene.findObject("test-axis-vert").show(value && isAxisVertical)
-    scene.findObject("bind-axis-name").show(value)
+    this.scene.findObject("test-axis").show(value && !isAxisVertical)
+    this.scene.findObject("test-axis-vert").show(value && isAxisVertical)
+    this.scene.findObject("bind-axis-name").show(value)
 
     if (value)
     {
@@ -804,17 +824,17 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       return
 
     let isEnabled = isListenAxis || isListenButton
-    let sampleText = ::loc("mainmenu/shortcuts") + " (%s" + ::loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
+    let sampleText = loc("mainmenu/shortcuts") + " (%s" + loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
     let coloredText = format(sampleText, "<color=@" + (isEnabled? "goodTextColor" : "warningTextColor") + ">", "</color>")
     let NotColoredText = format(sampleText, "", "")
 
-    setDoubleTextToButton(scene, "btn_switchAllModes", NotColoredText, coloredText)
+    setDoubleTextToButton(this.scene, "btn_switchAllModes", NotColoredText, coloredText)
   }
 
-  function switchAllListenModes(obj)
+  function switchAllListenModes(_obj)
   {
     axisCurTime = 0.0
-    let btnObj = scene.findObject("btn_switchAllModes")
+    let btnObj = this.scene.findObject("btn_switchAllModes")
     if (!btnObj.isEnabled())
       onResetAxisInput()
     else
@@ -831,7 +851,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       return
     let enable = !(isListenAxis || isListenButton)
     enableListenerObj(enable)
-    scene.findObject("hold_axis").show(enable)
+    this.scene.findObject("hold_axis").show(enable)
     if (isAxisListenInCurBox)
       switchListenAxis(enable, true)
     if (isButtonsListenInCurBox)
@@ -847,8 +867,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     {
       foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"])
       {
-        let btnObj = scene.findObject(name)
-        if (::checkObj(btnObj))
+        let btnObj = this.scene.findObject(name)
+        if (checkObj(btnObj))
         {
           btnObj.hideConsoleImage = isListening ? "yes" : "no"
           btnObj.inactiveColor = isListening ? "yes" : "no"
@@ -906,9 +926,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     foreach(d in devs)
       if (d>0)
         if (isKbd==null)
-          isKbd = d < ::JOYSTICK_DEVICE_0_ID
+          isKbd = d < JOYSTICK_DEVICE_0_ID
         else
-          if (isKbd != (d < ::JOYSTICK_DEVICE_0_ID))
+          if (isKbd != (d < JOYSTICK_DEVICE_0_ID))
             return null
     return isKbd
   }
@@ -931,7 +951,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
           if (isKbd == isKbdOrMouse(shortcuts[shortcutId][i].dev))
             shortcuts[shortcutId].remove(i)   //remove shortcuts by same device type
         shortcuts[shortcutId].append({dev = devs, btn = btns})
-        if (shortcuts[shortcutId].len() > max_shortcuts)
+        if (shortcuts[shortcutId].len() > MAX_SHORTCUTS)
           shortcuts[shortcutId].remove(0)
       }
     }
@@ -952,10 +972,10 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
     local actionText = ""
     foreach(binding in curBinding)
-      actionText += ((actionText=="")? "":", ") + ::loc("hotkeys/"+shortcutNames[binding[0]])
-    let msg = ::loc("hotkeys/msg/unbind_question", { action=actionText })
+      actionText += ((actionText=="")? "":", ") + loc("hotkeys/"+shortcutNames[binding[0]])
+    let msg = loc("hotkeys/msg/unbind_question", { action=actionText })
     this.msgBox("controls_wizard_bind_existing_shortcut", msg, [
-      ["add", (@(curBinding, devs, btns, shortcutId) function() {
+      ["add", (@(_curBinding, devs, btns, shortcutId) function() {
         doBind(devs, btns, shortcutId)
         onButtonDone()
       })(curBinding, devs, btns, shortcutId)],
@@ -1016,7 +1036,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     return res
   }
 
-  function onCancelButtonInput(obj)
+  function onCancelButtonInput(_obj)
   {
     if (isButtonsListenInCurBox || (curItem.type == CONTROL_TYPE.AXIS && !axisTypeButtons))
     {
@@ -1037,7 +1057,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
     let sc = readShortcutInfo(obj)
     curBtnText = getShortcutText(sc) + ((lastNumButtons>=3)? "" : (lastNumButtons>0)? " + ?" : "?")
-    scene.findObject("shortcut_current_button").setValue(curBtnText)
+    this.scene.findObject("shortcut_current_button").setValue(curBtnText)
   }
 
   function getShortcutText(sc)
@@ -1071,7 +1091,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function clearShortcutInfo()
   {
-    let obj = scene.findObject("input-listener")
+    let obj = this.scene.findObject("input-listener")
     for (local i = 0; i < 3; i++)
     {
       obj["device" + i] = ""
@@ -1106,29 +1126,29 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
     if (!axisApplyParams.isSlider)
     {
-      let minDev = min(::abs(config.max), ::abs(config.min))
+      let minDev = min(abs(config.max), abs(config.min))
       if (minDev>=3200) //10%
-        axisApplyParams.kMul = 0.1*::floor(320000.0/minDev)
+        axisApplyParams.kMul = 0.1*floor(320000.0/minDev)
       else
         axisApplyParams.isSlider = true  //count this axis as slider
     }
     if (axisApplyParams.isSlider)
     {
       axisApplyParams.kMul = 2.0*32000/(config.max-config.min) * 1.05 //accuracy 5%
-      axisApplyParams.kMul = 0.1*::ceil(10.0*axisApplyParams.kMul)
+      axisApplyParams.kMul = 0.1*ceil(10.0*axisApplyParams.kMul)
       axisApplyParams.kAdd = -0.5*(config.min+config.max) / 32000 * axisApplyParams.kMul
     }
 
     let curPreset = ::g_controls_manager.getCurPreset()
     curBtnText = ::remapAxisName(curPreset, selectedAxisNum)
-    showMsg(::loc("hotkeys/msg/axis_choosen") + "\n" + curBtnText, config)
+    showMsg(loc("hotkeys/msg/axis_choosen") + "\n" + curBtnText, config)
   }
 
   function bindAxis()
   {
     if (!axisApplyParams) return
 
-    foreach(idx, aName in curItem.axesList)
+    foreach(idx, _aName in curItem.axesList)
     {
       let axisIndex = curItem.axisIndex[idx]
       curJoyParams.bindAxis(axisIndex, selectedAxisNum)
@@ -1170,8 +1190,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
     local actionText = ""
     foreach(binding in curBinding)
-      actionText += ((actionText=="")? "":", ") + ::loc(getItemName(binding))
-    let msg = ::loc("hotkeys/msg/unbind_axis_question", {
+      actionText += ((actionText=="")? "":", ") + loc(getItemName(binding))
+    let msg = loc("hotkeys/msg/unbind_axis_question", {
       button=curBtnText, action=actionText
     })
     this.msgBox("controls_wizard_bind_existing_axis", msg, [
@@ -1203,8 +1223,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function updateAxisName()
   {
-    let obj = scene.findObject("bind-axis-name")
-    if (!::checkObj(obj))
+    let obj = this.scene.findObject("bind-axis-name")
+    if (!checkObj(obj))
       return
 
     obj.show(isAxisListenInCurBox)
@@ -1282,9 +1302,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     return foundAxis
   }
 
-  function onAxisInputTimer(obj, dt)
+  function onAxisInputTimer(_obj, dt)
   {
-    if (!isListenAxis || !is_app_active() || steam_is_overlay_active())
+    if (!isListenAxis || !::is_app_active() || ::steam_is_overlay_active())
       return
 
     let device = ::joystick_get_default()
@@ -1339,7 +1359,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
           selectedAxisNum = bindAxisNum
           bindAxisFixVal = bindAxisCurVal
           setAxisType(false)
-          scene.findObject("input-listener").select()
+          this.scene.findObject("input-listener").select()
 
           updateAxisPressKey()
           updateAxisName()
@@ -1363,7 +1383,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   function moveTestItem(value, obj=null)
   {
     if (!obj)
-      obj = scene.findObject(isAxisVertical? "test-real-box-vert" : "test-real-box")
+      obj = this.scene.findObject(isAxisVertical? "test-real-box-vert" : "test-real-box")
     if ("showInverted" in curItem && curItem.showInverted())
       value = -value
 
@@ -1422,7 +1442,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
     if (!isListbox)
     {
-      scene.findObject("msgBox_text").setValue(::loc(msgText))
+      this.scene.findObject("msgBox_text").setValue(loc(msgText))
       local data = ""
       foreach(idx, btn in msgButtons)
       {
@@ -1430,18 +1450,18 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
         data += format("Button_text { id:t='%d'; text:t='%s'; on_click:t='onMsgButton'; }",
                   idx, text)
       }
-      let btnsHolder = scene.findObject("msgBox_buttons")
-      guiScene.replaceContentFromText(btnsHolder, data, data.len(), this)
+      let btnsHolder = this.scene.findObject("msgBox_buttons")
+      this.guiScene.replaceContentFromText(btnsHolder, data, data.len(), this)
       ::move_mouse_on_obj(btnsHolder.findObject(defValue.tostring()))
     }
     else
     {
-      scene.findObject("listbox_text").setValue(::loc(msgText))
+      this.scene.findObject("listbox_text").setValue(loc(msgText))
 
       let view = { items = [] }
       foreach(idx, btn in msgButtons)
       {
-        local text = ::getTblValue("text", btn, "")
+        local text = getTblValue("text", btn, "")
         if (::u.isString(btn))
           text = btn
 
@@ -1456,8 +1476,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       }
 
       let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-      let listObj = scene.findObject("listbox")
-      guiScene.replaceContentFromText(listObj, data, data.len(), this)
+      let listObj = this.scene.findObject("listbox")
+      this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
       if (defValue in msgButtons)
         listObj.setValue(defValue)
       ::move_mouse_on_child(listObj, listObj.getValue())
@@ -1481,7 +1501,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       return
 
     waitMsgButton = false
-    guiScene.performDelayed(this, (@(value) function() {
+    this.guiScene.performDelayed(this, (@(value) function() {
       if ("optionType" in curItem)
       {
         optionsToSave.append({type = curItem.optionType, value = value})
@@ -1506,25 +1526,25 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function getCurListboxObj()
   {
-    let listObj = scene.findObject("listbox")
+    let listObj = this.scene.findObject("listbox")
     let value = listObj.getValue()
     if (value>=0 && value<listObj.childrenCount())
       return listObj.getChild(value)
     return null
   }
 
-  function onListboxDblClick(obj)
+  function onListboxDblClick(_obj)
   {
     let curObj = getCurListboxObj()
     if (curObj)
       onMsgButton(curObj)
   }
 
-  function onListboxSelect(obj)
+  function onListboxSelect(_obj)
   {
     let curObj = getCurListboxObj()
     if (!curObj) return
-    scene.findObject("listbox-hint").setValue("" + curObj.tooltip, true)
+    this.scene.findObject("listbox-hint").setValue("" + curObj.tooltip, true)
   }
 
   function askPresetsWnd()
@@ -1532,8 +1552,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     curIdx = -1
 
     switchToDiv("options-wnd")
-    let optObj = scene.findObject("optionlist")
-    if (!::checkObj(optObj))
+    let optObj = this.scene.findObject("optionlist")
+    if (!checkObj(optObj))
       return
 
     this.showSceneBtn("btn_prevItem", false)
@@ -1542,9 +1562,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       [::USEROPT_CONTROLS_PRESET, "spinner"],
     ]
     let container = ::create_options_container("preset_options", optionItems, false)
-    guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
+    this.guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
     processPresetValue(getOptionPresetValue())
-    ::move_mouse_on_obj(scene.findObject("controls_preset"))
+    ::move_mouse_on_obj(this.scene.findObject("controls_preset"))
   }
 
   function getOptionPresetValue()
@@ -1568,7 +1588,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     }
   }
 
-  function onPresetDone(obj)
+  function onPresetDone(_obj)
   {
     applyPreset(::applySelectedPreset(presetSelected))
   }
@@ -1582,18 +1602,18 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function startManualSetup()
   {
-    ::scene_msg_box("ask_unit_type", null, ::loc("mainmenu/askWizardForUnitType"),
+    ::scene_msg_box("ask_unit_type", null, loc("mainmenu/askWizardForUnitType"),
       [
-        [ "aviation", (@() startManualSetupForUnitType(::ES_UNIT_TYPE_AIRCRAFT)).bindenv(this) ],
-        [ "army", (@() startManualSetupForUnitType(::ES_UNIT_TYPE_TANK)).bindenv(this) ]
+        [ "aviation", (@() startManualSetupForUnitType(ES_UNIT_TYPE_AIRCRAFT)).bindenv(this) ],
+        [ "army", (@() startManualSetupForUnitType(ES_UNIT_TYPE_TANK)).bindenv(this) ]
       ], "aviation")
   }
 
   function startManualSetupForUnitType(esUnitType)
   {
-    if (esUnitType == ::ES_UNIT_TYPE_TANK)
+    if (esUnitType == ES_UNIT_TYPE_TANK)
       controls_wizard_config = ::tank_controls_wizard_config
-    else if (esUnitType == ::ES_UNIT_TYPE_AIRCRAFT)
+    else if (esUnitType == ES_UNIT_TYPE_AIRCRAFT)
       controls_wizard_config = ::aircraft_controls_wizard_config
     else
       ::script_net_assert_once("unsupported unit type", "Given unit type has not wizard config")
@@ -1606,7 +1626,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     nextItem()
   }
 
-  function onContinue(obj)
+  function onContinue(_obj)
   {
     if (curIdx == -1 || !controls_wizard_config) {
       startManualSetup()
@@ -1625,13 +1645,13 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     let device = ::joystick_get_default()
     curJoyParams.applyParams(device)
     ::joystick_set_cur_settings(curJoyParams)
-    save(false)
+    this.save(false)
   }
 
   function goBack()
   {
     if (curIdx>0 && !isPresetAlreadyApplied)
-      this.msgBox("ask_save", ::loc("hotkeys/msg/wizardSaveUnfinished"),
+      this.msgBox("ask_save", loc("hotkeys/msg/wizardSaveUnfinished"),
         [
           ["yes", function() { doApply() } ],
           ["no", function() { ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }],
@@ -1646,14 +1666,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
-  function onEventActiveHandlersChanged(p)
+  function onEventActiveHandlersChanged(_p)
   {
-    enableListenerObj(curDivName == "shortcut-wnd" && isSceneActiveNoModals())
+    enableListenerObj(curDivName == "shortcut-wnd" && this.isSceneActiveNoModals())
   }
 
   function afterModalDestroy()
   {
-    guiScene.sleepKeyRepeat(false)
+    this.guiScene.sleepKeyRepeat(false)
     ::set_bind_mode(false)
     ::preset_changed = true
     ::broadcastEvent("ControlsPresetChanged")
@@ -1663,23 +1683,23 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   {
     switchToDiv("msg-wnd")
     if (msg==null)
-      msg = ::loc("mainmenu/btnOk")
-    scene.findObject("msg_text").setValue(msg)
+      msg = loc("mainmenu/btnOk")
+    this.scene.findObject("msg_text").setValue(msg)
     msgTimer = time + waitAxisAddTime
 
     local showAxis = false
     if (config && ("min" in config) && ("max" in config))
     {
       let name = isAxisVertical? "msg-real-box-vert" : "msg-real-box"
-      moveTestItem(config.min, scene.findObject(name+"1"))
-      moveTestItem(config.max, scene.findObject(name+"2"))
+      moveTestItem(config.min, this.scene.findObject(name+"1"))
+      moveTestItem(config.max, this.scene.findObject(name+"2"))
       showAxis = true
     }
-    scene.findObject("msg-axis").show(showAxis && !isAxisVertical)
-    scene.findObject("msg-axis-vert").show(showAxis && isAxisVertical)
+    this.scene.findObject("msg-axis").show(showAxis && !isAxisVertical)
+    this.scene.findObject("msg-axis-vert").show(showAxis && isAxisVertical)
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
     if (msgTimer>0)
     {

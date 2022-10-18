@@ -1,5 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { read_text_from_file } = require("dagor.fs")
+let loadTemplateText = memoize(@(v) read_text_from_file($"{v}.tpl"))
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId)
@@ -25,9 +34,9 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 
   function initScreen()
   {
-    logListObj = scene.findObject("log_list")
-    if (!::checkObj(logListObj))
-      return goBack()
+    logListObj = this.scene.findObject("log_list")
+    if (!checkObj(logListObj))
+      return this.goBack()
 
     fetchLogPage()
   }
@@ -39,7 +48,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
       ::CLAN_LOG_ROWS_IN_PAGE,
       requestMarker,
       handleLogData,
-      function (result) {},
+      function (_result) {},
       this
     )
   }
@@ -48,12 +57,12 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
   {
     requestMarker = logData.requestMarker
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
     removeNextButton()
     showLogs(logData)
     if (logData.logEntries.len() >= ::CLAN_LOG_ROWS_IN_PAGE)
       addNextButton()
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
     selectLogItem()
   }
@@ -68,9 +77,9 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
     }
 
     let blk = ::handyman.renderCached("%gui/logEntryList", logData, {
-      details = ::load_template_text("%gui/clans/clanLogDetails")
+      details = loadTemplateText("%gui/clans/clanLogDetails")
     })
-    guiScene.appendWithBlk(logListObj, blk, this)
+    this.guiScene.appendWithBlk(logListObj, blk, this)
   }
 
   function selectLogItem()
@@ -85,7 +94,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
     ::move_mouse_on_child(logListObj, selectedIndex)
   }
 
-  function onUserLinkRClick(obj, itype, link) {
+  function onUserLinkRClick(_obj, _itype, link) {
     let uid = ::g_string.cutPrefix(link, "uid_", null)
 
     if (uid == null)
@@ -97,8 +106,8 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
   function removeNextButton()
   {
     let obj = logListObj.findObject(loadButtonId)
-    if (::checkObj(obj))
-      guiScene.destroyElement(obj)
+    if (checkObj(obj))
+      this.guiScene.destroyElement(obj)
   }
 
   function addNextButton()
@@ -107,16 +116,16 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
     if (!obj)
     {
       let data = format("expandable { id:t='%s'}", loadButtonId)
-      guiScene.appendWithBlk(logListObj, data, this)
+      this.guiScene.appendWithBlk(logListObj, data, this)
       obj = logListObj.findObject(loadButtonId)
     }
 
     let viewBlk = ::handyman.renderCached("%gui/userLog/userLogRow",
       {
-        middle = ::loc("userlog/showMore")
+        middle = loc("userlog/showMore")
         hasExpandImg = true
       })
-    guiScene.replaceContentFromText(obj, viewBlk, viewBlk.len(), this)
+    this.guiScene.replaceContentFromText(obj, viewBlk, viewBlk.len(), this)
   }
 
   function onItemSelect(obj)
@@ -131,7 +140,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 
     selectedIndex = index
     let selectedObj = obj.getChild(index)
-    if (::check_obj(selectedObj) && selectedObj?.id == loadButtonId)
+    if (checkObj(selectedObj) && selectedObj?.id == loadButtonId)
       fetchLogPage()
   }
 }

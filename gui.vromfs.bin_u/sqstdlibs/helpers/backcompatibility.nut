@@ -1,3 +1,6 @@
+#no-root-fallback
+#explicit-this
+
 /**
  * This provides ability to keep scripts back compatible with older version of client.
  *
@@ -13,10 +16,13 @@
  * Each value will be pushed to root table only of there is no same
  * key in root table
  */
-::apply_compatibilities <- function apply_compatibilities(comp_table) {
+let function apply_compatibilities(comp_table) {
   local rootTable = getroottable()
   local constTable = getconsttable()
   foreach(key, value in comp_table)
     if (!(key in rootTable) && !(key in constTable))
       rootTable[key] <- value
+}
+return {
+  apply_compatibilities
 }

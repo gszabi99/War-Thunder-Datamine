@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { secondsToMilliseconds, minutesToSeconds } = require("%scripts/time.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
@@ -37,15 +42,15 @@ let function askHotasPresetChange()
 
   ::g_popups.add(
     null,
-    ::loc(questionLocId),
+    loc(questionLocId),
     mainAction,
     [{
       id = "yes",
-      text = ::loc("msgbox/btn_yes"),
+      text = loc("msgbox/btn_yes"),
       func = mainAction
     },
     { id = "no",
-      text = ::loc("msgbox/btn_no")
+      text = loc("msgbox/btn_no")
     }],
     null,
     null,

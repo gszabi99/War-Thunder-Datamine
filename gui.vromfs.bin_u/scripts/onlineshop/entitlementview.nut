@@ -1,6 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 let template = "%gui/items/trophyDesc"
 let singleItemIconLayer = "item_place_single"
@@ -31,7 +37,7 @@ let getEntitlementGiftView = @(entitlement) (entitlement?.entitlementGift ?? [])
   if (config)
     return {
       icon = "#ui/gameuiskin#item_type_premium.svg"
-      title = ::colorize("userlogColoredText", getEntitlementName(config))
+      title = colorize("userlogColoredText", getEntitlementName(config))
     }
 
   return null
@@ -42,15 +48,15 @@ let getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(
   let typeValid = unlockType >= 0
   let unlockTypeText = typeValid ? ::get_name_by_unlock_type(unlockType) : "unknown"
 
-  local unlockTypeName = ::loc($"trophy/unlockables_names/{unlockTypeText}")
-  unlockTypeName = ::colorize(typeValid ? "activeTextColor" : "red", unlockTypeName)
+  local unlockTypeName = loc($"trophy/unlockables_names/{unlockTypeText}")
+  unlockTypeName = colorize(typeValid ? "activeTextColor" : "red", unlockTypeName)
 
   local name = unlockTypeName
 
-  local nameText = ::get_unlock_name_text(unlockType, unlockId)
-  nameText = ::colorize(typeValid ? "userlogColoredText" : "red", nameText)
-  if (unlockType != ::UNLOCKABLE_SLOT && nameText != "")
-    name += ::loc("ui/colon") + nameText
+  local nameText = getUnlockNameText(unlockType, unlockId)
+  nameText = colorize(typeValid ? "userlogColoredText" : "red", nameText)
+  if (unlockType != UNLOCKABLE_SLOT && nameText != "")
+    name += loc("ui/colon") + nameText
 
   return {
     title = name
@@ -82,10 +88,10 @@ let getDecoratorGiftView = @(giftArray, decoratorType, params) (giftArray ?? [])
   let buttons = getDecoratorActionButtonsView(decorator, decoratorType)
 
   return {
-    title = ::colorize(nameColor, locName)
+    title = colorize(nameColor, locName)
     icon = decoratorType.prizeTypeIcon
     tooltipId = ::g_tooltip.getIdDecorator(giftId, decoratorType.unlockedItemType)
-    commentText = isHave ? ::colorize("badTextColor", ::loc("mainmenu/receiveOnlyOnce")) : null
+    commentText = isHave ? colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")) : null
     buttons = buttons
     buttonsCount = buttons.len()
   }
@@ -129,7 +135,7 @@ let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).
     classIco = classIco,
     shopItemType = shopItemType,
     unitPlate = unitPlate,
-    commentText = isBought? ::colorize("badTextColor", ::loc(receiveOnce)) : null
+    commentText = isBought? colorize("badTextColor", loc(receiveOnce)) : null
     buttons = buttons
     buttonsCount = buttons.len()
   }
@@ -204,9 +210,9 @@ local function getEntitlementLayerIcons(entitlement) {
 
   layerStyles.extend((entitlement?.entitlementGift ?? [])
     .filter(@(entId) getEntitlementConfig(entId) != null)
-    .map(@(entId) "reward_entitlement")
+    .map(@(_entId) "reward_entitlement")
   )
-  layerStyles.extend((entitlement?.unlockGift ?? []).map(@(unlockId) "reward_unlock"))
+  layerStyles.extend((entitlement?.unlockGift ?? []).map(@(_unlockId) "reward_unlock"))
 
   let layersArray = layerStyles.map(@(style) ::LayersIcon.getIconData(style))
 

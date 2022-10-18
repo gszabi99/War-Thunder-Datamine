@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
@@ -93,8 +100,8 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
 
   function initScreen()
   {
-    let contentObj = scene.findObject("content")
-    if (!::check_obj(contentObj))
+    let contentObj = this.scene.findObject("content")
+    if (!checkObj(contentObj))
       goBack()
 
     let view = isPlatformPS4 ? controllerDualshock4View
@@ -104,9 +111,9 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
     view.isGamepadCursorControlsEnabled <- ::g_gamepad_cursor_controls.getValue()
 
     let markUp = ::handyman.renderCached("%gui/controls/gamepadCursorcontrolsController", view)
-    guiScene.replaceContentFromText(contentObj, markUp, markUp.len(), this)
+    this.guiScene.replaceContentFromText(contentObj, markUp, markUp.len(), this)
 
-    let linkingObjsContainer = getObj("gamepad_image")
+    let linkingObjsContainer = this.getObj("gamepad_image")
     let linesGeneratorConfig = {
       startObjContainer = linkingObjsContainer
       endObjContainer   = linkingObjsContainer
@@ -114,7 +121,7 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
       links = bubblesList.map(@(id) { start = $"bubble_{id}", end = $"dot_{id}" })
     }
     let linesMarkup = ::LinesGenerator.getLinkLinesMarkup(linesGeneratorConfig)
-    guiScene.replaceContentFromText(getObj("lines_block"), linesMarkup, linesMarkup.len(), this)
+    this.guiScene.replaceContentFromText(this.getObj("lines_block"), linesMarkup, linesMarkup.len(), this)
   }
 
 

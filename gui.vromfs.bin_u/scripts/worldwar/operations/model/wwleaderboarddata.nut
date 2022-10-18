@@ -1,4 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
+let { round } = require("math")
 
 let modes = [
   {
@@ -47,7 +53,7 @@ let modes = [
 let function getModeByName(mName)
 {
   return ::u.search(modes, @(m) m.mode == mName
-    && (!m?.needFeature || ::has_feature(m.needFeature)))
+    && (!m?.needFeature || hasFeature(m.needFeature)))
 }
 
 /*
@@ -147,7 +153,7 @@ let function convertWwLeaderboardData(result, applyLocalisationToName = false)
       continue
 
     let lbData = {
-      name = applyLocalisationToName ? ::loc(rowId) : rowId
+      name = applyLocalisationToName ? loc(rowId) : rowId
     }
     foreach (columnId, columnData in rowData)
     {
@@ -159,7 +165,7 @@ let function convertWwLeaderboardData(result, applyLocalisationToName = false)
       local value = typeof(columnData) == "table"
         ? columnData?.value_total
         : columnId == "name" && applyLocalisationToName
-            ? ::loc(columnData)
+            ? loc(columnData)
             : columnData
       if (valueFactor)
         value = value * valueFactor
@@ -212,7 +218,7 @@ let function updateClanByWWLBAndDo(clanInfo, afterUpdate)
         let idx = lbData?.idx
         let rating = lbData?.rating?.value_total
         if(rating != null)
-          clanInfo.rating <- ::round(rating / 10000.0).tointeger()
+          clanInfo.rating <- round(rating / 10000.0).tointeger()
         if(idx != null)
           clanInfo.place <- idx + 1
       }

@@ -1,10 +1,20 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getCdBaseDifficulty } = ::require_native("guiOptions")
-local { getActionBarUnitName } = ::require_native("hudActionBar")
+let { getCdBaseDifficulty } = require_native("guiOptions")
+let { getActionBarUnitName } = require_native("hudActionBar")
+let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
+let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -27,7 +37,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/navTestflight.blk"
   multipleInstances = false
-  wndGameMode = ::GM_TEST_FLIGHT
+  wndGameMode = GM_TEST_FLIGHT
   wndOptionsMode = ::OPTIONS_MODE_TRAINING
   afterCloseFunc = null
   shouldSkipUnitCheck = false
@@ -44,51 +54,51 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
   {
     unit = unit ?? showedUnit.value
     if (!unit)
-      return goBack()
+      return this.goBack()
 
     ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
     let btnBuilder = this.showSceneBtn("btn_builder", hasMissionBuilder)
     if (hasMissionBuilder)
-      btnBuilder.setValue(::loc("mainmenu/btnBuilder"))
+      btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     this.showSceneBtn("btn_select", true)
 
     needSlotbar = needSlotbar && !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(unit)
     if (needSlotbar)
     {
-      let frameObj = scene.findObject("wnd_frame")
+      let frameObj = this.scene.findObject("wnd_frame")
       frameObj.size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
       frameObj.pos = "50%pw-50%w, 1@battleBtnBottomOffset-h"
       frameObj.withSlotbar = "yes"
     }
 
     this.showSceneBtn("unit_weapons_selector", true)
-    guiScene.applyPendingChanges(false)
+    this.guiScene.applyPendingChanges(false)
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
 
     updateAircraft()
 
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
     if (needSlotbar)
     {
-      ::switch_profile_country(unit.shopCountry) //select country for slotbar
+      switchProfileCountry(unit.shopCountry) //select country for slotbar
       showedUnit(unit) //select unit for slotbar
-      createSlotbar()
+      this.createSlotbar()
     }
     else
     {
-      let unitNestObj = scene.findObject("unit_nest")
-      if (::checkObj(unitNestObj))
+      let unitNestObj = this.scene.findObject("unit_nest")
+      if (checkObj(unitNestObj))
       {
         let airData = ::build_aircraft_item(unit.name, unit)
-        guiScene.appendWithBlk(unitNestObj, airData, this)
+        this.guiScene.appendWithBlk(unitNestObj, airData, this)
         ::fill_unit_item_timers(unitNestObj.findObject(unit.name), unit)
       }
     }
 
-    ::move_mouse_on_obj(scene.findObject("btn_select"))
+    ::move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
 
   function updateLinkedOptions() {
@@ -121,8 +131,8 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       return
 
     let bulletGroups = weaponsSelectorWeak?.bulletsManager.getBulletsGroups() ?? []
-    foreach(idx, bulGroup in bulletGroups)
-      showOptionRow(bulGroup.getOption(), bulGroup.active)
+    foreach(_idx, bulGroup in bulletGroups)
+      this.showOptionRow(bulGroup.getOption(), bulGroup.active)
   }
 
   function updateWeaponsSelector()
@@ -133,7 +143,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       return
     }
 
-    let weaponryObj = scene.findObject("unit_weapons_selector")
+    let weaponryObj = this.scene.findObject("unit_weapons_selector")
 
     let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
@@ -143,40 +153,40 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     })
 
     weaponsSelectorWeak = handler.weakref()
-    registerSubHandler(handler)
+    this.registerSubHandler(handler)
   }
 
   function getCantFlyText(checkUnit)
   {
     return !checkUnit.unitType.isAvailable() ?
-      ::loc("mainmenu/unitTypeLocked") : checkUnit.unitType.getTestFlightUnavailableText()
+      loc("mainmenu/unitTypeLocked") : checkUnit.unitType.getTestFlightUnavailableText()
   }
 
   function updateOptionsArray()
   {
-    if (optionsConfig == null) {
+    if (this.optionsConfig == null) {
       let diffOpt = ::get_option(::USEROPT_DIFFICULTY)
-      optionsConfig = { diffCode = diffOpt.diffCode[diffOpt.value]}
+      this.optionsConfig = { diffCode = diffOpt.diffCode[diffOpt.value]}
     }
-    options = [
+    this.options = [
       [::USEROPT_DIFFICULTY, "spinner"],
     ]
     if (unit?.isAir() || unit?.isHelicopter?())
     {
-      options.append([::USEROPT_LIMITED_FUEL, "spinner"])
-      options.append([::USEROPT_LIMITED_AMMO, "spinner"])
+      this.options.append([::USEROPT_LIMITED_FUEL, "spinner"])
+      this.options.append([::USEROPT_LIMITED_AMMO, "spinner"])
     }
 
     let skin_options = [
       [::USEROPT_SKIN, "spinner"]
     ]
-    if (::has_feature("UserSkins"))
+    if (hasFeature("UserSkins"))
       skin_options.append([::USEROPT_USER_SKIN, "spinner"])
 
-    options.extend(skin_options)
+    this.options.extend(skin_options)
 
     if (unit?.isAir())
-      options.append(
+      this.options.append(
         [::USEROPT_AEROBATICS_SMOKE_TYPE, "spinner"],
         [::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, "spinner"],
         [::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, "spinner"],
@@ -184,7 +194,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       )
 
     if (unit?.isAir() || unit?.isHelicopter?())
-      options.append(
+      this.options.append(
         [::USEROPT_GUN_TARGET_DISTANCE, "spinner"],
         [::USEROPT_GUN_VERTICAL_TARGETING, "spinner"],
         [::USEROPT_BOMB_ACTIVATION_TIME, "spinner"],
@@ -198,19 +208,19 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     if (unit?.isShipOrBoat())
     {
-      options.append(
+      this.options.append(
         [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
         [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
         [::USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
       )
     }
 
-    options.append(
+    this.options.append(
       [::USEROPT_MODIFICATIONS, "spinner"],
       [::USEROPT_TIME, "spinner"],
       [::USEROPT_CLIME, "spinner"]
     )
-    return options
+    return this.options
   }
 
   function updateAircraft()
@@ -220,16 +230,16 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     let showOptions = isTestFlightAvailable()
 
-    let optListObj = scene.findObject("optionslist")
-    let textObj = scene.findObject("no_options_textarea")
+    let optListObj = this.scene.findObject("optionslist")
+    let textObj = this.scene.findObject("no_options_textarea")
     optListObj.show(showOptions)
     textObj.setValue(showOptions? "" : getCantFlyText(unit))
 
-    let hObj = scene.findObject("header_name")
-    if (!::checkObj(hObj))
+    let hObj = this.scene.findObject("header_name")
+    if (!checkObj(hObj))
       return
 
-    let headerText = unit.unitType.getTestFlightText() + " " + ::loc("ui/mdash") + " " + ::getUnitName(unit.name)
+    let headerText = unit.unitType.getTestFlightText() + " " + loc("ui/mdash") + " " + ::getUnitName(unit.name)
     hObj.setValue(headerText)
 
     if (!showOptions)
@@ -240,18 +250,18 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     ::test_flight_aircraft <- unit
     ::cur_aircraft_name = unit.name
     ::aircraft_for_weapons = unit.name
-    ::set_gui_option(::USEROPT_AIRCRAFT, unit.name)
+    set_gui_option(::USEROPT_AIRCRAFT, unit.name)
 
-    let container = create_options_container("testflight_options", options, true, 0.5, true, optionsConfig)
-    guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
+    let container = ::create_options_container("testflight_options", this.options, true, 0.5, true, this.optionsConfig)
+    this.guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
 
-    optionsContainers = [container.descr]
+    this.optionsContainers = [container.descr]
     updateLinkedOptions()
   }
 
   function isBuilderAvailable()
   {
-    return ::isUnitAvailableForGM(unit, ::GM_BUILDER)
+    return ::isUnitAvailableForGM(unit, GM_BUILDER)
   }
   function isTestFlightAvailable()
   {
@@ -260,18 +270,18 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function updateButtons()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    scene.findObject("btn_builder").inactiveColor = isBuilderAvailable() ? "no" : "yes"
-    scene.findObject("btn_select").inactiveColor = isTestFlightAvailable()? "no" : "yes"
+    this.scene.findObject("btn_builder").inactiveColor = isBuilderAvailable() ? "no" : "yes"
+    this.scene.findObject("btn_select").inactiveColor = isTestFlightAvailable()? "no" : "yes"
   }
 
   function onMissionBuilder()
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
-        maxSquadSize = ::get_max_players_for_gamemode(::GM_BUILDER)
+        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return
 
@@ -281,24 +291,24 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
       if (needSlotbar) // There is a slotbar in this scene
         this.msgBox("not_available",
-          ::loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
+          loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
         ::gui_start_modal_wnd(::gui_handlers.changeAircraftForBuilder, { shopAir = unit })
       return
     }
 
-    applyFunc = function()
+    this.applyFunc = function()
     {
       saveAircraftOptions()
 
       ::gui_start_builder()
-      applyFunc = null
+      this.applyFunc = null
     }
-    applyOptions()
+    this.applyOptions()
   }
 
-  function onApply(obj)
+  function onApply(_obj)
   {
     let bulletsManager = weaponsSelectorWeak?.bulletsManager
     if (!bulletsManager || !bulletsManager.checkChosenBulletsCount())
@@ -312,37 +322,37 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     if (!isTestFlightAvailable())
       return this.msgBox("not_available", getCantFlyText(unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
 
-    if (::isInArray(getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
+    if (isInArray(this.getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
       if (!::check_diff_pkg(::g_difficulty.SIMULATOR.diffCode))
         return
 
     if (unit)
-      ::set_gui_option(::USEROPT_WEAPONS, getLastWeapon(unit.name))
+      set_gui_option(::USEROPT_WEAPONS, getLastWeapon(unit.name))
 
     if (::SessionLobby.isInRoom())
-      return goBack()
+      return this.goBack()
 
     ::queues.checkAndStart(
-      ::Callback(function() {
-        applyFunc = function()
+      Callback(function() {
+        this.applyFunc = function()
         {
-          if (::get_gui_option(::USEROPT_DIFFICULTY) == "custom")
+          if (get_gui_option(::USEROPT_DIFFICULTY) == "custom")
           {
             ::gui_start_cd_options(startTestFlight, this) // See "MissionDescriptor::loadFromBlk"
-            doWhenActiveOnce("updateSceneDifficulty")
+            this.doWhenActiveOnce("updateSceneDifficulty")
           }
           else
             startTestFlight()
-          applyFunc = null
+          this.applyFunc = null
         }
-        applyOptions()
+        this.applyOptions()
       }, this)
       null
       "isCanNewflight"
     )
   }
 
-  function onEventSquadStatusChanged(params)
+  function onEventSquadStatusChanged(_params)
   {
     updateButtons()
   }
@@ -352,7 +362,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     let misName = getTestFlightMisName(unit.testFlight)
     let misBlk = ::get_mission_meta_info(misName)
     if (!misBlk)
-      return ::dagor.assertf(false, "Error: wrong testflight mission " + misName)
+      return assert(false, "Error: wrong testflight mission " + misName)
 
     ::current_campaign_mission <- misName
 
@@ -360,12 +370,12 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     ::g_decorator.setCurSkinToHangar(unit.name)
 
     ::mergeToBlk({
-        _gameMode = ::GM_TEST_FLIGHT
+        _gameMode = GM_TEST_FLIGHT
         name      = misName
         chapter   = "training"
         takeOffOnStart = false
-        weather     = getSceneOptValue(::USEROPT_CLIME)
-        environment = getSceneOptValue(::USEROPT_TIME)
+        weather     = this.getSceneOptValue(::USEROPT_CLIME)
+        environment = this.getSceneOptValue(::USEROPT_TIME)
       }, misBlk)
 
     ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
@@ -373,7 +383,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     actionBarInfo.cacheActionDescs(getActionBarUnitName())
 
     ::select_training_mission(misBlk)
-    guiScene.performDelayed(this, ::gui_start_flight)
+    this.guiScene.performDelayed(this, ::gui_start_flight)
   }
 
   function getTestFlightMisName(misName)
@@ -392,7 +402,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     let skin = ::get_option(::USEROPT_SKIN)
     let skinValue = skin.values[skin.value]
-    let fuelValue = getSceneOptValue(::USEROPT_LOAD_FUEL_AMOUNT)
+    let fuelValue = this.getSceneOptValue(::USEROPT_LOAD_FUEL_AMOUNT)
     let limitedFuel = ::get_option(::USEROPT_LIMITED_FUEL)
     let limitedAmmo = ::get_option(::USEROPT_LIMITED_AMMO)
 
@@ -423,16 +433,16 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
         name = bulGroup.getBulletNameForCode(bulGroup.selectedName)
         count = bulGroup.bulletsCount * bulGroup.guns
       }
-      ::set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, name)
+      set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, name)
       ::set_option(::USEROPT_BULLETS0 + bulIdx, name)
-      ::set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, count)
+      set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, count)
     }
     ++bulIdx
 
-    while(bulIdx < ::BULLETS_SETS_QUANTITY) {
-      ::set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, "")
+    while(bulIdx < BULLETS_SETS_QUANTITY) {
+      set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, "")
       ::set_option(::USEROPT_BULLETS0 + bulIdx, "")
-      ::set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
+      set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
       ++bulIdx
     }
   }
@@ -442,30 +452,30 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     updateVerticalTargetingOption()
     updateSceneDifficulty()
 
-    let diffOptionCont = findOptionInContainers(::USEROPT_DIFFICULTY)
+    let diffOptionCont = this.findOptionInContainers(::USEROPT_DIFFICULTY)
     ::set_option(::USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
-    optionsConfig.diffCode <- diffOptionCont.diffCode[obj.getValue()]
-    updateOption(::USEROPT_LOAD_FUEL_AMOUNT)
-    updateOption(::USEROPT_BOMB_ACTIVATION_TIME)
+    this.optionsConfig.diffCode <- diffOptionCont.diffCode[obj.getValue()]
+    this.updateOption(::USEROPT_LOAD_FUEL_AMOUNT)
+    this.updateOption(::USEROPT_BOMB_ACTIVATION_TIME)
   }
 
   function updateSceneDifficulty()
   {
-    if (getSlotbar())
-      getSlotbar().updateDifficulty()
+    if (this.getSlotbar())
+      this.getSlotbar().updateDifficulty()
 
-    let unitNestObj = unit ? scene.findObject("unit_nest") : null
-    if (::checkObj(unitNestObj))
+    let unitNestObj = unit ? this.scene.findObject("unit_nest") : null
+    if (checkObj(unitNestObj))
     {
       let obj = unitNestObj.findObject("rank_text")
-      if (::checkObj(obj))
+      if (checkObj(obj))
         obj.setValue(::get_unit_rank_text(unit, null, true, getCurrentEdiff()))
     }
   }
 
   function getCurrentEdiff()
   {
-    let diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
+    let diffValue = this.getSceneOptValue(::USEROPT_DIFFICULTY)
     let difficulty = (diffValue == "custom") ?
       ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
@@ -483,14 +493,14 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       afterCloseFunc()
   }
 
-  function onEventCrewChanged(p)
+  function onEventCrewChanged(_p)
   {
-    doWhenActiveOnce("setUnitFromSlotbar")
+    this.doWhenActiveOnce("setUnitFromSlotbar")
   }
 
-  function onEventCountryChanged(p)
+  function onEventCountryChanged(_p)
   {
-    doWhenActiveOnce("setUnitFromSlotbar")
+    this.doWhenActiveOnce("setUnitFromSlotbar")
   }
 
   function setUnitFromSlotbar()
@@ -505,26 +515,26 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       return
     }
 
-    applyFunc = ::Callback(function()
+    this.applyFunc = Callback(function()
       {
         unit = crewUnit
         updateAircraft()
-        applyFunc = null
+        this.applyFunc = null
       },
       this)
 
-    applyOptions()
+    this.applyOptions()
   }
 
   function onUserModificationsUpdate(obj) {
-    let option = get_option_by_id(obj?.id)
+    let option = this.get_option_by_id(obj?.id)
     if (!option)
       return
 
     if (option.value != obj.getValue()) {
-      guiScene.performDelayed(this, function() {
+      this.guiScene.performDelayed(this, function() {
         ::set_option(option.type, obj.getValue())
-        updateOption(option.type)
+        this.updateOption(option.type)
       })
     }
 
@@ -534,21 +544,21 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function onMyWeaponOptionUpdate(obj)
   {
-    let option = get_option_by_id(obj?.id)
+    let option = this.get_option_by_id(obj?.id)
     if (!option) return
 
     ::set_option(option.type, obj.getValue(), option)
     if ("hints" in option)
       obj.tooltip = option.hints[ obj.getValue() ]
     else if ("hint" in option)
-      obj.tooltip = ::g_string.stripTags( ::loc(option.hint, "") )
+      obj.tooltip = ::g_string.stripTags( loc(option.hint, "") )
     checkBulletsRows()
     updateWeaponOptions()
   }
 
   function onTripleAerobaticsSmokeSelected(obj)
   {
-    let option = get_option_by_id(obj?.id)
+    let option = this.get_option_by_id(obj?.id)
     if (!option)
       return
 
@@ -558,67 +568,67 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function checkRocketDisctanceFuseRow()
   {
-    let option = findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
+    let option = this.findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
     if (!option)
       return
 
-    showOptionRow(option, !!unit && (getCurrentPreset(unit)?.hasRocketDistanceFuse ?? false))
+    this.showOptionRow(option, !!unit && (getCurrentPreset(unit)?.hasRocketDistanceFuse ?? false))
   }
 
   function checkBombActivationTimeRow()
   {
-    let option = findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
+    let option = this.findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
     if (!option)
       return
 
-    showOptionRow(option, !!unit && (getCurrentPreset(unit)?.bomb ?? false))
+    this.showOptionRow(option, !!unit && (getCurrentPreset(unit)?.bomb ?? false))
   }
 
   function checkBombSeriesRow()
   {
-    let option = findOptionInContainers(::USEROPT_BOMB_SERIES)
+    let option = this.findOptionInContainers(::USEROPT_BOMB_SERIES)
     if (!option)
       return
 
-    showOptionRow(option, bombNbr(unit) > 1)
+    this.showOptionRow(option, bombNbr(unit) > 1)
 
-    updateOption(::USEROPT_BOMB_SERIES)
+    this.updateOption(::USEROPT_BOMB_SERIES)
   }
 
   function checkCountermeasurePeriodsRow()
   {
     let option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
     if (option)
-      showOptionRow(option, hasCountermeasures(unit))
+      this.showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkCountermeasureSeriesRow()
   {
     let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
     if (option)
-      showOptionRow(option, hasCountermeasures(unit))
+      this.showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkCountermeasureSeriesPeriodsRow()
   {
     let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
     if (option)
-      showOptionRow(option, hasCountermeasures(unit))
+      this.showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkDepthChargeActivationTimeRow()
   {
-    let option = findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
+    let option = this.findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
     if (!option)
       return
 
-    showOptionRow(option, unit?.isDepthChargeAvailable?()
+    this.showOptionRow(option, unit?.isDepthChargeAvailable?()
       && (getCurrentPreset(unit)?.hasDepthCharge ?? false))
   }
 
   function updateTripleAerobaticsSmokeOptions()
   {
-    let aerobaticsSmokeOptions = find_options_in_containers([
+    let aerobaticsSmokeOptions = this.find_options_in_containers([
       ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR,
       ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR,
       ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
@@ -629,41 +639,41 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     let show = isTripleColorSmokeAvailable()
     foreach(option in aerobaticsSmokeOptions)
-      showOptionRow(option, show)
+      this.showOptionRow(option, show)
   }
 
   function updateTorpedoDiveDepth() {
-    let option = findOptionInContainers(::USEROPT_TORPEDO_DIVE_DEPTH)
+    let option = this.findOptionInContainers(::USEROPT_TORPEDO_DIVE_DEPTH)
     if (!option)
       return
 
-    showOptionRow(option, !::get_option_torpedo_dive_depth_auto()
+    this.showOptionRow(option, !::get_option_torpedo_dive_depth_auto()
       && unit.isShipOrBoat()
       && (getCurrentPreset(unit)?.torpedo ?? false))
   }
 
   function updateVerticalTargetingOption()
   {
-    let optList = find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
+    let optList = this.find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
     if (!optList.len())
       return
-    let diffName = getOptValue(::USEROPT_DIFFICULTY, false)
+    let diffName = this.getOptValue(::USEROPT_DIFFICULTY, false)
     if (diffName == null) //no such option in current options list
       return
 
     foreach(option in optList)
-      showOptionRow(option, diffName != ::g_difficulty.ARCADE.name)
+      this.showOptionRow(option, diffName != ::g_difficulty.ARCADE.name)
   }
 
-  function onEventUnitWeaponChanged(p) {
+  function onEventUnitWeaponChanged(_p) {
     updateWeaponOptions()
   }
 
-  function onEventModificationChanged(p) {
-    doWhenActiveOnce("updateCountermeasureOptions")
+  function onEventModificationChanged(_p) {
+    this.doWhenActiveOnce("updateCountermeasureOptions")
   }
 
-  function onEventModificationPurchased(p) {
-    doWhenActiveOnce("updateCountermeasureOptions")
+  function onEventModificationPurchased(_p) {
+    this.doWhenActiveOnce("updateCountermeasureOptions")
   }
 }

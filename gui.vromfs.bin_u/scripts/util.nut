@@ -1,5 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
-let { fabs } = require("math")
+let { get_time_msec } = require("dagor.time")
+let { floor, fabs } = require("math")
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
 let {
@@ -15,7 +21,7 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 let { havePremium } = require("%scripts/user/premium.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
@@ -39,7 +45,7 @@ const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 
 local gui_start_logout_scheduled = false
 
-::g_script_reloader.registerPersistentData("util", ::getroottable(),
+::g_script_reloader.registerPersistentData("util", getroottable(),
   ["current_campaign_id", "current_campaign_mission"])
 
 ::nbsp <- " " // Non-breaking space character
@@ -79,8 +85,6 @@ foreach (i, v in ::cssColorsMapDark)
   return (val != null) ? val : defVal
 }
 
-::isInArray <- @(v, arr) arr.contains(v)
-
 ::locOrStrip <- function locOrStrip(text)
 {
   return (text.len() && text.slice(0,1)!="#")? ::g_string.stripTags(text) : text
@@ -89,34 +93,24 @@ foreach (i, v in ::cssColorsMapDark)
 let function get_gamepad_specific_localization(locId)
 {
   if (!::show_console_buttons)
-    return ::loc(locId)
+    return loc(locId)
 
-  return ::loc(locId + "/gamepad_specific", locId)
+  return loc(locId + "/gamepad_specific", locId)
 }
 ::cross_call_api.get_gamepad_specific_localization <- get_gamepad_specific_localization
 
 
 ::locEnding <- function locEnding(locId, ending, defValue = null)
 {
-  local res = ::loc(locId + ending, "")
+  local res = loc(locId + ending, "")
   if (res == "" && ending!="")
-    res = ::loc(locId, defValue)
+    res = loc(locId, defValue)
   return res
 }
 
 ::getCompoundedText <- function getCompoundedText(firstPart, secondPart, color)
 {
-  return "".concat(firstPart, ::colorize(color, secondPart))
-}
-
-::colorize <- function colorize(color, text)
-{
-  if (!color.len() || text == "")
-    return text
-
-  let firstSymbol = color.slice(0, 1)
-  let prefix = (firstSymbol == "@" || firstSymbol == "#") ? "" : "@"
-  return "".concat("<color=", prefix, color, ">", text, "</color>")
+  return "".concat(firstPart, colorize(color, secondPart))
 }
 
 ::getAircraftByName <- function getAircraftByName(name)
@@ -128,13 +122,13 @@ let function get_gamepad_specific_localization(locId)
 ::current_wait_screen_txt <- ""
 ::show_wait_screen <- function show_wait_screen(txt)
 {
-  ::dagor.debug("GuiManager: show_wait_screen "+txt)
-  if (::checkObj(::current_wait_screen))
+  log("GuiManager: show_wait_screen "+txt)
+  if (checkObj(::current_wait_screen))
   {
     if (::current_wait_screen_txt == txt)
-      return ::dagor.debug("already have this screen, just ignore")
+      return log("already have this screen, just ignore")
 
-    ::dagor.debug("wait screen already exist, remove old one.")
+    log("wait screen already exist, remove old one.")
     ::current_wait_screen.getScene().destroyElement(::current_wait_screen)
     ::current_wait_screen = null
     ::reset_msg_box_check_anim_time()
@@ -142,26 +136,26 @@ let function get_gamepad_specific_localization(locId)
 
   let guiScene = ::get_main_gui_scene()
   if (guiScene == null)
-    return ::dagor.debug("guiScene == null")
+    return log("guiScene == null")
 
   let needAnim = ::need_new_msg_box_anim()
   ::current_wait_screen = guiScene.loadModal("", "%gui/waitBox.blk", needAnim ? "massTransp" : "div", null)
-  if (!::checkObj(::current_wait_screen))
-    return ::dagor.debug("Error: failed to create wait screen")
+  if (!checkObj(::current_wait_screen))
+    return log("Error: failed to create wait screen")
 
   let obj = ::current_wait_screen.findObject("wait_screen_msg")
-  if (!::checkObj(obj))
-    return ::dagor.debug("Error: failed to find wait_screen_msg")
+  if (!checkObj(obj))
+    return log("Error: failed to find wait_screen_msg")
 
-  obj.setValue(::loc(txt))
+  obj.setValue(loc(txt))
   ::current_wait_screen_txt = txt
   ::broadcastEvent("WaitBoxCreated")
 }
 
 ::close_wait_screen <- function close_wait_screen()
 {
-  ::dagor.debug("close_wait_screen")
-  if (!::checkObj(::current_wait_screen))
+  log("close_wait_screen")
+  if (!checkObj(::current_wait_screen))
     return
 
   let guiScene = ::current_wait_screen.getScene()
@@ -175,7 +169,7 @@ let function get_gamepad_specific_localization(locId)
 
 ::on_cannot_create_session <- function on_cannot_create_session()
 {
-  ::add_msg_box("cannot_session", ::loc("NET_CANNOT_CREATE_SESSION"), [["ok", function() {}]], "ok")
+  ::add_msg_box("cannot_session", loc("NET_CANNOT_CREATE_SESSION"), [["ok", function() {}]], "ok")
 }
 
 ::in_on_lost_psn <- false
@@ -183,7 +177,7 @@ let function get_gamepad_specific_localization(locId)
 // left for future ps3/ps4 realisation
 let function on_lost_psn()
 {
-  ::dagor.debug("on_lost_psn")
+  log("on_lost_psn")
   let guiScene = ::get_gui_scene()
   let handler = ::current_base_gui_handler
   if (handler == null)
@@ -210,7 +204,7 @@ let function on_lost_psn()
   else
   {
     ::in_on_lost_psn = true
-    ::add_msg_box("lost_live", ::loc("yn1/disconnection/psn"), [["ok",
+    ::add_msg_box("lost_live", loc("yn1/disconnection/psn"), [["ok",
         function()
         {
           ::in_on_lost_psn = false
@@ -234,15 +228,15 @@ let function on_lost_psn()
 {
   switch (game_mode)
   {
-    case ::GM_CAMPAIGN: return ::OPTIONS_MODE_CAMPAIGN;
-    case ::GM_TRAINING: return ::OPTIONS_MODE_TRAINING;
-    case ::GM_TEST_FLIGHT: return ::OPTIONS_MODE_TRAINING;
-    case ::GM_SINGLE_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
-    case ::GM_USER_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
-    case ::GM_DYNAMIC: return ::OPTIONS_MODE_DYNAMIC;
-    case ::GM_BUILDER: return ::OPTIONS_MODE_DYNAMIC;
-    case ::GM_DOMINATION: return ::OPTIONS_MODE_MP_DOMINATION;
-    case ::GM_SKIRMISH: return ::OPTIONS_MODE_MP_SKIRMISH;
+    case GM_CAMPAIGN: return ::OPTIONS_MODE_CAMPAIGN;
+    case GM_TRAINING: return ::OPTIONS_MODE_TRAINING;
+    case GM_TEST_FLIGHT: return ::OPTIONS_MODE_TRAINING;
+    case GM_SINGLE_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
+    case GM_USER_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
+    case GM_DYNAMIC: return ::OPTIONS_MODE_DYNAMIC;
+    case GM_BUILDER: return ::OPTIONS_MODE_DYNAMIC;
+    case GM_DOMINATION: return ::OPTIONS_MODE_MP_DOMINATION;
+    case GM_SKIRMISH: return ::OPTIONS_MODE_MP_SKIRMISH;
   }
   return ::OPTIONS_MODE_GAMEPLAY
 }
@@ -260,7 +254,7 @@ let function on_lost_psn()
   {
     let itemView = {}
     itemView.isFlightMenu <- is_flight_menu
-    itemView.name <- ::u.isString(item) ? item : ::getTblValue("name", item, "")
+    itemView.name <- ::u.isString(item) ? item : getTblValue("name", item, "")
     itemView.buttonId <- "btn_" + itemView.name.tolower()
     itemView.isFocus <- idx == 0
     itemView.isInactive <- false
@@ -300,7 +294,7 @@ let function on_lost_psn()
   if (num < 0)
     num = ::g_squad_manager.getSameCyberCafeMembersNum()
   let cyberCafeBonusesTable = ::calc_boost_for_squads_members_from_same_cyber_cafe(num)
-  local value = ::getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
+  local value = getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
   return value
 }
 
@@ -309,7 +303,7 @@ let function on_lost_psn()
   if (cyberCafeLevel < 0)
     cyberCafeLevel = ::get_cyber_cafe_level()
   let cyberCafeBonusesTable = ::calc_boost_for_cyber_cafe(cyberCafeLevel)
-  let value = ::getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
+  let value = getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
   return value
 }
 
@@ -324,31 +318,31 @@ let function on_lost_psn()
     {
       let blk = ::get_warpoints_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0)
-      rate = ::getWpPriceText(::colorize("activeTextColor", rate), true)
+      rate = ::getWpPriceText(colorize("activeTextColor", rate), true)
     }
     else if (effectType == boosterEffectType.RP)
     {
       let blk = ::get_ranks_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0)
-      rate = ::getRpPriceText(::colorize("activeTextColor", rate), true)
+      rate = ::getRpPriceText(colorize("activeTextColor", rate), true)
     }
-    tooltipText.append(::loc("mainmenu/activePremium") + ::loc("ui/colon") + rate)
+    tooltipText.append(loc("mainmenu/activePremium") + loc("ui/colon") + rate)
   }
 
   local value = ::get_cyber_cafe_bonus_by_effect_type(effectType)
   if (value > 0.0)
   {
     value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value)
-    value = effectType.getText(::colorize("activeTextColor", value), true)
-    tooltipText.append(::loc("mainmenu/bonusCyberCafe") + ::loc("ui/colon") + value)
+    value = effectType.getText(colorize("activeTextColor", value), true)
+    tooltipText.append(loc("mainmenu/bonusCyberCafe") + loc("ui/colon") + value)
   }
 
   value = ::get_squad_bonus_for_same_cyber_cafe(effectType)
   if (value > 0.0)
   {
     value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value)
-    value = effectType.getText(::colorize("activeTextColor", value), true)
-    tooltipText.append(::loc("item/FakeBoosterForNetCafeLevel/squad", {num = ::g_squad_manager.getSameCyberCafeMembersNum()}) + ::loc("ui/colon") + value)
+    value = effectType.getText(colorize("activeTextColor", value), true)
+    tooltipText.append(loc("item/FakeBoosterForNetCafeLevel/squad", {num = ::g_squad_manager.getSameCyberCafeMembersNum()}) + loc("ui/colon") + value)
   }
 
   let boostersArray = getActiveBoostersArray(effectType)
@@ -358,14 +352,14 @@ let function on_lost_psn()
 
   local bonusText = "\n".join(tooltipText, true)
   if (bonusText != "")
-    bonusText = $"\n<b>{::loc("mainmenu/bonusTitle")}{::loc("ui/colon")}</b>\n{bonusText}"
+    bonusText = $"\n<b>{loc("mainmenu/bonusTitle")}{loc("ui/colon")}</b>\n{bonusText}"
 
   return bonusText
 }
 
 ::add_bg_task_cb <- function add_bg_task_cb(taskId, actionFunc, handler = null)
 {
-  let taskCallback = ::Callback((@(actionFunc, handler) function(result = ::YU2_OK) {
+  let taskCallback = Callback((@(actionFunc, handler) function(_result = YU2_OK) {
     ::call_for_handler(handler, actionFunc)
   })(actionFunc, handler), handler)
   ::g_tasker.addTask(taskId, null, taskCallback, taskCallback)
@@ -386,32 +380,21 @@ let function on_lost_psn()
   return air?.shopCountry ?? ""
 }
 
-::isInArrayRecursive <- function isInArrayRecursive(v, arr)
-{
-  foreach(i in arr)
-    if (v==i)
-      return true
-    else
-      if (typeof(i)=="array" && ::isInArrayRecursive(v, i))
-        return true
-  return false
-}
-
 ::showBtn <- function showBtn(id, status, scene=null)
 {
-  let obj = ::checkObj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
+  let obj = checkObj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
   return ::show_obj(obj, status)
 }
 
 ::enableBtnTable <- function enableBtnTable(obj, table, setInactive = false)
 {
-  if(!::checkObj(obj))
+  if(!checkObj(obj))
     return
 
   foreach(id, status in table)
   {
     let idObj = obj.findObject(id)
-    if (::checkObj(idObj))
+    if (checkObj(idObj))
     {
       if (setInactive)
         idObj.inactiveColor = status? "no" : "yes"
@@ -423,7 +406,7 @@ let function on_lost_psn()
 
 ::showBtnTable <- function showBtnTable(obj, table)
 {
-  if (!::checkObj(obj))
+  if (!checkObj(obj))
     return
 
   foreach(id, status in table)
@@ -441,7 +424,7 @@ let function on_lost_psn()
 ::is_game_mode_with_spendable_weapons <- function is_game_mode_with_spendable_weapons()
 {
   let mode = ::get_mp_mode();
-  return mode == ::GM_DOMINATION || mode == ::GM_TOURNAMENT;
+  return mode == GM_DOMINATION || mode == GM_TOURNAMENT;
 }
 
 ::stringReplace <- function stringReplace(str, replstr, value)
@@ -462,10 +445,10 @@ let function on_lost_psn()
   return s;
 }
 
-local last_update_entitlements_time = ::dagor.getCurTime()
+local last_update_entitlements_time = get_time_msec()
 ::get_update_entitlements_timeout_msec <- function get_update_entitlements_timeout_msec()
 {
-  return last_update_entitlements_time - ::dagor.getCurTime() + 20000
+  return last_update_entitlements_time - get_time_msec() + 20000
 }
 
 ::update_entitlements_limited <- function update_entitlements_limited(force=false)
@@ -474,7 +457,7 @@ local last_update_entitlements_time = ::dagor.getCurTime()
     return -1
   if (force || ::get_update_entitlements_timeout_msec() < 0)
   {
-    last_update_entitlements_time = ::dagor.getCurTime()
+    last_update_entitlements_time = get_time_msec()
     return ::update_entitlements()
   }
   return -1
@@ -489,10 +472,10 @@ local last_update_entitlements_time = ::dagor.getCurTime()
   local text = null
   local isGoldNotEnough = false
   if (cost.wp > 0 && balance.wp < cost.wp)
-    text = ::loc("not_enough_warpoints")
+    text = loc("not_enough_warpoints")
   if (cost.gold > 0 && balance.gold < cost.gold)
   {
-    text = ::loc("not_enough_gold")
+    text = loc("not_enough_gold")
     isGoldNotEnough = true
     ::update_entitlements_limited()
   }
@@ -506,9 +489,9 @@ local last_update_entitlements_time = ::dagor.getCurTime()
   local defButton = cancelBtnText
   let buttons = [[cancelBtnText, (@(afterCheck) function() {if (afterCheck) afterCheck ();})(afterCheck) ]]
   local shopType = ""
-  if (isGoldNotEnough && ::has_feature("EnableGoldPurchase"))
+  if (isGoldNotEnough && hasFeature("EnableGoldPurchase"))
     shopType = "eagles"
-  else if (!isGoldNotEnough && ::has_feature("SpendGold"))
+  else if (!isGoldNotEnough && hasFeature("SpendGold"))
     shopType = "warpoints"
 
   if (::isInMenu() && shopType != "")
@@ -527,9 +510,9 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
 {
   local text = ""
   if (gold!=0 || showGold)
-    text += gold + ::loc(colored? "gold/short/colored" : "gold/short")
+    text += gold + loc(colored? "gold/short/colored" : "gold/short")
   if (wp!=0 || showWp)
-    text += ((text=="")? "" : ", ") + wp + ::loc(colored? "warpoints/short/colored" : "warpoints/short")
+    text += ((text=="")? "" : ", ") + wp + loc(colored? "warpoints/short/colored" : "warpoints/short")
   return text
 }
 
@@ -551,23 +534,23 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
 {
   if (rp == 0)
     return ""
-  return rp.tostring() + ::loc("currency/researchPoints/sign" + (colored? "/colored" : ""))
+  return rp.tostring() + loc("currency/researchPoints/sign" + (colored? "/colored" : ""))
 }
 
 ::get_crew_sp_text <- function get_crew_sp_text(sp, showEmpty = true)
 {
   if (!showEmpty && sp == 0)
     return ""
-  return ::g_language.decimalFormat(sp) + ::loc("currency/skillPoints/sign/colored")
+  return ::g_language.decimalFormat(sp) + loc("currency/skillPoints/sign/colored")
 }
 
 ::get_flush_exp_text <- function get_flush_exp_text(exp_value)
 {
   if (exp_value == null || exp_value < 0)
     return ""
-  let rpPriceText = exp_value.tostring() + ::loc("currency/researchPoints/sign/colored")
+  let rpPriceText = exp_value.tostring() + loc("currency/researchPoints/sign/colored")
   let coloredPriceText = ::colorTextByValues(rpPriceText, exp_value, 0)
-  return format(::loc("mainmenu/availableFreeExpForNewResearch"), coloredPriceText)
+  return format(loc("mainmenu/availableFreeExpForNewResearch"), coloredPriceText)
 }
 
 ::getCrewSpText <- function getCrewSpText(sp, colored=true)
@@ -575,7 +558,7 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
   if (sp == 0)
     return ""
   return ::g_language.decimalFormat(sp)
-    + ::loc("currency/skillPoints/sign" + (colored? "/colored" : ""))
+    + loc("currency/skillPoints/sign" + (colored? "/colored" : ""))
 }
 
 ::colorTextByValues <- function colorTextByValues(text, val1, val2, useNeutral = true, useGood = true)
@@ -698,7 +681,7 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
     table[elementKey] <- [table[elementKey], elementValue]
 }
 
-::buildTableRow <- function buildTableRow(rowName, rowData, even=null, trParams="", tablePad="@tblPad")
+::buildTableRow <- function buildTableRow(rowName, rowData, even=null, trParams="", _tablePad="@tblPad")
 {
   //tablePad not using, but passed through many calls of this function
   let view = {
@@ -714,14 +697,14 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
     let config = (haveParams ? cell : {}).__merge({
       params = haveParams
       display = (cell?.show ?? true) ? "show" : "hide"
-      id = ::getTblValue("id", cell, "td_" + idx)
-      rawParam = ::getTblValue("rawParam", cell, "")
-      needText = ::getTblValue("needText", cell, true)
-      textType = ::getTblValue("textType", cell, "activeText")
-      text = haveParams? ::getTblValue("text", cell, "") : cell.tostring()
-      textRawParam = ::getTblValue("textRawParam", cell, "")
-      imageType = ::getTblValue("imageType", cell, "cardImg")
-      fontIconType = ::getTblValue("fontIconType", cell, "fontIcon20")
+      id = getTblValue("id", cell, "td_" + idx)
+      rawParam = getTblValue("rawParam", cell, "")
+      needText = getTblValue("needText", cell, true)
+      textType = getTblValue("textType", cell, "activeText")
+      text = haveParams? getTblValue("text", cell, "") : cell.tostring()
+      textRawParam = getTblValue("textRawParam", cell, "")
+      imageType = getTblValue("imageType", cell, "cardImg")
+      fontIconType = getTblValue("fontIconType", cell, "fontIcon20")
     })
 
     view.cell.append(config)
@@ -767,7 +750,7 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
 
 ::showCurBonus <- function showCurBonus(obj, value, tooltipLocName="", isDiscount=true, fullUpdate=false, tooltip = null)
 {
-  if (!::checkObj(obj))
+  if (!checkObj(obj))
     return
 
   local text = ""
@@ -778,7 +761,7 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
     if (!tooltip && tooltipLocName!="")
     {
       let prefix = isDiscount? "discount/" : "bonus/"
-      tooltip = format(::loc(prefix + tooltipLocName + "/tooltip"), value.tostring())
+      tooltip = format(loc(prefix + tooltipLocName + "/tooltip"), value.tostring())
     }
   }
 
@@ -794,7 +777,7 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
 
 ::hideBonus <- function hideBonus(obj)
 {
-  if (::checkObj(obj))
+  if (checkObj(obj))
     obj.setValue("")
 }
 
@@ -840,9 +823,9 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
   let locEnd = (typeof(airName)=="string")? "/tooltip" : "/group/tooltip"
   if(imgColor != "")
   {
-    tooltipText += exp <= 1.0? "" : format(::loc("bonus/" + (imgColor=="wp_exp"? "exp" : imgColor) + imgType + placeType + "Mul" + locEnd), "x" + exp)
+    tooltipText += exp <= 1.0? "" : format(loc("bonus/" + (imgColor=="wp_exp"? "exp" : imgColor) + imgType + placeType + "Mul" + locEnd), "x" + exp)
     if(wp > 1)
-      tooltipText += ((tooltipText=="")? "":"\n") + format(::loc("bonus/" + (imgColor=="wp_exp"? "wp" : imgColor) + imgType + placeType + "Mul" + locEnd),"x" + wp)
+      tooltipText += ((tooltipText=="")? "":"\n") + format(loc("bonus/" + (imgColor=="wp_exp"? "wp" : imgColor) + imgType + placeType + "Mul" + locEnd),"x" + wp)
   }
 
   local data = {
@@ -892,27 +875,13 @@ let function find_max_lower_value(val, list)
   return $"#ui/gameuiskin#{bType}_bonus_mult_{multiplier}.png"
 }
 
-::checkObj <- function checkObj(obj)
-{
-  return obj!=null && obj.isValid()
-}
-
 ::save_to_json <- function save_to_json(obj)
 {
-  ::dagor.assertf(::isInArray(type(obj), [ "table", "array" ]),
+  assert(isInArray(type(obj), [ "table", "array" ]),
     "Data type not suitable for save_to_json: " + type(obj))
 
   return ::json_to_string(obj, false)
 }
-
-::get_country_by_team <- function get_country_by_team(team_index)
-{
-  local countries = null
-  if (::mission_settings && ::mission_settings.layout)
-    countries = ::get_mission_team_countries(::mission_settings.layout)
-  return ::getTblValue(team_index, countries) || ""
-}
-
 
 ::roman_numerals <- ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
                          "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"]
@@ -947,7 +916,7 @@ const MAX_ROMAN_DIGIT = 3
   {
     let digit = num % 10
     num = num / 10
-    roman = ::getTblValue(digit + (i * 10), get_roman_numeral_lookup, "") + roman
+    roman = getTblValue(digit + (i * 10), get_roman_numeral_lookup, "") + roman
   }
   return thousands + roman
 }
@@ -971,7 +940,7 @@ const MAX_ROMAN_DIGIT = 3
 
   foreach (air in ::all_units)
   {
-    if (::get_es_unit_type(air) != ::ES_UNIT_TYPE_AIRCRAFT)
+    if (::get_es_unit_type(air) != ES_UNIT_TYPE_AIRCRAFT)
       continue
     if (!("tags" in air) || !air.tags)
       continue;
@@ -1012,7 +981,7 @@ const MAX_ROMAN_DIGIT = 3
 
 ::generatePaginator <- function generatePaginator(nest_obj, handler, cur_page, last_page, my_page = null, show_last_page = false, hasSimpleNavButtons = false)
 {
-  if(!::checkObj(nest_obj))
+  if(!checkObj(nest_obj))
     return
 
   let guiScene = nest_obj.getScene()
@@ -1022,7 +991,7 @@ const MAX_ROMAN_DIGIT = 3
   let numPageText = "activeText{ text:t='%s'; %s}"
   local paginatorObj = nest_obj.findObject("paginator_container")
 
-  if(!::checkObj(paginatorObj))
+  if(!checkObj(paginatorObj))
   {
     let paginatorMarkUpData = ::handyman.renderCached(paginatorTpl, {hasSimpleNavButtons = hasSimpleNavButtons})
     paginatorObj = guiScene.createElement(nest_obj, "paginator", handler)
@@ -1086,7 +1055,7 @@ const MAX_ROMAN_DIGIT = 3
 ::paginator_set_unseen <- function paginator_set_unseen(nestObj, prevUnseen, nextUnseen)
 {
   let paginatorObj = nestObj.findObject("paginator_container")
-  if (!::check_obj(paginatorObj))
+  if (!checkObj(paginatorObj))
     return
 
   let prevObj = paginatorObj.findObject("pag_prew_page_unseen")
@@ -1100,7 +1069,7 @@ const MAX_ROMAN_DIGIT = 3
 ::on_have_to_start_chard_op <- function on_have_to_start_chard_op(message)
 {
 //  dlog("GP: on have to start char op message! = " +message)
-  ::dagor.debug("on_have_to_start_chard_op "+message)
+  log("on_have_to_start_chard_op "+message)
 
   if (message == "sync_clan_vs_profile")
   {
@@ -1139,25 +1108,25 @@ const MAX_ROMAN_DIGIT = 3
   return value
 }
 
-let function startCreateWndByGamemode(handler, obj)
+let function startCreateWndByGamemode(_handler, _obj)
 {
   let gm = ::match_search_gm
-  if (gm == ::GM_EVENT)
+  if (gm == GM_EVENT)
     ::gui_start_briefing()
-  else if (gm == ::GM_DYNAMIC)
+  else if (gm == GM_DYNAMIC)
     ::gui_start_dynamic_layouts()
-  else if (gm == ::GM_BUILDER)
+  else if (gm == GM_BUILDER)
   {
     ::mission_settings.coop = true
     ::gui_start_builder()
   }
-  else if (gm == ::GM_SINGLE_MISSION)
+  else if (gm == GM_SINGLE_MISSION)
     ::gui_start_singleMissions()
-  else if (gm == ::GM_USER_MISSION)
+  else if (gm == GM_USER_MISSION)
     ::gui_start_userMissions()
-  else if (gm == ::GM_SKIRMISH)
+  else if (gm == GM_SKIRMISH)
     ::gui_create_skirmish()
-  else if (gm == ::GM_DOMINATION || gm == ::GM_TOURNAMENT)
+  else if (gm == GM_DOMINATION || gm == GM_TOURNAMENT)
     ::gui_start_mislist()
   else //any coop - create dyncampaign
     ::gui_start_dynamic_layouts()
@@ -1182,18 +1151,6 @@ let function startCreateWndByGamemode(handler, obj)
   })(handler, gm))
 }
 
-::get_profile_country_sq <- @() ::get_profile_country() ?? "country_0"
-
-::switch_profile_country <- function switch_profile_country(country)
-{
-  if (country == ::get_profile_country_sq())
-    return
-
-  ::set_profile_country(country)
-  ::g_squad_utils.updateMyCountryData()
-  ::broadcastEvent("CountryChanged")
-}
-
 ::flushExcessExpToUnit <- function flushExcessExpToUnit(unit)
 {
   let blk = ::DataBlock()
@@ -1215,8 +1172,8 @@ let function startCreateWndByGamemode(handler, obj)
 {
   // On PS4 path is "/app0/config.blk", but it is read-only.
   return {
-    read  = (::is_platform_pc) ? ::get_config_name() : null
-    write = (::is_platform_pc) ? ::get_config_name() : null
+    read  = (is_platform_pc) ? ::get_config_name() : null
+    write = (is_platform_pc) ? ::get_config_name() : null
   }
 }
 
@@ -1248,7 +1205,7 @@ let function startCreateWndByGamemode(handler, obj)
 {
   local res = 0
   foreach(i, val in values)
-    if (::isInArray(val, selValues))
+    if (isInArray(val, selValues))
       res = res | (1 << i)
   return res
 }
@@ -1296,17 +1253,17 @@ let function startCreateWndByGamemode(handler, obj)
 
 ::is_worldwar_enabled <- function is_worldwar_enabled()
 {
-  return ::has_feature("WorldWar")
-    && ("g_world_war" in ::getroottable())
+  return hasFeature("WorldWar")
+    && ("g_world_war" in getroottable())
     && (!isPlatformSony || isCrossPlayEnabled())
 }
 
 ::check_tanks_available <- function check_tanks_available(silent = false)
 {
-  if (::is_platform_pc && "is_tanks_allowed" in getroottable() && !::is_tanks_allowed())
+  if (is_platform_pc && "is_tanks_allowed" in getroottable() && !::is_tanks_allowed())
   {
     if (!silent)
-      ::showInfoMsgBox(::loc("mainmenu/graphics_card_does_not_support_tank"), "graphics_card_does_not_support_tanks")
+      ::showInfoMsgBox(loc("mainmenu/graphics_card_does_not_support_tank"), "graphics_card_does_not_support_tanks")
     return false
   }
   return true
@@ -1334,8 +1291,8 @@ let function startCreateWndByGamemode(handler, obj)
 
 ::checkRemnantPremiumAccount <- function checkRemnantPremiumAccount()
 {
-  if (!::has_feature("EnablePremiumPurchase") ||
-      !::has_feature("SpendGold"))
+  if (!hasFeature("EnablePremiumPurchase") ||
+      !hasFeature("SpendGold"))
     return
 
   let currDays = time.getUtcDays()
@@ -1353,7 +1310,7 @@ let function startCreateWndByGamemode(handler, obj)
   let lastDaysHavePremium = ::loadLocalByAccount("premium/lastDayHavePremium", 0)
   local msgText = ""
   if (expire > 0)
-    msgText = ::loc("msgbox/ending_premium_account")
+    msgText = loc("msgbox/ending_premium_account")
   else if (lastDaysHavePremium != 0)
   {
     let deltaDaysReminder = currDays - lastDaysReminder
@@ -1361,7 +1318,7 @@ let function startCreateWndByGamemode(handler, obj)
     let gmBlk = ::get_game_settings_blk()
     let daysCounter = gmBlk?.reminderBuyPremiumDays ?? 7
     if (2 * deltaDaysReminder >= deltaDaysHavePremium || deltaDaysReminder >= daysCounter)
-      msgText = ::loc("msgbox/ended_premium_account")
+      msgText = loc("msgbox/ended_premium_account")
   }
 
   if (msgText != "")
@@ -1381,9 +1338,9 @@ local informTexQualityRestrictedDone = false
 {
   if (informTexQualityRestrictedDone)
     return
-  let message = ::loc("msgbox/graphicsOptionValueReduced/lowVideoMemory", {
-    name =  ::colorize("userlogColoredText", ::loc("options/texQuality"))
-    value = ::colorize("userlogColoredText", ::loc("options/quality_medium"))
+  let message = loc("msgbox/graphicsOptionValueReduced/lowVideoMemory", {
+    name =  colorize("userlogColoredText", loc("options/texQuality"))
+    value = colorize("userlogColoredText", loc("options/quality_medium"))
   })
   ::showInfoMsgBox(message, "sysopt_tex_quality_restricted")
   informTexQualityRestrictedDone = true
@@ -1434,23 +1391,23 @@ local server_message_end_time = 0
 
 ::show_aas_notify <- function show_aas_notify(text, timeseconds)
 {
-  server_message_text = ::loc(text)
-  server_message_end_time = ::dagor.getCurTime() + timeseconds * 1000
+  server_message_text = loc(text)
+  server_message_end_time = get_time_msec() + timeseconds * 1000
   ::broadcastEvent("ServerMessage")
   ::update_gamercards()
 }
 
 ::server_message_update_scene <- function server_message_update_scene(scene)
 {
-  if (!::checkObj(scene))
+  if (!checkObj(scene))
     return false
 
   let serverMessageObject = scene.findObject("server_message")
-  if (!::checkObj(serverMessageObject))
+  if (!checkObj(serverMessageObject))
     return false
 
   local text = ""
-  if (::dagor.getCurTime() < server_message_end_time)
+  if (get_time_msec() < server_message_end_time)
     text = server_message_text
 
   serverMessageObject.setValue(text)
@@ -1469,7 +1426,7 @@ local server_message_end_time = 0
   do {
     let div = intNum % 10
     arr.append(div)
-    intNum = ::floor(intNum/10).tointeger()
+    intNum = floor(intNum/10).tointeger()
   } while(intNum != 0)
 
   arr.reverse()
@@ -1519,7 +1476,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 {
   if (gt == null)
     gt = ::get_game_type()
-  return !(gt & (::GT_FFA_DEATHMATCH | ::GT_FFA))
+  return !(gt & (GT_FFA_DEATHMATCH | GT_FFA))
 }
 ::cross_call_api.is_mode_with_teams <- ::is_mode_with_teams
 
@@ -1555,10 +1512,10 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
     {
       let unitId = player.aircraftName
       if (unitId != "")
-        unitNameLoc = ::loc(unitId + "_1")
+        unitNameLoc = loc(unitId + "_1")
     }
     if (unitNameLoc != "")
-      unitName = ::loc("ui/parentheses", {text = unitNameLoc})
+      unitName = loc("ui/parentheses", {text = unitNameLoc})
   }
 
   let clanTag = withClanTag && !player?.isBot ? player.clanTag : ""
@@ -1566,14 +1523,14 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
                                               clanTag,
                                               unitName)
 
-  return colored ? ::colorize(::get_mplayer_color(player), name) : name
+  return colored ? colorize(::get_mplayer_color(player), name) : name
 }
 
 ::is_multiplayer <- @() is_mplayer_host() || is_mplayer_peer()
 
 ::get_dagui_obj_aabb <- function get_dagui_obj_aabb(obj)
 {
-  if (!::checkObj(obj))
+  if (!checkObj(obj))
     return null
 
   let size = obj.getSize()
@@ -1597,12 +1554,12 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 
 ::show_not_available_msg_box <- function show_not_available_msg_box()
 {
-  ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"), "not_available", true)
+  ::showInfoMsgBox(loc("msgbox/notAvailbleYet"), "not_available", true)
 }
 
 ::is_hangar_blur_available <- function is_hangar_blur_available()
 {
-  return ("enable_dof" in ::getroottable())
+  return ("enable_dof" in getroottable())
 }
 
 ::hangar_blur <- function hangar_blur(enable, params = null)
@@ -1611,12 +1568,12 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
     return
   if (enable)
   {
-    ::enable_dof(::getTblValue("nearFrom",   params, 0), // meters
-                 ::getTblValue("nearTo",     params, 0), // meters
-                 ::getTblValue("nearEffect", params, 0), // 0..1
-                 ::getTblValue("farFrom",    params, 0), // meters
-                 ::getTblValue("farTo",      params, 0.1), // meters
-                 ::getTblValue("farEffect",  params, 1)) // 0..1
+    ::enable_dof(getTblValue("nearFrom",   params, 0), // meters
+                 getTblValue("nearTo",     params, 0), // meters
+                 getTblValue("nearEffect", params, 0), // 0..1
+                 getTblValue("farFrom",    params, 0), // meters
+                 getTblValue("farTo",      params, 0.1), // meters
+                 getTblValue("farEffect",  params, 1)) // 0..1
   }
   else
     ::disable_dof()
@@ -1624,6 +1581,6 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 
 ::warningIfGold <- function warningIfGold(text, cost){
   if ((cost?.gold ?? 0) > 0)
-    text = ::colorize("@red", ::loc("shop/needMoneyQuestion_warning"))+ "\n" + text
+    text = colorize("@red", loc("shop/needMoneyQuestion_warning"))+ "\n" + text
   return text
 }

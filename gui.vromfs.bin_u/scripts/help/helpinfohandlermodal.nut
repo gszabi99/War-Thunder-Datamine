@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 //wndInfoConfig = {
 //  textsBlk - blk with texts for this window
 //  links = [
@@ -10,8 +16,9 @@
 //  ]
 //}
 
-::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
@@ -35,19 +42,19 @@
   function initScreen()
   {
     if (!config)
-      return goBack()
+      return this.goBack()
 
-    objContainer = ::getTblValue("objContainer", config, ownerScene)
+    objContainer = getTblValue("objContainer", config, ownerScene)
     if (!checkObj(objContainer))
-      return goBack()
+      return this.goBack()
 
-    let links = ::getTblValue("links", config)
+    let links = getTblValue("links", config)
     if (!links)
-      return goBack()
+      return this.goBack()
 
     let textsBlk = config?.textsBlk
     if (textsBlk)
-      guiScene.replaceContent(scene.findObject("texts_screen"), textsBlk, null)
+      this.guiScene.replaceContent(this.scene.findObject("texts_screen"), textsBlk, null)
 
     //update messages visibility to correct update other messages positions
     let highlightList = []
@@ -58,8 +65,8 @@
       if (!link?.msgId)
         link.msgId <- null
 
-      let msgObj = link.msgId ? scene.findObject(link.msgId) : null
-      if (::check_obj(msgObj))
+      let msgObj = link.msgId ? this.scene.findObject(link.msgId) : null
+      if (checkObj(msgObj))
       {
         msgObj.show(!!objBlock)
         if ("text" in link)
@@ -70,16 +77,16 @@
         highlightList.append(objBlock.__merge({id = "lightObj_" + idx}))
     }
 
-    guiScene.setUpdatesEnabled(true, true) //need to recount sizes and positions
+    this.guiScene.setUpdatesEnabled(true, true) //need to recount sizes and positions
 
-    ::guiTutor.createHighlight(scene.findObject("dark_screen"), highlightList, this, { onClick = "goBack" })
+    ::guiTutor.createHighlight(this.scene.findObject("dark_screen"), highlightList, this, { onClick = "goBack" })
 
     let linesData = ::LinesGenerator.getLinkLinesMarkup(getLinesGeneratorConfig())
-    guiScene.replaceContentFromText(scene.findObject("lines_block"), linesData, linesData.len(), this)
+    this.guiScene.replaceContentFromText(this.scene.findObject("lines_block"), linesData, linesData.len(), this)
   }
 
   getLinesGeneratorConfig = @() {
-    startObjContainer = scene
+    startObjContainer = this.scene
     endObjContainer = objContainer
     lineInterval = config?.lineInterval
     links = ::u.keysReplace(config.links, { msgId = "start", obj = "end" })
@@ -87,6 +94,6 @@
 
   function consoleNext()
   {
-    goBack()
+    this.goBack()
   }
 }

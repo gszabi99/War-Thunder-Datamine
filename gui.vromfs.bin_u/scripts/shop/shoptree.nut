@@ -1,6 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+
 let { format } = require("string")
-let function getReqAirPosInArray(reqName, arr)
-{
+let { fatal } = require("dagor.debug")
+
+let function getReqAirPosInArray(reqName, arr) {
   foreach(r, row in arr)
     foreach(c, item in row)
       if (item && typeof item != "integer" && reqName == item.name)
@@ -58,7 +66,7 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null)
   }
 
   local prevAir = null
-  foreach(idx, item in branch)
+  foreach(_idx, item in branch)
   {
     local curAir = null
     if (!::isUnitGroup(item))
@@ -70,7 +78,7 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null)
     else {
       curAir = item
       if (item?.reqAir)
-        prevAir = getAircraftByName(item.reqAir)
+        prevAir = ::getAircraftByName(item.reqAir)
       if (prevAir)
         curAir.reqAir <- prevAir.name
     }
@@ -118,7 +126,7 @@ let function appendBranches(rangeData, headIdx, branches, brIdxTbl, prevItem=nul
     if (next.len()==0)
       idx=-1
     else if (rangeData[next[0]].used)
-      ::dagor.fatal("Cycled requirements in shop!!!  look at " + rangeData[next[0]].name)
+      fatal("Cycled requirements in shop!!!  look at " + rangeData[next[0]].name)
     else if (next.len()==1)
         idx=next[0]
     else
@@ -142,8 +150,8 @@ let function appendBranches(rangeData, headIdx, branches, brIdxTbl, prevItem=nul
     foreach(bIdx, bItem in branches[branches.len()-1])
       if (bItem?.reqAir && bItem.reqAir=="" && bItem.rank >= curBranch[0].rank)
       {
-        foreach(k, curItem in curBranch)
-          branches[branches.len()-1].insert(bIdx+k, curBranch[k])
+        foreach(k, _curItem in curBranch)
+          branches[branches.len()-1].insert(bIdx+k, curBranch[k]) //warning disable: -modified-container
         placeFound = true
         break
       }
@@ -205,7 +213,7 @@ let function getBranchesTbl(rangeData)
     foreach(idx, item in b)
       test += ((idx==0)? "\n" : ", ") + item.air.name + " ("+item.air.rank+","+item.childs+")"
                + (item?.reqAir ? "("+item.reqAir+")":"")
-  ::dagor.debug(test)
+  log(test)
 */
   return branches
 }
@@ -380,7 +388,7 @@ let function generatePageTreeByRank(page)
     let rangeData = page.airList[range]
     let branches = getBranchesTbl(rangeData)
     let rangeTree = array(treeSize, null)
-    foreach(idx, ar in rangeTree)
+    foreach(idx, _ar in rangeTree)
       rangeTree[idx] = []
 
     foreach(bIdx, branch in branches)
@@ -413,7 +421,7 @@ let function generatePageTreeByRank(page)
             if (item != null)
             {
               if (rangeTree[i][j + firstCol] != null)
-                ::dagor.debug("GP: try to fill not empty cell!!!!! ")
+                log("GP: try to fill not empty cell!!!!! ")
               rangeTree[i][j + firstCol] = item
             }
         }
@@ -422,7 +430,7 @@ let function generatePageTreeByRank(page)
     }
 
     //merge rangesTbl into tree and fill range lines
-    foreach(r, row in page.tree)
+    foreach(r, _row in page.tree)
       page.tree[r].extend(rangeTree[r])
   }
 }
@@ -435,14 +443,14 @@ let function generatePageTreeByRankPosXY(page)
     let rangeData = page.airList[range]
     let branches = getBranchesTbl(rangeData)
 
-    foreach(bIdx, branch in branches)
+    foreach(_bIdx, branch in branches)
     {
       foreach (unit in branch)
       {
         let rankPosXY = unit?.rankPosXY
         if (!rankPosXY)
         {
-          if (!::isInArray(unit.name, unitsWithWrongPositions))
+          if (!isInArray(unit.name, unitsWithWrongPositions))
             unitsWithWrongPositions.append(unit.name)
           continue
         }
@@ -454,9 +462,9 @@ let function generatePageTreeByRankPosXY(page)
         if (page.tree[absolutePosY-1][absolutePosX-1] != null)
         {
           let curUnit = page.tree[absolutePosY-1][absolutePosX-1]
-          if (!::isInArray(unit.name, unitsWithWrongPositions))
+          if (!isInArray(unit.name, unitsWithWrongPositions))
             unitsWithWrongPositions.append(unit.name)
-          if (!::isInArray(curUnit, unitsWithWrongPositions))
+          if (!isInArray(curUnit, unitsWithWrongPositions))
             unitsWithWrongPositions.append(curUnit.name)
         }
         page.tree[absolutePosY-1][absolutePosX-1] = unit?.air ?? unit
@@ -491,7 +499,7 @@ let function generateTreeData(page)
   page.fakeRanksRowsCount <- ranksAndSections.fakeRanksRowsCount
   let treeSize = page.ranksHeight[page.ranksHeight.len() - 1]
   page.tree.resize(treeSize, null)
-  foreach(idx, ar in page.tree)
+  foreach(idx, _ar in page.tree)
     page.tree[idx] = []
 
   if (page?.hasRankPosXY)
@@ -503,7 +511,7 @@ let function generateTreeData(page)
   local emptyLine = true
   for(local idx = page.tree.len() - 1; idx > 0; idx--)
   {
-    foreach(i, air in page.tree[idx])
+    foreach(_i, air in page.tree[idx])
       if (air)
       {
         emptyLine = false
@@ -527,7 +535,7 @@ let function generateTreeData(page)
       if (typeof(item)=="integer") testText += "."
       else testText += "A"
     }
-  ::dagor.debug(testText + "\n done.")
+  log(testText + "\n done.")
 */
   //fill Lines and clear table
   fillLinesInPage(page)

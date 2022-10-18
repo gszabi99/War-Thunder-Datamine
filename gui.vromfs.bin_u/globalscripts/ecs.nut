@@ -1,6 +1,8 @@
 //set of functions to make life possible with very poor network messages and events native API
 // better to implement it native code and even not at daNetGame but in some gameLib
 
+#explicit-this
+#no-root-fallback
 let ecs = require("%sqstd/ecs.nut")
 let {
   server_send_net_sqevent, server_broadcast_net_sqevent,
@@ -9,7 +11,7 @@ let {
 
 let _get_msgSink = ecs.SqQuery("_get_msgSink", {comps_rq = ["msg_sink"]})
 let function _get_msg_sink_eid(){
-  return _get_msgSink.perform(@(eid, comp) eid) ?? INVALID_ENTITY_ID
+  return _get_msgSink.perform(@(eid, _comp) eid) ?? ecs.INVALID_ENTITY_ID
 }
 
 let client_msg_sink = @(evt) client_request_unicast_net_sqevent(_get_msg_sink_eid(), evt)

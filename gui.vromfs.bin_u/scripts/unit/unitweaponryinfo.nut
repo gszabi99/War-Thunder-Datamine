@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { isWeaponAux, getLastWeapon, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 
@@ -14,7 +19,7 @@ let function getUnitMassPerSecValue(unit, showLocalState = true, lastWeapon = nu
 
   lastWeapon = lastWeapon ?? (showLocalState ? getLastWeapon(unit.name) : "")
 
-  foreach(idx, weapon in weapons)
+  foreach(_idx, weapon in weapons)
   {
     if (lastWeapon != weapon.name || isWeaponAux(weapon))
       continue

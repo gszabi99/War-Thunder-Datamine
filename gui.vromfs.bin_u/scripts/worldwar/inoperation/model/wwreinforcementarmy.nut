@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
@@ -11,8 +17,8 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   constructor(reinforcementBlock)
   {
-    units = []
-    artilleryAmmo = ::WwArtilleryAmmo()
+    this.units = []
+    this.artilleryAmmo = ::WwArtilleryAmmo()
     update(reinforcementBlock)
   }
 
@@ -22,25 +28,25 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
       return
 
     let armyBlock = reinforcementBlock.army
-    name = armyBlock.name
-    owner = ::WwArmyOwner(armyBlock.getBlockByName("owner"))
+    this.name = armyBlock.name
+    this.owner = ::WwArmyOwner(armyBlock.getBlockByName("owner"))
 
-    morale = armyBlock?.morale ?? -1
+    this.morale = armyBlock?.morale ?? -1
     availableAtMillisec = reinforcementBlock?.availableAtMillisec ?? 0
     suppliesEndMillisec = armyBlock?.suppliesEndMillisec ?? 0
     entrenchEndMillisec = armyBlock?.entrenchEndMillisec ?? 0
 
-    unitType = ::g_ww_unit_type.getUnitTypeByTextCode(armyBlock?.specs?.unitType).code
-    overrideIconId = armyBlock?.iconOverride ?? ""
-    loadedArmyType = ::ww_get_loaded_army_type(name, true)
-    hasArtilleryAbility = armyBlock?.specs.canArtilleryFire ?? false
-    units = wwActionsWithUnitsList.loadUnitsFromBlk(armyBlock.getBlockByName("units"))
+    this.unitType = ::g_ww_unit_type.getUnitTypeByTextCode(armyBlock?.specs?.unitType).code
+    this.overrideIconId = armyBlock?.iconOverride ?? ""
+    this.loadedArmyType = ::ww_get_loaded_army_type(this.name, true)
+    this.hasArtilleryAbility = armyBlock?.specs.canArtilleryFire ?? false
+    this.units = wwActionsWithUnitsList.loadUnitsFromBlk(armyBlock.getBlockByName("units"))
     loadedArmies = ::build_blk_from_container(reinforcementBlock?.loadedArmies)
 
-    let armyArtilleryParams = hasArtilleryAbility ?
+    let armyArtilleryParams = this.hasArtilleryAbility ?
       ::g_world_war.getArtilleryUnitParamsByBlk(armyBlock.getBlockByName("units")) : null
-    artilleryAmmo.setArtilleryParams(armyArtilleryParams)
-    artilleryAmmo.update(name, armyBlock.getBlockByName("artilleryAmmo"))
+    this.artilleryAmmo.setArtilleryParams(armyArtilleryParams)
+    this.artilleryAmmo.update(this.name, armyBlock.getBlockByName("artilleryAmmo"))
   }
 
   function clear()
@@ -55,13 +61,13 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getName()
   {
-    return name
+    return this.name
   }
 
   function getFullName()
   {
     local fullName = getName()
-    fullName += ::loc("ui/parentheses/space", {text = getDescription()})
+    fullName += loc("ui/parentheses/space", {text = getDescription()})
 
     return fullName
   }
@@ -70,25 +76,25 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   {
     let desc = []
 
-    if (morale >= 0)
-      desc.append(::loc("worldwar/morale", {morale = (morale + 0.5).tointeger()}))
+    if (this.morale >= 0)
+      desc.append(loc("worldwar/morale", {morale = (this.morale + 0.5).tointeger()}))
 
     if (suppliesEndMillisec > 0)
     {
       let elapsed = max(0, (suppliesEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
 
-      desc.append(::loc("worldwar/suppliesfinishedIn",
+      desc.append(loc("worldwar/suppliesfinishedIn",
           {time = time.hoursToString(time.secondsToHours(elapsed), true, true)}))
     }
 
     let elapsed = secondsLeftToEntrench();
     if (elapsed == 0)
     {
-      desc.append(::loc("worldwar/armyEntrenched"))
+      desc.append(loc("worldwar/armyEntrenched"))
     }
     else if (elapsed > 0)
     {
-      desc.append(::loc("worldwar/armyEntrenching",
+      desc.append(loc("worldwar/armyEntrenching",
           {time = time.hoursToString(time.secondsToHours(elapsed), true, true)}))
     }
 
@@ -109,7 +115,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   {
     let arrivalTime = getArrivalTime()
     if (arrivalTime == 0)
-      return ::loc("worldwar/state/reinforcement_ready")
+      return loc("worldwar/state/reinforcement_ready")
 
     return time.secondsToString(time.millisecondsToSeconds(arrivalTime), false)
   }
@@ -124,7 +130,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getUnitsMapFullName()
   {
-    return ::u.map(getUnits(), function(unit) { return unit.getFullName() })
+    return ::u.map(this.getUnits(), function(unit) { return unit.getFullName() })
   }
 
   function secondsLeftToEntrench()

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let { refreshGlobalStatusData,
@@ -82,14 +88,14 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     emptyCharData = {}
 
     loadList = function() {
-      cachedList = {}
-      let data = getData()
+      this.cachedList = {}
+      let data = this.getData()
       if (!::u.isTable(data))
         return
 
       let mapsList = ::g_ww_global_status_type.MAPS.getList()
       foreach(mapId, map in mapsList)
-        cachedList[mapId] <-::WwQueue(map, ::getTblValue(mapId, data))
+        this.cachedList[mapId] <-::WwQueue(map, getTblValue(mapId, data))
     }
   }
 
@@ -99,28 +105,28 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     isAvailableInShortStatus = true
 
     loadList = function() {
-      cachedList = []
-      let data = getData()
+      this.cachedList = []
+      let data = this.getData()
       if (!::u.isArray(data))
         return
 
       foreach(opData in data) {
         let operation = ::WwOperation(opData)
         if (operation.isValid())
-          cachedList.append(operation)
+          this.cachedList.append(operation)
       }
     }
 
     loadShortList = function() {
-      cachedShortStatusList = []
-      let data = getShortData()
+      this.cachedShortStatusList = []
+      let data = this.getShortData()
       if (!::u.isArray(data))
         return
 
       foreach(opData in data) {
         let operation = ::WwOperation(opData, true)
         if (operation.isValid())
-          cachedShortStatusList.append(operation)
+          this.cachedShortStatusList.append(operation)
       }
     }
   }
@@ -132,23 +138,23 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     isAvailableInShortStatus = true
 
     loadList = function() {
-      cachedList = {}
-      let data = getData()
+      this.cachedList = {}
+      let data = this.getData()
       if (!::u.isTable(data) || (data.len() <= 0))
         return
 
       foreach(name, mapData in data)
-        cachedList[name] <-::WwMap(name, mapData)
+        this.cachedList[name] <-::WwMap(name, mapData)
     }
 
     loadShortList = function() {
-      cachedShortStatusList = {}
-      let data = getShortData()
+      this.cachedShortStatusList = {}
+      let data = this.getShortData()
       if (!::u.isTable(data) || (data.len() <= 0))
         return
 
       foreach(name, mapData in data)
-        cachedShortStatusList[name] <-::WwMap(name, mapData)
+        this.cachedShortStatusList[name] <-::WwMap(name, mapData)
 
       let guiScene = ::get_cur_gui_scene()
       if (guiScene) //need all other configs invalidate too before push event
@@ -166,7 +172,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     loadList = function() {
       let mapsList = ::g_ww_global_status_type.MAPS.getList()
-      cachedList = ::u.map(mapsList, @(map) ::WwOperationsGroup(map.name))
+      this.cachedList = ::u.map(mapsList, @(map) ::WwOperationsGroup(map.name))
     }
   }
 })

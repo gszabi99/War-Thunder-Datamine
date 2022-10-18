@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let {handlerType} = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -9,7 +15,8 @@ let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { get_time_msec } = require("dagor.time")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
+let { hasChat } = require("%scripts/user/matchingFeature.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -83,22 +90,22 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   {
     base.constructor(gui_scene, params)
 
-    if (wndType == handlerType.MODAL || wndType == handlerType.BASE)
-      enableHangarControls(false, wndType == handlerType.BASE)
+    if (this.wndType == handlerType.MODAL || this.wndType == handlerType.BASE)
+      ::enableHangarControls(false, this.wndType == handlerType.BASE)
 
-    setWndGameMode()
-    setWndOptionsMode()
+    this.setWndGameMode()
+    this.setWndOptionsMode()
   }
 
   function init()
   {
-    fillGamercard()
+    this.fillGamercard()
     base.init()
   }
 
   function getNavbarMarkup()
   {
-    let tplView = getNavbarTplView()
+    let tplView = this.getNavbarTplView()
     if (!tplView)
       return null
     return ::handyman.renderCached("%gui/commonParts/navBar", tplView)
@@ -108,53 +115,53 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function fillGamercard()
   {
-    ::fill_gamer_card(null, "gc_", scene)
-    initGcBackButton()
-    initSquadWidget()
-    initVoiceChatWidget()
-    initRightSection()
+    ::fill_gamer_card(null, "gc_", this.scene)
+    this.initGcBackButton()
+    this.initSquadWidget()
+    this.initVoiceChatWidget()
+    this.initRightSection()
   }
 
   function initGcBackButton()
   {
-    this.showSceneBtn("gc_nav_back", canQuitByGoBack && useTouchscreen && !::is_in_loading_screen())
+    this.showSceneBtn("gc_nav_back", this.canQuitByGoBack && useTouchscreen && !::is_in_loading_screen())
   }
 
   function initSquadWidget()
   {
-    if (squadWidgetHandlerWeak)
+    if (this.squadWidgetHandlerWeak)
       return
 
-    let nestObj = scene.findObject(squadWidgetNestObjId)
-    if (!::checkObj(nestObj))
+    let nestObj = this.scene.findObject(this.squadWidgetNestObjId)
+    if (!checkObj(nestObj))
       return
 
-    squadWidgetHandlerWeak = ::init_squad_widget_handler(nestObj)
-    registerSubHandler(squadWidgetHandlerWeak)
+    this.squadWidgetHandlerWeak = ::init_squad_widget_handler(nestObj)
+    this.registerSubHandler(this.squadWidgetHandlerWeak)
   }
 
   function initVoiceChatWidget()
   {
-    if (canInitVoiceChatWithSquadWidget || squadWidgetHandlerWeak == null)
+    if (this.canInitVoiceChatWithSquadWidget || this.squadWidgetHandlerWeak == null)
       ::handlersManager.initVoiceChatWidget(this)
   }
 
   function updateVoiceChatWidget(shouldShow)
   {
-    this.showSceneBtn(voiceChatWidgetNestObjId, shouldShow)
+    this.showSceneBtn(this.voiceChatWidgetNestObjId, shouldShow)
   }
 
   function initRightSection()
   {
-    if (rightSectionHandlerWeak)
+    if (this.rightSectionHandlerWeak)
       return
 
-    rightSectionHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(scene.findObject("topmenu_menu_panel_right"),
+    this.rightSectionHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(this.scene.findObject("topmenu_menu_panel_right"),
                                                                           this,
                                                                           ::g_top_menu_right_side_sections,
-                                                                          scene.findObject("right_gc_panel_free_width")
+                                                                          this.scene.findObject("right_gc_panel_free_width")
                                                                          )
-    registerSubHandler(rightSectionHandlerWeak)
+    this.registerSubHandler(this.rightSectionHandlerWeak)
   }
 
   /**
@@ -187,7 +194,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   function updateModesTabsContent(modesObj, view)
   {
     let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    guiScene.replaceContentFromText(modesObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
 
     let selectCb = modesObj?.on_select
     if (selectCb && (selectCb in this))
@@ -196,54 +203,54 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function fillModeListBox(nest, selectedDiffCode=0, filterFunc = null, addTabs = [])
   {
-    if (!::check_obj(nest))
+    if (!checkObj(nest))
       return
 
     let modesObj = nest.findObject("modes_list")
-    if (!::check_obj(modesObj))
+    if (!checkObj(modesObj))
       return
 
-    updateModesTabsContent(modesObj, {
-      tabs = getModesTabsView(selectedDiffCode, filterFunc).extend(addTabs)
+    this.updateModesTabsContent(modesObj, {
+      tabs = this.getModesTabsView(selectedDiffCode, filterFunc).extend(addTabs)
     })
   }
 
   function onTopMenuGoBack(...)
   {
-    checkedForward(function() {
-      goForward(::gui_start_mainmenu, false)
+    this.checkedForward(function() {
+      this.goForward(::gui_start_mainmenu, false)
     })
   }
 
   function afterSave()
   {
-    ::dagor.debug("warning! empty afterSave!")
+    log("warning! empty afterSave!")
   }
 
   function save(onlineSave = true)
   {
     let handler = this
-    ::dagor.debug("save")
+    log("save")
     if (::is_save_device_selected())
     {
-      local saveRes = ::SAVELOAD_OK;
+      local saveRes = SAVELOAD_OK;
       saveRes = ::save_profile(onlineSave && ::is_online_available())
 
-      if (saveRes != ::SAVELOAD_OK)
+      if (saveRes != SAVELOAD_OK)
       {
-        ::dagor.debug("saveRes = "+saveRes.tostring())
+        log("saveRes = "+saveRes.tostring())
         local txt = "x360/noSaveDevice"
-        if (saveRes == ::SAVELOAD_NO_SPACE)
+        if (saveRes == SAVELOAD_NO_SPACE)
           txt = "x360/noSpace"
-        else if (saveRes == ::SAVELOAD_NOT_SELECTED)
+        else if (saveRes == SAVELOAD_NOT_SELECTED)
           txt = "xbox360/questionSelectDevice"
-        this.msgBox("no_save_device", ::loc(txt),
+        this.msgBox("no_save_device", loc(txt),
         [
           ["yes", (@(handler, onlineSave) function() {
-              ::dagor.debug("performDelayed save")
+              log("performDelayed save")
               handler.guiScene.performDelayed(handler, (@(handler, onlineSave) function() {
                 ::select_save_device(true)
-                save(onlineSave)
+                this.save(onlineSave)
                 handler.afterSave()
               })(handler, onlineSave))
           })(handler, onlineSave)],
@@ -258,14 +265,14 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     }
     else
     {
-      this.msgBox("no_save_device", ::loc("xbox360/questionSelectDevice"),
+      this.msgBox("no_save_device", loc("xbox360/questionSelectDevice"),
       [
         ["yes", (@(handler, onlineSave) function() {
 
-            ::dagor.debug("performDelayed save")
-            handler.guiScene.performDelayed(handler, (@(handler, onlineSave) function() {
+            log("performDelayed save")
+            handler.guiScene.performDelayed(handler, (@(_handler, onlineSave) function() {
               ::select_save_device(true)
-              save(onlineSave)
+              this.save(onlineSave)
             })(handler, onlineSave))
         })(handler, onlineSave)],
         ["no", (@(handler) function() {
@@ -278,32 +285,32 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function goForwardCheckEntitlement(start_func, entitlement)
   {
-    guiScene = ::get_cur_gui_scene()
+    this.guiScene = ::get_cur_gui_scene()
 
-    startFunc = start_func
+    this.startFunc = start_func
 
     if (typeof(entitlement) == "table")
-      task = entitlement;
+      this.task = entitlement
     else
-      task = {loc = entitlement, entitlement = entitlement}
+      this.task = {loc = entitlement, entitlement = entitlement}
 
-    task.gm <- ::get_game_mode()
+    this.task.gm <- ::get_game_mode()
 
-    taskId = ::update_entitlements()
-    if (::is_dev_version && taskId < 0)
-      goForward(start_func)
+    this.taskId = ::update_entitlements()
+    if (::is_dev_version && this.taskId < 0)
+      this.goForward(start_func)
     else
     {
       let taskOptions = {
         showProgressBox = true
-        progressBoxText = ::loc("charServer/checking")
+        progressBoxText = loc("charServer/checking")
       }
-      let taskSuccessCallback = ::Callback(function ()
+      let taskSuccessCallback = Callback(function ()
         {
-          if (::checkAllowed.bindenv(this)(task))
-            goForward(startFunc)
+          if (::checkAllowed.bindenv(this)(this.task))
+            this.goForward(this.startFunc)
         }, this)
-      ::g_tasker.addTask(taskId, taskOptions, taskSuccessCallback)
+      ::g_tasker.addTask(this.taskId, taskOptions, taskSuccessCallback)
     }
   }
 
@@ -312,19 +319,19 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (start_without_forward)
       start_func();
     else
-      goForward(start_func)
+      this.goForward(start_func)
   }
 
   function goForwardIfOnline(start_func, skippable, start_without_forward = false)
   {
     if (::is_online_available())
     {
-      goForwardOrJustStart(start_func, start_without_forward)
+      this.goForwardOrJustStart(start_func, start_without_forward)
       return
     }
 
-    let successCb = ::Callback((@(start_func, start_without_forward) function() {
-      goForwardOrJustStart(start_func, start_without_forward)
+    let successCb = Callback((@(start_func, start_without_forward) function() {
+      this.goForwardOrJustStart(start_func, start_without_forward)
     })(start_func, start_without_forward), this)
     let errorCb = skippable ? successCb : null
 
@@ -333,34 +340,34 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function destroyProgressBox()
   {
-    if(::checkObj(progressBox))
+    if(checkObj(this.progressBox))
     {
-      guiScene.destroyElement(progressBox)
+      this.guiScene.destroyElement(this.progressBox)
       ::broadcastEvent("ModalWndDestroy")
     }
-    progressBox = null
+    this.progressBox = null
   }
 
   function onShowHud(show = true, needApplyPending = false)
   {
-    if (!isSceneActive())
+    if (!this.isSceneActive())
       return
 
-    if (rootHandlerWeak)
-      return rootHandlerWeak.onShowHud(show)
+    if (this.rootHandlerWeak)
+      return this.rootHandlerWeak.onShowHud(show)
 
-    if (!::check_obj(scene))
+    if (!checkObj(this.scene))
       return
 
-    scene.show(show)
+    this.scene.show(show)
     if (needApplyPending)
-      guiScene.applyPendingChanges(false) //to correct work isVisible() for scene objects after event
+      this.guiScene.applyPendingChanges(false) //to correct work isVisible() for scene objects after event
   }
 
   function startOnlineShop(chapter = null, afterCloseShop = null, metric = "unknown")
   {
     let handler = this
-    goForwardIfOnline(function() {
+    this.goForwardIfOnline(function() {
         local closeFunc = null
         if (afterCloseShop)
           closeFunc = function() {
@@ -371,40 +378,40 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       }, false, true)
   }
 
-  function onOnlineShop(obj)          { startOnlineShop() }
-  function onOnlineShopPremium()      { startOnlineShop("premium")}
-  function onOnlineShopLions()        { startOnlineShop("warpoints") }
+  function onOnlineShop(_obj)          { this.startOnlineShop() }
+  function onOnlineShopPremium()      { this.startOnlineShop("premium")}
+  function onOnlineShopLions()        { this.startOnlineShop("warpoints") }
 
   function onOnlineShopEagles()
   {
-    if (::has_feature("EnableGoldPurchase"))
-      startOnlineShop("eagles", null, "gamercard")
+    if (hasFeature("EnableGoldPurchase"))
+      this.startOnlineShop("eagles", null, "gamercard")
     else
-      ::showInfoMsgBox(::loc("msgbox/notAvailbleGoldPurchase"))
+      ::showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
   }
 
   function onItemsShop() { ::gui_start_itemsShop() }
   function onInventory() { ::gui_start_inventory() }
 
-  function onConvertExp(obj)
+  function onConvertExp(_obj)
   {
     ::gui_modal_convertExp()
   }
 
   function notAvailableYetMsgBox()
   {
-    this.msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+    this.msgBox("not_available", loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 
-  function onUserLog(obj)
+  function onUserLog(_obj)
   {
-    if (::has_feature("UserLog"))
+    if (hasFeature("UserLog"))
       ::gui_modal_userLog()
     else
-      notAvailableYetMsgBox()
+      this.notAvailableYetMsgBox()
   }
 
-  function onProfile(obj)
+  function onProfile(_obj)
   {
     ::gui_start_profile()
   }
@@ -414,85 +421,84 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     ::gui_modal_clans("my_clan")
   }
 
-  function onGC_chat(obj)
+  function onGC_chat(_obj)
   {
     if (!::isMenuChatActive())
       isChatEnabled(true)
 
-    switchChatWindow()
+    this.switchChatWindow()
   }
 
   function switchChatWindow()
   {
-    if (gchat_is_enabled() && ::has_feature("Chat"))
-      switchMenuChatObj(getChatDiv(scene))
-    else
-      notAvailableYetMsgBox()
+    if (::gchat_is_enabled() && hasChat.value)
+      ::switchMenuChatObj(::getChatDiv(this.scene))
   }
 
   function onSwitchContacts()
   {
-    ::switchContactsObj(scene, this)
+    ::switchContactsObj(this.scene, this)
   }
-  function onGC_contacts(obj)
+  function onGC_contacts(_obj)
   {
-    if (!::has_feature("Friends"))
-      return notAvailableYetMsgBox()
+    if (!hasFeature("Friends"))
+      return this.notAvailableYetMsgBox()
 
     if (!::isContactsWindowActive())
       updateContacts()
 
-    onSwitchContacts()
+    this.onSwitchContacts()
   }
-  function onGC_invites(obj)
+  function onGC_invites(_obj)
   {
     ::gui_start_invites()
   }
-  function onInviteSquad(obj)
+  function onInviteSquad(_obj)
   {
     ::gui_start_search_squadPlayer()
   }
 
   function getSlotbar()
   {
-    return rootHandlerWeak ? rootHandlerWeak.slotbarWeak : slotbarWeak
+    return this.rootHandlerWeak ? this.rootHandlerWeak.slotbarWeak : this.slotbarWeak
   }
 
   function getCurSlotUnit()
   {
-    let slotbar = getSlotbar()
+    let slotbar = this.getSlotbar()
     return slotbar && slotbar.getCurSlotUnit()
   }
 
   function getHangarFallbackUnitParams()
   {
-    return getSlotbar()?.getHangarFallbackUnitParams()
+    return this.getSlotbar()?.getHangarFallbackUnitParams()
   }
 
   function getCurCrew()
   {
-    let slotbar = getSlotbar()
+    let slotbar = this.getSlotbar()
     return slotbar && slotbar.getCurCrew()
   }
 
   function getCurSlotbarCountry()
   {
-    local slotbar = getSlotbar()
+    local slotbar = this.getSlotbar()
     return slotbar && slotbar.getCurCountry()
   }
 
   function onTake(unit, params = {})
   {
     unitActions.take(unit, {
-        unitObj = unit?.name? scene.findObject(unit.name) : null
-        shouldCheckCrewsReady = shouldCheckCrewsReady
+        unitObj = unit?.name ? this.scene.findObject(unit.name) : null
+        shouldCheckCrewsReady = this.shouldCheckCrewsReady
       }.__update(params))
   }
 
-  hasAutoRefillChangeInProcess =false
+  hasAutoRefillChangeInProcess = false
+
   function onSlotsChangeAutoRefill(obj)
   {
-    if ((slotbarWeak?.slotbarOninit ?? false) || hasAutoRefillChangeInProcess)
+    if ((this.slotbarWeak?.slotbarOninit ?? false) || this.hasAutoRefillChangeInProcess)
       return
     let mode = obj.id == "slots-autorepair" ? 0
       : obj.id == "slots-autoweapon" ? 1
@@ -502,34 +508,34 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       return
 
     local value = obj.getValue()
-    set_auto_refill(mode, value)
+    ::set_auto_refill(mode, value)
     ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
 
-    hasAutoRefillChangeInProcess = true
-    ::broadcastEvent("AutorefillChanged", { id = obj.id, value = value })
-    hasAutoRefillChangeInProcess = false
+    this.hasAutoRefillChangeInProcess = true
+    ::broadcastEvent("AutorefillChanged", { id = obj.id, value })
+    this.hasAutoRefillChangeInProcess = false
   }
 
   //"nav-help" - navBar
   function createSlotbar(params = {}, nest = "nav-help")
   {
-    if (slotbarWeak)
+    if (this.slotbarWeak)
     {
-      slotbarWeak.setParams(params)
+      this.slotbarWeak.setParams(params)
       return
     }
 
     if (::u.isString(nest))
-      nest = scene.findObject(nest)
+      nest = this.scene.findObject(nest)
     params.scene <- nest
     params.ownerWeak <- this.weakref()
 
-    let slotbar = createSlotbarHandler(params)
+    let slotbar = this.createSlotbarHandler(params)
     if (!slotbar)
       return
 
-    slotbarWeak = slotbar.weakref()
-    registerSubHandler(slotbar)
+    this.slotbarWeak = slotbar.weakref()
+    this.registerSubHandler(slotbar)
   }
 
   function createSlotbarHandler(params)
@@ -539,21 +545,21 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function reinitSlotbar() //!!FIX ME: Better to not use it.
   {
-    let slotbar = getSlotbar()
+    let slotbar = this.getSlotbar()
     if (slotbar)
       slotbar.fullUpdate()
   }
 
   function destroySlotbar()
   {
-    if (slotbarWeak)
-      slotbarWeak.destroy()
-    slotbarWeak = null
+    if (this.slotbarWeak)
+      this.slotbarWeak.destroy()
+    this.slotbarWeak = null
   }
 
   function getSlotbarActions()
   {
-    return slotbarActions || defaultSlotbarActions
+    return this.slotbarActions || defaultSlotbarActions
   }
 
   getParamsForActionsList = @() {}
@@ -564,10 +570,10 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function openUnitActionsList(unitObj, ignoreSelect = false, ignoreHover = false)
   {
-    if (!::checkObj(unitObj) || (!ignoreHover && !unitObj.isHovered()))
+    if (!checkObj(unitObj) || (!ignoreHover && !unitObj.isHovered()))
       return
     let parentObj = unitObj.getParent()
-    if (!::checkObj(parentObj)
+    if (!checkObj(parentObj)
       || (!ignoreSelect && (parentObj?.chosen ?? parentObj?.selected) != "yes"))
       return
 
@@ -576,59 +582,59 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       return unitContextMenuState(null)
 
     unitContextMenuState({
-      unitObj = unitObj
-      actionsNames = getSlotbarActions()
+      unitObj
+      actionsNames = this.getSlotbarActions()
       closeOnUnhover = !ignoreHover
-      curEdiff = getCurrentEdiff?() ?? -1
-      shouldCheckCrewsReady = shouldCheckCrewsReady
-      slotbar = getSlotbar()
-    }.__update(getParamsForActionsList()).__update(getUnitParamsFromObj(unitObj)))
+      curEdiff = this.getCurrentEdiff?() ?? -1
+      shouldCheckCrewsReady = this.shouldCheckCrewsReady
+      slotbar = this.getSlotbar()
+    }.__update(this.getParamsForActionsList(), this.getUnitParamsFromObj(unitObj)))
   }
 
   function onOpenActionsList(obj)
   {
-    openUnitActionsList(obj.getParent().getParent(), true)
+    this.openUnitActionsList(obj.getParent().getParent(), true)
   }
 
   function getSlotbarPresetsList()
   {
-    return rootHandlerWeak ? rootHandlerWeak.presetsListWeak : presetsListWeak
+    return this.rootHandlerWeak ? this.rootHandlerWeak.presetsListWeak : this.presetsListWeak
   }
 
   function setSlotbarPresetsListAvailable(isAvailable)
   {
     if (isAvailable)
     {
-      if (presetsListWeak)
-        presetsListWeak.update()
+      if (this.presetsListWeak)
+        this.presetsListWeak.update()
       else
-        presetsListWeak = SlotbarPresetsList(this).weakref()
-    } else
-      if (presetsListWeak)
-        presetsListWeak.destroy()
+        this.presetsListWeak = ::SlotbarPresetsList(this).weakref()
+    }
+    else if (this.presetsListWeak)
+      this.presetsListWeak.destroy()
   }
 
   function slotOpCb(id, tType, result)
   {
-    if (id != taskId)
+    if (id != this.taskId)
     {
-      ::dagor.debug("wrong ID in char server cb, ignoring");
+      log("wrong ID in char server cb, ignoring");
       ::g_tasker.charCallback(id, tType, result)
       return
     }
     ::g_tasker.restoreCharCallback()
-    destroyProgressBox()
+    this.destroyProgressBox()
 
     penalties.showBannedStatusMsgBox(true)
 
     if (result != 0)
     {
       let handler = this
-      local text = ::loc("charServer/updateError/"+result.tostring())
+      local text = loc("charServer/updateError/"+result.tostring())
 
       if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
         && ("get_char_extended_error" in getroottable()))
-        if (result == ::EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS)
+        if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS)
         {
           let notAllowedChars = ::get_char_extended_error()
           text = format(text, notAllowedChars)
@@ -636,26 +642,29 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
       handler.msgBox("char_connecting_error", text,
       [
-        ["ok", (@(result) function() { if (afterSlotOpError != null) afterSlotOpError(result);})(result) ]
+        ["ok", (@(result) function() {
+            if (this.afterSlotOpError != null)
+              this.afterSlotOpError(result)
+          })(result) ]
       ], "ok")
       return
     }
-    else if (afterSlotOp != null)
-      afterSlotOp();
+    else if (this.afterSlotOp != null)
+    this.afterSlotOp()
   }
 
   function showTaskProgressBox(text = null, cancelFunc = null, delayedButtons = 30)
   {
-    if (::checkObj(progressBox))
+    if (checkObj(this.progressBox))
       return
 
     if (text == null)
-      text = ::loc("charServer/purchase0")
+      text = loc("charServer/purchase0")
 
     if (cancelFunc == null)
       cancelFunc = function(){}
 
-    progressBox = this.msgBox("char_connecting",
+    this.progressBox = this.msgBox("char_connecting",
         text,
         [["cancel", cancelFunc]], "cancel",
         { waitAnim = true,
@@ -681,7 +690,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (uid)
     {
       contact = ::getContact(uid)
-      canShow = canShowContactTooltip(contact)
+      canShow = this.canShowContactTooltip(contact)
     }
     obj["class"] = canShow ? "" : "empty"
 
@@ -696,8 +705,8 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onQueuesTooltipOpen(obj)
   {
-    guiScene.replaceContent(obj, "%gui/queue/queueInfoTooltip.blk", this)
-    SecondsUpdater(obj.findObject("queue_tooltip_root"), function(obj, params)
+    this.guiScene.replaceContent(obj, "%gui/queue/queueInfoTooltip.blk", this)
+    SecondsUpdater(obj.findObject("queue_tooltip_root"), function(obj, _params)
     {
       obj.findObject("text").setValue(::queues.getQueuesInfoText())
     })
@@ -705,12 +714,12 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onProjectawardTooltipOpen(obj)
   {
-    if (!::checkObj(obj)) return
+    if (!checkObj(obj)) return
     let img = obj?.img ?? ""
     let title = obj?.title ?? ""
     let desc = obj?.desc ?? ""
 
-    guiScene.replaceContent(obj, "%gui/customization/decalTooltip.blk", this)
+    this.guiScene.replaceContent(obj, "%gui/customization/decalTooltip.blk", this)
     obj.findObject("header").setValue(title)
     obj.findObject("description").setValue(desc)
     let imgObj = obj.findObject("image")
@@ -725,26 +734,26 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     ::view_fullscreen_image(obj)
   }
 
-  function onFaq()             { openUrl(::loc("url/faq")) }
-  function onForum()           { openUrl(::loc("url/forum")) }
-  function onSupport()         { openUrl(::loc("url/support")) }
-  function onWiki()            { openUrl(::loc("url/wiki")) }
+  function onFaq()             { openUrl(loc("url/faq")) }
+  function onForum()           { openUrl(loc("url/forum")) }
+  function onSupport()         { openUrl(loc("url/support")) }
+  function onWiki()            { openUrl(loc("url/wiki")) }
 
-  function onSquadCreate(obj)
+  function onSquadCreate(_obj)
   {
     if (::g_squad_manager.isInSquad())
-      this.msgBox("already_in_squad", ::loc("squad/already_in_squad"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
+      this.msgBox("already_in_squad", loc("squad/already_in_squad"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
     else
       ::chatInviteToSquad(null, this)
   }
 
   function unstickLastDropDown(newObj = null, forceMove = "no")
   {
-    if (::checkObj(stickedDropDown) && (!newObj || !stickedDropDown.isEqual(newObj)))
+    if (checkObj(stickedDropDown) && (!newObj || !stickedDropDown.isEqual(newObj)))
     {
       setForceMove(stickedDropDown, forceMove)
       stickedDropDown.getScene().applyPendingChanges(false)
-      onStickDropDown(stickedDropDown, false)
+      this.onStickDropDown(stickedDropDown, false)
       stickedDropDown = null
     }
   }
@@ -763,11 +772,11 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
     let needStick = obj?.forceMove != "open"
     setForceMove(obj, needStick ? "open" : "no")
-    unstickLastDropDown(obj, needStick ? "close" : "no")
+    this.unstickLastDropDown(obj, needStick ? "close" : "no")
 
-    guiScene.applyPendingChanges(false)
+    this.guiScene.applyPendingChanges(false)
     stickedDropDown = needStick ? obj : null
-    onStickDropDown(obj, needStick)
+    this.onStickDropDown(obj, needStick)
   }
 
   function onHoverSizeMove(obj)
@@ -775,7 +784,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     //this only for pc mouse logic. For animated gamepad cursor look onDropdownAnimFinish
     if (!::is_mouse_last_time_used())
       return
-    unstickLastDropDown(getDropDownRootObj(obj))
+    this.unstickLastDropDown(getDropDownRootObj(obj))
   }
 
   function onGCDropdown(obj)
@@ -784,29 +793,29 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     let ending = "_panel"
     if (id && id.len() > ending.len() && id.slice(id.len()-ending.len())==ending)
       id = id.slice(0, id.len()-ending.len())
-    if (!::isInArray(id, GCDropdownsList))
+    if (!isInArray(id, this.GCDropdownsList))
       return
 
     let btnObj = obj.findObject(id + "_btn")
-    if (::checkObj(btnObj))
-      onDropDownToggle(btnObj)
+    if (checkObj(btnObj))
+      this.onDropDownToggle(btnObj)
   }
 
   function onStickDropDown(obj, show)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let id = obj?.id
-    if (!show || !::isInArray(id, GCDropdownsList))
+    if (!show || !isInArray(id, this.GCDropdownsList))
     {
-      curGCDropdown = null
+      this.curGCDropdown = null
       return
     }
 
-    curGCDropdown = id
+    this.curGCDropdown = id
     ::move_mouse_on_obj(obj)
-    guiScene.playSound("menu_appear")
+    this.guiScene.playSound("menu_appear")
   }
 
   function onDropdownAnimFinish(obj) {
@@ -814,7 +823,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     let isOpened = obj.getFloatProp(timerPID, 0.0) == 1
     if (!isOpened) {
       let rootObj = getDropDownRootObj(obj)
-      guiScene.performDelayed({}, function() {
+      this.guiScene.performDelayed({}, function() {
         if (rootObj?.isValid())
           setForceMove(rootObj, "no") //need to remove flag on the next frame, after hover will be removed
       })
@@ -826,15 +835,15 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     let rootObj = getDropDownRootObj(obj)
     if (!rootObj || !stickedDropDown.isEqual(rootObj))
       return
-    let menuObj = getCurGCDropdownMenu()
+    let menuObj = this.getCurGCDropdownMenu()
     if (!menuObj?.isValid())
       return
     moveToFirstEnabled(menuObj)
     local tempTask = -1
     tempTask = ::periodic_task_register(this,
       function(_) {
-        if (isValid() && stickedDropDown?.isValid() && rootObj?.isValid() && stickedDropDown.isEqual(rootObj))
-          unstickLastDropDown()
+        if (this.isValid() && stickedDropDown?.isValid() && rootObj?.isValid() && stickedDropDown.isEqual(rootObj))
+          this.unstickLastDropDown()
         ::periodic_task_unregister(tempTask)
       },
       1)
@@ -842,52 +851,52 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onDropdownHover(obj) {
     // see func onDropdownAnimFinish
-    if (!::show_console_buttons || !::check_obj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!::show_console_buttons || !checkObj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
       return
-    let btn = getCurGCDropdownBtn()
+    let btn = this.getCurGCDropdownBtn()
     if (btn && (getDropDownRootObj(btn)?.getIntProp(forceTimePID, 0) ?? 0) > get_time_msec() + 100)
-      unstickLastDropDown()
+      this.unstickLastDropDown()
   }
 
-  onBackDropdownMenu   = @(obj) ::move_mouse_on_obj(getObj($"{obj?.sectionId}_btn"))
-  getCurGCDropdownBtn  = @() curGCDropdown != null ? getObj(curGCDropdown + "_btn") : null
-  getCurGCDropdownMenu = @() curGCDropdown != null ? getObj(curGCDropdown + "_focus") : null
+  onBackDropdownMenu   = @(obj) ::move_mouse_on_obj(this.getObj($"{obj?.sectionId}_btn"))
+  getCurGCDropdownBtn  = @() this.curGCDropdown != null ? this.getObj(this.curGCDropdown + "_btn") : null
+  getCurGCDropdownMenu = @() this.curGCDropdown != null ? this.getObj(this.curGCDropdown + "_focus") : null
 
   function setSceneTitle(text, placeObj = null, name = "gc_title")
   {
     if (!placeObj)
-     placeObj = scene
+     placeObj = this.scene
 
-    if (text == null || !::check_obj(placeObj))
+    if (text == null || !checkObj(placeObj))
       return
 
     let textObj = placeObj.findObject(name)
-    if (::check_obj(textObj))
+    if (checkObj(textObj))
       textObj.setValue(text.tostring())
   }
 
   function restoreMainOptions()
   {
-    if (mainOptionsMode >= 0)
-      setGuiOptionsMode(mainOptionsMode)
-    if (mainGameMode >= 0)
-      ::set_mp_mode(mainGameMode)
+    if (this.mainOptionsMode >= 0)
+      setGuiOptionsMode(this.mainOptionsMode)
+    if (this.mainGameMode >= 0)
+      ::set_mp_mode(this.mainGameMode)
   }
 
   function setWndGameMode()
   {
-    if (wndGameMode < 0)
+    if (this.wndGameMode < 0)
       return
-    mainGameMode = ::get_mp_mode()
-    ::set_mp_mode(wndGameMode)
+    this.mainGameMode = ::get_mp_mode()
+    ::set_mp_mode(this.wndGameMode)
   }
 
   function setWndOptionsMode()
   {
-    if (wndOptionsMode < 0)
+    if (this.wndOptionsMode < 0)
       return
-    mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(wndOptionsMode)
+    this.mainOptionsMode = getGuiOptionsMode()
+    setGuiOptionsMode(this.wndOptionsMode)
   }
 
   function checkAndStart(onSuccess, onCancel, checkName, checkParam = null)
@@ -897,25 +906,25 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   }
 
   function checkedNewFlight(func, cancelFunc=null)
-                   { checkAndStart(func, cancelFunc, "isCanNewflight") }
+                   { this.checkAndStart(func, cancelFunc, "isCanNewflight") }
   function checkedForward(func, cancelFunc=null)
-                   { checkAndStart(func, cancelFunc, "isCanGoForward") }
+                   { this.checkAndStart(func, cancelFunc, "isCanGoForward") }
   function checkedCrewModify(func, cancelFunc=null)
-                   { checkAndStart(func, cancelFunc, "isCanModifyCrew") }
+                   { this.checkAndStart(func, cancelFunc, "isCanModifyCrew") }
   function checkedAirChange(func, cancelFunc=null)  //change selected air
-                   { checkAndStart(func, cancelFunc, "isCanAirChange") }
+                   { this.checkAndStart(func, cancelFunc, "isCanAirChange") }
   function checkedCrewAirChange(func, cancelFunc=null) //change air in slot
   {
-    checkAndStart(
+    this.checkAndStart(
       function() {
         ::g_squad_utils.checkSquadUnreadyAndDo(callback.make(func, this),
-          callback.make(cancelFunc, this), shouldCheckCrewsReady)
+          callback.make(cancelFunc, this), this.shouldCheckCrewsReady)
       },
       cancelFunc, "isCanModifyCrew")
   }
   function checkedModifyQueue(qType, func, cancelFunc = null)
   {
-    checkAndStart(func, cancelFunc, "isCanModifyQueueParams", qType)
+    this.checkAndStart(func, cancelFunc, "isCanModifyQueueParams", qType)
   }
 
   function onFacebookPostScrnshot(saved_screenshot_path)
@@ -925,19 +934,19 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onFacebookLoginAndPostScrnshot()
   {
-    ::make_screenshot_and_do(onFacebookPostScrnshot, this)
+    ::make_screenshot_and_do(this.onFacebookPostScrnshot, this)
   }
 
   function onFacebookLoginAndAddFriends()
   {
     ::make_facebook_login_and_do(function()
          {
-           ::scene_msg_box("facebook_login", null, ::loc("facebook/downloadingFriends"), null, null)
-           ::facebook_load_friends(::EPL_MAX_PLAYERS_IN_LIST)
+           ::scene_msg_box("facebook_login", null, loc("facebook/downloadingFriends"), null, null)
+           ::facebook_load_friends(EPL_MAX_PLAYERS_IN_LIST)
          }, this)
   }
 
-  function proccessLinkFromText(obj, itype, link)
+  function proccessLinkFromText(obj, _itype, link)
   {
     openUrl(link, false, false, obj?.bqKey ?? obj?.id)
   }
@@ -959,48 +968,48 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   {
     if (show)
     {
-      setWndGameMode()
-      setWndOptionsMode()
+      this.setWndGameMode()
+      this.setWndOptionsMode()
     } else
-      restoreMainOptions()
+      this.restoreMainOptions()
 
     if (::is_hud_visible())
-      onShowHud()
+      this.onShowHud()
 
     base.onSceneActivate(show)
   }
 
   function getControlsAllowMask()
   {
-    return wndControlsAllowMask
+    return this.wndControlsAllowMask
   }
 
   function switchControlsAllowMask(mask)
   {
-    if (mask == wndControlsAllowMask)
+    if (mask == this.wndControlsAllowMask)
       return
 
-    wndControlsAllowMask = mask
+    this.wndControlsAllowMask = mask
     ::handlersManager.updateControlsAllowMask()
   }
 
   function getWidgetsList()
   {
     let result = []
-    if (widgetsList)
-      foreach (widgetDesc in widgetsList)
+    if (this.widgetsList)
+      foreach (widgetDesc in this.widgetsList)
       {
         result.append({ widgetId = widgetDesc.widgetId })
         if ("placeholderId" in widgetDesc)
-          result.top()["transform"] <- getWidgetParams(widgetDesc.placeholderId)
+          result.top()["transform"] <- this.getWidgetParams(widgetDesc.placeholderId)
       }
     return result
   }
 
   function getWidgetParams(placeholderId)
   {
-    let placeholderObj = scene.findObject(placeholderId)
-    if (!::checkObj(placeholderObj))
+    let placeholderObj = this.scene.findObject(placeholderId)
+    if (!checkObj(placeholderObj))
       return null
 
     return {

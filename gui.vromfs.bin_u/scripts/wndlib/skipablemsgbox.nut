@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.SkipableMsgBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -21,30 +29,30 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   {
     updateSkipCheckBox()
 
-    let msgTextObj = scene.findObject("msgText")
-    if (::check_obj(msgTextObj))
+    let msgTextObj = this.scene.findObject("msgText")
+    if (checkObj(msgTextObj))
       msgTextObj.setValue(message)
 
-    let listTextObj = scene.findObject("listText")
-    if (::check_obj(listTextObj))
+    let listTextObj = this.scene.findObject("listText")
+    if (checkObj(listTextObj))
       listTextObj.setValue(list)
 
-    let btnSelectObj = scene.findObject("btn_select")
-    if (::check_obj(btnSelectObj))
+    let btnSelectObj = this.scene.findObject("btn_select")
+    if (checkObj(btnSelectObj))
       btnSelectObj.show(ableToStartAndSkip)
 
-    let btnCancelObj = scene.findObject("btn_cancel")
-    if(::check_obj(btnCancelObj))
-      btnCancelObj.setValue(::loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
+    let btnCancelObj = this.scene.findObject("btn_cancel")
+    if(checkObj(btnCancelObj))
+      btnCancelObj.setValue(loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
 
     if (startBtnText != "")
-      setDoubleTextToButton(scene, "btn_select", startBtnText)
+      setDoubleTextToButton(this.scene, "btn_select", startBtnText)
   }
 
   function updateSkipCheckBox()
   {
-    let skipObj = scene.findObject("skip_this")
-    if (::check_obj(skipObj))
+    let skipObj = this.scene.findObject("skip_this")
+    if (checkObj(skipObj))
     {
       skipObj.show(ableToStartAndSkip && skipFunc)
       skipObj.enable(ableToStartAndSkip && skipFunc)
@@ -66,7 +74,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
     if (parentHandler && onStartPressed)
       isStarted = true
 
-    goBack()
+    this.goBack()
   }
 
   function afterModalDestroy()

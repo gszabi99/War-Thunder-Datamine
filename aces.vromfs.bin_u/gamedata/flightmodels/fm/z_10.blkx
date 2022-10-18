@@ -467,7 +467,7 @@
       "Span": 3.5,
       "Angle": 2.0,
       "Arm": [
-        -7.5,
+        -7.1,
         -0.05,
         1.0
       ],
@@ -482,10 +482,10 @@
         "lineClCoeff": 0.06,
         "AfterCritParabAngle": 3.0,
         "AfterCritDeclineCoeff": 0.02,
-        "AfterCritMaxDistanceAngle": 27.0,
-        "CxAfterCoeff": 0.01,
-        "ClAfterCritHigh": 0.6,
-        "ClAfterCritLow": -0.6,
+        "AfterCritMaxDistanceAngle": 30.0,
+        "CxAfterCoeff": 0.001,
+        "ClAfterCritHigh": 0.2,
+        "ClAfterCritLow": -0.2,
         "MachFactor": 3,
         "MachCrit1": 0.7,
         "MachMax1": 1.0,
@@ -539,14 +539,14 @@
       "Span": 2.75,
       "Angle": 5.0,
       "Arm": [
-        -8.0,
+        -7.2,
         0.5,
         0.0
       ],
       "FlowInertia": 0.0500038,
       "SlipStreamDistance": 9000.0,
       "Areas": {
-        "Main": 2.7,
+        "Main": 2.4,
         "Rudder": 0.0
       },
       "Polar": {
@@ -1376,19 +1376,19 @@
     "Geometry": {
       "Radius": 6.5,
       "NumBlades": 5,
-      "BladePitch0": 0.0,
-      "BladeWidth0": 0.07,
-      "BladePitch1": 0.0,
+      "BladePitch0": 4.0,
+      "BladeWidth0": 0.08,
+      "BladePitch1": 2.0,
       "BladeWidth1": 0.086,
-      "BladePitch2": 0.0,
+      "BladePitch2": -0.0,
       "BladeWidth2": 0.086,
-      "BladePitch3": 0.0,
+      "BladePitch3": -2.0,
       "BladeWidth3": 0.08,
       "FlyBarStabilizationMult": 2.0,
       "FlyBarAngleMax": 45.0,
       "FlyBarToCylicAxes": 2E-05,
-      "ForceToBladeAngle": 1.6E-05,
-      "BladeAngleMax": 0.25,
+      "ForceToBladeAngle": 1.9E-05,
+      "BladeAngleMax": 0.3,
       "BladeToShaftTorqueMult": 0.43,
       "Coaxial": false,
       "RollDamping": [
@@ -1411,34 +1411,34 @@
       ],
       "AirFlowSolver": true,
       "AirFlow1": [
-        -100.0,
-        100.0,
-        1.0,
-        -1.0
+        -30.0,
+        30.0,
+        0.2,
+        1.0
       ],
       "AirFlow2": [
         -10.0,
-        10.0,
+        20.0,
         1.0,
-        -0.0
+        1.0
       ],
       "AirFlow3": [
         0.0,
-        -1.0,
+        -0.0,
         1.0,
         1.0
       ],
       "AirFlow4": [
         9.0,
-        -2.0,
-        0.8,
-        0.75
+        5.0,
+        1.0,
+        1.0
       ],
       "AirFlow5": [
-        14.0,
+        19.0,
         -8.0,
-        0.3,
-        0.75
+        0.4,
+        1.0
       ],
       "FlapCompensatorEfficiency": [
         240.0,
@@ -1469,21 +1469,21 @@
     "Polar": {
       "lineClCoeff": 0.088,
       "Cl0": 0.07,
-      "alphaCritHigh": 16.5,
-      "alphaCritLow": -14.5,
+      "alphaCritHigh": 18.5,
+      "alphaCritLow": -16.5,
       "ClCritHigh": 1.15,
       "ClCritLow": -0.85,
       "CdMin": 0.011,
       "AfterCritParabAngle": 3.0,
       "AfterCritDeclineCoeff": 0.00222,
-      "AfterCritMaxDistanceAngle": 28.0,
-      "ClAfterCritHigh": 1.1,
+      "AfterCritMaxDistanceAngle": 34.0,
+      "ClAfterCritHigh": 1.4,
       "ClAfterCritLow": -1.1,
       "CxAfterCoeff": 0.01,
       "OswaldsEfficiencyNumber": 0.85,
       "MachFactor": 3,
       "CombinedCl": false,
-      "MachCrit1": 0.75,
+      "MachCrit1": 0.79,
       "MachMax1": 1.0,
       "MultMachMax1": 4.2,
       "MultLineCoeff1": -3.0,
@@ -1526,12 +1526,12 @@
     },
     "Governor": {
       "PitchMin": 0.0,
-      "PitchMax": 14.0,
+      "PitchMax": 15.0,
       "Aoa0": 10.0,
       "PitchCyclicPitchAngles": [
-        -8.0,
+        -10.0,
         0.3,
-        8.5
+        10.5
       ],
       "PitchCyclicRollAngles": [
         -8.5,

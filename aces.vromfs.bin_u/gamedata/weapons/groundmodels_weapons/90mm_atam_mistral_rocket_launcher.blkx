@@ -22,10 +22,7 @@
   "bEnablePause": false,
   "bullets": -1,
   "bulletsCluster": 1,
-  "useSingleIconForBullet": [
-    true,
-    true
-  ],
+  "useSingleIconForBullet": true,
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/atgm",
   "sound_pathStudio": "ground/weapon/atgm",
@@ -38,16 +35,24 @@
   "isBulletBelt": false,
   "drawRocketInBullet": true,
   "allowRearmOnField": true,
-  "mesh": "atam_mistral_rocket_deployed",
+  "mesh": "atam_mistral_rocket",
   "bullet": {
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.05,
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "aam",
+    "bulletType": "sam_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "explodeOnRendinst": true,
+    "shellAnimation": "video/shells_animations/sam.ivf",
     "bulletName": "atam_mistral",
     "mass": 19.7,
     "caliber": 0.09,
@@ -60,21 +65,15 @@
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
-        0.05
+        0.5
       ],
       "mod2": [
-        20.0,
-        0.1
+        15.0,
+        0.7
       ],
       "mod3": [
-        [
-          30.0,
-          0.2
-        ],
-        [
-          45.0,
-          0.3
-        ]
+        30.0,
+        0.99
       ]
     },
     "pressureDamage": {
@@ -132,10 +131,7 @@
       "distanceFuse": false,
       "hitPowerMult": 400.0,
       "fuseDelayDist": 1.0,
-      "explodeTreshold": [
-        0.1,
-        0.01
-      ],
+      "explodeTreshold": 0.1,
       "guidanceSfx": "alarm_con_scan",
       "guidanceType": "ir",
       "hasProximityFuse": true,
@@ -163,6 +159,8 @@
       "price": 3000.0,
       "amountPerTier": 2.0,
       "iconType": "missile_air_to_air_group",
+      "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
+      "mesh": "atam_mistral_rocket_deployed",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,

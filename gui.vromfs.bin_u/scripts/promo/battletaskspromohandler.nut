@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
@@ -23,13 +30,13 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
   function initScreen()
   {
-    scene.setUserData(this)
+    this.scene.setUserData(this)
     updateHandler()
   }
 
   function updateHandler()
   {
-    let id = scene.id
+    let id = this.scene.id
     local difficultyGroupArray = []
 
     // 0) Prepare: Filter tasks array by available difficulties list
@@ -115,30 +122,30 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
     if (!(view.needShowProgressBar ?? false) && view.needShowProgressValue)
     {
-      let progressValueText = ::loc("ui/parentheses/space",
+      let progressValueText = loc("ui/parentheses/space",
         {text = "".concat(view.progressValue, "/", view.progressMaxValue)})
       view.collapsedText = $"{view.collapsedText}{progressValueText}"
     }
-    let maxTextWidth = ::to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
+    let maxTextWidth = to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
       view.taskStatus != null ? "-1@modStatusHeight" : "",
       view.newIconWidget != null ? "-1@arrowButtonHeight" : ""))
     view.collapsedIcon <- ::g_promo.getCollapsedIcon(view, id)
-    let iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", guiScene) + ::to_pixels("1@blockInterval")
-    if (getStringWidthPx(view.collapsedText, "fontNormal", guiScene) > maxTextWidth - iconSize)
-      view.shortInfoBlockWidth <- ::to_pixels("1@arrowButtonWidth-1@blockInterval")
+    let iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", this.guiScene) + to_pixels("1@blockInterval")
+    if (getStringWidthPx(view.collapsedText, "fontNormal", this.guiScene) > maxTextWidth - iconSize)
+      view.shortInfoBlockWidth <- to_pixels("1@arrowButtonWidth-1@blockInterval")
     view.hasMarginCollapsedIcon <- view.collapsedText != "" && view.taskDifficultyImage != ""
     view.hasCollapsedText <- view.collapsedText != ""
     let taskHeaderCondition = view?.taskHeaderCondition ?? ""
     if (taskHeaderCondition != "")
       view.title = $"{view.title} {taskHeaderCondition}"
-    if (getStringWidthPx(view.title, "fontNormal", guiScene) > maxTextWidth)
+    if (getStringWidthPx(view.title, "fontNormal", this.guiScene) > maxTextWidth)
       view.headerWidth <- maxTextWidth
     view.performActionId <- ::g_promo.getActionParamsKey(id)
-    view.taskId <- ::getTblValue("id", reqTask)
+    view.taskId <- getTblValue("id", reqTask)
     view.action <- ::g_promo.PERFORM_ACTON_NAME
 
 
-    view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && ::has_feature("PromoBattleTasksRadioButtons"))
+    view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && hasFeature("PromoBattleTasksRadioButtons"))
     view.radioButtons <- difficultyGroupArray
     view.otherTasksNumText <- view.otherTasksNum > 0 ? "#mainmenu/battleTasks/OtherTasksCount" : ""
     let isEmptyTask = view.taskId == null
@@ -153,11 +160,11 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
     let data = ::handyman.renderCached("%gui/promo/promoBattleTasks",
       { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME})
-    guiScene.replaceContentFromText(scene, data, data.len(), this)
+    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
-    ::g_battle_tasks.setUpdateTimer(reqTask, scene)
+    ::g_battle_tasks.setUpdateTimer(reqTask, this.scene)
     if (showProgressBar && currentWarbond)
-      ::g_warbonds_view.updateProgressBar(currentWarbond, scene, true)
+      ::g_warbonds_view.updateProgressBar(currentWarbond, this.scene, true)
   }
 
   function onGetRewardForTask(obj)
@@ -165,7 +172,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     ::g_battle_tasks.requestRewardForTask(obj?.task_id)
   }
 
-  function onWarbondsShop(obj)
+  function onWarbondsShop(_obj)
   {
     ::g_warbonds.openShop()
   }
@@ -183,7 +190,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
     ::save_local_account_settings(savePathBattleTasksDiff, difficultyGroup)
 
-    guiScene.performDelayed(this, function()
+    this.guiScene.performDelayed(this, function()
     {
       updateHandler()
     })
@@ -217,13 +224,13 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
   }
   function onToggleItem(obj) { ::g_promo.toggleItem(obj) }
 
-  onEventNewBattleTasksChanged                = @(p) updateHandler()
-  onEventBattleTasksFinishedUpdate            = @(p) updateHandler()
-  onEventBattleTasksTimeExpired               = @(p) updateHandler()
-  onEventCurrentGameModeIdChanged             = @(p) updateHandler()
-  onEventWarbondShopMarkSeenLevel             = @(p) updateHandler()
-  onEventWarbondViewShowProgressBarFlagUpdate = @(p) updateHandler()
-  onEventXboxMultiplayerPrivilegeUpdated      = @(p) updateHandler()
+  onEventNewBattleTasksChanged                = @(_p) updateHandler()
+  onEventBattleTasksFinishedUpdate            = @(_p) updateHandler()
+  onEventBattleTasksTimeExpired               = @(_p) updateHandler()
+  onEventCurrentGameModeIdChanged             = @(_p) updateHandler()
+  onEventWarbondShopMarkSeenLevel             = @(_p) updateHandler()
+  onEventWarbondViewShowProgressBarFlagUpdate = @(_p) updateHandler()
+  onEventXboxMultiplayerPrivilegeUpdated      = @(_p) updateHandler()
 }
 
 let promoButtonId = "current_battle_tasks_mainmenu_button"
@@ -231,14 +238,14 @@ let promoButtonId = "current_battle_tasks_mainmenu_button"
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "battleTask"
-  collapsedIcon = ::loc("icon/battleTasks")
+  collapsedIcon = loc("icon/battleTasks")
   collapsedText = "title"
   updateFunctionInHandler = function() {
     let id = promoButtonId
     let show = ::g_battle_tasks.isAvailableForUser()
       && ::g_promo.getVisibilityById(id)
-    let buttonObj = ::showBtn(id, show, scene)
-    if (!show || !::checkObj(buttonObj))
+    let buttonObj = ::showBtn(id, show, this.scene)
+    if (!show || !checkObj(buttonObj))
       return
 
     ::gui_handlers.BattleTasksPromoHandler.open({ scene = buttonObj })

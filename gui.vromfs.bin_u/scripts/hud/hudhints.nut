@@ -1,7 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
-let { is_stereo_mode } = ::require_native("vr")
+let { is_stereo_mode } = require_native("vr")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
@@ -25,19 +32,19 @@ global enum HINT_INTERVAL {
   cache = { byName = {} }
 }
 
-g_hud_hints._buildMarkup <- function _buildMarkup(eventData, hintObjId)
+::g_hud_hints._buildMarkup <- function _buildMarkup(eventData, hintObjId)
 {
-  return ::g_hints.buildHintMarkup(buildText(eventData), getHintMarkupParams(eventData, hintObjId))
+  return ::g_hints.buildHintMarkup(this.buildText(eventData), this.getHintMarkupParams(eventData, hintObjId))
 }
 
-g_hud_hints._getHintMarkupParams <- function _getHintMarkupParams(eventData, hintObjId)
+::g_hud_hints._getHintMarkupParams <- function _getHintMarkupParams(eventData, hintObjId)
 {
   return {
-    id = hintObjId || name
-    style = getHintStyle()
-    time = getTimerTotalTimeSec(eventData)
-    timeoffset = getTimerCurrentTimeSec(eventData, ::dagor.getCurTime()) //creation time right now
-    animation = shouldBlink ? "wink" : shouldFadeOut ? "show" : null
+    id = hintObjId || this.name
+    style = this.getHintStyle()
+    time = this.getTimerTotalTimeSec(eventData)
+    timeoffset = this.getTimerCurrentTimeSec(eventData, get_time_msec()) //creation time right now
+    animation = this.shouldBlink ? "wink" : this.shouldFadeOut ? "show" : null
     showKeyBoardShortcutsForMouseAim = eventData?.showKeyBoardShortcutsForMouseAim ?? false
   }
 }
@@ -58,14 +65,14 @@ let getRawShortcutsArray = function(shortcuts)
   return rawShortcutsArray
 }
 
-g_hud_hints._buildText <- function _buildText(data)
+::g_hud_hints._buildText <- function _buildText(data)
 {
-  let shortcuts = getShortcuts(data)
+  let shortcuts = this.getShortcuts(data)
   if (shortcuts == null)
   {
-    local res = ::loc(getLocId(data), getLocParams(data))
-    if (image)
-      res = ::g_hint_tag.IMAGE.makeFullTag({ image = image }) + res
+    local res = loc(this.getLocId(data), this.getLocParams(data))
+    if (this.image)
+      res = ::g_hint_tag.IMAGE.makeFullTag({ image = this.image }) + res
     return res
   }
 
@@ -73,15 +80,15 @@ g_hud_hints._buildText <- function _buildText(data)
   let assigned = rawShortcutsArray.len() > 0
   if (!assigned)
   {
-    let noKeyLocId = getNoKeyLocId()
+    let noKeyLocId = this.getNoKeyLocId()
     if (noKeyLocId != "")
-      return ::loc(noKeyLocId)
+      return loc(noKeyLocId)
   }
 
   let expandedShortcutArray = ::g_shortcut_type.expandShortcuts(rawShortcutsArray)
   let shortcutTag = ::g_hud_hints._wrapShortsCutIdWithTags(expandedShortcutArray)
-  let locParams = getLocParams(data).__update({shortcut = shortcutTag})
-  local result = ::loc(getLocId(data), locParams)
+  let locParams = this.getLocParams(data).__update({shortcut = shortcutTag})
+  local result = loc(this.getLocId(data), locParams)
 
   //If shortcut not specified in localization string it should
   //be placed at the beginig
@@ -94,7 +101,7 @@ g_hud_hints._buildText <- function _buildText(data)
 /**
  * Return true if only one shortcut should be picked from @shortcutArray
  */
-g_hud_hints.shouldPickFirstValid <- function shouldPickFirstValid(shortcutArray)
+::g_hud_hints.shouldPickFirstValid <- function shouldPickFirstValid(shortcutArray)
 {
   foreach (shortcutId in shortcutArray)
     if (::g_string.startsWith(shortcutId, "@"))
@@ -102,7 +109,7 @@ g_hud_hints.shouldPickFirstValid <- function shouldPickFirstValid(shortcutArray)
   return false
 }
 
-g_hud_hints.pickFirstValidShortcut <- function pickFirstValidShortcut(shortcutArray)
+::g_hud_hints.pickFirstValidShortcut <- function pickFirstValidShortcut(shortcutArray)
 {
   foreach (shortcutId in shortcutArray)
   {
@@ -117,7 +124,7 @@ g_hud_hints.pickFirstValidShortcut <- function pickFirstValidShortcut(shortcutAr
   return null
 }
 
-g_hud_hints.removeUnmappedShortcuts <- function removeUnmappedShortcuts(shortcutArray)
+::g_hud_hints.removeUnmappedShortcuts <- function removeUnmappedShortcuts(shortcutArray)
 {
   for (local i = shortcutArray.len() - 1; i >= 0; --i)
   {
@@ -129,30 +136,30 @@ g_hud_hints.removeUnmappedShortcuts <- function removeUnmappedShortcuts(shortcut
   return shortcutArray
 }
 
-g_hud_hints._getLocId <- function _getLocId(data)
+::g_hud_hints._getLocId <- function _getLocId(_data)
 {
-  return locId
+  return this.locId
 }
 
-g_hud_hints._getNoKeyLocId <- function _getNoKeyLocId()
+::g_hud_hints._getNoKeyLocId <- function _getNoKeyLocId()
 {
-  return noKeyLocId
+  return this.noKeyLocId
 }
 
-g_hud_hints._getLifeTime <- function _getLifeTime(data)
+::g_hud_hints._getLifeTime <- function _getLifeTime(data)
 {
-  return lifeTime || ::getTblValue("lifeTime", data, 0)
+  return this.lifeTime || getTblValue("lifeTime", data, 0)
 }
 
-g_hud_hints._getShortcuts <- function _getShortcuts(data)
+::g_hud_hints._getShortcuts <- function _getShortcuts(_data)
 {
-  return shortcuts
+  return this.shortcuts
 }
 
-g_hud_hints._wrapShortsCutIdWithTags <- function _wrapShortsCutIdWithTags(shortNamesArray)
+::g_hud_hints._wrapShortsCutIdWithTags <- function _wrapShortsCutIdWithTags(shortNamesArray)
 {
   local result = ""
-  let separator = ::loc("hints/shortcut_separator")
+  let separator = loc("hints/shortcut_separator")
   foreach (shortcutName in shortNamesArray)
   {
     if (result.len())
@@ -163,14 +170,14 @@ g_hud_hints._wrapShortsCutIdWithTags <- function _wrapShortsCutIdWithTags(shortN
   return result
 }
 
-g_hud_hints._getHintNestId <- function _getHintNestId()
+::g_hud_hints._getHintNestId <- function _getHintNestId()
 {
-  return hintType.nestId
+  return this.hintType.nestId
 }
 
-g_hud_hints._getHintStyle <- function _getHintStyle()
+::g_hud_hints._getHintStyle <- function _getHintStyle()
 {
-  return hintType.hintStyle
+  return this.hintType.hintStyle
 }
 
 //all obsolette hinttype names must work as standard mission hint
@@ -188,17 +195,17 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   _missionTimerStartMsec = 0
 
   updateCbs = {
-    ["mission:timer:start"] = function(hintData, eventData)
+    ["mission:timer:start"] = function(_hintData, eventData)
     {
-      let totalSec = ::getTblValue("totalTime", eventData)
+      let totalSec = getTblValue("totalTime", eventData)
       if (!totalSec)
         return false
 
       _missionTimerTotalMsec = 1000 * totalSec
-      _missionTimerStartMsec = ::dagor.getCurTime()
+      _missionTimerStartMsec = get_time_msec()
       return true
     },
-    ["mission:timer:stop"] = function(hintData, eventData) {
+    ["mission:timer:stop"] = function(_hintData, _eventData) {
       _missionTimerTotalMsec = 0
       return true
     }
@@ -208,31 +215,31 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   {
     if (isHideEvent && !("hintType" in eventData))
       return true
-    return checkHintTypeNameFunc(::getTblValue("hintType", eventData, MISSION_HINT_TYPE.STANDARD))
+    return checkHintTypeNameFunc(getTblValue("hintType", eventData, MISSION_HINT_TYPE.STANDARD))
   }
 
   getLocId = function (hintData)
   {
-    return ::getTblValue("locId", hintData, "")
+    return getTblValue("locId", hintData, "")
   }
 
   getShortcuts = function (hintData)
   {
-    return ::getTblValue("shortcuts", hintData)
+    return getTblValue("shortcuts", hintData)
   }
 
   buildText = function (hintData) {
     local res = ::g_hud_hints._buildText.call(this, hintData)
-    local varValue = ::getTblValue("variable_value", hintData)
+    local varValue = getTblValue("variable_value", hintData)
     if (varValue != null)
     {
-      let varStyle = ::getTblValue("variable_style", hintData)
+      let varStyle = getTblValue("variable_style", hintData)
       if (varStyle == "playerId")
       {
         let player = ::get_mplayer_by_id(varValue)
         varValue = ::build_mplayer_name(player)
       }
-      res = ::loc(res, {var = varValue})
+      res = loc(res, {var = varValue})
     }
     if (!getShortcuts(hintData))
       return res
@@ -245,29 +252,29 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
     let res = ::g_hud_hints._getHintMarkupParams.call(this, eventData, hintObjId)
     res.hideWhenStopped <- true
     res.timerOffsetX <- "-w" //to timer do not affect message position.
-    res.isOrderPopup <- ::getTblValue("isOverFade", eventData, false)
+    res.isOrderPopup <- getTblValue("isOverFade", eventData, false)
 
-    res.animation <- ::getTblValue("shouldBlink", eventData, false) ? "wink"
-      : ::getTblValue("shouldFadeout", eventData, false) ? "show"
+    res.animation <- getTblValue("shouldBlink", eventData, false) ? "wink"
+      : getTblValue("shouldFadeout", eventData, false) ? "show"
       : null
     return res
   }
 
-  getTimerTotalTimeSec = function(eventData)
+  getTimerTotalTimeSec = function(_eventData)
   {
     if (_missionTimerTotalMsec <= 0
-        || (::dagor.getCurTime() > _missionTimerTotalMsec + _missionTimerStartMsec))
+        || (get_time_msec() > _missionTimerTotalMsec + _missionTimerStartMsec))
       return 0
     return time.millisecondsToSeconds(_missionTimerTotalMsec)
   }
-  getTimerCurrentTimeSec = function(eventData, hintAddTime)
+  getTimerCurrentTimeSec = function(_eventData, _hintAddTime)
   {
-    return time.millisecondsToSeconds(::dagor.getCurTime() - _missionTimerStartMsec)
+    return time.millisecondsToSeconds(get_time_msec() - _missionTimerStartMsec)
   }
 
-  getLifeTime = @(eventData) ::getTblValue("time", eventData, 0)
+  getLifeTime = @(eventData) getTblValue("time", eventData, 0)
 
-  isInstantHide = @(eventData) !::getTblValue("shouldFadeout", eventData, true)
+  isInstantHide = @(eventData) !getTblValue("shouldFadeout", eventData, true)
   hideHint = function(hintObject, isInstant)
   {
     if (isInstant)
@@ -299,10 +306,10 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   getLocId = ::g_hud_hints._getLocId
   getNoKeyLocId = ::g_hud_hints._getNoKeyLocId
 
-  getLocParams = @(hintData) {}
+  getLocParams = @(_hintData) {}
 
-  getPriority = function(eventData) { return ::getTblValue("priority", eventData, priority) }
-  isCurrent = @(eventData, isHideEvent) true
+  getPriority = function(eventData) { return getTblValue("priority", eventData, priority) }
+  isCurrent = @(_eventData, _isHideEvent) true
 
   //Some hints contain shortcuts. If there is only one shortuc in hint (common case)
   //just put shirtcut id in shortcuts field.
@@ -322,13 +329,13 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   selfRemove = false //will be true if lifeTime > 0
   lifeTime = 0.0
   getTimerTotalTimeSec    = function(eventData) { return getLifeTime(eventData) }
-  getTimerCurrentTimeSec  = function(eventData, hintAddTime)
+  getTimerCurrentTimeSec  = function(_eventData, hintAddTime)
   {
-    return time.millisecondsToSeconds(::dagor.getCurTime() - hintAddTime)
+    return time.millisecondsToSeconds(get_time_msec() - hintAddTime)
   }
 
-  isInstantHide = @(eventData) true
-  hideHint = function(hintObject, isInstant)  //return <need to instant hide when new hint appear>
+  isInstantHide = @(_eventData) true
+  hideHint = function(hintObject, _isInstant)  //return <need to instant hide when new hint appear>
   {
     hintObject.getScene().destroyElement(hintObject)
     return false
@@ -374,14 +381,14 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
     return interval
   }
 
-  updateHintOptionsBlk = function(blk) {} //special options for native hints
+  updateHintOptionsBlk = function(_blk) {} //special options for native hints
 }
 
 enums.addTypesByGlobalName("g_hud_hints", {
   UNKNOWN = {}
 
   OFFER_BAILOUT = {
-    getLocId = function(hintData)
+    getLocId = function(_hintData)
     {
       let curUnit = getPlayerCurUnit()
       return curUnit?.isHelicopter?() ? "hints/ready_to_bailout_helicopter"
@@ -403,7 +410,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     nearestOffenderLocId = "HUD_AWARD_NEAREST"
     awardGiveForLocId = "HUD_AWARD_GIVEN_FOR"
 
-    getLocId = function (hintData)
+    getLocId = function (_hintData)
     {
       let curUnit = getPlayerCurUnit()
       return curUnit?.isHelicopter?() ? "hints/bailout_helicopter_in_progress"
@@ -418,12 +425,12 @@ enums.addTypesByGlobalName("g_hud_hints", {
     buildText = function (data) {
       local res = ::g_hud_hints._buildText.call(this, data)
       res += " " + ::g_hint_tag.TIMER.makeFullTag()
-      let leaveKill = ::getTblValue("leaveKill", data, false)
+      let leaveKill = getTblValue("leaveKill", data, false)
       if (leaveKill)
-        res +=  "\n" + ::loc(nearestOffenderLocId)
-      let offenderName = ::getTblValue("offenderName", data, "")
+        res +=  "\n" + loc(nearestOffenderLocId)
+      let offenderName = getTblValue("offenderName", data, "")
       if (offenderName != "")
-        res +=  "\n" + ::loc(awardGiveForLocId) + offenderName
+        res +=  "\n" + loc(awardGiveForLocId) + offenderName
       return res
     }
   }
@@ -487,7 +494,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:action_not_available"
     lifeTime = 5.0
     priority = CATASTROPHIC_HINT_PRIORITY
-    getLocId = @(data) ::loc($"hints/{data?.hintId ?? ""}")
+    getLocId = @(data) loc($"hints/{data?.hintId ?? ""}")
   }
 
   INEFFECTIVE_HIT_HINT = {
@@ -599,7 +606,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.ACTIONBAR
     locId = "hints/have_art_support"
     noKeyLocId = "hints/have_art_support_no_key"
-    getShortcuts = @(data) ::g_hud_action_bar_type.ARTILLERY_TARGET.getVisualShortcut()
+    getShortcuts = @(_data) ::g_hud_action_bar_type.ARTILLERY_TARGET.getVisualShortcut()
     showEvent = "hint:have_art_support:show"
     hideEvent = "hint:have_art_support:hide"
     lifeTime = 5.0
@@ -629,7 +636,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:winch_request:show"
     hideEvent = "hint:winch_request:hide"
     priority = DEFAULT_MISSION_HINT_PRIORITY
-    getShortcuts = @(data) ::g_hud_action_bar_type.WINCH.getVisualShortcut()
+    getShortcuts = @(_data) ::g_hud_action_bar_type.WINCH.getVisualShortcut()
     lifeTime = 10.0
     delayTime = 4.0
   }
@@ -652,7 +659,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:winch_use:show"
     hideEvent = "hint:winch_use:hide"
     priority = DEFAULT_MISSION_HINT_PRIORITY
-    getShortcuts = @(data) ::g_hud_action_bar_type.WINCH.getVisualShortcut()
+    getShortcuts = @(_data) ::g_hud_action_bar_type.WINCH.getVisualShortcut()
     lifeTime = 10.0
     delayTime = 2.0
   }
@@ -664,7 +671,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:winch_detach:show"
     hideEvent = "hint:winch_detach:hide"
     priority = DEFAULT_MISSION_HINT_PRIORITY
-    getShortcuts = @(data) ::g_hud_action_bar_type.WINCH.getVisualShortcut()
+    getShortcuts = @(_data) ::g_hud_action_bar_type.WINCH.getVisualShortcut()
     lifeTime = 10.0
     delayTime = 4.0
   }
@@ -788,7 +795,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/extinguish_fire"
     noKeyLocId = "hints/extinguish_fire_nokey"
-    getShortcuts = @(data) getPlayerCurUnit()?.isAir?() ? "ID_TOGGLE_EXTINGUISHER" : ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
+    getShortcuts = @(_data) getPlayerCurUnit()?.isAir?() ? "ID_TOGGLE_EXTINGUISHER" : ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
     showEvent = "hint:extinguish_fire:show"
     hideEvent = "hint:extinguish_fire:hide"
     shouldBlink = true
@@ -934,7 +941,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       if (!rawShortcutsArray.len())
         locId = eventData?.noKeyLocId ?? locId
 
-      res += ::loc(locId, {
+      res += loc(locId, {
         player = player ? ::build_mplayer_name(player) : ""
         time = time.secondsToString(eventData?.timeSeconds ?? 0, true, true)
       })
@@ -984,7 +991,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
       if (participantsAStr.len() > 0 && participantsBStr.len() > 0)
         res = participantsAStr
-        + spaceStr + ::loc("country/VS").tolower() + spaceStr
+        + spaceStr + loc("country/VS").tolower() + spaceStr
         + participantsBStr
         + "\n" + res
 
@@ -1001,16 +1008,16 @@ enums.addTypesByGlobalName("g_hud_hints", {
       local res = eventData?.locId
       if (!res)
         return ""
-      res = ::loc(res)
+      res = loc(res)
       if (eventData?.param)
       {
         local param = eventData.param
         if (eventData?.paramTeamId)
-          param = ::colorize(::get_team_color(eventData.paramTeamId), param)
+          param = colorize(::get_team_color(eventData.paramTeamId), param)
         res = format(res, param)
       }
       if (eventData?.teamId && eventData.teamId > 0)
-        res = ::colorize(::get_team_color(eventData.teamId), res)
+        res = colorize(::get_team_color(eventData.teamId), res)
       return res
     }
   }
@@ -1146,7 +1153,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hideEvent = "hint:drowning:hide"
     buildText = function(eventData)
     {
-      let res = ::loc("hints/drowning_in") + " "
+      let res = loc("hints/drowning_in") + " "
       + time.secondsToString(eventData?.timeTo ?? 0, false)
       return res
     }
@@ -1189,10 +1196,10 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = DEFAULT_MISSION_HINT_PRIORITY
     delayTime = 1.0
 
-    isCurrent = @(eventData, isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
+    isCurrent = @(eventData, _isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
     getLocId = function(eventData)
     {
-      return ::getTblValue("hintId", eventData, "hints/unknown")
+      return getTblValue("hintId", eventData, "hints/unknown")
     }
   }
 
@@ -1205,7 +1212,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 5.0
     priority = DEFAULT_MISSION_HINT_PRIORITY
 
-    isCurrent = @(eventData, isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
+    isCurrent = @(eventData, _isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
   }
 
   OBJECTIVE_SUCCESS = {
@@ -1217,15 +1224,15 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = DEFAULT_MISSION_HINT_PRIORITY
     isShowedInVR = true
 
-    isCurrent = @(eventData, isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
+    isCurrent = @(eventData, _isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
 
     getLocId = function(hintData)
     {
-      let objType = ::getTblValue("objectiveType", hintData, ::OBJECTIVE_TYPE_SECONDARY)
+      let objType = getTblValue("objectiveType", hintData, OBJECTIVE_TYPE_SECONDARY)
       local result = ""
-      if (objType == ::OBJECTIVE_TYPE_PRIMARY)
+      if (objType == OBJECTIVE_TYPE_PRIMARY)
         result = "hints/objective_success"
-      if (objType == ::OBJECTIVE_TYPE_SECONDARY)
+      if (objType == OBJECTIVE_TYPE_SECONDARY)
         result = "hints/secondary_success"
       if (hintData.objectiveText != "")
         result += "_extended"
@@ -1244,15 +1251,15 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = DEFAULT_MISSION_HINT_PRIORITY
     isShowedInVR = true
 
-    isCurrent = @(eventData, isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
+    isCurrent = @(eventData, _isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
 
     getLocId = function(hintData)
     {
-      let objType = ::getTblValue("objectiveType", hintData, ::OBJECTIVE_TYPE_PRIMARY)
+      let objType = getTblValue("objectiveType", hintData, OBJECTIVE_TYPE_PRIMARY)
       local result = ""
-      if (objType == ::OBJECTIVE_TYPE_PRIMARY)
+      if (objType == OBJECTIVE_TYPE_PRIMARY)
         result = "hints/objective_fail"
-      if (objType == ::OBJECTIVE_TYPE_SECONDARY)
+      if (objType == OBJECTIVE_TYPE_SECONDARY)
         result = "hints/secondary_fail"
       if (hintData.objectiveText != "")
         result += "_extended"
@@ -1274,28 +1281,28 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.REPAIR
     getLocId = function (data) {
       let unitType = ::get_es_unit_type(getPlayerCurUnit())
-      if (::getTblValue("assist", data, false))
+      if (getTblValue("assist", data, false))
       {
-        if (unitType == ::ES_UNIT_TYPE_TANK)
+        if (unitType == ES_UNIT_TYPE_TANK)
           return "hints/repair_assist_tank_hold"
-        if (unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
+        if (unitType == ES_UNIT_TYPE_SHIP || unitType == ES_UNIT_TYPE_BOAT)
           return "hints/repair_assist_ship_hold"
         return "hints/repair_assist_plane_hold"
       }
-      if (::getTblValue("request", data, false))
+      if (getTblValue("request", data, false))
       {
         return "hints/repair_request_assist_hold"
       }
-      else if (::getTblValue("cancelRequest", data, false))
+      else if (getTblValue("cancelRequest", data, false))
       {
         return "hints/repair_cancel_request_assist_hold"
       }
-      return (unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT) ?
+      return (unitType == ES_UNIT_TYPE_SHIP || unitType == ES_UNIT_TYPE_BOAT) ?
         "hints/repair_ship" : "hints/repair_tank_hold"
     }
 
     noKeyLocId = "hints/ready_to_bailout_nokey"
-    getShortcuts =  function(data)
+    getShortcuts =  function(_data)
     {
       let curUnit = getPlayerCurUnit()
       return curUnit?.isShipOrBoat() ?
@@ -1449,7 +1456,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:shot_frequency_changed:show"
     lifeTime = 5.0
     isHideOnDeath = true
-    getLocParams = @(hintData) { shotFreq = ::loc($"hints/shotFreq/{hintData.shotFreq}") }
+    getLocParams = @(hintData) { shotFreq = loc($"hints/shotFreq/{hintData.shotFreq}") }
   }
 
   CHANGE_BULLET_TYPE_FOR_SET = {
@@ -1501,7 +1508,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     locId = "hints/extinguish_assist"
     showEvent = "hint:have_potential_fire_assistee"
     hideEvent = "hint:hide_potential_fire_assistee_hint"
-    getShortcuts =  function(data)
+    getShortcuts =  function(_data)
     {
       return ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
     }
@@ -1524,11 +1531,11 @@ enums.addTypesByGlobalName("g_hud_hints", {
   REQUEST_EXTINGUISH_HELP_HINT = {
     hintType = ::g_hud_hint_types.REPAIR
     getLocId = function (data) {
-      if (::getTblValue("request", data, false))
+      if (getTblValue("request", data, false))
       {
         return "hints/request_extinguish_help"
       }
-      else if (::getTblValue("cancelRequest", data, false))
+      else if (getTblValue("cancelRequest", data, false))
       {
         return "hints/request_extinguish_help_cancel"
       }
@@ -1539,7 +1546,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hideEvent = "hint:request_extinguish_help_hide"
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
-    getShortcuts =  function(data)
+    getShortcuts =  function(_data)
     {
       return ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
     }
@@ -1612,7 +1619,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 10.0
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
-    getShortcuts = @(data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
+    getShortcuts = @(_data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
   }
 
   ALLOW_SWITCH_SUPPORT_PLANE = {
@@ -1624,7 +1631,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     shouldBlink = true
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = false
-    getShortcuts = @(data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
+    getShortcuts = @(_data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
   }
 
   UAV_LAUNCH_BLOCKED = {
@@ -1701,18 +1708,26 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnWatchedHeroChanged = true
     shortcuts = "ID_SHIP_WEAPON_ALL"
   }
+//
+
+
+
+
+
+
+
+
 },
 function() {
-  name = "hint_" + typeName.tolower()
-  if (lifeTime > 0)
-    selfRemove = true
+  this.name = "hint_" + this.typeName.tolower()
+  if (this.lifeTime > 0)
+    this.selfRemove = true
 
-  if(maskId >= 0)
-    mask = 1 << maskId
+  if(this.maskId >= 0)
+    this.mask = 1 << this.maskId
 },
 "typeName")
 
-g_hud_hints.getByName <- function getByName(hintName)
-{
-  return enums.getCachedType("name", hintName, cache.byName, this, UNKNOWN)
+::g_hud_hints.getByName <- function getByName(hintName) {
+  return enums.getCachedType("name", hintName, this.cache.byName, this, this.UNKNOWN)
 }

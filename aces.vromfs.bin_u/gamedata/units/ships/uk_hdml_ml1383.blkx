@@ -587,11 +587,12 @@
     "createSecondaryShatters": false,
     "compartments": {
       "fireParamsPreset": "ship_cover_boats",
-      "stopChanceOnDeadPart": 0.5,
+      "stopChanceOnDeadPart": 0.75,
       "armorClass": "ship_wood",
       "armorThickness": 24.0,
       "fireProtectionHp": 3.0,
       "napalmDamageMult": 1.0,
+      "pressureDamageMult": 2.0,
       "compartment_01_dm": {
         "hp": 460.0
       },
@@ -604,13 +605,13 @@
     },
     "control_compartments": {
       "fireParamsPreset": "ship_cover_boats",
-      "stopChanceOnDeadPart": 0.5,
+      "stopChanceOnDeadPart": 0.75,
       "armorClass": "ship_wood",
       "armorThickness": 25.0,
       "fireProtectionHp": 3.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
-        "pressureDamageMult": 5.0,
+        "pressureDamageMult": 2.0,
         "hp": 200.0
       },
       "radio_station_dm": {
@@ -1511,7 +1512,12 @@
         "aa_turret_07_dm",
         "aa_turret_08_dm",
         "aa_turret_09_dm",
-        "aa_turret_10_dm"
+        "aa_turret_10_dm",
+        "compartment_01_dm",
+        "compartment_02_dm",
+        "compartment_03_dm",
+        "compartment_04_dm",
+        "compartment_05_dm"
       ],
       "effect": {
         "pressureOpen": true

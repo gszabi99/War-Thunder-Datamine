@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 
@@ -15,7 +23,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   timersArray = null
 
-  side = ::SIDE_NONE
+  side = SIDE_NONE
   needShowOperationDesc = true
   reqFullMissionObjectsButton = true
   restrictShownObjectives = false
@@ -30,12 +38,12 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getSceneTplContainerObj()
   {
-    return scene
+    return this.scene
   }
 
   function isValid()
   {
-    return ::checkObj(scene) && ::checkObj(scene.findObject("ww_mission_objectives"))
+    return checkObj(this.scene) && checkObj(this.scene.findObject("ww_mission_objectives"))
   }
 
   function initScreen()
@@ -46,8 +54,8 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function update()
   {
-    let placeObj = scene.findObject("ww_mission_objectives")
-    if (!::check_obj(placeObj))
+    let placeObj = this.scene.findObject("ww_mission_objectives")
+    if (!checkObj(placeObj))
       return
 
     updateObjectivesData()
@@ -64,19 +72,19 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       hasObjectiveDesc = hasObjectiveDesc
     }
     let data = ::handyman.renderCached(objectiveItemTpl, view)
-    guiScene.replaceContentFromText(placeObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }
 
   function checkTimers()
   {
     timersArray = []
-    foreach (id, dataBlk in staticBlk)
+    foreach (_id, dataBlk in staticBlk)
     {
       let statusBlk = getStatusBlock(dataBlk)
       let oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
       let handler = this
       foreach (param, func in oType.timersArrayByParamName)
-        timersArray.extend(func(handler, scene, param, dataBlk, statusBlk, oType, side))
+        timersArray.extend(func(handler, this.scene, param, dataBlk, statusBlk, oType, side))
     }
   }
 
@@ -119,7 +127,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   function getShowMaxObjectivesCount()
   {
     let winner = ::ww_get_operation_winner()
-    if (restrictShownObjectives && winner != ::SIDE_NONE)
+    if (restrictShownObjectives && winner != SIDE_NONE)
       return ::Point2(1, 0)
 
     let objectivesCount = getObjectivesCount()
@@ -127,7 +135,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (!restrictShownObjectives || ::g_world_war.isDebugModeEnabled())
       return objectivesCount
 
-    let guiScene = scene.getScene()
+    let guiScene = this.scene.getScene()
 
     let panelObj = guiScene["content_block_1"]
     let holderObj = panelObj.getParent()
@@ -169,7 +177,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     return objectivesCount
   }
 
-  function onEventWWAFKTimerStop(params)
+  function onEventWWAFKTimerStop(_params)
   {
     setTopPosition(getShowMaxObjectivesCount())
   }
@@ -184,7 +192,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (!restrictShownObjectives)
       return
 
-    let guiScene = scene.getScene()
+    let guiScene = this.scene.getScene()
     let content1BlockHeight = guiScene["ww-right-panel"].getSize()[1]
       - guiScene.calcString("1@content2BlockHeight + 1@content3BlockHeight + 2@framePadding", null)
 
@@ -293,7 +301,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getObjectiveViewsArray(objectives)
   {
-    return ::u.mapAdvanced(objectives, ::Callback(
+    return ::u.mapAdvanced(objectives, Callback(
       @(dataBlk, idx, arr)
         ::WwObjectiveView(
           dataBlk,
@@ -304,7 +312,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       this))
   }
 
-  function onEventWWLoadOperation(params)
+  function onEventWWLoadOperation(_params)
   {
     let objectivesBlk = ::g_world_war.getOperationObjectives()
     if (!objectivesBlk)
@@ -314,7 +322,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     checkTimers()
   }
 
-  function onEventWWOperationFinished(params)
+  function onEventWWOperationFinished(_params)
   {
     update()
     checkTimers()
@@ -364,19 +372,19 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     let result = oType.getUpdatableParamsArray(objectiveBlk, statusBlock, sideEnumVal)
     let zones = oType.getUpdatableZonesParams(objectiveBlk, statusBlock, sideEnumVal)
 
-    let objectiveObj = scene.findObject(objectiveBlockId)
-    if (!::checkObj(objectiveObj))
+    let objectiveObj = this.scene.findObject(objectiveBlockId)
+    if (!checkObj(objectiveObj))
       return
 
     let statusType = oType.getObjectiveStatus(statusBlock?.winner, sideEnumVal)
     objectiveObj.status = statusType.name
 
     let imageObj = objectiveObj.findObject("statusImg")
-    if (::checkObj(imageObj))
+    if (checkObj(imageObj))
       imageObj["background-image"] = statusType.wwMissionObjImg
 
     let titleObj = objectiveObj.findObject(oType.getNameId(objectiveBlk, side))
-    if (::checkObj(titleObj))
+    if (checkObj(titleObj))
       titleObj.setValue(oType.getName(objectiveBlk, statusBlock, sideEnumVal))
 
     foreach (block in result)
@@ -385,14 +393,14 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
         continue
 
       let updatableParamObj = objectiveObj.findObject(block.id)
-      if (!::checkObj(updatableParamObj))
+      if (!checkObj(updatableParamObj))
         continue
 
       foreach (textId in ["pName", "pValue"])
         if (textId in block)
         {
           let nameObj = updatableParamObj.findObject(textId)
-          if (::checkObj(nameObj))
+          if (checkObj(nameObj))
             nameObj.setValue(block[textId])
         }
 
@@ -404,12 +412,12 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       foreach(zone in zones)
       {
         let zoneObj = objectiveObj.findObject(zone.id)
-        if (::checkObj(zoneObj))
+        if (checkObj(zoneObj))
           zoneObj.team = zone.team
       }
 
     let descObj = objectiveObj.findObject("updatable_data_text")
-    if (::check_obj(descObj))
+    if (checkObj(descObj))
     {
       let text = oType.getUpdatableParamsDescriptionText(objectiveBlk, statusBlock, sideEnumVal)
       descObj.setValue(text)
@@ -432,7 +440,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     for (local i = 0; i < obj.childrenCount(); i++)
     {
       let zoneObj = obj.getChild(i)
-      if (!::checkObj(zoneObj))
+      if (!checkObj(zoneObj))
         continue
 
       zonesList.append(zoneObj.id)
@@ -441,7 +449,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       ::ww_mark_zones_as_outlined_by_name(zonesList)
   }
 
-  function onHoverLostName(obj)
+  function onHoverLostName(_obj)
   {
     ::ww_clear_outlined_zones()
   }

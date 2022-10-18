@@ -1,5 +1,12 @@
-::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/wndWidgets/navigationPanel"
   sceneBlkName = null
@@ -65,8 +72,8 @@
 
   function setNavItems(navItems)
   {
-    let navListObj = scene.findObject(navListObjId)
-    if (!::checkObj(navListObj))
+    let navListObj = this.scene.findObject(navListObjId)
+    if (!checkObj(navListObj))
       return
 
     itemList = navItems
@@ -80,7 +87,7 @@
     )}
 
     let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-    guiScene.replaceContentFromText(navListObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(navListObj, data, data.len(), this)
 
     updateVisibility()
   }
@@ -106,8 +113,8 @@
 
   function doNavigate(itemIdx, isRelative = false)
   {
-    let navListObj = scene.findObject(navListObjId)
-    if (!::checkObj(navListObj))
+    let navListObj = this.scene.findObject(navListObjId)
+    if (!checkObj(navListObj))
       return false
 
     let itemsCount = itemList.len()
@@ -136,16 +143,16 @@
     let isNavRequired = itemList.len() > 1
     this.showSceneBtn(panelObjId, isNavRequired && isPanelVisible)
     this.showSceneBtn(expandButtonObjId, isNavRequired && !isPanelVisible)
-    guiScene.performDelayed(this, function() {
-      if (isValid())
+    this.guiScene.performDelayed(this, function() {
+      if (this.isValid())
         updateMoveToPanelButton()
     })
   }
 
-  function onNavClick(obj = null)
+  function onNavClick(_obj = null)
   {
-    let navListObj = scene.findObject(navListObjId)
-    if (!::checkObj(navListObj))
+    let navListObj = this.scene.findObject(navListObjId)
+    if (!checkObj(navListObj))
       return false
 
     let itemIdx = navListObj.getValue()
@@ -153,23 +160,23 @@
       onClickCb(itemList[itemIdx])
   }
 
-  function onNavSelect(obj = null)
+  function onNavSelect(_obj = null)
   {
-    let navListObj = scene.findObject(navListObjId)
-    if (!::checkObj(navListObj))
+    let navListObj = this.scene.findObject(navListObjId)
+    if (!checkObj(navListObj))
       return false
 
     notifyNavChanged(navListObj.getValue())
   }
 
-  function onExpand(obj = null)
+  function onExpand(_obj = null)
   {
     showPanel(true)
     if (shouldCallCallback && onCollapseCb)
       onCollapseCb(false)
   }
 
-  function onNavCollapse(obj = null)
+  function onNavCollapse(_obj = null)
   {
     showPanel(false)
     if (shouldCallCallback && onCollapseCb)
@@ -179,8 +186,8 @@
   function onCollapse(obj)
   {
     let itemObj = obj?.collapse_header ? obj : obj.getParent()
-    let listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
-    if (!::check_obj(listObj) || !itemObj?.collapse_header)
+    let listObj = checkObj(itemObj) ? itemObj.getParent() : null
+    if (!checkObj(listObj) || !itemObj?.collapse_header)
       return
 
     itemObj.collapsing = "yes"
@@ -238,14 +245,14 @@
     }
   }
 
-  onFocusNavigationList = @() ::move_mouse_on_child_by_value(scene.findObject(navListObjId))
+  onFocusNavigationList = @() ::move_mouse_on_child_by_value(this.scene.findObject(navListObjId))
   function updateMoveToPanelButton() {
-    if (isValid())
-      this.showSceneBtn("moveToLeftPanel", ::show_console_buttons && !scene.findObject(navListObjId).isHovered())
+    if (this.isValid())
+      this.showSceneBtn("moveToLeftPanel", ::show_console_buttons && !this.scene.findObject(navListObjId).isHovered())
   }
 
   function getCurrentItem() {
-    let currentIdx = ::get_object_value(scene, navListObjId)
+    let currentIdx = ::get_object_value(this.scene, navListObjId)
     if (currentIdx == null)
       return null
 

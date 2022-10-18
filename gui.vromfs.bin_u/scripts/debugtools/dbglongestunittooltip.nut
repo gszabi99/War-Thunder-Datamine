@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_command } = require("console")
 
 local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
@@ -8,36 +16,36 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   maxUnits = null
 
   function getSceneTplView() {
-    unitsByType = getUnits()
+    this.unitsByType = this.getUnits()
 
-    displayableUnitTypes = unitTypes.types.filter(@(t) t.isAvailable()).map(@(t) {typeName = t.typeName})
+    this.displayableUnitTypes = unitTypes.types.filter(@(t) t.isAvailable()).map(@(t) {typeName = t.typeName})
 
     return {
-      unitType = displayableUnitTypes
+      unitType = this.displayableUnitTypes
     }
   }
 
   function initScreen() {
-    scene.findObject("wnd_frame").select()
-    maxUnits = {}
+    this.scene.findObject("wnd_frame").select()
+    this.maxUnits = {}
 
-    foreach (id in [].extend(displayableUnitTypes.map(@(t) t.typeName), ["sample_type"])) {
-      let contentObj = scene.findObject(id)
-      if (::check_obj(contentObj)) {
-        guiScene.replaceContent(contentObj, "%gui/airTooltip.blk", this)
+    foreach (id in [].extend(this.displayableUnitTypes.map(@(t) t.typeName), ["sample_type"])) {
+      let contentObj = this.scene.findObject(id)
+      if (checkObj(contentObj)) {
+        this.guiScene.replaceContent(contentObj, "%gui/airTooltip.blk", this)
         contentObj.show(false)
       }
     }
 
-    scene.findObject("update_timer").setUserData(this)
+    this.scene.findObject("update_timer").setUserData(this)
   }
 
-  function onUpdate(obj, dt) {
+  function onUpdate(_obj, _dt) {
     local passedLastType = null
     local unitsList = []
     for (local i = 0; i < unitTypes.types.len(); i++) {
       let uType = unitTypes.types[i]
-      unitsList = unitsByType?[uType.typeName] ?? []
+      unitsList = this.unitsByType?[uType.typeName] ?? []
       if (unitsList.len() != 0)
         break
 
@@ -45,35 +53,35 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     }
 
     if (unitsList.len() == 0) {
-      if (passedLastType == displayableUnitTypes.top().typeName) {
-        scene.findObject("update_timer").setUserData(null)
-        revealFoundedUnits()
+      if (passedLastType == this.displayableUnitTypes.top().typeName) {
+        this.scene.findObject("update_timer").setUserData(null)
+        this.revealFoundedUnits()
       }
       return
     }
 
-    guiScene.performDelayed(this, function() {
+    this.guiScene.performDelayed(this, function() {
       let unit = unitsList.remove(0)
-      ::dlog($"DBG: Check: left {unitsByType?[unit.unitType.typeName].len() ?? 0}, {unit.unitType.typeName} -> {unit.name}") // warning disable: -forbidden-function
+      dlog($"DBG: Check: left {this.unitsByType?[unit.unitType.typeName].len() ?? 0}, {unit.unitType.typeName} -> {unit.name}") // warning disable: -forbidden-function
 
-      checkLongestUnitTooltip(unit)
+      this.checkLongestUnitTooltip(unit)
     })
   }
 
   function checkLongestUnitTooltip(unit) {
-    guiScene.setUpdatesEnabled(false, false)
-    fillUnitInfo(unit, true)
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(false, false)
+    this.fillUnitInfo(unit, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
-    if (!::check_obj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let unitInfoObj = scene.findObject("sample_type")
+    let unitInfoObj = this.scene.findObject("sample_type")
     let height = unitInfoObj?.getSize()[1] ?? 0
     let { typeName } = unit.unitType
-    if ((maxUnits?[typeName].height ?? -1) < height) {
-      maxUnits[typeName] <- { height, unit }
-      fillUnitInfo(unit)
+    if ((this.maxUnits?[typeName].height ?? -1) < height) {
+      this.maxUnits[typeName] <- { height, unit }
+      this.fillUnitInfo(unit)
     }
   }
 
@@ -85,10 +93,10 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   }, {})
 
   function fillUnitInfo(unit, isTesting = false) {
-    if (!unit || !::check_obj(scene))
+    if (!unit || !checkObj(this.scene))
       return
 
-    let contentObj = scene.findObject(isTesting? "sample_type" : unit.unitType.typeName)
+    let contentObj = this.scene.findObject(isTesting? "sample_type" : unit.unitType.typeName)
     contentObj.show(true)
     ::showAirInfo(unit, true, contentObj.findObject("air_info_tooltip"), this, {
       showLocalState = false
@@ -104,10 +112,14 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     if (!unit)
       return
 
-    if (maxUnits?[unit.unitType.typeName].unit == unit)
-      fillUnitInfo(unit)
+    if (this.maxUnits?[unit.unitType.typeName].unit == unit)
+      this.fillUnitInfo(unit)
   }
 }
 ::gui_handlers.dbgLongestUnitTooltip <- dbgLongestUnitTooltip
 
-::debug_open_longest_unit_tooltips <- @() ::handlersManager.loadHandler(::gui_handlers.dbgLongestUnitTooltip)
+let function debug_open_longest_unit_tooltips() {
+  ::handlersManager.loadHandler(::gui_handlers.dbgLongestUnitTooltip)
+}
+
+register_command(debug_open_longest_unit_tooltips, "debug.open_longest_unit_tooltips")

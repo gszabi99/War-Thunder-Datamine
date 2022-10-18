@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
+
 let class ConfigBase
 {
   //main params to set in constructor
@@ -31,7 +38,7 @@ let class ConfigBase
       this.requestUpdate = function() { return -1 }
     if (!this.getImpl)
     {
-      ::dagor.assertf(false, "Configs: Not exist 'get' function in config " + this.id)
+      assert(false, "Configs: Not exist 'get' function in config " + this.id)
       this.getImpl = function() { return ::DataBlock() }
     }
     this.cbList = []
@@ -74,13 +81,13 @@ let class ConfigBase
   function isRequestInProgress()
   {
     return this.lastRequestTime > this.lastUpdateTime
-        && this.lastRequestTime + this.requestTimeoutMsec > ::dagor.getCurTime()
+        && this.lastRequestTime + this.requestTimeoutMsec > get_time_msec()
   }
 
   function canRequest(forceUpdate = false)
   {
     return (!this.isRequestInProgress() && ::isInMenu()
-           && (forceUpdate || this.lastRequestTime + this.requestDelayMsec < ::dagor.getCurTime()))
+           && (forceUpdate || this.lastRequestTime + this.requestDelayMsec < get_time_msec()))
   }
 
   function onUpdateComplete()
@@ -95,7 +102,7 @@ let class ConfigBase
     this.cbList.clear()
     this.errorCbList.clear()
 
-    this.lastUpdateTime = ::dagor.getCurTime()
+    this.lastUpdateTime = get_time_msec()
   }
 
   function onUpdateError(errCode)
@@ -125,11 +132,11 @@ let class ConfigBase
       return
     }
 
-    ::dagor.debug($"Configs: request config update {this.id}. isActual = {this.isActual()}")
-    this.lastRequestTime = ::dagor.getCurTime()
+    log($"Configs: request config update {this.id}. isActual = {this.isActual()}")
+    this.lastRequestTime = get_time_msec()
     this.addCbToList(cb, onErrorCb)
-    let successCb = ::Callback(this.onUpdateComplete, this)
-    let errorCb = ::Callback(this.onUpdateError, this)
+    let successCb = Callback(this.onUpdateComplete, this)
+    let errorCb = Callback(this.onUpdateError, this)
     ::g_tasker.addTask(taskId, { showProgressBox }, successCb, errorCb)
   }
 

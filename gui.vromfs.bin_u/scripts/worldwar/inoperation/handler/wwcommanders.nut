@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 ::gui_handlers.WwCommanders <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -19,12 +27,12 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getSceneTplContainerObj()
   {
-    return scene
+    return this.scene
   }
 
   function initScreen()
   {
-    onSwitchCommandersSide(getObj("commanders_switch_box"))
+    onSwitchCommandersSide(this.getObj("commanders_switch_box"))
     foreach(groupHandler in groupsHandlers)
       groupHandler.updateSelectedStatus()
   }
@@ -46,13 +54,13 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       let sideGroupsView = []
       let armyCountry = []
       let myClanId = ::clan_get_my_clan_id()
-      foreach (idx, group in groups)
+      foreach (_idx, group in groups)
       {
         let country = group.getArmyCountry()
-        if (!::isInArray(country, armyCountry))
+        if (!isInArray(country, armyCountry))
           armyCountry.append(country)
 
-        let groupHandler = ::WwArmyGroupHandler(scene, group)
+        let groupHandler = ::WwArmyGroupHandler(this.scene, group)
         groupsHandlers.append(groupHandler)
 
         let groupView = group.getView()
@@ -72,11 +80,11 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
         image = getCustomViewCountryData(country, mapName).icon
       })
 
-      local teamText = ::loc(getCustomViewCountryData(armyCountry[0], mapName).locId)
+      local teamText = loc(getCustomViewCountryData(armyCountry[0], mapName).locId)
       if (armyCountry.len() > 1)
       {
         let postfix = ::ww_get_player_side() == side? "allies" : "enemies"
-        teamText = ::loc("worldWar/side/" + postfix)
+        teamText = loc("worldWar/side/" + postfix)
       }
 
       view.items.append({
@@ -108,18 +116,18 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function onSwitchCommandersSide(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
-    let placeObj = getObj("switch_mode_items_place")
-    if (!::checkObj(placeObj))
+    let placeObj = this.getObj("switch_mode_items_place")
+    if (!checkObj(placeObj))
       return
 
     let side = obj.getValue() + 1
     foreach (groupHandler in groupsHandlers)
     {
       let viewObj = placeObj.findObject(groupHandler.group.getView().getId())
-      if (!::checkObj(viewObj))
+      if (!checkObj(viewObj))
         return
 
       viewObj.show(groupHandler.group.isMySide(side))
@@ -145,15 +153,15 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     ::showClanPage(obj.clanId, "", "")
   }
 
-  function onHoverLostArmyItem(obj)
+  function onHoverLostArmyItem(_obj)
   {
     ::ww_update_popuped_armies_name([])
   }
 
-  function onEventWWArmyManagersInfoUpdated(p)
+  function onEventWWArmyManagersInfoUpdated(_p)
   {
     let view = getSceneTplView()
     let data = ::handyman.renderCached(sceneTplName, view)
-    guiScene.replaceContentFromText(scene, data, data.len(), this)
+    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 }

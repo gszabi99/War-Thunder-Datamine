@@ -1,5 +1,12 @@
-::gui_handlers.teamUnitsLeftView <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.teamUnitsLeftView <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/promo/promoBlocks"
@@ -16,8 +23,8 @@
 
   function initScreen()
   {
-    scene.setUserData(this) //to not unload handler even when scene not loaded
-    scene.findObject(blockId).setUserData(this)
+    this.scene.setUserData(this) //to not unload handler even when scene not loaded
+    this.scene.findObject(blockId).setUserData(this)
 
     updateInfo()
   }
@@ -58,7 +65,7 @@
   {
     let data = missionRules.getFullUnitLimitsData()
     let textsList = ::u.map(data.unitLimits, getRespTextByUnitLimit)
-    textsList.insert(0, ::colorize("activeTextColor", ::loc(missionRules.customUnitRespawnsAllyListHeaderLocId)))
+    textsList.insert(0, colorize("activeTextColor", loc(missionRules.customUnitRespawnsAllyListHeaderLocId)))
 
     if (missionRules.isEnemyLimitedUnitsVisible())
     {
@@ -66,7 +73,7 @@
       if (enemyData.len())
       {
         let enemyTextsList = ::u.map(enemyData.unitLimits, getRespTextByUnitLimit)
-        textsList.append("\n" + ::colorize("activeTextColor", ::loc(missionRules.customUnitRespawnsEnemyListHeaderLocId)))
+        textsList.append("\n" + colorize("activeTextColor", loc(missionRules.customUnitRespawnsEnemyListHeaderLocId)))
         textsList.extend(enemyTextsList)
       }
     }
@@ -82,7 +89,7 @@
     if (isCollapsed)
       updateCollapsedInfoText(isJustSwitched)
     else
-      scene.findObject(blockId + "_text").setValue(getFullUnitsText())
+      this.scene.findObject(blockId + "_text").setValue(getFullUnitsText())
   }
 
   function updateCollapsedInfoByUnitLimit(unitLimit, needAnim = true)
@@ -91,12 +98,12 @@
     let text = getRespTextByUnitLimit(unitLimit)
     if (needAnim)
     {
-      ::g_promo_view_utils.animSwitchCollapsedText(scene, blockId, text)
+      ::g_promo_view_utils.animSwitchCollapsedText(this.scene, blockId, text)
       return
     }
 
-    let obj = ::g_promo_view_utils.getVisibleCollapsedTextObj(scene, blockId)
-    if (::checkObj(obj))
+    let obj = ::g_promo_view_utils.getVisibleCollapsedTextObj(this.scene, blockId)
+    if (checkObj(obj))
       obj.setValue(text)
   }
 
@@ -124,14 +131,14 @@
       setNewCollapsedInfo()
   }
 
-  function onToggleItem(obj)
+  function onToggleItem(_obj)
   {
     isCollapsed = !isCollapsed
-    scene.findObject(blockId).collapsed = isCollapsed ? "yes" : "no"
+    this.scene.findObject(blockId).collapsed = isCollapsed ? "yes" : "no"
     updateInfo(true)
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
     if (!isCollapsed)
       return
@@ -141,13 +148,13 @@
       setNewCollapsedInfo()
   }
 
-  function onEventMissionCustomStateChanged(p)
+  function onEventMissionCustomStateChanged(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventMyCustomStateChanged(p)
+  function onEventMyCustomStateChanged(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 }

@@ -1,5 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 local isFallbackUnitInHangar = null
 let hangarDefaultUnits = {}
@@ -18,19 +24,19 @@ let function getCountryHangarDefaultUnit(countryId, esUnitType) {
     }
   }
   return hangarDefaultUnits[countryId]?[esUnitType]
-    ?? hangarDefaultUnits[countryId].findvalue(@(u) true)
+    ?? hangarDefaultUnits[countryId].findvalue(@(_u) true)
 }
 
 let function getFallbackUnitForHangar(params) {
   // Trying a currently loaded hangar unit
-  let countryId = params?.country ?? ::get_profile_country_sq()
+  let countryId = params?.country ?? profileCountrySq.value
   let curHangarUnit = ::getAircraftByName(::hangar_get_current_unit_name())
   if (curHangarUnit?.shopCountry == countryId
       && (params?.slotbarUnits ?? []).indexof(curHangarUnit) != null)
     return curHangarUnit
 
   // Trying any other unit from country slotbar
-  let esUnitType = curHangarUnit?.esUnitType ?? ::ES_UNIT_TYPE_AIRCRAFT
+  let esUnitType = curHangarUnit?.esUnitType ?? ES_UNIT_TYPE_AIRCRAFT
   foreach (needCheckUnitType in [ true, false ])
     foreach (unit in (params?.slotbarUnits ?? []))
       if (!needCheckUnitType || unit.esUnitType == esUnitType)
@@ -40,7 +46,7 @@ let function getFallbackUnitForHangar(params) {
   return getCountryHangarDefaultUnit(countryId, esUnitType)
 }
 
-let showedUnit = persist("showedUnit", @() ::Watched(null))
+let showedUnit = persist("showedUnit", @() Watched(null))
 
 let getShowedUnitName = @() showedUnit.value?.name ??
   (isFallbackUnitInHangar ? "" : ::hangar_get_current_unit_name())
@@ -54,7 +60,7 @@ let function setShowUnit(unit, params = null) {
   loadModel(unit?.name ?? getFallbackUnitForHangar(params)?.name ?? "")
 }
 
-showedUnit.subscribe(function(v) {
+showedUnit.subscribe(function(_v) {
   ::broadcastEvent("ShowedUnitChanged")
 })
 

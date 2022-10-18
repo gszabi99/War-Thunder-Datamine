@@ -1,5 +1,12 @@
-::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/unlocks/favoriteUnlocksList.blk"
   curFavoriteUnlocksBlk = null
@@ -10,15 +17,15 @@
 
   function initScreen()
   {
-    scene.setUserData(this)
+    this.scene.setUserData(this)
     curFavoriteUnlocksBlk = ::DataBlock()
-    listContainer = scene.findObject("favorite_unlocks_list")
+    listContainer = this.scene.findObject("favorite_unlocks_list")
     updateList()
   }
 
   function updateList()
   {
-    if (!::checkObj(listContainer))
+    if (!checkObj(listContainer))
       return
 
     if(!unlocksListIsValid)
@@ -29,7 +36,7 @@
     if (unlocksObjCount == 0 && total > 0) {
       let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified"),
         { unlocks = array(total, { hasCloseButton = true, hasHiddenContent = true })})
-      guiScene.appendWithBlk(listContainer, blk, this)
+      this.guiScene.appendWithBlk(listContainer, blk, this)
     }
 
     for(local i = 0; i < total; i++)
@@ -43,15 +50,15 @@
     unlocksListIsValid = true
   }
 
-  function onEventFavoriteUnlocksChanged(params)
+  function onEventFavoriteUnlocksChanged(_params)
   {
     unlocksListIsValid = false
-    doWhenActiveOnce("updateList")
+    this.doWhenActiveOnce("updateList")
   }
 
-  function onEventProfileUpdated(params)
+  function onEventProfileUpdated(_params)
   {
-    doWhenActiveOnce("updateList")
+    this.doWhenActiveOnce("updateList")
   }
 
   function onRemoveUnlockFromFavorites(obj)

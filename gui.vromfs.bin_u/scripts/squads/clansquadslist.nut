@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
   const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 //ms
   const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -20,14 +27,14 @@ local ClanSquadsList = class
   function isNewest()
   {
     return (clanId == ::clan_get_my_clan_id()) && !isInUpdate
-             && ::dagor.getCurTime() - lastUpdateTimeMsec < CLAN_SQUADS_LIST_REFRESH_MIN_TIME
+             && get_time_msec() - lastUpdateTimeMsec < CLAN_SQUADS_LIST_REFRESH_MIN_TIME
   }
 
   function canRequestByTime()
   {
     let checkTime = isInUpdate ? CLAN_SQUADS_LIST_REQUEST_TIME_OUT
       : CLAN_SQUADS_LIST_REFRESH_MIN_TIME
-    return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
+    return  get_time_msec() - lastRequestTimeMsec >= checkTime
   }
 
   function canRequest()
@@ -38,7 +45,7 @@ local ClanSquadsList = class
   function isListValid()
   {
     return ((clanId == ::clan_get_my_clan_id())
-      && (::dagor.getCurTime() - lastUpdateTimeMsec < CLAN_SQUADS_LIST_TIME_OUT))
+      && (get_time_msec() - lastUpdateTimeMsec < CLAN_SQUADS_LIST_TIME_OUT))
   }
 
   function validateList()
@@ -61,12 +68,12 @@ local ClanSquadsList = class
       return false
 
     isInUpdate = true
-    lastRequestTimeMsec = ::dagor.getCurTime()
+    lastRequestTimeMsec = get_time_msec()
 
     let requestClanId = ::clan_get_my_clan_id()
-    let cb = ::Callback(@(resp) requestListCb(resp, requestClanId), this)
+    let cb = Callback(@(resp) requestListCb(resp, requestClanId), this)
 
-    matching_api_func("msquad.get_squads", cb, {players = getClanUidsList()})
+    ::matching_api_func("msquad.get_squads", cb, {players = getClanUidsList()})
     return true
   }
 
@@ -95,7 +102,7 @@ local ClanSquadsList = class
     if (!squads)
       return
 
-    lastUpdateTimeMsec = ::dagor.getCurTime()
+    lastUpdateTimeMsec = get_time_msec()
     updateClanSquadsList(squads)
     ::broadcastEvent("ClanSquadsListChanged", { clanSquadsList = clanSquadsList })
   }

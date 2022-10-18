@@ -1,16 +1,24 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { debug_dump_stack } = require("dagor.debug")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { hasFeature } = require("%scripts/user/features.nut")
 let { is_replay_playing } = require("replays")
+let { get_time_msec } = require("dagor.time")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
  * This method is called from within C++.
  * Triggered only when some player gets a reward.
  */
-::on_order_result_received <- function on_order_result_received(player, orderId, param, wp, exp)
+::on_order_result_received <- function on_order_result_received(player, _orderId, param, _wp, _exp)
 {
   // Parameter 'orderId' comes as a string (e.g. "::g_orders.activeOrder.orderId")
   // this is a misleading naming. But 'winnerScoreDataByOrderId' uses actual
@@ -28,8 +36,8 @@ const AUTO_ACTIVATE_TIME = 60
                               "orderStatusPosition", "orderStatusSize"
                              ]
 
-  autoActivateHint = ::loc("guiHints/order_auto_activate",
-    {time = $"{AUTO_ACTIVATE_TIME} {::loc("mainmenu/seconds")}"})
+  autoActivateHint = loc("guiHints/order_auto_activate",
+    {time = $"{AUTO_ACTIVATE_TIME} {loc("mainmenu/seconds")}"})
   hasActiveOrder = false
   activeOrder = {
     orderId = -1
@@ -155,7 +163,7 @@ const AUTO_ACTIVATE_TIME = 60
 // Public methods
 //
 
-g_orders.openOrdersInventory <- function openOrdersInventory()
+::g_orders.openOrdersInventory <- function openOrdersInventory()
 {
   if (!::g_orders.orderCanBeActivated())
     return ::showInfoMsgBox(::g_orders.getWarningText(), "orders_cant_be_activated")
@@ -165,15 +173,15 @@ g_orders.openOrdersInventory <- function openOrdersInventory()
 
 // This takes in account fact that item was used during current battle.
 // @see ::items_classes.Order::getAmount()
-g_orders.collectOrdersToActivate <- @() ordersToActivate = ::ItemsManager.getInventoryList(
+::g_orders.collectOrdersToActivate <- @() this.ordersToActivate = ::ItemsManager.getInventoryList(
   itemType.ORDER, @(item) item.getAmount() > 0).sort(@(a, b) a.expiredTimeSec <=> b.expiredTimeSec)
 
-g_orders.hasOrdersToActivate <- @() (ordersToActivate?.len() ?? 0) > 0
+::g_orders.hasOrdersToActivate <- @() (this.ordersToActivate?.len() ?? 0) > 0
 
-g_orders.getActivateButtonLabel <- function getActivateButtonLabel()
+::g_orders.getActivateButtonLabel <- function getActivateButtonLabel()
 {
-  local label = ::loc("flightmenu/btnActivateOrder")
-  if (cooldownTimeleft > 0)
+  local label = loc("flightmenu/btnActivateOrder")
+  if (this.cooldownTimeleft > 0)
   {
     let timeText = time.secondsToString(::g_orders.cooldownTimeleft)
     label += format(" (%s)", timeText)
@@ -185,24 +193,24 @@ g_orders.getActivateButtonLabel <- function getActivateButtonLabel()
  * Warning text with explanation why player can't activate item.
  * Returns empty string if player can activate item.
  */
-g_orders.getWarningText <- function getWarningText(selectedOrderItem = null)
+::g_orders.getWarningText <- function getWarningText(selectedOrderItem = null)
 {
-  if (hasActiveOrder)
-    return ::loc("items/order/activateOrderWarning/hasActiveOrder")
+  if (this.hasActiveOrder)
+    return loc("items/order/activateOrderWarning/hasActiveOrder")
   if (!::g_orders.hasOrdersToActivate())
-    return ::loc("items/order/noOrdersAvailable")
-  let timeleft = getCooldownTimeleft()
+    return loc("items/order/noOrdersAvailable")
+  let timeleft = this.getCooldownTimeleft()
   if (timeleft > 0)
   {
     let locParams = {cooldownTimeleftText = time.secondsToString(timeleft)}
-    return ::loc("items/order/activateOrderWarning/cooldown", locParams)
+    return loc("items/order/activateOrderWarning/cooldown", locParams)
   }
-  if (!checkCurrentMission(selectedOrderItem))
+  if (!this.checkCurrentMission(selectedOrderItem))
     return ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
   return ""
 }
 
-g_orders.checkCurrentMission <- function checkCurrentMission(selectedOrderItem)
+::g_orders.checkCurrentMission <- function checkCurrentMission(selectedOrderItem)
 {
   if (selectedOrderItem == null)
     return true
@@ -216,153 +224,153 @@ g_orders.checkCurrentMission <- function checkCurrentMission(selectedOrderItem)
   return true
 }
 
-g_orders.enableOrders <- function enableOrders(statusObj)
+::g_orders.enableOrders <- function enableOrders(statusObj)
 {
-  if (!ordersCanBeUsed() || ::u.isEqual(statusObj, ordersStatusObj))
+  if (!this.ordersCanBeUsed() || ::u.isEqual(statusObj, this.ordersStatusObj))
     return
 
-  ordersEnabled = true
+  this.ordersEnabled = true
 
-  ordersStatusObj = statusObj
+  this.ordersStatusObj = statusObj
 
-  updateActiveOrder(false)
-  updateOrderStatus(true)
+  this.updateActiveOrder(false)
+  this.updateOrderStatus(true)
 
-  if (listenersEnabled || !::checkObj(statusObj))
+  if (this.listenersEnabled || !checkObj(statusObj))
     return
-  listenersEnabled = true
+  this.listenersEnabled = true
 
-  ::add_event_listener("LobbyStatusChange", onEventLobbyStatusChange, this)
-  ::add_event_listener("ActiveOrderChanged", onEventActiveOrderChanged, this)
-  ::add_event_listener("OrderUpdated", onEventOrderUpdated, this)
-  ::add_event_listener("WatchedHeroSwitched", onEventWatchedHeroSwitched, this)
-  ::add_event_listener("ChangedCursorVisibility", onEventChangedCursorVisibility, this)
+  ::add_event_listener("LobbyStatusChange", this.onEventLobbyStatusChange, this)
+  ::add_event_listener("ActiveOrderChanged", this.onEventActiveOrderChanged, this)
+  ::add_event_listener("OrderUpdated", this.onEventOrderUpdated, this)
+  ::add_event_listener("WatchedHeroSwitched", this.onEventWatchedHeroSwitched, this)
+  ::add_event_listener("ChangedCursorVisibility", this.onEventChangedCursorVisibility, this)
 }
 
 
-g_orders.enableOrdersWithoutDagui <- function enableOrdersWithoutDagui()
+::g_orders.enableOrdersWithoutDagui <- function enableOrdersWithoutDagui()
 {
-  if (!ordersCanBeUsed())
+  if (!this.ordersCanBeUsed())
     return
 
-  ordersEnabled = true
+  this.ordersEnabled = true
 
-  if (listenersEnabled)
+  if (this.listenersEnabled)
     return
-  listenersEnabled = true
+  this.listenersEnabled = true
 
-  ::add_event_listener("LobbyStatusChange", onEventLobbyStatusChange, this)
-  ::add_event_listener("ActiveOrderChanged", onEventActiveOrderChanged, this)
-  ::add_event_listener("OrderUpdated", onEventOrderUpdated, this)
-  ::add_event_listener("WatchedHeroSwitched", onEventWatchedHeroSwitched, this)
-  ::add_event_listener("ChangedCursorVisibility", onEventChangedCursorVisibility, this)
+  ::add_event_listener("LobbyStatusChange", this.onEventLobbyStatusChange, this)
+  ::add_event_listener("ActiveOrderChanged", this.onEventActiveOrderChanged, this)
+  ::add_event_listener("OrderUpdated", this.onEventOrderUpdated, this)
+  ::add_event_listener("WatchedHeroSwitched", this.onEventWatchedHeroSwitched, this)
+  ::add_event_listener("ChangedCursorVisibility", this.onEventChangedCursorVisibility, this)
 }
 
 
-g_orders.disableOrders <- function disableOrders()
+::g_orders.disableOrders <- function disableOrders()
 {
-  if (!ordersEnabled)
+  if (!this.ordersEnabled)
   {
-    debugPrint("g_orders::disableOrders:Skipped. Already disabled.")
-    ::callstack()
+    this.debugPrint("g_orders::disableOrders:Skipped. Already disabled.")
+    debug_dump_stack()
     return
   }
-  ordersEnabled = false
+  this.ordersEnabled = false
   subscriptions.removeAllListenersByEnv(this)
-  ordersStatusObj = null
-  listenersEnabled = false
-  updateActiveOrder()
-  timesUsedByOrderItemId.clear()
-  playerDataById.clear()
-  activeLocalOrderIds.clear()
-  winnerScoreDataByOrderId.clear()
-  activatingLocalOrderId = null
-  activatingLocalOrderCallback = null
+  this.ordersStatusObj = null
+  this.listenersEnabled = false
+  this.updateActiveOrder()
+  this.timesUsedByOrderItemId.clear()
+  this.playerDataById.clear()
+  this.activeLocalOrderIds.clear()
+  this.winnerScoreDataByOrderId.clear()
+  this.activatingLocalOrderId = null
+  this.activatingLocalOrderCallback = null
   ::set_order_accepted_cb(::g_orders, null)
-  orderStatusPosition = null
-  orderStatusSize = null
-  localPlayerData = null
+  this.orderStatusPosition = null
+  this.orderStatusSize = null
+  this.localPlayerData = null
 }
 
-g_orders.updateOrderStatus <- function updateOrderStatus(fullUpdate)
+::g_orders.updateOrderStatus <- function updateOrderStatus(fullUpdate)
 {
-  saveOrderStatusPositionAndSize()
-  updateOrderStatusObject(ordersStatusObj, fullUpdate)
+  this.saveOrderStatusPositionAndSize()
+  this.updateOrderStatusObject(this.ordersStatusObj, fullUpdate)
 }
 
-g_orders.updateActiveOrder <- function updateActiveOrder(dispatchEvents = true, isForced = false)
+::g_orders.updateActiveOrder <- function updateActiveOrder(dispatchEvents = true, isForced = false)
 {
   local activeOrderChanged = false
   local orderStatusChanged = false
 
   // See what's changed.
-  let orderObjective = getActiveOrderObjective()
+  let orderObjective = this.getActiveOrderObjective()
 
   // This means that there's active order but it
   // is not fully loaded yet. Better bail out and
   // update on next updateActiveOrder() call.
-  let starterId = ::getTblValue("starterId", orderObjective, -1)
+  let starterId = getTblValue("starterId", orderObjective, -1)
   if (starterId == -1 && orderObjective != null && !isForced)
     return
 
-  if (activeOrder.orderId != getOrderId(orderObjective))
+  if (this.activeOrder.orderId != this.getOrderId(orderObjective))
     activeOrderChanged = true
-  else if (activeOrder.orderStatus != getOrderStatus(orderObjective))
+  else if (this.activeOrder.orderStatus != this.getOrderStatus(orderObjective))
     orderStatusChanged = true
 
   // Update active order model.
-  let oldActiveOrder = clone activeOrder
-  activeOrder.orderId = getOrderId(orderObjective)
-  activeOrder.orderObjective = orderObjective
-  activeOrder.orderType = getOrderType(orderObjective)
-  activeOrder.orderStatus = getOrderStatus(orderObjective)
-  activeOrder.orderItem = getOrderItem(orderObjective)
-  activeOrder.timeToSwitchTarget = ::getTblValue("timeToSwitchTarget", orderObjective, -1)
+  let oldActiveOrder = clone this.activeOrder
+  this.activeOrder.orderId = this.getOrderId(orderObjective)
+  this.activeOrder.orderObjective = orderObjective
+  this.activeOrder.orderType = this.getOrderType(orderObjective)
+  this.activeOrder.orderStatus = this.getOrderStatus(orderObjective)
+  this.activeOrder.orderItem = this.getOrderItem(orderObjective)
+  this.activeOrder.timeToSwitchTarget = getTblValue("timeToSwitchTarget", orderObjective, -1)
 
-  let objectiveStarterId = ::getTblValue("starterId", orderObjective, -1)
-  let orderStartId = ::getTblValue("id", activeOrder.starterPlayer, -1)
+  let objectiveStarterId = getTblValue("starterId", orderObjective, -1)
+  let orderStartId = getTblValue("id", this.activeOrder.starterPlayer, -1)
   // Updating starterPlayer table only if it's really required as it's expensive.
-  if (orderStartId != objectiveStarterId || activeOrder.starterPlayer == null)
-    activeOrder.starterPlayer = getPlayerDataById(objectiveStarterId)
+  if (orderStartId != objectiveStarterId || this.activeOrder.starterPlayer == null)
+    this.activeOrder.starterPlayer = this.getPlayerDataById(objectiveStarterId)
 
-  let objectiveTargetId = ::getTblValue("targetId", orderObjective, -1)
-  let orderTargetId = ::getTblValue("id", activeOrder.targetPlayer, -1)
+  let objectiveTargetId = getTblValue("targetId", orderObjective, -1)
+  let orderTargetId = getTblValue("id", this.activeOrder.targetPlayer, -1)
   // Same idea as started player.
-  if (orderTargetId != objectiveTargetId || activeOrder.targetPlayer == null)
-    activeOrder.targetPlayer = getPlayerDataById(objectiveTargetId)
+  if (orderTargetId != objectiveTargetId || this.activeOrder.targetPlayer == null)
+    this.activeOrder.targetPlayer = this.getPlayerDataById(objectiveTargetId)
 
-  hasActiveOrder = orderObjective != null
+  this.hasActiveOrder = orderObjective != null
 
   // Handle this player's active orders.
-  updateActiveLocalOrders()
+  this.updateActiveLocalOrders()
 
   // Update previous active order.
-  if (activeOrder.orderObjective == null
+  if (this.activeOrder.orderObjective == null
     && oldActiveOrder.orderStatus == ::g_objective_status.RUNNING
-    && activeOrder.orderStatus != ::g_objective_status.RUNNING
+    && this.activeOrder.orderStatus != ::g_objective_status.RUNNING
     && oldActiveOrder.orderId != -1)
   {
-    prevActiveOrder = oldActiveOrder
+    this.prevActiveOrder = oldActiveOrder
   }
   else if (activeOrderChanged
-    && activeOrder.orderStatus == ::g_objective_status.RUNNING)
+    && this.activeOrder.orderStatus == ::g_objective_status.RUNNING)
   {
-   prevActiveOrder = null
+   this.prevActiveOrder = null
   }
 
   // Cooldown starts after order becomes
   // active and goes down to zero.
-  if (!hasActiveOrder)
-    updateCooldownTimeleft()
+  if (!this.hasActiveOrder)
+    this.updateCooldownTimeleft()
 
-  updateHideOrderBlock()
+  this.updateHideOrderBlock()
 
   // Preparing handyman-view both for current active
   // order and previous order when it's on cooldown.
-  if ((activeOrderChanged || orderStatusChanged) && hasActiveOrder)
-    updateStatusTextView(activeOrder, true)
-  if (cooldownTimeleft > 0 && prevActiveOrder != null)
-    updateStatusTextView(prevActiveOrder, true)
+  if ((activeOrderChanged || orderStatusChanged) && this.hasActiveOrder)
+    this.updateStatusTextView(this.activeOrder, true)
+  if (this.cooldownTimeleft > 0 && this.prevActiveOrder != null)
+    this.updateStatusTextView(this.prevActiveOrder, true)
 
   if (dispatchEvents)
   {
@@ -373,69 +381,69 @@ g_orders.updateActiveOrder <- function updateActiveOrder(dispatchEvents = true, 
     ::broadcastEvent("OrderUpdated", { oldActiveOrder = oldActiveOrder })
   }
 
-  local visibleScoreTableTexts = getScoreTableTexts()
-  visibleScoreTableTexts = visibleScoreTableTexts.len() > maxRowsInScoreTable
-    ? visibleScoreTableTexts.resize(maxRowsInScoreTable, null)
+  local visibleScoreTableTexts = this.getScoreTableTexts()
+  visibleScoreTableTexts = visibleScoreTableTexts.len() > this.maxRowsInScoreTable
+    ? visibleScoreTableTexts.resize(this.maxRowsInScoreTable, null)
     : visibleScoreTableTexts
   ::call_darg("orderStateUpdate", {
-    statusText = getStatusText()
-    statusTextBottom = getStatusTextBottom()
-    showOrder = hasActiveOrder || (cooldownTimeleft > 0 && prevActiveOrder != null)
+    statusText = this.getStatusText()
+    statusTextBottom = this.getStatusTextBottom()
+    showOrder = this.hasActiveOrder || (this.cooldownTimeleft > 0 && this.prevActiveOrder != null)
     scoresTable = visibleScoreTableTexts
   })
 }
 
-g_orders.updateOrderVisibility <- function updateOrderVisibility()
+::g_orders.updateOrderVisibility <- function updateOrderVisibility()
 {
-  if (!::checkObj(ordersStatusObj))
+  if (!checkObj(this.ordersStatusObj))
     return
 
-  let ordersBlockObj = ordersStatusObj.findObject("orders_block")
-  if (::check_obj(ordersBlockObj))
-    ordersBlockObj.show(!isOrdersHidden)
+  let ordersBlockObj = this.ordersStatusObj.findObject("orders_block")
+  if (checkObj(ordersBlockObj))
+    ordersBlockObj.show(!this.isOrdersHidden)
 }
 
-g_orders.updateHideOrderBlock <- function updateHideOrderBlock()
+::g_orders.updateHideOrderBlock <- function updateHideOrderBlock()
 {
-  if (!::checkObj(ordersStatusObj))
+  if (!checkObj(this.ordersStatusObj))
     return
 
-  let isHideOrderBtnVisible = isOrderInfoVisible() && ::is_cursor_visible_in_gui()
+  let isHideOrderBtnVisible = this.isOrderInfoVisible() && ::is_cursor_visible_in_gui()
 
-  let hideOrderBlockObj = ordersStatusObj.findObject("hide_order_block")
-  if (!::check_obj(hideOrderBlockObj))
+  let hideOrderBlockObj = this.ordersStatusObj.findObject("hide_order_block")
+  if (!checkObj(hideOrderBlockObj))
     return
 
-  hideOrderBlockObj.collapsed = isOrdersHidden ? "yes" : "no"
+  hideOrderBlockObj.collapsed = this.isOrdersHidden ? "yes" : "no"
 
   let hideOrderBtnObj = hideOrderBlockObj.findObject("hide_order_btn")
-  if (::check_obj(hideOrderBtnObj))
+  if (checkObj(hideOrderBtnObj))
     hideOrderBtnObj.isHidden = isHideOrderBtnVisible ? "no" : "yes"
 
   let hideOrderTextIconObj = hideOrderBlockObj.findObject("hide_order_text")
-  if (::check_obj(hideOrderTextIconObj))
-    hideOrderTextIconObj.show(isHideOrderBtnVisible && isOrdersHidden)
+  if (checkObj(hideOrderTextIconObj))
+    hideOrderTextIconObj.show(isHideOrderBtnVisible && this.isOrdersHidden)
 }
 
 // Activates order, which soon expire.
-g_orders.activateSoonExpiredOrder <- function activateSoonExpiredOrder()
+::g_orders.activateSoonExpiredOrder <- function activateSoonExpiredOrder()
 {
-  if (!hasFeature("OrderAutoActivate") || isActivationProgress)
+  if (!hasFeature("OrderAutoActivate") || this.isActivationProgress)
     return
 
   // If some orders expired during other one active
-  ordersToActivate = ordersToActivate.filter(@(inst) !inst.isExpired())
+  this.ordersToActivate = this.ordersToActivate.filter(@(inst) !inst.isExpired())
 
-  for (local i = 0; i < ordersToActivate.len(); i++)
+  for (local i = 0; i < this.ordersToActivate.len(); i++)
   {
-    let order = ordersToActivate[i]
+    let order = this.ordersToActivate[i]
     if (order.isActivateBeforeExpired && order.hasExpireTimer()
-      && order.expiredTimeSec - ::dagor.getCurTime() * 0.001 <= AUTO_ACTIVATE_TIME)
+      && order.expiredTimeSec - get_time_msec() * 0.001 <= AUTO_ACTIVATE_TIME)
       {
-        activateOrder(order,
+        this.activateOrder(order,
           function(p){
             if(p.useResult == ::g_order_use_result.OK)
-              ordersToActivate.remove(i)
+              this.ordersToActivate.remove(i)
             }, true)
           break
       }
@@ -443,46 +451,46 @@ g_orders.activateSoonExpiredOrder <- function activateSoonExpiredOrder()
 }
 
 /** Returns true if player can activate some order now. */
-g_orders.orderCanBeActivated <- function orderCanBeActivated()
+::g_orders.orderCanBeActivated <- function orderCanBeActivated()
 {
-  if (!ordersCanBeUsed() || !hasOrdersToActivate())
+  if (!this.ordersCanBeUsed() || !this.hasOrdersToActivate())
     return false
   updateActiveOrder()
-  return !hasActiveOrder
+  return !this.hasActiveOrder
 }
 
 /** Returns true if orders can be used as a feature. */
-g_orders.ordersCanBeUsed <- function ordersCanBeUsed()
+::g_orders.ordersCanBeUsed <- function ordersCanBeUsed()
 {
-  let checkGameType = (::get_game_type() & ::GT_USE_ORDERS) != 0
-  return checkGameType && ::is_in_flight() && ::has_feature("Orders")
+  let checkGameType = (::get_game_type() & GT_USE_ORDERS) != 0
+  return checkGameType && ::is_in_flight() && hasFeature("Orders")
 }
 
-g_orders.getActivateInfoText <- function getActivateInfoText()
+::g_orders.getActivateInfoText <- function getActivateInfoText()
 {
   if (!::is_in_flight())
-    return ::loc("order/usableOnlyInBattle")
-  if ((::get_game_type() & ::GT_USE_ORDERS) == 0)
-    return ::loc("order/notUsableInCurrentBattle")
-  if (hasActiveOrder)
-    return ::loc("order/onlyOneOrderCanBeActive")
+    return loc("order/usableOnlyInBattle")
+  if ((::get_game_type() & GT_USE_ORDERS) == 0)
+    return loc("order/notUsableInCurrentBattle")
+  if (this.hasActiveOrder)
+    return loc("order/onlyOneOrderCanBeActive")
   return ""
 }
 
-g_orders.isInSpectatorMode <- function isInSpectatorMode()
+::g_orders.isInSpectatorMode <- function isInSpectatorMode()
 {
   return ::isPlayerDedicatedSpectator() || is_replay_playing()
 }
 
-g_orders.showActivateOrderButton <- function showActivateOrderButton()
+::g_orders.showActivateOrderButton <- function showActivateOrderButton()
 {
   return !isInSpectatorMode() && ordersCanBeUsed()
 }
 
-g_orders.activateOrder <- function activateOrder(orderItem, onComplete = null, isSilent = false)
+::g_orders.activateOrder <- function activateOrder(orderItem, onComplete = null, isSilent = false)
 {
-  isActivationProgress = true
-  if (activatingLocalOrderId != null)
+  this.isActivationProgress = true
+  if (this.activatingLocalOrderId != null)
   {
     if (onComplete != null)
     {
@@ -491,39 +499,39 @@ g_orders.activateOrder <- function activateOrder(orderItem, onComplete = null, i
         orderId = orderItem.id
       })
     }
-    debugPrint("g_orders::activateOrder: Activation didn't start. "
-      + "Already activating order with ID: " + activatingLocalOrderId)
+    this.debugPrint("g_orders::activateOrder: Activation didn't start. "
+      + "Already activating order with ID: " + this.activatingLocalOrderId)
     return
   }
-  activatingLocalOrderId = orderItem.id
-  activatingLocalOrderCallback = onComplete
-  debugPrint("g_orders::activateOrder: Activation started. "
-    + "Order ID: " + activatingLocalOrderId + " Order UID: " + orderItem.uids[0])
+  this.activatingLocalOrderId = orderItem.id
+  this.activatingLocalOrderCallback = onComplete
+  this.debugPrint("g_orders::activateOrder: Activation started. "
+    + "Order ID: " + this.activatingLocalOrderId + " Order UID: " + orderItem.uids[0])
   if (checkCurrentMission(orderItem))
   {
-    ::set_order_accepted_cb(::g_orders, @(res) onOrderAccepted(res, isSilent))
+    ::set_order_accepted_cb(::g_orders, @(res) this.onOrderAccepted(res, isSilent))
     ::use_order_request(orderItem.uids[0])
   }
   else
-    onOrderAccepted(::g_order_use_result.RESTRICTED_MISSION.code, isSilent)
+    this.onOrderAccepted(::g_order_use_result.RESTRICTED_MISSION.code, isSilent)
 }
 
 /**
  * Returns amount of times item was used by this player during
  * current session. This data is reset when battle ends.
  */
-g_orders.getTimesUsedOrderItem <- function getTimesUsedOrderItem(orderItem)
+::g_orders.getTimesUsedOrderItem <- function getTimesUsedOrderItem(orderItem)
 {
-  return ::getTblValue(orderItem.id, timesUsedByOrderItemId, 0)
+  return getTblValue(orderItem.id, this.timesUsedByOrderItemId, 0)
 }
 
 /**
  * Manually managing activated order items as there's no way
  * to retrieve this kind of info from server.
  */
-g_orders.isOrderItemActive <- function isOrderItemActive(orderItem)
+::g_orders.isOrderItemActive <- function isOrderItemActive(orderItem)
 {
-  return ::isInArray(orderItem.id, activeLocalOrderIds)
+  return isInArray(orderItem.id, this.activeLocalOrderIds)
 }
 
 /**
@@ -531,162 +539,162 @@ g_orders.isOrderItemActive <- function isOrderItemActive(orderItem)
  * to rebuild whole status object content.
  * Used to avoid multiple 'replaceContent' calls.
  */
-g_orders.updateOrderStatusObject <- function updateOrderStatusObject(statusObj, fullUpdate)
+::g_orders.updateOrderStatusObject <- function updateOrderStatusObject(statusObj, fullUpdate)
 {
-  if (!::checkObj(statusObj))
+  if (!checkObj(statusObj))
     return
 
-  let orderObject = hasActiveOrder
-    ? activeOrder
-    : prevActiveOrder
+  let orderObject = this.hasActiveOrder
+    ? this.activeOrder
+    : this.prevActiveOrder
 
   if (fullUpdate)
   {
-    let statusContent = getStatusContent(orderObject, (statusObj?.isHalignRight ?? "no") == "yes")
+    let statusContent = this.getStatusContent(orderObject, (statusObj?.isHalignRight ?? "no") == "yes")
     let guiScene = statusObj.getScene()
     guiScene.replaceContentFromText(statusObj, statusContent, statusContent.len(), this)
 
     // (Re)enable timer.
     let orderTimerObj = statusObj.findObject("order_timer")
-    if (::checkObj(orderTimerObj))
+    if (checkObj(orderTimerObj))
       orderTimerObj.setUserData(this)
   }
 
-  let waitingForCooldown = cooldownTimeleft > 0 && prevActiveOrder != null
+  let waitingForCooldown = this.cooldownTimeleft > 0 && this.prevActiveOrder != null
 
-  let showStatus = hasActiveOrder || waitingForCooldown
-  setStatusObjVisibility(statusObj, showStatus)
+  let showStatus = this.hasActiveOrder || waitingForCooldown
+  this.setStatusObjVisibility(statusObj, showStatus)
   if (!showStatus)
     return
 
   // Updating order status text.
   let statusTextObj = statusObj.findObject("status_text")
-  if (::checkObj(statusTextObj))
-    statusTextObj.setValue(getStatusText())
+  if (checkObj(statusTextObj))
+    statusTextObj.setValue(this.getStatusText())
 
   // Updating order bottom status text.
   let statusTextBottomObj = statusObj.findObject("status_text_bottom")
-  if (::checkObj(statusTextBottomObj))
-    statusTextBottomObj.setValue(getStatusTextBottom())
+  if (checkObj(statusTextBottomObj))
+    statusTextBottomObj.setValue(this.getStatusTextBottom())
 
   // Updating order score table.
-  let tableTexts = getScoreTableTexts()
+  let tableTexts = this.getScoreTableTexts()
   let showTable = tableTexts != null && tableTexts.len()
   let statusTableObj = statusObj.findObject("status_table")
-  let numScores = min(tableTexts ? tableTexts.len() : 0, maxRowsInScoreTable)
-  if (::checkObj(statusTableObj))
+  let numScores = min(tableTexts ? tableTexts.len() : 0, this.maxRowsInScoreTable)
+  if (checkObj(statusTableObj))
     statusTableObj.show(showTable)
   if (showTable)
   {
     for (local i = 0; i < numScores; ++i)
     {
-      let rowObj = getRowObjByIndex(i, statusObj)
-      ::dagor.assertf(rowObj != null, "Error updating order status: Row object not found.")
-      setRowObjTexts(rowObj, tableTexts[i].player, tableTexts[i].score, true)
+      let rowObj = this.getRowObjByIndex(i, statusObj)
+      assert(rowObj != null, "Error updating order status: Row object not found.")
+      this.setRowObjTexts(rowObj, tableTexts[i].player, tableTexts[i].score, true)
     }
   }
 
   // Hiding rows without data.
-  for (local i = numScores; i < maxRowsInScoreTable; ++i)
+  for (local i = numScores; i < this.maxRowsInScoreTable; ++i)
   {
-    let rowObj = getRowObjByIndex(i, statusObj)
-    ::dagor.assertf(rowObj != null, "Error updating order status: Row object not found.")
-    setRowObjTexts(rowObj, "", "", false)
+    let rowObj = this.getRowObjByIndex(i, statusObj)
+    assert(rowObj != null, "Error updating order status: Row object not found.")
+    this.setRowObjTexts(rowObj, "", "", false)
   }
 }
 
-g_orders.setStatusObjVisibility <- function setStatusObjVisibility(statusObj, visible)
+::g_orders.setStatusObjVisibility <- function setStatusObjVisibility(statusObj, visible)
 {
-  if (!::checkObj(statusObj))
+  if (!checkObj(statusObj))
     return
 
   let ordersBlockObj = statusObj.findObject("orders_block")
-  if (::check_obj(ordersBlockObj))
-    ordersBlockObj.show(visible && !isOrdersHidden)
+  if (checkObj(ordersBlockObj))
+    ordersBlockObj.show(visible && !this.isOrdersHidden)
 }
 
-g_orders.getRowObjByIndex <- function getRowObjByIndex(rowIndex, statusObj)
+::g_orders.getRowObjByIndex <- function getRowObjByIndex(rowIndex, statusObj)
 {
   let rowObj = statusObj.findObject("order_score_row_" + rowIndex)
-  return ::checkObj(rowObj) ? rowObj : null
+  return checkObj(rowObj) ? rowObj : null
 }
 
-g_orders.setRowObjTexts <- function setRowObjTexts(rowObj, nameText, scoreText, pilotIconVisible)
+::g_orders.setRowObjTexts <- function setRowObjTexts(rowObj, nameText, scoreText, pilotIconVisible)
 {
-  if (!::checkObj(rowObj))
+  if (!checkObj(rowObj))
     return
   let playerNameTextObj = rowObj.findObject("order_score_player_name_text")
-  if (::checkObj(playerNameTextObj))
+  if (checkObj(playerNameTextObj))
     playerNameTextObj.setValue(nameText)
   let playerScoreTextObj = rowObj.findObject("order_score_value_text")
-  if (::checkObj(playerScoreTextObj))
+  if (checkObj(playerScoreTextObj))
     playerScoreTextObj.setValue(scoreText)
   let pilotIconObj = rowObj.findObject("order_score_pilot_icon")
-  if (::checkObj(pilotIconObj))
+  if (checkObj(pilotIconObj))
     pilotIconObj.show(pilotIconVisible)
 }
 
 
-g_orders.getScoreTableTexts <- function getScoreTableTexts()
+::g_orders.getScoreTableTexts <- function getScoreTableTexts()
 {
-  let showOrder = isOrderInfoVisible()
+  let showOrder = this.isOrderInfoVisible()
   if ( !showOrder )
     return []
-  let orderObject = hasActiveOrder ? activeOrder : prevActiveOrder
-  let scoreData = getOrderScores(orderObject)
+  let orderObject = this.hasActiveOrder ? this.activeOrder : this.prevActiveOrder
+  let scoreData = this.getOrderScores(orderObject)
   if (!scoreData)
     return []
-  prepareStatusScores(scoreData, orderObject)
+  this.prepareStatusScores(scoreData, orderObject)
   return scoreData.map(function (item) {
     let playerData = ::g_orders.getPlayerDataByScoreData(item)
     return {
       score = orderObject.orderType.formatScore(item.score)
-      player = (::getTblValue("playerIndex", item, 0) + 1).tostring() + ". " + ::build_mplayer_name(playerData)
+      player = (getTblValue("playerIndex", item, 0) + 1).tostring() + ". " + ::build_mplayer_name(playerData)
     }
   })
 }
 
 
-g_orders.isOrderInfoVisible <- function isOrderInfoVisible()
+::g_orders.isOrderInfoVisible <- function isOrderInfoVisible()
 {
-  return hasActiveOrder || (cooldownTimeleft > 0 && prevActiveOrder != null)
+  return this.hasActiveOrder || (this.cooldownTimeleft > 0 && this.prevActiveOrder != null)
 }
 
 
-g_orders.getStatusText <- function getStatusText()
+::g_orders.getStatusText <- function getStatusText()
 {
-  let orderObject = hasActiveOrder ? activeOrder : prevActiveOrder
+  let orderObject = this.hasActiveOrder ? this.activeOrder : this.prevActiveOrder
   if (orderObject == null)
     return ""
-  updateStatusTextView(orderObject, false)
+  this.updateStatusTextView(orderObject, false)
   let view = orderObject.statusTextView
   local result = ""
-  if (!hasActiveOrder)
+  if (!this.hasActiveOrder)
   {
-    result += ::colorize(statusColorScheme.parameterLabelColor, view.orderFinishedLabel)
-    result += ::colorize(statusColorScheme.parameterValueColor, view.orderName)
+    result += colorize(this.statusColorScheme.parameterLabelColor, view.orderFinishedLabel)
+    result += colorize(this.statusColorScheme.parameterValueColor, view.orderName)
     return result
   }
-  result += ::colorize(statusColorScheme.parameterLabelColor, view.orderActiveLabel) + " "
-  result += ::colorize(statusColorScheme.parameterValueColor, view.orderName) + "\n"
+  result += colorize(this.statusColorScheme.parameterLabelColor, view.orderActiveLabel) + " "
+  result += colorize(this.statusColorScheme.parameterValueColor, view.orderName) + "\n"
   result += view.orderDescription + "\n"
-  if (orderObject.starterPlayer != null && checkOrderActivationTime(5))
+  if (orderObject.starterPlayer != null && this.checkOrderActivationTime(5))
   {
-    result += ::colorize(statusColorScheme.parameterLabelColor, view.orderStarterLabel)
-    result += ::colorize(statusColorScheme.parameterValueColor, view.orderStarter) + "\n"
+    result += colorize(this.statusColorScheme.parameterLabelColor, view.orderStarterLabel)
+    result += colorize(this.statusColorScheme.parameterValueColor, view.orderStarter) + "\n"
   }
-  if (orderObject.targetPlayer != emptyPlayerData)
+  if (orderObject.targetPlayer != this.emptyPlayerData)
   {
-    result += ::colorize(statusColorScheme.parameterLabelColor, view.orderTargetLabel)
-    result += ::colorize(statusColorScheme.parameterValueColor, view.orderTarget) + "\n"
+    result += colorize(this.statusColorScheme.parameterLabelColor, view.orderTargetLabel)
+    result += colorize(this.statusColorScheme.parameterValueColor, view.orderTarget) + "\n"
     if (orderObject.timeToSwitchTarget != -1)
     {
-      result += ::colorize(statusColorScheme.parameterLabelColor, view.timeToSwitchTargetLabel)
-      result += ::colorize(statusColorScheme.parameterValueColor, view.timeToSwitchTarget) + "\n"
+      result += colorize(this.statusColorScheme.parameterLabelColor, view.timeToSwitchTargetLabel)
+      result += colorize(this.statusColorScheme.parameterValueColor, view.timeToSwitchTarget) + "\n"
     }
   }
-  result += ::colorize(statusColorScheme.parameterLabelColor, view.orderTimeleftLabel) + " "
-  result += ::colorize(statusColorScheme.parameterValueColor, view.orderTimeleft)
+  result += colorize(this.statusColorScheme.parameterLabelColor, view.orderTimeleftLabel) + " "
+  result += colorize(this.statusColorScheme.parameterValueColor, view.orderTimeleft)
   return result
 }
 
@@ -694,41 +702,41 @@ g_orders.getStatusText <- function getStatusText()
  * Returns true if order was activated less
  * than specified amount of time ago.
  */
-g_orders.checkOrderActivationTime <- function checkOrderActivationTime(timeSeconds)
+::g_orders.checkOrderActivationTime <- function checkOrderActivationTime(timeSeconds)
 {
-  if (activeOrder.orderItem == null)
+  if (this.activeOrder.orderItem == null)
     return false
-  return getOrderTimeleft(activeOrder) >= activeOrder.orderItem.timeTotal - timeSeconds
+  return this.getOrderTimeleft(this.activeOrder) >= this.activeOrder.orderItem.timeTotal - timeSeconds
 }
 
-g_orders.getStatusTextBottom <- function getStatusTextBottom()
+::g_orders.getStatusTextBottom <- function getStatusTextBottom()
 {
-  if (hasActiveOrder || prevActiveOrder == null)
+  if (this.hasActiveOrder || this.prevActiveOrder == null)
     return ""
-  let view = prevActiveOrder.statusTextView
+  let view = this.prevActiveOrder.statusTextView
   local result = ""
-  result += ::colorize(statusColorScheme.parameterLabelColor, view.cooldownTimeleftLabel)
-  result += ::colorize(statusColorScheme.parameterValueColor, view.cooldownTimeleft)
+  result += colorize(this.statusColorScheme.parameterLabelColor, view.cooldownTimeleftLabel)
+  result += colorize(this.statusColorScheme.parameterValueColor, view.cooldownTimeleft)
   return result
 }
 
-g_orders.showOrdersContainer <- function showOrdersContainer(isShown)
+::g_orders.showOrdersContainer <- function showOrdersContainer(isShown)
 {
-  isOrdersContainerVisible = isShown
+  this.isOrdersContainerVisible = isShown
 }
 
-g_orders.getStatusContent <- function getStatusContent(orderObject, isHalignRight = false)
+::g_orders.getStatusContent <- function getStatusContent(orderObject, isHalignRight = false)
 {
-  let orderType = orderObject == null ? g_order_type.UNKNOWN : orderObject.orderType
+  let orderType = orderObject == null ? ::g_order_type.UNKNOWN : orderObject.orderType
   let view = {
     rows = []
-    playersHeaderText = ::loc("items/order/scoreTable/playersHeader")
+    playersHeaderText = loc("items/order/scoreTable/playersHeader")
     scoreHeaderText = orderType.getScoreHeaderText()
     needPlaceInHiddenContainer = isInSpectatorMode()
-    isHiddenContainerVisible = isOrdersContainerVisible
+    isHiddenContainerVisible = this.isOrdersContainerVisible
     isHalignRight = isHalignRight
   }
-  for (local i = 0; i < maxRowsInScoreTable; ++i)
+  for (local i = 0; i < this.maxRowsInScoreTable; ++i)
     view.rows.append({ rowIndex = i })
   return ::handyman.renderCached("%gui/items/orderStatus", view)
 }
@@ -737,53 +745,53 @@ g_orders.getStatusContent <- function getStatusContent(orderObject, isHalignRigh
  * Implementation of this method will change after
  * switching to multiple active orders by same player.
  */
-g_orders.updateActiveLocalOrders <- function updateActiveLocalOrders()
+::g_orders.updateActiveLocalOrders <- function updateActiveLocalOrders()
 {
-  let starterUid = ::getTblValue("userId", activeOrder.starterPlayer, null)
-  let itemId = ::getTblValue("id", activeOrder.orderItem, null)
-  for (local i = activeLocalOrderIds.len() - 1; i >= 0; --i)
+  let starterUid = getTblValue("userId", this.activeOrder.starterPlayer, null)
+  let itemId = getTblValue("id", this.activeOrder.orderItem, null)
+  for (local i = this.activeLocalOrderIds.len() - 1; i >= 0; --i)
   {
-    let id = activeLocalOrderIds[i]
+    let id = this.activeLocalOrderIds[i]
 
     // How? We don't know yet.
     // Added assertions for further investigation.
     if (id == null)
     {
-      ::debugTableData(::g_orders)
-      ::dagor.assertf(false,
+      debugTableData(::g_orders)
+      assert(false,
         "Active order ids array contains null. Report this issue immediately.")
-      activeLocalOrderIds.remove(i)
+      this.activeLocalOrderIds.remove(i)
       continue
     }
 
     if (id != itemId || starterUid != ::my_user_id_str)
     {
-      activeLocalOrderIds.remove(i)
-      timesUsedByOrderItemId[id] <- ::getTblValue(id, timesUsedByOrderItemId, 0) + 1
+      this.activeLocalOrderIds.remove(i)
+      this.timesUsedByOrderItemId[id] <- getTblValue(id, this.timesUsedByOrderItemId, 0) + 1
     }
   }
 }
 
-g_orders.getActiveOrderObjective <- function getActiveOrderObjective()
+::g_orders.getActiveOrderObjective <- function getActiveOrderObjective()
 {
-  let objectives = get_objectives_list()
+  let objectives = ::get_objectives_list()
   foreach (objective in objectives)
   {
-    if (::getTblValue("status", objective, 0) == 0)
+    if (getTblValue("status", objective, 0) == 0)
       continue
 
-    let objectiveType = ::getTblValue("type", objective, -1)
-    if (objectiveType == ::OBJECTIVE_TYPE_ORDER)
+    let objectiveType = getTblValue("type", objective, -1)
+    if (objectiveType == OBJECTIVE_TYPE_ORDER)
       return objective
   }
   return null
 }
 
-g_orders.onOrderAccepted <- function onOrderAccepted(useResultCode, isSilent = false)
+::g_orders.onOrderAccepted <- function onOrderAccepted(useResultCode, isSilent = false)
 {
   let useResult = ::g_order_use_result.getOrderUseResultByCode(useResultCode)
-  debugPrint("g_orders::onOrderAccepted: Activation complete. Result: "
-    + ::toString(useResult))
+  this.debugPrint("g_orders::onOrderAccepted: Activation complete. Result: "
+    + toString(useResult))
   if (!isSilent)
     ::scene_msg_box("order_use_result", null, useResult.createResultMessage(true),
       [["ok", function() {
@@ -791,74 +799,74 @@ g_orders.onOrderAccepted <- function onOrderAccepted(useResultCode, isSilent = f
       } ]], "ok")
   if (useResult == ::g_order_use_result.OK)
   {
-    if (activatingLocalOrderId == null)
+    if (this.activatingLocalOrderId == null)
     {
-      ::debugTableData(::g_orders)
-      ::dagor.assertf(false,
+      debugTableData(::g_orders)
+      assert(false,
         "Activating local order is null. Report this issue immediately.")
     }
-    activeLocalOrderIds.append(activatingLocalOrderId)
+    this.activeLocalOrderIds.append(this.activatingLocalOrderId)
     ::broadcastEvent("OrderActivated")
   }
-  if (activatingLocalOrderCallback != null)
+  if (this.activatingLocalOrderCallback != null)
   {
-    activatingLocalOrderCallback({
+    this.activatingLocalOrderCallback({
       success = true
       useResult = useResult
-      orderId = activatingLocalOrderId
+      orderId = this.activatingLocalOrderId
     })
-    activatingLocalOrderCallback = null
+    this.activatingLocalOrderCallback = null
   }
-  activatingLocalOrderId = null
+  this.activatingLocalOrderId = null
   ::set_order_accepted_cb(::g_orders, null)
-  isActivationProgress = false
+  this.isActivationProgress = false
 }
 
 /** This is order counter local in scope of one battle. */
-g_orders.getOrderId <- function getOrderId(orderObjective)
+::g_orders.getOrderId <- function getOrderId(orderObjective)
 {
-  return ::getTblValue("id", orderObjective, -1)
+  return getTblValue("id", orderObjective, -1)
 }
 
 /**
  * Order status is: running, failed, succeed.
  * @see ::g_objective_status
  */
-g_orders.getOrderStatus <- function getOrderStatus(orderObjective)
+::g_orders.getOrderStatus <- function getOrderStatus(orderObjective)
 {
-  let statusCode = ::getTblValue("status", orderObjective, -1)
+  let statusCode = getTblValue("status", orderObjective, -1)
   return ::g_objective_status.getObjectiveStatusByCode(statusCode)
 }
 
-g_orders.getOrderType <- function getOrderType(orderObjective)
+::g_orders.getOrderType <- function getOrderType(orderObjective)
 {
-  let orderItem = getOrderItem(orderObjective)
+  let orderItem = this.getOrderItem(orderObjective)
   if (orderItem == null)
     return ::g_order_type.UNKNOWN
   return orderItem.orderType
 }
 
-g_orders.getOrderItem <- function getOrderItem(orderObjective)
+::g_orders.getOrderItem <- function getOrderItem(orderObjective)
 {
-  let objectiveId = ::getTblValue("objectiveId", orderObjective, null)
+  let objectiveId = getTblValue("objectiveId", orderObjective, null)
   return ::ItemsManager.findItemById(objectiveId, itemType.ORDER)
 }
 
 /** Called only when no active order. */
-g_orders.updateCooldownTimeleft <- function updateCooldownTimeleft()
+::g_orders.updateCooldownTimeleft <- function updateCooldownTimeleft()
 {
-  cooldownTimeleft = max(getCooldownTimeleft(), 0)
+  this.cooldownTimeleft = max(this.getCooldownTimeleft(), 0)
 }
 
-g_orders.getCooldownTimeleft <- function getCooldownTimeleft()
+::g_orders.getCooldownTimeleft <- function getCooldownTimeleft()
 {
   // Returns 1 or 2 as team indices.
   let playerTeam = ::get_mp_local_team()
   if (playerTeam == Team.Any)
     return -1
   let tblTeams = ::get_mp_tbl_teams()
-  let localTeamTbl = ::getTblValue(playerTeam - 1, tblTeams)
-  return ::getTblValue("orderCooldownLeft", localTeamTbl, 0)
+  let localTeamTbl = getTblValue(playerTeam - 1, tblTeams)
+  return getTblValue("orderCooldownLeft", localTeamTbl, 0)
 }
 
 /**
@@ -866,7 +874,7 @@ g_orders.getCooldownTimeleft <- function getCooldownTimeleft()
  * @param fullUpdate Setting to 'true' will update parameters
  * that are not changing for same order.
  */
-g_orders.updateStatusTextView <- function updateStatusTextView(orderObject, fullUpdate)
+::g_orders.updateStatusTextView <- function updateStatusTextView(orderObject, fullUpdate)
 {
   // Possible when another player activates an order.
   if (orderObject == null)
@@ -877,154 +885,154 @@ g_orders.updateStatusTextView <- function updateStatusTextView(orderObject, full
   if (fullUpdate)
   {
     // Order name
-    view.orderActiveLabel <- ::loc("icon/orderSymbol")
+    view.orderActiveLabel <- loc("icon/orderSymbol")
     view.orderName <- orderObject.orderItem.getStatusOrderName()
 
-    view.orderTimeleftLabel <- ::loc("icon/timer")
+    view.orderTimeleftLabel <- loc("icon/timer")
 
     // Order starter
-    view.orderStarterLabel <- ::loc("items/order/status/starter") + ::loc("ui/colon")
+    view.orderStarterLabel <- loc("items/order/status/starter") + loc("ui/colon")
     view.orderStarter <- ::build_mplayer_name(orderObject.starterPlayer)
 
     // Order target
-    view.orderTargetLabel <- ::loc("items/order/status/target") + ::loc("ui/colon")
+    view.orderTargetLabel <- loc("items/order/status/target") + loc("ui/colon")
 
-    view.cooldownTimeleftLabel <- ::loc("items/order/status/cooldown") + ::loc("ui/colon")
-    view.orderFinishedLabel <- ::loc("items/order/status/finished") + ::loc("ui/colon")
-    view.timeToSwitchTargetLabel <- ::loc("items/order/status/timeToSwitchTarget") + ::loc("ui/colon")
+    view.cooldownTimeleftLabel <- loc("items/order/status/cooldown") + loc("ui/colon")
+    view.orderFinishedLabel <- loc("items/order/status/finished") + loc("ui/colon")
+    view.timeToSwitchTargetLabel <- loc("items/order/status/timeToSwitchTarget") + loc("ui/colon")
   }
 
   // Order description
   let orderTypeParams = orderObject?.orderItem.typeParams
   view.orderDescription <- orderTypeParams != null
-    ? orderObject.orderType.getObjectiveDescription(orderTypeParams, statusColorScheme)
+    ? orderObject.orderType.getObjectiveDescription(orderTypeParams, this.statusColorScheme)
     : null
 
-  view.orderTimeleft <- time.secondsToString(getOrderTimeleft(orderObject))
-  view.cooldownTimeleft <- time.secondsToString(cooldownTimeleft)
-  if (orderObject.targetPlayer != emptyPlayerData)
+  view.orderTimeleft <- time.secondsToString(this.getOrderTimeleft(orderObject))
+  view.cooldownTimeleft <- time.secondsToString(this.cooldownTimeleft)
+  if (orderObject.targetPlayer != this.emptyPlayerData)
     view.orderTarget <- ::build_mplayer_name(orderObject.targetPlayer)
   if (orderObject.timeToSwitchTarget != -1)
     view.timeToSwitchTarget <- time.secondsToString(orderObject.timeToSwitchTarget)
 }
 
-g_orders.getOrderTimeleft <- function getOrderTimeleft(orderObject)
+::g_orders.getOrderTimeleft <- function getOrderTimeleft(orderObject)
 {
   return orderObject?.orderObjective.timeLeft ?? 0
 }
 
 /** Returns null-object player data if nothing found. */
-g_orders.getPlayerDataById <- function getPlayerDataById(playerId)
+::g_orders.getPlayerDataById <- function getPlayerDataById(playerId)
 {
-  if (!ordersEnabled)
+  if (!this.ordersEnabled)
   {
-    debugPrint("g_orders::getPlayerDataById: Calling when orders are disabled.")
-    ::callstack()
+    this.debugPrint("g_orders::getPlayerDataById: Calling when orders are disabled.")
+    debug_dump_stack()
   }
-  let playerData = playerDataById?[playerId] ?? ::get_mplayer_by_id(playerId) ?? emptyPlayerData
+  let playerData = this.playerDataById?[playerId] ?? ::get_mplayer_by_id(playerId) ?? this.emptyPlayerData
   if (is_replay_playing())
   {
     playerData.isLocal = spectatorWatchedHero.id == playerData.id
     playerData.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, playerData?.squadId)
   }
-  if (!(playerId in playerDataById))
-    playerDataById[playerId] <- playerData
+  if (!(playerId in this.playerDataById))
+    this.playerDataById[playerId] <- playerData
   return playerData
 }
 
-g_orders.getPlayerDataByScoreData <- function getPlayerDataByScoreData(scoreData)
+::g_orders.getPlayerDataByScoreData <- function getPlayerDataByScoreData(scoreData)
 {
   if (scoreData.playerId != -1)
     return getPlayerDataById(scoreData.playerId)
-  return ::getTblValue("playerData", scoreData, emptyPlayerData)
+  return getTblValue("playerData", scoreData, this.emptyPlayerData)
 }
 
 
 //
 // Handlers
 //
-g_orders.onChangeOrderVisibility <- function onChangeOrderVisibility(obj, dt)
+::g_orders.onChangeOrderVisibility <- function onChangeOrderVisibility(_obj, _dt)
 {
-  isOrdersHidden = !isOrdersHidden
+  this.isOrdersHidden = !this.isOrdersHidden
   updateHideOrderBlock()
   updateOrderVisibility()
 }
 
-g_orders.onOrderTimerUpdate <- function onOrderTimerUpdate(obj, dt)
+::g_orders.onOrderTimerUpdate <- function onOrderTimerUpdate(_obj, _dt)
 {
   ::g_orders.updateActiveOrder()
 }
 
-g_orders.onEventLobbyStatusChange <- function onEventLobbyStatusChange(params)
+::g_orders.onEventLobbyStatusChange <- function onEventLobbyStatusChange(_params)
 {
   if (!::SessionLobby.isInRoom())
     disableOrders()
 }
 
-g_orders.onEventActiveOrderChanged <- function onEventActiveOrderChanged(params)
+::g_orders.onEventActiveOrderChanged <- function onEventActiveOrderChanged(params)
 {
-  collectOrdersToActivate()
+  this.collectOrdersToActivate()
   updateOrderStatus(true)
   local text
   if (::g_orders.hasActiveOrder)
   {
-    text = ::loc("items/order/hudMessage/activate", {
+    text = loc("items/order/hudMessage/activate", {
       playerName = ::build_mplayer_name(::g_orders.activeOrder.starterPlayer)
       orderName = ::g_orders.activeOrder.orderItem.getName(false)
     })
-    isOrdersHidden = false
+    this.isOrdersHidden = false
   }
   else
   {
-    text = ::loc("items/order/hudMessage/finished", {
+    text = loc("items/order/hudMessage/finished", {
       orderName = params.oldActiveOrder.orderItem.getName(false)
     })
   }
   ::g_hud_event_manager.onHudEvent("HudMessage", {
     id = -1
-    type = ::HUD_MSG_OBJECTIVE
+    type = HUD_MSG_OBJECTIVE
     text = text
   })
 }
 
-g_orders.onEventOrderUpdated <- function onEventOrderUpdated(params)
+::g_orders.onEventOrderUpdated <- function onEventOrderUpdated(_params)
 {
   updateOrderStatus(false)
   updateHideOrderBlock()
 }
 
-g_orders.onEventWatchedHeroSwitched <- function onEventWatchedHeroSwitched(params)
+::g_orders.onEventWatchedHeroSwitched <- function onEventWatchedHeroSwitched(_params)
 {
   updateActiveOrder(true, true)
 }
 
-g_orders.onEventChangedCursorVisibility <- function onEventChangedCursorVisibility(params)
+::g_orders.onEventChangedCursorVisibility <- function onEventChangedCursorVisibility(_params)
 {
   updateHideOrderBlock()
 }
 
-g_orders.debugPrint <- function debugPrint(message)
+::g_orders.debugPrint <- function debugPrint(message)
 {
-  if (enableDebugPrint)
-    ::dagor.debug("g_orders::debugPrint:\n" + message)
+  if (this.enableDebugPrint)
+    log("g_orders::debugPrint:\n" + message)
 }
 
 /**
  * Returns valid order scores, taking in account fact that when order
  * finishes it's objective-object does not hold valid score for winner.
  */
-g_orders.getOrderScores <- function getOrderScores(orderObject)
+::g_orders.getOrderScores <- function getOrderScores(orderObject)
 {
   local scores = orderObject?.orderObjective.score
   if (scores != null)
   {
     scores = clone scores
-    foreach (player in debugPlayers)
+    foreach (player in this.debugPlayers)
       scores.append(player.scoreData)
-    addLocalPlayerScoreData(scores)
+    this.addLocalPlayerScoreData(scores)
   }
 
-  let winnerScoreData = ::getTblValue(orderObject.orderId, winnerScoreDataByOrderId, null)
+  let winnerScoreData = getTblValue(orderObject.orderId, this.winnerScoreDataByOrderId, null)
   if (scores == null || winnerScoreData == null)
     return scores
 
@@ -1041,7 +1049,7 @@ g_orders.getOrderScores <- function getOrderScores(orderObject)
   return scores
 }
 
-g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, orderObject)
+::g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, orderObject)
 {
   statusScores.sort(orderObject.orderType.sortPlayerScores)
 
@@ -1062,7 +1070,7 @@ g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, order
       continue
 
     let playerData = getPlayerDataByScoreData(score)
-    if (::getTblValue("userId", playerData) == ::my_user_id_str)
+    if (getTblValue("userId", playerData) == ::my_user_id_str)
       localPlayerIndex = idx
   }
 
@@ -1071,9 +1079,9 @@ g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, order
 
   // Removing players preceding local player so that it
   // will be within first 'maxRowsInScoreTable' players.
-  while (localPlayerIndex >= maxRowsInScoreTable)
+  while (localPlayerIndex >= this.maxRowsInScoreTable)
   {
-    statusScores.remove(maxRowsInScoreTable - 1)
+    statusScores.remove(this.maxRowsInScoreTable - 1)
     --localPlayerIndex
   }
 }
@@ -1082,7 +1090,7 @@ g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, order
  * Adds local player data and score
  * dummy to specified scores array.
  */
-g_orders.addLocalPlayerScoreData <- function addLocalPlayerScoreData(scores)
+::g_orders.addLocalPlayerScoreData <- function addLocalPlayerScoreData(scores)
 {
   let checkFunc = is_replay_playing() ?
     function(p) { return p.id == spectatorWatchedHero.id } :
@@ -1100,17 +1108,17 @@ g_orders.addLocalPlayerScoreData <- function addLocalPlayerScoreData(scores)
   scores.append({
     playerId = -1
     score = 0
-    playerData = getLocalPlayerData()
+    playerData = this.getLocalPlayerData()
   })
 }
 
-g_orders.saveOrderStatusPositionAndSize <- function saveOrderStatusPositionAndSize()
+::g_orders.saveOrderStatusPositionAndSize <- function saveOrderStatusPositionAndSize()
 {
-  if (!::checkObj(ordersStatusObj))
+  if (!checkObj(this.ordersStatusObj))
     return
 
-  let frameObj = ordersStatusObj.findObject("order_status_frame")
-  if (!::checkObj(frameObj)) // Possible if not in spectator mode.
+  let frameObj = this.ordersStatusObj.findObject("order_status_frame")
+  if (!checkObj(frameObj)) // Possible if not in spectator mode.
     return
 
   let frameSize = frameObj.getSize()
@@ -1120,24 +1128,24 @@ g_orders.saveOrderStatusPositionAndSize <- function saveOrderStatusPositionAndSi
   if (frameSize[0] == -1)
     return
 
-  orderStatusSize = frameSize
+  this.orderStatusSize = frameSize
 
-  orderStatusPosition = frameObj.getPosRC()
-  let statusObjPosition = ordersStatusObj.getPosRC()
+  this.orderStatusPosition = frameObj.getPosRC()
+  let statusObjPosition = this.ordersStatusObj.getPosRC()
 
   // Saving frame object position relative to parent.
-  orderStatusPosition[0] -= statusObjPosition[0]
-  orderStatusPosition[1] -= statusObjPosition[1]
+  this.orderStatusPosition[0] -= statusObjPosition[0]
+  this.orderStatusPosition[1] -= statusObjPosition[1]
 }
 
-g_orders.getLocalPlayerData <- function getLocalPlayerData()
+::g_orders.getLocalPlayerData <- function getLocalPlayerData()
 {
   if (is_replay_playing())
-    localPlayerData = getPlayerDataById(spectatorWatchedHero.id)
+    this.localPlayerData = getPlayerDataById(spectatorWatchedHero.id)
 
-  if (localPlayerData == null)
-    localPlayerData = ::get_local_mplayer()
-  return localPlayerData
+  if (this.localPlayerData == null)
+    this.localPlayerData = ::get_local_mplayer()
+  return this.localPlayerData
 }
 
 

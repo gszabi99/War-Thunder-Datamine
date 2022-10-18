@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -15,16 +21,15 @@ let buttons = {
     brAfter = false
     isAvailableInMission = @() true
     canShowOnMissionFailed = false
-    isVisible = @() canShowOnMissionFailed || ::get_mission_status() != ::MISSION_STATUS_FAIL
+    isVisible = @() canShowOnMissionFailed || ::get_mission_status() != MISSION_STATUS_FAIL
     getUpdatedLabelText = @() "" // Unchangable buttons returns empty string.
   }
 }
 
-let function typeConstructor()
-{
-  buttonId = $"btn_{name.tolower()}"
-  labelText = $"#flightmenu/btn{name}"
-  onClickFuncName = $"on{name}"
+let function typeConstructor() {
+  this.buttonId = $"btn_{this.name.tolower()}"
+  this.labelText = $"#flightmenu/btn{this.name}"
+  this.onClickFuncName = $"on{this.name}"
 }
 
 local idx = 0
@@ -37,12 +42,12 @@ enums.addTypes(buttons, {
   OPTIONS = {
     idx = idx++
     name = "Options"
-    isAvailableInMission = @() ::get_game_mode() != ::GM_BENCHMARK
+    isAvailableInMission = @() ::get_game_mode() != GM_BENCHMARK
   }
   CONTROLS = {
     idx = idx++
     name = "Controls"
-    isAvailableInMission = @() ::get_game_mode() != ::GM_BENCHMARK && ::has_feature("ControlsAdvancedSettings")
+    isAvailableInMission = @() ::get_game_mode() != GM_BENCHMARK && hasFeature("ControlsAdvancedSettings")
   }
   STATS = {
     idx = idx++
@@ -52,7 +57,7 @@ enums.addTypes(buttons, {
   CONTROLS_HELP = {
     idx = idx++
     name = "ControlsHelp"
-    isAvailableInMission = @() ::get_game_mode() != ::GM_BENCHMARK && ::has_feature("ControlsHelp")
+    isAvailableInMission = @() ::get_game_mode() != GM_BENCHMARK && hasFeature("ControlsHelp")
   }
   RESTART = {
     idx = idx++
@@ -66,18 +71,18 @@ enums.addTypes(buttons, {
     isVisible = canBailout
     getUpdatedLabelText = function getUpdatedLabelText() {
       local txt = getPlayerCurUnit()?.unitType.getBailoutButtonText() ?? ""
-      if (!::is_multiplayer() && ::get_mission_restore_type() == ::ERT_ATTEMPTS)
+      if (!::is_multiplayer() && ::get_mission_restore_type() == ERT_ATTEMPTS)
       {
         local attemptsTxt
         let numLeft = ::get_num_attempts_left()
         if (numLeft < 0)
-          attemptsTxt = ::loc("options/attemptsUnlimited")
+          attemptsTxt = loc("options/attemptsUnlimited")
         else
         {
-          local attempts = ::loc(numLeft == 1 ? "options/attemptLeft" : "options/attemptsLeft")
+          local attempts = loc(numLeft == 1 ? "options/attemptLeft" : "options/attemptsLeft")
           attemptsTxt = $"{numLeft} {attempts}"
         }
-        txt = "".concat(txt, ::loc("ui/parentheses/space", { text = attemptsTxt }))
+        txt = "".concat(txt, loc("ui/parentheses/space", { text = attemptsTxt }))
       }
       return txt
     }
@@ -87,10 +92,10 @@ enums.addTypes(buttons, {
     name = "QuitMission"
     canShowOnMissionFailed = true
     getUpdatedLabelText = function getUpdatedLabelText() {
-      return ::loc(
+      return loc(
         is_replay_playing() ? "flightmenu/btnQuitReplay"
-        : (::get_mission_status() == ::MISSION_STATUS_SUCCESS
-            && ::get_game_mode() == ::GM_DYNAMIC) ? "flightmenu/btnCompleteMission"
+        : (::get_mission_status() == MISSION_STATUS_SUCCESS
+            && ::get_game_mode() == GM_DYNAMIC) ? "flightmenu/btnCompleteMission"
         : "flightmenu/btnQuitMission"
       )
     }

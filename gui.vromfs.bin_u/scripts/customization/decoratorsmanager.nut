@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -70,19 +76,19 @@ const DEFAULT_SKIN_NAME = "default"
   }
 }
 
-g_decorator.clearCache <- function clearCache()
+::g_decorator.clearCache <- function clearCache()
 {
   ::g_decorator.cache.clear()
   ::g_decorator.clearLivePreviewParams()
 }
 
-g_decorator.clearLivePreviewParams <- function clearLivePreviewParams()
+::g_decorator.clearLivePreviewParams <- function clearLivePreviewParams()
 {
   ::g_decorator.previewedLiveSkinIds.clear()
   ::g_decorator.approversUnitToPreviewLiveResource = null
 }
 
-g_decorator.getCachedDataByType <- function getCachedDataByType(decType, unitType = null)
+::g_decorator.getCachedDataByType <- function getCachedDataByType(decType, unitType = null)
 {
   let id = unitType ? $"proceedData_{decType.name}_{unitType}" : $"proceedData_{decType.name}"
   if (id in ::g_decorator.cache)
@@ -93,19 +99,19 @@ g_decorator.getCachedDataByType <- function getCachedDataByType(decType, unitTyp
   return data
 }
 
-g_decorator.getCachedOrderByType <- function getCachedOrderByType(decType, unitType = null)
+::g_decorator.getCachedOrderByType <- function getCachedOrderByType(decType, unitType = null)
 {
   let data = ::g_decorator.getCachedDataByType(decType, unitType)
   return data.categories
 }
 
-g_decorator.getCachedDecoratorsListByType <- function getCachedDecoratorsListByType(decType)
+::g_decorator.getCachedDecoratorsListByType <- function getCachedDecoratorsListByType(decType)
 {
   let data = ::g_decorator.getCachedDataByType(decType)
   return data.decoratorsList
 }
 
-g_decorator.getDecorator <- function getDecorator(searchId, decType)
+::g_decorator.getDecorator <- function getDecorator(searchId, decType)
 {
   local res = null
   if (::u.isEmpty(searchId))
@@ -113,13 +119,13 @@ g_decorator.getDecorator <- function getDecorator(searchId, decType)
 
   res = decType.getSpecialDecorator(searchId)
     || ::g_decorator.getCachedDecoratorsListByType(decType)?[searchId]
-    || decType.getLiveDecorator(searchId, liveDecoratorsCache)
+    || decType.getLiveDecorator(searchId, this.liveDecoratorsCache)
   if (!res)
-    ::dagor.debug("Decorators Manager: " + searchId + " was not found in old cache, try update cache")
+    log("Decorators Manager: " + searchId + " was not found in old cache, try update cache")
   return res
 }
 
-g_decorator.getDecoratorById <- function getDecoratorById(searchId)
+::g_decorator.getDecoratorById <- function getDecoratorById(searchId)
 {
   if (::u.isEmpty(searchId))
     return null
@@ -134,12 +140,12 @@ g_decorator.getDecoratorById <- function getDecoratorById(searchId)
   return null
 }
 
-g_decorator.getDecoratorByResource <- function getDecoratorByResource(resource, resourceType)
+::g_decorator.getDecoratorByResource <- function getDecoratorByResource(resource, resourceType)
 {
   return getDecorator(resource, ::g_decorator_type.getTypeByResourceType(resourceType))
 }
 
-g_decorator.getCachedDecoratorByUnlockId <- function getCachedDecoratorByUnlockId(unlockId, decType)
+::g_decorator.getCachedDecoratorByUnlockId <- function getCachedDecoratorByUnlockId(unlockId, decType)
 {
   if (::u.isEmpty(unlockId))
     return null
@@ -163,7 +169,7 @@ g_decorator.getCachedDecoratorByUnlockId <- function getCachedDecoratorByUnlockI
   return foundDecorator
 }
 
-g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
+::g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
 {
   let result = {
     categories = []
@@ -192,7 +198,7 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
     decorator.category = category
 
     if (decorator.getCouponItemdefId() != null && !::ItemsManager.findItemById(decorator.getCouponItemdefId()))
-      waitingItemdefs[decorator.getCouponItemdefId()] <- decorator
+      this.waitingItemdefs[decorator.getCouponItemdefId()] <- decorator
 
     result.decoratorsList[decorator.id] <- decorator
 
@@ -224,19 +230,19 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
   return result
 }
 
-g_decorator.getSkinSaveId <- function getSkinSaveId(unitName)
+::g_decorator.getSkinSaveId <- function getSkinSaveId(unitName)
 {
   return "skins/" + unitName
 }
 
-g_decorator.isAutoSkinAvailable <- function isAutoSkinAvailable(unitName)
+::g_decorator.isAutoSkinAvailable <- function isAutoSkinAvailable(unitName)
 {
   return unitTypes.getByUnitName(unitName).isSkinAutoSelectAvailable()
 }
 
-g_decorator.getLastSkin <- function getLastSkin(unitName)
+::g_decorator.getLastSkin <- function getLastSkin(unitName)
 {
-  let unit = getAircraftByName(unitName)
+  let unit = ::getAircraftByName(unitName)
   if (!unit.isUsable() && unit.getPreviewSkinId() != "")
     return unit.getPreviewSkinId()
   if (!isAutoSkinAvailable(unitName))
@@ -246,13 +252,13 @@ g_decorator.getLastSkin <- function getLastSkin(unitName)
 
 ::g_decorator.isAutoSkinOn <- @(unitName) !getLastSkin(unitName)
 
-g_decorator.getRealSkin <- function getRealSkin(unitName)
+::g_decorator.getRealSkin <- function getRealSkin(unitName)
 {
   let res = getLastSkin(unitName)
-  return res || getAutoSkin(unitName)
+  return res || this.getAutoSkin(unitName)
 }
 
-g_decorator.setLastSkin <- function setLastSkin(unitName, skinName, needAutoSkin = true)
+::g_decorator.setLastSkin <- function setLastSkin(unitName, skinName, needAutoSkin = true)
 {
   if (!isAutoSkinAvailable(unitName))
     return skinName && ::hangar_set_last_skin(unitName, skinName)
@@ -260,31 +266,31 @@ g_decorator.setLastSkin <- function setLastSkin(unitName, skinName, needAutoSkin
   if (needAutoSkin || getLastSkin(unitName))
     ::save_local_account_settings(getSkinSaveId(unitName), skinName)
   if (!needAutoSkin || skinName)
-    ::hangar_set_last_skin(unitName, skinName || getAutoSkin(unitName))
+    ::hangar_set_last_skin(unitName, skinName || this.getAutoSkin(unitName))
 }
 
-g_decorator.setCurSkinToHangar <- function setCurSkinToHangar(unitName)
+::g_decorator.setCurSkinToHangar <- function setCurSkinToHangar(unitName)
 {
-  if (!isAutoSkinOn(unitName))
+  if (!this.isAutoSkinOn(unitName))
     ::hangar_set_last_skin(unitName, getRealSkin(unitName))
 }
 
-g_decorator.setAutoSkin <- function setAutoSkin(unitName, needSwitchOn)
+::g_decorator.setAutoSkin <- function setAutoSkin(unitName, needSwitchOn)
 {
-  if (needSwitchOn != isAutoSkinOn(unitName))
+  if (needSwitchOn != this.isAutoSkinOn(unitName))
     setLastSkin(unitName, needSwitchOn ? null : ::hangar_get_last_skin(unitName))
 }
 
 //default skin will return when no one skin match location
-g_decorator.getAutoSkin <- function getAutoSkin(unitName, isLockedAllowed = false)
+::g_decorator.getAutoSkin <- function getAutoSkin(unitName, isLockedAllowed = false)
 {
-  let list = getBestSkinsList(unitName, isLockedAllowed)
+  let list = this.getBestSkinsList(unitName, isLockedAllowed)
   if (!list.len())
     return DEFAULT_SKIN_NAME
   return list[list.len() - 1 - (::SessionLobby.roomId % list.len())] //use last skin when no in session
 }
 
-g_decorator.getBestSkinsList <- function getBestSkinsList(unitName, isLockedAllowed)
+::g_decorator.getBestSkinsList <- function getBestSkinsList(unitName, isLockedAllowed)
 {
   let unit = ::getAircraftByName(unitName)
   if (!unit)
@@ -313,7 +319,7 @@ g_decorator.getBestSkinsList <- function getBestSkinsList(unitName, isLockedAllo
   return skinLocations.getBestSkinsList(skinsList, unitName, level)
 }
 
-g_decorator.addSkinItemToOption <- function addSkinItemToOption(option, locName, value, decorator, shouldSetFirst = false, needIcon = false)
+::g_decorator.addSkinItemToOption <- function addSkinItemToOption(option, locName, value, decorator, shouldSetFirst = false, needIcon = false)
 {
   let idx = shouldSetFirst ? 0 : option.items.len()
   option.items.insert(idx, {
@@ -334,7 +340,7 @@ g_decorator.addSkinItemToOption <- function addSkinItemToOption(option, locName,
   return option.access[idx]
 }
 
-g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false, needAutoSkin = true, showDownloadable = false)
+::g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false, needAutoSkin = true, showDownloadable = false)
 {
   let descr = {
     items = []
@@ -348,11 +354,11 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
   if (!unit)
     return descr
 
-  let needIcon = unit.esUnitType == ::ES_UNIT_TYPE_TANK
+  let needIcon = unit.esUnitType == ES_UNIT_TYPE_TANK
 
   local skins = unit.getSkins()
   if (showDownloadable)
-    skins = addDownloadableLiveSkins(skins, unit)
+    skins = this.addDownloadableLiveSkins(skins, unit)
 
   for (local skinNo = 0; skinNo < skins.len(); skinNo++)
   {
@@ -362,7 +368,7 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
 
     let skinBlockName = unitName + "/"+ skinName
 
-    let isPreviewedLiveSkin = ::has_feature("EnableLiveSkins") && ::isInArray(skinBlockName, previewedLiveSkinIds)
+    let isPreviewedLiveSkin = hasFeature("EnableLiveSkins") && isInArray(skinBlockName, this.previewedLiveSkinIds)
     local decorator = ::g_decorator.getDecorator(skinBlockName, ::g_decorator_type.SKINS)
     if (!decorator)
     {
@@ -405,7 +411,7 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
   {
     let autoSkin = getAutoSkin(unitName)
     let decorator = ::g_decorator.getDecorator(unitName + "/"+ autoSkin, ::g_decorator_type.SKINS)
-    let locName = ::loc("skins/auto", { skin = decorator ? decorator.getName() : "" })
+    let locName = loc("skins/auto", { skin = decorator ? decorator.getName() : "" })
     addSkinItemToOption(descr, locName, null, decorator, true, needIcon)
   }
 
@@ -421,26 +427,26 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
   return descr
 }
 
-g_decorator.onEventSignOut <- function onEventSignOut(p)
+::g_decorator.onEventSignOut <- function onEventSignOut(_p)
 {
   ::g_decorator.clearCache()
 }
 
-g_decorator.onEventLoginComplete <- function onEventLoginComplete(p)
+::g_decorator.onEventLoginComplete <- function onEventLoginComplete(_p)
 {
   ::g_decorator.clearCache()
 }
 
-g_decorator.onEventDecalReceived <- function onEventDecalReceived(p)
+::g_decorator.onEventDecalReceived <- function onEventDecalReceived(p)
 {
   if (p?.id)
-    updateDecalVisible(p, ::g_decorator_type.DECALS)
+    this.updateDecalVisible(p, ::g_decorator_type.DECALS)
 }
 
-g_decorator.onEventAttachableReceived <- function onEventAttachableReceived(p)
+::g_decorator.onEventAttachableReceived <- function onEventAttachableReceived(p)
 {
   if (p?.id)
-    updateDecalVisible(p, ::g_decorator_type.ATTACHABLES)
+    this.updateDecalVisible(p, ::g_decorator_type.ATTACHABLES)
 }
 
 let function addDecoratorToCachedData(decorator, data) {
@@ -464,7 +470,7 @@ let function addDecoratorToCachedData(decorator, data) {
   }
 }
 
-g_decorator.updateDecalVisible <- function updateDecalVisible(params, decType)
+::g_decorator.updateDecalVisible <- function updateDecalVisible(params, decType)
 {
   let decorId = params.id
   let data = getCachedDataByType(decType)
@@ -483,17 +489,17 @@ g_decorator.updateDecalVisible <- function updateDecalVisible(params, decType)
   }
 }
 
-g_decorator.onEventUnitBought <- function onEventUnitBought(p)
+::g_decorator.onEventUnitBought <- function onEventUnitBought(p)
 {
-  applyPreviewSkin(p)
+  this.applyPreviewSkin(p)
 }
 
-g_decorator.onEventUnitRented <- function onEventUnitRented(p)
+::g_decorator.onEventUnitRented <- function onEventUnitRented(p)
 {
-  applyPreviewSkin(p)
+  this.applyPreviewSkin(p)
 }
 
-g_decorator.applyPreviewSkin <- function applyPreviewSkin(params)
+::g_decorator.applyPreviewSkin <- function applyPreviewSkin(params)
 {
   let unit = ::getAircraftByName(params?.unitName)
   if (!unit)
@@ -509,12 +515,12 @@ g_decorator.applyPreviewSkin <- function applyPreviewSkin(params)
   ::save_profile(false)
 }
 
-g_decorator.isPreviewingLiveSkin <- function isPreviewingLiveSkin()
+::g_decorator.isPreviewingLiveSkin <- function isPreviewingLiveSkin()
 {
-  return ::has_feature("EnableLiveSkins") && ::g_decorator.previewedLiveSkinIds.len() > 0
+  return hasFeature("EnableLiveSkins") && ::g_decorator.previewedLiveSkinIds.len() > 0
 }
 
-g_decorator.buildLiveDecoratorFromResource <- function buildLiveDecoratorFromResource(resource, resourceType, itemDef, params)
+::g_decorator.buildLiveDecoratorFromResource <- function buildLiveDecoratorFromResource(resource, resourceType, itemDef, params)
 {
   if (!resource || !resourceType)
     return
@@ -536,18 +542,18 @@ g_decorator.buildLiveDecoratorFromResource <- function buildLiveDecoratorFromRes
     ::g_decorator.liveDecoratorsCache[resource] <- decorator
 }
 
-g_decorator.onEventItemsShopUpdate <- function onEventItemsShopUpdate(p)
+::g_decorator.onEventItemsShopUpdate <- function onEventItemsShopUpdate(_p)
 {
-  foreach (itemDefId, decorator in waitingItemdefs)
+  foreach (itemDefId, decorator in this.waitingItemdefs)
   {
     let couponItem = ::ItemsManager.findItemById(itemDefId)
     if (couponItem)
     {
       decorator.updateFromItemdef(couponItem.itemDef)
-      waitingItemdefs[itemDefId] = null
+      this.waitingItemdefs[itemDefId] = null
     }
   }
-  waitingItemdefs = waitingItemdefs.filter(@(v) v != null)
+  this.waitingItemdefs = this.waitingItemdefs.filter(@(v) v != null)
 }
 
 ::subscribe_handler(::g_decorator, ::g_listener_priority.CONFIG_VALIDATION)

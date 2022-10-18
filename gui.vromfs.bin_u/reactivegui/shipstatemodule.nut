@@ -1,3 +1,6 @@
+from "%rGui/globals/ui_library.nut" import *
+let cross_call = require("%rGui/globals/cross_call.nut")
+
 let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
@@ -147,7 +150,7 @@ let buoyancyIndicator = @() {
   ]
 }
 
-let picFire = ::Picture($"{images.fire}{iconSize}:{iconSize}:K")
+let picFire = Picture($"{images.fire}{iconSize}:{iconSize}:K")
 let stateBlock = {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
@@ -165,7 +168,7 @@ let stateBlock = {
 
 
 let playAiSwithAnimation = function (_ne_value) {
-  ::anim_start(aiGunnersState)
+  anim_start(aiGunnersState)
 }
 
 let aiGunners = @() {
@@ -388,7 +391,7 @@ return @() {
   behavior = Behaviors.RecalcHandler
   function onRecalcLayout(_initial, elem) {
     if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-      ::cross_call.update_damage_panel_state({
+      cross_call.update_damage_panel_state({
         pos = [elem.getScreenPosX(), elem.getScreenPosY()]
         size = [elem.getWidth(), elem.getHeight()]
         visible = true

@@ -1,10 +1,16 @@
-::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc)
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc) {
   ::gui_start_modal_wnd(::gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc})
 }
 
-::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsInput.blk"
 
@@ -17,9 +23,9 @@
   function initScreen()
   {
     ::set_bind_mode(true);
-    guiScene.sleepKeyRepeat(true);
+    this.guiScene.sleepKeyRepeat(true);
     isListenButton = true;
-    scene.select();
+    this.scene.select();
   }
 
   function onButtonEntered(obj)
@@ -37,10 +43,10 @@
         let btnId = obj["button" + i].tointeger();
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
-        ::dagor.debug("onButtonEntered "+i+" "+devId+" "+btnId);
+        log("onButtonEntered "+i+" "+devId+" "+btnId);
         dev.append(devId);
         btn.append(btnId);
       }
@@ -48,7 +54,7 @@
     goBack();
   }
 
-  function onCancelButtonInput(obj)
+  function onCancelButtonInput(_obj)
   {
     goBack();
   }
@@ -68,7 +74,7 @@
         btnId = btnId.tointeger()
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
         if (numButtons != 0)
@@ -79,7 +85,7 @@
       }
     }
     curBtnText = ::hackTextAssignmentForR2buttonOnPS4(curBtnText)
-    scene.findObject("txt_current_button").setValue(curBtnText + ((numButtons < 3)? " + ?" : ""));
+    this.scene.findObject("txt_current_button").setValue(curBtnText + ((numButtons < 3)? " + ?" : ""));
   }
 
   function afterModalDestroy()
@@ -89,14 +95,14 @@
         onButtonEnteredFunc.call(owner, dev, btn);
   }
 
-  function onEventAfterJoinEventRoom(event)
+  function onEventAfterJoinEventRoom(_event)
   {
     goBack()
   }
 
   function goBack()
   {
-    guiScene.sleepKeyRepeat(false);
+    this.guiScene.sleepKeyRepeat(false);
     ::set_bind_mode(false);
     isListenButton = false;
     base.goBack();

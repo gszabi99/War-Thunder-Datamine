@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 local onSetTarget = null    //onSetTarget(oDaguiObject)
 local onUnsetTarget = null  //onUnsetTarget(DaguiObject)
 local shouldHideImage = false
@@ -32,7 +35,7 @@ let class bhvFocusFrameTarget
         hideImage(obj)
       onSetTarget(obj)
     }
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 
   function onDetach(obj)
@@ -41,7 +44,7 @@ let class bhvFocusFrameTarget
       onUnsetTarget(obj)
     if (shouldHideImage)
       unhideImage(obj)
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 }
 

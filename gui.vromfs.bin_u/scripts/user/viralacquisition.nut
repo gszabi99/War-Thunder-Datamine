@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+
 let regexp2 = require("regexp2")
 let { format } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -6,11 +13,11 @@ let awardRanks = [3, 4, 7]
 let awardVesselsRanks = [3, 4, 5]
 let awards = [[70000, 0], [300000, 100], [0, 2500]]
 
-let getLinkString = @() format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+let getLinkString = @() format(loc("msgBox/viralAcquisition"), ::my_user_id_str)
 
 local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
   locId = "/".concat(locId, "separatedVessels") // add separatedVessels postfix when vessels ranks are not equal to other ranks
-  let desc = ::loc(locId, {
+  let desc = loc(locId, {
     firstAwardRank = ::get_roman_numeral(awardRanks[0]),
     secondAwardRank = ::get_roman_numeral(awardRanks[1]),
     thirdAwardRank = ::get_roman_numeral(awardRanks[2]),
@@ -26,7 +33,7 @@ local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
 }
 
 let function showViralAcquisitionWnd() {
-  if (!::has_feature("Invites"))
+  if (!hasFeature("Invites"))
     return
 
   ::copy_to_clipboard(getLinkString())
@@ -49,7 +56,7 @@ let function showViralAcquisitionWnd() {
   }
 
   let config = {
-    name = ::loc("mainmenu/getLinkTitle")
+    name = loc("mainmenu/getLinkTitle")
     desc = getViralAcquisitionDesc()
     descAlign = "center"
     popupImage = "#"+image
@@ -57,7 +64,7 @@ let function showViralAcquisitionWnd() {
     showSendEmail = true
     showPostLink = true
   }
-  showUnlockWnd(config)
+  ::showUnlockWnd(config)
 }
 
 return {

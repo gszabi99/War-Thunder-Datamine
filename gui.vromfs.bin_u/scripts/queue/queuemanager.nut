@@ -1,12 +1,21 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { get_time_msec } = require("dagor.time")
 
 global enum queueStates
 {
   ERROR,
   NOT_IN_QUEUE,
+  ACTUALIZE,
   JOINING_QUEUE,
   LEAVING_QUEUE,
   IN_QUEUE
@@ -41,7 +50,7 @@ foreach (fn in [
 
   ::queues.init()
   ::g_delayed_actions.add(
-    ::Callback(@()::queues.joinQueue(::queues.lastQueueReqParams), ::queues),
+    Callback(@()::queues.joinQueue(::queues.lastQueueReqParams), ::queues),
     5000 + ::math.rnd() % 5000)
 })
 
@@ -183,7 +192,9 @@ foreach (fn in [
 
   function isQueueActive(queue)
   {
-    return queue != null && (queue.state == queueStates.IN_QUEUE || queue.state == queueStates.JOINING_QUEUE)
+    return queue != null && (queue.state == queueStates.IN_QUEUE
+      || queue.state == queueStates.ACTUALIZE
+      || queue.state == queueStates.JOINING_QUEUE)
   }
 
   function isAnyQueuesActive(typeMask = -1)
@@ -195,7 +206,7 @@ foreach (fn in [
     return false
   }
 
-  function getActiveQueueByName(id)
+  function getActiveQueueByName(_id)
   {
     foreach(q in queuesList)
       if (isQueueActive(q))
@@ -221,7 +232,7 @@ foreach (fn in [
     let wasAnyActive = isAnyQueuesActive()
 
     queue.state = queueState
-    queue.activateTime = isQueueActive(queue)? ::dagor.getCurTime() : -1
+    queue.activateTime = isQueueActive(queue)? get_time_msec() : -1
     ::broadcastEvent("QueueChangeState", { queue = queue })
 
     if (wasAnyActive!=isAnyQueuesActive)
@@ -235,11 +246,11 @@ foreach (fn in [
 
   function cantSquadQueueMsgBox(params = null, reasonText = "")
   {
-    ::dagor.debug("Error: cant join queue with squad. " + reasonText)
+    log("Error: cant join queue with squad. " + reasonText)
     if (params)
-      ::debugTableData(params)
+      debugTableData(params)
 
-    local msg = ::loc("squad/cant_join_queue")
+    local msg = loc("squad/cant_join_queue")
     if (reasonText)
       msg += "\n" + reasonText
     ::showInfoMsgBox(msg, "cant_join_queue")
@@ -247,14 +258,14 @@ foreach (fn in [
 
   function showProgressBox(show, text = "charServer/purchase0")
   {
-    if (::checkObj(progressBox))
+    if (checkObj(progressBox))
     {
       progressBox.getScene().destroyElement(progressBox)
       ::broadcastEvent("ModalWndDestroy")
       progressBox = null
     }
     if (show)
-      progressBox = ::scene_msg_box("queue_action", null, ::loc(text),
+      progressBox = ::scene_msg_box("queue_action", null, loc(text),
         [["cancel", function(){}]], "cancel",
         { waitAnim = true,
           delayedButtons = 30
@@ -265,7 +276,7 @@ foreach (fn in [
   {
     joinQueue({
       mode = eventId
-      country = ::get_profile_country_sq()
+      country = profileCountrySq.value
       slots = getSelSlotsData().slots
       clusters = clustersModule.getCurrentClusters()
       queueSelfActivated = true
@@ -275,28 +286,38 @@ foreach (fn in [
     })
   }
 
+  function joinQueueImpl(queue) {
+    queue.join(
+      Callback(function(_response) {
+        afterJoinQueue(queue)
+        if (isLeaveDelayed)
+          leaveQueue(queue)
+      }, this),
+      Callback(function(_response) {
+        removeQueue(queue)
+      }, this)
+    )
+    changeState(queue, queueStates.JOINING_QUEUE)
+  }
+
   function joinQueue(params)
   {
     if (params == null)
-      return ::dagor.debug("Error: cancel join queue because params = null.")
+      return log("Error: cancel join queue because params = null.")
     if (findQueue(params))
-      return ::dagor.debug("Error: cancel join queue because already exist.")
+      return log("Error: cancel join queue because already exist.")
 
     isLeaveDelayed = false
     lastQueueReqParams = clone params
     ::broadcastEvent("BeforeJoinQueue")
     let queue = createQueue(params, true)
-    queue.join(
-      ::Callback(function(response) {
-        afterJoinQueue(queue)
-        if (isLeaveDelayed)
-          leaveQueue(queue)
-      }, this),
-      ::Callback(function(response) {
-        removeQueue(queue)
-      }, this)
-    )
-    changeState(queue, queueStates.JOINING_QUEUE)
+    if (queue.hasActualQueueData()) {
+      joinQueueImpl(queue)
+      return
+    }
+
+    changeState(queue, queueStates.ACTUALIZE)
+    queue.actualizeData()
   }
 
   function afterJoinQueue(queue)
@@ -331,7 +352,7 @@ foreach (fn in [
 
   function _getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
   {
-    return ::Callback(function(response) {
+    return Callback(function(response) {
       showProgressBox(false)
       if (response.error == SERVER_ERROR_REQUEST_REJECTED)
       {
@@ -373,7 +394,7 @@ foreach (fn in [
   {
     if (queue.state == queueStates.LEAVING_QUEUE)
       return
-    if (queue.state == queueStates.NOT_IN_QUEUE)
+    if (queue.state == queueStates.NOT_IN_QUEUE || queue.state == queueStates.ACTUALIZE)
       return removeQueue(queue)
     if (queue.state == queueStates.JOINING_QUEUE)
     {
@@ -403,7 +424,7 @@ foreach (fn in [
 
   function getOnLeaveQueueErrorCallback(queue)
   {
-    return ::Callback(function(response) {
+    return Callback(function(response) {
       showProgressBox(false)
       if (response.error == SERVER_ERROR_REQUEST_REJECTED)
       {
@@ -418,15 +439,15 @@ foreach (fn in [
     }, this)
   }
 
-  function getOnLeaveQueueSuccessCallback(queue)
+  function getOnLeaveQueueSuccessCallback(_queue)
   {
-    return ::Callback(@(response) showProgressBox(false), this)
+    return Callback(@(_response) showProgressBox(false), this)
   }
 
   function afterLeaveQueue(queue, msg = null)
   {
     removeQueue(queue)
-    if (msg && !::checkObj(::get_gui_scene()["leave_queue_msgbox"]))
+    if (msg && !checkObj(::get_gui_scene()["leave_queue_msgbox"]))
       ::showInfoMsgBox(msg, "leave_queue_msgbox")
   }
 
@@ -546,13 +567,13 @@ foreach (fn in [
     let country = getQueueCountry(queue)
     return ::events.getSlotbarRank(event,
                                    country,
-                                   ::getTblValue(country, getQueueSlots(queue), 0)
+                                   getTblValue(country, getQueueSlots(queue), 0)
                                   )
   }
 
   function getQueuesInfoText()
   {
-    local text = ::loc("inQueueList/header")
+    local text = loc("inQueueList/header")
     foreach(queue in queuesList)
       if (isQueueActive(queue))
         text += "\n" + queue.getDescription()
@@ -576,7 +597,7 @@ foreach (fn in [
 
   function checkQueueType(queue, typeMask)
   {
-    return (::getTblValue("typeBit", queue, 0) & typeMask) != 0
+    return (getTblValue("typeBit", queue, 0) & typeMask) != 0
   }
 
   function getQueuePreferredViewClass(queue)
@@ -590,7 +611,7 @@ foreach (fn in [
     return defaultHandler
   }
 
-  function onEventClanInfoUpdate(params)
+  function onEventClanInfoUpdate(_params)
   {
     if (!::my_clan_info)
       foreach(queue in queuesList)
@@ -615,7 +636,7 @@ foreach (fn in [
   function onEventQueueInfoRecived(params)
   {
     local haveChanges = false
-    let queueInfo = ::getTblValue("queue_info", params)
+    let queueInfo = getTblValue("queue_info", params)
 
     if (::u.isTable(queueInfo))
       haveChanges = applyQueueInfo(queueInfo, ::queue_stats_versions.StatsVer2)
@@ -630,14 +651,14 @@ foreach (fn in [
 
   function pushQueueInfoUpdatedEvent()
   {
-    if (delayedInfoUpdateEventtTime > 0 && ::dagor.getCurTime() - delayedInfoUpdateEventtTime < 1000)
+    if (delayedInfoUpdateEventtTime > 0 && get_time_msec() - delayedInfoUpdateEventtTime < 1000)
       return
 
     let guiScene = ::get_gui_scene()
     if (!guiScene)
       return
 
-    delayedInfoUpdateEventtTime = ::dagor.getCurTime()
+    delayedInfoUpdateEventtTime = get_time_msec()
     guiScene.performDelayed(this, function()
      {
        delayedInfoUpdateEventtTime = -1
@@ -655,12 +676,12 @@ foreach (fn in [
     )
   }
 
-  function onEventMatchingDisconnect(p)
+  function onEventMatchingDisconnect(_p)
   {
     afterLeaveQueues({})
   }
 
-  function onEventMatchingConnect(p)
+  function onEventMatchingConnect(_p)
   {
     afterLeaveQueues({})
   }
@@ -689,20 +710,20 @@ foreach (fn in [
       return
     }
 
-    ::scene_msg_box("requeue_question", null, ::loc("msg/cancel_queue_question"),
-      [["ok", ::Callback(@() leaveAllQueuesAndDo(onSuccess, onCancel), this)], ["no", onCancel]],
+    ::scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
+      [["ok", Callback(@() leaveAllQueuesAndDo(onSuccess, onCancel), this)], ["no", onCancel]],
       "ok",
       { cancel_fn = onCancel ?? @()null, checkDuplicateId = true })
   }
 
-  function onEventLobbyStatusChange(p)
+  function onEventLobbyStatusChange(_p)
   {
     if (::SessionLobby.status == lobbyStates.IN_SESSION)
       lastQueueReqParams = null
   }
 }
 
-::queues = QueueManager()
+::queues = ::QueueManager()
 
 ::checkIsInQueue <- function checkIsInQueue()
 {

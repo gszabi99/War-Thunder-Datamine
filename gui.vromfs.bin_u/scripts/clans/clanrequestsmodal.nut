@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::showClanRequests <- function showClanRequests(candidatesData, clanId, owner)
 {
@@ -59,13 +66,13 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
   function updateRequestList()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return;
 
     if (curPage > 0 && rowTexts.len() <= curPage * rowsPerPage)
       curPage--
 
-    let tblObj = scene.findObject("candidatesList");
+    let tblObj = this.scene.findObject("candidatesList");
     local data = "";
 
     let headerRow = [];
@@ -78,7 +85,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
         tdalign="center",
       });
     }
-    data = buildTableRow("row_header", headerRow, null,
+    data = ::buildTableRow("row_header", headerRow, null,
       "enable:t='no'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ");
 
     let startIdx = curPage * rowsPerPage
@@ -95,11 +102,11 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
           text = "",
         });
       }
-      data += buildTableRow(rowName, rowData, (i-startIdx)%2==0, "");
+      data += ::buildTableRow(rowName, rowData, (i-startIdx)%2==0, "");
     }
 
-    guiScene.setUpdatesEnabled(false, false);
-    guiScene.replaceContentFromText(tblObj, data, data.len(), this);
+    this.guiScene.setUpdatesEnabled(false, false);
+    this.guiScene.replaceContentFromText(tblObj, data, data.len(), this);
 
     for(local i=startIdx; i < lastIdx; i++)
     {
@@ -109,11 +116,11 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     }
 
     tblObj.setValue(1) //after header
-    guiScene.setUpdatesEnabled(true, true);
+    this.guiScene.setUpdatesEnabled(true, true);
     ::move_mouse_on_child_by_value(tblObj)
     onSelect()
 
-    generatePaginator(scene.findObject("paginator_place"), this, curPage, ((rowTexts.len()-1) / rowsPerPage).tointeger())
+    ::generatePaginator(this.scene.findObject("paginator_place"), this, curPage, ((rowTexts.len()-1) / rowsPerPage).tointeger())
   }
 
   function goToPage(obj)
@@ -127,7 +134,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     curCandidate = null;
     if (candidatesList && candidatesList.len()>0)
     {
-      let objTbl = scene.findObject("candidatesList");
+      let objTbl = this.scene.findObject("candidatesList");
       let index = objTbl.getValue() + curPage*rowsPerPage - 1; //header
       if (index in candidatesList)
         curCandidate = candidatesList[index];
@@ -150,8 +157,8 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
   function onUserAction()
   {
-    let table = scene.findObject("candidatesList")
-    if (!::checkObj(table))
+    let table = this.scene.findObject("candidatesList")
+    if (!checkObj(table))
       return
 
     let index = table.getValue()
@@ -203,7 +210,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     if (rowTexts.len() > 0)
       updateRequestList()
     else
-      goBack()
+      this.goBack()
   }
 
   function afterModalDestroy()

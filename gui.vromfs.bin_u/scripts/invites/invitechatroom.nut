@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 ::g_invites_classes.ChatRoom <- class extends ::BaseInvite
 {
@@ -7,12 +13,12 @@ let { format } = require("string")
 
   static function getUidByParams(params)
   {
-    return "CR_" + ::getTblValue("inviterName", params, "") + "/" + ::getTblValue("roomId", params, "")
+    return "CR_" + getTblValue("inviterName", params, "") + "/" + getTblValue("roomId", params, "")
   }
 
   function updateCustomParams(params, initial = false)
   {
-    roomId = ::getTblValue("roomId", params, "")
+    roomId = getTblValue("roomId", params, "")
     roomType = ::g_chat_room_type.getRoomType(roomId)
 
     if (roomType == ::g_chat_room_type.THREAD)
@@ -20,18 +26,18 @@ let { format } = require("string")
       let threadInfo = ::g_chat.addThreadInfoById(roomId)
       threadInfo.checkRefreshThread()
       if (threadInfo.lastUpdateTime < 0)
-        setDelayed(true)
+        this.setDelayed(true)
       if (initial)
         ::add_event_listener("ChatThreadInfoChanged",
                              function (data) {
-                               if (::getTblValue("roomId", data) == roomId)
-                                 setDelayed(false)
+                               if (getTblValue("roomId", data) == roomId)
+                                 this.setDelayed(false)
                              },
                              this)
     }
     else if (roomType == ::g_chat_room_type.SQUAD
-             && inviterName == ::g_squad_manager.getLeaderNick())
-      autoAccept()
+             && this.inviterName == ::g_squad_manager.getLeaderNick())
+      this.autoAccept()
   }
 
   function isValid()
@@ -41,22 +47,22 @@ let { format } = require("string")
 
   function haveRestrictions()
   {
-    return !isAvailableByChatRestriction()
+    return !this.isAvailableByChatRestriction()
   }
 
   function getChatInviteText()
   {
-    let nameF = "<Link=%s><Color="+inviteActiveColor+">%s</Color></Link>"
+    let nameF = "<Link=%s><Color="+this.inviteActiveColor+">%s</Color></Link>"
 
     let clickNameText = roomType.getInviteClickNameText(roomId)
-    return ::loc(roomType.inviteLocIdFull,
-                 { player = format(nameF, getChatInviterLink(), getInviterName()),
-                   channel = format(nameF, getChatLink(), clickNameText) })
+    return loc(roomType.inviteLocIdFull,
+                 { player = format(nameF, this.getChatInviterLink(), this.getInviterName()),
+                   channel = format(nameF, this.getChatLink(), clickNameText) })
   }
 
   function getInviteText()
   {
-    return ::loc(roomType.inviteLocIdNoNick,
+    return loc(roomType.inviteLocIdNoNick,
                  {
                    channel = roomType.getRoomName(roomId)
                  })
@@ -64,9 +70,9 @@ let { format } = require("string")
 
   function getPopupText()
   {
-    return ::loc(roomType.inviteLocIdFull,
+    return loc(roomType.inviteLocIdFull,
                  {
-                   player = getInviterName()
+                   player = this.getInviterName()
                    channel = roomType.getRoomName(roomId)
                  })
   }
@@ -85,6 +91,6 @@ let { format } = require("string")
       return
 
     ::menu_chat_handler.popupAcceptInvite(roomId)
-    remove()
+    this.remove()
   }
 }

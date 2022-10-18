@@ -1,14 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { subscribe } = require("eventbus")
 
 subscribe("on_online_unavailable", function(_) {
-  ::dagor.debug("on_online_unavailable")
+  log("on_online_unavailable")
   ::g_matching_connect.onDisconnect()
 })
 
 ::on_online_available <- function on_online_available()
 {
-  ::dagor.debug("on_online_available")
+  log("on_online_available")
   ::g_matching_connect.onConnect()
 }
 
@@ -26,15 +31,15 @@ subscribe("on_online_unavailable", function(_) {
 
 ::punish_show_tips <- function punish_show_tips(params)
 {
-  ::dagor.debug("punish_show_tips")
+  log("punish_show_tips")
   if ("reason" in params)
-    showInfoMsgBox(params.reason)
+    ::showInfoMsgBox(params.reason)
 }
 
 ::punish_close_client <- function punish_close_client(params)
 {
-  ::dagor.debug("punish_close_client")
-  let message = ("reason" in params) ? ::g_language.addLineBreaks(params.reason) : ::loc("matching/hacker_kicked_notice")
+  log("punish_close_client")
+  let message = ("reason" in params) ? ::g_language.addLineBreaks(params.reason) : loc("matching/hacker_kicked_notice")
 
   let needFlightMenu = ::is_in_flight() && !::get_is_in_flight_menu() && !::is_flight_menu_disabled()
   if (needFlightMenu)
@@ -53,7 +58,7 @@ requestOptions:
 **/
 ::request_matching <- function request_matching(functionName, onSuccess = null, onError = null, params = null, requestOptions = null)
 {
-  let showError = ::getTblValue("showError", requestOptions, true)
+  let showError = getTblValue("showError", requestOptions, true)
 
   let callback = (@(onSuccess, onError, showError) function(response) {
                      if (!::checkMatchingError(response, showError))
@@ -65,7 +70,7 @@ requestOptions:
                       onSuccess(response)
                    })(onSuccess, onError, showError)
 
-  matching_api_func(functionName, callback, params)
+  ::matching_api_func(functionName, callback, params)
 }
 
 ::checkMatchingError <- function checkMatchingError(params, showError = true)
@@ -76,8 +81,8 @@ requestOptions:
   if (!showError || ::disable_network())
     return false
 
-  let errorId = ::getTblValue("error_id", params) || ::matching.error_string(params.error)
-  local text = ::loc("matching/" + g_string.replace(errorId, ".", "_"))
+  let errorId = getTblValue("error_id", params) || ::matching.error_string(params.error)
+  local text = loc("matching/" + ::g_string.replace(errorId, ".", "_"))
   if ("error_message" in params)
     text = text + "\n<B>"+params.error_message+"</B>"
 

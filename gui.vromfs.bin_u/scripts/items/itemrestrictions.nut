@@ -1,7 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let legalRestrictionsChecked = persist("legalRestrictionsChecked", @() ::Watched(false))
-let isPurchaseAllowed = persist("isPurchaseAllowed", @() ::Watched(true))
+let legalRestrictionsChecked = persist("legalRestrictionsChecked", @() Watched(false))
+let isPurchaseAllowed = persist("isPurchaseAllowed", @() Watched(true))
 
 let countryCodeToLocId = {
   BE = "country_belgium",
@@ -21,7 +26,7 @@ let function hasLegalRestictions(restrictedInCountries)
 
 let function showLegalRestrictionsNotice()
 {
-  ::scene_msg_box("legalRestrictionsNotice", null, ::loc("msgbox/legalRestrictionsNotice"),
+  ::scene_msg_box("legalRestrictionsNotice", null, loc("msgbox/legalRestrictionsNotice"),
     [["ok"]], "ok")
 }
 
@@ -34,7 +39,7 @@ let function getCountryName(countryCode)
     return ""
   }
 
-  let res = ::loc(countryCodeToLocId[countryCode], "")
+  let res = loc(countryCodeToLocId[countryCode], "")
   if (res == "")
     ::script_net_assert_once("Legal restrictions: localization is not found",
       $"Random rewards functionality is limited in {countryCode}, but no localization was provided")
@@ -72,13 +77,13 @@ let function checkLegalRestrictions(restrictedInCountries, onSuccessCb)
   if (countryName == "")
     return onSuccessCb()
 
-  let text = ::loc("msgbox/countryConfirmation", { country = countryName })
+  let text = loc("msgbox/countryConfirmation", { country = countryName })
   ::scene_msg_box("countryConfirmation", null, text,
     [["yes", onCountryConfirmed], ["no", onCountryDeclined]], "yes", { cancel_fn = @() null })
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(p) legalRestrictionsChecked(false)
+  SignOut = @(_p) legalRestrictionsChecked(false)
 })
 
 return {

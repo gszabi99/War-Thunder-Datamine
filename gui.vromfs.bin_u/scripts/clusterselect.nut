@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { is_bit_set } = require("%sqstd/math.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
@@ -24,7 +29,7 @@ let createClusterSelectMenu = function(placeObj, alight = "top")
 
       for (local i = 0; i < clusterOpt.values.len(); i++)
         if ((mask & (1 << i)) > 0 && (prevMask & (1 << i)) == 0 && clusterOpt.items[i].isUnstable)
-          ::showInfoMsgBox(::loc("multiplayer/cluster_connection_unstable"), "warning_cluster_unstable")
+          ::showInfoMsgBox(loc("multiplayer/cluster_connection_unstable"), "warning_cluster_unstable")
     }
     align = alight
     alignObj = placeObj
@@ -54,10 +59,10 @@ let updateClusters = function(btnObj)
   let clusterNamesText = "; ".join(currentClustersInfo.names)
   let needWarning = currentClustersInfo.hasUnstable
 
-  btnObj.tooltip = needWarning ? ::loc("multiplayer/cluster_connection_unstable") : ""
+  btnObj.tooltip = needWarning ? loc("multiplayer/cluster_connection_unstable") : ""
 
   let btnTextObj = btnObj.findObject("cluster_select_button_text")
-  btnTextObj.setValue("".concat(::loc("options/cluster"), ::loc("ui/colon"), clusterNamesText))
+  btnTextObj.setValue("".concat(loc("options/cluster"), loc("ui/colon"), clusterNamesText))
   btnTextObj.leftAligned = needWarning ? "yes" : "no"
 
   let btnIconObj = btnObj.findObject("cluster_select_button_icon")

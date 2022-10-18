@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 ::WwOperationsGroup <- class
@@ -80,7 +86,7 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
   {
     let countriesByTeams = getCountriesByTeams()
     foreach(cList in countriesByTeams)
-      if (::isInArray(country, cList))
+      if (isInArray(country, cList))
         return true
     return false
   }
@@ -98,7 +104,7 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
 
     if (!canJoinByCountry(country))
     {
-      res.reasonText = ::loc("worldWar/chooseAvailableCountry")
+      res.reasonText = loc("worldWar/chooseAvailableCountry")
       return res
     }
 

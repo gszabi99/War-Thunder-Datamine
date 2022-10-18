@@ -1,7 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 
 let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { findChild } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -24,11 +31,11 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function createCategories() {
-    if (!scene?.isValid())
+    if (!this.scene?.isValid())
       return
 
-    let headerObj = scene.findObject("decals_wnd_header")
-    headerObj.setValue(::loc(curDecorType.listHeaderLocId))
+    let headerObj = this.scene.findObject("decals_wnd_header")
+    headerObj.setValue(loc(curDecorType.listHeaderLocId))
 
     let decorType = curDecorType
     let decorCache = getDecorCache()
@@ -45,11 +52,11 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     })
 
     let data = ::handyman.renderCached(categoryTpl, { categories })
-    let listObj = scene.findObject("categories_list")
-    guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    let listObj = this.scene.findObject("categories_list")
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
-  function updateSelectedCategory(decorator) {
+  function updateSelectedCategory(_decorator) {
     if (!isOpened)
       return
 
@@ -62,7 +69,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let data = generateDecalCategoryContent(categoryObj.categoryId, categoryObj.groupId)
-    guiScene.replaceContentFromText(decorListObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(decorListObj, data, data.len(), this)
     decorListObj.getChild(decorListObj.getValue()).selected = "yes"
   }
 
@@ -73,7 +80,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
     let prevValue = listObj.getValue()
     listObj.setValue(-1)
-    guiScene.applyPendingChanges(false)
+    this.guiScene.applyPendingChanges(false)
     if (::show_console_buttons)
       ::move_mouse_on_child(listObj, prevValue)
   }
@@ -82,7 +89,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     if (categoryId == "")
       return false
 
-    let listObj = scene.findObject("categories_list")
+    let listObj = this.scene.findObject("categories_list")
     let { childIdx, childObj } = findChild(listObj, @(c) c.categoryId == categoryId)
     if (!childObj?.isValid())
       return false
@@ -126,9 +133,9 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function show(isShown) {
     isOpened = isShown
-    scene.show(isShown)
-    scene.enable(isShown)
-    ::enableHangarControls(!scene.findObject("hangar_control_tracking").isHovered())
+    this.scene.show(isShown)
+    this.scene.enable(isShown)
+    ::enableHangarControls(!this.scene.findObject("hangar_control_tracking").isHovered())
   }
 
   // private
@@ -182,7 +189,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       : generateDecalCategoryContent(categoryId, groupId)
 
     let contentListObj = getContentObj(categoryObj)
-    guiScene.replaceContentFromText(contentListObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(contentListObj, data, data.len(), this)
 
     savePath(categoryId, groupId)
 
@@ -196,7 +203,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       contentListObj.setValue(-1)
 
     scrollDecalsCategory()
-    guiScene.applyPendingChanges(false)
+    this.guiScene.applyPendingChanges(false)
     let idx = contentListObj.getValue()
     ::move_mouse_on_child(contentListObj, idx != -1 ? idx : 0)
   }
@@ -247,7 +254,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getSelectedCategoryObj() {
-    let categoryObj = getSelectedObj(scene.findObject("categories_list"))
+    let categoryObj = getSelectedObj(this.scene.findObject("categories_list"))
     if (!categoryObj?.isValid())
       return null
 
@@ -281,7 +288,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     fillDecalsCategoryContent(listObj)
   }
 
-  function onDecorCategoryActivate(listObj) {
+  function onDecorCategoryActivate(_listObj) {
     collapseOpenedCategory()
   }
 

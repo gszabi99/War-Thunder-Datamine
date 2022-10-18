@@ -1,23 +1,29 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 
 let expEventLocIds = {
-  [::EXP_EVENT_CAPTURE_ZONE]       = "expEventScore/captureZone",
-  [::EXP_EVENT_DESTROY_ZONE]       = "expEventScore/destroyZone",
-  [::EXP_EVENT_KILL]               = "expEventScore/kill",
-  [::EXP_EVENT_KILL_GROUND]        = "expEventScore/killGround",
-  [::EXP_EVENT_CRITICAL_HIT]       = "expEventScore/criticalHit",
-  [::EXP_EVENT_HIT]                = "expEventScore/hit",
-  [::EXP_EVENT_ASSIST]             = "expEventScore/assist",
-  [::EXP_EVENT_DAMAGE_ZONE]        = "expEventScore/damageZone",
-  [::EXP_EVENT_UNIT_DAMAGE]        = "expEventScore/unitDamage",
-  [::EXP_EVENT_SCOUT]              = "expEventScore/scout",
-  [::EXP_EVENT_SCOUT_CRITICAL_HIT] = "expEventScore/scoutCriticalHit",
-  [::EXP_EVENT_SCOUT_KILL]         = "expEventScore/scoutKill",
-  [::EXP_EVENT_SCOUT_KILL_UNKNOWN] = "expEventScore/scoutKillUnknown",
-  [::EXP_EVENT_DEATH]              = "expEventScore/death"
+  [EXP_EVENT_CAPTURE_ZONE]       = "expEventScore/captureZone",
+  [EXP_EVENT_DESTROY_ZONE]       = "expEventScore/destroyZone",
+  [EXP_EVENT_KILL]               = "expEventScore/kill",
+  [EXP_EVENT_KILL_GROUND]        = "expEventScore/killGround",
+  [EXP_EVENT_CRITICAL_HIT]       = "expEventScore/criticalHit",
+  [EXP_EVENT_HIT]                = "expEventScore/hit",
+  [EXP_EVENT_ASSIST]             = "expEventScore/assist",
+  [EXP_EVENT_DAMAGE_ZONE]        = "expEventScore/damageZone",
+  [EXP_EVENT_UNIT_DAMAGE]        = "expEventScore/unitDamage",
+  [EXP_EVENT_SCOUT]              = "expEventScore/scout",
+  [EXP_EVENT_SCOUT_CRITICAL_HIT] = "expEventScore/scoutCriticalHit",
+  [EXP_EVENT_SCOUT_KILL]         = "expEventScore/scoutKill",
+  [EXP_EVENT_SCOUT_KILL_UNKNOWN] = "expEventScore/scoutKillUnknown",
+  [EXP_EVENT_DEATH]              = "expEventScore/death"
 }
 
 ::g_mplayer_param_type <- {
@@ -27,11 +33,11 @@ let expEventLocIds = {
   }
 }
 
-g_mplayer_param_type._substract <- function _substract(old, new) {
+::g_mplayer_param_type._substract <- function _substract(old, new) {
   return ::to_integer_safe(new) - ::to_integer_safe(old)
 }
 
-g_mplayer_param_type._newer <- function _newer(old, new) {
+::g_mplayer_param_type._newer <- function _newer(_old, new) {
   return new
 }
 
@@ -43,21 +49,21 @@ g_mplayer_param_type._newer <- function _newer(old, new) {
   isForceUpdate = false // Force updates even when value not changed.
   missionObjective = MISSION_OBJECTIVE.ANY
   getVal = function(player) {
-    return ::getTblValue(id, player, defVal)
+    return getTblValue(id, player, defVal)
   }
-  printFunc = function(val, player) {
+  printFunc = function(val, _player) {
     return val != null ? val.tostring() : ""
   }
-  getTooltip = function(val, player, defText) {
+  getTooltip = function(_val, _player, defText) {
     return defText
   }
-  getName = @(val = 0) ::loc(tooltip)
+  getName = @(_val = 0) loc(tooltip)
   diffFunc = ::g_mplayer_param_type._substract
 
   width = null
   relWidth = 10
   pareText = false
-  updateSpecificMarkupParams = function(markupTbl) {}
+  updateSpecificMarkupParams = function(_markupTbl) {}
   getMarkupData = function()
   {
     let res = {
@@ -75,13 +81,13 @@ g_mplayer_param_type._newer <- function _newer(old, new) {
     return res
   }
 
-  isVisible = function(objectivesMask, gameType, gameMode = ::GM_DOMINATION)
+  isVisible = function(objectivesMask, gameType, gameMode = GM_DOMINATION)
   {
     return ((missionObjective == MISSION_OBJECTIVE.ANY) || (missionObjective & objectivesMask) != 0)
       && isVisibleByGameType(gameType) && isVisibleByGameMode(gameMode)
   }
-  isVisibleByGameType = @(gt) true
-  isVisibleByGameMode = @(gm) true
+  isVisibleByGameType = @(_gt) true
+  isVisibleByGameMode = @(_gm) true
 }
 
 enums.addTypesByGlobalName("g_mplayer_param_type", {
@@ -92,7 +98,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     id = "name"
     tooltip = "multiplayer/name"
     defVal = ""
-    printFunc = function(val, player) {
+    printFunc = function(_val, player) {
       return ::build_mplayer_name(player, false)
     }
     diffFunc = ::g_mplayer_param_type._newer
@@ -111,7 +117,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     defVal = ""
     relWidth = 30
     pareText = true
-    printFunc = function(val, player) {
+    printFunc = function(val, _player) {
       return ::getUnitName(val)
     }
     diffFunc = ::g_mplayer_param_type._newer
@@ -129,18 +135,18 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "multiplayer/score"
     relWidth = 25
 
-    getTooltip = function(val, player, defText) {
+    getTooltip = function(_val, player, _defText) {
       let res = []
-      for (local i = 0; i < ::EXP_EVENT_TOTAL; i++) {
+      for (local i = 0; i < EXP_EVENT_TOTAL; i++) {
         let rowVal = player?.scoreForExpEvents[$"event{i}"] ?? 0
         if (rowVal <= 0)
           continue
         let evLocId = expEventLocIds?[i] ?? ""
         if (evLocId == "")
           continue
-        res.append("".concat(::loc(evLocId), ::loc("ui/colon"), rowVal))
+        res.append("".concat(loc(evLocId), loc("ui/colon"), rowVal))
       }
-      res.append("".concat(::loc("expEventScore/total"), ::loc("ui/colon"), (player?.score ?? 0)))
+      res.append("".concat(loc("expEventScore/total"), loc("ui/colon"), (player?.score ?? 0)))
       return "\n".join(res)
     }
   }
@@ -165,7 +171,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "multiplayer/naval_damage"
     relWidth = 25
     missionObjective = MISSION_OBJECTIVE.KILLS_NAVAL
-    isVisibleByGameMode = @(gm) gm != ::GM_SKIRMISH
+    isVisibleByGameMode = @(gm) gm != GM_SKIRMISH
   }
 
   NAVAL_KILLS = {
@@ -204,10 +210,10 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     getVal = function(player) {
       local res = 0
       foreach (aiKillsRowId in [ "aiKills", "aiGroundKills", "aiNavalKills" ])
-        res += ::getTblValue(aiKillsRowId, player, 0)
+        res += getTblValue(aiKillsRowId, player, 0)
       return res
     }
-    printFunc = function(val, player) {
+    printFunc = function(_val, player) {
       return getVal(player).tostring()
     }
   }
@@ -223,10 +229,10 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
         res += player?[rowId] ?? 0
       return res
     }
-    printFunc = function(val, player) {
+    printFunc = function(_val, player) {
       return getVal(player).tostring()
     }
-    getTooltip = function(val, player, defText) {
+    getTooltip = function(_val, player, defText) {
       if (!(player?.scoutKills ?? 0))
         return defText
 
@@ -239,7 +245,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
       {
         let rowVal = player?[row.id] ?? 0
         if (rowVal)
-          res.append(::loc(row.label) + ::loc("ui/colon") + rowVal)
+          res.append(loc(row.label) + loc("ui/colon") + rowVal)
       }
       return ::g_string.implode(res, "\n")
     }
@@ -264,7 +270,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "debriefing/Damage"
     relWidth = 15
     missionObjective = MISSION_OBJECTIVE.ZONE_BOMBING
-    printFunc = function(val, player) {
+    printFunc = function(val, _player) {
       return stdMath.roundToDigits(val * ::KG_TO_TONS, 3).tostring()
     }
   }
@@ -281,7 +287,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     fontIcon = "#icon/mpstats/raceLastCheckpoint"
     tooltip = "multiplayer/raceLastCheckpoint"
     relWidth = 15
-    printFunc = function(val, player) {
+    printFunc = function(val, _player) {
       let total = ::get_race_checkpioints_count()
       let laps = ::get_race_laps_count()
       if (total && laps)
@@ -297,7 +303,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "multiplayer/raceLastCheckpointTime"
     relWidth = 30
     defVal = -1
-    printFunc = function(val, player) {
+    printFunc = function(val, _player) {
       return time.getRaceTimeFromSeconds(val)
     }
     diffFunc = ::g_mplayer_param_type._newer
@@ -315,7 +321,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "multiplayer/each_player_fastlap"
     relWidth = 30
     defVal = -1
-    printFunc = function(val, player) {
+    printFunc = function(val, _player) {
       return time.getRaceTimeFromSeconds(val)
     }
     diffFunc = function(old, new) {
@@ -334,7 +340,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
       {
         let total = ::get_race_checkpioints_count()
         if (total)
-          return (100 * ::getTblValue("raceLastCheckpoint", player, 0) / total).tointeger() + "%"
+          return (100 * getTblValue("raceLastCheckpoint", player, 0) / total).tointeger() + "%"
       }
       return time.getRaceTimeFromSeconds(val)
     }
@@ -350,17 +356,17 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     id = "penaltyTime"
     relWidth = 30
     defVal = 0
-    printFunc = function(val, player) {
+    printFunc = function(val, _player) {
       if (val == 0)
         return ""
 
-      return "".concat(val > 0 ? "+" : "", val, ::loc("debriefing/timeSec"))
+      return "".concat(val > 0 ? "+" : "", val, loc("debriefing/timeSec"))
     }
     getName = function(val = 0) {
       if (val >= 0)
-        return ::loc("HUD_RACE_PENALTY_TIME")
+        return loc("HUD_RACE_PENALTY_TIME")
 
-      return ::loc("HUD_RACE_BONUS_TIME")
+      return loc("HUD_RACE_BONUS_TIME")
     }
   }
 
@@ -413,12 +419,12 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     fontIcon = "#icon/timer"
     relWidth = 15
     missionObjective = MISSION_OBJECTIVE.ALIVE_TIME
-    printFunc = @(val, player) time.secondsToString(val, false)
-    isVisibleByGameType = @(gt) !!(gt & ::GT_LAST_MAN_STANDING)
+    printFunc = @(val, _player) time.secondsToString(val, false)
+    isVisibleByGameType = @(gt) !!(gt & GT_LAST_MAN_STANDING)
   }
 })
 
-g_mplayer_param_type.getTypeById <- function getTypeById(id)
+::g_mplayer_param_type.getTypeById <- function getTypeById(id)
 {
   return enums.getCachedType("id", id, ::g_mplayer_param_type.cache.byId,
     ::g_mplayer_param_type, ::g_mplayer_param_type.UNKNOWN)

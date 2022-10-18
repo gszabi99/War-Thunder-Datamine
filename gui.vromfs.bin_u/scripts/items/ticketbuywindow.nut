@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.TicketBuyWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -11,7 +19,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   function initScreen()
   {
     let view = {
-      headerText = ::loc("ticketBuyWindow/header")
+      headerText = loc("ticketBuyWindow/header")
       tickets = ::handyman.renderCached("%gui/items/item", createTicketsView(tickets))
       windowMainText = createMainText()
       ticketCaptions = createTicketCaptionsView()
@@ -19,7 +27,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
       hasActiveTicket = activeTicket != null
     }
     let data = ::handyman.renderCached("%gui/items/ticketBuyWindow", view)
-    guiScene.replaceContentFromText(scene, data, data.len(), this)
+    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
     updateTicketCaptionsPosition()
     updateBuyButtonText()
 
@@ -28,18 +36,18 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
     ::g_item_limits.requestLimits()
   }
 
-  function onEventItemLimitsUpdated(params)
+  function onEventItemLimitsUpdated(_params)
   {
     updateTicketCaptionsText()
     updateTicketCaptionsPosition()
   }
 
-  function onTicketDoubleClicked(obj)
+  function onTicketDoubleClicked(_obj)
   {
     doMainAction()
   }
 
-  function onBuyClicked(obj)
+  function onBuyClicked(_obj)
   {
     doMainAction()
   }
@@ -74,8 +82,8 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   {
     for (local i = 0; i < tickets.len(); ++i)
     {
-      let captionObj = scene.findObject(getTicketCaptionId(i))
-      if (::checkObj(captionObj))
+      let captionObj = this.scene.findObject(getTicketCaptionId(i))
+      if (checkObj(captionObj))
         captionObj.setValue(getTicketCaptionText(tickets[i]))
     }
   }
@@ -104,7 +112,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
     doMainAction(item)
   }
 
-  function onTicketSelected(obj)
+  function onTicketSelected(_obj)
   {
     updateBuyButtonText()
   }
@@ -112,24 +120,24 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   function getCurItem()
   {
     local value = getItemsListObj().getValue()
-    return ::getTblValue(value, tickets)
+    return getTblValue(value, tickets)
   }
 
   function getItemsListObj()
   {
-    return scene.findObject("items_list")
+    return this.scene.findObject("items_list")
   }
 
   function getTicketCaptionObj()
   {
-    return scene.findObject("ticket_caption")
+    return this.scene.findObject("ticket_caption")
   }
 
   function doMainAction(item = null)
   {
     item = item ?? getCurItem()
     if (item != null)
-      item.doMainAction(::Callback(@(result) result.success && goBack(), this), this)
+      item.doMainAction(Callback(@(result) result.success && this.goBack(), this), this)
   }
 
   function updateTicketCaptionsPosition()
@@ -138,16 +146,16 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
     for (local i = 0; i < tickets.len(); ++i)
     {
       let itemObj = itemsListObj.getChild(i)
-      let captionObj = scene.findObject("ticket_caption_" + i.tostring())
+      let captionObj = this.scene.findObject("ticket_caption_" + i.tostring())
       updateTicketCaptionPosition(captionObj, itemObj)
     }
   }
 
   function updateTicketCaptionPosition(captionObj, itemObj)
   {
-    if (!::checkObj(captionObj))
+    if (!checkObj(captionObj))
       return
-    if (!::checkObj(itemObj))
+    if (!checkObj(itemObj))
       return
     let objCenterX = itemObj.getPosRC()[0] + 0.5 * itemObj.getSize()[0]
     let position = objCenterX - 0.5 * captionObj.getSize()[0] - captionObj.getParent().getPosRC()[0]
@@ -159,7 +167,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
     let mainActionData = getCurItem().getMainActionData()
     if (mainActionData)
       setDoubleTextToButton(
-        scene,
+        this.scene,
         "btn_apply",
         mainActionData.btnName,
         mainActionData?.btnColoredName || mainActionData.btnName)
@@ -167,9 +175,9 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 
   function createMainText()
   {
-    local text = ::loc("ticketBuyWindow/mainText")
+    local text = loc("ticketBuyWindow/mainText")
     if (tickets.len() > 1)
-      text += "\n" + ::loc("ticketBuyWindow/optionalText")
+      text += "\n" + loc("ticketBuyWindow/optionalText")
     return text
   }
 
@@ -177,10 +185,10 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   {
     if (activeTicket == null)
       return ""
-    local text = ::loc("ticketBuyWindow/activeTicketText") + "\n"
+    local text = loc("ticketBuyWindow/activeTicketText") + "\n"
     let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(event))
     let textParts = []
-    textParts.append(::loc("ticketBuyWindow/unfinishedSessions", tournamentData))
+    textParts.append(loc("ticketBuyWindow/unfinishedSessions", tournamentData))
     textParts.append(activeTicket.getDefeatCountText(tournamentData))
     textParts.append(activeTicket.getSequenceDefeatCountText(tournamentData))
     text += ::g_string.implode(textParts, "\n")

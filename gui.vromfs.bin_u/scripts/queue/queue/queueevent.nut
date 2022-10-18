@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
+let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 
 ::queue_classes.Event <- class extends ::queue_classes.Base
 {
@@ -10,42 +17,42 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
   function init()
   {
-    name = ::getTblValue("mode", params, "")
-    shouldQueueCustomMode = getShouldQueueCustomMode(name)
+    this.name = getTblValue("mode", this.params, "")
+    shouldQueueCustomMode = getShouldQueueCustomMode(this.name)
 
-    params.clusters <- clone (params?.clusters ?? [])
+    this.params.clusters <- clone (this.params?.clusters ?? [])
   }
 
   function addQueueByParams(qParams)
   {
     if ("mrank" in qParams)
-      params.mrank <- qParams.mrank
+      this.params.mrank <- qParams.mrank
 
     if (!("cluster" in qParams))
       return false
 
     let cluster = qParams.cluster
     local isClusterAdded = false
-    if (!::isInArray(cluster, params.clusters))
+    if (!isInArray(cluster, this.params.clusters))
     {
-      params.clusters.append(cluster)
+      this.params.clusters.append(cluster)
       isClusterAdded = true
     }
 
-    addQueueByUid(qParams?.queueId, getQueueData(qParams))
+    this.addQueueByUid(qParams?.queueId, getQueueData(qParams))
     return isClusterAdded
   }
 
   function removeQueueByParams(leaveData)
   {
-    let queueUid = ::getTblValue("queueId", leaveData)
-    if (queueUid == null || (queueUid in queueUidsList && queueUidsList.len() == 1)) //leave all queues
+    let queueUid = getTblValue("queueId", leaveData)
+    if (queueUid == null || (queueUid in this.queueUidsList && this.queueUidsList.len() == 1)) //leave all queues
     {
       clearAllQueues()
       return true
     }
 
-    if (!(queueUid in queueUidsList))
+    if (!(queueUid in this.queueUidsList))
       return false
 
     removeQueueByUid(queueUid)
@@ -54,19 +61,19 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
   function removeQueueByUid(queueUid)
   {
-    let cluster = queueUidsList[queueUid].cluster
-    if (::u.filter(queueUidsList, @(q) q.cluster == cluster).len() <= 1)
+    let cluster = this.queueUidsList[queueUid].cluster
+    if (::u.filter(this.queueUidsList, @(q) q.cluster == cluster).len() <= 1)
     {
-      let idx = params.clusters.indexof(cluster)
+      let idx = this.params.clusters.indexof(cluster)
       if (idx != null)
-        params.clusters.remove(idx)
+        this.params.clusters.remove(idx)
     }
     base.removeQueueByUid(queueUid)
   }
 
   function clearAllQueues()
   {
-    params.clusters.clear()
+    this.params.clusters.clear()
     base.clearAllQueues()
   }
 
@@ -87,7 +94,7 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
   static function hasCustomModeByEventName(eventName)
   {
-    return ::has_feature("QueueCustomEventRoom") && !!::queue_classes.Event.getCustomMgm(eventName)
+    return hasFeature("QueueCustomEventRoom") && !!::queue_classes.Event.getCustomMgm(eventName)
   }
 
   static function hasOptions(eventName)
@@ -109,8 +116,8 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
   function join(successCallback, errorCallback)
   {
-    ::dagor.debug("enqueue into event session")
-    ::debugTableData(params)
+    log("enqueue into event session")
+    debugTableData(this.params)
     _joinQueueImpl(getQueryParams(true), successCallback, errorCallback)
   }
 
@@ -170,16 +177,16 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
     if (customMgm)
       qp.game_mode_id <- customMgm.gameModeId
     else
-      qp.mode <- name
+      qp.mode <- this.name
 
     if (!isForJoining)
       return qp
 
-    qp.team <- getTeamCode()
+    qp.team <- this.getTeamCode()
 
-    qp.clusters <- params.clusters
+    qp.clusters <- this.params.clusters
 
-    let prefParams =  mapPreferencesParams.getParams(::events.getEvent(name))
+    let prefParams =  mapPreferencesParams.getParams(::events.getEvent(this.name))
     qp.players <- {
       [::my_user_id_str] = {
         country = ::queues.getQueueCountry(this)  //FIX ME: move it out of manager
@@ -189,7 +196,9 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
         fakeName = !::get_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY).value
       }
     }
-    let members = ::getTblValue("members", params)
+    if (queueProfileJwt.value != null)
+      qp.players[::my_user_id_str].profileJwt <- queueProfileJwt.value
+    let members = getTblValue("members", this.params)
     if (members)
       foreach(uid, m in members)
       {
@@ -201,14 +210,16 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
         }
         if ("slots" in m)
           qp.players[uid].slots <- m.slots
+        if ((m?.queueProfileJwt ?? "") != "")
+          qp.players[uid].profileJwt <- m.queueProfileJwt
       }
     qp.jip <- ::get_option_in_mode(::USEROPT_QUEUE_JIP, ::OPTIONS_MODE_GAMEPLAY).value
     qp.auto_squad <- ::get_option_in_mode(::USEROPT_AUTO_SQUAD, ::OPTIONS_MODE_GAMEPLAY).value
 
-    if (params)
+    if (this.params)
       foreach (key in ["team", "roomId", "gameQueueId"])
-        if (key in params)
-          qp[key] <- params[key]
+        if (key in this.params)
+          qp[key] <- this.params[key]
 
     return qp
   }
@@ -217,13 +228,13 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
   {
     return {
       cluster = qParams.cluster
-      gameModeId = ::getTblValue("gameModeId", qParams, -1)
+      gameModeId = getTblValue("gameModeId", qParams, -1)
     }
   }
 
   function getBattleName()
   {
-    let event = ::events.getEvent(name)
+    let event = ::events.getEvent(this.name)
     if (!event)
       return ""
 
@@ -232,15 +243,15 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
   function hasCustomMode()
   {
-    return hasCustomModeByEventName(name)
+    return hasCustomModeByEventName(this.name)
   }
 
   function isCustomModeQUeued()
   {
-    let customMgm = getCustomMgm(name)
+    let customMgm = getCustomMgm(this.name)
     if (!customMgm)
       return false
-    return !!::u.search(queueUidsList, @(q) q.gameModeId == customMgm.gameModeId )
+    return !!::u.search(this.queueUidsList, @(q) q.gameModeId == customMgm.gameModeId )
   }
 
   function isCustomModeSwitchedOn()
@@ -250,27 +261,27 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
   function switchCustomMode(shouldQueue, needForceRequest = false)
   {
-    if (!isAllowedToSwitchCustomMode()
+    if (!this.isAllowedToSwitchCustomMode()
       || (!needForceRequest && shouldQueue == shouldQueueCustomMode))
       return
 
     shouldQueueCustomMode = shouldQueue
-    setShouldQueueCustomMode(name, shouldQueueCustomMode)
+    setShouldQueueCustomMode(this.name, shouldQueueCustomMode)
 
     if (isCustomModeInTransition)
       return
 
     let queue = this
-    let cb = function(res)
+    let cb = function(_res)
     {
       queue.isCustomModeInTransition = false
       queue.afterCustomModeQueueChanged(shouldQueue)
     }
     isCustomModeInTransition = true
     if (shouldQueueCustomMode)
-      _joinQueueImpl(getQueryParams(true, getCustomMgm(name)), cb, cb, false)
+      _joinQueueImpl(getQueryParams(true, getCustomMgm(this.name)), cb, cb, false)
     else
-      _leaveQueueImpl(getQueryParams(false, getCustomMgm(name)), cb, cb, false)
+      _leaveQueueImpl(getQueryParams(false, getCustomMgm(this.name)), cb, cb, false)
   }
 
   function afterCustomModeQueueChanged(wasShouldQueue)
@@ -283,5 +294,15 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
     if (wasShouldQueue != shouldQueueCustomMode)
       switchCustomMode(shouldQueueCustomMode, true)
+  }
+
+  hasActualQueueData = @() isQueueDataActual.value
+  function actualizeData() {
+    let queue = this
+    actualizeQueueData(function(_jwtData) {
+      if (queue.state != queueStates.ACTUALIZE)
+        return
+      ::queues.joinQueueImpl(queue)
+    })
   }
 }

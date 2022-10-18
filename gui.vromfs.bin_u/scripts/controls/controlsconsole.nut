@@ -1,8 +1,14 @@
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
+from "%scripts/dagui_library.nut" import *
 
-::gui_start_controls_console <- function gui_start_controls_console()
-{
-  if (!::has_feature("ControlsAdvancedSettings"))
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_start_controls_console <- function gui_start_controls_console() {
+  if (!hasFeature("ControlsAdvancedSettings"))
     return
 
   ::gui_start_modal_wnd(::gui_handlers.ControlsConsole)
@@ -23,7 +29,7 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
     setBreadcrumbGoBackParams(this)
     options = [
       [::USEROPT_INVERTY, "spinner"],
-      [::USEROPT_INVERTY_TANK, "spinner", ::has_feature("Tanks")],
+      [::USEROPT_INVERTY_TANK, "spinner", hasFeature("Tanks")],
       [::USEROPT_INVERTCAMERAY, "spinner"],
       [::USEROPT_MOUSE_AIM_SENSE, "slider"],
       [::USEROPT_ZOOM_SENSE,"slider"],
@@ -35,15 +41,15 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
     ]
 
     let guiScene = ::get_gui_scene()
-    let container = create_options_container("controls", options, true)
+    let container = ::create_options_container("controls", options, true)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
-    optionsContainers = [container.descr]
+    this.optionsContainers = [container.descr]
 
     checkHeadtrackRows()
     updateButtons()
 
     lastHeadtrackActive = ::ps4_headtrack_is_active()
-    scene.findObject("controls_update").setUserData(this)
+    this.scene.findObject("controls_update").setUserData(this)
   }
 
   function onControlsWizard()
@@ -53,16 +59,16 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
   function onControlsHelp()
   {
-    applyFunc = function() {
+    this.applyFunc = function() {
       ::gui_modal_help(false, HELP_CONTENT_SET.CONTROLS)
-      applyFunc = null
+      this.applyFunc = null
     }
-    applyOptions()
+    this.applyOptions()
   }
 
   function onHeadtrackEnableChange(obj)
   {
-    let option = get_option_by_id(obj?.id)
+    let option = this.get_option_by_id(obj?.id)
     if (!option) return
 
     ::set_option(option.type, obj.getValue(), option)
@@ -73,29 +79,29 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
   {
     let show = ::ps4_headtrack_is_attached() && ::ps4_headtrack_get_enable()
     foreach(o in [::USEROPT_HEADTRACK_SCALE_X, ::USEROPT_HEADTRACK_SCALE_Y])
-      showOptionRow(get_option(o), show)
+      this.showOptionRow(::get_option(o), show)
     this.showSceneBtn("btn_calibrate", show)
   }
 
   function onSwitchModeButton()
   {
     changeControlsMode = true
-    backSceneFunc = ::gui_start_advanced_controls
+    this.backSceneFunc = ::gui_start_advanced_controls
     ::switchControlsMode(false)
-    goBack()
+    this.goBack()
   }
 
   function updateButtons()
   {
     this.showSceneBtn("btn_switchMode", true)
-    this.showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets") && ::get_game_mode() != ::GM_TRAINING && !::is_platform_xbox)
-    this.showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
-    let btnObj = scene.findObject("btn_calibrate")
-    if (::checkObj(btnObj))
+    this.showSceneBtn("btn_controlsWizard", hasFeature("ControlsPresets") && ::get_game_mode() != GM_TRAINING && !is_platform_xbox)
+    this.showSceneBtn("btn_controlsHelp", hasFeature("ControlsHelp"))
+    let btnObj = this.scene.findObject("btn_calibrate")
+    if (checkObj(btnObj))
       btnObj.inactiveColor = ::ps4_headtrack_is_active()? "no" : "yes"
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, _dt)
   {
     if (lastHeadtrackActive == ::ps4_headtrack_is_active())
       return
@@ -111,11 +117,11 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
     if (!::ps4_headtrack_is_active())
     {
-      this.msgBox("not_available", ::loc("options/headtrack_camera_not_work"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      this.msgBox("not_available", loc("options/headtrack_camera_not_work"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
       return
     }
 
-    this.msgBox("calibrate", ::loc("msg/headtrack_calibrate"),
+    this.msgBox("calibrate", loc("msg/headtrack_calibrate"),
       [["ok", function() { ::ps4_headtrack_calibrate() } ]],
       "ok", { cancel_fn = function() {}})
   }

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getAvailableRespawnBases } = require("guiRespawn")
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
 
@@ -27,7 +33,7 @@ local respawnBases = {
     res.canChooseRespawnBase = true
     let lastSelectedBase = getSelectedBase()
     local defaultBase = null
-    foreach(idx, id in rbs)
+    foreach(_idx, id in rbs)
     {
       let rb = RespawnBase(id)
       res.basesList.append(rb)
@@ -60,7 +66,7 @@ local respawnBases = {
     selectedBaseData = null
   }
 
-  function onEventLoadingStateChange(p)
+  function onEventLoadingStateChange(_p)
   {
     if (!::is_in_flight())
       resetSelectedBase()

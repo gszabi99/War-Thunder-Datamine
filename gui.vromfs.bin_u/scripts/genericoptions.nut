@@ -1,11 +1,25 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 from "soundOptions" import *
 
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+
+let function get_country_by_team(team_index) {
+  local countries = null
+  if (::mission_settings && ::mission_settings.layout)
+    countries = ::get_mission_team_countries(::mission_settings.layout)
+  return countries?[team_index] ?? ""
+}
 
 ::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -15,7 +29,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   currentContainerName = "generic_options"
   options = null
-  optionsConfig = null //config forwarded to get_option
+  optionsConfig = null //config forwarded to ::get_option
   optionsContainers = null
   applyFunc = null
   cancelFunc = null
@@ -37,21 +51,21 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     if (options)
       loadOptions(options, currentContainerName)
 
-    setSceneTitle(titleText, scene, "menu-title")
+    this.setSceneTitle(titleText, this.scene, "menu-title")
   }
 
   function loadOptions(opt, optId)
   {
-    let optListObj = scene.findObject("optionslist")
-    if (!::checkObj(optListObj))
-      return ::dagor.assertf(false, "Error: cant load options when no optionslist object.")
+    let optListObj = this.scene.findObject("optionslist")
+    if (!checkObj(optListObj))
+      return assert(false, "Error: cant load options when no optionslist object.")
 
     let container = ::create_options_container(optId, opt, true, columnsRatio, true, optionsConfig)
-    guiScene.setUpdatesEnabled(false, false);
+    this.guiScene.setUpdatesEnabled(false, false);
     optionIdToObjCache.clear()
-    guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
+    this.guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
     optionsContainers.append(container.descr)
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
     updateLinkedOptions()
   }
@@ -76,18 +90,18 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
   {
     foreach (container in optionsContainers)
     {
-      let objTbl = getObj(container.name)
+      let objTbl = this.getObj(container.name)
       if (objTbl == null)
         continue
 
-      foreach(idx, option in container.data)
+      foreach(_idx, option in container.data)
       {
         if(option.controlType == optionControlType.HEADER ||
            option.controlType == optionControlType.BUTTON)
           continue
 
-        let obj = getObj(option.id)
-        if (!::checkObj(obj))
+        let obj = this.getObj(option.id)
+        if (!checkObj(obj))
         {
           ::script_net_assert_once("Bad option",
             "Error: not found obj for option " + option.id + ", type = " + option.type)
@@ -114,7 +128,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     base.goBack()
   }
 
-  function onApply(obj)
+  function onApply(_obj)
   {
     applyOptions(true)
   }
@@ -126,9 +140,9 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
       applyReturn()
   }
 
-  function onApplyOffline(obj)
+  function onApplyOffline(_obj)
   {
-    let coopObj = getObj("coop_mode")
+    let coopObj = this.getObj("coop_mode")
     if (coopObj) coopObj.setValue(2)
     applyOptions()
   }
@@ -142,7 +156,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
       {
         if (container.data[i].id == obj?.id)
         {
-          newDescr = func(guiScene, obj, container.data[i])
+          newDescr = func(this.guiScene, obj, container.data[i])
           break
         }
       }
@@ -177,9 +191,9 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   function updateOptionDelayed(optionType)
   {
-    guiScene.performDelayed(this, function()
+    this.guiScene.performDelayed(this, function()
     {
-      if (isValid())
+      if (this.isValid())
         updateOption(optionType)
     })
   }
@@ -200,21 +214,21 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   function updateOptionImpl(option)
   {
-    let obj = scene.findObject(option.id)
-    if (!::check_obj(obj))
+    let obj = this.scene.findObject(option.id)
+    if (!checkObj(obj))
       return
 
     isOptionInUpdate = true
     if (option.controlType == optionControlType.LIST)
     {
       let markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
-      guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+      this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
     } else
       obj.setValue(option.value)
     isOptionInUpdate = false
   }
 
-  function onEventQueueChangeState(p) {
+  function onEventQueueChangeState(_p) {
     let opt = findOptionInContainers(::USEROPT_PS4_CROSSPLAY)
     if (opt == null)
       return
@@ -224,10 +238,10 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   function getOptionObj(option) {
     local obj = optionIdToObjCache?[option.id]
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
     {
-      obj = getObj(option.getTrId())
-      if (!::check_obj(obj))
+      obj = this.getObj(option.getTrId())
+      if (!checkObj(obj))
         return null
       optionIdToObjCache[option.id] <- obj
     }
@@ -259,7 +273,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     if (obj != null)
     {
       let numPlayers = obj.getValue() + 2
-      let objPriv = getObj("numPrivateSlots")
+      let objPriv = this.getObj("numPrivateSlots")
       if (objPriv != null)
       {
         let numPriv = objPriv.getValue()
@@ -274,7 +288,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     if (obj != null)
     {
       let numPriv = obj.getValue()
-      let objPlayers = getObj("numPlayers")
+      let objPlayers = this.getObj("numPlayers")
       if (objPlayers != null)
       {
         let numPlayers = objPlayers.getValue() + 2
@@ -321,11 +335,11 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   function onPTTChange(obj)
   {
-    ::set_option_ptt(get_option(::USEROPT_PTT).value ? 0 : 1);
-    ::showBtn("ptt_buttons_block", obj.getValue(), scene)
+    ::set_option_ptt(::get_option(::USEROPT_PTT).value ? 0 : 1);
+    ::showBtn("ptt_buttons_block", obj.getValue(), this.scene)
   }
 
-  function onVoicechatChange(obj)
+  function onVoicechatChange(_obj)
   {
     ::set_option(::USEROPT_VOICE_CHAT, !::get_option(::USEROPT_VOICE_CHAT).value)
     ::broadcastEvent("VoiceChatOptionUpdated")
@@ -345,11 +359,11 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     {
       let unit = getPlayerCurUnit()
       let success = ::add_tank_alt_crosshair_template()
-      let message = success && unit ? format(::loc("hud/successUserSight"), unit.name) : ::loc("hud/failUserSight")
+      let message = success && unit ? format(loc("hud/successUserSight"), unit.name) : loc("hud/failUserSight")
 
-      guiScene.performDelayed(this, function()
+      this.guiScene.performDelayed(this, function()
       {
-        if (!isValid())
+        if (!this.isValid())
           return
 
         ::showInfoMsgBox(message)
@@ -387,7 +401,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
     this.msgBox(
       "crossnetwork_changes_warning",
-      ::loc("guiHints/ps4_crossnetwork_chat"),
+      loc("guiHints/ps4_crossnetwork_chat"),
       [
         ["ok", @() setCrossNetworkChatValue(null, false, true)], //Send notification of changed value
         ["no", @() setCrossNetworkChatValue(obj, true, false)] //Silently return value
@@ -399,7 +413,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   function setCrossNetworkChatValue(obj, value, needSendNotification = false)
   {
-    if (::check_obj(obj))
+    if (checkObj(obj))
       obj.setValue(value)
 
     if (needSendNotification)
@@ -415,11 +429,11 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
           ::set_option(::USEROPT_VOICE_CHAT, false)
       }
 
-      let listObj = scene.findObject("groups_list")
-      if (::check_obj(listObj))
+      let listObj = this.scene.findObject("groups_list")
+      if (checkObj(listObj))
       {
         let voiceTabObj = listObj.findObject("voicechat")
-        if (::check_obj(voiceTabObj))
+        if (checkObj(voiceTabObj))
           voiceTabObj.inactive = value? "no" : "yes"
       }
     }
@@ -442,7 +456,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
       return res
     foreach (container in optionsContainers)
       for (local i = 0; i < container.data.len(); ++i)
-        if (::isInArray(container.data[i].type, optTypeList))
+        if (isInArray(container.data[i].type, optTypeList))
           res.append(container.data[i])
     return res
   }
@@ -465,7 +479,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     let option = get_option_by_id(optName) || ::get_option(optName)
     if (option.values.len() == 0)
       return null
-    let obj = scene.findObject(option.id)
+    let obj = this.scene.findObject(option.id)
     let value = obj? obj.getValue() : option.value
     if (value in option.values)
       return option.values[value]
@@ -478,33 +492,33 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     ::set_option_gamma(gamma, false)
   }
 
-  function onControls(obj)
+  function onControls(_obj)
   {
-    goForward(::gui_start_controls);
+    this.goForward(::gui_start_controls);
   }
 
-  function onProfileChange(obj)
+  function onProfileChange(_obj)
   {
-    fillGamercard()
+    this.fillGamercard()
   }
 
-  function onLayoutChange(obj)
+  function onLayoutChange(_obj)
   {
-    let countryOption = get_option(::USEROPT_MP_TEAM_COUNTRY);
-    let cobj = getObj(countryOption.id);
+    let countryOption = ::get_option(::USEROPT_MP_TEAM_COUNTRY);
+    let cobj = this.getObj(countryOption.id);
     local country = ""
-    if(::checkObj(cobj))
+    if(checkObj(cobj))
     {
       country = get_country_by_team(cobj.getValue())
       ::set_option(::USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
-    let yearOption = get_option(::USEROPT_YEAR)
-    let unitsByYears = get_number_of_units_by_years(country, yearOption.valuesInt)
-    let yearObj = getObj(yearOption.id)
+    let yearOption = ::get_option(::USEROPT_YEAR)
+    let unitsByYears = ::get_number_of_units_by_years(country, yearOption.valuesInt)
+    let yearObj = this.getObj(yearOption.id)
     if (!yearObj)
       return;
 
-    ::dagor.assert(yearObj.childrenCount() == yearOption.values.len())
+    assert(yearObj.childrenCount() == yearOption.values.len())
     for (local i = 0; i < yearObj.childrenCount(); i++)
     {
       let line = yearObj.getChild(i);
@@ -522,7 +536,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
         let unlockBlk = ::g_unlocks.getUnlockById(yearId)
         if (unlockBlk)
         {
-          enabled = ::is_unlocked_scripted(::UNLOCKABLE_YEAR, yearId)
+          enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
           tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlockBlk))
         }
       }
@@ -530,7 +544,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
       line.enable(enabled)
       line.tooltip = tooltip
       let year = yearOption.valuesInt[i]
-      text.setValue(format(::loc("options/year_text"), year,
+      text.setValue(format(loc("options/year_text"), year,
         unitsByYears[$"year{year}"], unitsByYears[$"beforeyear{year}"]))
     }
 
@@ -541,7 +555,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
   function getOptValue(optName, return_default_when_no_obj = true)
   {
     let option = ::get_option(optName)
-    let obj = scene.findObject(option.id)
+    let obj = this.scene.findObject(option.id)
     if (!obj && !return_default_when_no_obj)
       return null
     let value = obj? obj.getValue() : option.value
@@ -558,17 +572,17 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     ::set_option(option.type, obj.getValue(), option)
 
     ::update_volume_for_music();
-    updateInternerRadioButtons()
+    this.updateInternerRadioButtons()
   }
 
-  function onMissionCountriesType(obj)
+  function onMissionCountriesType(_obj)
   {
     checkMissionCountries()
   }
 
   function checkMissionCountries()
   {
-    if (::getTblValue("isEventRoom", optionsConfig, false))
+    if (getTblValue("isEventRoom", optionsConfig, false))
       return
 
     let optList = find_options_in_containers([::USEROPT_BIT_COUNTRIES_TEAM_A, ::USEROPT_BIT_COUNTRIES_TEAM_B])
@@ -584,7 +598,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     }
   }
 
-  function onUseKillStreaks(obj)
+  function onUseKillStreaks(_obj)
   {
     checkAllowedUnitTypes()
   }
@@ -594,8 +608,8 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     let option = findOptionInContainers(::USEROPT_BIT_UNIT_TYPES)
     if (!option)
       return
-    let optionTrObj = getObj(option.getTrId())
-    if (!::check_obj(optionTrObj))
+    let optionTrObj = this.getObj(option.getTrId())
+    if (!checkObj(optionTrObj))
       return
 
     let missionBlk = ::get_mission_meta_info(optionsConfig?.missionName ?? "")
@@ -609,18 +623,18 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
         continue
       let isShow = !!(allowedUnitTypesMask & unitType.bit)
       let itemObj = optionTrObj.findObject("bit_" + unitType.tag)
-      if (!::check_obj(itemObj))
+      if (!checkObj(itemObj))
         continue
       itemObj.show(isShow)
       itemObj.enable(isShow)
     }
 
     let itemObj = optionTrObj.findObject("text_after")
-      if (::check_obj(itemObj))
+      if (checkObj(itemObj))
         itemObj.show(useKillStreaks)
   }
 
-  function onOptionBotsAllowed(obj)
+  function onOptionBotsAllowed(_obj)
   {
     checkBotsOption()
   }
@@ -646,18 +660,18 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   function updateOptionValueText(option, value)
   {
-    let obj = scene.findObject("value_" + option.id)
-    if (::check_obj(obj))
+    let obj = this.scene.findObject("value_" + option.id)
+    if (checkObj(obj))
       obj.setValue(option.getValueLocText(value))
   }
 
-  function onMissionChange(obj) {}
-  function onSectorChange(obj) {}
-  function onYearChange(obj) {}
-  function onGamemodeChange(obj) {}
-  function onOptionsListboxDblClick(obj) {}
-  function onGroupSelect(obj) {}
-  function onDifficultyChange(obj) {}
+  function onMissionChange(_obj) {}
+  function onSectorChange(_obj) {}
+  function onYearChange(_obj) {}
+  function onGamemodeChange(_obj) {}
+  function onOptionsListboxDblClick(_obj) {}
+  function onGroupSelect(_obj) {}
+  function onDifficultyChange(_obj) {}
 }
 
 ::gui_handlers.GenericOptionsModal <- class extends ::gui_handlers.GenericOptions
@@ -680,31 +694,31 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     initNavigation()
 
     if (needMoveMouseOnButtonApply)
-      ::move_mouse_on_obj(scene.findObject("btn_apply"))
+      ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
   }
 
   function initNavigation()
   {
     let handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
-      { scene = scene.findObject("control_navigation")
-        onSelectCb = ::Callback(doNavigateToSection, this)
+      { scene = this.scene.findObject("control_navigation")
+        onSelectCb = Callback(doNavigateToSection, this)
         panelWidth        = "0.4@sf, ph"
         // Align to helpers_mode and table first row
         headerHeight      = "1@buttonHeight"
       })
-    registerSubHandler(navigationHandlerWeak)
+    this.registerSubHandler(navigationHandlerWeak)
     navigationHandlerWeak = handler.weakref()
   }
 
   function doNavigateToSection(navItem)
   {
-    let objTbl = scene.findObject(currentContainerName)
-    if ( ! ::check_obj(objTbl))
+    let objTbl = this.scene.findObject(this.currentContainerName)
+    if ( ! checkObj(objTbl))
       return
 
     local trId = ""
-    foreach(idx, option in getCurrentOptionsList())
+    foreach(_idx, option in getCurrentOptionsList())
     {
       if(option.controlType == optionControlType.HEADER
         && option.id == navItem.id)
@@ -717,7 +731,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
       return
 
     let rowObj = objTbl.findObject(trId)
-    if (::check_obj(rowObj))
+    if (checkObj(rowObj))
       rowObj.scrollToView(true)
   }
 
@@ -727,7 +741,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
       navigationHandlerWeak.setNavItems([])
   }
 
-  function onTblSelect(obj)
+  function onTblSelect(_obj)
   {
     checkCurrentNavigationSection()
 
@@ -736,7 +750,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
     let option = getSelectedOption()
     if (option.controlType == optionControlType.EDITBOX)
-      ::select_editbox(getObj(option.id))
+      ::select_editbox(this.getObj(option.id))
   }
 
   function checkCurrentNavigationSection()
@@ -765,8 +779,8 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   function getSelectedOption()
   {
-    let objTbl = scene.findObject(currentContainerName)
-    if (!::check_obj(objTbl))
+    let objTbl = this.scene.findObject(this.currentContainerName)
+    if (!checkObj(objTbl))
       return null
 
     let idx = objTbl.getValue()
@@ -788,9 +802,9 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   function getCurrentOptionsList()
   {
-    let containerName = currentContainerName
-    let container = ::u.search(optionsContainers, @(c) c.name == containerName)
-    return ::getTblValue("data", container, [])
+    let containerName = this.currentContainerName
+    let container = ::u.search(this.optionsContainers, @(c) c.name == containerName)
+    return getTblValue("data", container, [])
   }
 
   function setNavigationItems()
@@ -820,18 +834,18 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
   function goBack()
   {
     if (applyAtClose)
-      applyOptions(true)
+      this.applyOptions(true)
     else
     {
       base.goBack()
-      restoreMainOptions()
+      this.restoreMainOptions()
     }
   }
 
   function applyReturn()
   {
-    if (!applyFunc)
-      restoreMainOptions()
+    if (!this.applyFunc)
+      this.restoreMainOptions()
     base.applyReturn()
   }
 }

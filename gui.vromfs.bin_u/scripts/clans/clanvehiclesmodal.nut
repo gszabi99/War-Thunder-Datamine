@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { hasClanUnitChosenResearch, saveClanUnitResearchChosen,
@@ -16,7 +22,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
   function initScreen()
   {
-    lastSelectedUnit = ::getAircraftByName(::clan_get_researching_unit())
+    this.lastSelectedUnit = ::getAircraftByName(::clan_get_researching_unit())
     base.initScreen()
   }
 
@@ -27,9 +33,9 @@ local handlerClass = class extends vehiclesModal.handlerClass
     if (flushExp <= 0 || needChosenResearchOfSquadron())
       locId = "mainmenu/nextResearchSquadronVehicle"
 
-    local expText = flushExp ? ::loc("ui/parentheses/space",
+    local expText = flushExp ? loc("ui/parentheses/space",
         {text = ::Balance(0, 0, 0, 0, flushExp).getTextAccordingToBalance()}) : ""
-    expText = ::loc(locId) + expText
+    expText = loc(locId) + expText
 
     return expText
   }
@@ -67,8 +73,8 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
   function updateTitle()
   {
-    let titleObj = scene.findObject("header_text")
-    if (!::check_obj(titleObj))
+    let titleObj = this.scene.findObject("header_text")
+    if (!checkObj(titleObj))
       return
 
     titleObj.setValue(getWndTitle())
@@ -76,44 +82,44 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
   function updateBuyBtn()
   {
-    if (!lastSelectedUnit)
+    if (!this.lastSelectedUnit)
       return this.showSceneBtn("btn_buy_unit", false)
 
-    let canBuyIngame = ::canBuyUnit(lastSelectedUnit)
-    let canBuyOnline = ::canBuyUnitOnline(lastSelectedUnit)
+    let canBuyIngame = ::canBuyUnit(this.lastSelectedUnit)
+    let canBuyOnline = ::canBuyUnitOnline(this.lastSelectedUnit)
     let needShowBuyUnitBtn = canBuyIngame || canBuyOnline
     this.showSceneBtn("btn_buy_unit", needShowBuyUnitBtn)
     if (!needShowBuyUnitBtn)
       return
 
-    let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(lastSelectedUnit.name) })
-    let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(lastSelectedUnit) : ::Cost()
-    placePriceTextToButton(scene.findObject("nav-help"),      "btn_buy_unit", locText, unitCost)
+    let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(this.lastSelectedUnit.name) })
+    let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(this.lastSelectedUnit) : ::Cost()
+    placePriceTextToButton(this.scene.findObject("nav-help"),      "btn_buy_unit", locText, unitCost)
   }
 
   function updateSpendExpBtn()
   {
-    if (!lastSelectedUnit)
+    if (!this.lastSelectedUnit)
       return this.showSceneBtn("btn_spend_exp", false)
 
-    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(lastSelectedUnit) - ::getUnitExp(lastSelectedUnit))
+    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(this.lastSelectedUnit) - ::getUnitExp(this.lastSelectedUnit))
     let needShowSpendBtn = (flushExp > 0 || needChosenResearchOfSquadron())
-      && lastSelectedUnit.isSquadronVehicle() && ::canResearchUnit(lastSelectedUnit)
+      && this.lastSelectedUnit.isSquadronVehicle() && ::canResearchUnit(this.lastSelectedUnit)
 
     this.showSceneBtn("btn_spend_exp", needShowSpendBtn)
     if (!needShowSpendBtn)
       return
 
-    let textWord = ::loc(
+    let textWord = loc(
       (flushExp <= 0 || needChosenResearchOfSquadron())
         ? "shop/researchUnit"
         : "shop/investToUnit",
-      { unit = ::getUnitName(lastSelectedUnit.name) })
-    let textValue = flushExp > 0 ? ::loc("ui/parentheses/space",
+      { unit = ::getUnitName(this.lastSelectedUnit.name) })
+    let textValue = flushExp > 0 ? loc("ui/parentheses/space",
       {text = ::Cost().setSap(flushExp).tostring()}) : ""
     let coloredText = textWord + textValue
 
-    setColoredDoubleTextToButton(scene, "btn_spend_exp", coloredText)
+    setColoredDoubleTextToButton(this.scene, "btn_spend_exp", coloredText)
   }
 
   function onSpendExcessExp()
@@ -121,13 +127,13 @@ local handlerClass = class extends vehiclesModal.handlerClass
     if (hasSpendExpProcess)
       return
 
-    let unit = lastSelectedUnit
+    let unit = this.lastSelectedUnit
     if (!unit?.isSquadronVehicle?() || !::canResearchUnit(unit))
       return
 
     hasSpendExpProcess = true
 
-    let afterDoneFunc = ::Callback(function() {hasSpendExpProcess = false}, this)
+    let afterDoneFunc = Callback(function() {hasSpendExpProcess = false}, this)
     if (!::isUnitInResearch(unit)) {
       unitActions.setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc)
       return
@@ -139,7 +145,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
       return
     }
     hasSpendExpProcess = false
-    goBack()
+    this.goBack()
   }
 
   getParamsForActionsList = @() {
@@ -147,7 +153,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
     isSquadronResearchMode = true
     needChosenResearchOfSquadron = needChosenResearchOfSquadron()
     isSlotbarEnabled = false
-    onSpendExcessExp = ::Callback(onSpendExcessExp, this)
+    onSpendExcessExp = Callback(onSpendExcessExp, this)
   }
 
   needChosenResearchOfSquadron = @() !hasClanUnitChosenResearch()
@@ -155,7 +161,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
   function onBuy()
   {
-    unitActions.buy(lastSelectedUnit, "clan_vehicles")
+    unitActions.buy(this.lastSelectedUnit, "clan_vehicles")
   }
 
   function onEventFlushSquadronExp(params)
@@ -170,13 +176,13 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
     if (unit && ::canBuyUnit(unit))
       ::buyUnit(unit)
-    goBack()
+    this.goBack()
   }
 
   function onEventUnitBought(p)
   {
     if (isAllClanUnitsResearched())
-      return goBack()
+      return this.goBack()
 
     base.onEventFlushSquadronExp(p)
   }

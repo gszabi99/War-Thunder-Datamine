@@ -1,5 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { abs, fabs, pow } = require("math")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
+let { MAX_DEADZONE, MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.AxisControls <- class extends ::gui_handlers.Hotkeys
 {
@@ -33,15 +41,15 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     changedShortcuts = []
     changedAxes = []
 
-    let titleObj = scene.findObject("axis_title")
-    if (::check_obj(titleObj))
-      titleObj.setValue(::loc("controls/" + axisItem.id))
+    let titleObj = this.scene.findObject("axis_title")
+    if (checkObj(titleObj))
+      titleObj.setValue(loc("controls/" + axisItem.id))
 
     reinitScreen()
     dontCheckControlsDupes = ::refillControlsDupes()
 
-    let timerObj = scene.findObject("axis_test_box")
-    if (::check_obj(timerObj))
+    let timerObj = this.scene.findObject("axis_test_box")
+    if (checkObj(timerObj))
       timerObj.setUserData(this)
 
     ::update_gamercards()
@@ -67,8 +75,8 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
   function reinitAutodetectAxis()
   {
-    let autodetectChBxObj = scene.findObject("autodetect_checkbox")
-    if (::checkObj(autodetectChBxObj))
+    let autodetectChBxObj = this.scene.findObject("autodetect_checkbox")
+    if (checkObj(autodetectChBxObj))
     {
       autodetectChBxObj.setValue(autodetectAxis)
       onChangeAutodetect(autodetectChBxObj)
@@ -80,7 +88,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
   function getAxisRawValues(device, idx)
   {
-    local res = ::getTblValue(idx, axisRawValues)
+    local res = getTblValue(idx, axisRawValues)
     if (!res)
     {
       if (axisRawValues.len() <= idx)
@@ -100,8 +108,8 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
   function fillAxisTable(axis)
   {
-    let axisControlsTbl = scene.findObject(optionTableId)
-    if (!::checkObj(axisControlsTbl))
+    let axisControlsTbl = this.scene.findObject(optionTableId)
+    if (!checkObj(axisControlsTbl))
       return
 
     let hideAxisOptionsArray = axisItem?.hideAxisOptions ?? []
@@ -110,21 +118,21 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     foreach (idx, item in shortcutsAxisListModule.types)
     {
       local addTrParams = ""
-      if (::isInArray(item.id, hideAxisOptionsArray))
+      if (isInArray(item.id, hideAxisOptionsArray))
         addTrParams = "hiddenTr:t='yes'; inactive:t='yes';"
 
       let hotkeyData = ::buildHotkeyItem(idx, shortcuts, item, axis, idx%2 == 0, addTrParams)
       data += hotkeyData.markup
     }
 
-    guiScene.replaceContentFromText(axisControlsTbl, data, data.len(), this)
+    this.guiScene.replaceContentFromText(axisControlsTbl, data, data.len(), this)
 
-    let invObj = scene.findObject("invertAxis")
-    if (::checkObj(invObj))
+    let invObj = this.scene.findObject("invertAxis")
+    if (checkObj(invObj))
       invObj.setValue(axis.inverse ? 1 : 0)
 
-    let relObj = scene.findObject("relativeAxis")
-    if (::checkObj(relObj))
+    let relObj = this.scene.findObject("relativeAxis")
+    if (checkObj(relObj))
       relObj.setValue(axis.relative ? 1 : 0)
 
     updateAxisItemsPos([0,0])
@@ -133,15 +141,15 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     foreach(item in shortcutsAxisListModule.types)
       if (item.type == CONTROL_TYPE.SLIDER)
       {
-        let slideObj = scene.findObject(item.id)
-        if (::checkObj(slideObj))
+        let slideObj = this.scene.findObject(item.id)
+        if (checkObj(slideObj))
           onSliderChange(slideObj)
       }
   }
 
   function onChangeAxisRelative(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     updateAxisRelativeOptions(obj.getValue())
@@ -150,19 +158,19 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
   function updateAxisRelativeOptions(isRelative)
   {
     local txtObj = null
-    txtObj = scene.findObject("txt_rangeMax")
-    if (::check_obj(txtObj))
-      txtObj.setValue(::loc(isRelative? "hotkeys/rangeInc" : "hotkeys/rangeMax"))
+    txtObj = this.scene.findObject("txt_rangeMax")
+    if (checkObj(txtObj))
+      txtObj.setValue(loc(isRelative? "hotkeys/rangeInc" : "hotkeys/rangeMax"))
 
-    txtObj = scene.findObject("txt_rangeMin")
-    if (::check_obj(txtObj))
-      txtObj.setValue(::loc(isRelative? "hotkeys/rangeDec" : "hotkeys/rangeMin"))
+    txtObj = this.scene.findObject("txt_rangeMin")
+    if (checkObj(txtObj))
+      txtObj.setValue(loc(isRelative? "hotkeys/rangeDec" : "hotkeys/rangeMin"))
 
     foreach (item in [shortcutsAxisListModule.kRelSpd, shortcutsAxisListModule.kRelStep])
     {
       let idx = shortcutsAxisListModule.types.indexof(item)
-      let obj = scene.findObject($"table_row_{idx}")
-      if (!::check_obj(obj))
+      let obj = this.scene.findObject($"table_row_{idx}")
+      if (!checkObj(obj))
         continue
 
       obj.inactive = isRelative? "no" : "yes"
@@ -173,7 +181,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
   function onSliderChange(obj)
   {
     let textObj = obj?.id && obj.getParent().findObject(obj.id + "_value")
-    if (!::checkObj(textObj))
+    if (!checkObj(textObj))
       return
 
     let reqItem = shortcutsAxisListModule?[obj.id]
@@ -192,8 +200,8 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
   function fillAxisDropright()
   {
-    let listObj = scene.findObject("axis_list")
-    if (!::checkObj(listObj))
+    let listObj = this.scene.findObject("axis_list")
+    if (!checkObj(listObj))
       return
 
     curDevice = ::joystick_get_default()
@@ -205,7 +213,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
       data += format("option { id:t='axisopt_%d'; text:t='%s' }\n",
               i, ::g_string.stripTags(::remapAxisName(curPreset, i)))
 
-    guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
     listObj.setValue(curDevice? (bindAxisNum+1) : 0)
 
     updateAxisListValue()
@@ -216,8 +224,8 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     if (bindAxisNum > numAxisInList)
       return
 
-    let listObj = scene.findObject("axis_list")
-    if (!::checkObj(listObj))
+    let listObj = this.scene.findObject("axis_list")
+    if (!checkObj(listObj))
       return
 
     //"-1", "+1" cos value is what we get from dropright, 0 is not recognized axis there,
@@ -237,15 +245,15 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
   function updateAutodetectButtonStyle()
   {
-    let obj = scene.findObject("btn_axis_autodetect")
-    if (::checkObj(obj))
+    let obj = this.scene.findObject("btn_axis_autodetect")
+    if (checkObj(obj))
     {
-      let text = ::loc("mainmenu/btn" + (autodetectAxis? "StopAutodetect":"AutodetectAxis"))
+      let text = loc("mainmenu/btn" + (autodetectAxis? "StopAutodetect":"AutodetectAxis"))
       obj.tooltip = text
       obj.text = text
 
       let imgObj = obj.findObject("autodetect_img")
-      if (::checkObj(imgObj))
+      if (checkObj(imgObj))
         imgObj["background-image"] = "#ui/gameuiskin#btn_autodetect_" + (autodetectAxis? "off" : "on") + ".svg"
     }
   }
@@ -262,8 +270,8 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     {
       if (item.type == CONTROL_TYPE.SLIDER || item.type == CONTROL_TYPE.SPINNER || item.type == CONTROL_TYPE.SWITCH_BOX)
       {
-        let slideObj = scene.findObject(item.id)
-        if (::checkObj(slideObj))
+        let slideObj = this.scene.findObject(item.id)
+        if (checkObj(slideObj))
           slideObj.setValue(item.value.call(this, axis))
       }
       else if (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
@@ -293,9 +301,9 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
   getScById = @(scId) shortcutsAxisListModule.types?[(scId ?? "-1").tointeger()]
 
-  function onAxisInputTimer(obj, dt)
+  function onAxisInputTimer(_obj, dt)
   {
-    if (scene.getModalCounter() > 0)
+    if (this.scene.getModalCounter() > 0)
       return
 
     curDevice = ::joystick_get_default()
@@ -318,10 +326,10 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
       }
       let dPos = rawPos - rawValues.def
 
-      if (::abs(dPos) > deviation)
+      if (abs(dPos) > deviation)
       {
         foundAxis = i
-        deviation = ::abs(dPos)
+        deviation = abs(dPos)
 
         if (fabs(rawPos-rawValues.last) < 1000)  //check stucked axes
         {
@@ -347,16 +355,16 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     //!!FIX ME: Have to adjust the code below taking values from the table and only when they change
     local val = curDevice.getAxisPosRaw(bindAxisNum) / 32000.0
 
-    let isInv = scene.findObject("invertAxis").getValue()
+    let isInv = this.scene.findObject("invertAxis").getValue()
 
-    let objDz = scene.findObject("deadzone")
-    let deadzone = max_deadzone * objDz.getValue() / objDz.max.tofloat()
-    let objNl = scene.findObject("nonlinearity")
+    let objDz = this.scene.findObject("deadzone")
+    let deadzone = MAX_DEADZONE * objDz.getValue() / objDz.max.tofloat()
+    let objNl = this.scene.findObject("nonlinearity")
     let nonlin = objNl.getValue().tofloat() / 10 - 1
 
-    let objMul = scene.findObject("kMul")
+    let objMul = this.scene.findObject("kMul")
     let kMul = objMul.getValue().tofloat() / 100.0
-    let objAdd = scene.findObject("kAdd")
+    let objAdd = this.scene.findObject("kAdd")
     let kAdd = objAdd.getValue().tofloat() / 50.0
 
     let devVal = val
@@ -374,7 +382,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
     val = fabs(val) < deadzone? 0 : valSign * ((fabs(val) - deadzone) / (1.0 - deadzone))
 
-    val = valSign * (::pow(fabs(val), (1 + nonlin)))
+    val = valSign * (pow(fabs(val), (1 + nonlin)))
 
     updateAxisItemsPos([val, devVal])
   }
@@ -387,8 +395,8 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     let objectsArray = ["test-game-box", "test-real-box"]
     foreach(idx, id in objectsArray)
     {
-      let obj = scene.findObject(id)
-      if (!::checkObj(obj))
+      let obj = this.scene.findObject(id)
+      if (!checkObj(obj))
         continue
 
       let leftPos = (valsArray[idx] + 1.0) * 0.5
@@ -402,7 +410,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
       return false
 
     let mWheelId = "mouse_z"
-    let wheelObj = scene.findObject(mWheelId)
+    let wheelObj = this.scene.findObject(mWheelId)
     if (!wheelObj) return false
 
     foreach(item in ::shortcutsList)
@@ -411,7 +419,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
         let value = wheelObj.getValue()
         if (("values" in item) && (value in item.values) && (item.values[value]=="zoom"))
         {
-          let msg = format(::loc("msg/zoomAssignmentsConflict"), ::loc("controls/mouse_z"))
+          let msg = format(loc("msg/zoomAssignmentsConflict"), loc("controls/mouse_z"))
           this.msgBox("zoom_axis_assigned", msg,
           [
             ["replace", (@(wheelObj) function() {
@@ -443,8 +451,8 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
     local actionText = ""
     foreach(item in alreadyBindedAxes)
-      actionText += ((actionText=="")? "":", ") + ::loc("controls/" + item.id)
-    let msg = ::loc("hotkeys/msg/unbind_axis_question", {
+      actionText += ((actionText=="")? "":", ") + loc("controls/" + item.id)
+    let msg = loc("hotkeys/msg/unbind_axis_question", {
       action=actionText
     })
     this.msgBox("controls_axis_bind_existing_axis", msg, [
@@ -483,12 +491,12 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     curJoyParams.bindAxis(setupAxisMode, bindAxisNum)
     doApplyJoystick()
     curJoyParams.applyParams(curDevice)
-    guiScene.performDelayed(this, closeWnd)
+    this.guiScene.performDelayed(this, this.closeWnd)
   }
 
   function updateButtons()
   {
-    let item = getCurItem()
+    let item = this.getCurItem()
     if (!item)
       return
 
@@ -504,7 +512,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
   function onTblDblClick()
   {
-    let item = getCurItem()
+    let item = this.getCurItem()
     if (!item)
       return
 
@@ -521,7 +529,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
   {
     if (dev.len() > 0 && dev.len() == btn.len())
     {
-      let item = getCurItem()
+      let item = this.getCurItem()
       if (item)
         bindShortcut(dev, btn, item)
     }
@@ -587,10 +595,10 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
         return
 
     local actions = ""
-    foreach(idx, shortcut in curBinding)
-      actions += (actions == ""? "" : ", ") + ::loc("hotkeys/" + getShortcutLocId(shortcut[0]))
+    foreach(_idx, shortcut in curBinding)
+      actions += (actions == ""? "" : ", ") + loc("hotkeys/" + getShortcutLocId(shortcut[0]))
 
-    let msg = ::loc("hotkeys/msg/unbind_question", {action = actions})
+    let msg = loc("hotkeys/msg/unbind_question", {action = actions})
 
     this.msgBox("controls_axis_bind_existing_shortcut", msg, [
       ["add", (@(devs, btns, item) function() {
@@ -617,7 +625,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
                    btn = btns
                 })
 
-    if (event.len() > max_shortcuts)
+    if (event.len() > MAX_SHORTCUTS)
       event.remove(0)
 
     ::set_controls_preset("") //custom mode
@@ -627,13 +635,13 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
   function updateShortcutText(shortcutId)
   {
     if (!(shortcutId in shortcuts) ||
-      !::isInArray(shortcutId, ::u.values(axisItem.modifiersId)))
+      !isInArray(shortcutId, ::u.values(axisItem.modifiersId)))
       return
 
     let itemId = getShortcutLocId(shortcutId, false)
-    let obj = scene.findObject("txt_sc_"+ itemId)
+    let obj = this.scene.findObject("txt_sc_"+ itemId)
 
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj.setValue(::get_shortcut_text({shortcuts = shortcuts, shortcutId = shortcutId}))
   }
 
@@ -645,7 +653,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
   function onButtonReset()
   {
-    let item = getCurItem()
+    let item = this.getCurItem()
     if (!item)
       return
 
@@ -656,7 +664,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
   function doApplyJoystick()
   {
     if (curJoyParams != null)
-      doApplyJoystickImpl(shortcutsAxisListModule.types, curJoyParams.getAxis(setupAxisMode))
+      this.doApplyJoystickImpl(shortcutsAxisListModule.types, curJoyParams.getAxis(setupAxisMode))
   }
 
   function onApply()

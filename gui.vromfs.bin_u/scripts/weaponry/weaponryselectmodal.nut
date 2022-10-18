@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 /*
   config = {
     unit  //unit for weapons
@@ -22,6 +28,9 @@
   }
 */
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { ceil, sqrt } = require("math")
+
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getLastWeapon,
         setLastWeapon,
@@ -111,15 +120,15 @@ local CHOOSE_WEAPON_PARAMS = {
     if (!unit || !list)
       return null
 
-    let cols = ::ceil(::sqrt(list.len().tofloat() / rowsToClumnsProportion)).tointeger()
-    let rows = cols ? ::ceil(list.len().tofloat() / cols).tointeger() : 0
+    let cols = ceil(sqrt(list.len().tofloat() / rowsToClumnsProportion)).tointeger()
+    let rows = cols ? ceil(list.len().tofloat() / cols).tointeger() : 0
 
     wasSelIdx = -1
     let params = { posX = 0, posY = 0 }
     local weaponryListMarkup = ""
     foreach(idx, config in list)
     {
-      let weaponryItem = ::getTblValue("weaponryItem", config)
+      let weaponryItem = getTblValue("weaponryItem", config)
       if (!weaponryItem)
       {
         ::script_net_assert_once("cant load weaponry",
@@ -128,7 +137,7 @@ local CHOOSE_WEAPON_PARAMS = {
         return null
       }
 
-      if (::getTblValue("selected", config))
+      if (getTblValue("selected", config))
         wasSelIdx = idx
 
       params.posX = rows ? (idx / rows) : 0
@@ -149,26 +158,26 @@ local CHOOSE_WEAPON_PARAMS = {
   function initScreen()
   {
     if (!list || !unit)
-      return goBack()
+      return this.goBack()
 
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
+    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, this.scene.findObject("main_frame"))
     updateItems()
     updateOpenAnimParams()
-    ::move_mouse_on_child_by_value(scene.findObject("weapons_list"))
+    ::move_mouse_on_child_by_value(this.scene.findObject("weapons_list"))
   }
 
   function updateItems()
   {
-    let listObj = scene.findObject("weapons_list")
+    let listObj = this.scene.findObject("weapons_list")
     let total = min(list.len(), listObj.childrenCount())
     for(local i = 0; i < total; i++)
     {
       let config = list[i]
       let itemObj = listObj.getChild(i)
-      let enabled = ::getTblValue("enabled", config, true)
+      let enabled = getTblValue("enabled", config, true)
       itemObj.enable(enabled)
 
-      weaponItemParams.visualDisabled <- !enabled || ::getTblValue("visualDisabled", config, false)
+      weaponItemParams.visualDisabled <- !enabled || getTblValue("visualDisabled", config, false)
       updateModItem(unit, config.weaponryItem, itemObj, false, this, weaponItemParams)
     }
     weaponItemParams.visualDisabled <- false
@@ -176,7 +185,7 @@ local CHOOSE_WEAPON_PARAMS = {
 
   function updateOpenAnimParams()
   {
-    let animObj = scene.findObject("anim_block")
+    let animObj = this.scene.findObject("anim_block")
     if (!animObj)
       return
     let size = animObj.getSize()
@@ -199,7 +208,7 @@ local CHOOSE_WEAPON_PARAMS = {
   function onChangeValue(obj)
   {
     selIdx = obj.getValue()
-    goBack()
+    this.goBack()
   }
 
   function onModItemClick(obj)
@@ -208,7 +217,7 @@ local CHOOSE_WEAPON_PARAMS = {
     if (idx < 0)
       return
     selIdx = idx
-    goBack()
+    this.goBack()
   }
 
   function afterModalDestroy()
@@ -220,6 +229,6 @@ local CHOOSE_WEAPON_PARAMS = {
         || !(selIdx in list)
         || !onChangeValueCb)
       return
-    onChangeValueCb(::getTblValue("weaponryItem", list[selIdx]))
+    onChangeValueCb(getTblValue("weaponryItem", list[selIdx]))
   }
 }

@@ -1,16 +1,21 @@
-let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
+from "%scripts/dagui_library.nut" import *
 
-::gui_handlers.WeaponWarningHandler <- class extends ::gui_handlers.SkipableMsgBox
-{
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
+let { set_gui_option } = require("guiOptions")
+
+::gui_handlers.WeaponWarningHandler <- class extends ::gui_handlers.SkipableMsgBox {
   skipOption = ::USEROPT_SKIP_WEAPON_WARNING
   showCheckBoxBullets = true
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
 
-    let bltCheckBoxObj = scene.findObject("slots-autoweapon")
-    if (!::check_obj(bltCheckBoxObj))
+    let bltCheckBoxObj = this.scene.findObject("slots-autoweapon")
+    if (!checkObj(bltCheckBoxObj))
       return
 
     bltCheckBoxObj.show(showCheckBoxBullets)
@@ -18,9 +23,8 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
       bltCheckBoxObj.setValue(::get_auto_refill(1))
   }
 
-  function skipFunc(value)
-  {
-    ::set_gui_option(skipOption, value)
+  function skipFunc(value) {
+    set_gui_option(skipOption, value)
     saveProfile()
   }
 }

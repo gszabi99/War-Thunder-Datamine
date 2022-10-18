@@ -1,4 +1,10 @@
-let stdMath = require("%sqstd/math.nut")
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { sqrt, pow } = require("%sqstd/math.nut")
+let { MAX_DEADZONE, MAX_NONLINEARITY } = require("%scripts/controls/controlsConsts.nut")
 
 return [
   {
@@ -34,14 +40,14 @@ return [
     max = 100
     step = 5
     showValueMul = 0.005
-    value = @(axis) (axis.innerDeadzone/max_deadzone) * 100
-    setValue = @(axis, objValue) axis.innerDeadzone = objValue / 100.0 * max_deadzone
+    value = @(axis) (axis.innerDeadzone/MAX_DEADZONE) * 100
+    setValue = @(axis, objValue) axis.innerDeadzone = objValue / 100.0 * MAX_DEADZONE
   }
   {
     id = "nonlinearity"
     type = CONTROL_TYPE.SLIDER
     min = 10
-    max = max_nonlinearity * 10
+    max = MAX_NONLINEARITY * 10
     step = 1
     showValueMul = 0.1
     value = @(axis) axis.nonlinearity * 10.0 + 10.0
@@ -67,8 +73,8 @@ return [
     max = 10
     step = 1
     showValuePercMul = 10
-    value = @(axis) ::sqrt(axis.relSens) * 10.0
-    setValue = @(axis, objValue) axis.relSens = stdMath.pow(objValue / 10.0, 2)
+    value = @(axis) sqrt(axis.relSens) * 10.0
+    setValue = @(axis, objValue) axis.relSens = pow(objValue / 10.0, 2)
   }
   {
     id = "kRelStep"

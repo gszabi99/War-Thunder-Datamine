@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -32,46 +38,46 @@ enum chatRoomTabOrder {
   checkRoomId = function(roomId) { return ::g_string.startsWith(roomId, roomPrefix) }
 
   //roomId params depend on roomType
-  getRoomId   = function(param1, param2 = null) { return roomPrefix + param1 }
+  getRoomId   = function(param1, _param2 = null) { return roomPrefix + param1 }
 
   roomNameLocId = null
     //localized roomName
-  getRoomName = function(roomId, isColored = false)
+  getRoomName = function(roomId, _isColored = false)
   {
     if (roomNameLocId)
-      return ::loc(roomNameLocId)
+      return loc(roomNameLocId)
     let roomName = roomId.slice(1)
-    return ::loc("chat/channel/" + roomName, roomName)
+    return loc("chat/channel/" + roomName, roomName)
   }
   getTooltip = @(roomId) getRoomName(roomId, true)
-  getRoomColorTag = @(roomId) ""
+  getRoomColorTag = @(_roomId) ""
 
   havePlayersList = true
   canVoiceChat = false
-  canBeClosed = function(roomId) { return true }
+  canBeClosed = function(_roomId) { return true }
   needSave = function() { return false }
   needSwitchRoomOnJoin = false //do not use it in pair with needSave
   canInviteToRoom = false
   onlyOwnerCanInvite = true
   isVisibleInSearch = function() { return false }
   hasCustomViewHandler = false
-  loadCustomHandler = @(scene, roomId, backFunc) null
+  loadCustomHandler = @(_scene, _roomId, _backFunc) null
 
   inviteLocIdNoNick = "chat/receiveInvite/noNick"
   inviteLocIdFull = "chat/receiveInvite"
   inviteIcon = "#ui/gameuiskin#chat.svg"
   getInviteClickNameText = function(roomId) {
     let locId = ::show_console_buttons ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
-    return format(::loc(locId), getRoomName(roomId))
+    return format(loc(locId), getRoomName(roomId))
   }
 
   canCreateRoom = function() { return false }
 
   hasChatHeader = false
-  fillChatHeader = function(obj, roomData) {}
-  updateChatHeader = function(obj, roomData) {}
+  fillChatHeader = function(_obj, _roomData) {}
+  updateChatHeader = function(_obj, _roomData) {}
   isAllowed = @() true
-  isConcealed = @(roomId) false
+  isConcealed = @(_roomId) false
 
   needCountAsImportant = false
   needShowMessagePopup = true
@@ -97,7 +103,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     havePlayersList = false
     needCountAsImportant = true
 
-    checkRoomId  = function(roomId) { return !::g_string.startsWith(roomId, roomPrefix) }
+    checkRoomId  = function(roomId) { return !::g_string.startsWith(roomId, this.roomPrefix) }
     getRoomId    = function(playerName, ...) { return playerName }
     getRoomName  = function(roomId, isColored = false) //roomId == playerName
     {
@@ -106,14 +112,14 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         ::clanUserTable?[roomId] ?? ""
       )
       if (isColored)
-        res = ::colorize(::g_chat.getSenderColor(roomId), res)
+        res = colorize(::g_chat.getSenderColor(roomId), res)
       return res
     }
     getRoomColorTag = function(roomId) //roomId == playerName
     {
       if (::g_squad_manager.isInMySquad(roomId, false))
         return "squad"
-      if (::isPlayerNickInContacts(roomId, ::EPL_FRIENDLIST))
+      if (::isPlayerNickInContacts(roomId, EPL_FRIENDLIST))
         return "friend"
       return ""
     }
@@ -133,17 +139,17 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     getRoomName = function(roomId, isColored = false, isFull = false)
     {
       let isMySquadRoom = roomId == ::g_chat.getMySquadRoomId()
-      local res = !isFull || isMySquadRoom ? ::loc(roomNameLocId) : ::loc("squad/disbanded/name")
+      local res = !isFull || isMySquadRoom ? loc(roomNameLocId) : loc("squad/disbanded/name")
       if (isColored && isMySquadRoom)
-        res = ::colorize(::g_chat.color.senderSquad[true], res)
+        res = colorize(::g_chat.color.senderSquad[true], res)
       return res
     }
     getTooltip = @(roomId) getRoomName(roomId, true, true)
     getRoomColorTag = @(roomId) roomId == ::g_chat.getMySquadRoomId() ? "squad" : "disbanded_squad"
 
     canBeClosed = function(roomId) { return !::g_squad_manager.isInSquad() || roomId != ::g_chat.getMySquadRoomId() }
-    getInviteClickNameText = function(roomId) {
-      return ::loc(::show_console_buttons ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
+    getInviteClickNameText = function(_roomId) {
+      return loc(::show_console_buttons ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
     }
   }
 
@@ -157,7 +163,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     needCountAsImportant = true
     isHaveOwner = false
 
-    canBeClosed = function(roomId) { return roomId != getRoomId(::clan_get_my_clan_id()) }
+    canBeClosed = function(roomId) { return roomId != this.getRoomId(::clan_get_my_clan_id()) }
   }
 
   SYSTEM = { //param none
@@ -168,7 +174,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     isHaveOwner = false
     checkRoomId = function(roomId) { return roomId == roomPrefix }
     getRoomId   = function(...) { return roomPrefix }
-    canBeClosed = function(roomId) { return false }
+    canBeClosed = function(_roomId) { return false }
   }
 
   MP_LOBBY = { //param SessionLobby.roomId
@@ -189,8 +195,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         if (roomId.indexof(r.name + "_", 1) == 1)
         {
           let lang = ::g_string.slice(roomId, r.name.len() + 2)
-          local langsList = ::getTblValue("langs", r, ::langs_list)
-          return ::isInArray(lang, langsList)
+          local langsList = getTblValue("langs", r, ::langs_list)
+          return isInArray(lang, langsList)
         }
       return false
     }
@@ -203,8 +209,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         if (r.name != roomName)
           continue
 
-        let langsList = ::getTblValue("langs", r, ::langs_list)
-        if (!::isInArray(lang, langsList))
+        let langsList = getTblValue("langs", r, ::langs_list)
+        if (!isInArray(lang, langsList))
           lang = langsList[0]
         return format("#%s_%s", roomName, lang)
       }
@@ -222,11 +228,11 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     onlyOwnerCanInvite = false
 
     threadNameLen = 15
-    getRoomName = function(roomId, isColored = false)
+    getRoomName = function(roomId, _isColored = false)
     {
       let threadInfo = ::g_chat.getThreadInfo(roomId)
       if (!threadInfo)
-        return ::loc(roomNameLocId)
+        return loc(roomNameLocId)
 
       local title = threadInfo.getTitle()
       //use text only before first linebreak
@@ -256,7 +262,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
                                                     })
       obj.setUserData(handler)
     }
-    updateChatHeader = function(obj, roomData)
+    updateChatHeader = function(obj, _roomData)
     {
       let ud = obj.getUserData()
       if ("onSceneShow" in ud)
@@ -273,7 +279,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     havePlayersList = false
     checkRoomId = function(roomId) { return roomId == roomPrefix }
     getRoomId   = function(...) { return roomPrefix }
-    canBeClosed = function(roomId) { return false }
+    canBeClosed = function(_roomId) { return false }
 
 
     hasCustomViewHandler = true
@@ -292,12 +298,12 @@ enums.addTypesByGlobalName("g_chat_room_type", {
   return 0
 })
 
-g_chat_room_type.getRoomType <- function getRoomType(roomId)
+::g_chat_room_type.getRoomType <- function getRoomType(roomId)
 {
-  foreach(roomType in types)
+  foreach(roomType in this.types)
     if (roomType.checkRoomId(roomId))
       return roomType
 
-  ::dagor.assertf(false, "Cant get room type by roomId = " + roomId)
-  return DEFAULT_ROOM
+  assert(false, "Cant get room type by roomId = " + roomId)
+  return this.DEFAULT_ROOM
 }

@@ -1,9 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
-::uploadLimit <- 3
+const UPLOAD_LIMIT = 3
 ::on_screenshot_saved <- null
 ::after_facebook_login <- null
 
@@ -11,13 +18,13 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 
 ::make_screenshot_and_do <- function make_screenshot_and_do(func, handler)
 {
-  on_screenshot_saved = (@(func, handler) function(saved_screenshot_filename) {
+  ::on_screenshot_saved = (@(func, handler) function(saved_screenshot_filename) {
       if(handler)
       {
         ::fill_gamer_card(::get_profile_info(), "gc_", ::getLastGamercardScene())
         func.call(handler, saved_screenshot_filename)
       }
-      on_screenshot_saved = null
+      ::on_screenshot_saved = null
     })(func, handler)
   ::fill_gamer_card({gold = ""}, "gc_", ::getLastGamercardScene())
   ::make_screenshot()
@@ -25,22 +32,22 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 
 ::make_facebook_login_and_do <- function make_facebook_login_and_do(func, handler)
 {
-  after_facebook_login = (@(func, handler) function() {
+  ::after_facebook_login = (@(func, handler) function() {
         if(handler && func)
           func.call(handler)
-        after_facebook_login = null
+        ::after_facebook_login = null
       })(func, handler)
   if(!::facebook_is_logged_in())
     ::start_facebook_login()
   else
-    after_facebook_login()
+    ::after_facebook_login()
 }
 
 ::on_facebook_link_finished <- function on_facebook_link_finished(result)
 {
   ::on_facebook_destroy_waitbox()
   if (result == "")
-    ::showInfoMsgBox(::loc("facebook/postFail"), "facebook_post_fail")
+    ::showInfoMsgBox(loc("facebook/postFail"), "facebook_post_fail")
 
   return
 }
@@ -49,15 +56,15 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 {
   if (path == "")
     return
-  ::dagor.debug("FACEBOOK UPLOAD: " + path)
+  log("FACEBOOK UPLOAD: " + path)
 
   let uploadsBlk = ::load_local_account_settings(FACEBOOK_UPLOADS_SAVE_ID) ?? ::DataBlock()
   if (uploadsBlk?.postDate == time.getUtcDays())
   {
     let uploads = uploadsBlk % "path"
-    if (uploads.len() >= uploadLimit)
+    if (uploads.len() >= UPLOAD_LIMIT)
     {
-      let msgText = format(::loc("facebook/error_upload_limit"), uploadLimit);
+      let msgText = format(loc("facebook/error_upload_limit"), UPLOAD_LIMIT);
       ::showInfoMsgBox(msgText, "facebook_upload_limit")
       return;
     }
@@ -65,21 +72,21 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
       foreach (p in uploads)
         if (path == p)
         {
-          ::showInfoMsgBox(::loc("facebook/error_upload_once"), "facebook_upload")
+          ::showInfoMsgBox(loc("facebook/error_upload_once"), "facebook_upload")
           return;
         }
   }
   else
     ::save_local_account_settings(FACEBOOK_UPLOADS_SAVE_ID, null)
 
-  ::scene_msg_box("facebook_login", null, ::loc("facebook/uploading"),
+  ::scene_msg_box("facebook_login", null, loc("facebook/uploading"),
     [["cancel", function() {}]], "cancel", {cancel_fn = function() {}, waitAnim=true, delayedButtons = 10})
   ::facebook_upload_screenshot(path)
 }
 
 ::on_facebook_upload_finished <- function on_facebook_upload_finished(path)
 {
-  on_facebook_destroy_waitbox()
+  ::on_facebook_destroy_waitbox()
   if (path == "")
     return
 
@@ -90,16 +97,16 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
   ::save_local_account_settings(FACEBOOK_UPLOADS_SAVE_ID, uploadsBlk)
 
   if (::current_base_gui_handler)
-    ::current_base_gui_handler.msgBox("facebook_finish_upload_screenshot", ::loc("facebook/successUpload"), [["ok"]], "ok")
+    ::current_base_gui_handler.msgBox("facebook_finish_upload_screenshot", loc("facebook/successUpload"), [["ok"]], "ok")
 }
 
-::on_facebook_destroy_waitbox <- function on_facebook_destroy_waitbox(unusedEventParams=null)
+::on_facebook_destroy_waitbox <- function on_facebook_destroy_waitbox(_unusedEventParams=null)
 {
   let guiScene = ::get_gui_scene()
   if (!guiScene)
     return
   let facebook_obj = guiScene["facebook_login"]
-  if (::checkObj(facebook_obj))
+  if (checkObj(facebook_obj))
     guiScene.destroyElement(facebook_obj)
 
   ::broadcastEvent("CheckFacebookLoginStatus")
@@ -107,9 +114,9 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 
 ::on_facebook_login_finished <- function on_facebook_login_finished()
 {
-  if(::facebook_is_logged_in() && after_facebook_login)
-      after_facebook_login()
-  on_facebook_destroy_waitbox()
+  if (::facebook_is_logged_in() && ::after_facebook_login)
+    ::after_facebook_login()
+  ::on_facebook_destroy_waitbox()
 
   if (::is_builtin_browser_active)
     ::close_browser_modal()
@@ -120,7 +127,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
   if (isPlatformSony)
     return
 
-  ::scene_msg_box("facebook_login", null, ::loc("facebook/connecting"),
+  ::scene_msg_box("facebook_login", null, loc("facebook/connecting"),
                   [["cancel", function() {::facebook_cancel_login()}]],
                   "cancel",
                   {waitAnim=true, delayedButtons = 10}
@@ -130,7 +137,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 
 ::show_facebook_login_reminder <- function show_facebook_login_reminder()
 {
-  if (::is_unlocked(::UNLOCKABLE_ACHIEVEMENT, "facebook_like")
+  if (::is_unlocked(UNLOCKABLE_ACHIEVEMENT, "facebook_like")
     || ::disable_network())
     return;
 
@@ -147,23 +154,23 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 
 ::show_facebook_screenshot_button <- function show_facebook_screenshot_button(scene, show = true, id = "btn_upload_facebook_scrn")
 {
-  show = show && !isPlatformSony && ::has_feature("FacebookScreenshots")
+  show = show && !isPlatformSony && hasFeature("FacebookScreenshots")
   let fbObj = ::showBtn(id, show, scene)
-  if (!::checkObj(fbObj))
+  if (!checkObj(fbObj))
     return
 
-  fbObj.tooltip = format(::loc("mainmenu/facebookShareLimit"), ::uploadLimit)
+  fbObj.tooltip = format(loc("mainmenu/facebookShareLimit"), UPLOAD_LIMIT)
 }
 
 ::gui_handlers.facebookReminderModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   function initScreen()
   {
-    scene.findObject("award_name").setValue(::loc("options/facebookTitle"));
-    scene.findObject("award_desc").setValue(format(::loc("facebook/reminderText"), ::get_unlock_reward("facebook_like")));
-    scene.findObject("award_image")["background-image"] = "#ui/images/facebook_like.jpg?P1";
-    scene.findObject("award_image")["height"] = "0.5w"
-    scene.findObject("btn_ok").setValue(::loc("options/facebookLogin"));
+    this.scene.findObject("award_name").setValue(loc("options/facebookTitle"));
+    this.scene.findObject("award_desc").setValue(format(loc("facebook/reminderText"), ::get_unlock_reward("facebook_like")));
+    this.scene.findObject("award_image")["background-image"] = "#ui/images/facebook_like.jpg?P1";
+    this.scene.findObject("award_image")["height"] = "0.5w"
+    this.scene.findObject("btn_ok").setValue(loc("options/facebookLogin"));
     this.showSceneBtn("btn_upload_facebook_scrn", false)
   }
 
@@ -180,4 +187,4 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
   sceneBlkName = "%gui/showUnlock.blk"
 }
 
-::add_event_listener("DestroyEmbeddedBrowser", on_facebook_destroy_waitbox)
+::add_event_listener("DestroyEmbeddedBrowser", ::on_facebook_destroy_waitbox)

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 
 local refreshMinTimeSec = 2 //sec
@@ -19,7 +26,7 @@ local WwQueuesData = class
   function isNewest()
   {
     return (!isInUpdate &&
-      ::dagor.getCurTime() - lastUpdateTimeMsec < getRefreshMinTimeMsec())
+      get_time_msec() - lastUpdateTimeMsec < getRefreshMinTimeMsec())
   }
 
   function canRequestByTime()
@@ -28,7 +35,7 @@ local WwQueuesData = class
     let checkTime = isInUpdate
       ? refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
       : refreshMinTime
-    return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
+    return  get_time_msec() - lastRequestTimeMsec >= checkTime
   }
 
   function canRequest()
@@ -38,7 +45,7 @@ local WwQueuesData = class
 
   function isDataValid()
   {
-    return (::dagor.getCurTime() - lastUpdateTimeMsec < WW_QUEUES_DATA_TIME_OUT)
+    return (get_time_msec() - lastUpdateTimeMsec < WW_QUEUES_DATA_TIME_OUT)
   }
 
   function validateData()
@@ -58,10 +65,10 @@ local WwQueuesData = class
       return false
 
     isInUpdate = true
-    lastRequestTimeMsec = ::dagor.getCurTime()
+    lastRequestTimeMsec = get_time_msec()
 
-    let cb = ::Callback(requestDataCb, this)
-    let errorCb = ::Callback(requestError, this)
+    let cb = Callback(requestDataCb, this)
+    let errorCb = Callback(requestError, this)
 
     ::queues.updateQueueInfoByType(::g_queue_type.WW_BATTLE, cb, errorCb, true)
     return true
@@ -74,13 +81,13 @@ local WwQueuesData = class
   function requestDataCb(queuesData)
   {
     isInUpdate = false
-    lastUpdateTimeMsec = ::dagor.getCurTime()
+    lastUpdateTimeMsec = get_time_msec()
     data = queuesData
 
     ::ww_event("UpdateWWQueues")
   }
 
-  function requestError(taskResult)
+  function requestError(_taskResult)
   {
     isInUpdate = false
   }

@@ -1,6 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
-::gui_handlers.CrewBuyPointsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { floor } = require("math")
+
+::gui_handlers.CrewBuyPointsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneTplName = "%gui/crew/crewBuyPoints"
@@ -10,12 +18,12 @@ let { format } = require("string")
   function initScreen()
   {
     buyPointsPacks = ::g_crew_points.getSkillPointsPacks(::g_crew.getCrewCountry(crew))
-    scene.findObject("wnd_title").setValue(::loc("mainmenu/btnBuySkillPoints"))
+    this.scene.findObject("wnd_title").setValue(loc("mainmenu/btnBuySkillPoints"))
 
-    let rootObj = scene.findObject("wnd_frame")
+    let rootObj = this.scene.findObject("wnd_frame")
     rootObj["class"] = "wnd"
     loadSceneTpl()
-    ::move_mouse_on_child(scene.findObject("buy_table"), 0)
+    ::move_mouse_on_child(this.scene.findObject("buy_table"), 0)
   }
 
   function loadSceneTpl()
@@ -25,8 +33,8 @@ let { format } = require("string")
     foreach(idx, pack in buyPointsPacks)
     {
       let skills = pack.skills || 1
-      let bonusDiscount = price ? ::floor(100.5 - 100.0 * pack.cost.gold / skills / price) : 0
-      let bonusText = bonusDiscount ? format(::loc("charServer/entitlement/discount"), bonusDiscount) : ""
+      let bonusDiscount = price ? floor(100.5 - 100.0 * pack.cost.gold / skills / price) : 0
+      let bonusText = bonusDiscount ? format(loc("charServer/entitlement/discount"), bonusDiscount) : ""
 
       rows.append({
         id = getRowId(idx)
@@ -40,14 +48,14 @@ let { format } = require("string")
 
     let view = { rows = rows }
     let data = ::handyman.renderCached(sceneTplName, view)
-    guiScene.replaceContentFromText(scene.findObject("wnd_content"), data, data.len(), this)
+    this.guiScene.replaceContentFromText(this.scene.findObject("wnd_content"), data, data.len(), this)
 
     updateRows()
   }
 
   function updateRows()
   {
-    let tblObj = scene.findObject("buy_table")
+    let tblObj = this.scene.findObject("buy_table")
     foreach(idx, pack in buyPointsPacks)
       ::showDiscount(tblObj.findObject("buy_discount_" + idx),
                      "skills", ::g_crews_list.get()[crew.idCountry].country, pack.name)
@@ -60,7 +68,7 @@ let { format } = require("string")
 
   function getBasePrice()
   {
-    foreach(idx, pack in buyPointsPacks)
+    foreach(_idx, pack in buyPointsPacks)
       if (pack.cost.gold)
         return pack.cost.gold.tofloat() / (pack.skills || 1)
     return 0
@@ -68,9 +76,9 @@ let { format } = require("string")
 
   function onButtonRowApply(obj)
   {
-    if (!::check_obj(obj) || obj?.id != "buttonRowApply")
+    if (!checkObj(obj) || obj?.id != "buttonRowApply")
     {
-      let tblObj = scene.findObject("buy_table")
+      let tblObj = this.scene.findObject("buy_table")
       if (!tblObj?.isValid())
         return
       let idx = tblObj.getValue()
@@ -81,24 +89,24 @@ let { format } = require("string")
         obj = rowObj.findObject("buttonRowApply")
     }
 
-    if (::check_obj(obj))
+    if (checkObj(obj))
       doBuyPoints(obj)
   }
 
   function doBuyPoints(obj)
   {
-    let row = ::g_crew.getButtonRow(obj, scene, scene.findObject("buy_table"))
+    let row = ::g_crew.getButtonRow(obj, this.scene, this.scene.findObject("buy_table"))
     if (!(row in buyPointsPacks))
       return
 
     ::g_crew_points.buyPack(crew, buyPointsPacks[row],
-      ::Callback(goBack, this),
-      ::Callback(@() ::move_mouse_on_child(scene.findObject("buy_table"), row), this))
+      Callback(this.goBack, this),
+      Callback(@() ::move_mouse_on_child(this.scene.findObject("buy_table"), row), this))
   }
 
-  function onEventModalWndDestroy(params)
+  function onEventModalWndDestroy(_params)
   {
-    if (isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(getObj("buy_table"))
+    if (this.isSceneActiveNoModals())
+      ::move_mouse_on_child_by_value(this.getObj("buy_table"))
   }
 }

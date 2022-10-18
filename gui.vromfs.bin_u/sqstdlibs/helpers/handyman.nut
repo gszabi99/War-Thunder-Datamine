@@ -1,3 +1,6 @@
+#no-root-fallback
+#explicit-this
+
 /**
  * Documenation: http://mustache.github.io/mustache.5.html
  *
@@ -10,40 +13,46 @@
  *
  *  API
  *
- *  ::handyman.render(template, view)
+ *  handyman.render(template, view)
  *    @template - template raw string
  *    @view - table of data for template
  *    @return - template string with filled data
  *
- *  ::handyman.renderCached(template_name, view)
+ *  handyman.renderCached(template_name, view)
  *    @template_name - template name in format <path-to-template>/<template-file-name>
  *      File name should be without extantion
  *    @view - table of data for template
  *    @return - template string with filled data
  *
  *  Main difference betwin this two calls is in caching.
- *  ::handyman.render(/.../) use whole template raw string as
+ *  handyman.render(/.../) use whole template raw string as
  *  cache id for rendered tokens.
- *  ::handyman.renderCached(template_name, view) use just template file name.
+ *  handyman.renderCached(template_name, view) use just template file name.
  */
 
 #no-plus-concat
 
+let { get_time_msec } = require("dagor.time")
 let g_string =  require("%sqstd/string.nut")
+let { loc } = require("dagor.localize")
 local {regexp} = require("string")
+let {memoize} = require("%sqstd/functools.nut")
+let { read_text_from_file } = require("dagor.fs")
+let loadTemplateText = memoize(@(v) read_text_from_file($"{v.replace(":","").replace("..","")}.tpl"))
 
 /**
  * A simple string scanner that is used by the template parser to find
  * tokens in template strings.
  */
+local handyman
 local Scanner = class {
   string = ""
   tail   = ""
   pos    = 0
 
-  constructor (_string) {
-    this.string = _string
-    this.tail = _string
+  constructor (string_) {
+    this.string = string_
+    this.tail = string_
     this.pos = 0
   }
 
@@ -101,11 +110,11 @@ Context = class {
   cache         = {}
   parentContext = null
 
-  constructor(_view, _parentContext = null) {
-    this.view          = _view == null ? {} : _view
+  constructor(view_, parentContext_ = null) {
+    this.view          = view_ == null ? {} : view_
     this.cache         = {}
     this.cache["."]    <- this.view
-    this.parentContext = _parentContext
+    this.parentContext = parentContext_
   }
 
   /**
@@ -255,7 +264,7 @@ local Writer = class {
         }
         else if (typeof value == "function") {
           if (typeof originalTemplate != "string") {
-            ::dagor.assertf(false, "Cannot use higher-order sections without the original template")
+            assert(false, "Cannot use higher-order sections without the original template")
             return "".join(buffer)
           }
 
@@ -289,9 +298,9 @@ local Writer = class {
           local valueTemplate
           local valueTokens
           // Assume value is a path to some cached template.
-          if (value in ::handyman.templateByTemplatePath) {
-            valueTemplate = ::handyman.templateByTemplatePath[value]
-            valueTokens = ::handyman.tokensByTemplatePath[value]
+          if (value in handyman.templateByTemplatePath) {
+            valueTemplate = handyman.templateByTemplatePath[value]
+            valueTokens = handyman.tokensByTemplatePath[value]
           }
           else {
             valueTemplate = value
@@ -320,7 +329,7 @@ local Writer = class {
           buffer.append(value.tostring())
       }
       else if (token[0] == "?")
-        buffer.append(g_string.stripTags(::loc(token[1])))
+        buffer.append(g_string.stripTags(loc(token[1])))
       else if (token[0] == "text")
         buffer.append(token[1])
     }
@@ -351,7 +360,7 @@ local Writer = class {
 
   function escapeTags(tags) { //warning disable: -ident-hides-ident
     if (!(typeof tags == "array") || tags.len() != 2) {
-      ::dagor.assertf(false, $"Invalid tags: {tags}")
+      assert(false, $"Invalid tags: {tags}")
     }
 
     return [
@@ -360,8 +369,8 @@ local Writer = class {
     ]
   }
 
-  function parseTemplate(template, _tags = null) {
-    local tags = _tags || this.tags //warning disable: -ident-hides-ident
+  function parseTemplate(template, tags_ = null) {
+    local tags = tags_ || this.tags //warning disable: -ident-hides-ident
     template = template || ""
 
     if (typeof tags == "string")
@@ -443,7 +452,7 @@ local Writer = class {
 
       // Match the closing tag.
       if (!scanner.scan(tagRes[1])) {
-        ::dagor.assertf(false, $"Unclosed tag at {scanner.pos}")
+        assert(false, $"Unclosed tag at {scanner.pos}")
         scanError = true
         break
       }
@@ -458,13 +467,13 @@ local Writer = class {
         openSection = sections.len()? sections.pop() : null
 
         if (!openSection) {
-          ::dagor.assertf(false, $"Unopened section \"{value}\" at {start}")
+          assert(false, $"Unopened section \"{value}\" at {start}")
           scanError = true
           break
         }
 
         if (openSection[1] != value) {
-          ::dagor.assertf(false, $"Unclosed section \"{openSection[1]}\" at {start}")
+          assert(false, $"Unclosed section \"{openSection[1]}\" at {start}")
           scanError = true
           break
         }
@@ -481,7 +490,7 @@ local Writer = class {
 
     // Make sure there are no open sections when we're done.
     if (sections.len() > 0)
-      ::dagor.assertf(false, $"Unclosed section \"{sections[sections.len() - 1][1]}\" at {scanner.pos}")
+      assert(false, $"Unclosed section \"{sections[sections.len() - 1][1]}\" at {scanner.pos}")
 
     if (scanError)
       tokens = []
@@ -556,7 +565,7 @@ local Writer = class {
   }
 }
 
-::handyman <- {
+handyman = {
 
   // All high-level functions use this writer.
   defaultWriter = Writer()
@@ -599,7 +608,7 @@ local Writer = class {
   function renderCached(templatePath, view, partials = null, cachePartials = false) {
     this.updateCache(templatePath)
     if (partials != null && cachePartials)
-      foreach (partialName, partialPath in partials)
+      foreach (partialPath in partials)
         this.updateCache(partialPath)
     local tokens = this.tokensByTemplatePath[templatePath]
     local template = this.tokensByTemplatePath[templatePath]
@@ -608,10 +617,10 @@ local Writer = class {
   }
 
   function checkCacheReset() {//only for easier development
-    if (!::always_reload_scenes || ::dagor.getCurTime() - this.lastCacheReset < 1000)
+    if (!(getroottable()?["always_reload_scenes"] ?? false) || get_time_msec() - this.lastCacheReset < 1000)
       return
 
-    this.lastCacheReset = ::dagor.getCurTime()
+    this.lastCacheReset = get_time_msec()
     this.tokensByTemplatePath.clear()
   }
 
@@ -619,7 +628,7 @@ local Writer = class {
     this.checkCacheReset()
     if (templatePath in this.tokensByTemplatePath)
       return
-    local template = ::load_template_text(templatePath)
+    local template = loadTemplateText(templatePath)
     template = this.processIncludes(template)
     this.templateByTemplatePath[templatePath] <- template
     this.tokensByTemplatePath[templatePath] <- this.defaultWriter.parseTemplate(template)
@@ -643,7 +652,7 @@ local Writer = class {
         continue
       }
 
-      local includeRes = ::load_template_text(fName)
+      local includeRes = loadTemplateText(fName)
       template = "".concat(template.slice(0, startIdx), includeRes, template.slice(endIdx + 1))
     }
     return template
@@ -657,7 +666,7 @@ local Writer = class {
   function renderNested(template, translate) {
     return (@(template, translate) function() {
       return (@(template, translate) function(text, render) {  // warning disable: -ident-hides-ident
-        return ::handyman.render(template, translate(render(text)))
+        return handyman.render(template, translate(render(text)))
       })(template, translate)
     })(template, translate)
   }
@@ -671,7 +680,7 @@ local Writer = class {
  ******************************************************************************/
 
 
-local function testhandyman(_temaple = null, _view = null, partails = null) { // warning disable: -declared-never-used
+local function testhandyman(_temaple = null, _view = null, _partails = null) { // warning disable: -declared-never-used
   local testTemplate = @"text{
   text:t='<<header>>';
 }
@@ -720,6 +729,10 @@ local partials = {
     }
     layout_insertion = "wink:t='yes';"
   }
-  ::dlog("before render")
-  ::dlog(::handyman.render(testTemplate, testView, partials))
+  println("before render")
+  println(handyman.render(testTemplate, testView, partials))
+}
+
+return {
+  handyman
 }

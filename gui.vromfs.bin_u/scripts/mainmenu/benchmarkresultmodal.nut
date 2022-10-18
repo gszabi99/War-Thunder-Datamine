@@ -1,5 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.BenchmarkResultModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -12,7 +19,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
   function initScreen()
   {
     if (title)
-      scene.findObject("mission_title").setValue(title)
+      this.scene.findObject("mission_title").setValue(title)
 
     if ("benchTotalTime" in benchmark_data)
     {
@@ -27,7 +34,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
       resultTableData += getStatRow("stat_total", "benchmark/total", benchmark_data.benchTotalFrames)
 
-      guiScene.replaceContentFromText("results_list", resultTableData, resultTableData.len(), this)
+      this.guiScene.replaceContentFromText("results_list", resultTableData, resultTableData.len(), this)
     }
 
     if (isPlatformSony)
@@ -38,7 +45,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
   {
     let rowData = [
                       {
-                        text = ::loc(statType),
+                        text = loc(statType),
                         tdalign = "right",
                         width = "46%pw"
                       }

@@ -1,13 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
 const REQUEST_TIME_OUT_MSEC  = 20000    //20sec
 const VALID_INFO_TIME_OUT_MSEC = 1800000 //30min
 
 let cachedList = {}
 
 let canRequestByTime = @(clanData) !(clanData?.isInUpdate ?? false)
-  && (::dagor.getCurTime() - (clanData?.lastRequestTimeMsec ?? 0)) >= REQUEST_TIME_OUT_MSEC
+  && (get_time_msec() - (clanData?.lastRequestTimeMsec ?? 0)) >= REQUEST_TIME_OUT_MSEC
 
 let hasValidInfo = @(clanData) ("info" in clanData)
-  && (::dagor.getCurTime() - clanData.lastUpdateTimeMsec < VALID_INFO_TIME_OUT_MSEC)
+  && (get_time_msec() - clanData.lastUpdateTimeMsec < VALID_INFO_TIME_OUT_MSEC)
 
 let function needRequest(clanId) {
   let clanData = cachedList?[clanId] ?? {}
@@ -25,7 +31,7 @@ let function prepareListToRequest(clanIdsArray) {
     blk.body.addStr("clanId", clanIdStr)
     cachedList[clanIdStr] <- (cachedList?[clanIdStr] ?? {}).__update({
       isInUpdate = true
-      lastRequestTimeMsec = ::dagor.getCurTime()
+      lastRequestTimeMsec = get_time_msec()
     })
   }
   return blk
@@ -39,7 +45,7 @@ let function updateClansInfoList(data) {
       continue
     cachedList[id] <- {
       info = ::buildTableFromBlk(info)
-      lastUpdateTimeMsec = ::dagor.getCurTime()
+      lastUpdateTimeMsec = get_time_msec()
     }
     clansInfoList[id] <- cachedList[id].info
   }
@@ -61,7 +67,7 @@ let function requestList(clanIdsArray) {
   if (!("clanId" in requestBlk.body))
     return
 
-  let errorCb = @(taskResult) requestError(requestBlk)
+  let errorCb = @(_taskResult) requestError(requestBlk)
   ::g_tasker.charRequestBlk("cln_clans_list_get_short_info", requestBlk, null, requestListCb, errorCb)
   return
 }

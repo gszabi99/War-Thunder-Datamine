@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { WEAPON_TAG,
         isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
 let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
@@ -24,19 +30,19 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
         break
   }
 
-  function onEventModalWndDestroy(params)
+  function onEventModalWndDestroy(_params)
   {
     processActions()
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
     actions.clear()
   }
 
   function onEventCrewTakeUnit(params)
   {
-    let unit = ::getTblValue("unit", params)
+    let unit = getTblValue("unit", params)
     actions.append((@(unit) function() { return checkTutorialOnSetUnit(unit) })(unit).bindenv(this))
     processActions()
   }

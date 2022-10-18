@@ -1,10 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let { getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
-{
+local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
   sceneTplName = "%gui/crew/crewSkillRow"
@@ -16,7 +22,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   crew = null
   curPage = null
-  curCrewUnitType = ::CUT_INVALID
+  curCrewUnitType = CUT_INVALID
   curPoints = 0
   onSkillRowChangeCb = null
   unit = null
@@ -25,9 +31,9 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!curPage || !crew)
     {
-      scene = null //make handler invalid to unsubscribe from events.
+      this.scene = null //make handler invalid to unsubscribe from events.
       ::script_net_assert_once("failed load crewSkillsPage", format("Error: try to init CrewSkillsPageHandler without page data (%s) or crew (%s)",
-                                   ::toString(curPage), ::toString(crew)))
+                                   toString(curPage), toString(crew)))
       return
     }
 
@@ -41,12 +47,12 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
   function loadSceneTpl(row = null)
   {
     let rows = []
-    local obj = scene
+    local obj = this.scene
     if (row != null)
     {
-       obj = scene.findObject(getRowName(row))
+       obj = this.scene.findObject(getRowName(row))
        let item = curPage.items?[row]
-       if (!::checkObj(obj) || !item)
+       if (!checkObj(obj) || !item)
          return
 
        rows.append(getSkillRowConfig(row))
@@ -64,21 +70,21 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     let data = ::handyman.renderCached(sceneTplName, view)
-    guiScene.replaceContentFromText(obj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
 
     if (row != null)
       return
 
-    let totalRows = scene.childrenCount()
-    if (totalRows > 0 && totalRows <= scene.getValue())
-      scene.setValue(0)
+    let totalRows = this.scene.childrenCount()
+    if (totalRows > 0 && totalRows <= this.scene.getValue())
+      this.scene.setValue(0)
   }
 
   function setHandlerVisible(value)
   {
     isHandlerVisible = value
-    scene.show(value)
-    scene.enable(value)
+    this.scene.show(value)
+    this.scene.enable(value)
   }
 
   function updateHandlerData(params)
@@ -103,7 +109,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     let curSpecMul = specType.getMulValue()
     if (page.id=="gunner")
     {
-      let airGunners = ::getTblValue("gunnersCount", unit, 0)
+      let airGunners = getTblValue("gunnersCount", unit, 0)
       local curGunners = getSkillValue(crew.id, unit, "gunner", "members")
       foreach (item in page.items)
         if(item.name == "members" && "newValue" in item)
@@ -146,8 +152,8 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!item.isVisible(curCrewUnitType))
         continue
-      let rowObj = scene.findObject(getRowName(idx))
-      if (!::checkObj(rowObj))
+      let rowObj = this.scene.findObject(getRowName(idx))
+      if (!checkObj(rowObj))
         continue
 
       let newCost = ::g_crew.getNextSkillStepCost(item, item?.newValue ?? getSkillValue(crew.id, unit, curPage.id, item.name))
@@ -159,8 +165,8 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
   function applySkillRowChange(row, item, newValue)
   {
     onSkillRowChangeCb?(item, newValue)
-    guiScene.performDelayed(this, function() {
-      if (isValid())
+    this.guiScene.performDelayed(this, function() {
+      if (this.isValid())
         updateSkills(row)
     })
   }
@@ -170,7 +176,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isRecrutedCurCrew())
       return
 
-    let row = ::g_crew.getButtonRow(obj, scene, scene)
+    let row = ::g_crew.getButtonRow(obj, this.scene, this.scene)
     if (curPage.items.len() > 0 && (!repeatButton || isRepeat))
     {
       let item = curPage.items[row]
@@ -218,7 +224,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     onProgressButton(obj, false, true)
   }
 
-  function onButtonMax(obj)
+  function onButtonMax(_obj)
   {
     // onProgressButton(obj, true, true)
   }
@@ -244,7 +250,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (pageOnInit || !obj || !isRecrutedCurCrew())
       return
 
-    let row = ::g_crew.getButtonRow(obj, scene, scene)
+    let row = ::g_crew.getButtonRow(obj, this.scene, this.scene)
     if (curPage.items.len() == 0)
       return
 
@@ -266,8 +272,8 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     if (newValue == item.newValue)
     {
-      guiScene.performDelayed(this, function() {
-        if (isValid())
+      this.guiScene.performDelayed(this, function() {
+        if (this.isValid())
           updateSkills(row, false)
       })
       return
@@ -287,11 +293,11 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     needAskBuySkills = false
 
     // Duplicate check.
-    if (::checkObj(guiScene["buySkillPoints"]))
+    if (checkObj(this.guiScene["buySkillPoints"]))
       return
 
-    let spendGold = ::has_feature("SpendGold")
-    local text = ::loc("shop/notEnoughSkillPoints")
+    let spendGold = hasFeature("SpendGold")
+    local text = loc("shop/notEnoughSkillPoints")
     let cancelButtonName = spendGold? "no" : "ok"
     let buttonsArray = [[cancelButtonName, function(){}]]
     local defaultButton = "ok"
@@ -327,7 +333,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     let view = getSkillDescriptionView(
       crew, difficulty, memberName, skillName, curCrewUnitType, unit)
     let data = ::handyman.renderCached("%gui/crew/crewSkillParametersTooltip", view)
-    guiScene.replaceContentFromText(obj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
   function getSkillRowConfig(idx)
@@ -356,16 +362,16 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
       bonusOverlayTextColor = (bonusLevel < 0) ? "bad" : "good"
 
       if (bonusData.add > 0)
-        bonusTooltip = ::loc("crew/qualifyBonus") + ::loc("ui/colon")
-                  + ::colorize("goodTextColor", "+" + stdMath.round_by_value(addLevel, 0.01))
+        bonusTooltip = loc("crew/qualifyBonus") + loc("ui/colon")
+                  + colorize("goodTextColor", "+" + stdMath.round_by_value(addLevel, 0.01))
 
       let lvlDiffByGunners = stdMath.round_by_value(bonusLevel - addLevel, 0.01)
       if (lvlDiffByGunners < 0)
-        bonusTooltip += ((bonusTooltip != "") ? "\n" : "") + ::loc("crew/notEnoughGunners") + ::loc("ui/colon")
+        bonusTooltip += ((bonusTooltip != "") ? "\n" : "") + loc("crew/notEnoughGunners") + loc("ui/colon")
           + "<color=@badTextColor>" + lvlDiffByGunners + "</color>"
     }
 
-    let level = ::g_crew.getCrewLevel(crew, unit, unit?.getCrewUnitType?() ?? ::CUT_INVALID)
+    let level = ::g_crew.getCrewLevel(crew, unit, unit?.getCrewUnitType?() ?? CUT_INVALID)
     let isRecrutedCrew = isRecrutedCurCrew()
     return {
       id = getRowName(idx)
@@ -373,7 +379,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
       even = idx % 2 == 0
       skillName = item.name
       memberName = curPage.id
-      name = ::loc("crew/" + item.name)
+      name = loc("crew/" + item.name)
       progressMax = ::g_crew.getTotalSteps(item)
       maxSkillCrewLevel = ::g_crew.getSkillMaxCrewLevel(item)
       maxValue = ::g_crew.getMaxSkillValue(item)

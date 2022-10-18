@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::gui_start_dynamic_results <- function gui_start_dynamic_results()
 {
   ::handlersManager.loadHandler(::gui_handlers.CampaignResults)
@@ -13,26 +19,26 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
   function initScreen()
   {
-    guiScene["campaign-status"].setValue(
-        (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("DYNAMIC_CAMPAIGN_SUCCESS") : ::loc("DYNAMIC_CAMPAIGN_FAIL")
+    this.guiScene["campaign-status"].setValue(
+        (getDynamicResult() == MISSION_STATUS_SUCCESS) ? loc("DYNAMIC_CAMPAIGN_SUCCESS") : loc("DYNAMIC_CAMPAIGN_FAIL")
       )
-    guiScene["campaign-result"].setValue(
-        (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("missions/dynamic_success") : ::loc("missions/dynamic_fail")
+    this.guiScene["campaign-result"].setValue(
+        (getDynamicResult() == MISSION_STATUS_SUCCESS) ? loc("missions/dynamic_success") : loc("missions/dynamic_fail")
       );
 
     let wpdata = ::get_session_warpoints()
 
-    guiScene["info-dc-wins"].setValue(wpdata.dcWins.tostring())
-    guiScene["info-dc-fails"].setValue(wpdata.dcFails.tostring())
+    this.guiScene["info-dc-wins"].setValue(wpdata.dcWins.tostring())
+    this.guiScene["info-dc-fails"].setValue(wpdata.dcFails.tostring())
 
     if (wpdata.nDCWp>0)
     {
-      guiScene["info-dc-text"].setValue(::loc("debriefing/dc"))
-      guiScene["info-dc-wp"].setValue(::Cost(wpdata.nDCWp).toStringWithParams(
+      this.guiScene["info-dc-text"].setValue(loc("debriefing/dc"))
+      this.guiScene["info-dc-wp"].setValue(::Cost(wpdata.nDCWp).toStringWithParams(
         {isWpAlwaysShown = true, isColored = false}))
     }
 
-    let info = DataBlock()
+    let info = ::DataBlock()
     ::dynamic_get_visual(info)
     let stats = ["bombers", "fighters", "infantry", "tanks", "artillery","ships"]
     let sides = ["ally","enemy"]
@@ -43,24 +49,24 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
         local value = info.getInt("loss_"+sides[j]+"_"+stats[i], 0)
         if (value > 10000)
           value = "" + ((value/1000).tointeger()).tostring() + "K"
-        guiScene["info-"+stats[i]+j.tostring()].text = value
+        this.guiScene["info-"+stats[i]+j.tostring()].text = value
       }
     }
 
   }
   function onSelect()
   {
-    ::dagor.debug("::gui_handlers.CampaignResults onSelect")
-    save()
+    log("::gui_handlers.CampaignResults onSelect")
+    this.save()
   }
   function afterSave()
   {
-    ::dagor.debug("::gui_handlers.CampaignResults afterSave")
-    goForward(::gui_start_mainmenu)
+    log("::gui_handlers.CampaignResults afterSave")
+    this.goForward(::gui_start_mainmenu)
   }
   function onBack()
   {
-    ::dagor.debug("::gui_handlers.CampaignResults goBack")
-    goBack()
+    log("::gui_handlers.CampaignResults goBack")
+    this.goBack()
   }
 }

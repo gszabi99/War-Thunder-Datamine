@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
@@ -27,23 +35,23 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
   function initScreen()
   {
-    if (!::checkObj(showObj))
-      return goBack()
+    if (!checkObj(showObj))
+      return this.goBack()
 
     let image = showObj?["background-image"]
     maxSize = [
-      ::g_dagui_utils.toPixels(guiScene, showObj?["max-width"]  ?? "@rw", showObj),
-      ::g_dagui_utils.toPixels(guiScene, showObj?["max-height"] ?? "@rh", showObj)
+      ::g_dagui_utils.toPixels(this.guiScene, showObj?["max-width"]  ?? "@rw", showObj),
+      ::g_dagui_utils.toPixels(this.guiScene, showObj?["max-height"] ?? "@rh", showObj)
     ]
 
     if (!image || image=="" || !maxSize[0] || !maxSize[1])
-      return goBack()
+      return this.goBack()
 
-    scene.findObject("image_update").setUserData(this)
+    this.scene.findObject("image_update").setUserData(this)
 
     baseSize = showObj.getSize()
     basePos = showObj.getPosRC()
-    let rootSize = guiScene.getRoot().getSize()
+    let rootSize = this.guiScene.getRoot().getSize()
     basePos = [basePos[0] + baseSize[0]/2, basePos[1] + baseSize[1]/2]
     lastPos = [rootSize[0]/2, rootSize[1]/2]
 
@@ -62,15 +70,15 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
       maxSize[1] = (maxSize[1] * sizeKoef).tointeger()
     }
 
-    imgObj = scene.findObject("image")
+    imgObj = this.scene.findObject("image")
     imgObj["max-width"] = maxSize[0].tostring()
     imgObj["max-height"] = maxSize[1].tostring()
     imgObj["background-image"] = image
     imgObj["background-svg-size"] = format("%d, %d", maxSize[0], maxSize[1])
     imgObj["background-repeat"] = showObj?["background-repeat"] ?? "aspect-ratio"
 
-    frameObj = scene.findObject("imgFrame")
-    shadeObj = scene.findObject("root-box")
+    frameObj = this.scene.findObject("imgFrame")
+    shadeObj = this.scene.findObject("root-box")
     onUpdate(null, 0.0)
   }
 
@@ -81,7 +89,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     return (baseVal+ div).tointeger().tostring()
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
     if (frameObj && frameObj.isValid()
         && ((!moveBack && timer < resizeTime) || (moveBack && timer > 0)))
@@ -92,13 +100,13 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
       {
         t = 1.0
         timer = resizeTime
-        scene.findObject("btn_back").show(true)
+        this.scene.findObject("btn_back").show(true)
       }
       if (moveBack && t <= 0.0)
       {
         t = 0.0
         timer = 0.0
-        goBack() //performDelayed inside
+        this.goBack() //performDelayed inside
       }
 
       imgObj.width = countProp(baseSize[0], maxSize[0], t)
@@ -114,7 +122,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     if (!moveBack)
     {
       moveBack = true
-      scene.findObject("btn_back").show(false)
+      this.scene.findObject("btn_back").show(false)
     }
   }
 }
@@ -149,9 +157,9 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
   function initScreen()
   {
-    let rootObj = scene.findObject("root-box")
-    if (!::checkObj(rootObj))
-      return goBack()
+    let rootObj = this.scene.findObject("root-box")
+    if (!checkObj(rootObj))
+      return this.goBack()
 
     rootObj["transparent"] = "100"
 
@@ -159,11 +167,11 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     frameObj.pos = "50%pw-50%w, 45%ph-50%h"
 
     let imgObj = frameObj.findObject("image")
-    if (!::checkObj(imgObj))
-      return goBack()
+    if (!checkObj(imgObj))
+      return this.goBack()
 
     if (!maxSize)
-      maxSize = [ ::g_dagui_utils.toPixels(guiScene, "@rw"), ::g_dagui_utils.toPixels(guiScene, "@rh") ]
+      maxSize = [ ::g_dagui_utils.toPixels(this.guiScene, "@rw"), ::g_dagui_utils.toPixels(this.guiScene, "@rh") ]
     else if (::u.isInteger(maxSize))
       maxSize = [ maxSize, maxSize ]
 
@@ -193,17 +201,17 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     }
     imgObj["background-repeat"] = "aspect-ratio"
 
-    scene.findObject("btn_back").show(true)
+    this.scene.findObject("btn_back").show(true)
   }
 
   function reinitScreen(params = {})
   {
-    setParams(params)
+    this.setParams(params)
     initScreen()
   }
 
   function onBack()
   {
-    goBack()
+    this.goBack()
   }
 }

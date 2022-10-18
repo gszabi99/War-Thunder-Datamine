@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
+let { format } = require("string")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
@@ -13,12 +20,12 @@ let handlerClass = class extends ::gui_handlers.clanVehiclesModal
     && ::canResearchUnit(u) && u.name != userlog.body.unit
 
   function getSceneTplView() {
-    canQuitByGoBack = !needChoseResearch
-    let flushExpText = "".concat(::loc("userlog/clanUnits/flush/desc", {
+    this.canQuitByGoBack = !needChoseResearch
+    let flushExpText = "".concat(loc("userlog/clanUnits/flush/desc", {
         unit = ::getUnitName(userlog.body.unit)
         rp = ::Cost().setSap(userlog.body.rp).tostring()
       }),
-      needChoseResearch ? $"\n{::loc("mainmenu/nextResearchSquadronVehicle")}" : ""
+      needChoseResearch ? $"\n{loc("mainmenu/nextResearchSquadronVehicle")}" : ""
     )
     return base.getSceneTplView().__update({
       flushExpText
@@ -31,21 +38,21 @@ let handlerClass = class extends ::gui_handlers.clanVehiclesModal
     if (unit == null)
       return ""
     return format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
-      ::build_aircraft_item(unit.name, unit, getUnitItemParams(unit)))
+      ::build_aircraft_item(unit.name, unit, this.getUnitItemParams(unit)))
   }
 
   function updateFlushExpUnit() {
     let data = getFlushExpUnitView()
-    guiScene.replaceContentFromText(scene.findObject("flush_exp_unit_nest"), data, data.len(), this)
+    this.guiScene.replaceContentFromText(this.scene.findObject("flush_exp_unit_nest"), data, data.len(), this)
   }
 
-  getWndTitle = @() ::loc("clan/research_vehicles")
+  getWndTitle = @() loc("clan/research_vehicles")
 
   initPopupFilter = @() null
 
   function updateButtons() {
-    updateBuyBtn()
-    updateSpendExpBtn()
+    this.updateBuyBtn()
+    this.updateSpendExpBtn()
     this.showSceneBtn("skip_info", !needChoseResearch)
   }
 
@@ -55,7 +62,7 @@ let handlerClass = class extends ::gui_handlers.clanVehiclesModal
 
   function onUnitActivate(obj)
   {
-    openUnitActionsList(obj.findObject(userlog.body.unit), true)
+    this.openUnitActionsList(obj.findObject(userlog.body.unit), true)
   }
 
   function onEventUnitBought(p)

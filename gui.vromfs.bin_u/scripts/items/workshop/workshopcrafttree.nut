@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
@@ -286,7 +291,7 @@ let function generateTreeConfig(blk)
   let allowableResources = blk % "allowableResources"
   local hasHeaderItems = false
   let bodiesConfig = []
-  foreach (idx, branch in branches) {
+  foreach (_idx, branch in branches) {
      craftTreeItemsList.__update(branch.itemsIdList)
      hasHeaderItems = hasHeaderItems || branch.headerItems.len() > 0
 

@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let colors = require("style/colors.nut")
 
 const MAX_DOST = 5
@@ -88,7 +90,7 @@ let text = @(total_count, broken_count) {
   rendObj = ROBJ_TEXT
   color = broken_count > 0 ? colors.hud.damageModule.active : colors.hud.damageModule.inactive
   halign = ALIGN_CENTER
-  text = ::str((total_count - broken_count),"/",total_count)
+  text = str((total_count - broken_count),"/",total_count)
 }
 
 
@@ -117,7 +119,7 @@ let dmModule = function (params) {
       color = colors.hud.damageModule.dmModuleDestroyed
     else if (brokenCountState.value > 0)
       color = colors.hud.damageModule.dmModuleDamaged
-    ::anim_start(brokenCountState)
+    anim_start(brokenCountState)
 
     let children = [moduleIcon(color)]
     if (totalCountState.value > 1) {

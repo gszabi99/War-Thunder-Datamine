@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -14,10 +20,10 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   constructor(blk, invBlk = null, slotData = null)
   {
     base.constructor(blk, invBlk, slotData)
-    id = blk.unlockId
+    this.id = blk.unlockId
     usingStyle = getUsingStyle(blk)
-    canBuy = true
-    unlockType = ::get_unlock_type_by_id(id)
+    this.canBuy = true
+    unlockType = ::get_unlock_type_by_id(this.id)
     tags = []
     let tagsBlk = blk?.tags
     if (tagsBlk)
@@ -32,13 +38,13 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (!option)
       return {}
 
-    let unlockId = id
+    let unlockId = this.id
     let idx = option.unlocks.findindex(@(v) v == unlockId)
 
     return {option = option, currIdx = idx}
   }
 
-  isUnlocked = @() ::is_unlocked_scripted(unlockType, id)
+  isUnlocked = @() ::is_unlocked_scripted(unlockType, this.id)
 
   isShowPrise = @() !isUnlocked()
 
@@ -53,17 +59,17 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   }
 
   getName = @(colored = true)// Used with type name in buy dialog message only
-    $"{::loc("itemTypes/aerobatic_smoke")} {base.getName(colored)}"
+    $"{loc("itemTypes/aerobatic_smoke")} {base.getName(colored)}"
 
   getDescriptionTitle = @() base.getName()
 
-  getIcon = @(addItemName = true)
-    ::LayersIcon.getIconData(usingStyle, defaultIcon, 1.0, defaultIconStyle)
+  getIcon = @(_addItemName = true)
+    ::LayersIcon.getIconData(usingStyle, this.defaultIcon, 1.0, this.defaultIconStyle)
 
-  getBigIcon = @() ::LayersIcon.getIconData($"{usingStyle}_big", defaultIcon, 1.0, defaultIconStyle)
+  getBigIcon = @() ::LayersIcon.getIconData($"{usingStyle}_big", this.defaultIcon, 1.0, this.defaultIconStyle)
 
-  getMainActionData = @(isShort = false, params = {}) isActive() ? null : {
-      btnName = isUnlocked() ? ::loc("item/consume") : getBuyText(false, isShort)
+  getMainActionData = @(isShort = false, _params = {}) isActive() ? null : {
+      btnName = isUnlocked() ? loc("item/consume") : this.getBuyText(false, isShort)
     }
 
   getDescription = @() getTagsDesc()
@@ -88,9 +94,9 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     }
 
     let item = this
-    ::scene_msg_box("offer_unit_change", null, ::loc("decoratorPreview/autoselectedUnit", {
-        previewUnit = ::colorize("activeTextColor", ::getUnitName(unit))
-        hangarUnit = ::colorize("activeTextColor", ::getUnitName(currUnit))
+    ::scene_msg_box("offer_unit_change", null, loc("decoratorPreview/autoselectedUnit", {
+        previewUnit = colorize("activeTextColor", ::getUnitName(unit))
+        hangarUnit = colorize("activeTextColor", ::getUnitName(currUnit))
       }),
       [
         ["yes", @() item.openTestFlight(unit)],
@@ -127,7 +133,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       return ::script_net_assert_once("Wrong testflight mission",
         "ItemSmoke: No meta info for aerobatic_smoke_preview")
 
-    let unlockId = id
+    let unlockId = this.id
     let smokeId = aeroSmokesList.value.findvalue(@(p) p.unlockId == unlockId)?.id
     if (!smokeId)
       return ::script_net_assert_once("Wrong smoke option value",
@@ -145,8 +151,8 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   function getCost(ignoreCanBuy = false)
   {
-    return (isCanBuy() || ignoreCanBuy) && !isUnlocked()
-      ? ::get_unlock_cost(id).multiply(getSellAmount())
+    return (this.isCanBuy() || ignoreCanBuy) && !isUnlocked()
+      ? ::get_unlock_cost(this.id).multiply(this.getSellAmount())
       : ::Cost()
   }
 
@@ -181,12 +187,12 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   {
     return isUnlocked()
       ? consumeSmoke(cb)
-      : buy(cb, handler, params)
+      : this.buy(cb, handler, params)
   }
 
-  function _buy(cb, params = null)
+  function _buy(cb, _params = null)
   {
-    ::g_unlocks.buyUnlock(id, ::Callback(@() cb(true), this))
+    ::g_unlocks.buyUnlock(this.id, Callback(@() cb(true), this))
   }
 
   function getTagsDesc()
@@ -194,7 +200,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (tags.len() == 0)
       return ""
 
-    let tagsLoc = tags.map(@(t) ::colorize("activeTextColor", ::loc($"content/tag/{t}")))
-    return $"{::loc("ugm/tags")}{::loc("ui/colon")}{::loc("ui/comma").join(tagsLoc)}"
+    let tagsLoc = tags.map(@(t) colorize("activeTextColor", loc($"content/tag/{t}")))
+    return $"{loc("ugm/tags")}{loc("ui/colon")}{loc("ui/comma").join(tagsLoc)}"
   }
 }

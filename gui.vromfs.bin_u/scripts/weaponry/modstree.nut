@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getModificationByName, getModificationBulletsGroup
 } = require("%scripts/weaponry/modificationInfo.nut")
@@ -53,24 +58,24 @@ local modsTree = {
 
     if (!prevMod) //generate only by first modification
     {
-      if (!mustBeInModTree(mod))
+      if (!this.mustBeInModTree(mod))
         return true
 
-      foreach(branch in tree)
+      foreach (branch in this.tree)
         if (typeof(branch)=="array" && branch[0]==mod.modClass)
         {
           branch.append(mod)
           return true
         }
-      tree.append([mod.modClass, mod])
+      this.tree.append([mod.modClass, mod])
       return true
     }
 
-    let path = findPathToMod(tree, prevMod)
+    let path = this.findPathToMod(this.tree, prevMod)
     if (!path) return false
 
     //put in right place
-    local branch = tree
+    local branch = this.tree
     for(local i = 0; i < path.len()-1; i++)
       branch = branch[path[i]]
     let curIdx = path[path.len()-1]
@@ -83,40 +88,39 @@ local modsTree = {
 
   function generateTree(genAir)
   {
-    air = genAir
-    tree = [null] //root
-    if (!("modifications" in air))
-      return tree
+    this.air = genAir
+    this.tree = [null] //root
+    if (!("modifications" in this.air))
+      return this.tree
 
-    foreach(ctg in genAir.unitType.modClassOrder)
-      tree.append([ctg])
+    foreach (ctg in genAir.unitType.modClassOrder)
+      this.tree.append([ctg])
 
     let notInTreeMods = []
-    foreach(idx, mod in air.modifications)
+    foreach (_idx, mod in this.air.modifications)
       if (getModificationBulletsGroup(mod.name) == "" &&
-          mustBeInModTree(mod) &&
-          (!ignoreGoldMods || !::wp_get_modification_cost_gold(air.name, mod.name))
+          this.mustBeInModTree(mod) &&
+          (!this.ignoreGoldMods || !::wp_get_modification_cost_gold(this.air.name, mod.name))
          )
-        if (!insertMod(mod))
+        if (!this.insertMod(mod))
           notInTreeMods.append(mod)
 
     local haveChanges = true
     while (notInTreeMods.len() && haveChanges)
     {
       haveChanges = false
-      for(local i = notInTreeMods.len()-1; i>=0; i--)
-        if (insertMod(notInTreeMods[i]))
+      for (local i = notInTreeMods.len()-1; i>=0; i--)
+        if (this.insertMod(notInTreeMods[i]))
         {
           notInTreeMods.remove(i)
           haveChanges = true
         }
     }
-    checkNotInTreeMods(notInTreeMods)
 
-    clearEmptyClasses(tree)
-
-    generatePositions(tree)
-    return tree
+    this.checkNotInTreeMods(notInTreeMods)
+    this.clearEmptyClasses(this.tree)
+    this.generatePositions(this.tree)
+    return this.tree
   }
 
   function clearEmptyClasses(tree)
@@ -134,7 +138,7 @@ local modsTree = {
     if (typeof(branch)=="table") //modification
       branch.guiPosX <- (("guiPosX" in branch)? branch.guiPosX : 0.0) + offsetX
     else if (typeof(branch)=="array") //branch
-      foreach(idx, item in branch)
+      foreach(_idx, item in branch)
         shiftBranchX(item, offsetX)
   }
 
@@ -222,10 +226,10 @@ local modsTree = {
         sideTiers.append(itemTiers)
       } else
       {
-        let offset = tiersTable.len()? getMergeBranchXOffset(item, tiersTable) : 0
+        let offset = tiersTable.len() ? this.getMergeBranchXOffset(item, tiersTable) : 0
         if (offset)
-          shiftBranchX(item, offset)
-        addTiers(tiersTable, itemTiers, offset)
+          this.shiftBranchX(item, offset)
+        this.addTiers(tiersTable, itemTiers, offset)
       }
     }
 
@@ -235,26 +239,26 @@ local modsTree = {
       branch[0].guiPosX <- 0.0 //0.5 * (width - 1)
       if (sideBranches.len())
       {
-        ::dagor.assertf(sideBranches.len() <= 2, "Error: mod " + branch[0].name + " for "+ air.name + " have more than 2 child modifications with same tier")
+        assert(sideBranches.len() <= 2, "Error: mod " + branch[0].name + " for "+ this.air.name + " have more than 2 child modifications with same tier")
         let haveLeft = sideBranches.len()>1
         let lastRight = haveLeft? sideBranches.len()-1 : sideBranches.len()
         for(local i=0; i<lastRight; i++)
         {
-          let offset = tiersTable.len()? getMergeBranchXOffset(sideBranches[i], tiersTable) : 0
+          let offset = tiersTable.len() ? this.getMergeBranchXOffset(sideBranches[i], tiersTable) : 0
           if (offset)
-            shiftBranchX(sideBranches[i], offset)
-          addTiers(tiersTable, sideTiers[i], offset)
+            this.shiftBranchX(sideBranches[i], offset)
+          this.addTiers(tiersTable, sideTiers[i], offset)
         }
 
         if (haveLeft)
         {
           let leftIdx = sideBranches.len()-1
-          let offset = getTiersWidth(sideTiers[leftIdx])
+          let offset = this.getTiersWidth(sideTiers[leftIdx])
           if (offset)
           {
-            shiftBranchX(branch, offset)
-            shiftBranchX(sideBranches[leftIdx], -offset)
-            tiersTable = addTiers(sideTiers[leftIdx], tiersTable, offset)
+            this.shiftBranchX(branch, offset)
+            this.shiftBranchX(sideBranches[leftIdx], -offset)
+            tiersTable = this.addTiers(sideTiers[leftIdx], tiersTable, offset)
           }
         }
       }
@@ -272,8 +276,8 @@ local modsTree = {
       foreach(idx, item in sideBranches)
       {
         if (width>0)
-          shiftBranchX(item, width)
-        width += getTiersWidth(sideTiers[idx], 1)
+          this.shiftBranchX(item, width)
+        width += this.getTiersWidth(sideTiers[idx], 1)
       }
     }
     return tiersTable
@@ -283,7 +287,7 @@ local modsTree = {
   {
     if (!curCorners)
       curCorners = [{ guiPosX = -1, tier = -1}, { guiPosX = -1, tier = -1}]
-    foreach(idx, item in branch)
+    foreach(_idx, item in branch)
       if (typeof(item)=="table") //modification
       {
         foreach(p in ["guiPosX", "tier"])
@@ -305,7 +309,7 @@ local modsTree = {
       curArrows = []
 
     let reqName = (typeof(branch[0])=="table")? branch[0].name : null
-    foreach(idx, item in branch)
+    foreach(_idx, item in branch)
     {
       local checkItem = null
       if (typeof(item)=="table") //modification
@@ -335,42 +339,42 @@ local modsTree = {
 
   function generateBlocksAndArrows(genAir)
   {
-    if (!air || air.name!=genAir.name)
-      generateTree(genAir)
+    if (!this.air || this.air.name!=genAir.name)
+      this.generateTree(genAir)
 
     let res = { blocks = [], arrows = [] }
-    if (!tree)
+    if (!this.tree)
       return res
 
-    foreach(idx, item in tree)
+    foreach (_idx, item in this.tree)
       if (typeof(item)=="array") //branch
       {
-        let corners = getBranchCorners(item)
+        let corners = this.getBranchCorners(item)
         let block = {
-          name = typeof(item[0])=="string"? ::loc("modification/category/" + item[0]) : ""
+          name = typeof(item[0])=="string"? loc("modification/category/" + item[0]) : ""
           width = max(corners[1].guiPosX - corners[0].guiPosX, 1)
         }
         res.blocks.append(block)
       }
-    res.arrows = getBranchArrows(tree)
+    res.arrows = this.getBranchArrows(this.tree)
     return res
   }
 
   function getTreeSize(genAir)
   {
-    if (!air || air.name!=genAir.name)
-      generateTree(genAir)
-    local rightCorner = getBranchCorners(tree)[1]
+    if (!this.air || this.air.name!=genAir.name)
+      this.generateTree(genAir)
+    local rightCorner = this.getBranchCorners(this.tree)[1]
     rightCorner.tier--
     return rightCorner
   }
 
   function debugTree(branch=null, addStr="DD: ") //!!debug only
   {
-    let debugLog = ::dlog // warning disable: -forbidden-function
+    let debugLog = dlog // warning disable: -forbidden-function
     if (!branch)
-      branch = tree
-    foreach(idx, item in branch)
+      branch = this.tree
+    foreach (_idx, item in branch)
       if (typeof(item)=="table") //modification
         debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0})")
       else if (typeof(item)=="array") //branch
@@ -387,8 +391,8 @@ local modsTree = {
     if (notInTreeMods.len()==0)
       return
 
-    ::dagor.debug("incorrect modification requirements for air " + air.name)
-    ::debugTableData(notInTreeMods)
+    log("incorrect modification requirements for air " + this.air.name)
+    debugTableData(notInTreeMods)
     foreach(mod in notInTreeMods)
     {
       local prevName = ""
@@ -396,19 +400,19 @@ local modsTree = {
         prevName = mod.reqModification[0]
       else if ("prevModification" in mod)
         prevName = mod.prevModification
-      let prevMod = getModificationByName(air, prevName)
+      let prevMod = getModificationByName(this.air, prevName)
       local res = ""
       if (!prevMod)
         res = "does not exist"
       else if (getModificationBulletsGroup(prevName) != "")
         res = "is bullets"
-      else if (ignoreGoldMods && ::wp_get_modification_cost_gold(air.name, prevName))
+      else if (this.ignoreGoldMods && ::wp_get_modification_cost_gold(this.air.name, prevName))
         res = "is premium"
       else
         res = "have another incorrect requirement"
-      ::dagor.debug("modification " + prevName + " required for " + mod.name + " " + res)
+      log("modification " + prevName + " required for " + mod.name + " " + res)
     }
-    ::dagor.assertf(false, "Error: found incorrect modifications requirement for air " + air.name)
+    assert(false, "Error: found incorrect modifications requirement for air " + this.air.name)
   }
 }
 

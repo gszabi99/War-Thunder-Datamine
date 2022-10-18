@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
@@ -9,16 +17,16 @@ const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
   function initScreen()
   {
-    let title = " ".concat(::loc("hotkeys/ID_HELP"), ::loc("ui/mdash"), ::loc("worldwar/vehicleGroups"))
-    scene.findObject("wnd_title").setValue(title)
+    let title = " ".concat(loc("hotkeys/ID_HELP"), loc("ui/mdash"), loc("worldwar/vehicleGroups"))
+    this.scene.findObject("wnd_title").setValue(title)
 
-    guiScene.replaceContent(scene.findObject("wnd_content"), "%gui/help/wwarSlotbarGroups.blk", this)
+    this.guiScene.replaceContent(this.scene.findObject("wnd_content"), "%gui/help/wwarSlotbarGroups.blk", this)
     fillLinkLines()
   }
 
   function fillLinkLines()
   {
-    let linkContainer = scene.findObject("wnd_content")
+    let linkContainer = this.scene.findObject("wnd_content")
     let linkLinesConfig = {
       startObjContainer = linkContainer
       endObjContainer = linkContainer
@@ -38,9 +46,9 @@ const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
     }
 
     let markup = ::LinesGenerator.getLinkLinesMarkup(linkLinesConfig)
-    let obj = scene.findObject("link_lines_block")
+    let obj = this.scene.findObject("link_lines_block")
     obj.show(true)
-    guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+    this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 }
 

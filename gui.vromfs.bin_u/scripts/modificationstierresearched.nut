@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config)
@@ -9,7 +17,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
       config[param] = value[0]
   }
 
-  let unit = ::getAircraftByName(::getTblValue("unit", config))
+  let unit = ::getAircraftByName(getTblValue("unit", config))
   if (!unit)
     return
 
@@ -48,12 +56,12 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
     if (isLastResearchedModule)
       locTextId = "modifications/full_unit_researched"
 
-    let nameObj = scene.findObject("award_name")
-    if (::checkObj(nameObj))
-      nameObj.setValue(::loc(locTextId + "/header"))
+    let nameObj = this.scene.findObject("award_name")
+    if (checkObj(nameObj))
+      nameObj.setValue(loc(locTextId + "/header"))
 
-    let imgObj = scene.findObject("award_image")
-    if (::checkObj(imgObj))
+    let imgObj = this.scene.findObject("award_image")
+    if (checkObj(imgObj))
     {
       local imageId = ::getUnitCountry(unit) + "_" + ::getUnitTypeTextByUnit(unit).tolower()
       if (isLastResearchedModule)
@@ -74,7 +82,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
       if (tier.len() == 1)
         tierText = tier.top()
       else if (tier.len() == 2)
-        tierText = ::get_roman_numeral(tier[0]) + ::loc("ui/comma") + ::get_roman_numeral(tier[1])
+        tierText = ::get_roman_numeral(tier[0]) + loc("ui/comma") + ::get_roman_numeral(tier[1])
       else
       {
         local maxTier = 0
@@ -84,29 +92,29 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
           maxTier = max(maxTier, t)
           minTier = min(minTier, t)
         }
-        tierText = ::get_roman_numeral(minTier) + ::loc("ui/mdash") + ::get_roman_numeral(maxTier)
+        tierText = ::get_roman_numeral(minTier) + loc("ui/mdash") + ::get_roman_numeral(maxTier)
       }
     }
     else
       tierText = ::get_roman_numeral(tier)
 
-    local msgText = ::loc(locTextId, { tier = tierText, unitName = ::getUnitName(unit) })
+    local msgText = loc(locTextId, { tier = tierText, unitName = ::getUnitName(unit) })
     if (!expReward.isZero())
     {
-      msgText += "\n" + ::loc("reward") + ::loc("ui/colon") + ::loc("userlog/open_all_in_tier/resName",
+      msgText += "\n" + loc("reward") + loc("ui/colon") + loc("userlog/open_all_in_tier/resName",
                         { resUnitExpInvest = expReward.tostring(),
                           resUnitName = ::getUnitName(unitInResearch)
                         })
     }
 
-    let descObj = scene.findObject("award_desc")
-    if (::checkObj(descObj))
+    let descObj = this.scene.findObject("award_desc")
+    if (checkObj(descObj))
     {
       descObj["text-align"] = "center"
       descObj.setValue(msgText)
     }
 
-    this.showSceneBtn("btn_upload_facebook_wallPost", ::has_feature("FacebookWallPost") && isLastResearchedModule)
+    this.showSceneBtn("btn_upload_facebook_wallPost", hasFeature("FacebookWallPost") && isLastResearchedModule)
     if (isLastResearchedModule)
     {
       postConfig = {
@@ -120,7 +128,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
         unitName = unit.name + "_shop"
         rank = ::get_roman_numeral(unit?.rank ?? -1)
         country = ::getUnitCountry(unit)
-        link = format(::loc("url/wiki_objects"), unit.name)
+        link = format(loc("url/wiki_objects"), unit.name)
       }
     }
   }
@@ -133,7 +141,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
 
   function onOk()
   {
-    goBack()
+    this.goBack()
   }
 
   function afterModalDestroy()

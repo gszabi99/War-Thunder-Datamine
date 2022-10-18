@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let colors = {
   transparent = Color(0, 0, 0, 0)
   white = Color(255, 255, 255)

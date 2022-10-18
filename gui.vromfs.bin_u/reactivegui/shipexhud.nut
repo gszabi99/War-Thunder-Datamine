@@ -1,3 +1,7 @@
+from "%rGui/globals/ui_library.nut" import *
+let cross_call = require("%rGui/globals/cross_call.nut")
+
+let string = require("string")
 let {floor} = require("math")
 let activeOrder = require("activeOrder.nut")
 let shipStateModule = require("shipStateModule.nut")
@@ -159,25 +163,25 @@ let function mkShellComp(watches, textCtor){
 let shellAltitude = {
   flow = FLOW_HORIZONTAL
   children = [
-    styleShipHudText.__merge({text = $"{::loc("hud/depth")} "})
+    styleShipHudText.__merge({text = $"{loc("hud/depth")} "})
     mkShellComp(altitude,
-        @() ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -altitude.value), false))
+        @() cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -altitude.value), false))
   ]
 }
 
 let shellChildren = [
   shellAltitude
   mkShellComp(remainingDist, @() remainingDist.value <= 0.0 ? "" :
-          ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(remainingDist.value))
+          cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(remainingDist.value))
   mkShellComp([isOperated, isTrackingTarget],
-              @() isOperated.value ? ::loc("hud/shell_operated") :
-              ::string.format("%s: %s", ::loc("hud/shell_homing"), isTrackingTarget.value ? ::loc("hud/shell_tracking") : ::loc("hud/shell_searching")))
-  mkShellComp(isActiveSensor, @() isActiveSensor.value ? ::loc("activeSonar") : ::loc("passiveSonar"))
+              @() isOperated.value ? loc("hud/shell_operated") :
+              string.format("%s: %s", loc("hud/shell_homing"), isTrackingTarget.value ? loc("hud/shell_tracking") : loc("hud/shell_searching")))
+  mkShellComp(isActiveSensor, @() isActiveSensor.value ? loc("activeSonar") : loc("passiveSonar"))
   mkShellComp([wireLoseTime, isWireConnected],
               @() isWireConnected.value ?
                (wireLoseTime.value > 0.0 ?
-                  ::string.format("%s: %d", ::loc("hud/wireMayBeLost"), floor(wireLoseTime.value + 0.5)) : "") :
-              ::loc("hud/wireIsLost"))
+                  string.format("%s: %d", loc("hud/wireMayBeLost"), floor(wireLoseTime.value + 0.5)) : "") :
+              loc("hud/wireIsLost"))
 ]
 
 let function ShipShellState() {
@@ -213,11 +217,11 @@ let shipHud = @(){
   watch = safeAreaSizeHud
   size = [SIZE_TO_CONTENT, flex()]
   margin = safeAreaSizeHud.value.borders
-  padding = [0, 0, hdpx(32) + ::fpx(6), 0]
+  padding = [0, 0, hdpx(32) + fpx(6), 0]
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
-  gap = ::scrn_tgt(0.005)
+  gap = scrn_tgt(0.005)
   children = [
     voiceChat
     activeOrder

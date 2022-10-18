@@ -1,11 +1,18 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let stdMath = require("%sqstd/math.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { ceil } = require("math")
 
-::gui_handlers.ChooseTitle <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ChooseTitle <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/profile/chooseTitle"
 
@@ -15,7 +22,7 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 
   static function open()
   {
-    if(!isInMenu() || !::my_stats.getStats())
+    if(!::isInMenu() || !::my_stats.getStats())
       return
 
     ::handlersManager.loadHandler(::gui_handlers.ChooseTitle)
@@ -32,7 +39,7 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
     let hasUnseen = seenTitles.getNewCount() > 0
     local titlesData = titlesList.map(function(name)
     {
-      let locText = ::loc("title/" + name)
+      let locText = loc("title/" + name)
       let isOwn = isOwnTitle(name)
       return {
         name
@@ -46,20 +53,20 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
       }
     }.bindenv(this))
 
-    local titleWidth = daguiFonts.getStringWidthPx(titlesData.map(@(t) t.text), "fontNormal", guiScene)
+    local titleWidth = daguiFonts.getStringWidthPx(titlesData.map(@(t) t.text), "fontNormal", this.guiScene)
     if (hasUnseen)
-      titleWidth += ::to_pixels("1@newWidgetIconHeight + 1@blockInterval")
-    titleWidth = max(titleWidth + 2 * ::to_pixels("@buttonTextPadding"), ::to_pixels("1@buttonWidth"))
-    let titleHeight = ::to_pixels("1@buttonHeight")
+      titleWidth += to_pixels("1@newWidgetIconHeight + 1@blockInterval")
+    titleWidth = max(titleWidth + 2 * to_pixels("@buttonTextPadding"), to_pixels("1@buttonWidth"))
+    let titleHeight = to_pixels("1@buttonHeight")
     let gRatioColumns = stdMath.calc_golden_ratio_columns(titlesData.len(),
       titleWidth / (titleHeight || 1))
-    let maxColumns = (::to_pixels("1@rw - 1@scrollBarSize") / titleWidth ).tointeger() || 1
+    let maxColumns = (to_pixels("1@rw - 1@scrollBarSize") / titleWidth ).tointeger() || 1
     let columns = clamp(gRatioColumns, min(3, maxColumns), maxColumns)
 
     //sort alphabetically, and by columns
     titlesData.sort(@(a, b) a.lowerText <=> b.lowerText)
     let orderedData = []
-    let rows = ::ceil(titlesData.len().tofloat() / columns).tointeger()
+    let rows = ceil(titlesData.len().tofloat() / columns).tointeger()
     for(local i = 0; i < rows; i++)
       for(local j = i; j < titlesData.len(); j += rows)
         orderedData.append(titlesData[j])
@@ -77,7 +84,7 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 
   function initScreen()
   {
-    ::move_mouse_on_child_by_value(scene.findObject("titles_list"))
+    ::move_mouse_on_child_by_value(this.scene.findObject("titles_list"))
     updateButtons()
   }
 
@@ -91,7 +98,7 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
   }
 
   function updateButtons() {
-    let title = getSelTitle(scene.findObject("titles_list"))
+    let title = getSelTitle(this.scene.findObject("titles_list"))
     if (!title) {
       this.showSceneBtn("btn_fav", false)
       this.showSceneBtn("btn_apply", false)
@@ -102,8 +109,8 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
     let favBtnObj = this.showSceneBtn("btn_fav", !isOwn)
     if (!isOwn)
       favBtnObj.setValue(::g_unlocks.isUnlockFav(title)
-        ? ::loc("preloaderSettings/untrackProgress")
-        : ::loc("preloaderSettings/trackProgress"))
+        ? loc("preloaderSettings/untrackProgress")
+        : loc("preloaderSettings/trackProgress"))
 
     this.showSceneBtn("btn_apply", isOwn)
   }
@@ -142,25 +149,25 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
   }
 
   function onApply() {
-    let title = getSelTitle(scene.findObject("titles_list"))
+    let title = getSelTitle(this.scene.findObject("titles_list"))
     setTitleAndGoBack(title)
   }
 
   function onToggleFav() {
-    let title = getSelTitle(scene.findObject("titles_list"))
+    let title = getSelTitle(this.scene.findObject("titles_list"))
     ::g_unlocks.toggleFav(title)
     updateButtons()
   }
 
   function setTitleAndGoBack(titleName) {
     if (!titleName || titleName == curTitle)
-      return goBack()
+      return this.goBack()
 
     ::g_tasker.addTask(
       ::select_current_title(titleName),
       {
         showProgressBox = true
-        progressBoxText = ::loc("charServer/checking")
+        progressBoxText = loc("charServer/checking")
       },
       function()
       {
@@ -168,7 +175,7 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
        ::my_stats.getStats()
       })
 
-    goBack()
+    this.goBack()
   }
 
   function afterModalDestroy()

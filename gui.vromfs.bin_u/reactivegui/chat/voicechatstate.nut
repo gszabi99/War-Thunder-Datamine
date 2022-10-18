@@ -1,3 +1,7 @@
+from "%rGui/globals/ui_library.nut" import *
+
+let {interop} = require("%rGui/globals/interop.nut")
+
 let VOICE_CHAT_MEMBER_PARAMS = {
   id = ""
   name = ""
@@ -38,9 +42,9 @@ let function showVoiceChatMember(config) {
     if (newVal)
       return
 
-    ::gui_scene.setInterval(voiceChatMember.animTime,
+    gui_scene.setInterval(voiceChatMember.animTime,
       function() {
-        ::gui_scene.clearTimer(callee())
+        gui_scene.clearTimer(callee())
         removeVoiceChatMember(voiceChatMember.id)
       })
   })
@@ -57,7 +61,7 @@ let function hideVoiceChatMember(config) {
     }
 }
 
-::interop.updateVoiceChatStatus <- function(config) {
+interop.updateVoiceChatStatus <- function(config) {
   if (config.isTalking)
     showVoiceChatMember(config)
   else

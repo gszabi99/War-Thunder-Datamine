@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
 
 
@@ -22,10 +28,10 @@ let time = require("%scripts/time.nut")
   basicInfoTable = null
   textInfoTable = null
 
-  constructor(log)
+  constructor(logObj)
   {
-    logBlk = log.blk
-    logId = log.id
+    logBlk = logObj.blk
+    logId = logObj.id
     logType = ::g_ww_log_type.getLogTypeByName(logBlk.type)
 
     logColor = getEventColor()
@@ -51,8 +57,8 @@ let time = require("%scripts/time.nut")
       }
     }
     else if (logBlk.type == WW_LOG_TYPES.ARMY_DIED)
-      detailedInfoText = ::loc("ui/parentheses",
-        {text = ::loc("worldwar/log/army_died_" + logBlk.reason)})
+      detailedInfoText = loc("ui/parentheses",
+        {text = loc("worldwar/log/army_died_" + logBlk.reason)})
 
     local wwArmyId = ""
     if ("army" in logBlk)
@@ -132,12 +138,12 @@ let time = require("%scripts/time.nut")
       }
     }
 
-    local str = ::loc("worldwar/log/" + logTypeKey) + " "
+    local str = loc("worldwar/log/" + logTypeKey) + " "
     if (logEndKey && logEndKey.len())
-      str += ::loc("worldwar/log/" + logEndKey) + " "
+      str += loc("worldwar/log/" + logEndKey) + " "
 
     textInfoTable = {
-      text = ::colorize(logColor, str),
+      text = colorize(logColor, str),
       tooltip = detailedInfoText
     }
   }
@@ -208,7 +214,7 @@ let time = require("%scripts/time.nut")
   {
     let mySideName = ::ww_side_val_to_name(::ww_get_player_side())
     let objectiveType = ::g_ww_objective_type.getTypeByTypeName(statBlk.type)
-    return "\"" + objectiveType.getName(statBlk, DataBlock(), mySideName) + "\""
+    return "\"" + objectiveType.getName(statBlk, ::DataBlock(), mySideName) + "\""
   }
 
   function getZoneName()

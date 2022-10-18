@@ -1,7 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+
 /*
   config {
-    purchaseData = (OnlineShopModel.getPurchaseData) //required
+    purchaseData = (::OnlineShopModel.getPurchaseData) //required
     image = (string)  //full path to image
     imageRatioHeight = (float)
     header = (string)
@@ -32,17 +41,17 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
   function initScreen()
   {
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
 
-    scene.findObject("award_name").setValue(header)
-    scene.findObject("award_desc").setValue(text)
+    this.scene.findObject("award_name").setValue(header)
+    this.scene.findObject("award_desc").setValue(text)
 
     validateImageData()
-    let imgObj = scene.findObject("award_image")
+    let imgObj = this.scene.findObject("award_image")
     imgObj["background-image"] = image
     imgObj["height"] = imageRatioHeight + "w"
 
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function getNavbarTplView()
@@ -75,7 +84,7 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
     let rndImg = ::u.chooseRandom(imgBlk % "image")
     if (::u.isString(rndImg))
     {
-      let country = ::get_profile_country_sq()
+      let country = profileCountrySq.value
       image = rndImg.subst({ country = ::g_string.cutPrefix(country, "country_", country) })
     }
     if (::is_numeric(imgBlk?.imageRatio))
@@ -87,7 +96,7 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
     ::OnlineShopModel.openBrowserByPurchaseData(purchaseData)
   }
 
-  function onEventProfileUpdated(p)
+  function onEventProfileUpdated(_p)
   {
     if (!::has_entitlement(purchaseData.sourceEntitlement))
       return
@@ -95,7 +104,7 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
     if (!::u.isEmpty(checkPackage))
       ::check_package_and_ask_download(checkPackage)
 
-    goBack()
+    this.goBack()
   }
 
   function onFacebookPostLink() {}

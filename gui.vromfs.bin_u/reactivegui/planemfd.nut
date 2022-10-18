@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {mkRadarForMfd} = require("radarComponent.nut")
 let {MfdRadarColor, MfdRadarEnabled} = require("radarState.nut")
 let {IsMfdEnabled, MfdOpticAtgmSightVis, MfdSightPosSize, RwrScale, MfdRadarWithNavVis, MfdRadarNavPosSize,
@@ -5,8 +7,8 @@ let {IsMfdEnabled, MfdOpticAtgmSightVis, MfdSightPosSize, RwrScale, MfdRadarWith
 let tws = require("tws.nut")
 let opticAtgmSight = require("opticAtgmSight.nut")
 let {RwrForMfd, RwrPosSize} = require("airState.nut")
-let mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut");
-let mfdVdi = require("planeCockpit/mfdVdi.nut");
+let mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut")
+let mfdVdi = require("planeCockpit/mfdVdi.nut")
 
 let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
   RwrPosSize.value[1] + 0.17 * RwrPosSize.value[3]])

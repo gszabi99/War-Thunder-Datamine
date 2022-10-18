@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
@@ -7,24 +13,24 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
   static defaultLocId = "recipes_bundle"
   static typeIcon = "#ui/gameuiskin#items_blueprint.png"
 
-  isDisassemble         = @() itemDef?.tags?.isDisassemble == true
-  updateNameLoc         = @(locName) isDisassemble() ? ::loc("item/disassemble_header", { name = locName })
+  isDisassemble         = @() this.itemDef?.tags?.isDisassemble == true
+  updateNameLoc         = @(locName) isDisassemble() ? loc("item/disassemble_header", { name = locName })
     : base.updateNameLoc(locName)
 
   canConsume            = @() false
-  shouldShowAmount      = @(count) false
+  shouldShowAmount      = @(_count) false
   getMaxRecipesToShow   = @() 1
   getMarketablePropDesc = @() ""
 
-  getGenerator          = @() ItemGenerators.get(id) //recipes bundle created by generator, so has same id
-  getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(getMyRecipes(), this, params)
-  getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(getMyRecipes(), this, params)
+  getGenerator          = @() ItemGenerators.get(this.id) //recipes bundle created by generator, so has same id
+  getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(this.getMyRecipes(), this, params)
+  getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(this.getMyRecipes(), this, params)
 
   function _getDescHeader(fixedAmount = 1)
   {
     let locId = (fixedAmount > 1) ? "trophy/recipe_result/many" : "trophy/recipe_result"
-    let headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
-    return ::colorize("grayOptionColor", headerText)
+    let headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
+    return colorize("grayOptionColor", headerText)
   }
 
   function getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes = false, timeText = "")
@@ -33,35 +39,35 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
       return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
 
     let locId = totalAmount == 1 ? "item/disassemble_recipes/single" : "item/disassemble_recipes"
-    return ::loc(locId,
+    return loc(locId,
       {
         count = totalAmount
-        countColored = ::colorize("activeTextColor", totalAmount)
+        countColored = colorize("activeTextColor", totalAmount)
         exampleCount = showAmount
       })
   }
 
-  function getMainActionData(isShort = false, params = {})
+  function getMainActionData(_isShort = false, _params = {})
   {
-    if (canAssemble())
+    if (this.canAssemble())
       return {
         btnName = getAssembleButtonText()
-        isInactive = hasReachedMaxAmount()
+        isInactive = this.hasReachedMaxAmount()
       }
 
     return null
   }
 
-  getAssembleHeader     = @() isDisassemble() ? getName() : base.getAssembleHeader()
-  getAssembleText       = @() isDisassemble() ? ::loc(getLocIdsList().disassemble) : ::loc(getLocIdsList().assemble)
-  getAssembleButtonText = @() isDisassemble() ? ::loc(getLocIdsList().disassemble) : base.getAssembleButtonText()
+  getAssembleHeader     = @() isDisassemble() ? this.getName() : base.getAssembleHeader()
+  getAssembleText       = @() isDisassemble() ? loc(this.getLocIdsList().disassemble) : loc(this.getLocIdsList().assemble)
+  getAssembleButtonText = @() isDisassemble() ? loc(this.getLocIdsList().disassemble) : base.getAssembleButtonText()
   getConfirmMessageData = @(recipe) !isDisassemble() ? ItemExternal.getConfirmMessageData.call(this, recipe)
-    : getEmptyConfirmMessageData().__update({
-        text = ::loc(getLocIdsList().msgBoxConfirm)
+    : this.getEmptyConfirmMessageData().__update({
+        text = loc(this.getLocIdsList().msgBoxConfirm)
         needRecipeMarkup = true
       })
 
-  doMainAction          = @(cb, handler, params = null) assemble(cb, params)
+  doMainAction          = @(cb, _handler, params = null) this.assemble(cb, params)
 
   getRewardListLocId = @() isDisassemble() ? "mainmenu/itemsList" : base.getRewardListLocId()
 

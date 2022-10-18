@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 // warning disable: -file:forbidden-function
 
 let dagor_fs = require("dagor.fs")
@@ -6,65 +12,66 @@ let skinLocations = require("%scripts/customization/skinLocations.nut")
 let unitInfoTexts = require("%scripts/unit/unitInfoTexts.nut")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
+let { register_command } = require("console")
+let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 
-local skyquakePath = ::debug_get_skyquake_path()
+local skyquakePath = debug_get_skyquake_path()
 
-::debug_check_unlocalized_resources <- function debug_check_unlocalized_resources()
-{
+let function debug_check_unlocalized_resources() {
   if (!::is_dev_version) return
 
-  dlog("debug_check_unlocalized_resources() // " + ::get_current_language() +" // listed in log")
+  dlog($"debug_check_unlocalized_resources() // {::get_current_language()} // listed in log")
   local count = 0
 
   // Units
-  ::dagor.debug("UNITS")
+  log("UNITS")
   count = 0
   foreach (unit in ::all_units)
     if (unit.isInShop)
       foreach (suffix in ["_shop", "_0", "_1", "_2"])
       {
         local localeId = unit.name + suffix
-        if (::loc(localeId, "") == "")
+        if (loc(localeId, "") == "")
         {
-          ::dagor.debug("    " + localeId)
+          log("    " + localeId)
           count++
         }
       }
   dlog(count + " units")
 
   // Unit Descriptions
-  ::dagor.debug("UNITDESC")
+  log("UNITDESC")
   count = 0
-  local placeholder = ::loc("encyclopedia/no_unit_description")
+  local placeholder = loc("encyclopedia/no_unit_description")
   foreach (unit in ::all_units)
     if (unit.isInShop)
     {
       local localeId = "encyclopedia/" + unit.name + "/desc"
-      local text = ::loc(localeId, "")
+      local text = loc(localeId, "")
       if (text == "" || text == placeholder)
       {
-        ::dagor.debug("    " + localeId)
+        log("    " + localeId)
         count++
       }
     }
   dlog(count + " unitdescs")
 
   // Skins
-  ::dagor.debug("SKINS")
+  log("SKINS")
   count = 0
   foreach (unit in ::all_units)
     if (unit.isInShop)
     {
       if (unit.skins.len() == 0)
-        unit.skins = get_skins_for_unit(unit.name) //always returns at least one entry
+        unit.skins = ::get_skins_for_unit(unit.name) //always returns at least one entry
 
       foreach (skin in unit.skins)
         if (skin.name.len())
         {
           local localeId = unit.name + "/" + skin.name
-          if (::loc(localeId, "") == "")
+          if (loc(localeId, "") == "")
           {
-            ::dagor.debug("    " + localeId)
+            log("    " + localeId)
             count++
           }
         }
@@ -72,7 +79,7 @@ local skyquakePath = ::debug_get_skyquake_path()
   dlog(count + " skins")
 
   // Decals
-  ::dagor.debug("DECALS")
+  log("DECALS")
   count = 0
   local blk = ::get_decals_blk()
   local total = blk.blockCount()
@@ -80,17 +87,16 @@ local skyquakePath = ::debug_get_skyquake_path()
   {
     local dblk = blk.getBlock(i)
     local localeId = "decals/" + dblk.getBlockName()
-    if (::loc(localeId, "") == "")
+    if (loc(localeId, "") == "")
     {
-      ::dagor.debug("    " + localeId)
+      log("    " + localeId)
       count++
     }
   }
   dlog(count + " decals")
 }
 
-::debug_check_unit_naming <- function debug_check_unit_naming()
-{
+let function debug_check_unit_naming() {
   if (!::is_dev_version) return 0
 
   local ids = {}
@@ -100,8 +106,8 @@ local skyquakePath = ::debug_get_skyquake_path()
   local total = 0
   local brief = []
 
-  brief.append("debug_check_unit_naming() // " + ::get_current_language())
-  ::dagor.debug(brief[brief.len() - 1])
+  brief.append($"debug_check_unit_naming() // {::get_current_language()}")
+  log(brief[brief.len() - 1])
 
   foreach (unit in ::all_units)
     if (unit.isInShop)
@@ -118,87 +124,87 @@ local skyquakePath = ::debug_get_skyquake_path()
       names[c][suffix] <- []
   }
 
-  ::dagor.debug("UNLOCALIZED UNIT NAMES:")
+  log("UNLOCALIZED UNIT NAMES:")
   count = 0
   foreach (c, unitIds in ids)
     foreach (unitId in unitIds)
       foreach (suffix in suffixes)
       {
         local locId = unitId + suffix
-        local locName = ::loc(locId)
+        local locName = loc(locId)
         if (locName == locId)
         {
           locName = ""
-          ::dagor.debug(format("    \"%s\" - not found in localization", locId))
+          log(format("    \"%s\" - not found in localization", locId))
           count++
         }
         names[c][suffix].append(locName)
       }
   brief.append(count + " unlocalized unit names")
-  ::dagor.debug(brief[brief.len() - 1])
+  log(brief[brief.len() - 1])
   total += count
 
-  ::dagor.debug("NAME_SHOP CONFLICTS (IMPORTANT!):")
+  log("NAME_SHOP CONFLICTS (IMPORTANT!):")
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       for (local j = i + 1; j < unitIds.len(); j++)
         if (names[c]._shop[i] != "" && names[c]._shop[j] != "" && names[c]._shop[i] == names[c]._shop[j])
         {
-          ::dagor.debug(format("    '%s_shop', '%s_shop' - both units named \"%s\"",
+          log(format("    '%s_shop', '%s_shop' - both units named \"%s\"",
             unitIds[i], unitIds[j], names[c]._shop[i]))
           count++
         }
   brief.append(count + " name_shop conflicts:")
-  ::dagor.debug(brief[brief.len() - 1])
+  log(brief[brief.len() - 1])
   total += count
 
-  ::dagor.debug("NAME_0 CONFLICTS:")
+  log("NAME_0 CONFLICTS:")
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       for (local j = i + 1; j < unitIds.len(); j++)
         if (names[c]._0[i] != "" && names[c]._0[j] != "" && names[c]._0[i] == names[c]._0[j])
         {
-          ::dagor.debug(format("    '%s_0', '%s_0' - both units named \"%s\"",
+          log(format("    '%s_0', '%s_0' - both units named \"%s\"",
             unitIds[i], unitIds[j], names[c]._0[i]))
           count++
         }
   brief.append(count + " name_0 conflicts")
-  ::dagor.debug(brief[brief.len() - 1])
+  log(brief[brief.len() - 1])
   total += count
 
-  ::dagor.debug("MIXED-UP _SHOP AND _0 NAMES:") // HERE
+  log("MIXED-UP _SHOP AND _0 NAMES:") // HERE
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       if (names[c]._shop[i] != "" && names[c]._0[i] != "" &&
         ::utf8_strlen(names[c]._shop[i]) > ::utf8_strlen(names[c]._0[i]))
       {
-        ::dagor.debug(format("    '%s_shop' (\"%s\") is longer than '%s_0' (\"%s\"), probably names are mixed up",
+        log(format("    '%s_shop' (\"%s\") is longer than '%s_0' (\"%s\"), probably names are mixed up",
           unitIds[i], names[c]._shop[i], unitIds[i], names[c]._0[i]))
         count++
       }
   brief.append(count + " _shop and _0 names mixed-up")
-  ::dagor.debug(brief[brief.len() - 1])
+  log(brief[brief.len() - 1])
   total += count
 
-  ::dagor.debug("MIXED-UP _SHOP AND _1 NAMES:")
+  log("MIXED-UP _SHOP AND _1 NAMES:")
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       if (names[c]._shop[i] != "" && names[c]._1[i] != "" &&
         ::utf8_strlen(names[c]._1[i]) > ::utf8_strlen(names[c]._shop[i]))
       {
-        ::dagor.debug(format("    '%s_1' (\"%s\") is longer than '%s_shop' (\"%s\"), probably names are mixed up",
+        log(format("    '%s_1' (\"%s\") is longer than '%s_shop' (\"%s\"), probably names are mixed up",
           unitIds[i], names[c]._1[i], unitIds[i], names[c]._shop[i]))
         count++
       }
   brief.append(count + " _shop and _1 names mixed-up")
-  ::dagor.debug(brief[brief.len() - 1])
+  log(brief[brief.len() - 1])
   total += count
 
-  ::dagor.debug("NAMES WITH WASTED SPACE:")
+  log("NAMES WITH WASTED SPACE:")
   count = 0
   foreach (c, unitIds in ids)
     foreach (idx, unitId in unitIds)
@@ -208,16 +214,16 @@ local skyquakePath = ::debug_get_skyquake_path()
         local fixed = regexp2(@"\s\s").replace(" ", strip(name))
         if (name.len() > fixed.len())
         {
-          ::dagor.debug(format("    \"%s%s\" - need to trim space characters here: \"%s\"",
+          log(format("    \"%s%s\" - need to trim space characters here: \"%s\"",
             unitId, suffix, name))
           count++
         }
       }
   brief.append(count + " names with wasted space")
-  ::dagor.debug(brief[brief.len() - 1])
+  log(brief[brief.len() - 1])
   total += count
 
-  ::dagor.debug("NAMES WITH SUSPICIOUS CHARACTERS (" + ::get_current_language() + "):")
+  log("NAMES WITH SUSPICIOUS CHARACTERS (" + ::get_current_language() + "):")
   count = 0
   local locale = ::get_current_language()
   local configs = {
@@ -238,7 +244,7 @@ local skyquakePath = ::debug_get_skyquake_path()
   local cfg = configs?[locale] ?? configs.Other
   foreach (c, unitIds in ids)
   {
-    if (cfg?.countriesCheck && !::isInArray(c, cfg.countriesCheck))
+    if (cfg?.countriesCheck && !isInArray(c, cfg.countriesCheck))
       continue
     foreach (idx, unitId in unitIds)
       foreach (suffix in suffixes)
@@ -255,19 +261,19 @@ local skyquakePath = ::debug_get_skyquake_path()
           continue
 
         local allForeignChars = cfg.foreignAbc.replace("_", origName)
-        ::dagor.debug(format("    \"%s%s\" - %s chars in name: \"%s\" -> \"%s\"",
+        log(format("    \"%s%s\" - %s chars in name: \"%s\" -> \"%s\"",
           unitId, suffix, cfg.foreignName, origName, allForeignChars))
         count++
       }
   }
   brief.append(count + " names with suspicious characters")
-  ::dagor.debug(brief[brief.len() - 1])
+  log(brief[brief.len() - 1])
   total += count
 
   brief.append("TOTAL: " + total)
-  ::dagor.debug(brief[brief.len() - 1])
+  log(brief[brief.len() - 1])
   foreach (str in brief)
-    dagor.screenlog(str)
+    dlog(str)
   return total
 }
 
@@ -355,13 +361,12 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
   return res
 }
 
-::debug_check_unit_images <- function debug_check_unit_images(verbose = false)
-{
+let function debug_check_unit_images(verbose = false) {
   local unitsList = ::all_units.values().filter(@(u) u.isInShop)
   local errors    = 0
   local warnings  = 0
   local info      = 0
-  local printFunc = ::dagor.console_print
+  local printFunc = console_print
 
   foreach (cfg in unitImagesCheckCfgs)
   {
@@ -379,10 +384,10 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
 
     cfg?.onStart()
     local units = cfg?.filterUnits ? unitsList.filter(cfg.filterUnits) : unitsList
-    foreach (idx, unit in units)
+    foreach (_idx, unit in units)
     {
       local fn = cfg.getImgFnForUnit(unit).tolower()
-      local unitTag = unit.unitType.tag
+      local unitTag = unit.unitType.getCrewTag()
       local unitSrc = unit.isPkgDev ? "pkg_dev" : "release"
       local pathKey = unit.isPkgDev ? "pathDev" : "pathRel"
 
@@ -419,7 +424,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
         local imgUnit = ::getAircraftByName(cfg.getUnitIdByImgFn(fn))
         if (imgUnit != null && imgUnit != unit && unit.isPkgDev && !imgUnit.isPkgDev)
         {
-          local unitTag2 = imgUnit.unitType.tag
+          local unitTag2 = imgUnit.unitType.getCrewTag()
           local pathKey2 = imgUnit.isPkgDev ? "pathDev" : "pathRel"
           if (files[unitTag2][pathKey2].indexof(fn) != null)
             continue
@@ -464,8 +469,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
   return errors
 }
 
-::debug_cur_level_auto_skins <- function debug_cur_level_auto_skins()
-{
+let function debug_cur_level_auto_skins() {
   local level = ::is_in_flight() ? ::get_current_mission_info_cached()?.level : null
   local fullDebugtext = "Auto skins for " + (level || "TestFlight")
   if (level)
@@ -480,12 +484,11 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
         + ::g_string.implode(::g_decorator.getBestSkinsList(unit.name, true), ", ")
     }
 
-  ::dagor.debug(fullDebugtext)
-  return "Total units found = " + total
+  log(fullDebugtext)
+  dlog($"Total units found = {total}")
 }
 
-::debug_all_skins_without_location_mask <- function debug_all_skins_without_location_mask()
-{
+let function debug_all_skins_without_location_mask() {
   local totalList = []
   foreach(unit in ::all_units)
     if (unit.unitType.isSkinAutoSelectAvailable())
@@ -497,5 +500,12 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
         if (!mask)
           ::u.appendOnce(skin.name, totalList)
       }
-  return "Total skins without location mask = " + totalList.len() + "\n" + ::g_string.implode(totalList, ", ")
+  dlog($"Total skins without location mask = {totalList.len()}\n{", ".join(totalList, true)}")
 }
+
+register_command(debug_check_unlocalized_resources, "debug.check_unlocalized_resources")
+register_command(debug_check_unit_naming, "debug.check_unit_naming")
+register_command(@() debug_check_unit_images(), "debug.check_unit_images")
+register_command(@() debug_check_unit_images(true), "debug.check_unit_images_verbose")
+register_command(debug_cur_level_auto_skins, "debug.cur_level_auto_skins")
+register_command(debug_all_skins_without_location_mask, "debug.all_skins_without_location_mask")

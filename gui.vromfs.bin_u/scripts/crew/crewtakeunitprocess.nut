@@ -1,7 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { get_time_msec } = require("dagor.time")
 let chard = require("chard")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
+let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -104,16 +112,16 @@ enum CTU_PROGRESS {
         {
           local msg = ""
           if (unit)
-            msg = ::loc("msg/cantUseUnitInCurrentBattle",
-              { unitName = ::colorize("userlogColoredText", ::getUnitName(unit)) })
+            msg = loc("msg/cantUseUnitInCurrentBattle",
+              { unitName = colorize("userlogColoredText", ::getUnitName(unit)) })
           else
-            msg = ::loc("msg/needAtLeastOneAvailableUnit")
+            msg = loc("msg/needAtLeastOneAvailableUnit")
           ::showInfoMsgBox(msg)
           return remove()
         }
         if (!hasRequiredUnit)
         {
-          ::showInfoMsgBox(::loc("msg/needAtLeastOneRequiredUnit"))
+          ::showInfoMsgBox(loc("msg/needAtLeastOneRequiredUnit"))
           return remove()
         }
       }
@@ -130,7 +138,7 @@ enum CTU_PROGRESS {
       if (!crew)
         locId = unit ? "shop/needMoneyQuestion_hireAndTrainCrew"
                      : "shop/needMoneyQuestion_purchaseCrew"
-      let msgText = ::warningIfGold(format(::loc(locId), cost.getTextAccordingToBalance()), cost)
+      let msgText = ::warningIfGold(format(loc(locId), cost.getTextAccordingToBalance()), cost)
       ::scene_msg_box("need_money", null, msgText,
         [ ["ok", nextStepCb],
           ["cancel", removeCb ]
@@ -140,7 +148,7 @@ enum CTU_PROGRESS {
     [CTU_PROGRESS.CHECK_MONEY] = function()
     {
       if (::check_balance_msgBox(cost,
-            ::Callback(function()
+            Callback(function()
               {
                 if (::check_balance_msgBox(cost, nextStepCb, true))
                   nextStep()
@@ -155,7 +163,7 @@ enum CTU_PROGRESS {
     {
       if (crew)
         return nextStep()
-      let purchaseCb = ::Callback(function()
+      let purchaseCb = Callback(function()
         {
           let crews = ::get_crews_list_by_country(country)
           if (!crews.len())
@@ -208,8 +216,8 @@ enum CTU_PROGRESS {
     onFinish = callback
     activeProcesses.append(this)
 
-    nextStepCb = ::Callback(nextStep, this)
-    removeCb = ::Callback(remove, this)
+    nextStepCb = Callback(nextStep, this)
+    removeCb = Callback(remove, this)
     cost = getProcessCost(crew, unit, country)
 
     ::g_crews_list.suspendSlotbarUpdates()
@@ -252,7 +260,7 @@ enum CTU_PROGRESS {
 
   function isValid()
   {
-    return ::getTblValue(0, activeProcesses) == this
+    return getTblValue(0, activeProcesses) == this
   }
 
   function isEqual(process)
@@ -282,19 +290,19 @@ enum CTU_PROGRESS {
       return false
 
     let msg = format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
-                         ::getEnumValName("CTU_PROGRESS", activeProcesses[0].curProgress))
+      getEnumValName("CTU_PROGRESS", activeProcesses[0].curProgress))
     ::script_net_assert_once("can't start take crew", msg)
     return false
   }
 
   function isStuck()
   {
-    return ::dagor.getCurTime() - lastUpdateTime > PROCESS_TIME_OUT
+    return get_time_msec() - lastUpdateTime > PROCESS_TIME_OUT
   }
 
   function refreshTimer()
   {
-    lastUpdateTime = ::dagor.getCurTime()
+    lastUpdateTime = get_time_msec()
   }
 
   function remove(...)
@@ -315,7 +323,7 @@ enum CTU_PROGRESS {
     curProgress++
     refreshTimer()
 
-    let curStepFunc = ::getTblValue(curProgress, stepsList)
+    let curStepFunc = getTblValue(curProgress, stepsList)
     if (!curStepFunc)
     {
       ::script_net_assert_once("missing take unit step", "Missing take unit step = " + curProgress)
@@ -325,7 +333,7 @@ enum CTU_PROGRESS {
     curStepFunc.call(this)
   }
 
-  function onEventQueueChangeState(p)
+  function onEventQueueChangeState(_p)
   {
     if (curProgress > CTU_PROGRESS.CHECK_QUEUE
         && (crew || unit)
@@ -333,13 +341,13 @@ enum CTU_PROGRESS {
       remove()
   }
 
-  function onEventLoadingStateChange(p)
+  function onEventLoadingStateChange(_p)
   {
     if (::is_in_flight())
       remove()
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
     remove()
   }

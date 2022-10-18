@@ -1,7 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
-let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
 /*
   behaviour config params:
@@ -14,7 +19,7 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
 let BhvUnseen = class
 {
-  eventMask    = ::EV_ON_CMD
+  eventMask    = EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
 
   function onAttach(obj)
@@ -22,7 +27,7 @@ let BhvUnseen = class
     if (obj?.value)
       setNewConfig(obj, buildConfig(obj.value))
     updateView(obj)
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 
   function buildConfig(value)
@@ -102,7 +107,7 @@ let BhvUnseen = class
   function getOnSeenChangedCb(obj)
   {
     let bhvClass = this
-    return @() ::check_obj(obj) && bhvClass.updateView(obj)
+    return @() checkObj(obj) && bhvClass.updateView(obj)
   }
 
   function updateView(obj)

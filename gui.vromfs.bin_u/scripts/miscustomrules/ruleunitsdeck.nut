@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::mission_rules.UnitsDeck <- class extends ::mission_rules.Base
 {
   needLeftRespawnOnSlots = true
@@ -9,17 +15,17 @@
 
   function getRespawnInfoTextForUnitInfo(unit)
   {
-    return ::loc("multiplayer/leftTeamUnit",
+    return loc("multiplayer/leftTeamUnit",
                  { num = getUnitLeftRespawns(unit) })
   }
 
-  function getUnitLeftRespawns(unit, teamDataBlk = null)
+  function getUnitLeftRespawns(unit, _teamDataBlk = null)
   {
     if (!unit)
       return 0
-    let myState = getMyStateBlk()
-    let limitedUnits = ::getTblValue("limitedUnits", myState)
-    return ::getTblValue(unit.name, limitedUnits, 0)
+    let myState = this.getMyStateBlk()
+    let limitedUnits = getTblValue("limitedUnits", myState)
+    return getTblValue(unit.name, limitedUnits, 0)
   }
 
   function getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk)
@@ -35,12 +41,12 @@
     let leftRespawns = getUnitLeftRespawns(unit)
     if (leftRespawns || isUnitAvailableBySpawnScore(unit))
       return null
-    return ::loc("respawn/noUnitLeft", { unitName = ::colorize("userlogColoredText", ::getUnitName(unit)) })
+    return loc("respawn/noUnitLeft", { unitName = colorize("userlogColoredText", ::getUnitName(unit)) })
   }
 
   function hasCustomUnitRespawns()
   {
-    let myTeamDataBlk = getMyTeamDataBlk()
+    let myTeamDataBlk = this.getMyTeamDataBlk()
     return myTeamDataBlk != null
   }
 
@@ -49,26 +55,26 @@
     let res = base.calcFullUnitLimitsData()
     res.defaultUnitRespawnsLeft = 0
 
-    let myTeamDataBlk = isTeamMine ? getMyTeamDataBlk() : getEnemyTeamDataBlk()
-    let distributedBlk = ::getTblValue("distributedUnits", myTeamDataBlk)
-    let limitedBlk = ::getTblValue("limitedUnits", myTeamDataBlk)
+    let myTeamDataBlk = isTeamMine ? this.getMyTeamDataBlk() : this.getEnemyTeamDataBlk()
+    let distributedBlk = getTblValue("distributedUnits", myTeamDataBlk)
+    let limitedBlk = getTblValue("limitedUnits", myTeamDataBlk)
     let myTeamUnitsParamsBlk = isTeamMine
-      ? getMyTeamDataBlk("unitsParamsList") : getEnemyTeamDataBlk("unitsParamsList")
-    let weaponsLimitsBlk = getWeaponsLimitsBlk()
-    let unitsGroups = getUnitsGroups()
+      ? this.getMyTeamDataBlk("unitsParamsList") : this.getEnemyTeamDataBlk("unitsParamsList")
+    let weaponsLimitsBlk = this.getWeaponsLimitsBlk()
+    let unitsGroups = this.getUnitsGroups()
 
     if (::u.isDataBlock(limitedBlk))
       for(local i = 0; i < limitedBlk.paramCount(); i++)
       {
         let unitName = limitedBlk.getParamName(i)
-        let teamUnitPreset = ::getTblValue(unitName, myTeamUnitsParamsBlk, null)
-        let userUnitPreset = ::getTblValue(unitName, weaponsLimitsBlk, null)
-        let weapon = ::getTblValue("weapon", teamUnitPreset, null)
+        let teamUnitPreset = getTblValue(unitName, myTeamUnitsParamsBlk, null)
+        let userUnitPreset = getTblValue(unitName, weaponsLimitsBlk, null)
+        let weapon = getTblValue("weapon", teamUnitPreset, null)
 
         let presetData = {
-          weaponPresetId = ::getTblValue("name", weapon, "")
-          teamUnitPresetAmount = ::getTblValue("count", weapon, "")
-          userUnitPresetAmount = ::getTblValue("respawnsLeft", userUnitPreset, 0)
+          weaponPresetId = getTblValue("name", weapon, "")
+          teamUnitPresetAmount = getTblValue("count", weapon, "")
+          userUnitPresetAmount = getTblValue("respawnsLeft", userUnitPreset, 0)
         }
 
         let group = unitsGroups?[unitName]
@@ -93,13 +99,13 @@
       return false
 
     local missionUnit = unit
-    let missionUnitName = getMyStateBlk()?.userUnitToUnitGroup[unit.name] ?? ""
+    let missionUnitName = this.getMyStateBlk()?.userUnitToUnitGroup[unit.name] ?? ""
     if (missionUnitName != "")
       missionUnit = ::getAircraftByName(missionUnitName)
 
     return getUnitLeftRespawns(unit) == 0
-      && getUnitLeftRespawnsByTeamDataBlk(missionUnit, getMyTeamDataBlk()) != 0
-      && isScoreRespawnEnabled
+      && getUnitLeftRespawnsByTeamDataBlk(missionUnit, this.getMyTeamDataBlk()) != 0
+      && this.isScoreRespawnEnabled
       && unit.getSpawnScore() > 0
   }
 

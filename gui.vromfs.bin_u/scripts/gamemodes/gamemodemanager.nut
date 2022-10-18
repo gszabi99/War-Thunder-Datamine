@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -11,10 +17,10 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 ::featured_modes <- [
   {
     modeId = "world_war_featured_game_mode"
-    text = @() ::loc("mainmenu/btnWorldwar")
+    text = @() loc("mainmenu/btnWorldwar")
     textDescription = @() ::g_world_war.getPlayedOperationText()
     startFunction = @() ::g_world_war.openMainWnd()
-    isWide = @() ::is_me_newbie() || !::is_platform_pc
+    isWide = @() ::is_me_newbie() || !is_platform_pc
     image = function() {
         let operation = ::g_world_war.getLastPlayedOperation()
         if (operation != null)
@@ -32,40 +38,40 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         return null
 
       if (!isMultiplayerPrivilegeAvailable.value)
-        return ::loc("xbox/noMultiplayer")
+        return loc("xbox/noMultiplayer")
 
       //Always send to other platform if enabled
       //Need to notify about it
       if (isCrossPlayEnabled())
-        return ::loc("xbox/crossPlayEnabled")
+        return loc("xbox/crossPlayEnabled")
 
       //Notify that crossplay is strongly required
-      return ::loc("xbox/crossPlayRequired")
+      return loc("xbox/crossPlayRequired")
     }
     hasNewIconWidget = true
     updateByTimeFunc = function(scene, objId) {
       let descObj = scene.findObject(objId + "_text_description")
-      if (::check_obj(descObj))
+      if (checkObj(descObj))
         descObj.setValue(::g_world_war.getPlayedOperationText())
     }
   }
   {
     /*TSS*/
     modeId = "tss_featured_game_mode"
-    text = @() ::loc("mainmenu/btnTournamentsTSS")
+    text = @() loc("mainmenu/btnTournamentsTSS")
     textDescription = @() null
     startFunction = function() {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
-        openUrl(::loc("url/tss_all_tournaments"), false, false)
+        openUrl(loc("url/tss_all_tournaments"), false, false)
       else if (!isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
       else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
-        ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
+        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
     }
     isWide = false
     image = @() "#ui/images/game_modes_tiles/tss_" + (isWide ? "wide" : "thin") + ".jpg?P1"
     videoPreview = null
-    isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && ::has_feature("Tournaments") && ::has_feature("AllowExternalLink")
+    isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())
@@ -78,15 +84,15 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         return null
 
       if (!isMultiplayerPrivilegeAvailable.value)
-        return ::loc("xbox/noMultiplayer")
+        return loc("xbox/noMultiplayer")
 
       //Always send to other platform if enabled
       //Need to notify about it
       if (isCrossPlayEnabled())
-        return ::loc("xbox/crossPlayEnabled")
+        return loc("xbox/crossPlayEnabled")
 
       //Notify that crossplay is strongly required
-      return ::loc("xbox/crossPlayRequired")
+      return loc("xbox/crossPlayRequired")
     }
   }
   {
@@ -96,9 +102,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     {
       let activeEventsNum = ::events.getEventsVisibleInEventsWindowCount()
       if (activeEventsNum <= 0)
-        return ::loc("mainmenu/events/eventlist_btn_no_active_events")
+        return loc("mainmenu/events/eventlist_btn_no_active_events")
       else
-        return ::loc("mainmenu/btnTournamentsAndEvents")
+        return loc("mainmenu/btnTournamentsAndEvents")
 
     }
     textDescription = function() { return null }
@@ -114,13 +120,13 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     videoPreview = null
     isVisible = function ()
     {
-      return ::has_feature("Events") && ::events.getEventsVisibleInEventsWindowCount() > 0
+      return hasFeature("Events") && ::events.getEventsVisibleInEventsWindowCount() > 0
     }
     hasNewIconWidget = false
     inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
     crossplayTooltip = function() {
       if (!isMultiplayerPrivilegeAvailable.value)
-        return ::loc("xbox/noMultiplayer")
+        return loc("xbox/noMultiplayer")
 
       return null
     }
@@ -139,7 +145,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     }
     text = function ()
     {
-      return ::loc("mainmenu/btnSkirmish")
+      return loc("mainmenu/btnSkirmish")
     }
     textDescription = function() { return null }
     isWide = false
@@ -157,7 +163,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
     crossplayTooltip = function() {
       if (!isMultiplayerPrivilegeAvailable.value)
-        return ::loc("xbox/noMultiplayer")
+        return loc("xbox/noMultiplayer")
 
       return null
     }
@@ -186,7 +192,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       if (chapterEvents.len())
       {
         let lastPlayedEventId = ::events.getLastPlayedEvent()?.name
-        let lastPlayedEventRelevance = ::isInArray(lastPlayedEventId, chapterEvents) ?
+        let lastPlayedEventRelevance = isInArray(lastPlayedEventId, chapterEvents) ?
           ::events.checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
         let relevanceList = ::u.map(chapterEvents, function(id) {
           return { eventId = id, relevance = ::events.checkUnitRelevanceForEvent(id, curUnit) }
@@ -211,29 +217,29 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return !chapter || chapter.isEmpty()
     }
     isVisible = function() {
-      return ::has_feature("AllModesInRandomBattles")
-             && ::g_difficulty.SIMULATOR.isAvailable(::GM_DOMINATION)
+      return hasFeature("AllModesInRandomBattles")
+             && ::g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)
              && !::is_me_newbie()
     }
-    getTooltipText = function() { return ::loc("simulator_battles/desc") }
+    getTooltipText = function() { return loc("simulator_battles/desc") }
   }
 ]
 
 ::game_mode_select_partitions_data <- [
   {
-    diffCode = ::DIFFICULTY_ARCADE
+    diffCode = DIFFICULTY_ARCADE
     forClan = false
     skipFeatured = true
     skipEnableOnDebug = true
   }
   {
-    diffCode = ::DIFFICULTY_REALISTIC
+    diffCode = DIFFICULTY_REALISTIC
     forClan = false
     skipFeatured = true
     skipEnableOnDebug = true
   }
   {
-    diffCode = ::DIFFICULTY_HARDCORE
+    diffCode = DIFFICULTY_HARDCORE
     forClan = false
     skipFeatured = true
     skipEnableOnDebug = true
@@ -370,7 +376,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
    */
   function getCurrentGameMode()
   {
-    return ::getTblValue(_currentGameModeId, _gameModeById, null)
+    return getTblValue(_currentGameModeId, _gameModeById, null)
   }
 
   /**
@@ -378,27 +384,27 @@ let { checkAndShowMultiplayerPrivilegeWarning,
    */
   function getGameModeById(id)
   {
-    return ::getTblValue(id, _gameModeById, null)
+    return getTblValue(id, _gameModeById, null)
   }
 
   /**
    * Game modes retrieve method.
    * @param unitType Optional parameter providing method with unit type filter.
-   *                 Parameter will be ignored if it set to ::ES_UNIT_TYPE_INVALID.
+   *                 Parameter will be ignored if it set to ES_UNIT_TYPE_INVALID.
    * @param filterFunc Optional filter function with game mode as parameter and
    *                   boolean return type.
    * @return Returns array with available game modes.
    */
-  function getGameModes(unitType = ::ES_UNIT_TYPE_INVALID, filterFunc = null)
+  function getGameModes(unitType = ES_UNIT_TYPE_INVALID, filterFunc = null)
   {
-    if (unitType == ::ES_UNIT_TYPE_INVALID && filterFunc == null)
+    if (unitType == ES_UNIT_TYPE_INVALID && filterFunc == null)
       return _gameModes
     let gameModes = []
     foreach (gameMode in _gameModes)
     {
       if (filterFunc != null && !filterFunc(gameMode))
         continue
-      if (unitType != ::ES_UNIT_TYPE_INVALID && !::isInArray(unitType, gameMode.unitTypes))
+      if (unitType != ES_UNIT_TYPE_INVALID && !isInArray(unitType, gameMode.unitTypes))
         continue
       gameModes.append(gameMode)
     }
@@ -423,7 +429,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         continue
       let checkedUnitTypes = getRequiredUnitTypes(gameMode)
 
-      if (!::isInArray(unitType, checkedUnitTypes))
+      if (!isInArray(unitType, checkedUnitTypes))
         continue
       if (excludeClanGameModes && gameMode.forClan)
         continue
@@ -470,7 +476,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
    */
   function isPresetValidForGameMode(preset, gameMode = null)
   {
-    let unitNames = ::getTblValue("units", preset, null)
+    let unitNames = getTblValue("units", preset, null)
     if (unitNames == null)
       return false
     if (gameMode == null)
@@ -479,7 +485,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     foreach (unitName in unitNames)
     {
       let unit = ::getAircraftByName(unitName)
-      if (::isInArray(unit?.esUnitType, checkedUnitTypes)
+      if (isInArray(unit?.esUnitType, checkedUnitTypes)
         && isUnitAllowedForGameMode(unit, gameMode))
         return true
     }
@@ -488,7 +494,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function findPresetValidForGameMode(countryId, gameMode = null /* if null then current game mode*/)
   {
-    let presets = ::getTblValue(countryId, ::slotbarPresets.presets, null)
+    let presets = getTblValue(countryId, ::slotbarPresets.presets, null)
     if (presets == null)
       return null
     foreach (preset in presets)
@@ -514,7 +520,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return queue.name
 
     local idFromAccount = null
-    local unitType = ::ES_UNIT_TYPE_INVALID
+    local unitType = ES_UNIT_TYPE_INVALID
     if (!ignoreLocalProfile && ::g_login.isProfileReceived())
     {
       // Step 1. Attempting to retrieve current game mode id from account.
@@ -525,7 +531,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       // Step 2. Player's newbie event is may be not longer available.
       //         Attempting to get event with same unit type.
       unitType = ::my_stats.getUnitTypeByNewbieEventId(idFromAccount)
-      if (unitType != ::ES_UNIT_TYPE_INVALID)
+      if (unitType != ES_UNIT_TYPE_INVALID)
       {
         local gameMode = null
         if (preferredDiffCode != -1)
@@ -539,20 +545,20 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
     // Step 4. Attempting to retrieve current game mode id from newbie event.
     let event = ::my_stats.getNextNewbieEvent(null, null, true)
-    let idFromEvent = ::getTblValue("name", event, null)
+    let idFromEvent = getTblValue("name", event, null)
     if (idFromEvent in _gameModeById)
       return idFromEvent
 
     // Step 5. Attempting to get unit type from currently selected unit.
     let unit = ::get_cur_slotbar_unit()
-    if (unitType == ::ES_UNIT_TYPE_INVALID && unit != null)
+    if (unitType == ES_UNIT_TYPE_INVALID && unit != null)
         unitType = ::get_es_unit_type(unit)
 
     // Step 6. Newbie event not found. If player is newbie and he has
     //         valid unit type we select easiest game mode.
-    let firstUnitType = getFirstChosenUnitType(::ES_UNIT_TYPE_INVALID)
-    if (unitType == ::ES_UNIT_TYPE_INVALID
-        && firstUnitType != ::ES_UNIT_TYPE_INVALID
+    let firstUnitType = getFirstChosenUnitType(ES_UNIT_TYPE_INVALID)
+    if (unitType == ES_UNIT_TYPE_INVALID
+        && firstUnitType != ES_UNIT_TYPE_INVALID
         && ::my_stats.isMeNewbie())
       unitType = firstUnitType
 
@@ -637,7 +643,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
        return
 
     let isForClan = ::events.isEventForClan(event)
-    if (isForClan && !::has_feature("Clans"))
+    if (isForClan && !hasFeature("Clans"))
       return
 
     let gameMode = {
@@ -650,7 +656,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       diffCode = ::events.getEventDiffCode(event)
       ediff = ::events.getEDiffByEvent(event)
       image = ::events.getEventTileImageName(event, ::events.isEventDisplayWide(event))
-      videoPreview = ::has_feature("VideoPreview") ? ::events.getEventPreviewVideoName(event, ::events.isEventDisplayWide(event)) : null
+      videoPreview = hasFeature("VideoPreview") ? ::events.getEventPreviewVideoName(event, ::events.isEventDisplayWide(event)) : null
       displayType = ::events.getEventDisplayType(event)
       forClan = isForClan
       countries = ::events.getAvailableCountriesByEvent(event)
@@ -696,7 +702,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       diffCode = gm.difficulty.diffCode
       ediff = gm.difficulty.getEdiff()
       image = gm.image
-      linkIcon = ::getTblValue("linkIcon", gm, false)
+      linkIcon = getTblValue("linkIcon", gm, false)
       videoPreview = null
       displayType = gm.type
       forClan = false
@@ -704,12 +710,12 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       displayWide = gm.displayWide
       enableOnDebug = false
       inactiveColor = gm?.inactiveColor ?? @() false
-      unitTypes = [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_BOAT, ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_HELICOPTER]
+      unitTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_HELICOPTER]
       startFunction = @() gm?.startFunction()
       onBattleButtonClick = @() gm?.onBattleButtonClick()
 
       getEvent = @() ::events.getEvent(gm?.getEventId())
-      getTooltipText = ::getTblValue("getTooltipText", gm, function() { return "" })
+      getTooltipText = getTblValue("getTooltipText", gm, function() { return "" })
     }
     return _appendGameMode(gameMode)
   }
@@ -790,7 +796,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       let partition = {
         separator = partitionData.forClan
         gameModes = ::game_mode_manager.getGameModes(
-          ::ES_UNIT_TYPE_INVALID,
+          ES_UNIT_TYPE_INVALID,
           (@(partitionData) function (gameMode) {
             let checkForClan = gameMode.forClan == partitionData.forClan
             let checkDiffCode = partitionData.diffCode == -1 || gameMode.diffCode == partitionData.diffCode
@@ -817,28 +823,28 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function getFeaturedGameModes()
   {
-    return getGameModes(::ES_UNIT_TYPE_INVALID, function (gameMode) {
+    return getGameModes(ES_UNIT_TYPE_INVALID, function (gameMode) {
       return gameMode.displayType == ::g_event_display_type.FEATURED && !gameMode.enableOnDebug
     })
   }
 
   function getDebugGameModes()
   {
-    return getGameModes(::ES_UNIT_TYPE_INVALID, function (gameMode) {
+    return getGameModes(ES_UNIT_TYPE_INVALID, function (gameMode) {
       return gameMode.enableOnDebug
     })
   }
 
   function getPveBattlesGameModes()
   {
-    return getGameModes(::ES_UNIT_TYPE_INVALID, function (gameMode) {
+    return getGameModes(ES_UNIT_TYPE_INVALID, function (gameMode) {
       return gameMode.displayType == ::g_event_display_type.PVE_BATTLE && !gameMode.enableOnDebug
     })
   }
 
   function getClanBattlesGameModes()
   {
-    return getGameModes(::ES_UNIT_TYPE_INVALID, function (gameMode) {
+    return getGameModes(ES_UNIT_TYPE_INVALID, function (gameMode) {
       return gameMode.forClan && !gameMode.enableOnDebug
     })
   }
@@ -905,7 +911,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function isSeen(gameModeId)
   {
-    return ::getTblValue(gameModeId, isSeenByGameModeId, false)
+    return getTblValue(gameModeId, isSeenByGameModeId, false)
   }
 
   function saveSeenGameModes()
@@ -946,29 +952,29 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
 //------------- </New Icon Widget> ----------------------
 
-  function _onEventsDataUpdated(params)
+  function _onEventsDataUpdated(_params)
   {
     updateManager()
   }
 
-  function _onMyStatsUpdated(params)
+  function _onMyStatsUpdated(_params)
   {
     updateManager()
   }
 
-  function _onUnitTypeChosen(params)
+  function _onUnitTypeChosen(_params)
   {
     updateManager()
   }
 
-  function _onGameLocalizationChanged(params)
+  function _onGameLocalizationChanged(_params)
   {
     if (!::g_login.isLoggedIn())
       return
     updateManager()
   }
 
-  function _onEventCrewTakeUnit(params)
+  function _onEventCrewTakeUnit(_params)
   {
     updateManager()
   }
@@ -979,7 +985,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       _updateCurrentGameModeId()
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
     _currentGameModeId = null
     _gameModeById.clear()
@@ -1003,4 +1009,4 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
 }
 
-::game_mode_manager <- GameModeManager()
+::game_mode_manager <- ::GameModeManager()

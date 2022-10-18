@@ -1,10 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getMarkerUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqualSimple } = require("%sqstd/underscore.nut")
 let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.nut")
+let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null // array of strings
@@ -173,11 +178,11 @@ let function getUnlockIdsByArmyId(country, armyId, ediff) {
 seenList.setListGetter(@() getUnlockIds(getShopDiffCode()))
 
 addListenersWithoutEnv({
-  UnlocksCacheInvalidate = @(p) invalidateCache()
-  SignOut = @(p) invalidateCache()
-  LoginComplete = @(p) invalidateCache()
-  InitConfigs = @(p) invalidateCache()
-  ShopDiffCodeChanged = @(p) seenList.onListChanged()
+  UnlocksCacheInvalidate = @(_p) invalidateCache()
+  SignOut = @(_p) invalidateCache()
+  LoginComplete = @(_p) invalidateCache()
+  InitConfigs = @(_p) invalidateCache()
+  ShopDiffCodeChanged = @(_p) seenList.onListChanged()
 })
 
 return {

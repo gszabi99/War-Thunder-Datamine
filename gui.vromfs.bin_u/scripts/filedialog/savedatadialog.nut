@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let time = require("%scripts/time.nut")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let DataBlock = require("DataBlock")
@@ -48,14 +56,14 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function initScreen()
   {
-    if (!scene)
-      goBack()
+    if (!this.scene)
+      this.goBack()
 
     if (!getSaveDataContents)
     {
       ::script_net_assert_once("SaveDataDialog: no listing function",
                                "SaveDataDialog: no mandatory listing function")
-      goBack()
+      this.goBack()
       return
     }
 
@@ -73,11 +81,11 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function onReceivedSaveDataListing(blk)
   {
-    if (!isValid())
+    if (!this.isValid())
       return
 
     entries.clear()
-    foreach (id, meta in blk)
+    foreach (_id, meta in blk)
     {
       if (meta instanceof DataBlock)
         entries.append({path=meta.path, comment=meta.comment, mtime=meta.mtime})
@@ -97,13 +105,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
   function requestEntries()
   {
     showWaitAnimation(true)
-    let cb = ::Callback(onReceivedSaveDataListing, this)
+    let cb = Callback(onReceivedSaveDataListing, this)
     getSaveDataContents(@(blk) cb(blk))
   }
 
   function updateSortingList() {
-    let obj = scene.findObject("sorting_block_bg")
-    if (!::checkObj(obj))
+    let obj = this.scene.findObject("sorting_block_bg")
+    if (!checkObj(obj))
       return
 
     let curVal = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
@@ -112,13 +120,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
       btnName = "RB"
       funcName = "onChangeSortParam"
       values = sortParams.map(@(p, idx) {
-        text = "{0} ({1})".subst(::loc($"items/sort/{p.id}"), ::loc(p.asc? "items/sort/ascending" : "items/sort/descending"))
+        text = "{0} ({1})".subst(loc($"items/sort/{p.id}"), loc(p.asc? "items/sort/ascending" : "items/sort/descending"))
         isSelected = curVal == idx
       })
     }
 
     let data = ::handyman.renderCached("%gui/commonParts/comboBox", view)
-    guiScene.replaceContentFromText(obj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     getSortListObj().setValue(curVal)
   }
 
@@ -151,7 +159,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function updateButtons()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
 
     let isNewFileSelected  = curHoverObjId == "file_name"
@@ -159,15 +167,15 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     let curEntry = getSelectedEntry()
     let isLoadedEntry = isEntryLoaded(curEntry)
 
-    ::showBtnTable(scene, {
+    ::showBtnTable(this.scene, {
       btn_delete = doDelete && isFileTableFocused && isLoadedEntry,
       btn_load = doLoad && isFileTableFocused && isLoadedEntry
       btn_save = isNewFileSelected
       btn_rewrite = isFileTableFocused
     })
 
-    let newFileName = getObj("file_name").getValue()
-    ::enableBtnTable(scene, {btn_save = newFileName != ""}, true)
+    let newFileName = this.getObj("file_name").getValue()
+    ::enableBtnTable(this.scene, {btn_save = newFileName != ""}, true)
   }
 
   function renderSaveDataContents()
@@ -179,7 +187,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     let curSortIdx = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
     let sortParam = sortParams[curSortIdx].param
     let headerRow = []
-    tableParams.each(function(p, idx) {
+    tableParams.each(function(p, _idx) {
       headerRow.append({
         id = $"file_header_{p.id}"
         text = p.headerLocId
@@ -215,7 +223,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     }
 
     markUp = ::g_string.implode(markUp)
-    guiScene.replaceContentFromText(fileTableObj, markUp, markUp.len(), this)
+    this.guiScene.replaceContentFromText(fileTableObj, markUp, markUp.len(), this)
   }
 
   function updateSelectionAfterDataLoaded()
@@ -230,13 +238,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (tableEntries.len() > 0)
       ::move_mouse_on_child_by_value(getTableListObj())
     else
-      ::select_editbox(getObj("file_name"))
+      ::select_editbox(this.getObj("file_name"))
   }
 
   function restoreFocus()
   {
     if (curHoverObjId == "file_name")
-      ::select_editbox(getObj("file_name"))
+      ::select_editbox(this.getObj("file_name"))
     else
       ::move_mouse_on_child_by_value(getTableListObj())
   }
@@ -273,7 +281,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function onFileNameEditBoxAccesskey()
   {
-    ::select_editbox(getObj("file_name"))
+    ::select_editbox(this.getObj("file_name"))
   }
 
   function onFileNameEditBoxCancelEdit(obj)
@@ -281,7 +289,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (obj.getValue().len() > 0)
       obj.setValue("")
     else
-      goBack()
+      this.goBack()
   }
 
   function onBtnDelete()
@@ -290,29 +298,29 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!curEntry)
       return
 
-    ::dagor.debug("SAVE DIALOG: onBtnDelete for entry")
-    ::debugTableData(curEntry)
+    log("SAVE DIALOG: onBtnDelete for entry")
+    debugTableData(curEntry)
 
     ::scene_msg_box("savedata_delete_msg_box",
                     null,
-                    ::loc("save/confirmDelete", {name=curEntry.comment}),
-                    [["yes", ::Callback(@() doDelete(curEntry), this)], ["no", function(){}]],
+                    loc("save/confirmDelete", {name=curEntry.comment}),
+                    [["yes", Callback(@() doDelete(curEntry), this)], ["no", function(){}]],
                     "no",
                     { cancel_fn = @() null })
   }
 
   function onBtnSave()
   {
-    let entryName = getObj("file_name").getValue()
+    let entryName = this.getObj("file_name").getValue()
     if (entryName == "")
     {
-      ::showInfoMsgBox(::loc("save/saveNameMissing"))
+      ::showInfoMsgBox(loc("save/saveNameMissing"))
       return
     }
 
     let entry = getExistEntry(entryName) || createEntry(entryName)
-    ::dagor.debug("SAVE DIALOG: onBtnSave for entry:")
-    ::debugTableData(entry)
+    log("SAVE DIALOG: onBtnSave for entry:")
+    debugTableData(entry)
 
     if (entry.path == "")
       doSave(entry)
@@ -334,8 +342,8 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!selectedEntry)
       return
 
-    ::dagor.debug("SAVE DIALOG: onBtnRewrite for entry:")
-    ::debugTableData(selectedEntry)
+    log("SAVE DIALOG: onBtnRewrite for entry:")
+    debugTableData(selectedEntry)
     doRewrite(selectedEntry)
   }
 
@@ -343,9 +351,9 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
   {
     ::scene_msg_box("savedata_overwrite_msg_box",
       null,
-      ::loc("save/confirmOverwrite", {name=entry.comment}),
+      loc("save/confirmOverwrite", {name=entry.comment}),
       [
-        ["yes", ::Callback(@() doSave(entry), this)],
+        ["yes", Callback(@() doSave(entry), this)],
         ["no", @() null]
       ],
       "no",
@@ -358,13 +366,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!curEntry)
       return
 
-    ::dagor.debug("SAVE DIALOG: onBtnLoad for entry:")
-    ::debugTableData(curEntry)
+    log("SAVE DIALOG: onBtnLoad for entry:")
+    debugTableData(curEntry)
 
     ::scene_msg_box("savedata_confirm_load_msg_box",
                     null,
-                    ::loc("save/confirmLoad", {name=curEntry.comment}),
-                    [["yes", ::Callback(@() doLoad(curEntry), this)], ["no", function(){}]],
+                    loc("save/confirmLoad", {name=curEntry.comment}),
+                    [["yes", Callback(@() doLoad(curEntry), this)], ["no", function(){}]],
                     "no",
                     { cancel_fn = @() null })
   }
@@ -373,17 +381,17 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
   {
     if (doCancel)
       doCancel()
-    goBack()
+    this.goBack()
   }
 
-  function onEventModalWndDestroy(params)
+  function onEventModalWndDestroy(_params)
   {
-    if (!isSceneActiveNoModals())
+    if (!this.isSceneActiveNoModals())
       return
     updateButtons()
     restoreFocus()
   }
 
-  getTableListObj = @() getObj("file_table")
-  getSortListObj = @() getObj("sort_params_list")
+  getTableListObj = @() this.getObj("file_table")
+  getSortListObj = @() this.getObj("sort_params_list")
 }

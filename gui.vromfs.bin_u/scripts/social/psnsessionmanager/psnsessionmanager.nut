@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
 // local base64 = require("base64")
@@ -16,7 +21,7 @@ let PSN_SESSION_TYPE = {
   data = [getSessionData()]
 }
 */
-let createdSessionData = persist("createdSessionData", @() ::Watched({}))
+let createdSessionData = persist("createdSessionData", @() Watched({}))
 let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
    createdSessionData.mutate(@(v) v[sessionId] <- {
       sType = sType
@@ -26,10 +31,10 @@ let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
 }
 
 // { [PSN_SESSION_TYPE] = data }
-let pendingSessions = persist("pendingSessions", @() ::Watched({}))
+let pendingSessions = persist("pendingSessions", @() Watched({}))
 
 //[sessionId] = {activityId, isSpectator}
-let postponedInvitations = persist("postponedInvitations", @() ::Watched([]))
+let postponedInvitations = persist("postponedInvitations", @() Watched([]))
 
 let getLocalizedTextInfo = function(locIdsArray) {
   let textsData = ::g_localization.getFilledFeedTextByLang(locIdsArray)
@@ -61,7 +66,7 @@ let BASE64_GARBAGE = "+"
 let encodeDataToBase64Like = function(data) {
   let res = []
   foreach (block in data) {
-    foreach (key, val in block)
+    foreach (_key, val in block)
       res.append(val)
   }
 
@@ -90,7 +95,7 @@ let decodeBase64LikeToArray = function(str) {
 
   let parsedData = {}
   foreach (idx, block in typeData)
-    foreach (key, val in block)
+    foreach (key, _val in block)
       parsedData[key] <- params[idx]
 
   return parsedData
@@ -178,7 +183,7 @@ let create = function(sType, saveSessionIdCb) {
 
   psnsm.create(
     pendingSessions.value[sType],
-    ::Callback(function(r, err) {
+    Callback(function(r, err) {
       let sessionId = r?.playerSessions[0].sessionId
       saveSessionIdCb(sessionId, err)
 
@@ -198,7 +203,7 @@ let destroy = function(sType) {
       let sId = sessionId
       psnsm.destroy(
         sId,
-        ::Callback(function(r, err) {
+        Callback(function(_r, _err) {
           if (sId in createdSessionData.value)
             createdSessionData.mutate(@(v) delete v[sId])
         }, this)
@@ -213,7 +218,7 @@ let update = function(sessionId, sType) {
     sessionId,
     existSessionInfo?.data.playerSessions[0],
     sessionData.playerSessions[0],
-    ::Callback(function(r, err) {
+    Callback(function(_r, _err) {
       createdSessionData.mutate(@(v) v[sessionId].data = copy(sessionData))
     }, this)
   )
@@ -230,13 +235,13 @@ let join = function(sessionId, isSpectator, onFinishCb) {
 
 let postponeInvite = @(params) postponedInvitations.mutate(@(v) v.append(params))
 
-let afterAcceptInviteCb = function(sessionId, pushContextId, r, err) {
+let afterAcceptInviteCb = function(sessionId, pushContextId, _r, err) {
   if (err) {
-    ::dagor.debug($"[PSGI] accepted PSN invite, error {err}")
+    log($"[PSGI] accepted PSN invite, error {err}")
     return
   }
 
-  psnsm.list([sessionId], ::Callback(function(r, err) {
+  psnsm.list([sessionId], Callback(function(r, _err) {
     foreach (sessionData in (r?.playerSessions ?? [])) {
       if (sessionData.sessionId != sessionId)
         continue
@@ -265,26 +270,26 @@ let proceedInvite = function(p) {
 
   let isInPsnSession = sessionId in createdSessionData.value
 
-  if (u.isEmpty(sessionId) || isInPsnSession)
+  if (isEmpty(sessionId) || isInPsnSession)
     return // Most-likely we are joining from PSN Overlay
 
   if (!::g_login.isLoggedIn() || ::is_in_loading_screen()) {
-    ::dagor.debug("[PSGI:PI] delaying PSN invite until logged in and loaded")
+    log("[PSGI:PI] delaying PSN invite until logged in and loaded")
     postponeInvite(p)
     return
   }
 
   if (isInPsnSession) {
     //There is no deactivation, so just do nothing
-    ::dagor.debug("[PSGI:PI] stale PSN invite: already joined")
+    log("[PSGI:PI] stale PSN invite: already joined")
     return
   }
 
   if (!::isInMenu()) {
-    ::dagor.debug("[PSGI:PI] delaying PSN invite until in menu")
+    log("[PSGI:PI] delaying PSN invite until in menu")
     postponeInvite(p)
     ::get_cur_gui_scene().performDelayed(this, function() {
-      ::showInfoMsgBox(::loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
+      ::showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
     })
     return
   }
@@ -297,7 +302,7 @@ let proceedInvite = function(p) {
 }
 
 addListenersWithoutEnv({
-  SquadStatusChanged = function(p) {
+  SquadStatusChanged = function(_p) {
     switch (::g_squad_manager.state) {
       case squadState.IN_SQUAD:
         if (PSN_SESSION_TYPE.SQUAD in pendingSessions.value)
@@ -306,15 +311,15 @@ addListenersWithoutEnv({
         let sessionId = ::g_squad_manager.getPsnSessionId()
         let isLeader = ::g_squad_manager.isSquadLeader()
         let isInPsnSession = sessionId in createdSessionData.value
-        ::dagor.debug($"[PSSM] onEventSquadStatusChanged {::g_squad_manager.state} for {sessionId}")
-        ::dagor.debug($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
-        ::dagor.debug($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
+        log($"[PSSM] onEventSquadStatusChanged {::g_squad_manager.state} for {sessionId}")
+        log($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
+        log($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
 
         if (!isLeader && !isInPsnSession) // Invite accepted on normal relogin
           join(
             sessionId,
             false,
-            function(sId, pushContextId, r, err) {
+            function(sId, pushContextId, _r, err) {
               if (!err)
                 dumpSessionData(sId, PSN_SESSION_TYPE.SQUAD, pushContextId, {})
             }
@@ -336,7 +341,7 @@ addListenersWithoutEnv({
         break
     }
   }
-  SquadSizeChanged = function(p) {
+  SquadSizeChanged = function(_p) {
     if (!::g_squad_manager.isSquadLeader())
       return
 
@@ -350,7 +355,7 @@ addListenersWithoutEnv({
 
     let newLeaderData = ::g_squad_manager.getMemberData(p?.uid)
     if (!newLeaderData) {
-      ::dagor.debug($"PSN: Session Manager: Didn't found any info for new leader {p?.uid}")
+      log($"PSN: Session Manager: Didn't found any info for new leader {p?.uid}")
       return
     }
 
@@ -361,7 +366,7 @@ addListenersWithoutEnv({
       sessionId,
       contact.psnId,
       newLeaderData.platform.toupper(),
-      ::Callback(function(r, err) {
+      Callback(function(_r, _err) {
         let existSessionInfo = createdSessionData.value?[sessionId]
         let pushContextId = existSessionInfo?.pushContextId
         let sessionData = getSessionData(PSN_SESSION_TYPE.SQUAD, pushContextId)
@@ -370,13 +375,13 @@ addListenersWithoutEnv({
     )})
   }
   GameIntentJoinSession = proceedInvite
-  MainMenuReturn = function(p) {
+  MainMenuReturn = function(_p) {
     let invites = copy(postponedInvitations.value)
     postponedInvitations([])
 
     invites.each(@(p) proceedInvite(p))
   }
 
-  GameIntentLaunchActivity = function(p) { }
-  GameIntentLaunchMultiplayerActivity = function(p) { }
+  GameIntentLaunchActivity = function(_p) { }
+  GameIntentLaunchMultiplayerActivity = function(_p) { }
 })

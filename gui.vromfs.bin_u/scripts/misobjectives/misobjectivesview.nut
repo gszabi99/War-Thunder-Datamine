@@ -1,5 +1,12 @@
-::gui_load_mission_objectives <- function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0)
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_load_mission_objectives <- function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
   return ::handlersManager.loadHandler(::gui_handlers.misObjectivesView,
                                        { scene = nestObj,
                                          sceneBlkName = leftAligned ? "%gui/missions/misObjective.blk" : "%gui/missions/misObjectiveRight.blk"
@@ -12,18 +19,18 @@
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missions/misObjective.blk"
 
-  objTypeMask = (1 << ::OBJECTIVE_TYPE_PRIMARY) + (1 << ::OBJECTIVE_TYPE_SECONDARY)
+  objTypeMask = (1 << OBJECTIVE_TYPE_PRIMARY) + (1 << OBJECTIVE_TYPE_SECONDARY)
 
   curList = null
 
   function initScreen()
   {
     curList = []
-    scene.findObject("objectives_list_timer").setUserData(this)
+    this.scene.findObject("objectives_list_timer").setUserData(this)
     refreshList()
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, _dt)
   {
     refreshList()
   }
@@ -59,8 +66,8 @@
     local lastObj = null
     for(local i = 0; i < total; i++)
     {
-      let newObjective = ::getTblValue(i, newList)
-      if (::u.isEqual(::getTblValue(i, curList), newObjective))
+      let newObjective = getTblValue(i, newList)
+      if (::u.isEqual(getTblValue(i, curList), newObjective))
         continue
 
       let obj = updateObjective(i, newObjective)
@@ -84,7 +91,7 @@
     let status = ::g_objective_status.getObjectiveStatusByCode(objective.status)
     obj.findObject("obj_img")["background-image"] = status.missionObjImg
 
-    local text = ::loc(objective.text)
+    local text = loc(objective.text)
     if (!::u.isEmpty(objective.mapSquare))
       text += "  " + objective.mapSquare
     obj.findObject("obj_text").setValue(text)
@@ -97,11 +104,11 @@
   function getMisObjObject(idx)
   {
     let id = "objective_" + idx
-    local obj = scene.findObject(id)
-    if (::checkObj(obj))
+    local obj = this.scene.findObject(id)
+    if (checkObj(obj))
       return obj
 
-    obj = scene.findObject("objective_teamplate").getClone(scene, this)
+    obj = this.scene.findObject("objective_teamplate").getClone(this.scene, this)
     obj.id = id
     return obj
   }

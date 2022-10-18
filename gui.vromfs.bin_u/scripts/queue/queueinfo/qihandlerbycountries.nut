@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::gui_handlers.QiHandlerByCountries <- class extends ::gui_handlers.QiHandlerBase
 {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
@@ -12,21 +18,21 @@
   function initTimer()
   {
     base.initTimer()
-    scene.findObject("wait_time_block").show(hasTimerText)
+    this.scene.findObject("wait_time_block").show(this.hasTimerText)
   }
 
   function createStats()
   {
     createClustersList()
 
-    statsObj = scene.findObject("stats_table")
-    ::g_qi_view_utils.createViewByCountries(statsObj, queue, event)
+    statsObj = this.scene.findObject("stats_table")
+    ::g_qi_view_utils.createViewByCountries(statsObj, this.queue, this.event)
   }
 
   function updateStats()
   {
-    ::g_qi_view_utils.updateViewByCountries(statsObj, queue, curClusterName)
-    let countrySets = ::events.getAllCountriesSets(event)
+    ::g_qi_view_utils.updateViewByCountries(statsObj, this.queue, curClusterName)
+    let countrySets = ::events.getAllCountriesSets(this.event)
     if (!::u.isEqual(visibleCountrySets, countrySets))
       fillCountrySets(countrySets)
     updateCustomModeCheckbox()
@@ -38,7 +44,7 @@
     if (countrySets.len() < 2)
       return
 
-    let myCountry = ::queues.getQueueCountry(queue)
+    let myCountry = ::queues.getQueueCountry(this.queue)
     let sortedSets = clone countrySets
     sortedSets.sort((@(myCountry) function(a, b) {
       let countryDiff = (myCountry in a.allCountries ? 0 : 1) - (myCountry in b.allCountries ? 0 : 1)
@@ -69,20 +75,20 @@
     }
 
     let markup = ::handyman.renderCached("%gui/events/countriesByTeamsList", view)
-    let nestObj = scene.findObject("countries_sets")
-    guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
+    let nestObj = this.scene.findObject("countries_sets")
+    this.guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
     this.showSceneBtn("countries_sets_header", true)
   }
 
   function updateCustomModeCheckbox()
   {
-    let isVisible = queue && queue.hasCustomMode()
+    let isVisible = this.queue && this.queue.hasCustomMode()
     this.showSceneBtn("custom_mode_header", isVisible)
     let obj = this.showSceneBtn("custom_mode_checkbox", isVisible)
     if (!isVisible)
       return
 
-    obj.enable(queue.isAllowedToSwitchCustomMode())
+    obj.enable(this.queue.isAllowedToSwitchCustomMode())
     let value = getCustomModeCheckboxValue()
     if (value != obj.getValue())
       obj.setValue(value)
@@ -90,29 +96,29 @@
 
   function getCustomModeCheckboxValue()
   {
-    if (!queue)
+    if (!this.queue)
       return false
-    if (queue.isAllowedToSwitchCustomMode())
-      return queue.isCustomModeSwitchedOn()
-    return queue.isCustomModeQUeued()
+    if (this.queue.isAllowedToSwitchCustomMode())
+      return this.queue.isCustomModeSwitchedOn()
+    return this.queue.isCustomModeQUeued()
   }
 
   function onCustomModeCheckbox(obj)
   {
-    if (queue)
-      queue.switchCustomMode(obj.getValue())
+    if (this.queue)
+      this.queue.switchCustomMode(obj.getValue())
   }
 
   function onEventQueueChanged(q)
   {
-    if (q == queue)
+    if (q == this.queue)
       updateCustomModeCheckbox()
   }
 
   function createClustersList()
   {
-    let clustersObj = scene.findObject("clusters_list")
-    if (::events.isMultiCluster(event))
+    let clustersObj = this.scene.findObject("clusters_list")
+    if (::events.isMultiCluster(this.event))
     {
       clustersObj.show(false)
       clustersObj.enable(false)
@@ -120,7 +126,7 @@
     }
 
     let view = { tabs = [] }
-    foreach (clusterName in ::queues.getQueueClusters(queue)) {
+    foreach (clusterName in ::queues.getQueueClusters(this.queue)) {
       let isUnstable = ::g_clusters.isClusterUnstable(clusterName)
       view.tabs.append({
         id = clusterName
@@ -131,7 +137,7 @@
     }
 
     let markup = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    guiScene.replaceContentFromText(clustersObj, markup, markup.len(), this)
+    this.guiScene.replaceContentFromText(clustersObj, markup, markup.len(), this)
     if (view.tabs.len())
     {
       curClusterName = view.tabs[0].id
@@ -146,7 +152,7 @@
       return
 
     curClusterName = obj.getChild(value).id
-    if (queue && isStatsCreated)
+    if (this.queue && this.isStatsCreated)
       updateStats()
   }
 }

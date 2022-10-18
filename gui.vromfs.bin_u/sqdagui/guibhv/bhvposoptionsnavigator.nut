@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
 /*
@@ -13,16 +16,16 @@ but have 2 axis navigation as posNavigator by real size and positions of self ch
   function onAttach(obj)
   {
     markObjShortcutOnHover(obj, true)
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 
   function onDetach(obj) {
     markObjShortcutOnHover(obj, false)
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 
-  setChildSelected = @(obj, childObj, isSelected = true) null
-  onShortcutSelect = @(obj, is_down) ::RETCODE_NOTHING
+  setChildSelected = @(_obj, _childObj, _isSelected = true) null
+  onShortcutSelect = @(_obj, _is_down) RETCODE_NOTHING
 
   function eachSelectable(obj, handler) {
     local idx = 0
@@ -79,6 +82,6 @@ but have 2 axis navigation as posNavigator by real size and positions of self ch
       this.hoverMove(obj, child)
   }
 
-  isOnlyHover = @(obj) true
+  isOnlyHover = @(_obj) true
   isInteractiveObj = @(obj) obj.getFinalProp("interactive") == "yes"
 }

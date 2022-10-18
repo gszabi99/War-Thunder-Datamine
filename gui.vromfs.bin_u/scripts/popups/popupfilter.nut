@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 const MAIN_BTN_ID  = "filter_button"
@@ -27,10 +35,10 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function getSceneTplView() {
     local maxTextWidth = 0
-    btnTitle = btnTitle ?? ::loc("tournaments/filters")
+    btnTitle = btnTitle ?? loc("tournaments/filters")
     let k = ::show_console_buttons ? 2 : 1
-    btnWidth = ::to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
-      + getStringWidthPx($"{btnTitle} {::loc("ui/parentheses", {text = " +99"})}", "nav_button_font")
+    btnWidth = to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
+      + getStringWidthPx($"{btnTitle} {loc("ui/parentheses", {text = " +99"})}", "nav_button_font")
 
     foreach (fType in filterTypes)
       foreach (cb in fType.checkbox)
@@ -85,7 +93,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateColumn(typeName) {
     let curList  = stateList.filter(@(inst) inst.typeName == typeName)
-    let columnObj = scene.findObject($"{typeName}_column")
+    let columnObj = this.scene.findObject($"{typeName}_column")
     if (!columnObj?.isValid())
       return
 
@@ -115,9 +123,9 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateMainBtn() {
     let count = stateList.filter(@(inst) inst.value).len()
-    setDoubleTextToButton(scene, MAIN_BTN_ID, btnTitle,
+    setDoubleTextToButton(this.scene, MAIN_BTN_ID, btnTitle,
       count == 0 ? ""
-        : ::colorize("lbActiveColumnColor", ::loc("ui/parentheses", {text = $"+{count}"})))
+        : colorize("lbActiveColumnColor", loc("ui/parentheses", {text = $"+{count}"})))
   }
 
   function onCheckBoxChange(obj) {
@@ -136,7 +144,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
     onChangeFn(obj.id, obj.typeName, value)
   }
 
-  function onShowFilterBtnClick(obj) {
+  function onShowFilterBtnClick(_obj) {
     isFilterVisible = !isFilterVisible
     this.showSceneBtn(POUP_ID, isFilterVisible)
   }

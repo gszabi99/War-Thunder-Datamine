@@ -1,22 +1,30 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { isGameModeCoop, isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { get_cd_preset, set_cd_preset } = require("guiOptions")
+local { getCdOption, getCdBaseDifficulty } = require_native("guiOptions")
 
 ::gui_handlers.OptionsCustomDifficultyModal <- class extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
-  titleText = ::loc("profile/difficulty")
+  titleText = loc("profile/difficulty")
 
   options = null
   afterApplyFunc = null
   applyAtClose = false
 
-  curBaseDifficulty = ::DIFFICULTY_ARCADE
+  curBaseDifficulty = DIFFICULTY_ARCADE
   ignoreUiCallbacks = false
 
   function initScreen()
   {
-    scene.findObject("header_name").setValue(titleText)
+    this.scene.findObject("header_name").setValue(titleText)
     options = ::get_custom_difficulty_options()
     base.initScreen()
     updateCurBaseDifficulty()
@@ -24,8 +32,8 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 
   function reinitScreen()
   {
-    let optListObj = scene.findObject(currentContainerName)
-    if (!::checkObj(optListObj))
+    let optListObj = this.scene.findObject(this.currentContainerName)
+    if (!checkObj(optListObj))
       return
     options = ::get_custom_difficulty_options()
 
@@ -35,8 +43,8 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
       let option = ::get_option(o[0])
       let obj = optListObj.findObject(option.id)
       if (option.controlType == optionControlType.LIST && option.values[option.value] != getCdOption(option.type))
-        ::dagor.assertf(false, "[ERROR] Custom difficulty param " + option.type + " (" + option.id + ") value '" + getCdOption(option.type) + "' is out of range.")
-      if (::checkObj(obj))
+        assert(false, "[ERROR] Custom difficulty param " + option.type + " (" + option.id + ") value '" + getCdOption(option.type) + "' is out of range.")
+      if (checkObj(obj))
         obj.setValue(option.value)
     }
     ignoreUiCallbacks = false
@@ -83,10 +91,10 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
   {
     curBaseDifficulty = getCdBaseDifficulty()
 
-    let obj = scene.findObject("info_text_top")
-    if (!::checkObj(obj))
+    let obj = this.scene.findObject("info_text_top")
+    if (!checkObj(obj))
       return
-    let text = ::loc("customdiff/value") + ::loc("difficulty" + curBaseDifficulty)
+    let text = loc("customdiff/value") + loc("difficulty" + curBaseDifficulty)
     obj.setValue(text)
   }
 
@@ -100,7 +108,7 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
   function onApply(obj)
   {
     // init custom difficulty by BaseDifficulty
-    ::set_cd_preset(::get_cd_preset(curBaseDifficulty))
+    set_cd_preset(get_cd_preset(curBaseDifficulty))
     base.onApply(obj)
   }
 
@@ -108,7 +116,7 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
   {
     if (ignoreUiCallbacks)
       return
-    let option = get_option_by_id(obj.id)
+    let option = this.get_option_by_id(obj.id)
     if (!option)
       return
     ::set_option(option.type, obj.getValue(), option)
@@ -117,7 +125,7 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 
   function onListCdPresets(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     if (::gui_handlers.ActionsList.hasActionsListOnObject(obj))
@@ -130,7 +138,7 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
     let menu = { handler = this, actions = [] }
     for (local i = 0; i < option.items.len(); i++)
     {
-      if (option.diffCode[i] == ::DIFFICULTY_CUSTOM)
+      if (option.diffCode[i] == DIFFICULTY_CUSTOM)
         continue
       let difficulty = ::g_difficulty.getDifficultyByDiffCode(option.diffCode[i])
       let cdPresetValue = difficulty.cdPresetValue
@@ -149,7 +157,7 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 
   function applyCdPreset(cdValue)
   {
-    ::set_cd_preset(cdValue)
+    set_cd_preset(cdValue)
     reinitScreen()
   }
 }
@@ -159,7 +167,7 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 ::get_custom_difficulty_options <- function get_custom_difficulty_options()
 {
   let gm = ::get_game_mode()
-  let canChangeTpsViews = isGameModeCoop(gm) || isGameModeVersus(gm) || gm == ::GM_TEST_FLIGHT
+  let canChangeTpsViews = isGameModeCoop(gm) || isGameModeVersus(gm) || gm == GM_TEST_FLIGHT
 
   return [
       [::USEROPT_CD_ENGINE],
@@ -201,37 +209,37 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 
 ::gui_start_cd_options <- function gui_start_cd_options(afterApplyFunc, owner = null)
 {
-  ::dagor.debug("gui_start_cd_options called")
+  log("gui_start_cd_options called")
   if (::SessionLobby.isInRoom())
   {
     let curDiff = ::SessionLobby.getMissionParam("custDifficulty", null)
     if (curDiff)
-      ::set_cd_preset(curDiff)
+      set_cd_preset(curDiff)
   }
 
   ::handlersManager.loadHandler(::gui_handlers.OptionsCustomDifficultyModal, {
     owner = owner
-    afterApplyFunc = ::Callback(afterApplyFunc, owner)
+    afterApplyFunc = Callback(afterApplyFunc, owner)
   })
 }
 
 ::get_custom_difficulty_tooltip_text <- function get_custom_difficulty_tooltip_text(custDifficulty)
 {
-  let wasDiff = ::get_cd_preset(::DIFFICULTY_CUSTOM)
-  ::set_cd_preset(custDifficulty)
+  let wasDiff = get_cd_preset(DIFFICULTY_CUSTOM)
+  set_cd_preset(custDifficulty)
 
   local text = ""
   let options = ::get_custom_difficulty_options()
   foreach(o in options)
   {
-    let opt = get_option(o[0])
+    let opt = ::get_option(o[0])
     let valueText = opt.items ?
-      ::loc(opt.items[opt.value]) :
-      ::loc(opt.value ? "options/yes" : "options/no")
+      loc(opt.items[opt.value]) :
+      loc(opt.value ? "options/yes" : "options/no")
     text += (text!="")? "\n" : ""
-    text += ::loc("options/" + opt.id) + ::loc("ui/colon") + ::colorize("userlogColoredText", valueText)
+    text += loc("options/" + opt.id) + loc("ui/colon") + colorize("userlogColoredText", valueText)
   }
 
-  ::set_cd_preset(wasDiff)
+  set_cd_preset(wasDiff)
   return text
 }

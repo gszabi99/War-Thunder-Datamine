@@ -1,4 +1,8 @@
-let mkWatched = require("%globalScripts/mkWatched.nut")
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let DataBlock = require("DataBlock")
 let { initUnitCustomPresetsWeapons } = require("%scripts/unit/initUnitWeapons.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -146,8 +150,8 @@ let function getCustomPresetByPresetBlk(unit, presetName, presetBlk) {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(p) invalidateCache()
-  ProfileReceived = @(p) invalidateCache()
+  SignOut = @(_p) invalidateCache()
+  ProfileReceived = @(_p) invalidateCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 

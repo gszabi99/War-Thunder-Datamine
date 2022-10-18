@@ -1,9 +1,11 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let colors = require("%rGui/style/colors.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
 
-let closeButtonHeight = ::scrn_tgt(0.045)
+let closeButtonHeight = scrn_tgt(0.045)
 let function closeBtn(override) {
-  let stateFlags = ::Watched(0)
+  let stateFlags = Watched(0)
   return @() {
     size = [closeButtonHeight, closeButtonHeight]
     rendObj = ROBJ_SOLID
@@ -19,7 +21,7 @@ let function closeBtn(override) {
     children = {
       rendObj = ROBJ_IMAGE
       size = flex()
-      image = ::Picture($"!ui/gameuiskin#btn_close.svg:{closeButtonHeight}:{closeButtonHeight}:K")
+      image = Picture($"!ui/gameuiskin#btn_close.svg:{closeButtonHeight}:{closeButtonHeight}:K")
       color = colors.white
     }
   }.__merge(override)

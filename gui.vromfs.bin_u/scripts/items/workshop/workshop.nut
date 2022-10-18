@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let Set = require("workshopSet.nut")
@@ -114,7 +120,7 @@ let function invalidateItemsCache()
   seenIdCanBeNew.clear()
   foreach(set in getSetsList())
     set.invalidateItemsCache()
-  if (ItemsManager.isInventoryFullUpdated)
+  if (::ItemsManager.isInventoryFullUpdated)
     seenWorkshop.setDaysToUnseen(OUT_OF_DATE_DAYS_WORKSHOP)
   seenWorkshop.onListChanged()
 }
@@ -158,9 +164,9 @@ let function getRandomEffect(effects) {
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(p) invalidateCache()
-  InventoryUpdate = @(p) invalidateItemsCache()
-  ItemsShopUpdate = @(p) invalidateItemsCache()
+  SignOut = @(_p) invalidateCache()
+  InventoryUpdate = @(_p) invalidateItemsCache()
+  ItemsShopUpdate = @(_p) invalidateItemsCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 seenWorkshop.setListGetter(getVisibleSeenIds)

@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneBlkName         = null
@@ -24,16 +32,16 @@ let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     align = ::g_dagui_utils.setPopupMenuPosAndAlign(
-      parentObj, align, scene.findObject("popup_list"))
+      parentObj, align, this.scene.findObject("popup_list"))
   }
 
   function onItemClick(obj) {
     onClickCb?(obj)
-    goBack()
+    this.goBack()
   }
 
-  function hidePopupList(obj) {
-    goBack()
+  function hidePopupList(_obj) {
+    this.goBack()
   }
 }
 

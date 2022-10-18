@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 ::gui_handlers.CreateClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {
@@ -20,7 +26,7 @@ let { format } = require("string")
     }
 
     return {
-      windowHeader = ::loc("clan/new_clan_wnd_title")
+      windowHeader = loc("clan/new_clan_wnd_title")
       hasClanTypeSelect = ::g_clans.clanTypesEnabled()
       clanTypeItems = clanTypeItems
       hasClanNameSelect = true
@@ -42,14 +48,14 @@ let { format } = require("string")
       if (clanType == ::g_clan_type.UNKNOWN)
         continue
       let typeTextId = getTypeTextId(clanType)
-      let typeTextObj = scene.findObject(typeTextId)
-      if (::checkObj(typeTextObj))
+      let typeTextObj = this.scene.findObject(typeTextId)
+      if (checkObj(typeTextObj))
         typeTextObj.setValue(clanType.getCreateCost().getTextAccordingToBalance())
     }
   }
 
   // Override.
-  function onEventOnlineShopPurchaseSuccessful(params)
+  function onEventOnlineShopPurchaseSuccessful(_params)
   {
     updateSubmitButtonText()
     updateTypeCosts()
@@ -59,48 +65,48 @@ let { format } = require("string")
   {
     base.initScreen()
     updateSubmitButtonText()
-    ::select_editbox(scene.findObject("newclan_name"))
-    resetTagDecorationObj()
-    updateDescription()
-    updateAnnouncement()
+    ::select_editbox(this.scene.findObject("newclan_name"))
+    this.resetTagDecorationObj()
+    this.updateDescription()
+    this.updateAnnouncement()
   }
 
   function onClanTypeSelect(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
-    prepareClanData(false, true)
-    updateTagMaxLength()
-    resetTagDecorationObj()
-    updateDescription()
-    updateAnnouncement()
-    updateReqs()
+    this.prepareClanData(false, true)
+    this.updateTagMaxLength()
+    this.resetTagDecorationObj()
+    this.updateDescription()
+    this.updateAnnouncement()
+    this.updateReqs()
     updateSubmitButtonText()
 
-    guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child_by_value(scene.findObject("newclan_type"))
+    this.guiScene.applyPendingChanges(false)
+    ::move_mouse_on_child_by_value(this.scene.findObject("newclan_type"))
   }
 
   // Override.
   function updateSubmitButtonText()
   {
-    let createCost = newClanType.getCreateCost()
-    setSubmitButtonText(::loc("clan/create_clan_submit_button"), createCost)
+    let createCost = this.newClanType.getCreateCost()
+    this.setSubmitButtonText(loc("clan/create_clan_submit_button"), createCost)
   }
 
   function createClan(createCost)
   {
-    if (isObsceneWord())
+    if (this.isObsceneWord())
       return
 
     let createParams = ::g_clans.prepareCreateRequest(
-      newClanType,
-      newClanName,
-      newClanTag,
-      newClanSlogan,
-      newClanDescription,
-      newClanAnnouncement,
-      newClanRegion
+      this.newClanType,
+      this.newClanName,
+      this.newClanTag,
+      this.newClanSlogan,
+      this.newClanDescription,
+      this.newClanAnnouncement,
+      this.newClanRegion
     )
     createParams["cost"] = createCost.wp
     createParams["costGold"] = createCost.gold
@@ -109,14 +115,14 @@ let { format } = require("string")
 
   function onSubmit()
   {
-    if(!prepareClanData())
+    if(!this.prepareClanData())
       return
-    let createCost = newClanType.getCreateCost()
+    let createCost = this.newClanType.getCreateCost()
     if (createCost <= ::zero_money)
       createClan(createCost)
     else if (::check_balance_msgBox(createCost))
     {
-      let msgText = warningIfGold(format(::loc("clan/needMoneyQuestion_createClan"),
+      let msgText = ::warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)
       this.msgBox("need_money", msgText, [["ok", function() { createClan(createCost) } ],
@@ -126,6 +132,6 @@ let { format } = require("string")
 
   function getDecoratorsList()
   {
-    return ::g_clan_tag_decorator.getDecoratorsForClanType(newClanType)
+    return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
   }
 }

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
@@ -19,12 +25,12 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
   sceneNavBlkName = "%gui/dynamicSummaryNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
-  wndGameMode = ::GM_DYNAMIC
+  wndGameMode = GM_DYNAMIC
 
   isFinal = false
   info = null
 
-  log = null
+  logObj = null
   layout = ""
 
   loses = ["fighters", "bombers", "tanks", "infantry", "ships", "artillery"]
@@ -46,11 +52,11 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
   function initScreen()
   {
-    if (guiScene["cutscene_update"])
-      guiScene["cutscene_update"].setUserData(this)
+    if (this.guiScene["cutscene_update"])
+      this.guiScene["cutscene_update"].setUserData(this)
 
-    info = DataBlock()
-    ::g_map_preview.setSummaryPreview(scene.findObject("tactical-map"), info, "")
+    info = ::DataBlock()
+    ::g_map_preview.setSummaryPreview(this.scene.findObject("tactical-map"), info, "")
 
     let l_file = info.getStr("layout","")
     let dynLayouts = ::get_dynamic_layouts()
@@ -59,28 +65,28 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
       {
         layout = dynLayouts[i].name
         if (!isFinal)
-          guiScene["scene-title"].text = ::loc("dynamic/" + layout)
+          this.guiScene["scene-title"].text = loc("dynamic/" + layout)
       }
     if (isFinal)
-      guiScene["scene-title"].text = (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("DYNAMIC_CAMPAIGN_SUCCESS") : ::loc("DYNAMIC_CAMPAIGN_FAIL")
+      this.guiScene["scene-title"].text = (getDynamicResult() == MISSION_STATUS_SUCCESS) ? loc("DYNAMIC_CAMPAIGN_SUCCESS") : loc("DYNAMIC_CAMPAIGN_FAIL")
 
-    guiScene["info-date"].text = ::loc("date_format",
+    this.guiScene["info-date"].text = loc("date_format",
     {
      year = info.getInt("dataYYYY",0),
      day = info.getInt("dataDD",0),
-     month = ::loc("sm_month_"+info.getInt("dataMM",0).tostring())
+     month = loc("sm_month_"+info.getInt("dataMM",0).tostring())
     })
 
     let playerSide = info.getInt("playerSide", 1)
     if (playerSide == 2)
     {
-      guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon.svg"
-      guiScene["ally-icon"]["background-image"] = "#ui/gameuiskin#team_axis_icon.svg"
+      this.guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon.svg"
+      this.guiScene["ally-icon"]["background-image"] = "#ui/gameuiskin#team_axis_icon.svg"
     }
     else
     {
-      guiScene["ally-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon.svg"
-      guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_axis_icon.svg"
+      this.guiScene["ally-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon.svg"
+      this.guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_axis_icon.svg"
     }
 
 
@@ -94,30 +100,30 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
         local value = info.getInt(sides[j]+"_"+stats[i], 0)
         if (value > 10000)
           value = "" + ((value/1000).tointeger()).tostring() + "K"
-        guiScene["info-"+stats[i]+j.tostring()].text = value
+        this.guiScene["info-"+stats[i]+j.tostring()].text = value
       }
     }
 
-    log = []
+    logObj = []
     for (local i = info.blockCount() - 1; i >= 0; i--)
       if (info.getBlock(i).getBlockName() == "log")
-        log.append(buildLogLine(info.getBlock(i)))
+        logObj.append(buildLogLine(info.getBlock(i)))
 
     let country = (playerSide == 2) ? info.getStr("country_axis","germany") : info.getStr("country_allies", "usa")
     //wtf??
-    ::dagor.debug("2 country = " + country)
+    log("2 country = " + country)
     if (country != "")
-      guiScene["briefing-flag"]["background-image"] = ::get_country_flag_img("bgflag_country_" + country)
+      this.guiScene["briefing-flag"]["background-image"] = ::get_country_flag_img("bgflag_country_" + country)
 
     if (isFinal)
     {
-      ::showBtn("btn_back", false, scene)
-      setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnOk"))
+      ::showBtn("btn_back", false, this.scene)
+      setDoubleTextToButton(this.scene, "btn_apply", loc("mainmenu/btnOk"))
     } else
       if (!::first_generation)
-        setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnNext"))
+        setDoubleTextToButton(this.scene, "btn_apply", loc("mainmenu/btnNext"))
 
-    ::move_mouse_on_obj(scene.findObject("btn_apply"))
+    ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
   }
 
   function buildLogLine(blk)
@@ -131,14 +137,14 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
         blk.getInt("dataDD",1),
         blk.getInt("dataMM",1),
         blk.getInt("dataYYYY",1941),
-        ::loc("dynamic/"+layout+"/"+blk.getStr("sectorName","")),
-        ::loc(blk.getStr("description",""))
+        loc("dynamic/"+layout+"/"+blk.getStr("sectorName","")),
+        loc(blk.getStr("description",""))
         )
     }
     else if (blk.getStr("winsCountTextId", "").len() > 0)
     {
       ret.main <- format("<Color=@blogHeaderColor>%s %d</Color>\n",
-        ::loc(blk.getStr("winsCountTextId", "")),
+        loc(blk.getStr("winsCountTextId", "")),
         blk.getInt("num", 1)
         );
     }
@@ -149,8 +155,8 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
         blk.getInt("dataDD",1),
         blk.getInt("dataMM",1),
         blk.getInt("dataYYYY",1941),
-        ::loc(blk.getStr("description","")),
-        ::loc(blk.getStr("reason", ""))
+        loc(blk.getStr("description","")),
+        loc(blk.getStr("reason", ""))
         )
     }
     else if (blk.getInt("enemyStartCount", -1) >= 0)
@@ -159,8 +165,8 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
         blk.getInt("dataDD",1),
         blk.getInt("dataMM",1),
         blk.getInt("dataYYYY",1941),
-        ::loc(blk.getStr("description","")),
-        ::loc("dynamic/" + blk.getStr("level","") + "_dynamic")
+        loc(blk.getStr("description","")),
+        loc("dynamic/" + blk.getStr("level","") + "_dynamic")
         )
     }
     else
@@ -169,7 +175,7 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
         blk.getInt("dataDD",1),
         blk.getInt("dataMM",1),
         blk.getInt("dataYYYY",1941),
-        ::loc(blk.getStr("description",""))
+        loc(blk.getStr("description",""))
         )
     }
 
@@ -210,9 +216,9 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
     return data
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
-    if (log.len() > 0)
+    if (logObj.len() > 0)
     {
       logTimer -= dt
       if (logTimer < -logHideTime)
@@ -220,10 +226,10 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
         showLog(logId)
         logTimer = logShowTime
 
-        for (local cnt = 0; cnt <= log.len() ; cnt++)
+        for (local cnt = 0; cnt <= logObj.len() ; cnt++)
         {
-          logId = (logId + 1) % log.len();
-          if (log[logId].showInSmallLog)
+          logId = (logId + 1) % logObj.len();
+          if (logObj[logId].showInSmallLog)
             break;
         }
       }
@@ -234,16 +240,16 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
   function showLog(id)
   {
-    let show = (id >= 0 && log.len() > id && log[id].showInSmallLog)
+    let show = (id >= 0 && logObj.len() > id && logObj[id].showInSmallLog)
     if (show)
-      guiScene["scene-info"].setValue(log[id].main)
-    guiScene["scene-info"].animShow = show? "show" : "hide"
+      this.guiScene["scene-info"].setValue(logObj[id].main)
+    this.guiScene["scene-info"].animShow = show? "show" : "hide"
   }
 
-  function onSelect(obj)
+  function onSelect(_obj)
   {
     let gm = ::get_game_mode()
-    if (gm == ::GM_DYNAMIC)
+    if (gm == GM_DYNAMIC)
     {
       if (::is_dynamic_won_by_player())
       {
@@ -263,30 +269,30 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
       if (::SessionLobby.isInRoom())
         if (!::SessionLobby.isRoomOwner && !isFinal && !::first_generation)
         {
-          this.msgBox("not_available", ::loc("msgbox/wait_for_squad_leader"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+          this.msgBox("not_available", loc("msgbox/wait_for_squad_leader"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
           return;
         }
     }
 
     if (isFinal)
-      goForward(::gui_start_dynamic_results)
+      this.goForward(::gui_start_dynamic_results)
     else
       ::gui_start_mislist(true, null, { owner = this })
   }
-  function onBack(obj)
+  function onBack(_obj)
   {
     if (::first_generation)
-      goForward(::gui_start_mainmenu)
+      this.goForward(::gui_start_mainmenu)
     else
     {
-      this.msgBox("question_quit_mission", ::loc("flightmenu/questionQuitCampaign"),
+      this.msgBox("question_quit_mission", loc("flightmenu/questionQuitCampaign"),
       [
         ["yes", function()
         {
           let gt = ::get_game_type()
-          if (gt & ::GT_COOPERATIVE)
+          if (gt & GT_COOPERATIVE)
             ::destroy_session_scripted()
-          goForward(::gui_start_mainmenu)
+          this.goForward(::gui_start_mainmenu)
         }],
         ["no", function() {}]
       ], "no")
@@ -295,10 +301,10 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
   function showNav(is_show)
   {
-    showBtn("btn_apply", is_show)
-    showBtn("btn_back", is_show && !isFinal)
-    showBtn("btn_battlelog", is_show)
-    guiScene["scene-title"].show(is_show)
+    ::showBtn("btn_apply", is_show)
+    ::showBtn("btn_back", is_show && !isFinal)
+    ::showBtn("btn_battlelog", is_show)
+    this.guiScene["scene-title"].show(is_show)
   }
 
   function infoBox(data, title = "")
@@ -306,7 +312,7 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
     let rootNode = ""
 
     let handlerClass = class {
-      function goBack(obj)
+      function goBack(_obj)
       {
         let delayedAction = (@(handler, guiScene, infoBoxObject) function() {
           guiScene.destroyElement(infoBoxObject)
@@ -321,16 +327,16 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
     }
 
     let handlerObj = handlerClass()
-    let infobox = guiScene.loadModal(rootNode, "%gui/optionInfoBox.blk", "InfoBox", handlerObj)
-    handlerObj.guiScene = guiScene
+    let infobox = this.guiScene.loadModal(rootNode, "%gui/optionInfoBox.blk", "InfoBox", handlerObj)
+    handlerObj.guiScene = this.guiScene
     handlerObj.infoBoxObject = infobox
     handlerObj.handler = this
 
-    setSceneTitle(title, infobox, "menu-title")
-    guiScene.replaceContentFromText(infobox.findObject("info-area"), data, data.len(), handlerObj)
+    this.setSceneTitle(title, infobox, "menu-title")
+    this.guiScene.replaceContentFromText(infobox.findObject("info-area"), data, data.len(), handlerObj)
   }
 
-  function onInfo(obj)
+  function onInfo(_obj)
   {
     if (isInInfo)
       return
@@ -338,36 +344,36 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
     local data = ""
     let logTextsToSet = {}
 
-    for (local i = (log.len() - 1); i >= 0; i--)
+    for (local i = (logObj.len() - 1); i >= 0; i--)
     {
       data += format("textareaNoTab { id:t='%s'; width:t='pw'; sideLogIcon { background-image:t='%s'} } \n",
-                "logtext_" + i, log[i].sideIcon)
-      logTextsToSet["logtext_" + i] <- log[i].main
+                "logtext_" + i, logObj[i].sideIcon)
+      logTextsToSet["logtext_" + i] <- logObj[i].main
 
-      if (log[i].ally_loses.len() > 0)
+      if (logObj[i].ally_loses.len() > 0)
       {
         data += format("tdiv { text{ id:t='%s'; text-align:t='left'} %s } \n",
-                  "ally_loses_" + i, log[i].ally_loses);
-        logTextsToSet["ally_loses_" + i] <- ::loc("log/losses_ally") + ": "
+                  "ally_loses_" + i, logObj[i].ally_loses);
+        logTextsToSet["ally_loses_" + i] <- loc("log/losses_ally") + ": "
       }
 
-      if (log[i].enemy_loses.len() > 0)
+      if (logObj[i].enemy_loses.len() > 0)
       {
         data += format("tdiv { margin-bottom:t='0.03sh'; text{ id:t='%s'; text-align:t='left'} %s } \n",
-                  "enemy_loses_" + i, log[i].enemy_loses);
-        logTextsToSet["enemy_loses_" + i] <- ::loc("log/losses_enemy") + ": "
+                  "enemy_loses_" + i, logObj[i].enemy_loses);
+        logTextsToSet["enemy_loses_" + i] <- loc("log/losses_enemy") + ": "
       } else
         data += "tdiv { margin-bottom:t='0.03sh';} \n";
     }
 
-    let title = ::loc("mainmenu/btnBattlelog")
+    let title = loc("mainmenu/btnBattlelog")
 
     infoBox(data, title)
     isInInfo = true
     showNav(false)
 
     foreach(name, text in logTextsToSet)
-      guiScene[name].setValue(text)
+      this.guiScene[name].setValue(text)
 /*
     this.msgBox("info", data,
       [

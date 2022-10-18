@@ -1,11 +1,18 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
 ::researchedModForCheck <- "prevMod"
 ::researchedUnitForCheck <- "prevUnit"
 
-::g_script_reloader.registerPersistentData("finishedResearchesGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("finishedResearchesGlobals", getroottable(),
   ["researched_items_table", "abandoned_researched_items_for_session"])
 
 let isResearchForModification = @(research)
@@ -43,7 +50,7 @@ let function isResearchEqual(research1, research2)
 
 let function isResearchAbandoned(research)
 {
-  foreach(idx, abandoned in ::abandoned_researched_items_for_session)
+  foreach(_idx, abandoned in ::abandoned_researched_items_for_session)
     if (isResearchEqual(research, abandoned))
       return true
   return false
@@ -52,9 +59,9 @@ let function isResearchAbandoned(research)
 let function isResearchLast(research, checkUnit = false)
 {
   if (isResearchForModification(research))
-    return ::getTblValue("mod", research, "") == ""
+    return getTblValue("mod", research, "") == ""
   else if (checkUnit)
-    return ::getTblValue("unit", research, "") == ""
+    return getTblValue("unit", research, "") == ""
   return false
 }
 
@@ -157,15 +164,15 @@ let function removeResearchBlock(researchBlock)
   {
     if (!researchBlock)
     {
-      goBack()
+      this.goBack()
       return
     }
 
-    let unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
+    let unitName = getTblValue(::researchedUnitForCheck, researchBlock)
     unit = ::getAircraftByName(unitName)
     if (!unit)
     {
-      goBack()
+      this.goBack()
       return
     }
 
@@ -176,23 +183,23 @@ let function removeResearchBlock(researchBlock)
   function updateResearchedUnit()
   {
     let placeObj = getUnitPlaceObj()
-    if (!::checkObj(placeObj))
+    if (!checkObj(placeObj))
       return
 
     let unit_blk = ::build_aircraft_item(unit.name, unit)
-    guiScene.replaceContentFromText(placeObj, unit_blk, unit_blk.len(), this)
+    this.guiScene.replaceContentFromText(placeObj, unit_blk, unit_blk.len(), this)
     placeObj.tooltipId = ::g_tooltip.getIdUnit(unit.name)
     ::fill_unit_item_timers(placeObj.findObject(unit.name), unit)
   }
 
-  function onEventCrewTakeUnit(params)
+  function onEventCrewTakeUnit(_params)
   {
-    goBack()
+    this.goBack()
   }
 
   function onEventUnitBought(params)
   {
-    if(::getTblValue("unitName", params) != unit.name)
+    if(getTblValue("unitName", params) != unit.name)
     {
       purchaseUnit()
       return
@@ -205,15 +212,15 @@ let function removeResearchBlock(researchBlock)
 
   function getUnitPlaceObj()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return null
 
-    return scene.findObject("rankup_aircraft_table")
+    return this.scene.findObject("rankup_aircraft_table")
   }
 
   function updateButtons()
   {
-    ::show_facebook_screenshot_button(scene)
+    ::show_facebook_screenshot_button(this.scene)
 
     let isBought = ::isUnitBought(unit)
     let isUsable = ::isUnitUsable(unit)
@@ -235,7 +242,7 @@ let function removeResearchBlock(researchBlock)
 
     ::gui_start_selecting_crew({
       unit = unit
-      unitObj = scene.findObject(unit.name)
+      unitObj = this.scene.findObject(unit.name)
       cellClass = "slotbarClone"
       isNewUnit = true
     })

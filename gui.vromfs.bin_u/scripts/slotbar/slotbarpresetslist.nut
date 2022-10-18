@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::SlotbarPresetsList <- class
@@ -12,10 +18,10 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   constructor(handler)
   {
     ownerWeak = handler.weakref()
-    if (!::checkObj(ownerWeak.scene))
+    if (!checkObj(ownerWeak.scene))
       return
     scene = ownerWeak.scene.findObject("slotbar-presetsPlace")
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return
 
     scene.show(true)
@@ -42,7 +48,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function isValid()
   {
-    return ::checkObj(scene)
+    return checkObj(scene)
   }
 
   function getCurCountry()
@@ -197,55 +203,55 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function checkChangePresetAndDo(action)
   {
     ::queues.checkAndStart(
-      ::Callback(function()
+      Callback(function()
       {
         ::g_squad_utils.checkSquadUnreadyAndDo(
-          ::Callback(function()
+          Callback(function()
           {
              if (!("beforeSlotbarChange" in ownerWeak))
                return action()
 
              ownerWeak.beforeSlotbarChange(
-               ::Callback(action, this),
-               ::Callback(update, this)
+               Callback(action, this),
+               Callback(update, this)
              )
           }, this),
-          ::Callback(update, this),
+          Callback(update, this),
           ownerWeak?.shouldCheckCrewsReady)
       }, this),
-      ::Callback(update, this),
+      Callback(update, this),
       "isCanModifyCrew"
     )
   }
 
-  function onSlotsChoosePreset(obj)
+  function onSlotsChoosePreset(_obj)
   {
     checkChangePresetAndDo(function () {
       ::gui_choose_slotbar_preset(ownerWeak)
     })
   }
 
-  function onEventSlotbarPresetLoaded(p)
+  function onEventSlotbarPresetLoaded(_p)
   {
     update()
   }
 
-  function onEventSlotbarPresetsChanged(p)
+  function onEventSlotbarPresetsChanged(_p)
   {
     update()
   }
 
-  function onEventVoiceChatOptionUpdated(p)
+  function onEventVoiceChatOptionUpdated(_p)
   {
     updateSizes(true)
   }
 
-  function onEventClanChanged(p)
+  function onEventClanChanged(_p)
   {
     updateSizes(true)
   }
 
-  function onEventSquadStatusChanged(p)
+  function onEventSquadStatusChanged(_p)
   {
     scene.getScene().performDelayed(this, function()
     {
@@ -256,10 +262,10 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function getListObj()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(scene))
       return null
     let obj = scene.findObject("slotbar-presetsList")
-    if (::checkObj(obj))
+    if (checkObj(obj))
       return obj
     return null
   }
@@ -269,7 +275,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     if (scene == null)
       return null
     let obj = scene.findObject("btn_slotbar_presets")
-    if (::checkObj(obj))
+    if (checkObj(obj))
       return obj
     return null
   }
@@ -286,7 +292,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     if (presetIdx < 0 || listObj.childrenCount() <= presetIdx)
       return null
     let childObj = listObj.getChild(presetIdx)
-    if (::checkObj(childObj))
+    if (checkObj(childObj))
       return childObj
     return null
   }

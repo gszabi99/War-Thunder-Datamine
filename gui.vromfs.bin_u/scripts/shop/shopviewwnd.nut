@@ -1,5 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 ::gui_handlers.ShopViewWnd <- class extends ::gui_handlers.ShopMenuHandler
 {
@@ -21,7 +30,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     base.initScreen()
 
     if(!isSmallScreen)
-      createSlotbar(
+      this.createSlotbar(
         {
           showNewSlot = true,
           showEmptySlot = true,
@@ -32,7 +41,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function fillAircraftsList(curName = "")
   {
-    base.fillAircraftsList(needHighlight ? curAirName : curName)
+    base.fillAircraftsList(needHighlight ? this.curAirName : curName)
 
     if (!needHighlight)
       return
@@ -40,9 +49,9 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     needHighlight = false
 
     if (::show_console_buttons)
-      ::move_mouse_on_child_by_value(scene.findObject("shop_items_list"))
+      ::move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
     else
-      highlightUnitsInTree([curAirName])
+      this.highlightUnitsInTree([this.curAirName])
   }
 
   function onCloseShop()
@@ -64,10 +73,10 @@ let function openShopViewWndFromPromo(params) {
     needHighlight = unitName != ""
   })
 
-  let acceptCallback = ::Callback( function() {
-    ::switch_profile_country(country)
+  let acceptCallback = Callback( function() {
+    switchProfileCountry(country)
     showUnitInShop() }, this)
-  if (country != ::get_profile_country_sq())
+  if (country != profileCountrySq.value)
     ::queues.checkAndStart(
       acceptCallback,
       null,
@@ -76,4 +85,4 @@ let function openShopViewWndFromPromo(params) {
     showUnitInShop()
 }
 
-addPromoAction("show_unit", @(handler, params, obj) openShopViewWndFromPromo(params))
+addPromoAction("show_unit", @(_handler, params, _obj) openShopViewWndFromPromo(params))

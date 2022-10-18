@@ -1,3 +1,6 @@
+from "%rGui/globals/ui_library.nut" import *
+
+let string = require("string")
 let {compassWrap, generateCompassMarkSU145} = require("ilsCompasses.nut")
 let {IlsColor, IlsLineScale, BombCCIPMode, RocketMode, BombingMode,
  CannonMode, TargetPosValid, TargetPos, IlsPosSize, TimeBeforeBombRelease} = require("%rGui/planeState/planeToolsState.nut")
@@ -235,7 +238,7 @@ let shellName = @() {
    (BombingMode.value ? "AUTO" :
     (RocketMode.value ? "RKT" :
      (CannonMode.value ? "GUN" :
-      (isAAMMode.value ? ::loc(string.format("%s/su_145", CurWeaponName.value)) :
+      (isAAMMode.value ? loc(string.format("%s/su_145", CurWeaponName.value)) :
       (HasGndReticle.value ? "GUN" : "")))))
 }
 

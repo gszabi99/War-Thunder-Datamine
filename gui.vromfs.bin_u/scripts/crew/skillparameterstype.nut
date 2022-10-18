@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//-file:undefined-const
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { fabs } = require("math")
 let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -28,20 +36,20 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
     let parsedMembers = []
     foreach(idx, value in paramData.valuesArr)
     {
-      if(::isInArray(value.memberName, parsedMembers))
+      if(isInArray(value.memberName, parsedMembers))
         continue
 
       if(isNotFoundMeasureType)
         measureType = getMeasureTypeBySkillParameterName(value.skillName)
 
       let parameterView = {
-        descriptionLabel = parameterName.indexof("weapons/") == 0 ? ::loc(parameterName)
-          : ::loc(format("crewSkillParameter/%s", parameterName))
+        descriptionLabel = parameterName.indexof("weapons/") == 0 ? loc(parameterName)
+          : loc(format("crewSkillParameter/%s", parameterName))
         valueItems = []
       }
 
       if (needMemberName)
-        parameterView.descriptionLabel += format(" (%s)", ::loc("crew/" + value.memberName))
+        parameterView.descriptionLabel += format(" (%s)", loc("crew/" + value.memberName))
 
       let params = {
         idx = idx
@@ -99,8 +107,8 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
       ::g_skill_parameters_request_type.MAX_VALUES, parametersByRequestType, params)
     let baseParameterValue = getValue(
       ::g_skill_parameters_request_type.BASE_VALUES, parametersByRequestType, params)
-    let curDiff = ::fabs(currentParameterValue - baseParameterValue)
-    let maxDiff = ::fabs(maxParameterValue - baseParameterValue)
+    let curDiff = fabs(currentParameterValue - baseParameterValue)
+    let maxDiff = fabs(maxParameterValue - baseParameterValue)
     if (maxDiff > 0.0)
       return (1000 * (curDiff / maxDiff)).tointeger()
     return 0
@@ -123,7 +131,7 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
       if (!currentDistanceErrorData.len())
         return
 
-      let sign = getDiffSign(parametersByRequestType, paramData.name)
+      let sign = this.getDiffSign(parametersByRequestType, paramData.name)
 
       foreach (i, parameterTable in currentDistanceErrorData[0].value)
       {
@@ -131,16 +139,16 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
           errorText = ::g_measure_type.ALTITUDE.getMeasureUnitsText(parameterTable.error, true, true)
         }
         let parameterView = {
-          descriptionLabel = ::loc("crewSkillParameter/" + paramData.name, descriptionLocParams)
+          descriptionLabel = loc("crewSkillParameter/" + paramData.name, descriptionLocParams)
           valueItems = []
         }
         let params = {
           columnIndex = i
           parameterName = paramData.name
         }
-        parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
+        this.parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
           ::g_measure_type.DISTANCE, sign, parameterView, params)
-        parameterView.progressBarValue <- getProgressBarValue(parametersByRequestType, params)
+        parameterView.progressBarValue <- this.getProgressBarValue(parametersByRequestType, params)
         resArray.append(parameterView)
       }
     }
@@ -157,7 +165,7 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
   }
 })
 
-g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName)
+::g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName)
 {
   return enums.getCachedType("paramNames", paramName, cache.byParamName, this, DEFAULT)
 }

@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 
 const ANY_CHANGED_ID = "___ANY___"
@@ -64,7 +69,7 @@ let function notifyChanged(listId, entitiesList)
       gatherCbFromList(subList?[entity], notifyList)
   }
   else
-    foreach(entity, list in subList)
+    foreach(entity, _list in subList)
       gatherCbFromList(subList[entity], notifyList)
 
   foreach(cb in notifyList)

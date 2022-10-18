@@ -1,5 +1,12 @@
-::gui_handlers.ChatThreadHeader <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.ChatThreadHeader <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/chat/chatThreadsListRows"
@@ -20,19 +27,19 @@
 
   function initScreen()
   {
-    let timerObj = scene.findObject("room_" + roomId)
-    if (::checkObj(timerObj))
+    let timerObj = this.scene.findObject("room_" + roomId)
+    if (checkObj(timerObj))
       timerObj.setUserData(this)
   }
 
   function updateInfo()
   {
-    threadInfo.updateInfoObj(scene)
+    threadInfo.updateInfoObj(this.scene)
   }
 
   function onSceneShow()
   {
-    popDelayedActions()
+    this.popDelayedActions()
   }
 
   function onUserInfo()
@@ -47,30 +54,30 @@
 
   function onEventChatThreadInfoChanged(p)
   {
-    if (::getTblValue("roomId", p) == roomId)
-      doWhenActiveOnce("updateInfo")
+    if (getTblValue("roomId", p) == roomId)
+      this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventChatFilterChanged(p)
+  function onEventChatFilterChanged(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventContactsGroupUpdate(p)
+  function onEventContactsGroupUpdate(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventSquadStatusChanged(p)
+  function onEventSquadStatusChanged(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventContactsBlockStatusUpdated(p) {
-    doWhenActiveOnce("updateInfo")
+  function onEventContactsBlockStatusUpdated(_p) {
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onThreadTimer(obj, dt)
+  function onThreadTimer(_obj, _dt)
   {
     threadInfo.checkRefreshThread()
   }

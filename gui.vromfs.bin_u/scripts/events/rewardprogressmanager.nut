@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
 /**
  * Caches data from leaderboard to provide always
@@ -43,7 +49,7 @@ let { format } = require("string")
       {
         let msgToSend = format("Error: no field '%s' in leaderbords for event '%s' , economic name '%s'",
                                    field, event.name, eventEconomicName)
-        ::dagor.debug(msgToSend)
+        log(msgToSend)
       }
     })
   }
@@ -60,17 +66,17 @@ let { format } = require("string")
   {
     let userLogs = ::getUserLogsList({
       show = [
-        ::EULT_SESSION_RESULT
+        EULT_SESSION_RESULT
       ]
     })
 
-    foreach (log in userLogs)
+    foreach (logObj in userLogs)
     {
       let eventEconomicName = ::events.getEventEconomicName(event)
-      if (::getTblValue("eventId", log) != eventEconomicName)
+      if (getTblValue("eventId", logObj) != eventEconomicName)
         continue
 
-      let leaderbordRow = log?.tournamentResult?.newStat
+      let leaderbordRow = logObj?.tournamentResult?.newStat
       if (!leaderbordRow)
         return false
 

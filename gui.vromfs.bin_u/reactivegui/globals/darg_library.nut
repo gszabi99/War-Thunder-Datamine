@@ -1,34 +1,25 @@
 // Put to global namespace for compatibility
-require("%globalScripts/ui_globals.nut")
-require("%sqStdLibs/helpers/backCompatibility.nut")
-require("%rGui/compatibility.nut")
-require("%rGui/library.nut")
-require("%globalScripts/sqModuleHelpers.nut")
+
+
+let {utf8} = require("%globalScripts/ui_globals.nut")
 require("%globalScripts/sharedEnums.nut")
-let functools = require("%sqstd/functools.nut")
-let darg_library = require("%darg/darg_library.nut")
-let {Computed, Watched, set_nested_observable_debug} = require("frp")
-
+let { DBGLEVEL } = require("dagor.system")
+let frp = require("frp")
 let log = require("%globalScripts/logs.nut")
-getroottable().__update(require("daRg"))
+let darg_library = require("%darg/darg_library.nut")
 
-set_nested_observable_debug(true)
+let {set_nested_observable_debug} = frp
 
-//frp
-::Watched <- Watched //warning disable: -ident-hides-ident
-::Computed <- Computed //warning disable: -ident-hides-ident
+set_nested_observable_debug(DBGLEVEL>0)
 
-//darg helpers
-::hdpx <- darg_library.hdpx
-::wrap <- darg_library.wrap
-::shHud <- @(value) (darg_library.fsh(value)).tointeger()
 
-//function tools
-::kwarg <- functools.kwarg
+let shHud = @(value) (darg_library.fsh(value)).tointeger()
 
-//logging
-::dlog <- log.dlog
-::log <- log.log  //warning disable: -ident-hides-ident
-
-::math <- require("math")
-::string <- require("string")
+return frp.__merge(
+  require("dagor.localize"),
+  darg_library,
+  require("%globalScripts/sqModuleHelpers.nut"),
+  require("%sqstd/functools.nut"),
+  require("daRg"),
+  {shHud, utf8,
+    log = log.log, dlog=log.dlog, log_for_user=log.dlog, console_print = log.console_print, log_with_prefix = log.log_with_prefix})//disable: -dlog-warn

@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { ceil } = require("math")
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -39,24 +48,29 @@ local MIN_ITEMS_IN_ROW = 7
     foreach(r in recipesList)
       maxRecipeLen = max(maxRecipeLen, r.getVisibleMarkupComponents())
 
-    let recipeWidthPx = maxRecipeLen * ::to_pixels("0.5@itemWidth")
-    let recipeHeightPx = ::to_pixels("0.5@itemHeight")
-    let minColumns = ::ceil(MIN_ITEMS_IN_ROW.tofloat() / maxRecipeLen).tointeger()
+    let recipeWidthPx = maxRecipeLen * to_pixels("0.5@itemWidth")
+    let recipeHeightPx = to_pixels("0.5@itemHeight")
+    let minColumns = ceil(MIN_ITEMS_IN_ROW.tofloat() / maxRecipeLen).tointeger()
     let columns = max(minColumns,
       stdMath.calc_golden_ratio_columns(recipesList.len(), recipeWidthPx / (recipeHeightPx || 1)))
-    let rows = ::ceil(recipesList.len().tofloat() / columns).tointeger()
+    let rows = ceil(recipesList.len().tofloat() / columns).tointeger()
 
     local itemsInRow = 0 //some columns are thinner than max
     local columnWidth = 0
+    let separatorsIdx = []
     foreach(i, recipe in recipesList)
     {
-      columnWidth = max(columnWidth, recipe.getVisibleMarkupComponents())
-      if ((i + 1) % (rows + 1))
+      let recipeWidth = recipe.getVisibleMarkupComponents()
+      columnWidth = max(columnWidth, recipeWidth)
+      if (i == 0 || (i % rows))
         continue
       itemsInRow += columnWidth
-      columnWidth = 0
-      recipesList.insert(i, { isSeparator = true })
+      columnWidth = recipeWidth
+      separatorsIdx.append(i + separatorsIdx.len())
     }
+    foreach (idx in separatorsIdx)
+      recipesList.insert(idx, { isSeparator = true })
+
     itemsInRow += columnWidth
 
     let res = {
@@ -76,13 +90,13 @@ local MIN_ITEMS_IN_ROW = 7
 
   function initScreen()
   {
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
+    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, this.scene.findObject("main_frame"))
     needMarkRecipes = ExchangeRecipes.hasFakeRecipes(recipesList)
-    let recipesListObj = scene.findObject("recipes_list")
+    let recipesListObj = this.scene.findObject("recipes_list")
     if (recipesList.len() > 0)
       recipesListObj.setValue(0)
 
-    guiScene.applyPendingChanges(false)
+    this.guiScene.applyPendingChanges(false)
     ::move_mouse_on_child_by_value(recipesListObj)
     updateCurRecipeInfo()
 
@@ -94,14 +108,14 @@ local MIN_ITEMS_IN_ROW = 7
   {
     let steps = [{
       obj = getUsableRecipeObjs().map(@(r) { obj = r, hasArrow = true })
-      text = ::loc("workshop/tutorial/selectRecipe")
+      text = loc("workshop/tutorial/selectRecipe")
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::GAMEPAD_ENTER_SHORTCUT
       cb = @() selectRecipe()
     },
     {
-      obj = scene.findObject("btn_apply")
-      text = ::loc("workshop/tutorial/pressButton", {
+      obj = this.scene.findObject("btn_apply")
+      text = loc("workshop/tutorial/pressButton", {
         button_name = buttonText
       })
       actionType = tutorAction.OBJ_CLICK
@@ -113,7 +127,7 @@ local MIN_ITEMS_IN_ROW = 7
 
   function selectRecipe()
   {
-    let recipesListObj = scene.findObject("recipes_list")
+    let recipesListObj = this.scene.findObject("recipes_list")
     if (!recipesListObj?.isValid())
       return
 
@@ -134,7 +148,7 @@ local MIN_ITEMS_IN_ROW = 7
   function getUsableRecipeObjs()
   {
     let res = []
-    let recipesListObj = scene.findObject("recipes_list")
+    let recipesListObj = this.scene.findObject("recipes_list")
     foreach (recipe in recipesList)
       if (!recipe?.isSeparator && recipe.isUsable && !recipe.isRecipeLocked())
         res.append(recipesListObj.findObject($"id_{recipe.uid}"))
@@ -143,27 +157,27 @@ local MIN_ITEMS_IN_ROW = 7
 
   function updateCurRecipeInfo()
   {
-    let infoObj = scene.findObject("selected_recipe_info")
+    let infoObj = this.scene.findObject("selected_recipe_info")
     let markup = curRecipe ? curRecipe.getTextMarkup() + curRecipe.getMarkDescMarkup() : ""
-    guiScene.replaceContentFromText(infoObj, markup, markup.len(), this)
+    this.guiScene.replaceContentFromText(infoObj, markup, markup.len(), this)
 
     updateButtons()
   }
 
   function updateButtons()
   {
-    local btnObj = scene.findObject("btn_apply")
+    local btnObj = this.scene.findObject("btn_apply")
     btnObj.inactiveColor = curRecipe?.isUsable && !curRecipe.isRecipeLocked() ? "no" : "yes"
 
-    local btnText = ::loc(curRecipe.getActionButtonLocId() ?? buttonText)
+    local btnText = loc(curRecipe.getActionButtonLocId() ?? buttonText)
     if (curRecipe.hasCraftTime())
-      btnText += " " + ::loc("ui/parentheses", {text = curRecipe.getCraftTimeText()})
+      btnText += " " + loc("ui/parentheses", {text = curRecipe.getCraftTimeText()})
     btnObj.setValue(btnText)
 
     if (!needMarkRecipes)
       return
 
-    btnObj = scene.findObject("btn_mark")
+    btnObj = this.scene.findObject("btn_mark")
     btnObj.show(needMarkRecipes && (curRecipe?.mark ?? MARK_RECIPE.NONE) < MARK_RECIPE.USED)
     btnObj.setValue(getMarkBtnText())
   }
@@ -181,7 +195,7 @@ local MIN_ITEMS_IN_ROW = 7
   {
     if (curRecipe && curRecipe.isRecipeLocked())
       return ::scene_msg_box("cant_cancel_craft", null,
-        ::colorize("badTextColor", ::loc(curRecipe.getCantAssembleMarkedFakeLocId())),
+        colorize("badTextColor", loc(curRecipe.getCantAssembleMarkedFakeLocId())),
         [[ "ok" ]],
         "ok")
 
@@ -189,10 +203,10 @@ local MIN_ITEMS_IN_ROW = 7
     if (curRecipe && onAcceptCb)
       needLeaveWndOpen = onAcceptCb(curRecipe)
     if (!needLeaveWndOpen)
-      goBack()
+      this.goBack()
   }
 
-  getMarkBtnText = @() ::loc(curRecipe.mark == MARK_RECIPE.BY_USER
+  getMarkBtnText = @() loc(curRecipe.mark == MARK_RECIPE.BY_USER
     ? "item/recipes/unmarkFake"
     : "item/recipes/markFake")
 
@@ -202,8 +216,8 @@ local MIN_ITEMS_IN_ROW = 7
       return
 
     curRecipe.markRecipe(true)
-    let recipeObj = scene.findObject("id_"+ curRecipe.uid)
-    if (!::check_obj(recipeObj))
+    let recipeObj = this.scene.findObject("id_"+ curRecipe.uid)
+    if (!checkObj(recipeObj))
       return
 
     recipeObj.isRecipeLocked = curRecipe.isRecipeLocked() ? "yes" : "no"

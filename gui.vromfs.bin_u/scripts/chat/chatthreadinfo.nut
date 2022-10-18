@@ -1,7 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { split_by_chars } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
+let { get_time_msec } = require("dagor.time")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
@@ -29,7 +36,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
   {
     roomId = threadRoomId
     isValid = roomId.len() > 0
-    ::dagor.assertf(::g_chat_room_type.THREAD.checkRoomId(roomId), "Chat thread created with not thread id = " + roomId)
+    assert(::g_chat_room_type.THREAD.checkRoomId(roomId), "Chat thread created with not thread id = " + roomId)
     langs = []
 
     updateInfo(dataBlk)
@@ -37,7 +44,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function markUpdated()
   {
-    lastUpdateTime = ::dagor.getCurTime()
+    lastUpdateTime = get_time_msec()
   }
 
   function invalidate()
@@ -47,14 +54,14 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function isOutdated()
   {
-    return lastUpdateTime + ::g_chat.THREADS_INFO_TIMEOUT_MSEC < ::dagor.getCurTime()
+    return lastUpdateTime + ::g_chat.THREADS_INFO_TIMEOUT_MSEC < get_time_msec()
   }
 
   function checkRefreshThread()
   {
     if (!isValid
         || !::g_chat.checkChatConnected()
-        || lastUpdateTime + ::g_chat.THREAD_INFO_REFRESH_DELAY_MSEC > ::dagor.getCurTime()
+        || lastUpdateTime + ::g_chat.THREAD_INFO_REFRESH_DELAY_MSEC > get_time_msec()
        )
       return
 
@@ -152,15 +159,15 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
     local res = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(ownerNick), ownerClanTag)
     if (isColored)
-      res = ::colorize(::g_chat.getSenderColor(ownerNick, false, false, defaultColor), res)
+      res = colorize(::g_chat.getSenderColor(ownerNick, false, false, defaultColor), res)
     return res
   }
 
   function getRoomTooltipText()
   {
     local res = getOwnerText(true, "userlogColoredText")
-    res += "\n" + ::loc("chat/thread/participants") + ::loc("ui/colon")
-           + ::colorize("activeTextColor", membersAmount)
+    res += "\n" + loc("chat/thread/participants") + loc("ui/colon")
+           + colorize("activeTextColor", membersAmount)
     res += "\n\n" + getTitle()
     return res
   }
@@ -183,12 +190,12 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function getJoinText()
   {
-    return isJoined() ? ::loc("chat/showThread") : ::loc("chat/joinThread")
+    return isJoined() ? loc("chat/showThread") : loc("chat/joinThread")
   }
 
   function getMembersAmountText()
   {
-    return ::loc("chat/thread/participants") + ::loc("ui/colon") + membersAmount
+    return loc("chat/thread/participants") + loc("ui/colon") + membersAmount
   }
 
   function showThreadMenu(position = null)
@@ -220,13 +227,13 @@ const MAX_THREAD_LANG_VISIBLE = 3
   function setObjValueById(objNest, id, value)
   {
     let obj = objNest.findObject(id)
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj.setValue(value)
   }
 
   function updateInfoObj(obj, updateActionBtn = false)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     obj.active = isJoined() ? "yes" : "no"

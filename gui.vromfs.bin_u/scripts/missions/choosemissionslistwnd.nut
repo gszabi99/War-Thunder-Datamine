@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 /*
  API:
  static open(config)
@@ -9,8 +15,9 @@
                      called only if list was changed
 */
 
-::gui_handlers.ChooseMissionsListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.ChooseMissionsListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/missions/chooseMissionsListWnd.blk"
 
@@ -28,11 +35,11 @@
 
   static function open(config)
   {
-    let misList = ::getTblValue("missionsList", config)
+    let misList = getTblValue("missionsList", config)
     if (!::u.isArray(misList) || !misList.len())
     {
       ::script_net_assert_once(" bad_missions_list",
-        "Bad missions list to choose: " + ::toString(misList))
+        "Bad missions list to choose: " + toString(misList))
       return
     }
     ::handlersManager.loadHandler(::gui_handlers.ChooseMissionsListWnd, config)
@@ -40,21 +47,21 @@
 
   function initScreen()
   {
-    misListObj = scene.findObject("items_list")
-    scene.findObject("wnd_title").setValue(headerText)
+    misListObj = this.scene.findObject("items_list")
+    this.scene.findObject("wnd_title").setValue(headerText)
 
     selMissionsMap = selMissionsToMap(missionsList, selMissions)
     initialSelMissionsMap = clone selMissionsMap
     initDescHandler()
     fillMissionsList()
 
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
+    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initDescHandler()
   {
-    let descHandler = ::gui_handlers.MissionDescription.create(getObj("mission_desc"), curMission)
-    registerSubHandler(descHandler)
+    let descHandler = ::gui_handlers.MissionDescription.create(this.getObj("mission_desc"), curMission)
+    this.registerSubHandler(descHandler)
     missionDescWeak = descHandler.weakref()
   }
 
@@ -72,14 +79,14 @@
   {
     let res = []
     foreach(mission in fullList)
-      if (::getTblValue(mission.id, misMap, false))
+      if (getTblValue(mission.id, misMap, false))
         res.append(mission)
     return res
   }
 
   function isMissionSelected(mission)
   {
-    return ::getTblValue(mission.id, selMissionsMap, false)
+    return getTblValue(mission.id, selMissionsMap, false)
   }
 
   function isAllMissionsSelected()
@@ -102,7 +109,7 @@
       })
 
     let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-    guiScene.replaceContentFromText(misListObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(misListObj, data, data.len(), this)
     misListObj.setValue(0)
   }
 
@@ -110,10 +117,10 @@
   {
     let chooseBtn = this.showSceneBtn("btn_choose", !!curMission)
     if (curMission)
-      chooseBtn.setValue(isMissionSelected(curMission) ? ::loc("misList/unselectMission") : ::loc("misList/selectMission"))
+      chooseBtn.setValue(isMissionSelected(curMission) ? loc("misList/unselectMission") : loc("misList/selectMission"))
 
-    let chooseAllText = isAllMissionsSelected() ? ::loc("misList/unselectAll") : ::loc("misList/selectAll")
-    scene.findObject("btn_choose_all").setValue(chooseAllText)
+    let chooseAllText = isAllMissionsSelected() ? loc("misList/unselectAll") : loc("misList/selectAll")
+    this.scene.findObject("btn_choose_all").setValue(chooseAllText)
   }
 
   function markSelected(mission, isSelected)
@@ -123,13 +130,13 @@
 
     selMissionsMap[mission.id] <- isSelected
     let checkBoxObj = misListObj.findObject("checkbox_" + mission.id)
-    if (::check_obj(checkBoxObj) && checkBoxObj.getValue() != isSelected)
+    if (checkObj(checkBoxObj) && checkBoxObj.getValue() != isSelected)
       checkBoxObj.setValue(isSelected)
   }
 
   function onMissionSelect(obj)
   {
-    let mission = ::getTblValue(obj.getValue(), missionsList)
+    let mission = getTblValue(obj.getValue(), missionsList)
     if (mission == curMission)
       return
 

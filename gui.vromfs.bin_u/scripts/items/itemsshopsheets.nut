@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let seenList = require("%scripts/seen/seenList.nut")
@@ -6,7 +12,7 @@ let shopSheets = {
   types = []
 }
 
-let isOnlyExtInventory = @(shopTab) shopTab != itemsTab.WORKSHOP && ::has_feature("ExtInventory")
+let isOnlyExtInventory = @(shopTab) shopTab != itemsTab.WORKSHOP && hasFeature("ExtInventory")
 
 shopSheets.template <- {
   id = "" //used from type name
@@ -32,7 +38,7 @@ shopSheets.template <- {
     ? (@(item) ::ItemsManager.isItemVisible(item, shopTab) && isDevItemsTab == item.isDevItem)
     : (@(item) ::ItemsManager.isItemVisible(item, shopTab))
 
-  getItemsList = function(shopTab, subsetId = null)
+  getItemsList = function(shopTab, _subsetId = null)
   {
     let visibleTypeMask = ::ItemsManager.checkItemsMaskFeatures(typeMask)
     let filterFunc = getItemFilterFunc(shopTab).bindenv(this)
@@ -43,7 +49,7 @@ shopSheets.template <- {
     return []
   }
   getSubsetsListParameters = @() null
-  getSubsetIdByItemId = @(itemId) null
+  getSubsetIdByItemId = @(_itemId) null
   getSubsetSeenListId = @(subsetId) "{0}/{1}".subst(getSeenId(), subsetId)
 }
 
@@ -64,12 +70,12 @@ shopSheets.addSheets <- function(sheetsTable)
   enums.addTypes(this, sheetsTable,
     function()
     {
-      if (!locId)
-        locId = "itemTypes/" + id.tolower()
-      if (!emptyTabLocId)
-        emptyTabLocId = "items/shop/emptyTab/" + id.tolower()
-      if (!searchId)
-        searchId = id
+      if (!this.locId)
+        this.locId = "itemTypes/" + this.id.tolower()
+      if (!this.emptyTabLocId)
+        this.emptyTabLocId = "items/shop/emptyTab/" + this.id.tolower()
+      if (!this.searchId)
+        this.searchId = this.id
     },
     "id")
   shopSheets.types.sort(@(a, b) a.sortId <=> b.sortId)
@@ -80,7 +86,7 @@ shopSheets.addSheets <- function(sheetsTable)
     {
       let curTab = tab
       let tabSeenList = seenList.get(getTabSeenId(tab))
-      foreach (sh in types)
+      foreach (sh in this.types)
         if (sh.isAllowedForTab(tab))
         {
           let curSheet = sh
@@ -100,7 +106,7 @@ shopSheets.addSheets <- function(sheetsTable)
 shopSheets.findSheet <- function(config, defSheet = null)
 {
   local res = null
-  foreach(sh in types)
+  foreach(sh in this.types)
   {
     if (config == sh)
     {
@@ -149,7 +155,7 @@ shopSheets.addSheets({
     typeMask = itemType.DISCOUNT
     sortId = sortId++
     isAllowedForTab = @(shopTab) shopTab == itemsTab.INVENTORY
-      || (shopTab == itemsTab.SHOP && ::has_feature("CanBuyDiscountItems"))
+      || (shopTab == itemsTab.SHOP && hasFeature("CanBuyDiscountItems"))
   }
   TICKETS = {
     typeMask = itemType.TICKET
@@ -164,13 +170,13 @@ shopSheets.addSheets({
     emptyTabLocId = "items/shop/emptyTab/universalSpare"
     typeMask = itemType.UNIVERSAL_SPARE
     sortId = sortId++
-    isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && !::has_feature("ItemModUpgrade")
+    isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && !hasFeature("ItemModUpgrade")
   }
   MODIFICATIONS = {
     locId = "mainmenu/btnWeapons"
     typeMask = itemType.UNIVERSAL_SPARE | itemType.MOD_UPGRADE | itemType.MOD_OVERDRIVE
     sortId = sortId++
-    isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && ::has_feature("ItemModUpgrade")
+    isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && hasFeature("ItemModUpgrade")
   }
   VEHICLES = {
     typeMask = itemType.VEHICLE | itemType.RENTED_UNIT | itemType.UNIT_COUPON_MOD
@@ -236,7 +242,7 @@ shopSheets.addSheets({
     typeMask = itemType.ALL
     isDevItemsTab = true
     sortId = sortId++
-    isAllowedForTab = @(shopTab) shopTab == itemsTab.SHOP && ::has_feature("devItemShop")
+    isAllowedForTab = @(shopTab) shopTab == itemsTab.SHOP && hasFeature("devItemShop")
   }
 })
 
@@ -265,12 +271,12 @@ shopSheets.updateWorkshopSheets <- function()
 
       hasSubLists = @() getSet().hasSubsets
 
-      getItemFilterFunc = function(shopTab) {
+      getItemFilterFunc = function(_shopTab) {
         let s = getSet()
         return s.isItemInSet.bindenv(s)
       }
 
-      getItemsList = @(shopTab, subsetId = null) subsetId == null
+      getItemsList = @(_shopTab, subsetId = null) subsetId == null
         ? getSet().getItemsList()
         : getSet().getItemsSubList(subsetId)
       getSubsetsListParameters = function() {
@@ -294,12 +300,12 @@ shopSheets.getSheetDataByItem <- function(item)
   if (item.shouldAutoConsume)
     return null
 
-  updateWorkshopSheets()
+  this.updateWorkshopSheets()
 
   let iType = item.iType
   for (local tab = 0; tab < itemsTab.TOTAL; tab++)
     if (isTabVisible(tab))
-      foreach (sh in types)
+      foreach (sh in this.types)
         if ((sh.typeMask & iType)
             && sh.isAllowedForTab(tab)
             && ::u.search(sh.getItemsList(tab), @(it) item.isEqual(it)) != null)

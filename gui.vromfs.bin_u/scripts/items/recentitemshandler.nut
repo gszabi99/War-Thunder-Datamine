@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
 
@@ -42,7 +50,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     }
     return view
   }
-  function onTimer(obj, dt)
+  function onTimer(_obj, _dt)
   {
     foreach (idx, item in recentItems)
       updateExpireAlarmIcon(item, scene.findObject($"shop_item_cont_{idx}"))
@@ -60,27 +68,27 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     scene.type = "recentItems"
     numOtherItems = ::g_recent_items.getNumOtherItems()
 
-    let promoView = ::getTblValue(scene.id, ::g_promo.getConfig(), {})
+    let promoView = getTblValue(scene.id, ::g_promo.getConfig(), {})
     let otherItemsText = createOtherItemsText(numOtherItems)
     let view = {
       id = ::g_promo.getActionParamsKey(scene.id)
       items = ::handyman.renderCached("%gui/items/item", createItemsView(recentItems))
       otherItemsText = otherItemsText
-      needAutoScroll = getStringWidthPx(otherItemsText, "fontNormal", guiScene)
-        > ::to_pixels("1@arrowButtonWidth") ? "yes" : "no"
+      needAutoScroll = getStringWidthPx(otherItemsText, "fontNormal", this.guiScene)
+        > to_pixels("1@arrowButtonWidth") ? "yes" : "no"
       action = ::g_promo.PERFORM_ACTON_NAME
       collapsedAction = ::g_promo.PERFORM_ACTON_NAME
       collapsedText = ::g_promo.getCollapsedText(promoView, scene.id)
       collapsedIcon = ::g_promo.getCollapsedIcon(promoView, scene.id)
     }
     let blk = ::handyman.renderCached("%gui/items/recentItemsHandler", view)
-    guiScene.replaceContentFromText(scene, blk, blk.len(), this)
+    this.guiScene.replaceContentFromText(scene, blk, blk.len(), this)
     scene.findObject("update_timer").setUserData(this)
   }
 
   function onItemAction(obj)
   {
-    let itemIndex = ::to_integer_safe(::getTblValue("holderId", obj), -1)
+    let itemIndex = ::to_integer_safe(getTblValue("holderId", obj), -1)
     if (itemIndex == -1 || !(itemIndex in recentItems))
       return
 
@@ -98,39 +106,39 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     if (!item.hasRecentItemConfirmMessageBox)
       return _doActivateItem(item, params)
 
-    let msgBoxText = ::loc("recentItems/useItem", {
+    let msgBoxText = loc("recentItems/useItem", {
       itemName = item.getName()
     })
 
-    guiScene.performDelayed(this, function()
+    this.guiScene.performDelayed(this, function()
     {
-      if (isValid())
+      if (this.isValid())
         this.msgBox("recent_item_confirmation", msgBoxText, [
-          ["ok", ::Callback(@() _doActivateItem(item, params), this)
+          ["ok", Callback(@() _doActivateItem(item, params), this)
           ], ["cancel", function () {}]], "ok")
     })
   }
 
   function _doActivateItem(item, params)
   {
-    item.doMainAction(function(r) {}, this, params)
+    item.doMainAction(function(_r) {}, this, params)
   }
 
-  function onEventInventoryUpdate(params)
+  function onEventInventoryUpdate(_params)
   {
     //Because doWhenActiveOnce checks visibility end enable status
     //have to call forced update
     if (wasShown)
-      doWhenActiveOnce("updateHandler")
+      this.doWhenActiveOnce("updateHandler")
     else
       updateHandler()
   }
 
   function createOtherItemsText(numItems)
   {
-    local text = ::loc("recentItems/otherItems")
+    local text = loc("recentItems/otherItems")
     if (numItems > 0)
-      text += ::loc("ui/parentheses/space", {text = numItems})
+      text += loc("ui/parentheses/space", {text = numItems})
     return text
   }
 
@@ -150,7 +158,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     ::show_obj(scene, isVisible)
   }
 
-  onEventActiveHandlersChanged = @(p) updateVisibility()
+  onEventActiveHandlersChanged = @(_p) updateVisibility()
 }
 
 let promoButtonId = "recent_items_mainmenu_button"
@@ -159,8 +167,8 @@ addPromoButtonConfig({
   promoButtonId = promoButtonId
   updateFunctionInHandler = function() {
     let id = promoButtonId
-    let show = isShowAllCheckBoxEnabled() || ::g_promo.getVisibilityById(id)
-    let handlerWeak = ::g_recent_items.createHandler(this, scene.findObject(id), show)
-    owner.registerSubHandler(handlerWeak)
+    let show = this.isShowAllCheckBoxEnabled() || ::g_promo.getVisibilityById(id)
+    let handlerWeak = ::g_recent_items.createHandler(this, this.scene.findObject(id), show)
+    this.owner.registerSubHandler(handlerWeak)
   }
 })

@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 //ms
+let { get_time_msec } = require("dagor.time")
 
 local WwOperationPreloader = class
 {
@@ -26,13 +33,13 @@ local WwOperationPreloader = class
       return
 
     isRequestInProgress = true
-    lastRequestTimeMsec = ::dagor.getCurTime()
+    lastRequestTimeMsec = get_time_msec()
 
     ::ww_stop_preview()
 
     let operationId = curTask.operationId
     let taskId = ::ww_preview_operation(operationId)
-    let accessCb = ::Callback(
+    let accessCb = Callback(
       function() {
         isRequestInProgress = false
         if (operationId != curTask?.operationId)
@@ -48,8 +55,8 @@ local WwOperationPreloader = class
       },
       this)
 
-    let errorCb = ::Callback(
-      function(res) {
+    let errorCb = Callback(
+      function(_res) {
         isRequestInProgress = false
         if (operationId != curTask?.operationId)
           requestPreview()
@@ -67,7 +74,7 @@ local WwOperationPreloader = class
 
   function isRequestTimedOut()
   {
-    return ::dagor.getCurTime() - lastRequestTimeMsec >= PREVIEW_WW_OPERATION_REQUEST_TIME_OUT
+    return get_time_msec() - lastRequestTimeMsec >= PREVIEW_WW_OPERATION_REQUEST_TIME_OUT
   }
 }
 

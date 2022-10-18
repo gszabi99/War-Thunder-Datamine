@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+
+let { get_time_msec } = require("dagor.time")
 let avatars = require("%scripts/user/avatars.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 
@@ -30,7 +38,7 @@ local haveRequest = false
 let function _getResponseWidthoutRequest(users)
 {
   local fastResponse = {}
-  let currentTime = ::dagor.getCurTime()
+  let currentTime = get_time_msec()
   foreach (userId in users)
   {
     let curUserInfo = usersInfo?[userId]
@@ -54,7 +62,7 @@ let function _requestDataCommonSuccessCallback(response)
     local curUserInfo = usersInfo?[uid]
     if (curUserInfo != null)
     {
-      foreach(key, value in newUserInfo)
+      foreach(key, _value in newUserInfo)
         if (newUserInfo[key] != curUserInfo?[key])
         {
           curUserInfo[key] <- newUserInfo[key]
@@ -69,7 +77,7 @@ let function _requestDataCommonSuccessCallback(response)
       isUpdated = true
     }
 
-    curUserInfo.updatingLastTime <- ::dagor.getCurTime()
+    curUserInfo.updatingLastTime <- get_time_msec()
     usersInfo[uid] <- curUserInfo
   }
 
@@ -130,7 +138,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null)
 
   let usersList = ::g_string.implode(users, ";")
 
-  let requestBlk = DataBlock()
+  let requestBlk = ::DataBlock()
   requestBlk.setStr("usersList", usersList)
 
   let function fullSuccessCb(response) {

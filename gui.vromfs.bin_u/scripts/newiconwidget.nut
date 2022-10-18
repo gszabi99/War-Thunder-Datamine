@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 /*
   widget API:
   static createLayout()  - return widget layout
@@ -40,9 +46,9 @@
   static function createLayout(params = {})
   {
     let view = {
-      needContainer = ::getTblValue("needContainer", params, true)
-      icon = ::getTblValue("icon", params, ::NewIconWidget.defaultIcon)
-      tooltip = ::getTblValue("tooltip", params, "")
+      needContainer = getTblValue("needContainer", params, true)
+      icon = getTblValue("icon", params, ::NewIconWidget.defaultIcon)
+      tooltip = getTblValue("tooltip", params, "")
     }
     return ::handyman.renderCached("%gui/newIconWidget", view)
   }
@@ -50,7 +56,7 @@
   function setContainer(containerObj)
   {
     _containerObj = containerObj
-    if (::check_obj(_containerObj))
+    if (checkObj(_containerObj))
     {
       _containerObj.setUserData(this.weakref())
       update()
@@ -65,12 +71,12 @@
 
   function isValidContainerData()
   {
-    return ::check_obj(_textObj) && ::check_obj(_iconObj)
+    return checkObj(_textObj) && checkObj(_iconObj)
   }
 
   function validateContent()
   {
-    if (!::check_obj(_containerObj))
+    if (!checkObj(_containerObj))
       return
 
     if (isValidContainerData())
@@ -112,10 +118,10 @@
   {
     validateContent()
 
-    if (::check_obj(_textObj))
+    if (checkObj(_textObj))
     {
       let newText = (currentValue > 0) ? currentValue.tostring() : ""
-      if (::check_obj(_containerObj))
+      if (checkObj(_containerObj))
       {
          _containerObj.widgetClass = (newText == "") ? "" : "text"
          _containerObj.show(currentVisibility)
@@ -128,36 +134,36 @@
   function setIcon(newIcon)
   {
     icon = newIcon
-    if (::check_obj(_iconObj))
+    if (checkObj(_iconObj))
       _iconObj["background-image"] = icon
   }
 
   function _getTextObj()
   {
-    if (!::check_obj(_containerObj))
+    if (!checkObj(_containerObj))
       return null
     let obj = _containerObj.findObject("new_icon_widget_text")
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return null
     return obj
   }
 
   function _getIconObj()
   {
-    if (!::check_obj(_containerObj))
+    if (!checkObj(_containerObj))
       return null
     let obj = _containerObj.findObject("new_icon_widget_icon")
-    return ::check_obj(obj) ? obj : null
+    return checkObj(obj) ? obj : null
   }
 
   static function getWidgetByObj(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return null
     let widget = obj.getUserData()
     if (widget == null)
       return null
-    if (widget instanceof NewIconWidget)
+    if (widget instanceof ::NewIconWidget)
       return widget
     return null
   }

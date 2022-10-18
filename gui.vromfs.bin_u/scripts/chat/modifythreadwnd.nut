@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let time = require("%scripts/time.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 
 ::gui_handlers.modifyThreadWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -22,34 +30,34 @@ let time = require("%scripts/time.nut")
     if (!threadInfo)
       return
 
-    let ownerText = ::colorize("userlogColoredText", threadInfo.getOwnerText(false))
-    let createdByText = ::loc("chat/threadCreatedBy", { player = ownerText })
-    scene.findObject("created_by_text").setValue(createdByText)
+    let ownerText = colorize("userlogColoredText", threadInfo.getOwnerText(false))
+    let createdByText = loc("chat/threadCreatedBy", { player = ownerText })
+    this.scene.findObject("created_by_text").setValue(createdByText)
 
-    scene.findObject("thread_title_header").setValue(::loc("chat/threadTitle/limits",
+    this.scene.findObject("thread_title_header").setValue(loc("chat/threadTitle/limits",
                                               {
                                                 min = ::g_chat.threadTitleLenMin
                                                 max = ::g_chat.threadTitleLenMax
                                               }))
 
-    let titleEditbox = scene.findObject("thread_title_editbox")
+    let titleEditbox = this.scene.findObject("thread_title_editbox")
     titleEditbox.setValue(threadInfo.title)
     ::move_mouse_on_child(titleEditbox)
 
-    let hiddenCheckObj = scene.findObject("is_hidden_checkbox")
+    let hiddenCheckObj = this.scene.findObject("is_hidden_checkbox")
     hiddenCheckObj.setValue(threadInfo.isHidden)
     onChangeHidden(hiddenCheckObj)
-    let pinnedCheckObj = scene.findObject("is_pinned_checkbox")
+    let pinnedCheckObj = this.scene.findObject("is_pinned_checkbox")
     pinnedCheckObj.setValue(threadInfo.isPinned)
     onChangePinned(pinnedCheckObj)
 
-    local timeHeader = ::loc("chat/threadTime")
+    local timeHeader = loc("chat/threadTime")
     if (threadInfo.timeStamp > 0)
     {
       threadTime = threadInfo.timeStamp
-      timeHeader += ::loc("ui/colon") + time.buildDateTimeStr(threadInfo.timeStamp)
+      timeHeader += loc("ui/colon") + time.buildDateTimeStr(threadInfo.timeStamp)
     }
-    scene.findObject("thread_time_header").setValue(timeHeader)
+    this.scene.findObject("thread_time_header").setValue(timeHeader)
 
     initLangs()
     initCategories()
@@ -75,7 +83,7 @@ let time = require("%scripts/time.nut")
         view.countries.append({ countryIcon = langInfo.icon })
     }
     let data = ::handyman.renderCached("%gui/countriesList", view)
-    guiScene.replaceContentFromText(scene.findObject("language_btn"), data, data.len(), this)
+    this.guiScene.replaceContentFromText(this.scene.findObject("language_btn"), data, data.len(), this)
   }
 
   function initCategories()
@@ -89,7 +97,7 @@ let time = require("%scripts/time.nut")
 
   function getSelThreadCategoryName()
   {
-    let cListObj = scene.findObject("categories_list")
+    let cListObj = this.scene.findObject("categories_list")
     return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, threadInfo.category)
   }
 
@@ -105,18 +113,18 @@ let time = require("%scripts/time.nut")
   {
     isValuesValid = ::g_chat.checkThreadTitleLen(curTitle)
 
-    scene.findObject("btn_apply").enable(isValuesValid)
+    this.scene.findObject("btn_apply").enable(isValuesValid)
   }
 
   function onApply()
   {
-    if (!isValuesValid || !::checkObj(scene))
+    if (!isValuesValid || !checkObj(this.scene))
       return
 
     let modifyTable = {
       title = curTitle
-      isHidden = scene.findObject("is_hidden_checkbox").getValue()
-      isPinned = scene.findObject("is_pinned_checkbox").getValue()
+      isHidden = this.scene.findObject("is_hidden_checkbox").getValue()
+      isPinned = this.scene.findObject("is_pinned_checkbox").getValue()
       category = getSelThreadCategoryName()
     }
     if (curTime > 0)
@@ -126,22 +134,22 @@ let time = require("%scripts/time.nut")
 
     let res = ::g_chat.modifyThread(threadInfo, modifyTable)
     if (res)
-      goBack()
+      this.goBack()
   }
 
   function onChangeHidden(obj)
   {
     if (!obj)
       return
-    scene.findObject("is_pinned_checkbox").enable(!obj.getValue())
-    scene.findObject("timestamp_editbox").enable(!obj.getValue())
+    this.scene.findObject("is_pinned_checkbox").enable(!obj.getValue())
+    this.scene.findObject("timestamp_editbox").enable(!obj.getValue())
   }
 
   function onChangePinned(obj)
   {
     if (!obj)
       return
-    scene.findObject("is_hidden_checkbox").enable(!obj.getValue())
+    this.scene.findObject("is_hidden_checkbox").enable(!obj.getValue())
   }
 
   function updateSelTimeText(timestamp)
@@ -149,7 +157,7 @@ let time = require("%scripts/time.nut")
     local text = ""
     if (timestamp >= 0)
       text = " -> " + time.buildDateTimeStr(timestamp)
-    scene.findObject("new_time_text").setValue(text)
+    this.scene.findObject("new_time_text").setValue(text)
   }
 
   function onChangeTimeStamp(obj)
@@ -163,7 +171,7 @@ let time = require("%scripts/time.nut")
   function goCancelTimeStamp(obj)
   {
     if (obj.getValue() == "")
-      goBack()
+      this.goBack()
     else
       obj.setValue("")
   }
@@ -171,7 +179,7 @@ let time = require("%scripts/time.nut")
   function setChatTime(timestamp)
   {
     let timeText = time.buildTabularDateTimeStr(timestamp, true)
-    let timeObj = scene.findObject("timestamp_editbox")
+    let timeObj = this.scene.findObject("timestamp_editbox")
     timeObj.setValue(timeText)
     ::select_editbox(timeObj)
   }
@@ -182,7 +190,7 @@ let time = require("%scripts/time.nut")
     let menu = []
     foreach(hours in hoursList)
       menu.append({
-        text = ::loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
+        text = loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
         action = (@(hours) function() {
           let timeInt = ::get_charserver_time_sec() + time.hoursToSeconds(hours)
           setChatTime(timeInt)
@@ -201,7 +209,7 @@ let time = require("%scripts/time.nut")
     let menu = []
     for(local i = 0; i < maxPos; i++)
       menu.append({
-        text = ::loc("chat/moveThreadToPosition", { place = i + 1 })
+        text = loc("chat/moveThreadToPosition", { place = i + 1 })
         action = (@(i) function() { moveChatToPlace(i) })(i)
       })
     ::gui_right_click_menu(menu, this)
@@ -245,14 +253,14 @@ let time = require("%scripts/time.nut")
           text = lang.title
           icon = lang.icon
           value = lang.chatId
-          selected = ::isInArray(lang.chatId, curLangs)
+          selected = isInArray(lang.chatId, curLangs)
         })
 
     ::gui_start_multi_select_menu({
       list = optionsList
       align = "right"
       alignObj = obj
-      onFinalApplyCb = ::Callback(function(langs)
+      onFinalApplyCb = Callback(function(langs)
                        {
                          if (langs.len())
                            curLangs = langs

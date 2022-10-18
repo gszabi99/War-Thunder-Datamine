@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -48,7 +55,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
 
   function isNewest() {
-    return !isInUpdate && ::dagor.getCurTime() - lastUpdateTimeMsec < ROOM_LIST_REFRESH_MIN_TIME
+    return !isInUpdate && get_time_msec() - lastUpdateTimeMsec < ROOM_LIST_REFRESH_MIN_TIME
   }
 
   function isThrottled(curTime) {
@@ -62,7 +69,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
   function validateList()
   {
-    if (::dagor.getCurTime() - lastUpdateTimeMsec >= ROOM_LIST_TIME_OUT)
+    if (get_time_msec() - lastUpdateTimeMsec >= ROOM_LIST_TIME_OUT)
       roomsList.clear()
   }
 
@@ -80,7 +87,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   function requestList(filter)
   {
     let roomsFilter = getFetchRoomsParams(filter)
-    let curTime = ::dagor.getCurTime()
+    let curTime = get_time_msec()
     if (isUpdateTimedout(curTime))
       isInUpdate = false
 
@@ -114,11 +121,11 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   {
     isInUpdate = false
 
-    let digest = ::checkMatchingError(p, false) ? ::getTblValue("digest", p) : null
+    let digest = ::checkMatchingError(p, false) ? getTblValue("digest", p) : null
     if (!digest)
       return
 
-    lastUpdateTimeMsec = ::dagor.getCurTime()
+    lastUpdateTimeMsec = get_time_msec()
     updateRoomsList(digest, hideFullRooms)
     ::broadcastEvent("SearchedRoomsChanged", { roomsList = this })
 
@@ -236,7 +243,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   function isRoomVisible(room, hideFullRooms)
   {
     let userUid = ::SessionLobby.getRoomCreatorUid(room)
-    if (userUid && ::isPlayerInContacts(userUid, ::EPL_BLOCKLIST))
+    if (userUid && ::isPlayerInContacts(userUid, EPL_BLOCKLIST))
       return false
 
     if (hideFullRooms) {
@@ -244,6 +251,6 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
       if (::SessionLobby.getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
         return false
     }
-    return ::SessionLobby.getMisListType(room.public).canJoin(::GM_SKIRMISH)
+    return ::SessionLobby.getMisListType(room.public).canJoin(GM_SKIRMISH)
   }
 }

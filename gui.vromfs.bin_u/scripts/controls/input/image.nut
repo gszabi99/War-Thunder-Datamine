@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 ::Input.InputImage <- class extends ::Input.InputBase
 {
   image = ""

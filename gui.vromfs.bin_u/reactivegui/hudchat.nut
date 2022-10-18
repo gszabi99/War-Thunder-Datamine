@@ -1,3 +1,7 @@
+from "%rGui/globals/ui_library.nut" import *
+let cross_call = require("%rGui/globals/cross_call.nut")
+let {chat_on_send, toggle_ingame_chat, chat_on_text_update} = require("%rGui/globals/chat.nut")
+let string = require("string")
 let colors = require("style/colors.nut")
 let teamColors = require("style/teamColors.nut")
 let textInput =  require("components/textInput.nut")
@@ -38,18 +42,18 @@ let function chatBase(log_state, send_message_fn) {
 }
 
 
-let chatLog = state.log
+let chatLog = state.hudLog
 
 
 let function modeColor(mode) {
-  let colorName = ::cross_call.mp_chat_mode.getModeColorName(mode)
+  let colorName = cross_call.mp_chat_mode.getModeColorName(mode)
   return colors.hud?[colorName] ?? teamColors.value[colorName]
 }
 
 
 let function sendFunc(_message) {
   if (!penalty.isDevoiced()) {
-    ::chat_on_send()
+    chat_on_send()
   } else {
     state.pushSystemMessage(penalty.getDevoiceDescriptionText())
   }
@@ -64,7 +68,7 @@ state.input.subscribe(function (new_val) {
 
 let function chatInputCtor(field, send) {
   let restoreControle = function () {
-    ::toggle_ingame_chat(false)
+    toggle_ingame_chat(false)
   }
 
   let onReturn = function () {
@@ -80,12 +84,12 @@ let function chatInputCtor(field, send) {
     key = "chatInput"
     font = fontsState.get("small")
     margin = 0
-    padding = [::fpx(8), ::fpx(8), 0, ::fpx(8)]
+    padding = [fpx(8), fpx(8), 0, fpx(8)]
     size = flex()
     valign = ALIGN_BOTTOM
     borderRadius = 0
     valignText = ALIGN_CENTER
-    textmargin = [::fpx(5) , ::fpx(8)]
+    textmargin = [fpx(5) , fpx(8)]
     imeOpenJoyBtn = $"{JB.A}"
     hotkeys = [
       [ $"{JB.B}", onEscape ],
@@ -97,7 +101,7 @@ let function chatInputCtor(field, send) {
 
     onReturn
     onEscape
-    onChange = @(new_val) ::chat_on_text_update(new_val)
+    onChange = @(new_val) chat_on_text_update(new_val)
     function onImeFinish(applied) {
       if (applied)
         onReturn()
@@ -109,7 +113,7 @@ let function chatInputCtor(field, send) {
 
 let function getHintText() {
   let config = hints(
-    ::cross_call.mp_chat_mode.getChatHint(),
+    cross_call.mp_chat_mode.getChatHint(),
     { font = fontsState.get("small")
       place = "chatHint"
     })
@@ -122,7 +126,7 @@ let chatHint = @() {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  padding = [::fpx(8)]
+  padding = [fpx(8)]
   gap = { size = flex() }
   color = colors.hud.hudLogBgColor
   children = [
@@ -130,7 +134,7 @@ let chatHint = @() {
     @() {
       rendObj = ROBJ_TEXT
       watch = state.modeId
-      text = ::cross_call.mp_chat_mode.getModeNameText(state.modeId.value)
+      text = cross_call.mp_chat_mode.getModeNameText(state.modeId.value)
       color = modeColor(state.modeId.value)
       font = fontsState.get("normal")
     }
@@ -152,7 +156,7 @@ let getMessageColor = function(message) {
   if (message.isBlocked)
     return colors.menu.chatTextBlockedColor
   if (message.isAutomatic) {
-    if (::cross_call.squad_manger.isInMySquad(message.sender))
+    if (cross_call.squad_manger.isInMySquad(message.sender))
       return teamColors.value.squadColor
     else if (message.team != hudState.playerArmyForHud.value)
       return teamColors.value.teamRedColor
@@ -166,11 +170,11 @@ let getMessageColor = function(message) {
 let getSenderColor = function (message) {
   if (message.isMyself)
     return colors.hud.mainPlayerColor
-  else if (::cross_call.isPlayerDedicatedSpectator(message.sender))
+  else if (cross_call.isPlayerDedicatedSpectator(message.sender))
     return colors.hud.spectatorColor
-  else if (message.team != hudState.playerArmyForHud.value || !::cross_call.is_mode_with_teams())
+  else if (message.team != hudState.playerArmyForHud.value || !cross_call.is_mode_with_teams())
     return teamColors.value.teamRedColor
-  else if (::cross_call.squad_manger.isInMySquad(message.sender))
+  else if (cross_call.squad_manger.isInMySquad(message.sender))
     return teamColors.value.squadColor
   return teamColors.value.teamBlueColor
 }
@@ -179,21 +183,21 @@ let getSenderColor = function (message) {
 let messageComponent = @(message) function() {
   local text = ""
   if (message.sender == "") { //systme
-    text = ::string.format(
+    text = string.format(
       "<color=%d>%s</color>",
       colors.hud.chatActiveInfoColor,
-      ::loc(message.text)
+      loc(message.text)
     )
   } else {
-    text = ::string.format("%s <Color=%d>[%s] %s:</Color> <Color=%d>%s</Color>",
+    text = string.format("%s <Color=%d>[%s] %s:</Color> <Color=%d>%s</Color>",
       secondsToTimeSimpleString(message.time),
       getSenderColor(message),
-      ::cross_call.mp_chat_mode.getModeNameText(message.mode),
-      ::cross_call.platform.getPlayerName(message.sender),
+      cross_call.mp_chat_mode.getModeNameText(message.mode),
+      cross_call.platform.getPlayerName(message.sender),
       getMessageColor(message),
       message.isAutomatic
         ? message.text
-        : ::cross_call.filter_chat_message(message.text, message.isMyself)
+        : cross_call.filter_chat_message(message.text, message.isMyself)
     )
   }
   return {
@@ -214,9 +218,9 @@ let logBox = hudLog({
 
 let onInputToggle = function (enable) {
   if (enable)
-    ::set_kb_focus(chatInputCtor)
+    set_kb_focus(chatInputCtor)
   else
-    ::set_kb_focus(null)
+    set_kb_focus(null)
 }
 
 let bottomPanel = @() {
@@ -236,7 +240,7 @@ let bottomPanel = @() {
    onDetach = function() {
      state.inputChatVisible(false)
      state.canWriteToChat.unsubscribe(onInputToggle)
-     ::set_kb_focus(null)
+     set_kb_focus(null)
    }
 }
 
@@ -249,7 +253,7 @@ return function () {
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
-    gap = ::fpx(8)
+    gap = fpx(8)
     watch = state.canWriteToChat
 
     children = children

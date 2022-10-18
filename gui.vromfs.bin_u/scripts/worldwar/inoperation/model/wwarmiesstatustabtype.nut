@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { ceil } = require("math")
+
 ::g_ww_map_armies_status_tab_type <- {
   types = []
   cache = {
@@ -27,16 +35,16 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
     local countText = armies.common.len()
     if (armies.surrounded.len() > 0)
-      countText += "+" + ::colorize("armySurroundedColor", armies.surrounded.len())
+      countText += "+" + colorize("armySurroundedColor", armies.surrounded.len())
 
-    return ::loc("ui/parentheses/space", { text = countText })
+    return loc("ui/parentheses/space", { text = countText })
   }
 
   getTitleViewData = function() {
     return {
       id = status
-      tabIconText = ::loc(iconText)
-      tabText = ::loc(text)
+      tabIconText = loc(iconText)
+      tabText = loc(text)
       armiesCountText = getArmiesCountText()
     }
   }
@@ -61,7 +69,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
   getTotalPageCount = function(itemsPerPage) {
     let armies = ::g_operations.getArmiesByStatus(status)
-    return ::ceil((armies.surrounded.len() + armies.common.len())/itemsPerPage.tofloat())
+    return ceil((armies.surrounded.len() + armies.common.len())/itemsPerPage.tofloat())
   }
 }
 
@@ -96,13 +104,12 @@ enums.addTypesByGlobalName("g_ww_map_armies_status_tab_type", {
 }, null, "name")
 
 
-g_ww_map_armies_status_tab_type.getTypeByStatus <- function getTypeByStatus(status)
-{
+::g_ww_map_armies_status_tab_type.getTypeByStatus <- function getTypeByStatus(status) {
   return enums.getCachedType(
     "status",
     status,
-    cache.byStatus,
+    this.cache.byStatus,
     this,
-    UNKNOWN
+    this.UNKNOWN
   )
 }

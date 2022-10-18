@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let statsd = require("statsd")
@@ -23,7 +28,7 @@ local haveItemDiscount = null
   if (!catalog || !catalog.blockCount())
   {
     statsd.send_counter("sq.ingame_store.open.empty_catalog", 1, {catalog = statsdMetric})
-    ::dagor.debug("XBOX SHOP: Empty catalog. Don't open shop.")
+    log("XBOX SHOP: Empty catalog. Don't open shop.")
     return
   }
 
@@ -37,7 +42,7 @@ local haveItemDiscount = null
     let itemBlock = catalog.getBlock(i)
     if (itemBlock.getBlockName() in skipItemsList)
     {
-      ::dagor.debug("XBOX SHOP: SKIP: " + itemBlock.Name + " by id " + itemBlock.getBlockName())
+      log("XBOX SHOP: SKIP: " + itemBlock.Name + " by id " + itemBlock.getBlockName())
       continue
     }
 
@@ -75,7 +80,7 @@ local haveItemDiscount = null
 
 let requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown")
 {
-  if (!::is_platform_xbox)
+  if (!is_platform_xbox)
     return
 
   onReceiveCatalogCb = cb
@@ -98,7 +103,7 @@ let requestData = function(isSilent = false, cb = null, invSeenList = false, met
   */
 }
 
-let canUseIngameShop = @() ::is_platform_xbox && ::has_feature("XboxIngameShop")
+let canUseIngameShop = @() is_platform_xbox && hasFeature("XboxIngameShop")
 
 let getVisibleSeenIds = function()
 {
@@ -155,8 +160,8 @@ let haveDiscount = function()
 }
 
 subscriptions.addListenersWithoutEnv({
-  ProfileUpdated = @(p) initXboxItemsListAfterLogin()
-  SignOut = function(p) {
+  ProfileUpdated = @(_p) initXboxItemsListAfterLogin()
+  SignOut = function(_p) {
     isItemsInitedOnce = false
     xboxProceedItems({})
     visibleSeenIds.clear()

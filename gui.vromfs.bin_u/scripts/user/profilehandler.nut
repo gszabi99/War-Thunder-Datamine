@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
@@ -15,7 +23,7 @@ let { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("%scripts/use
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { fillProfileSummary } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 let { canStartPreviewScene, useDecorator, showDecoratorAccessRestriction,
   getDecoratorDataToUse } = require("%scripts/customization/contentPreview.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -31,9 +39,10 @@ let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip
 } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { getUnlockConditionsText, getUnlockMultDesc,
-  getUnlockMainCondText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText,
+  getUnlockMainCondDescByCfg, getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -49,7 +58,7 @@ let selMedalIdx = {}
 
 ::gui_start_profile <- function gui_start_profile(params = {})
 {
-  if (!::has_feature("Profile"))
+  if (!hasFeature("Profile"))
     return
 
   ::gui_start_modal_wnd(::gui_handlers.Profile, params)
@@ -70,7 +79,7 @@ let selMedalIdx = {}
   profileInited = false
 
   airStatsList = null
-  statsType = ::ETTI_VALUE_INHISORY
+  statsType = ETTI_VALUE_INHISORY
   statsMode = ""
   statsCountries = null
   statsSortBy = ""
@@ -92,19 +101,19 @@ let selMedalIdx = {}
   isPageFilling = false
 
   unlockTypesToShow = [
-    ::UNLOCKABLE_ACHIEVEMENT,
-    ::UNLOCKABLE_CHALLENGE,
-    ::UNLOCKABLE_TROPHY,
-    ::UNLOCKABLE_TROPHY_PSN,
-    ::UNLOCKABLE_TROPHY_XBOXONE,
-    ::UNLOCKABLE_TROPHY_STEAM
+    UNLOCKABLE_ACHIEVEMENT,
+    UNLOCKABLE_CHALLENGE,
+    UNLOCKABLE_TROPHY,
+    UNLOCKABLE_TROPHY_PSN,
+    UNLOCKABLE_TROPHY_XBOXONE,
+    UNLOCKABLE_TROPHY_STEAM
   ]
 
   unlocksPages = [
-    ::UNLOCKABLE_ACHIEVEMENT
-    ::UNLOCKABLE_SKIN
-    ::UNLOCKABLE_DECAL
-    ::UNLOCKABLE_MEDAL
+    UNLOCKABLE_ACHIEVEMENT
+    UNLOCKABLE_SKIN
+    UNLOCKABLE_DECAL
+    UNLOCKABLE_MEDAL
   ]
 
   unlocksTree = {}
@@ -132,19 +141,19 @@ let selMedalIdx = {}
 
   function initScreen()
   {
-    if (!scene)
-      return goBack()
+    if (!this.scene)
+      return this.goBack()
 
-    isOwnStats = true
-    scene.findObject("profile_update").setUserData(this)
+    this.isOwnStats = true
+    this.scene.findObject("profile_update").setUserData(this)
 
     //prepare options
-    mainOptionsMode = getGuiOptionsMode()
+    this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
     unlocksTree = {}
 
-    initStatsParams()
+    this.initStatsParams()
     initSheetsList()
     initTabs()
 
@@ -157,21 +166,21 @@ let selMedalIdx = {}
           return (country != "")? country : null
         })
 
-      unlockFilters.UnlockSkin = ::u.filter(shopCountriesList, @(c) ::isInArray(c, skinCountries))
+      unlockFilters.UnlockSkin = ::u.filter(shopCountriesList, @(c) isInArray(c, skinCountries))
     }
 
     //fill medal filters
     if ("Medal" in unlockFilters)
     {
       let medalCountries = getUnlockFiltersList("medal", @(unlock) unlock?.country)
-      unlockFilters.Medal = ::u.filter(shopCountriesList, @(c) ::isInArray(c, medalCountries))
+      unlockFilters.Medal = ::u.filter(shopCountriesList, @(c) isInArray(c, medalCountries))
     }
 
-    let bntGetLinkObj = scene.findObject("btn_getLink")
-    if (::check_obj(bntGetLinkObj))
+    let bntGetLinkObj = this.scene.findObject("btn_getLink")
+    if (checkObj(bntGetLinkObj))
       bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
 
-    initLeaderboardModes()
+    this.initLeaderboardModes()
     initShortcuts()
   }
 
@@ -182,7 +191,7 @@ let selMedalIdx = {}
     local hasAnyUnlocks = false
     local hasAnyMedals = false //skins and decals tab also have resources without unlocks
 
-    let customCategoryConfig = ::getTblValue("customProfileMenuTab", ::get_gui_regional_blk(), null)
+    let customCategoryConfig = getTblValue("customProfileMenuTab", ::get_gui_regional_blk(), null)
     local tabImage = null
     local tabText = null
 
@@ -197,7 +206,7 @@ let selMedalIdx = {}
         continue
 
       hasAnyUnlocks = true
-      if (unlockTypeId == ::UNLOCKABLE_MEDAL)
+      if (unlockTypeId == UNLOCKABLE_MEDAL)
         hasAnyMedals = true
 
       if (cb?.customMenuTab == null)
@@ -275,28 +284,28 @@ let selMedalIdx = {}
     }
 
     let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    let sheetsListObj = scene.findObject("profile_sheet_list")
-    guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
+    let sheetsListObj = this.scene.findObject("profile_sheet_list")
+    this.guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     sheetsListObj.setValue(curSheetIdx)
   }
 
   function isSheetVisible(sheetName)
   {
     if (sheetName == "Medal")
-      return ::has_feature("ProfileMedals")
+      return hasFeature("ProfileMedals")
     return true
   }
 
   function initShortcuts()
   {
-    local obj = scene.findObject("btn_profile_icon")
-    if (::checkObj(obj))
+    local obj = this.scene.findObject("btn_profile_icon")
+    if (checkObj(obj))
       obj.btnName = "X"
-    obj = scene.findObject("profile_currentUser_btn_title")
-    if (::checkObj(obj))
+    obj = this.scene.findObject("profile_currentUser_btn_title")
+    if (checkObj(obj))
       obj.btnName = "Y"
-    scene.findObject("unseen_titles").setValue(SEEN.TITLES)
-    scene.findObject("unseen_avatar").setValue(SEEN.AVATARS)
+    this.scene.findObject("unseen_titles").setValue(SEEN.TITLES)
+    this.scene.findObject("unseen_avatar").setValue(SEEN.AVATARS)
   }
 
   function getUnlockFiltersList(uType, getCategoryFunc)
@@ -312,7 +321,7 @@ let selMedalIdx = {}
 
   function updateDecalButtons(decor) {
     if (!decor) {
-      ::showBtnTable(scene, {
+      ::showBtnTable(this.scene, {
         btn_buy_decorator              = false
         btn_fav                        = false
         btn_preview                    = false
@@ -334,19 +343,19 @@ let selMedalIdx = {}
 
     let buyBtnObj = this.showSceneBtn("btn_buy_decorator", canBuy)
     if (canBuy && buyBtnObj?.isValid())
-      placePriceTextToButton(scene, "btn_buy_decorator", ::loc("mainmenu/btnOrder"), decor.getCost())
+      placePriceTextToButton(this.scene, "btn_buy_decorator", loc("mainmenu/btnOrder"), decor.getCost())
 
     let canFav = !decor.isUnlocked() && ::g_unlocks.canDo(decor.unlockBlk)
     let favBtnObj = this.showSceneBtn("btn_fav", canFav)
     if (canFav)
       favBtnObj.setValue(::g_unlocks.isUnlockFav(decor.unlockId)
-        ? ::loc("preloaderSettings/untrackProgress")
-        : ::loc("preloaderSettings/trackProgress"))
+        ? loc("preloaderSettings/untrackProgress")
+        : loc("preloaderSettings/trackProgress"))
 
     let canUse = decor.isUnlocked() && canStartPreviewScene(false)
     let canPreview = !canUse && decor.canPreview()
 
-    ::showBtnTable(scene, {
+    ::showBtnTable(this.scene, {
       btn_preview                    = ::isInMenu() && canPreview
       btn_use_decorator              = ::isInMenu() && canUse
       btn_store                      = ::isInMenu() && canFindInStore
@@ -363,20 +372,20 @@ let selMedalIdx = {}
     let buttonsList = {
       btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !::is_vendor_tencent()
       btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !::is_vendor_tencent()
-      btn_getLink = !::is_in_loading_screen() && isProfileOpened && ::has_feature("Invites")
-      btn_codeApp = isPlatformPC && ::has_feature("AllowExternalLink") &&
+      btn_getLink = !::is_in_loading_screen() && isProfileOpened && hasFeature("Invites")
+      btn_codeApp = isPlatformPC && hasFeature("AllowExternalLink") &&
         !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened && !::is_vendor_tencent()
       btn_EmailRegistration = isProfileOpened && canEmailRegistration()
-      paginator_place = (sheet == "Statistics") && airStatsList && (airStatsList.len() > statsPerPage)
-      btn_achievements_url = (sheet == "UnlockAchievement") && ::has_feature("AchievementsUrl")
-        && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
+      paginator_place = (sheet == "Statistics") && airStatsList && (airStatsList.len() > this.statsPerPage)
+      btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
+        && hasFeature("AllowExternalLink") && !::is_vendor_tencent()
       btn_SkinPreview = ::isInMenu() && sheet == "UnlockSkin"
     }
 
-    ::showBtnTable(scene, buttonsList)
+    ::showBtnTable(this.scene, buttonsList)
 
     if (buttonsList.btn_EmailRegistration)
-      scene.findObject("btn_EmailRegistration").tooltip = emailRegistrationTooltip
+      this.scene.findObject("btn_EmailRegistration").tooltip = emailRegistrationTooltip
 
     updateDecalButtons(getCurDecal())
   }
@@ -422,7 +431,7 @@ let selMedalIdx = {}
     updateDecalButtons(decal)
   }
 
-  function onSheetChange(obj)
+  function onSheetChange(_obj)
   {
     let sheet = getCurSheet()
     curFilterType = ""
@@ -468,8 +477,8 @@ let selMedalIdx = {}
       }
 
       let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-      let categoriesListObj = scene.findObject("decals_group_list")
-      guiScene.replaceContentFromText(categoriesListObj, data, data.len(), this)
+      let categoriesListObj = this.scene.findObject("decals_group_list")
+      this.guiScene.replaceContentFromText(categoriesListObj, data, data.len(), this)
 
       let selCategory = filterGroupName ?? ::loadLocalByAccount("wnd/decalsCategory", "")
       if (isDecalGroup(selCategory))
@@ -478,14 +487,14 @@ let selMedalIdx = {}
       let selIdx = view.items.findindex(@(c) c.id == selCategory) ?? 0
       categoriesListObj.setValue(selIdx)
 
-      guiScene.applyPendingChanges(false)
+      this.guiScene.applyPendingChanges(false)
       categoriesListObj.getChild(selIdx).scrollToView()
     }
     else if (sheet == "Medal")
     {
       showSheetDiv("medals", true)
 
-      let selCategory = filterCountryName ?? ::get_profile_country_sq()
+      let selCategory = filterCountryName ?? profileCountrySq.value
 
       local selIdx = 0
       let view = { items = [] }
@@ -497,8 +506,8 @@ let selMedalIdx = {}
       }
 
       let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-      let pageList = scene.findObject("medals_list")
-      guiScene.replaceContentFromText(pageList, data, data.len(), this)
+      let pageList = this.scene.findObject("medals_list")
+      this.guiScene.replaceContentFromText(pageList, data, data.len(), this)
 
       let isEqualIdx = selIdx == pageList.getValue()
       pageList.setValue(selIdx)
@@ -517,8 +526,8 @@ let selMedalIdx = {}
       else
       {
         showSheetDiv("unlocks", true, true)
-        let pageList = scene.findObject("pages_list")
-        let curCountry = filterCountryName || ::get_profile_country_sq()
+        let pageList = this.scene.findObject("pages_list")
+        let curCountry = filterCountryName || profileCountrySq.value
         local selIdx = 0
 
         let view = { items = [] }
@@ -534,7 +543,7 @@ let selMedalIdx = {}
         }
 
         let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-        guiScene.replaceContentFromText(pageList, data, data.len(), this)  // fill countries listbox
+        this.guiScene.replaceContentFromText(pageList, data, data.len(), this)  // fill countries listbox
         pageList.setValue(selIdx)
         if (selIdx <= 0)
           onPageChange(null)
@@ -559,13 +568,13 @@ let selMedalIdx = {}
     foreach(div in ["profile", "unlocks", "stats", "medals", "decals"])
     {
       let show = div == name
-      let divObj = scene.findObject(div + "-container")
-      if (::checkObj(divObj))
+      let divObj = this.scene.findObject(div + "-container")
+      if (checkObj(divObj))
       {
         divObj.show(show)
         divObj.enable(show)
         if (show)
-          updateDifficultySwitch(divObj)
+          this.updateDifficultySwitch(divObj)
       }
     }
     this.showSceneBtn("pages_list", pages)
@@ -580,7 +589,7 @@ let selMedalIdx = {}
   }
 
   function fillDecalsList() {
-    let listObj = scene.findObject("decals_group_list")
+    let listObj = this.scene.findObject("decals_group_list")
     if (!listObj?.isValid())
       return
 
@@ -590,16 +599,16 @@ let selMedalIdx = {}
 
     let categoryObj = listObj.getChild(idx)
     let isCollapsable = categoryObj?.collapse_header == "yes"
-    let decalsListObj = scene.findObject("decals_zone")
+    let decalsListObj = this.scene.findObject("decals_zone")
     if (isCollapsable) {
-      guiScene.replaceContentFromText(decalsListObj, "", 0, null)
+      this.guiScene.replaceContentFromText(decalsListObj, "", 0, null)
       onDecalSelect()
       return
     }
 
     let [categoryId, groupId = "other"] = categoryObj.id.split("/")
     let markup = getDecalsMarkup(categoryId, groupId)
-    guiScene.replaceContentFromText(decalsListObj, markup, markup.len(), this)
+    this.guiScene.replaceContentFromText(decalsListObj, markup, markup.len(), this)
 
     if (initDecalId != "") {
       let decalIdx = findChildIndex(decalsListObj, @(c) c.id == initDecalId)
@@ -670,9 +679,9 @@ let selMedalIdx = {}
     } else
       progressObj.show(false)
 
-    infoObj.findObject("decalMainCond").setValue(getUnlockMainCondText(cfg))
-    infoObj.findObject("decalMultDecs").setValue(getUnlockMultDesc(cfg))
-    infoObj.findObject("decalConds").setValue(getUnlockConditionsText(cfg))
+    infoObj.findObject("decalMainCond").setValue(getUnlockMainCondDescByCfg(cfg))
+    infoObj.findObject("decalMultDecs").setValue(getUnlockMultDescByCfg(cfg))
+    infoObj.findObject("decalConds").setValue(getUnlockCondsDescByCfg(cfg))
     infoObj.findObject("decalPrice").setValue(getDecalObtainInfo(decor))
   }
 
@@ -684,15 +693,15 @@ let selMedalIdx = {}
       return decor.getCostText()
 
     if (decor.canGetFromCoupon(null))
-      return " ".concat(::loc("currency/gc/sign/colored"),
-        ::colorize("currencyGCColor", ::loc("shop/object/can_get_from_coupon")))
+      return " ".concat(loc("currency/gc/sign/colored"),
+        colorize("currencyGCColor", loc("shop/object/can_get_from_coupon")))
 
     if (decor.canBuyCouponOnMarketplace(null))
-      return " ".concat(::loc("currency/gc/sign/colored"),
-        ::colorize("currencyGCColor", ::loc("shop/object/can_be_found_on_marketplace")))
+      return " ".concat(loc("currency/gc/sign/colored"),
+        colorize("currencyGCColor", loc("shop/object/can_be_found_on_marketplace")))
 
     if (::ItemsManager.canGetDecoratorFromTrophy(decor))
-      return ::loc("mainmenu/itemCanBeReceived")
+      return loc("mainmenu/itemCanBeReceived")
 
     return ""
   }
@@ -701,7 +710,7 @@ let selMedalIdx = {}
     if (getCurSheet() != "UnlockDecal")
       return null
 
-    let listObj = scene.findObject("decals_zone")
+    let listObj = this.scene.findObject("decals_zone")
     if (!listObj?.isValid())
       return null
 
@@ -713,7 +722,7 @@ let selMedalIdx = {}
     return ::g_decorator.getDecorator(decalId, ::g_decorator_type.DECALS)
   }
 
-  function onPageChange(obj)
+  function onPageChange(_obj)
   {
     local pageIdx = 0
     let sheet = getCurSheet()
@@ -721,9 +730,9 @@ let selMedalIdx = {}
       return
 
     if(sheet=="Medal")
-      pageIdx = scene.findObject("medals_list").getValue()
+      pageIdx = this.scene.findObject("medals_list").getValue()
     else
-      pageIdx = scene.findObject("pages_list").getValue()
+      pageIdx = this.scene.findObject("pages_list").getValue()
 
     if (pageIdx < 0 || pageIdx >= unlockFilters[sheet].len())
       return
@@ -731,7 +740,7 @@ let selMedalIdx = {}
     let filter = unlockFilters[sheet][pageIdx]
     curPage = ("page" in filter)? filter.page : getPageIdByName(sheet)
 
-    curFilterType = ::getTblValue(sheet, filterTable, "")
+    curFilterType = getTblValue(sheet, filterTable, "")
 
     if (curFilterType != "")
       curFilter = filter
@@ -742,9 +751,9 @@ let selMedalIdx = {}
       fillUnlocksList()
   }
 
-  function onSubPageChange(obj = null)
+  function onSubPageChange(_obj = null)
   {
-    let subSwitch = getObj("unit_type_list")
+    let subSwitch = this.getObj("unit_type_list")
     if (subSwitch?.isValid())
     {
       let value = subSwitch.getValue()
@@ -756,15 +765,15 @@ let selMedalIdx = {}
     fillUnlocksList()
   }
 
-  function onOnlyForBoughtCheck(obj)
+  function onOnlyForBoughtCheck(_obj)
   {
     onSubPageChange()
   }
 
   function refreshUnitTypeControl()
   {
-    let unitypeListObj = scene.findObject("unit_type_list")
-    if ( ! ::check_obj(unitypeListObj))
+    let unitypeListObj = this.scene.findObject("unit_type_list")
+    if ( ! checkObj(unitypeListObj))
       return
 
     if ( ! unitypeListObj.childrenCount())
@@ -785,7 +794,7 @@ let selMedalIdx = {}
           )
 
       let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-      guiScene.replaceContentFromText(unitypeListObj, data, data.len(), this)
+      this.guiScene.replaceContentFromText(unitypeListObj, data, data.len(), this)
     }
 
     local indexForSelection = -1
@@ -855,21 +864,21 @@ let selMedalIdx = {}
 
   function getCurrentOwnType()
   {
-    let ownSwitch = scene.findObject("checkbox_only_for_bought")
-    let ownType = ( ! ::checkObj(ownSwitch) || ! ownSwitch.getValue()) ? OwnUnitsType.ALL : OwnUnitsType.BOUGHT
+    let ownSwitch = this.scene.findObject("checkbox_only_for_bought")
+    let ownType = ( ! checkObj(ownSwitch) || ! ownSwitch.getValue()) ? OwnUnitsType.ALL : OwnUnitsType.BOUGHT
     return ownType
   }
 
   function refreshOwnUnitControl(unitType)
   {
-    let ownSwitch = scene.findObject("checkbox_only_for_bought")
-    local tooltip = ::loc("profile/only_for_bought/hint")
+    let ownSwitch = this.scene.findObject("checkbox_only_for_bought")
+    local tooltip = loc("profile/only_for_bought/hint")
     local enabled = true
     if(getSkinsCache(curFilter, unitType, OwnUnitsType.BOUGHT).len() < 1)
     {
       if(ownSwitch.getValue() == true)
         ownSwitch.setValue(false)
-      tooltip = ::loc("profile/only_for_bought_disabled/hint")
+      tooltip = loc("profile/only_for_bought_disabled/hint")
       enabled = false
     }
     ownSwitch.tooltip = tooltip
@@ -881,16 +890,16 @@ let selMedalIdx = {}
   {
     isPageFilling = true
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
     local data = ""
     local curIndex = 0
     let lowerCurPage = curPage.tolower()
     let pageTypeId = ::get_unlock_type(lowerCurPage)
-    let itemSelectFunc = pageTypeId == ::UNLOCKABLE_MEDAL ? onMedalSelect : null
-    let containerObjId = pageTypeId == ::UNLOCKABLE_MEDAL ? "medals_zone" : "unlocks_group_list"
+    let itemSelectFunc = pageTypeId == UNLOCKABLE_MEDAL ? onMedalSelect : null
+    let containerObjId = pageTypeId == UNLOCKABLE_MEDAL ? "medals_zone" : "unlocks_group_list"
     unlocksTree = {}
 
-    if (pageTypeId == ::UNLOCKABLE_SKIN)
+    if (pageTypeId == UNLOCKABLE_SKIN)
     {
       let itemsView = getSkinsView()
       data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", { items = itemsView })
@@ -904,9 +913,9 @@ let selMedalIdx = {}
       data = ::handyman.renderCached("%gui/commonParts/imgFrame", view)
     }
 
-    let unlocksObj = scene.findObject(containerObjId)
+    let unlocksObj = this.scene.findObject(containerObjId)
 
-    let isAchievementPage = pageTypeId == ::UNLOCKABLE_ACHIEVEMENT
+    let isAchievementPage = pageTypeId == UNLOCKABLE_ACHIEVEMENT
     if (isAchievementPage && curAchievementGroupName == "")
       curAchievementGroupName = curUnlockId == ""
         ? findGroupName(@(g) g.len() > 0)
@@ -952,10 +961,10 @@ let selMedalIdx = {}
         }
     }
     data += ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-    guiScene.replaceContentFromText(unlocksObj, data, data.len(), this)
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.replaceContentFromText(unlocksObj, data, data.len(), this)
+    this.guiScene.setUpdatesEnabled(true, true)
 
-    if (pageTypeId == ::UNLOCKABLE_MEDAL)
+    if (pageTypeId == UNLOCKABLE_MEDAL)
       curIndex = selMedalIdx?[curFilter] ?? 0
 
     collapse(curAchievementGroupName != "" ? curAchievementGroupName : null)
@@ -973,7 +982,7 @@ let selMedalIdx = {}
   function getSkinsView()
   {
     let itemsView = []
-    let comma = ::loc("ui/comma")
+    let comma = loc("ui/comma")
     foreach (decorator in getSkinsCache(curFilter, curSubFilter, getCurrentOwnType()))
     {
       let unitId = ::g_unlocks.getPlaneBySkinId(decorator.id)
@@ -1004,18 +1013,18 @@ let selMedalIdx = {}
     let items = []
     let lowerCurPage = curPage.tolower()
     let isCustomMenuTab = lowerCurPage in customMenuTabs
-    let isUnlockTree = isCustomMenuTab || pageTypeId == -1 || pageTypeId == ::UNLOCKABLE_ACHIEVEMENT
+    let isUnlockTree = isCustomMenuTab || pageTypeId == -1 || pageTypeId == UNLOCKABLE_ACHIEVEMENT
     local chapter = ""
     local group = ""
 
-    foreach(idx, cb in ::g_unlocks.getAllUnlocksWithBlkOrder())
+    foreach(_idx, cb in ::g_unlocks.getAllUnlocksWithBlkOrder())
     {
       let name = cb.getStr("id", "")
       let unlockType = cb?.type ?? ""
       let unlockTypeId = ::get_unlock_type(unlockType)
       let isForceVisibleInTree = cb?.isForceVisibleInTree ?? false
       if (unlockTypeId != pageTypeId
-          && (!isUnlockTree || !::isInArray(unlockTypeId, unlockTypesToShow))
+          && (!isUnlockTree || !isInArray(unlockTypeId, unlockTypesToShow))
           && !isForceVisibleInTree)
         continue
       if (isUnlockTree && cb?.isRevenueShare)
@@ -1058,7 +1067,7 @@ let selMedalIdx = {}
         continue
       }
 
-      if (pageTypeId == ::UNLOCKABLE_MEDAL)
+      if (pageTypeId == UNLOCKABLE_MEDAL)
         items.append({
           id = name
           tag = "imgSelectable"
@@ -1075,7 +1084,7 @@ let selMedalIdx = {}
   {
     let unit = getUnitBySkin(skinName)
     if( ! unit)
-        return ::ES_UNIT_TYPE_INVALID
+        return ES_UNIT_TYPE_INVALID
     return ::get_es_unit_type(unit)
   }
 
@@ -1110,14 +1119,14 @@ let selMedalIdx = {}
     let unit = ::getAircraftByName(unitName)
     if (unit == null)
       return false
-    if (!::has_feature("Tanks") && unit?.isTank())
+    if (!hasFeature("Tanks") && unit?.isTank())
       return false
     return unit.isVisibleInShop()
   }
 
   function collapse(itemName = null)
   {
-    let listObj = scene.findObject("unlocks_group_list")
+    let listObj = this.scene.findObject("unlocks_group_list")
     if (!listObj || !unlocksTree || unlocksTree.len() == 0)
       return
 
@@ -1128,7 +1137,7 @@ let selMedalIdx = {}
       : uncollapsedChapterName
     local newValue = -1
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
     let total = listObj.childrenCount()
     for(local i = 0; i < total; i++)
     {
@@ -1149,7 +1158,7 @@ let selMedalIdx = {}
       obj.enable(visible)
       obj.show(visible)
     }
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
     if (newValue >= 0)
       listObj.setValue(newValue)
@@ -1162,7 +1171,7 @@ let selMedalIdx = {}
     if (id.len() > 4 && id.slice(0, 4) == "btn_")
     {
       collapse(id.slice(4))
-      let listBoxObj = scene.findObject("unlocks_group_list")
+      let listBoxObj = this.scene.findObject("unlocks_group_list")
       let listItemCount = listBoxObj.childrenCount()
       for(local i = 0; i < listItemCount; i++)
       {
@@ -1176,9 +1185,9 @@ let selMedalIdx = {}
     }
   }
 
-  function onCodeAppClick(obj)
+  function onCodeAppClick(_obj)
   {
-    openUrl(::loc("url/2step/codeApp"))
+    openUrl(loc("url/2step/codeApp"))
   }
 
   function onGroupCollapse(obj)
@@ -1194,8 +1203,8 @@ let selMedalIdx = {}
   {
     collapse(group)
     let reqBlockName = group + (name? ("/" + name) : "")
-    let listBoxObj = scene.findObject("unlocks_group_list")
-    if (!::checkObj(listBoxObj))
+    let listBoxObj = this.scene.findObject("unlocks_group_list")
+    if (!checkObj(listBoxObj))
       return
 
     let listItemCount = listBoxObj.childrenCount()
@@ -1230,11 +1239,11 @@ let selMedalIdx = {}
     if (!config)
       return null
 
-    return ::UnlockConditions.getLocForBitValues(config.type, config.names)
+    return getLocForBitValues(config.type, config.names)
       .map(function(name, i) {
         let isUnlocked = is_bit_set(config.curVal, i)
         let text = config?.compareOR && i > 0
-          ? $"{::loc("hints/shortcut_separator")}\n{name}"
+          ? $"{loc("hints/shortcut_separator")}\n{name}"
           : name
         return {
           unlocked = isUnlocked ? "yes" : "no"
@@ -1264,27 +1273,27 @@ let selMedalIdx = {}
       unlockProgress = progressData?.value
       hasProgress = progressData?.show
       skinPrice = decorator.getCostText()
-      mainCond = getUnlockMainCondText(config)
-      multDesc = getUnlockMultDesc(config)
-      conds = getUnlockConditionsText(config)
+      mainCond = getUnlockMainCondDescByCfg(config)
+      multDesc = getUnlockMultDescByCfg(config)
+      conds = getUnlockCondsDescByCfg(config)
       conditions = getSubUnlocksView(config)
       canAddFav
     }
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
     let markUpData = ::handyman.renderCached("%gui/profile/profileSkins", skinView)
     let objDesc = this.showSceneBtn("item_desc", true)
-    guiScene.replaceContentFromText(objDesc, markUpData, markUpData.len(), this)
+    this.guiScene.replaceContentFromText(objDesc, markUpData, markUpData.len(), this)
 
     if (canAddFav)
       ::g_unlock_view.fillUnlockFav(name, objDesc)
 
     this.showSceneBtn("unlocks_list", false)
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   unlockToFavorites = @(obj) ::g_unlocks.unlockToFavorites(obj,
-    ::Callback(updateFavoritesCheckboxesInList, this))
+    Callback(updateFavoritesCheckboxesInList, this))
 
   function updateFavoritesCheckboxesInList()
   {
@@ -1294,12 +1303,12 @@ let selMedalIdx = {}
     let canAddFav = ::g_unlocks.canAddFavorite()
     foreach (unlockId in getCurUnlockList())
     {
-      let unlockObj = scene.findObject(getUnlockBlockId(unlockId))
-      if (!::check_obj(unlockObj))
+      let unlockObj = this.scene.findObject(getUnlockBlockId(unlockId))
+      if (!checkObj(unlockObj))
         continue
 
       let cbObj = unlockObj.findObject("checkbox_favorites")
-      if (::check_obj(cbObj))
+      if (checkObj(cbObj))
         cbObj.inactiveColor = (canAddFav || (unlockId in ::g_unlocks.getFavoriteUnlocks())) ? "no" : "yes"
     }
   }
@@ -1312,7 +1321,7 @@ let selMedalIdx = {}
       return
 
     let checkBoxObj = obj.getChild(index).findObject("checkbox_favorites")
-    if (!::check_obj(checkBoxObj))
+    if (!checkObj(checkBoxObj))
       return
 
     checkBoxObj.setValue(!checkBoxObj.getValue())
@@ -1320,22 +1329,22 @@ let selMedalIdx = {}
 
   function onBuyUnlock(obj)
   {
-    let unlockId = ::getTblValue("unlockId", obj)
+    let unlockId = getTblValue("unlockId", obj)
     if (::u.isEmpty(unlockId))
       return
 
     let cost = ::get_unlock_cost(unlockId)
     this.msgBox("question_buy_unlock",
       ::warningIfGold(
-        ::loc("onlineShop/needMoneyQuestion",
-          { purchase = ::colorize("unlockHeaderColor", ::get_unlock_name_text(-1, unlockId)),
+        loc("onlineShop/needMoneyQuestion",
+          { purchase = colorize("unlockHeaderColor", getUnlockNameText(-1, unlockId)),
             cost = cost.getTextAccordingToBalance()
           }),
         cost),
       [
         ["ok", @() ::g_unlocks.buyUnlock(unlockId,
-            ::Callback(@() updateUnlockBlock(unlockId), this),
-            ::Callback(@() onUnlockGroupSelect(null), this))
+            Callback(@() updateUnlockBlock(unlockId), this),
+            Callback(@() onUnlockGroupSelect(null), this))
         ],
         ["cancel", @() null]
       ], "cancel")
@@ -1347,8 +1356,8 @@ let selMedalIdx = {}
     if (::u.isString(unlockData))
       unlock = ::g_unlocks.getUnlockById(unlockData)
 
-    let unlockObj = scene.findObject(getUnlockBlockId(unlock.id))
-    if (::check_obj(unlockObj))
+    let unlockObj = this.scene.findObject(getUnlockBlockId(unlock.id))
+    if (checkObj(unlockObj))
       fillUnlockInfo(unlock, unlockObj)
   }
 
@@ -1366,9 +1375,9 @@ let selMedalIdx = {}
     let allUnits = getUnitListByUnlockId(obj.unlockId).filter(@(u) u.isVisibleInShop())
 
     let unlockCfg = ::build_conditions_config(unlockBlk)
-    shopSearchWnd.open(null, ::Callback(@(u) showUnitInShop(u), this), getShopDiffCode, {
+    shopSearchWnd.open(null, Callback(@(u) showUnitInShop(u), this), getShopDiffCode, {
       units = allUnits
-      wndTitle = ::loc("mainmenu/showVehiclesTitle", {
+      wndTitle = loc("mainmenu/showVehiclesTitle", {
         taskName = ::g_unlock_view.getUnlockTitle(unlockCfg)
       })
     })
@@ -1379,12 +1388,12 @@ let selMedalIdx = {}
       return
 
     ::broadcastEvent("ShowUnitInShop", { unitName })
-    goBack()
+    this.goBack()
   }
 
   function fillUnlockInfo(unlockBlk, unlockObj)
   {
-    let itemData = build_conditions_config(unlockBlk)
+    let itemData = ::build_conditions_config(unlockBlk)
     ::build_unlock_desc(itemData)
     unlockObj.show(true)
     unlockObj.enable(true)
@@ -1408,13 +1417,13 @@ let selMedalIdx = {}
     this.showSceneBtn("item_desc", false)
     local blockAmount = unlocksListObj.childrenCount()
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
 
     if (blockAmount < achievaAmount)
     {
       let unlockItemBlk = "%gui/profile/unlockItem.blk"
       for(; blockAmount < achievaAmount; blockAmount++)
-        guiScene.createElementByObject(unlocksListObj, unlockItemBlk, "expandable", this)
+        this.guiScene.createElementByObject(unlocksListObj, unlockItemBlk, "expandable", this)
     }
     else if (blockAmount > achievaAmount)
     {
@@ -1430,12 +1439,12 @@ let selMedalIdx = {}
     foreach(unlock in ::g_unlocks.getAllUnlocksWithBlkOrder())
     {
       if (unlock?.id == null) {
-        let unlockConfigString = ::toString(unlock, 2) // warning disable: -declared-never-used
+        let unlockConfigString = toString(unlock, 2) // warning disable: -declared-never-used
         ::script_net_assert_once("missing id in unlock after cashed", "ProfileHandler: Missing id in unlock after cashed")
         continue
       }
 
-      if (!::isInArray(unlock.id, unlocksList))
+      if (!isInArray(unlock.id, unlocksList))
         continue
 
       let unlockObj = unlocksListObj.getChild(currentItemNum)
@@ -1449,7 +1458,7 @@ let selMedalIdx = {}
       currentItemNum++
     }
 
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
     if (unlocksListObj.childrenCount() > 0)
       unlocksListObj.setValue(selIdx)
@@ -1464,19 +1473,19 @@ let selMedalIdx = {}
 
   function onMedalSelect(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let idx = obj.getValue()
     let itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
-    let name = ::check_obj(itemObj) && itemObj?.id
+    let name = checkObj(itemObj) && itemObj?.id
     let unlock = name && ::g_unlocks.getUnlockById(name)
     if (!unlock)
       return
 
-    let containerObj = scene.findObject("medals_info")
-    let descObj = check_obj(containerObj) && containerObj.findObject("medals_desc")
-    if (!::check_obj(descObj))
+    let containerObj = this.scene.findObject("medals_info")
+    let descObj = checkObj(containerObj) && containerObj.findObject("medals_desc")
+    if (!checkObj(descObj))
       return
 
     if (!isPageFilling)
@@ -1487,21 +1496,21 @@ let selMedalIdx = {}
     let progressData = config.getProgressBarData()
 
     let view = {
-      title = ::loc(name + "/name")
+      title = loc(name + "/name")
       image = ::get_image_for_unlockable_medal(name, true)
       unlockProgress = progressData.value
       hasProgress = progressData.show
-      mainCond = getUnlockMainCondText(config)
-      multDesc = getUnlockMultDesc(config)
-      conds = getUnlockConditionsText(config)
+      mainCond = getUnlockMainCondDescByCfg(config)
+      multDesc = getUnlockMultDescByCfg(config)
+      conds = getUnlockCondsDescByCfg(config)
       rewardText = rewardText != "" ? rewardText : null
     }
 
     let markup = ::handyman.renderCached("%gui/profile/profileMedal", view)
-    guiScene.setUpdatesEnabled(false, false)
-    guiScene.replaceContentFromText(descObj, markup, markup.len(), this)
+    this.guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.replaceContentFromText(descObj, markup, markup.len(), this)
     ::g_unlock_view.fillUnlockFav(name, containerObj)
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function onUnlockSelect(obj)
@@ -1510,8 +1519,8 @@ let selMedalIdx = {}
       curUnlockId = getSelectedChild(obj)?.holderId ?? ""
   }
 
-  function onUnlockGroupSelect(obj) {
-    let list = scene.findObject("unlocks_group_list")
+  function onUnlockGroupSelect(_obj) {
+    let list = this.scene.findObject("unlocks_group_list")
     let index = list.getValue()
     local unlocksList = []
     if ((index >= 0) && (index < list.childrenCount()))
@@ -1545,9 +1554,9 @@ let selMedalIdx = {}
     }
   }
 
-  function onSkinPreview(obj)
+  function onSkinPreview(_obj)
   {
-    let list = scene.findObject("unlocks_group_list")
+    let list = this.scene.findObject("unlocks_group_list")
     let index = list.getValue()
     if ((index < 0) || (index >= list.childrenCount()))
       return
@@ -1556,7 +1565,7 @@ let selMedalIdx = {}
     let decorator = ::g_decorator.getDecoratorById(skinId)
     initSkinId = skinId
     if (decorator && canStartPreviewScene(true, true))
-      guiScene.performDelayed(this, @() decorator.doPreview())
+      this.guiScene.performDelayed(this, @() decorator.doPreview())
   }
 
   function getHandlerRestoreData() {
@@ -1572,13 +1581,13 @@ let selMedalIdx = {}
     return data
   }
 
-  function onEventBeforeStartShowroom(p) {
+  function onEventBeforeStartShowroom(_p) {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
   function getCurSheet()
   {
-    let obj = scene.findObject("profile_sheet_list")
+    let obj = this.scene.findObject("profile_sheet_list")
     let sheetIdx = obj.getValue()
     if ((sheetIdx < 0) || (sheetIdx >= obj.childrenCount()))
       return ""
@@ -1619,27 +1628,27 @@ let selMedalIdx = {}
       let tooltip = ["#mainmenu/arcadeInstantAction", "#mainmenu/instantAction", "#mainmenu/fullRealInstantAction"][diff]
       row.append({ id = diff.tostring(), text = s.tostring(), tooltip = tooltip})
     }
-    return buildTableRowNoPad("", row)
+    return ::buildTableRowNoPad("", row)
   }
 
   function updateStats()
   {
     let myStats = ::my_stats.getStats()
-    if (!myStats || !::checkObj(scene))
+    if (!myStats || !checkObj(this.scene))
       return
 
     fillProfileStats(myStats)
   }
 
-  function openChooseTitleWnd(obj)
+  function openChooseTitleWnd(_obj)
   {
     ::gui_handlers.ChooseTitle.open()
   }
 
   function openProfileTab(tab, selectedBlock)
   {
-    let obj = scene.findObject("profile_sheet_list")
-    if(::checkObj(obj))
+    let obj = this.scene.findObject("profile_sheet_list")
+    if(checkObj(obj))
     {
       let num = ::find_in_array(sheetsList, tab)
       if(num < 0)
@@ -1651,39 +1660,39 @@ let selMedalIdx = {}
 
   function fillProfileStats(stats)
   {
-    fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles")
+    this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles")
     if ("uid" in stats && stats.uid != ::my_user_id_str)
       externalIDsService.reqPlayerExternalIDsByUserId(stats.uid)
-    fillClanInfo(::get_profile_info())
-    fillModeListBox(scene.findObject("profile-container"), curMode)
-    ::fill_gamer_card(::get_profile_info(), "profile-", scene)
-    fillAwardsBlock(stats)
-    fillShortCountryStats(stats)
-    scene.findObject("profile_loading").show(false)
+    this.fillClanInfo(::get_profile_info())
+    this.fillModeListBox(this.scene.findObject("profile-container"), this.curMode)
+    ::fill_gamer_card(::get_profile_info(), "profile-", this.scene)
+    this.fillAwardsBlock(stats)
+    this.fillShortCountryStats(stats)
+    this.scene.findObject("profile_loading").show(false)
   }
 
   function onProfileStatsModeChange(obj)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
     let myStats = ::my_stats.getStats()
     if (!myStats)
       return
 
-    curMode = obj.getValue()
+    this.curMode = obj.getValue()
 
-    ::set_current_wnd_difficulty(curMode)
-    updateCurrentStatsMode(curMode)
-    fillProfileSummary(scene.findObject("stats_table"), myStats.summary, curMode)
-    fillLeaderboard()
+    ::set_current_wnd_difficulty(this.curMode)
+    this.updateCurrentStatsMode(this.curMode)
+    fillProfileSummary(this.scene.findObject("stats_table"), myStats.summary, this.curMode)
+    this.fillLeaderboard()
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, _dt)
   {
     if (pending_logout && ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active())
     {
       pending_logout = false
-      guiScene.performDelayed(this, function() {
+      this.guiScene.performDelayed(this, function() {
         startLogout()
       })
     }
@@ -1692,18 +1701,18 @@ let selMedalIdx = {}
   function onChangeName()
   {
     local textLocId = "mainmenu/questionChangeName"
-    local afterOkFunc = @() guiScene.performDelayed(this, function() { pending_logout = true})
+    local afterOkFunc = @() this.guiScene.performDelayed(this, function() { pending_logout = true})
 
-    if (::steam_is_running() && !::has_feature("AllowSteamAccountLinking"))
+    if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking"))
     {
       textLocId = "mainmenu/questionChangeNameSteam"
       afterOkFunc = @() null
     }
 
-    this.msgBox("question_change_name", ::loc(textLocId),
+    this.msgBox("question_change_name", loc(textLocId),
       [
         ["ok", function() {
-          openUrl(::loc("url/changeName"), false, false, "profile_page")
+          openUrl(loc("url/changeName"), false, false, "profile_page")
           afterOkFunc()
         }],
         ["cancel", function() { }]
@@ -1712,7 +1721,7 @@ let selMedalIdx = {}
 
   function onChangeAccount()
   {
-    this.msgBox("question_change_name", ::loc("mainmenu/questionChangePlayer"),
+    this.msgBox("question_change_name", loc("mainmenu/questionChangePlayer"),
       [
         ["yes", function() {
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, null)
@@ -1723,7 +1732,7 @@ let selMedalIdx = {}
   }
 
   function afterModalDestroy() {
-    restoreMainOptions()
+    this.restoreMainOptions()
   }
 
   function onChangePilotIcon() {
@@ -1744,17 +1753,17 @@ let selMedalIdx = {}
     ::set_option(::USEROPT_PILOT, option.idx)
     ::save_profile(false)
 
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let obj = scene.findObject("profile-icon")
+    let obj = this.scene.findObject("profile-icon")
     if (obj)
       obj.setValue(::get_profile_info().icon)
 
     ::broadcastEvent(profileEvent.AVATAR_CHANGED)
   }
 
-  function onEventMyStatsUpdated(params)
+  function onEventMyStatsUpdated(_params)
   {
     if (getCurSheet() == "Statistics")
       fillAirStats()
@@ -1762,18 +1771,18 @@ let selMedalIdx = {}
       updateStats()
   }
 
-  function onEventClanInfoUpdate(params)
+  function onEventClanInfoUpdate(_params)
   {
-    fillClanInfo(::get_profile_info())
+    this.fillClanInfo(::get_profile_info())
   }
 
   function initAirStats()
   {
     let myStats = ::my_stats.getStats()
-    if (!myStats || !::checkObj(scene))
+    if (!myStats || !checkObj(this.scene))
       return
 
-    initAirStatsScene(myStats.userstat)
+    this.initAirStatsScene(myStats.userstat)
   }
 
   function fillAirStats()
@@ -1782,7 +1791,7 @@ let selMedalIdx = {}
     if (!airStatsInited || !myStats || !myStats.userstat)
       return initAirStats()
 
-    fillAirStatsScene(myStats.userstat)
+    this.fillAirStatsScene(myStats.userstat)
   }
 
   function getPlayerStats()
@@ -1792,7 +1801,7 @@ let selMedalIdx = {}
 
   function getCurUnlockList()
   {
-    let list = scene.findObject("unlocks_group_list")
+    let list = this.scene.findObject("unlocks_group_list")
     let index = list.getValue()
     local unlocksList = []
     if ((index < 0) || (index >= list.childrenCount()))
@@ -1816,21 +1825,21 @@ let selMedalIdx = {}
     return unlocksList
   }
 
-  function onGroupCancel(obj)
+  function onGroupCancel(_obj)
   {
     if (::show_console_buttons && getCurSheet() == "UnlockSkin")
-      ::move_mouse_on_child_by_value(scene.findObject("pages_list"))
+      ::move_mouse_on_child_by_value(this.scene.findObject("pages_list"))
     else
-      goBack()
+      this.goBack()
   }
 
   function onBindEmail()
   {
     launchEmailRegistration()
-    doWhenActiveOnce("updateButtons")
+    this.doWhenActiveOnce("updateButtons")
   }
 
-  function onEventUnlocksCacheInvalidate(p)
+  function onEventUnlocksCacheInvalidate(_p)
   {
     let curSheet = getCurSheet()
     if (curSheet == "UnlockAchievement")
@@ -1844,7 +1853,7 @@ let selMedalIdx = {}
       fillUnlocksList()
   }
 
-  function onEventInventoryUpdate(p)
+  function onEventInventoryUpdate(_p)
   {
     let curSheet = getCurSheet()
     if (curSheet == "UnlockAchievement")
@@ -1855,7 +1864,7 @@ let selMedalIdx = {}
 
   function onOpenAchievementsUrl()
   {
-    openUrl(::loc("url/achievements",
+    openUrl(loc("url/achievements",
         { appId = APP_ID, name = ::get_profile_info().name}),
       false, false, "profile_page")
   }
@@ -1866,13 +1875,13 @@ let openProfileSheetParamsFromPromo = {
     uncollapsedChapterName = p2 != ""? p1 : null
     curAchievementGroupName = p1 + (p2 != "" ? ("/" + p2) : "")
   }
-  Medal = @(p1, p2, ...) { filterCountryName = p1 }
+  Medal = @(p1, _p2, ...) { filterCountryName = p1 }
   UnlockSkin = @(p1, p2, p3) {
     filterCountryName = p1
     filterUnitTag = p2
     initSkinId = p3
   }
-  UnlockDecal = @(p1, p2, ...) { filterGroupName = p1 }
+  UnlockDecal = @(p1, _p2, ...) { filterGroupName = p1 }
 }
 
 local function openProfileFromPromo(params, sheet = null) {
@@ -1883,4 +1892,4 @@ local function openProfileFromPromo(params, sheet = null) {
   ::gui_start_profile(launchParams)
 }
 
-addPromoAction("profile", @(handler, params, obj) openProfileFromPromo(params))
+addPromoAction("profile", @(_handler, params, _obj) openProfileFromPromo(params))

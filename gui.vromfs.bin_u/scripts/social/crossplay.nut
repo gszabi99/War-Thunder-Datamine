@@ -1,4 +1,7 @@
-from "frp" import Watched
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
@@ -21,7 +24,7 @@ let updateCrossNetworkPlayStatus = function(needOverrideValue = false)
 
   if (isPlatformXboxOne)
     crossNetworkPlayStatus(::check_crossnetwork_play_privilege())
-  else if (isPlatformSony && ::has_feature("PS4CrossNetwork") && ::g_login.isProfileReceived())
+  else if (isPlatformSony && hasFeature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     crossNetworkPlayStatus(::load_local_account_settings(PS4_CROSSPLAY_OPT_ID, true))
   else
     crossNetworkPlayStatus(true)
@@ -35,7 +38,7 @@ let isCrossNetworkPlayEnabled = function()
 
 let setCrossNetworkPlayStatus = function(val)
 {
-  if (!isPlatformSony || !::has_feature("PS4CrossNetwork"))
+  if (!isPlatformSony || !hasFeature("PS4CrossNetwork"))
     return
 
   resetCrossPlayStatus()
@@ -50,7 +53,7 @@ let updateCrossNetworkChatStatus = function(needOverrideValue = false)
 
   if (isPlatformXboxOne)
     crossNetworkChatStatus(::check_crossnetwork_communications_permission())
-  else if (isPlatformSony && ::has_feature("PS4CrossNetwork") && ::g_login.isProfileReceived())
+  else if (isPlatformSony && hasFeature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     crossNetworkChatStatus(::load_local_account_settings(PS4_CROSSNETWORK_CHAT_OPT_ID, XBOX_COMMUNICATIONS_ALLOWED))
   else
     crossNetworkChatStatus(XBOX_COMMUNICATIONS_ALLOWED)
@@ -66,7 +69,7 @@ let isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == XBOX_COMMUNIC
 
 let setCrossNetworkChatStatus = function(boolVal)
 {
-  if (!isPlatformSony || !::has_feature("PS4CrossNetwork"))
+  if (!isPlatformSony || !hasFeature("PS4CrossNetwork"))
     return
 
   let val = boolVal? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
@@ -75,10 +78,10 @@ let setCrossNetworkChatStatus = function(boolVal)
   updateCrossNetworkChatStatus()
 }
 
-let getTextWithCrossplayIcon = @(addIcon, text) (addIcon? (::loc("icon/cross_play") + " " ) : "") + text
+let getTextWithCrossplayIcon = @(addIcon, text) (addIcon? (loc("icon/cross_play") + " " ) : "") + text
 
 let getSeparateLeaderboardPlatformValue = function() {
-  if (::has_feature("ConsoleSeparateLeaderboards"))
+  if (hasFeature("ConsoleSeparateLeaderboards"))
   {
     if (isPlatformSony)
       return ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
@@ -114,9 +117,9 @@ let function reinitCrossNetworkStatus() {
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(p) invalidateCache()
-  ProfileReceived = @(p) reinitCrossNetworkStatus()
-  XboxMultiplayerPrivilegeUpdated = @(p) reinitCrossNetworkStatus()
+  SignOut = @(_p) invalidateCache()
+  ProfileReceived = @(_p) reinitCrossNetworkStatus()
+  XboxMultiplayerPrivilegeUpdated = @(_p) reinitCrossNetworkStatus()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

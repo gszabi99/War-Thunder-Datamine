@@ -1,6 +1,12 @@
-let { format } = require("string")
-::g_script_reloader.loadOnce("%scripts/ranks_common_shared.nut")
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
 
+let { format } = require("string")
+::g_script_reloader.loadOnce("%appGlobals/ranks_common_shared.nut")
+
+let { get_time_msec } = require("dagor.time")
 let avatars = require("%scripts/user/avatars.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
@@ -37,7 +43,7 @@ let current_user_profile = {
 ::exp_per_rank <- []
 ::prestige_by_rank <-[]
 
-::g_script_reloader.registerPersistentData("RanksGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("RanksGlobals", getroottable(),
   [
     "discounts", "event_muls",
     "exp_per_rank", "max_player_rank", "prestige_by_rank"
@@ -174,7 +180,7 @@ let function get_cur_session_country()
   current_user_profile.gold = info.gold
   current_user_profile.pilotId = info.pilotId
   current_user_profile.icon = avatars.getIconById(info.pilotId)
-  current_user_profile.medals = ::get_num_unlocked(::UNLOCKABLE_MEDAL, true)
+  current_user_profile.medals = ::get_num_unlocked(UNLOCKABLE_MEDAL, true)
   //dagor.debug("unlocked medals: "+current_user_profile.medals)
 
   //Show the current country in the game when you select an outcast.
@@ -216,7 +222,7 @@ let function get_cur_session_country()
 
 ::on_mission_started_mp <- function on_mission_started_mp()
 {
-  ::dagor.debug("on_mission_started_mp - CLIENT")
+  log("on_mission_started_mp - CLIENT")
   ::g_streaks.clear()
   ::before_first_flight_in_session = true;
   ::clear_spawn_score();
@@ -224,10 +230,10 @@ let function get_cur_session_country()
   ::broadcastEvent("MissionStarted")
 }
 
-let airTypes = [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER]
+let airTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
 ::get_weapon_image <- function get_weapon_image(unitType, weaponBlk, costBlk)
 {
-  if (unitType == ::ES_UNIT_TYPE_TANK)
+  if (unitType == ES_UNIT_TYPE_TANK)
   {
     return costBlk?.image_tank
            ?? weaponBlk?.image_tank
@@ -243,7 +249,7 @@ let airTypes = [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER]
            ?? weaponBlk?.image
            ?? ""
   }
-  else // unitType == ::ES_UNIT_TYPE_INVALID
+  else // unitType == ES_UNIT_TYPE_INVALID
   {
     return costBlk?.image
            ?? weaponBlk?.image
@@ -256,7 +262,7 @@ let function get_aircraft_rank(curAir)
   return ::get_wpcost_blk()?[curAir]?.rank ?? 0
 }
 
-let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() ::Watched({ wp = 0, exp = 0 }))
+let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() Watched({ wp = 0, exp = 0 }))
 
 let function haveCountryRankAir(country, rank)
 {
@@ -272,7 +278,7 @@ let function haveCountryRankAir(country, rank)
 //!!FIX ME: should to remove from this function all what not about unit.
 ::update_aircraft_warpoints <- function update_aircraft_warpoints(maxCallTimeMsec = 0)
 {
-  let startTime = ::dagor.getCurTime()
+  let startTime = get_time_msec()
   let errorsTextArray = []
   foreach (unit in ::all_units)
   {
@@ -283,21 +289,21 @@ let function haveCountryRankAir(country, rank)
     if (errors)
       errorsTextArray.extend(errors)
 
-    if (maxCallTimeMsec && ::dagor.getCurTime() - startTime >= maxCallTimeMsec)
+    if (maxCallTimeMsec && get_time_msec() - startTime >= maxCallTimeMsec)
     {
-      ::dagor.assertf(errorsTextArray.len() == 0, ::g_string.implode(errorsTextArray, "\n"))
+      assert(errorsTextArray.len() == 0, ::g_string.implode(errorsTextArray, "\n"))
       return PT_STEP_STATUS.SUSPEND
     }
   }
 
   //update discounts info
   let ws = ::get_warpoints_blk()
-  foreach(name, value in ::discounts)
+  foreach(name, _value in ::discounts)
     if (ws?[name+"DiscountMul"] != null)
       ::discounts[name] = (100.0*(1.0 - ws[name+"DiscountMul"])+0.5).tointeger()
 
   //update bonuses info
-  foreach(name, value in ::event_muls)
+  foreach(name, _value in ::event_muls)
     if (ws?[name] != null)
       ::event_muls[name] = ws[name]
 
@@ -306,7 +312,7 @@ let function haveCountryRankAir(country, rank)
     exp = ws?.exp_to_show_premium_reward ?? 0
   })
 
-  ::dagor.assertf(errorsTextArray.len() == 0, ::g_string.implode(errorsTextArray, "\n"))
+  assert(errorsTextArray.len() == 0, ::g_string.implode(errorsTextArray, "\n"))
   return PT_STEP_STATUS.NEXT_STEP
 }
 
@@ -318,10 +324,10 @@ let function haveCountryRankAir(country, rank)
   let silent = tbl?.silent ?? false
 
   if ("silentFeature" in tbl)
-    if (!::has_feature(tbl.silentFeature))
+    if (!hasFeature(tbl.silentFeature))
     {
       if (!silent)
-        ::showInfoMsgBox(::loc("msgbox/notAvailbleInDemo"), "in_demo_only_feature")
+        ::showInfoMsgBox(loc("msgbox/notAvailbleInDemo"), "in_demo_only_feature")
       return false
     }
 
@@ -329,7 +335,7 @@ let function haveCountryRankAir(country, rank)
     if (::get_profile_info().rank < tbl.minLevel)
     {
       if (!silent)
-        ::showInfoMsgBox(format(::loc("charServer/needRankFmt"), tbl.minLevel), "in_demo_only_minlevel")
+        ::showInfoMsgBox(format(loc("charServer/needRankFmt"), tbl.minLevel), "in_demo_only_minlevel")
       return false
     }
 
@@ -341,9 +347,9 @@ let function haveCountryRankAir(country, rank)
       if (!silent)
       {
         ::showInfoMsgBox(
-          ::loc("charServer/needAirRankFmt", {
+          loc("charServer/needAirRankFmt", {
               tier = tbl.minRank,
-              country = ::loc(country)
+              country = loc(country)
           }),
           "in_demo_only_minrank")
       }
@@ -352,11 +358,11 @@ let function haveCountryRankAir(country, rank)
   }
 
   if ("unlock" in tbl)
-    if (!::is_unlocked_scripted(::UNLOCKABLE_SINGLEMISSION, tbl.unlock) && !::is_debug_mode_enabled)
+    if (!::is_unlocked_scripted(UNLOCKABLE_SINGLEMISSION, tbl.unlock) && !::is_debug_mode_enabled)
     {
       if (!silent)
       {
-        let msg = ::loc("charServer/needUnlock") + "\n\n" + getFullUnlockDescByName(tbl.unlock, 1)
+        let msg = loc("charServer/needUnlock") + "\n\n" + getFullUnlockDescByName(tbl.unlock, 1)
         ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false
@@ -374,19 +380,19 @@ let function haveCountryRankAir(country, rank)
       if (!handler || handler == getroottable())
         handler = ::get_cur_base_gui_handler()
       let askFunc = (@(guiScene, handler) function(locText, entitlement) {
-        if (::has_feature("EnablePremiumPurchase"))
+        if (hasFeature("EnablePremiumPurchase"))
         {
-          let text = ::loc("charServer/noEntitlement/"+locText)
+          let text = loc("charServer/noEntitlement/"+locText)
           handler.msgBox("no_entitlement", text,
           [
-            ["yes", (@(guiScene, handler, entitlement) function() { guiScene.performDelayed(handler, (@(entitlement) function() {
+            ["yes", (@(guiScene, handler, entitlement) function() { guiScene.performDelayed(handler, (@(_entitlement) function() {
                 this.onOnlineShopPremium();
               })(entitlement)) })(guiScene, handler, entitlement) ],
             ["no", function() {} ]
           ], "yes")
         }
         else
-          ::scene_msg_box("premium_not_available", null, ::loc("charServer/notAvailableYet"),
+          ::scene_msg_box("premium_not_available", null, loc("charServer/notAvailableYet"),
             [["cancel"]], "cancel")
       })(guiScene, handler)
 

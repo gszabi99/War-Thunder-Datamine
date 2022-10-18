@@ -1,4 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 local unitsStateCached = null
 
@@ -6,7 +12,7 @@ local function getMyCrewUnitsState(country = null) {
   if (unitsStateCached != null)
     return unitsStateCached
 
-  country = country ?? ::get_profile_country_sq()
+  country = country ?? profileCountrySq.value
 
   unitsStateCached = {
     crewAirs = {}
@@ -36,8 +42,8 @@ local function getMyCrewUnitsState(country = null) {
 }
 
 addListenersWithoutEnv({
-  CrewsListChanged = @(p) unitsStateCached = null
-  CrewsListInvalidate = @(p) unitsStateCached = null
+  CrewsListChanged = @(_p) unitsStateCached = null
+  CrewsListInvalidate = @(_p) unitsStateCached = null
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

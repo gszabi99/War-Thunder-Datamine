@@ -1,10 +1,17 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let { format } = require("string")
+let { round } = require("math")
 ::tonemappingMode_list <- ["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"];
 ::lut_list <- ["#options/hudDefault"];
 ::lut_textures <- [""];
 ::lenseFlareMode_list <- ["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"];
 
-::g_script_reloader.registerPersistentData("PostFxGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("PostFxGlobals", getroottable(),
   [
     "lut_list", "lut_textures"
   ])
@@ -26,12 +33,12 @@ const firstColumnWidth = 0.45
 
 ::get_default_lut_texture <- function get_default_lut_texture()
 {
-  return ::getTblValue(0, ::lut_textures, "")
+  return getTblValue(0, ::lut_textures, "")
 }
 
 ::check_cur_lut_texture <- function check_cur_lut_texture()
 {
-  if (!::isInArray(::get_lut_texture(), ::lut_textures))
+  if (!isInArray(::get_lut_texture(), ::lut_textures))
     ::set_lut_texture(::get_default_lut_texture())
 }
 
@@ -47,28 +54,28 @@ const firstColumnWidth = 0.45
     let reinard = tm == 1;
     let polynom = tm == 2;
 
-    scene.findObject("L_inv_white").show(reinard);
-    scene.findObject("U_A").show(polynom);
-    scene.findObject("U_B").show(polynom);
-    scene.findObject("U_C").show(polynom);
-    scene.findObject("U_D").show(polynom);
-    scene.findObject("U_E").show(polynom);
-    scene.findObject("U_F").show(polynom);
-    scene.findObject("UWhite").show(polynom);
+    this.scene.findObject("L_inv_white").show(reinard);
+    this.scene.findObject("U_A").show(polynom);
+    this.scene.findObject("U_B").show(polynom);
+    this.scene.findObject("U_C").show(polynom);
+    this.scene.findObject("U_D").show(polynom);
+    this.scene.findObject("U_E").show(polynom);
+    this.scene.findObject("U_F").show(polynom);
+    this.scene.findObject("UWhite").show(polynom);
 
     //lensFlare
     if (::use_lense_flares())
     {
       let lfm = ::get_lenseFlareMode();
       let showLenseFlareSettings = lfm > 0;
-      scene.findObject("lenseFlareHaloPower").show(showLenseFlareSettings);
-      scene.findObject("lenseFlareGhostsPower").show(showLenseFlareSettings);
+      this.scene.findObject("lenseFlareHaloPower").show(showLenseFlareSettings);
+      this.scene.findObject("lenseFlareGhostsPower").show(showLenseFlareSettings);
     }
   }
 
   function updateSliderValue(name, value)
   {
-    let valueObj = scene.findObject(name+"_value")
+    let valueObj = this.scene.findObject(name+"_value")
     if (!valueObj) return
     let valueText = value.tostring();
     valueObj.setValue(valueText)
@@ -84,14 +91,14 @@ const firstColumnWidth = 0.45
 
   function createOneSlider(name, value, cb, params, showValue)
   {
-    params.step <- params?.step ?? max(1, ::round((params.max - params.min) / maxSliderSteps).tointeger())
+    params.step <- params?.step ?? max(1, round((params.max - params.min) / maxSliderSteps).tointeger())
     local markuo = ::create_option_slider("postfx_settings_" + name, value.tointeger(), cb, true, "slider", params)
     if (showValue)
       markuo += format(" optionValueText { id:t='%s' } ", name+"_value");
     markuo = createRowMarkup(name, markuo)
 
-    let dObj = scene.findObject("postfx_table")
-    guiScene.appendWithBlk(dObj, markuo, this)
+    let dObj = this.scene.findObject("postfx_table")
+    this.guiScene.appendWithBlk(dObj, markuo, this)
 
     if (showValue)
       updateSliderValue(name, value * recScale)
@@ -101,8 +108,8 @@ const firstColumnWidth = 0.45
   {
     local markuo = ::create_option_list("postfx_settings_" + name, list, value, cb, true)
     markuo = createRowMarkup(name, markuo)
-    let dObj = scene.findObject("postfx_table")
-    guiScene.appendWithBlk(dObj, markuo, this)
+    let dObj = this.scene.findObject("postfx_table")
+    this.guiScene.appendWithBlk(dObj, markuo, this)
   }
 
   function createObjects()
@@ -119,7 +126,7 @@ const firstColumnWidth = 0.45
     createOneSlider("sharpenCockpit", ::get_sharpenCockpit() * scale, "onSharpenCockpitChanged",
       { min = 0, max = 0.7 * scale }, false)
 
-    createOneSpinner("lutTexture", ::lut_list, get_lut_index_by_texture(::get_lut_texture()), "onLutTextureChanged");
+    createOneSpinner("lutTexture", ::lut_list, ::get_lut_index_by_texture(::get_lut_texture()), "onLutTextureChanged");
 
     if (::use_lense_flares())
     {
@@ -144,13 +151,13 @@ const firstColumnWidth = 0.45
 
   function setValue(name, value)
   {
-    let sliderObj = scene.findObject(name);
-    if (::checkObj(sliderObj))
+    let sliderObj = this.scene.findObject(name);
+    if (checkObj(sliderObj))
       sliderObj.setValue(value);
   }
   function getValue(name)
   {
-    let sliderObj = scene.findObject(name);
+    let sliderObj = this.scene.findObject(name);
     return sliderObj.getValue();
   }
 
@@ -163,10 +170,10 @@ const firstColumnWidth = 0.45
       ::set_lenseFlareMode(::get_lenseFlareMode());
 
     createObjects();
-    ::move_mouse_on_child(scene.findObject("postfx_table"), 0)
+    ::move_mouse_on_child(this.scene.findObject("postfx_table"), 0)
   }
 
-  function onResetToDefaults(obj)
+  function onResetToDefaults(_obj)
   {
     setValue("postfx_settings_vignette", ::get_default_postfx_vignette_multiplier() * scale);
     setValue("postfx_settings_sharpenTPS", ::get_default_sharpenTPS() * scale);
@@ -182,7 +189,7 @@ const firstColumnWidth = 0.45
     setValue("postfx_settings_U_F", ::get_default_U_F() * scale);
     setValue("postfx_settings_UWhite", ::get_default_UWhite() * scale);
     setValue("postfx_settings_fxaa", ::get_default_fxaa());
-    setValue("postfx_settings_lutTexture", get_lut_index_by_texture(::get_default_lut_texture()));
+    setValue("postfx_settings_lutTexture", ::get_lut_index_by_texture(::get_default_lut_texture()));
     setValue("postfx_settings_tonemappingMode", ::get_default_tonemappingMode());
     if (::use_lense_flares())
     {

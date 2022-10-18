@@ -1,7 +1,13 @@
-let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
+from "%scripts/dagui_library.nut" import *
 
-local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
-{
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
+let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/items/itemDesc.blk"
 
@@ -10,8 +16,8 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateHandlerData(item, shopDesc = false, preferMarkup = false, params = null)
   {
-    scene.scrollToView(true)
-    fillItemDescr(item, scene, this, shopDesc, preferMarkup, params)
+    this.scene.scrollToView(true)
+    fillItemDescr(item, this.scene, this, shopDesc, preferMarkup, params)
 
     if (item == null)
     {
@@ -31,18 +37,18 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function setHandlerVisible(value)
   {
-    scene.show(value)
-    scene.enable(value)
+    this.scene.show(value)
+    this.scene.enable(value)
   }
 
   function openCategory(categoryId)
   {
-    let containerObj = scene.findObject("item_info_collapsable_prizes")
-    if (!::check_obj(containerObj))
+    let containerObj = this.scene.findObject("item_info_collapsable_prizes")
+    if (!checkObj(containerObj))
       return
     let total = containerObj.childrenCount()
     local visible = false
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
     for(local i = 0; i < total; i++)
     {
       let childObj = containerObj.getChild(i)
@@ -61,7 +67,7 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
       childObj.collapsed = "yes"
       visible = false
     }
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function onPrizeCategoryClick(obj)
@@ -77,7 +83,7 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
 ::gui_handlers.ItemInfoHandler <- ItemInfoHandler
 
 return function(scene) {
-  if (!::check_obj(scene))
+  if (!checkObj(scene))
     return null
   return ::handlersManager.loadHandler(ItemInfoHandler, { scene = scene })
 }

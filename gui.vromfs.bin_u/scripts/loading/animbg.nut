@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { file_exists } = require("dagor.fs")
 let fileCheck = require("%scripts/clientState/fileCheck.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -29,22 +35,22 @@ let function loadBgBlk(name) {
   if (isLoaded)
     return res
 
-  let errText = ::dd_file_exist(fullName) ? "errors in file" : "not found file"
-  loadErrorText = "Error: cant load login bg blk {0}: {1}".subst(::colorize("userlogColoredText", fullName), errText)
+  let errText = file_exists(fullName) ? "errors in file" : "not found file"
+  loadErrorText = "Error: cant load login bg blk {0}: {1}".subst(colorize("userlogColoredText", fullName), errText)
 
   if (isDebugMode)
     return res //no need to change bg in debugMode
 
   res = null
   removeLoadingBgFromLists(name)
-  ::dagor.assertf(false, loadErrorText)
+  assert(false, loadErrorText)
   return res
 }
 
 local function load(blkFilePath = "", obj = null, curBgData = null) {
   if (!obj)
     obj = ::get_cur_gui_scene()["animated_bg_picture"]
-  if (!::check_obj(obj))
+  if (!checkObj(obj))
     return
 
   curBgData = curBgData ?? getCurLoadingBgData()
@@ -57,16 +63,16 @@ local function load(blkFilePath = "", obj = null, curBgData = null) {
   else
     if (::g_login.isLoggedIn() || lastBg == "") //no change bg during first load
     {
-      if (::has_feature("LoadingBackgroundFilter")
+      if (hasFeature("LoadingBackgroundFilter")
         && ::g_login.isProfileReceived() && havePremium.value)
       {
-        let filteredCurBgList = curBgList.filter(@(v, id) !isLoadingScreenBanned(id))
+        let filteredCurBgList = curBgList.filter(@(_v, id) !isLoadingScreenBanned(id))
         if (filteredCurBgList.len() > 0)
           curBgList = filteredCurBgList
       }
 
       local sum = 0.0
-      foreach(name, value in curBgList)
+      foreach(_name, value in curBgList)
         sum += value
       sum = ::math.frnd() * sum
       foreach(name, value in curBgList)
@@ -101,14 +107,14 @@ local function load(blkFilePath = "", obj = null, curBgData = null) {
 let function enableDebugUpdate() {
   SecondsUpdater(
     ::get_cur_gui_scene()["bg_picture_container"],
-    function(tObj, params) {
+    function(_tObj, _params) {
       let fileName = getLastBgFileName()
       if (!fileName.len())
         return
 
       local modified = ::get_file_modify_time_sec(fileName)
       if (modified < 0)
-        modified = ::dd_file_exist(fileName) ? MODIFY_UNKNOWN : MODIFY_NO_FILE
+        modified = file_exists(fileName) ? MODIFY_UNKNOWN : MODIFY_NO_FILE
 
       if (debugLastModified == modified)
         return
@@ -132,7 +138,7 @@ let function debugLoad(blkFilePath = "") {
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(p) invalidateCache()
+  SignOut = @(_p) invalidateCache()
 })
 
 return {

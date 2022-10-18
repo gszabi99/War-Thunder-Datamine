@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
 
 ::g_hud_message_stack <- {
@@ -7,11 +13,11 @@ let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
 
   function init(v_scene)
   {
-    if (!::checkObj(v_scene))
+    if (!checkObj(v_scene))
       return
     scene = v_scene
     guiScene = scene.getScene()
-    ::g_hud_event_manager.subscribe("ReinitHud", function(eventData)
+    ::g_hud_event_manager.subscribe("ReinitHud", function(_eventData)
       {
         clearMessageStacks()
       }, this)

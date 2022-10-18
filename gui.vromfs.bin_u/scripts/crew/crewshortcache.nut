@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#implicit-this
+
 /*
  Short tie cache for current viewing crew with selected unit
  saved only for one crew,
@@ -14,50 +20,50 @@
   unit = null
 }
 
-g_crew_short_cache.resetCache <- function resetCache(newCrewId, newUnit = null)
+::g_crew_short_cache.resetCache <- function resetCache(newCrewId, newUnit = null)
 {
-  cache.clear()
-  cacheCrewid = newCrewId
-  unit = newUnit ?? ::g_crew.getCrewUnit(::get_crew_by_id(cacheCrewid))
+  this.cache.clear()
+  this.cacheCrewid = newCrewId
+  this.unit = newUnit ?? ::g_crew.getCrewUnit(::get_crew_by_id(this.cacheCrewid))
 }
 
-g_crew_short_cache.getData <- function getData(crewId, newUnit, cacheUid)
+::g_crew_short_cache.getData <- function getData(crewId, newUnit, cacheUid)
 {
-  if (crewId != cacheCrewid || newUnit != unit)
+  if (crewId != this.cacheCrewid || newUnit != this.unit)
     return null
-  return ::getTblValue(cacheUid, cache)
+  return getTblValue(cacheUid, this.cache)
 }
 
-g_crew_short_cache.setData <- function setData(crewId, newUnit, cacheUid, data)
+::g_crew_short_cache.setData <- function setData(crewId, newUnit, cacheUid, data)
 {
-  if (crewId != cacheCrewid || newUnit != unit)
+  if (crewId != this.cacheCrewid || newUnit != this.unit)
     resetCache(crewId, newUnit)
-  cache[cacheUid] <- data
+  this.cache[cacheUid] <- data
 }
 
-g_crew_short_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(params)
+::g_crew_short_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(_params)
 {
-  resetCache(cacheCrewid, unit)
+  resetCache(this.cacheCrewid, this.unit)
 }
 
-g_crew_short_cache.onEventCrewNewSkillsChanged <- function onEventCrewNewSkillsChanged(params)
+::g_crew_short_cache.onEventCrewNewSkillsChanged <- function onEventCrewNewSkillsChanged(_params)
 {
-  resetCache(cacheCrewid, unit)
+  resetCache(this.cacheCrewid, this.unit)
 }
 
-g_crew_short_cache.onEventCrewTakeUnit <- function onEventCrewTakeUnit(params)
+::g_crew_short_cache.onEventCrewTakeUnit <- function onEventCrewTakeUnit(_params)
 {
-  resetCache(cacheCrewid)
+  resetCache(this.cacheCrewid)
 }
 
-g_crew_short_cache.onEventQualificationIncreased <- function onEventQualificationIncreased(params)
+::g_crew_short_cache.onEventQualificationIncreased <- function onEventQualificationIncreased(_params)
 {
-  resetCache(cacheCrewid, unit)
+  resetCache(this.cacheCrewid, this.unit)
 }
 
-g_crew_short_cache.onEventCrewSkillsReloaded <- function onEventCrewSkillsReloaded(params)
+::g_crew_short_cache.onEventCrewSkillsReloaded <- function onEventCrewSkillsReloaded(_params)
 {
-  resetCache(cacheCrewid, unit)
+  resetCache(this.cacheCrewid, this.unit)
 }
 
 ::subscribe_handler(::g_crew_short_cache, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
