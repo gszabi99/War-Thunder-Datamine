@@ -3,7 +3,7 @@ let {GimbalSize, GimbalX, GimbalY, GimbalVisible, GuidanceLockState,
   AamSightShadowOpacity, AamSightOpacity, AamSightLineWidthFactor, AamSightShadowLineWidthFactor} = require("rocketAamAimState.nut")
 let {backgroundColor, relativCircle, isDarkColor} = require("style/airHudStyle.nut")
 
-let {log} = require("%sqstd/math.nut")
+let math = require("%sqstd/math.nut")
 
 enum GuidanceLockResult {
   RESULT_INVALID = -1
@@ -14,65 +14,59 @@ enum GuidanceLockResult {
   RESULT_LOCK_AFTER_LAUNCH = 4
 }
 
-let aamAimGimbal = @(color_watched, alert_color_watched, is_background) function() {
+let gimbalLines = {
+  size = flex()
+  rendObj = ROBJ_VECTOR_CANVAS
+  fillColor = 0
+  commands = [[VECTOR_ELLIPSE, 0, 0, 100, 100]]
+}
 
+let aamAimGimbal = @(color_watched, alert_color_watched, is_background) function() {
   if (!GimbalVisible.value)
     return { watch = GimbalVisible }
-
-  let circle = [[VECTOR_ELLIPSE, 0, 0, GimbalSize.value, GimbalSize.value]]
 
   let linesWidth = hdpx(LINE_WIDTH * AamSightLineWidthFactor.value)
   let shadowLineWidth = hdpx(LINE_WIDTH * AamSightShadowLineWidthFactor.value)
 
-  let colorGimbal =  is_background ? backgroundColor
-      : GuidanceLockSnr.value < 0.0 ?
-        GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ? alert_color_watched.value
-        : color_watched.value
-      : GuidanceLockSnr.value > 1.0 ? alert_color_watched.value
-    : color_watched.value
+  let colorGimbal = is_background ? backgroundColor
+    : (GuidanceLockSnr.value > 1.0)
+      || (GuidanceLockSnr.value < 0.0 && GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING)
+      ? alert_color_watched.value : color_watched.value
 
   let shadowOpacity = isDarkColor(colorGimbal) ? AamSightShadowOpacity.value * 0.3  : AamSightShadowOpacity.value
 
-  local lines = @() ({
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
+  let shadowLines = gimbalLines.__merge({
+    lineWidth = shadowLineWidth
+    color = isDarkColor(colorGimbal) ? Color(255,255,255, 255) : Color(0,0,0,255)
+    opacity = shadowOpacity
+  })
+
+  let lines = gimbalLines.__merge({
     lineWidth = linesWidth
-    fillColor = Color(0,0,0,0)
     color = colorGimbal
-    commands = circle
     opacity = AamSightOpacity.value
   })
 
-  local shadowLines = @() ({
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = shadowLineWidth
-    fillColor = Color(0,0,0,0)
-    color = isDarkColor(colorGimbal) ? Color(255,255,255, 255) : Color(0,0,0,255)
-    opacity = shadowOpacity
-    commands = circle
-  })
-
   return {
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = [sh(9.75), sh(9.75)]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    fillColor = Color(0, 0, 0, 0)
+    size = [GimbalSize.value, GimbalSize.value]
+    pos = [GimbalX.value, GimbalY.value]
+    halign = ALIGN_LEFT
+    valign = ALIGN_TOP
     watch = [GimbalX, GimbalY, GimbalVisible, GuidanceLockState,
       GimbalSize, color_watched, alert_color_watched, GuidanceLockSnr,
       AamSightShadowLineWidthFactor, AamSightLineWidthFactor,
       AamSightOpacity, AamSightShadowOpacity]
-    transform = {
-      translate = [GimbalX.value, GimbalY.value]
-      children = [shadowLines, lines]
-    }
     children = [shadowLines, lines]
   }
+}
+
+let trackerLines = {
+  size = flex()
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  rendObj = ROBJ_VECTOR_CANVAS
+  fillColor = 0
+  commands = [[VECTOR_ELLIPSE, 0, 0, 100, 100]]
 }
 
 let aamAimTracker = @(color_watched, alert_color_watched, is_background) function() {
@@ -80,83 +74,53 @@ let aamAimTracker = @(color_watched, alert_color_watched, is_background) functio
   if(!TrackerVisible.value)
     return { watch = TrackerVisible }
 
-  local snrDb = 10.0 * log(clamp(GuidanceLockSnr.value, 0.1, 10.0)) / log(10.0)
+  local snrDb = 10.0 * math.log(clamp(GuidanceLockSnr.value, 0.1, 10.0)) / math.log(10.0)
 
-  let circle = [[VECTOR_ELLIPSE, 0, 0, TrackerSize.value, TrackerSize.value]]
+  let colorTracker = is_background ? backgroundColor
+    : (GuidanceLockSnr.value > 1.0)
+      || (GuidanceLockSnr.value < 0.0 && GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING)
+      ? alert_color_watched.value : color_watched.value
 
-  let colorTracker =  is_background ? backgroundColor
-  : GuidanceLockSnr.value < 0.0 ?
-  GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ? alert_color_watched.value
-  : color_watched.value
-  : GuidanceLockSnr.value > 1.0 ? alert_color_watched.value
-  : color_watched.value
-
-  local lines = @() ({
-    watch = [AamSightLineWidthFactor, AamSightOpacity]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
+  local lines = trackerLines.__merge({
     lineWidth = hdpx(LINE_WIDTH * AamSightLineWidthFactor.value)
-    fillColor = Color(0,0,0,0)
     color = colorTracker
     opacity = AamSightOpacity.value
-    commands = circle
   })
 
-  local shadowLines = @() ({
-    watch = [AamSightShadowLineWidthFactor, AamSightShadowOpacity]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
+  local shadowLines = trackerLines.__merge({
     lineWidth = hdpx(LINE_WIDTH * AamSightShadowLineWidthFactor.value)
-    fillColor = Color(0,0,0,0)
     color = isDarkColor(colorTracker) ? Color(255,255,255, 255) : Color(0,0,0, 255)
     opacity = isDarkColor(colorTracker) ? AamSightShadowOpacity.value * 0.3  : AamSightShadowOpacity.value
-    commands = circle
   })
 
-  local linesSNR = @() ({
-    watch = [AamSightLineWidthFactor, AamSightOpacity]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(LINE_WIDTH * AamSightLineWidthFactor.value)
-    fillColor = Color(0,0,0,0)
-    color = colorTracker
-    opacity = AamSightOpacity.value
-    commands = relativCircle((snrDb + 10.0) * 0.05, TrackerSize.value + TrackerSize.value * 0.05, 72)
-  })
+  let children = [shadowLines, lines]
 
-  local shadowLinesSNR = @() ({
-    watch = [AamSightShadowLineWidthFactor, AamSightShadowOpacity]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(LINE_WIDTH * AamSightShadowLineWidthFactor.value)
-    fillColor = Color(0,0,0,0)
-    color = isDarkColor(colorTracker) ? Color(255,255,255, 255) : Color(0,0,0,255)
-    opacity = isDarkColor(colorTracker) ? AamSightShadowOpacity.value * 0.3  : AamSightShadowOpacity.value
-    commands = relativCircle((snrDb + 10.0) * 0.05, TrackerSize.value + TrackerSize.value * 0.05, 72)
-  })
+  if (GuidanceLockSnr.value >= 0.0) {
+    local linesSNR = trackerLines.__merge({
+      lineWidth = hdpx(LINE_WIDTH * AamSightLineWidthFactor.value)
+      color = colorTracker
+      opacity = AamSightOpacity.value
+      commands = relativCircle((snrDb + 10.0) * 0.05, 105, 72)
+    })
+
+    local shadowLinesSNR = linesSNR.__merge({
+      lineWidth = hdpx(LINE_WIDTH * AamSightShadowLineWidthFactor.value)
+      color = isDarkColor(colorTracker) ? Color(255,255,255, 255) : Color(0,0,0,255)
+      opacity = isDarkColor(colorTracker) ? AamSightShadowOpacity.value * 0.3  : AamSightShadowOpacity.value
+    })
+
+    children.append(shadowLinesSNR, linesSNR)
+  }
 
   return {
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = [sh(9.75), sh(9.75)]
-    fillColor = Color(0, 0, 0, 0)
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
+    halign = ALIGN_LEFT
+    valign = ALIGN_TOP
+    size = [TrackerSize.value, TrackerSize.value]
+    pos = [TrackerX.value, TrackerY.value]
     watch = [TrackerX, TrackerY, TrackerVisible, GuidanceLockState,
-      TrackerSize, color_watched, alert_color_watched, GuidanceLockSnr]
-    transform = {
-      translate = [TrackerX.value, TrackerY.value]
-    }
-    children = GuidanceLockSnr.value < 0.0 ?
-      [shadowLines, lines]
-      :  [shadowLines, shadowLinesSNR, lines, linesSNR]
+      TrackerSize, color_watched, alert_color_watched, GuidanceLockSnr,
+      AamSightLineWidthFactor, AamSightOpacity, AamSightShadowLineWidthFactor, AamSightShadowOpacity]
+    children
   }
 }
 
