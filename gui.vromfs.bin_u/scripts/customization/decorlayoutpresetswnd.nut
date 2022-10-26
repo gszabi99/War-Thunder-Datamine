@@ -1,5 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const PRESET_MIN_USAGE = 2
 
@@ -7,7 +14,7 @@ const PRESET_MIN_USAGE = 2
 {
   wndType = handlerType.MODAL
   sceneBlkName = null
-  sceneTplName = "%gui/customization/decorLayoutPresetsWnd"
+  sceneTplName = "%gui/customization/decorLayoutPresetsWnd.tpl"
 
   unit = null
   masterSkinId = ""
@@ -23,11 +30,11 @@ const PRESET_MIN_USAGE = 2
   function getSceneTplView()
   {
     let view = { list = [] }
-    for (local i = 0; i < skinList.items.len(); i++)
+    for (local i = 0; i < this.skinList.items.len(); i++)
       view.list.append({
-        id   = skinList.values[i]
-        text = skinList.items[i].text
-        icon = skinList.items[i].image
+        id   = this.skinList.values[i]
+        text = this.skinList.items[i].text
+        icon = this.skinList.items[i].image
       })
     return view
   }
@@ -36,97 +43,97 @@ const PRESET_MIN_USAGE = 2
   {
     ::enableHangarControls(true)
 
-    let objCombobox = scene.findObject("master_skin")
-    let selIdx = getIndexBySkinId(masterSkinId)
-    let markup = ::create_option_combobox(null, skinList.items, selIdx, null, false)
-    guiScene.replaceContentFromText(objCombobox, markup, markup.len(), this)
-    updateMasterPreset()
+    let objCombobox = this.scene.findObject("master_skin")
+    let selIdx = this.getIndexBySkinId(this.masterSkinId)
+    let markup = ::create_option_combobox(null, this.skinList.items, selIdx, null, false)
+    this.guiScene.replaceContentFromText(objCombobox, markup, markup.len(), this)
+    this.updateMasterPreset()
   }
 
   function updateMasterPreset(needResetLinkedSkins = true)
   {
-    masterPresetId = ::hangar_customization_preset_get_name(masterSkinId)
-    isPreset = masterPresetId != ""
-    presetBySkinIdx = ::u.map(skinList.values, @(id) ::hangar_customization_preset_get_name(id))
+    this.masterPresetId = ::hangar_customization_preset_get_name(this.masterSkinId)
+    this.isPreset = this.masterPresetId != ""
+    this.presetBySkinIdx = ::u.map(this.skinList.values, @(id) ::hangar_customization_preset_get_name(id))
 
     if (needResetLinkedSkins)
     {
-      linkedSkinsInitial = 0
-      foreach (idx, val in skinList.values)
-        if (val == masterSkinId || (isPreset && presetBySkinIdx[idx] == masterPresetId))
-          linkedSkinsInitial = linkedSkinsInitial | (1 << idx)
-      linkedSkinsCurrent = linkedSkinsInitial
+      this.linkedSkinsInitial = 0
+      foreach (idx, val in this.skinList.values)
+        if (val == this.masterSkinId || (this.isPreset && this.presetBySkinIdx[idx] == this.masterPresetId))
+          this.linkedSkinsInitial = this.linkedSkinsInitial | (1 << idx)
+      this.linkedSkinsCurrent = this.linkedSkinsInitial
     }
 
-    updateSkinsPresets()
-    updateLinkedSkins()
-    updateButtons()
+    this.updateSkinsPresets()
+    this.updateLinkedSkins()
+    this.updateButtons()
   }
 
   function updateSkinsPresets()
   {
-    foreach (idx, skinId in skinList.values)
-      scene.findObject("preset_of_" + skinId).setValue(presetBySkinIdx[idx])
+    foreach (idx, skinId in this.skinList.values)
+      this.scene.findObject("preset_of_" + skinId).setValue(this.presetBySkinIdx[idx])
   }
 
   function updateLinkedSkins()
   {
-    let listObj = scene.findObject("destination_skins")
-    listObj.setValue(linkedSkinsCurrent)
-    foreach (idx, skinId in skinList.values)
-      listObj.findObject(skinId).enable(skinId != masterSkinId)
+    let listObj = this.scene.findObject("destination_skins")
+    listObj.setValue(this.linkedSkinsCurrent)
+    foreach (_idx, skinId in this.skinList.values)
+      listObj.findObject(skinId).enable(skinId != this.masterSkinId)
   }
 
   function getIndexBySkinId(skinId)
   {
     let selSkinId = skinId
-    return skinList.values.findindex(@(id) id == selSkinId) ?? -1
+    return this.skinList.values.findindex(@(id) id == selSkinId) ?? -1
   }
 
   function updateButtons()
   {
-    ::showBtnTable(scene, {
-        btn_rename = isPreset
-        btn_apply  = linkedSkinsCurrent != linkedSkinsInitial
+    ::showBtnTable(this.scene, {
+        btn_rename = this.isPreset
+        btn_apply  = this.linkedSkinsCurrent != this.linkedSkinsInitial
     })
   }
 
   function onMasterSkinSelect(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
-    masterSkinId = skinList.values?[obj.getValue()] ?? ""
+    this.masterSkinId = this.skinList.values?[obj.getValue()] ?? ""
 
-    ::g_decorator.setLastSkin(unit.name, masterSkinId, false)
-    ::hangar_apply_skin(masterSkinId)
+    ::g_decorator.setLastSkin(this.unit.name, this.masterSkinId, false)
+    ::hangar_apply_skin(this.masterSkinId)
     ::save_online_single_job(3210)
     ::save_profile(false)
 
-    updateMasterPreset()
+    this.updateMasterPreset()
   }
 
   function onDestinationSkinSelect(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
-    linkedSkinsCurrent = obj.getValue()
-    updateButtons()
+    this.linkedSkinsCurrent = obj.getValue()
+    this.updateButtons()
   }
 
-  function onBtnRename(obj)
+  function onBtnRename(_obj)
   {
-    if (!isPreset)
+    if (!this.isPreset)
       return
     let validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
-    let oldName = masterPresetId
+    let oldName = this.masterPresetId
     ::gui_modal_editbox_wnd({
-      title = ::loc("customization/decorLayout/layoutName")
+      title = loc("customization/decorLayout/layoutName")
       maxLen = 16
       value = oldName
       owner = this
       checkButtonFunc = @(val) val != null && clearBorderSymbols(val).len() > 0
       validateFunc = @(val) validatePresetNameRegexp.replace("", val)
-      okFunc = @(val) doRenamePreset(oldName, val)
+      okFunc = @(val) this.doRenamePreset(oldName, val)
     })
   }
 
@@ -134,41 +141,41 @@ const PRESET_MIN_USAGE = 2
   {
     if (newName == oldName)
       return
-    if (::isInArray(newName, presetBySkinIdx))
-      return ::showInfoMsgBox(::loc("rename/cant/nameAlreadyTaken"))
+    if (isInArray(newName, this.presetBySkinIdx))
+      return ::showInfoMsgBox(loc("rename/cant/nameAlreadyTaken"))
 
     ::hangar_customization_preset_set_name(oldName, newName)
     ::save_profile(false)
-    updateMasterPreset(false)
+    this.updateMasterPreset(false)
   }
 
-  function onStart(obj)
+  function onStart(_obj)
   {
-    if (linkedSkinsCurrent == linkedSkinsInitial)
+    if (this.linkedSkinsCurrent == this.linkedSkinsInitial)
       return
 
     let listAttach = []
     let listDetach = []
-    for (local i = 0; i < skinList.values.len(); i++)
+    for (local i = 0; i < this.skinList.values.len(); i++)
     {
-      let id = skinList.values[i]
-      let val = (linkedSkinsCurrent & (1 << i)) != 0
-      if ((isPreset && masterPresetId == presetBySkinIdx[i]) != val) // warning disable: -compared-with-bool
+      let id = this.skinList.values[i]
+      let val = (this.linkedSkinsCurrent & (1 << i)) != 0
+      if ((this.isPreset && this.masterPresetId == this.presetBySkinIdx[i]) != val) // warning disable: -compared-with-bool
         if (val)
           listAttach.append(id)
         else
           listDetach.append(id)
     }
 
-    local presetId = masterPresetId
-    if (!isPreset && listAttach.len())
-      for (local i = 0; i < skinList.values.len(); i++)
+    local presetId = this.masterPresetId
+    if (!this.isPreset && listAttach.len())
+      for (local i = 0; i < this.skinList.values.len(); i++)
       {
-        presetId = ::loc("customization/decorLayout/defaultName", { number = i + 1 })
+        presetId = loc("customization/decorLayout/defaultName", { number = i + 1 })
         if (::hangar_customization_preset_calc_usage(presetId) == 0)
         {
           ::hangar_customization_preset_create(presetId)
-          ::u.removeFrom(listAttach, masterSkinId)
+          ::u.removeFrom(listAttach, this.masterSkinId)
           break
         }
       }
@@ -179,7 +186,7 @@ const PRESET_MIN_USAGE = 2
       ::hangar_customization_preset_unassign_from_skin(id)
 
     let usedPresetsList = {}
-    foreach (id in skinList.values)
+    foreach (id in this.skinList.values)
       usedPresetsList[::hangar_customization_preset_get_name(id)] <- id
     foreach (pId, id in usedPresetsList)
       if (::hangar_customization_preset_calc_usage(pId) < PRESET_MIN_USAGE)
@@ -187,17 +194,17 @@ const PRESET_MIN_USAGE = 2
 
     ::save_profile(false)
 
-    updateMasterPreset()
+    this.updateMasterPreset()
   }
 }
 
 return {
   open = function (unit, skinId)
   {
-    if (!::has_feature("CustomizationLayoutPresets"))
+    if (!hasFeature("CustomizationLayoutPresets"))
       return
     let skinList = ::g_decorator.getSkinsOption(unit?.name, false, false)
-    if (!::isInArray(skinId, skinList.values))
+    if (!isInArray(skinId, skinList.values))
       return
     ::handlersManager.loadHandler(::gui_handlers.DecorLayoutPresets, {
       unit = unit

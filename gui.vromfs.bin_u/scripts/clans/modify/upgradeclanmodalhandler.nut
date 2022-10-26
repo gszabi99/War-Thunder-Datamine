@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 ::gui_handlers.UpgradeClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {
@@ -6,7 +12,7 @@ let { format } = require("string")
   function createView()
   {
     return {
-      windowHeader = ::loc("clan/upgrade_clan_wnd_title")
+      windowHeader = loc("clan/upgrade_clan_wnd_title")
       hasClanTypeSelect = false
       hasClanNameSelect = false
       hasClanSloganSelect = false
@@ -17,64 +23,64 @@ let { format } = require("string")
 
   function initScreen()
   {
-    newClanType = clanData.clanType.getNextType()
-    lastShownHintObj = scene.findObject("req_newclan_tag")
+    this.newClanType = this.clanData.clanType.getNextType()
+    this.lastShownHintObj = this.scene.findObject("req_newclan_tag")
     base.initScreen()
-    updateSubmitButtonText()
-    resetTagDecorationObj(clanData.tag)
-    updateDescription()
-    updateAnnouncement()
-    scene.findObject("newclan_description").setValue(clanData.desc)
-    let newClanTagObj = scene.findObject("newclan_tag")
-    newClanTagObj.setValue(::g_clans.stripClanTagDecorators(clanData.tag))
+    this.updateSubmitButtonText()
+    this.resetTagDecorationObj(this.clanData.tag)
+    this.updateDescription()
+    this.updateAnnouncement()
+    this.scene.findObject("newclan_description").setValue(this.clanData.desc)
+    let newClanTagObj = this.scene.findObject("newclan_tag")
+    newClanTagObj.setValue(::g_clans.stripClanTagDecorators(this.clanData.tag))
     ::select_editbox(newClanTagObj)
-    onFocus(newClanTagObj)
+    this.onFocus(newClanTagObj)
 
     // Helps to avoid redundant name length check.
-    newClanName = clanData.name
+    this.newClanName = this.clanData.name
   }
 
   // Override.
   function updateSubmitButtonText()
   {
-    let cost = clanData.getClanUpgradeCost()
-    setSubmitButtonText(::loc("clan/clan_upgrade/button"), cost)
+    let cost = this.clanData.getClanUpgradeCost()
+    this.setSubmitButtonText(loc("clan/clan_upgrade/button"), cost)
   }
 
   // Important override.
   function getSelectedClanType()
   {
-    return clanData.clanType.getNextType()
+    return this.clanData.clanType.getNextType()
   }
 
   function onSubmit()
   {
-    if(!prepareClanData())
+    if(!this.prepareClanData())
       return
-    let upgradeCost = clanData.getClanUpgradeCost()
+    let upgradeCost = this.clanData.getClanUpgradeCost()
     if (upgradeCost <= ::zero_money)
-      upgradeClan()
+      this.upgradeClan()
     else if (::check_balance_msgBox(upgradeCost))
     {
       let msgText = ::warningIfGold(
-        format(::loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
+        format(loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
         upgradeCost)
-      this.msgBox("need_money", msgText, [["ok", function() { upgradeClan() }],
+      this.msgBox("need_money", msgText, [["ok", function() { this.upgradeClan() }],
         ["cancel"]], "ok")
     }
   }
 
   function upgradeClan()
   {
-    if (isObsceneWord())
+    if (this.isObsceneWord())
       return
-    let clanId = (::my_clan_info != null && ::my_clan_info.id == clanData.id) ? "-1" : clanData.id
+    let clanId = (::my_clan_info != null && ::my_clan_info.id == this.clanData.id) ? "-1" : this.clanData.id
     let params = ::g_clans.prepareUpgradeRequest(
-      newClanType,
-      newClanTag,
-      newClanDescription,
-      newClanAnnouncement
+      this.newClanType,
+      this.newClanTag,
+      this.newClanDescription,
+      this.newClanAnnouncement
     )
     ::g_clans.upgradeClan(clanId, params, this)
   }
@@ -82,6 +88,6 @@ let { format } = require("string")
   function getDecoratorsList()
   {
     // cannot use non-paid decorators for upgrade
-    return ::g_clan_tag_decorator.getDecoratorsForClanType(newClanType)
+    return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
   }
 }

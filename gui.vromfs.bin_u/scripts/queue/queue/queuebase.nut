@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let time = require("%scripts/time.nut")
+let { get_time_msec } = require("dagor.time")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
 
@@ -19,28 +26,28 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
   constructor(queueId, v_queueType, v_params)
   {
-    id = queueId
-    queueType = v_queueType
-    params = v_params || {}
+    this.id = queueId
+    this.queueType = v_queueType
+    this.params = v_params || {}
 
-    typeBit = queueType.bit
-    queueUidsList = {}
-    selfActivated = ::getTblValue("queueSelfActivated", params, false)
+    this.typeBit = this.queueType.bit
+    this.queueUidsList = {}
+    this.selfActivated = getTblValue("queueSelfActivated", this.params, false)
 
-    init()
-    addQueueByParams(params)
+    this.init()
+    this.addQueueByParams(this.params)
   }
 
   function init() {}
 
   // return <is somethind in queue parameters changed>
-  function addQueueByParams(qParams)
+  function addQueueByParams(_qParams)
   {
     return false
   }
 
   //return true if queue changed
-  function removeQueueByParams(leaveData)
+  function removeQueueByParams(_leaveData)
   {
     return false
   }
@@ -48,32 +55,32 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   function addQueueByUid(queueUid, queueParms)
   {
     if (queueUid != null)
-      queueUidsList[queueUid] <- queueParms
+      this.queueUidsList[queueUid] <- queueParms
   }
 
   function removeQueueByUid(queueUid)
   {
-    delete queueUidsList[queueUid]
+    delete this.queueUidsList[queueUid]
   }
 
   function clearAllQueues()
   {
-    queueUidsList.clear()
+    this.queueUidsList.clear()
   }
 
   function isActive()
   {
-    return queueUidsList.len() > 0
+    return this.queueUidsList.len() > 0
   }
 
-  function getQueueData(qParams)
+  function getQueueData(_qParams)
   {
     return {}
   }
 
   function getTeamCode()
   {
-    return ::getTblValue("team", params, Team.Any)
+    return getTblValue("team", this.params, Team.Any)
   }
 
   function getBattleName()
@@ -81,20 +88,20 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
     return ""
   }
 
-  getDescription = @() "".concat( ::colorize("activeTextColor", getBattleName()), "\n",
-    ::loc("options/country"), ::loc("ui/colon"), ::loc(params?.country ?? ""))
+  getDescription = @() "".concat( colorize("activeTextColor", this.getBattleName()), "\n",
+    loc("options/country"), loc("ui/colon"), loc(this.params?.country ?? ""))
 
   function getActiveTime()
   {
-    if (activateTime >= 0)
-      return time.millisecondsToSeconds(::dagor.getCurTime() - activateTime)
+    if (this.activateTime >= 0)
+      return time.millisecondsToSeconds(get_time_msec() - this.activateTime)
 
     return 0
   }
 
-  function join(successCallback, errorCallback) {}
-  function leave(successCallback, errorCallback, needShowError = false) {}
-  static function leaveAll(successCallback, errorCallback, needShowError = false) {}
+  function join(_successCallback, _errorCallback) {}
+  function leave(_successCallback, _errorCallback, _needShowError = false) {}
+  static function leaveAll(_successCallback, _errorCallback, _needShowError = false) {}
 
   function hasCustomMode() { return false }
   //is already exist queue with custom mode.
@@ -102,7 +109,9 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   function isCustomModeQUeued() { return false }
   //when custom mode switched on, it will be queued automatically
   function isCustomModeSwitchedOn() { return false }
-  function switchCustomMode(shouldQueue) {}
+  function switchCustomMode(_shouldQueue) {}
   static function isAllowedToSwitchCustomMode()
     { return !::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader() }
+  hasActualQueueData = @() true
+  actualizeData = @() null
 }

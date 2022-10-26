@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -7,6 +13,10 @@ let { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
 } = require("%scripts/utils/genericTooltipTypes.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { getMainConditionListPrefix, isNestedUnlockMode, getHeaderCondition,
+  isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues,
+  getUnlockNameText, getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 ::g_battle_tasks <- null
 
@@ -40,51 +50,51 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
   constructor()
   {
-    currentTasksArray = []
-    activeTasksArray = []
-    proposedTasksArray = []
+    this.currentTasksArray = []
+    this.activeTasksArray = []
+    this.proposedTasksArray = []
 
-    isCompleteMediumTask = ::Watched(false)
-    isCompleteEasyTask = ::Watched(false)
-    hasInCompleteHardTask = ::Watched(false)
+    this.isCompleteMediumTask = Watched(false)
+    this.isCompleteEasyTask = Watched(false)
+    this.hasInCompleteHardTask = Watched(false)
 
-    seenTasks = {}
-    newIconWidgetByTaskId = {}
+    this.seenTasks = {}
+    this.newIconWidgetByTaskId = {}
 
-    lastGenerationId = 0
-    specTasksLastGenerationId = 0
+    this.lastGenerationId = 0
+    this.specTasksLastGenerationId = 0
 
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
   function reset()
   {
-    currentTasksArray.clear()
-    activeTasksArray.clear()
-    proposedTasksArray.clear()
+    this.currentTasksArray.clear()
+    this.activeTasksArray.clear()
+    this.proposedTasksArray.clear()
 
-    seenTasks = {}
-    newIconWidgetByTaskId = {}
-    seenTasksInited = false
+    this.seenTasks = {}
+    this.newIconWidgetByTaskId = {}
+    this.seenTasksInited = false
 
-    lastGenerationId = 0
-    specTasksLastGenerationId = 0
+    this.lastGenerationId = 0
+    this.specTasksLastGenerationId = 0
   }
 
-  isAvailableForUser = @() ::has_feature("BattleTasks")
-    && !::u.isEmpty(getTasksArray())
+  isAvailableForUser = @() hasFeature("BattleTasks")
+    && !::u.isEmpty(this.getTasksArray())
     && isMultiplayerPrivilegeAvailable.value
 
   function updateTasksData()
   {
-    currentTasksArray.clear()
+    this.currentTasksArray.clear()
     if (!::g_login.isLoggedIn())
       return
 
-    updatedProposedTasks()
-    updatedActiveTasks()
+    this.updatedProposedTasks()
+    this.updatedActiveTasks()
 
-    currentTasksArray.sort(function(a,b) {
+    this.currentTasksArray.sort(function(a,b) {
       if (a?._sort_order == null || b?._sort_order == null)
         return 0
 
@@ -95,82 +105,82 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     })
 
     if (::isInMenu())
-      checkNewSpecialTasks()
-    updateCompleteTaskWatched()
+      this.checkNewSpecialTasks()
+    this.updateCompleteTaskWatched()
     ::broadcastEvent("BattleTasksFinishedUpdate")
   }
 
   function onEventBattleTasksShowAll(params)
   {
-    showAllTasksValue = ::getTblValue("showAllTasksValue", params, false)
-    updateTasksData()
+    this.showAllTasksValue = getTblValue("showAllTasksValue", params, false)
+    this.updateTasksData()
   }
 
-  function onEventBattleTasksIncomeUpdate(params) { updateTasksData() }
-  function onEventBattleEnded(params)             { updateTasksData() }
+  function onEventBattleTasksIncomeUpdate(_params) { this.updateTasksData() }
+  function onEventBattleEnded(_params)             { this.updateTasksData() }
 
   function updatedProposedTasks()
   {
     let tasksDataBlock = ::get_proposed_personal_unlocks_blk()
     ::g_battle_task_difficulty.updateTimeParamsFromBlk(tasksDataBlock)
-    lastGenerationId = tasksDataBlock?[dailyTasksId + "_lastGenerationId"] ?? 0
-    specTasksLastGenerationId = tasksDataBlock?[specialTasksId + "_lastGenerationId"] ?? 0
+    this.lastGenerationId = tasksDataBlock?[this.dailyTasksId + "_lastGenerationId"] ?? 0
+    this.specTasksLastGenerationId = tasksDataBlock?[this.specialTasksId + "_lastGenerationId"] ?? 0
 
-    updateRerollCost(tasksDataBlock)
+    this.updateRerollCost(tasksDataBlock)
 
-    proposedTasksArray = []
-    newIconWidgetByTaskId = {}
+    this.proposedTasksArray = []
+    this.newIconWidgetByTaskId = {}
 
     for (local i = 0; i < tasksDataBlock.blockCount(); i++)
     {
       let task = ::DataBlock()
       task.setFrom(tasksDataBlock.getBlock(i))
       task.isActive = false
-      proposedTasksArray.append(task)
-      if (!isTaskActual(task) || !canInteract(task)
-        || !::g_battle_task_difficulty.checkAvailabilityByProgress(task, showAllTasksValue))
+      this.proposedTasksArray.append(task)
+      if (!this.isTaskActual(task) || !this.canInteract(task)
+        || !::g_battle_task_difficulty.checkAvailabilityByProgress(task, this.showAllTasksValue))
         continue
 
-      currentTasksArray.append(task)
-      newIconWidgetByTaskId[getUniqueId(task)] <- null
+      this.currentTasksArray.append(task)
+      this.newIconWidgetByTaskId[this.getUniqueId(task)] <- null
     }
   }
 
   function updatedActiveTasks()
   {
     let currentActiveTasks = ::get_personal_unlocks_blk()
-    activeTasksArray.clear()
+    this.activeTasksArray.clear()
     for (local i = 0; i < currentActiveTasks.blockCount(); i++)
     {
       let task = ::DataBlock()
       task.setFrom(currentActiveTasks.getBlock(i))
 
-      if (!isBattleTask(task))
+      if (!this.isBattleTask(task))
         continue
 
       task.isActive = true
-      activeTasksArray.append(task)
+      this.activeTasksArray.append(task)
 
-      if (!isTaskActual(task) || !canInteract(task)
-        || !::g_battle_task_difficulty.checkAvailabilityByProgress(task, showAllTasksValue))
+      if (!this.isTaskActual(task) || !this.canInteract(task)
+        || !::g_battle_task_difficulty.checkAvailabilityByProgress(task, this.showAllTasksValue))
         continue
 
-      currentTasksArray.append(task)
-      let isNew = !isTaskDone(task) && canGetReward(task)
-      markTaskSeen(getUniqueId(task), false, isNew)
-      newIconWidgetByTaskId[getUniqueId(task)] <- null
+      this.currentTasksArray.append(task)
+      let isNew = !this.isTaskDone(task) && this.canGetReward(task)
+      this.markTaskSeen(this.getUniqueId(task), false, isNew)
+      this.newIconWidgetByTaskId[this.getUniqueId(task)] <- null
     }
   }
 
   function updateRerollCost(tasksDataBlock)
   {
-    rerollCost = ::Cost(::getTblValue("_rerollCost", tasksDataBlock, 0),
-                        ::getTblValue("_rerollGoldCost", tasksDataBlock, 0))
+    this.rerollCost = ::Cost(getTblValue("_rerollCost", tasksDataBlock, 0),
+                        getTblValue("_rerollGoldCost", tasksDataBlock, 0))
   }
 
   function isTaskActive(task)
   {
-    return ::getTblValue("isActive", task, true)
+    return getTblValue("isActive", task, true)
   }
 
   function isTaskTimeExpired(task)
@@ -183,9 +193,9 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (::u.isEmpty(config))
       return false
 
-    if (isBattleTask(config))
+    if (this.isBattleTask(config))
     {
-      if (!getTaskById(config.id))
+      if (!this.getTaskById(config.id))
         return true //Task with old difficulty type, not using anymore
       return ::is_unlocked_scripted(-1, config.id)
     }
@@ -194,98 +204,98 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
   function canGetReward(task)
   {
-    return isBattleTask(task)
-           && isTaskActual(task)
-           && !isTaskDone(task)
-           && ::getTblValue("_readyToReward", task, false)
+    return this.isBattleTask(task)
+           && this.isTaskActual(task)
+           && !this.isTaskDone(task)
+           && getTblValue("_readyToReward", task, false)
   }
 
   function canGetAnyReward()
   {
-    foreach (task in getActiveTasksArray())
-      if (canGetReward(task))
+    foreach (task in this.getActiveTasksArray())
+      if (this.canGetReward(task))
         return true
     return false
   }
 
   function canActivateTask(task)
   {
-    if (!isBattleTask(task))
+    if (!this.isBattleTask(task))
       return false
 
     let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    if (!::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, getProposedTasksArray())
+    if (!::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, this.getProposedTasksArray())
         || !::g_battle_task_difficulty.checkAvailabilityByProgress(task))
         return false
 
-    foreach (idx, activeTask in getActiveTasksArray())
-      if (!isAutoAcceptedTask(activeTask))
+    foreach (_idx, activeTask in this.getActiveTasksArray())
+      if (!this.isAutoAcceptedTask(activeTask))
         return false
 
     return true
   }
 
-  function getTasksArray() { return currentTasksArray }
-  function getProposedTasksArray() { return proposedTasksArray }
-  function getActiveTasksArray() { return activeTasksArray }
-  function getWidgetsTable() { return newIconWidgetByTaskId }
+  function getTasksArray() { return this.currentTasksArray }
+  function getProposedTasksArray() { return this.proposedTasksArray }
+  function getActiveTasksArray() { return this.activeTasksArray }
+  function getWidgetsTable() { return this.newIconWidgetByTaskId }
 
   function debugClearSeenData()
   {
-    seenTasks = {}
-    saveSeenTasksData()
+    this.seenTasks = {}
+    this.saveSeenTasksData()
     //!!fix me: need to recount seen data from active tasks
   }
 
   function loadSeenTasksData(forceLoad = false)
   {
-    if (seenTasksInited && !forceLoad)
+    if (this.seenTasksInited && !forceLoad)
       return true
 
-    seenTasks.clear()
-    let blk = ::loadLocalByAccount(PLAYER_CONFIG_PATH)
+    this.seenTasks.clear()
+    let blk = ::loadLocalByAccount(this.PLAYER_CONFIG_PATH)
     if (typeof(blk) == "instance" && (blk instanceof ::DataBlock))
       for (local i = 0; i < blk.paramCount(); i++)
       {
         let id = blk.getParamName(i)
-        seenTasks[id] <- max(blk.getParamValue(i), ::getTblValue(id, seenTasks, 0))
+        this.seenTasks[id] <- max(blk.getParamValue(i), getTblValue(id, this.seenTasks, 0))
       }
 
-    seenTasksInited = true
+    this.seenTasksInited = true
     return true
   }
 
   function saveSeenTasksData()
   {
-    let minDay = time.getUtcDays() - TASKS_OUT_OF_DATE_DAYS
+    let minDay = time.getUtcDays() - this.TASKS_OUT_OF_DATE_DAYS
     let blk = ::DataBlock()
-    foreach(generation_id, day in seenTasks)
+    foreach(generation_id, day in this.seenTasks)
     {
-      if (day < minDay && !isBattleTaskNew(generation_id))
+      if (day < minDay && !this.isBattleTaskNew(generation_id))
         continue
 
       blk[generation_id] = day
     }
 
-    ::saveLocalByAccount(PLAYER_CONFIG_PATH, blk)
+    ::saveLocalByAccount(this.PLAYER_CONFIG_PATH, blk)
   }
 
   function isBattleTaskNew(generation_id)
   {
-    loadSeenTasksData()
-    return !(generation_id in seenTasks)
+    this.loadSeenTasksData()
+    return !(generation_id in this.seenTasks)
   }
 
   function markTaskSeen(generation_id, sendEvent = true, isNew = false)
   {
-    let wasNew = isBattleTaskNew(generation_id)
+    let wasNew = this.isBattleTaskNew(generation_id)
     if (wasNew == isNew)
       return false
 
     if (!isNew)
-      seenTasks[generation_id] <- time.getUtcDays()
-    else if (generation_id in seenTasks)
-      delete seenTasks[generation_id]
+      this.seenTasks[generation_id] <- time.getUtcDays()
+    else if (generation_id in this.seenTasks)
+      delete this.seenTasks[generation_id]
 
     if (sendEvent)
       ::broadcastEvent("NewBattleTasksChanged")
@@ -295,10 +305,10 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   function markAllTasksSeen()
   {
     local changeNew = false
-    foreach(task in currentTasksArray)
+    foreach(task in this.currentTasksArray)
     {
-      let generation_id = getUniqueId(task)
-      let result = markTaskSeen(generation_id, false)
+      let generation_id = this.getUniqueId(task)
+      let result = this.markTaskSeen(generation_id, false)
       changeNew = changeNew || result
     }
 
@@ -308,12 +318,12 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
   function getUnseenTasksCount()
   {
-    loadSeenTasksData()
+    this.loadSeenTasksData()
 
     local num = 0
-    foreach(idx, task in currentTasksArray)
+    foreach(_idx, task in this.currentTasksArray)
     {
-      if (!isBattleTaskNew(getUniqueId(task)))
+      if (!this.isBattleTaskNew(this.getUniqueId(task)))
         continue
 
       num++
@@ -328,32 +338,32 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (::u.isDataBlock(param))
     {
       task = param
-      id = ::getTblValue("id", param)
+      id = getTblValue("id", param)
     }
     else if (::u.isString(param))
     {
-      task = getTaskById(param)
+      task = this.getTaskById(param)
       id = param
     }
     else
       return ""
 
-    return ::loc(::getTblValue("locId", task, "battletask/" + id))
+    return loc(getTblValue("locId", task, "battletask/" + id))
   }
 
   function getTaskById(id)
   {
     if (::u.isTable(id) || ::u.isDataBlock(id))
-      id = ::getTblValue("id", id)
+      id = getTblValue("id", id)
 
     if (!id)
       return null
 
-    foreach(task in activeTasksArray)
+    foreach(task in this.activeTasksArray)
       if (task.id == id)
         return task
 
-    foreach(task in proposedTasksArray)
+    foreach(task in this.proposedTasksArray)
       if (task.id == id)
         return task
 
@@ -375,18 +385,18 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
   function isController(config)
   {
-    return ::getTblValue("_controller", config, false)
+    return getTblValue("_controller", config, false)
   }
 
   function isAutoAcceptedTask(task)
   {
-    return ::getTblValue("_autoAccept", task, false)
+    return getTblValue("_autoAccept", task, false)
   }
 
   function isBattleTask(task)
   {
     if (::u.isString(task))
-      task = getTaskById(task)
+      task = this.getTaskById(task)
 
     let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
     return diff != ::g_battle_task_difficulty.UNKNOWN
@@ -394,35 +404,35 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
   function isUserlogForBattleTasksGroup(body)
   {
-    let unlockId = ::getTblValue("unlockId", body)
+    let unlockId = getTblValue("unlockId", body)
     if (unlockId == null)
       return true
 
-    return getTaskById(unlockId) != null
+    return this.getTaskById(unlockId) != null
   }
 
   //currently it is using in userlog
-  function generateUpdateDescription(log)
+  function generateUpdateDescription(logObj)
   {
     let res = {}
     let blackList = []
     let whiteList = []
 
-    let proposedTasks = getProposedTasksArray()
+    let proposedTasks = this.getProposedTasksArray()
 
-    foreach(taskId, table in log)
+    foreach(taskId, table in logObj)
     {
       local header = ""
-      let diffTypeName = ::getTblValue("type", table)
+      let diffTypeName = getTblValue("type", table)
       if (diffTypeName)
       {
-        if (::isInArray(diffTypeName, blackList))
+        if (isInArray(diffTypeName, blackList))
           continue
 
         let diff = ::g_battle_task_difficulty.getDifficultyTypeByName(diffTypeName)
-        if (!::isInArray(diffTypeName, whiteList)
+        if (!isInArray(diffTypeName, whiteList)
             && !::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff,
-                                          proposedTasks, showAllTasksValue))
+                                          proposedTasks, this.showAllTasksValue))
         {
           blackList.append(diffTypeName)
           continue
@@ -434,7 +444,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
       if (!(header in res))
         res[header] <- []
 
-      res[header].append(generateStringForUserlog(table, taskId))
+      res[header].append(this.generateStringForUserlog(table, taskId))
     }
 
     local data = ""
@@ -447,7 +457,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
       data += data == ""? "" : "\n"
       if (lastUserLogHeader != userlogHeader)
       {
-        data += ::loc("userlog/battletask/type/" + userlogHeader) + ::loc("ui/colon")
+        data += loc("userlog/battletask/type/" + userlogHeader) + loc("ui/colon")
         lastUserLogHeader = userlogHeader
       }
       data += ::g_string.implode(arr, "\n")
@@ -457,7 +467,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   }
 
   function getDifficultyByProposals(proposals) {
-    if (proposals.findindex(function(v, id) {
+    if (proposals.findindex(function(_v, id) {
       let battleTask = ::g_battle_tasks.getTaskById(id)
       return ::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask)
     }))
@@ -468,17 +478,17 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
   function generateStringForUserlog(table, taskId)
   {
-    local text = getBattleTaskLocIdFromUserlog(table, taskId)
-    let cost = ::Cost(::getTblValue("cost", table, 0), ::getTblValue("costGold", table, 0))
+    local text = this.getBattleTaskLocIdFromUserlog(table, taskId)
+    let cost = ::Cost(getTblValue("cost", table, 0), getTblValue("costGold", table, 0))
     if (!::u.isEmpty(cost))
-      text += ::loc("ui/parentheses/space", {text = cost.tostring()})
+      text += loc("ui/parentheses/space", {text = cost.tostring()})
 
     return text
   }
 
-  function getBattleTaskLocIdFromUserlog(log, taskId)
+  function getBattleTaskLocIdFromUserlog(logObj, taskId)
   {
-    return "locId" in log? ::loc(log.locId) : getLocalizedTaskNameById(taskId)
+    return "locId" in logObj? loc(logObj.locId) : this.getLocalizedTaskNameById(taskId)
   }
 
   function getImage(imageName = null)
@@ -490,11 +500,11 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
   function getTaskStatus(task)
   {
-    if (canGetReward(task))
+    if (this.canGetReward(task))
       return "complete"
-    if (isTaskDone(task))
+    if (this.isTaskDone(task))
       return "done"
-    if (isTaskTimeExpired(task))
+    if (this.isTaskTimeExpired(task))
       return "failed"
     return null
   }
@@ -513,9 +523,9 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (!task?._generation_id)
       return true
 
-    let taskGenId = getGenerationIdInt(task)
-    return taskGenId == lastGenerationId
-      || taskGenId == specTasksLastGenerationId
+    let taskGenId = this.getGenerationIdInt(task)
+    return taskGenId == this.lastGenerationId
+      || taskGenId == this.specTasksLastGenerationId
   }
 
   function isTaskUnderControl(checkTask, taskController, typesToCheck = null)
@@ -525,25 +535,25 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (!typesToCheck)
       return true
 
-    return ::isInArray(::g_battle_task_difficulty.getDifficultyTypeByTask(checkTask).name, typesToCheck)
+    return isInArray(::g_battle_task_difficulty.getDifficultyTypeByTask(checkTask).name, typesToCheck)
   }
 
   function canCancelTask(task)
   {
-    return !isTaskDone(task) && !::getTblValue("_preventCancel", task, false)
+    return !this.isTaskDone(task) && !getTblValue("_preventCancel", task, false)
   }
 
   function getTasksListByControllerTask(taskController, conditions)
   {
     let tasksArray = []
-    if (!isController(taskController))
+    if (!this.isController(taskController))
       return tasksArray
 
     let unlocksCond = ::u.search(conditions, function(cond) { return cond.type == "char_personal_unlock" } )
     let personalUnlocksTypes = unlocksCond && unlocksCond.values
 
-    foreach (task in currentTasksArray)
-      if (isTaskUnderControl(task, taskController, personalUnlocksTypes))
+    foreach (task in this.currentTasksArray)
+      if (this.isTaskUnderControl(task, taskController, personalUnlocksTypes))
         tasksArray.append(task)
 
     return tasksArray
@@ -552,7 +562,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   function getTaskWithAvailableAward(tasksArray)
   {
     return ::u.search(tasksArray, function(task) {
-        return canGetReward(task)
+        return this.canGetReward(task)
       }.bindenv(this))
   }
 
@@ -561,7 +571,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (!config)
       return null
 
-    let task = getTaskById(config)
+    let task = this.getTaskById(config)
 
     let taskDescription = []
     local taskUnlocksListPrefix = ""
@@ -570,35 +580,34 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     let taskConditionsList = []
     let isPromo = paramsCfg?.isPromo ?? false
 
-    if (showAllTasksValue)
+    if (this.showAllTasksValue)
       taskDescription.append("*Debug info: id - " + config.id)
 
     if (isPromo)
     {
-      if (::getTblValue("locDescId", config, "") != "")
-        taskDescription.append(::loc(config.locDescId))
-      taskDescription.append(::UnlockConditions.getMainConditionText(config.conditions, config.curVal, config.maxVal))
+      if (getTblValue("locDescId", config, "") != "")
+        taskDescription.append(loc(config.locDescId))
+      taskDescription.append(getUnlockMainCondDescByCfg(config))
     }
     else
     {
-      if (::getTblValue("text", config, "") != "")
-        taskDescription.append(config.text)
+      taskDescription.append(getFullUnlockDesc(config))
 
-      if (!canGetReward(task)) {
-        taskUnlocksListPrefix = ::UnlockConditions.getMainConditionListPrefix(config.conditions)
+      if (!this.canGetReward(task)) {
+        taskUnlocksListPrefix = getMainConditionListPrefix(config.conditions)
 
-        if (isUnlocksList(config))
-          taskUnlocksList = getUnlocksListView(config)
+        if (this.isUnlocksList(config))
+          taskUnlocksList = this.getUnlocksListView(config)
         else
-          taskStreaksList = getStreaksListView(config)
+          taskStreaksList = this.getStreaksListView(config)
       }
 
-      let controlledTasks = getTasksListByControllerTask(task, config.conditions)
+      let controlledTasks = this.getTasksListByControllerTask(task, config.conditions)
       foreach (contrTask in controlledTasks)
       {
         taskConditionsList.append({
-          unlocked = isTaskDone(contrTask)
-          text = ::colorize(isActive(contrTask)? "userlogColoredText" : "", getLocalizedTaskNameById(contrTask))
+          unlocked = this.isTaskDone(contrTask)
+          text = colorize(this.isActive(contrTask)? "userlogColoredText" : "", this.getLocalizedTaskNameById(contrTask))
         })
       }
     }
@@ -611,7 +620,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     let view = {
       id = config.id
       taskDescription = ::g_string.implode(taskDescription, "\n")
-      taskSpecialDescription = getRefreshTimeTextForTask(task)
+      taskSpecialDescription = this.getRefreshTimeTextForTask(task)
       taskUnlocksListPrefix = taskUnlocksListPrefix
       taskUnlocks = taskUnlocksList
       taskStreaks = taskStreaksList
@@ -623,27 +632,27 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
       isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
     }
 
-    return ::handyman.renderCached("%gui/unlocks/battleTasksDescription", view)
+    return ::handyman.renderCached("%gui/unlocks/battleTasksDescription.tpl", view)
   }
 
-  function getUnlockConditionBlock(text, id, config, isUnlocked, isFinal, compareOR = false, isBitMode = true)
+  function getUnlockConditionBlock(text, _id, config, isUnlocked, isFinal, compareOR = false, isBitMode = true)
   {
-    local unlockDesc = compareOR ? ::loc("hints/shortcut_separator") + "\n" : ""
+    local unlockDesc = compareOR ? loc("hints/shortcut_separator") + "\n" : ""
     unlockDesc += text
-    unlockDesc += compareOR? "" : ::loc(isFinal? "ui/dot" : "ui/comma")
+    unlockDesc += compareOR? "" : loc(isFinal? "ui/dot" : "ui/comma")
 
     return {
-      tooltipMarkup = getTooltipMarkupByModeType(config)
+      tooltipMarkup = this.getTooltipMarkupByModeType(config)
       overlayTextColor = (isBitMode && isUnlocked) ? "userlog" : "active"
       text = unlockDesc
     }
   }
 
   function isUnlocksList(config) {
-    if (::UnlockConditions.nestedUnlockModes.contains(config.type))
+    if (isNestedUnlockMode(config.type))
       foreach (id in config.names) {
         let unlockBlk = ::g_unlocks.getUnlockById(id)
-        if (!(unlockBlk?.isMultiUnlock ?? false) && ::get_unlock_type(unlockBlk.type) != ::UNLOCKABLE_STREAK)
+        if (!(unlockBlk?.isMultiUnlock ?? false) && ::get_unlock_type(unlockBlk.type) != UNLOCKABLE_STREAK)
           return true
       }
     return false
@@ -652,8 +661,8 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   function getUnlocksListView(config) {
     let res = []
 
-    let namesLoc = ::UnlockConditions.getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
-    let isBitMode = ::UnlockConditions.isBitModeType(config.type)
+    let namesLoc = getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
+    let isBitMode = isBitModeType(config.type)
 
     foreach (idx, unlockId in config.names) {
       if (config.type == "char_resources") {
@@ -673,7 +682,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
         let unlockConfig = ::build_conditions_config(unlockBlk)
         let isUnlocked = isBitMode? stdMath.is_bit_set(config.curVal, idx) : ::is_unlocked_scripted(-1, unlockId)
         res.append({
-          tooltipMarkup = getTooltipMarkupByModeType(unlockConfig)
+          tooltipMarkup = this.getTooltipMarkupByModeType(unlockConfig)
           text = namesLoc[idx]
           isUnlocked
         })
@@ -684,8 +693,8 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   }
 
   function getStreaksListView(config) {
-    let isBitMode = ::UnlockConditions.isBitModeType(config.type)
-    let namesLoc = ::UnlockConditions.getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
+    let isBitMode = isBitModeType(config.type)
+    let namesLoc = getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
     let compareOR = config?.compareOR ?? false
 
     let res = []
@@ -698,7 +707,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
       let unlockConfig = ::build_conditions_config(unlockBlk)
       let isUnlocked = !isBitMode || stdMath.is_bit_set(config.curVal, i)
-      res.append(getUnlockConditionBlock(
+      res.append(this.getUnlockConditionBlock(
         namesLoc[i],
         unlockId,
         unlockConfig,
@@ -717,7 +726,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (config.type == "char_unit_exist")
       return UNIT.getMarkup(config.id, {showProgress=true})
 
-    if (isBattleTask(config.id))
+    if (this.isBattleTask(config.id))
       return BATTLE_TASK.getMarkup(config.id, {showProgress=true})
 
     if (activeUnlocks.value?[config.id] != null)
@@ -733,38 +742,38 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (timeLeft < 0)
       return ""
 
-    local labelText = "".concat(::loc("unlocks/_acceptTime"), ::loc("ui/colon"))
+    local labelText = "".concat(loc("unlocks/_acceptTime"), loc("ui/colon"))
     if (timeLeft < 30 * time.TIME_MINUTE_IN_SECONDS)
-      labelText = ::colorize("warningTextColor", labelText)
-    return "".concat(labelText,  ::colorize("unlockActiveColor", diff.getTimeLeftText(task)))
+      labelText = colorize("warningTextColor", labelText)
+    return "".concat(labelText,  colorize("unlockActiveColor", diff.getTimeLeftText(task)))
   }
 
   function setUpdateTimer(task, taskBlockObj, addParams = {})
   {
-    if (!::checkObj(taskBlockObj))
+    if (!checkObj(taskBlockObj))
       return
 
     let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
     if (!diff.hasTimer) return
 
     local holderObj = taskBlockObj.findObject("task_timer_text")
-    if (::checkObj(holderObj) && task)
+    if (checkObj(holderObj) && task)
       SecondsUpdater(holderObj, function(obj, params) {
         local timeText = ::g_battle_tasks.getRefreshTimeTextForTask(task)
         let isTimeEnded = timeText == ""
         let addText = params?.addText ?? ""
         if (isTimeEnded)
-          timeText = ::colorize("badTextColor", ::loc("mainmenu/battleTasks/timeWasted"))
+          timeText = colorize("badTextColor", loc("mainmenu/battleTasks/timeWasted"))
         obj.setValue($"{addText} {timeText}")
 
         return isTimeEnded
       }, true, addParams)
 
     holderObj = taskBlockObj.findObject("tasks_refresh_timer")
-    if (::checkObj(holderObj))
-      SecondsUpdater(holderObj, function(obj, params) {
+    if (checkObj(holderObj))
+      SecondsUpdater(holderObj, function(obj, _params) {
         let timeText = ::g_battle_task_difficulty.EASY.getTimeLeftText(task)
-        obj.setValue(::loc("ui/parentheses/space", {text = timeText + ::loc("icon/timer")}))
+        obj.setValue(loc("ui/parentheses/space", {text = timeText + loc("icon/timer")}))
 
         return timeText == ""
       })
@@ -792,17 +801,17 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   function getRewardMarkUpConfig(task, config)
   {
     let rewardMarkUp = {}
-    let itemId = ::getTblValue("userLogId", task)
+    let itemId = getTblValue("userLogId", task)
     if (itemId)
     {
       let item = ::ItemsManager.findItemById(::to_integer_safe(itemId, itemId, false))
       if (item)
-        rewardMarkUp.itemMarkUp <- item.getNameMarkup(::getTblValue("amount_trophies", task))
+        rewardMarkUp.itemMarkUp <- item.getNameMarkup(getTblValue("amount_trophies", task))
     }
 
-    local reward = ::get_unlock_rewards_text(config)
+    local reward = getUnlockRewardsText(config)
     let difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    if (::has_feature("BattlePass")) {
+    if (hasFeature("BattlePass")) {
       let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
 
       reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
@@ -810,9 +819,9 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     }
 
     if(difficulty == ::g_battle_task_difficulty.MEDIUM) {
-      let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[::EWBAT_BATTLE_TASK])
+      let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
       if (specialTaskAward?.awardType.hasIncreasingLimit()) {
-        let rewardText = ::loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
+        let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
         reward = reward != "" ? $"{reward}\n{rewardText}" : rewardText
       }
     }
@@ -820,8 +829,8 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (reward == "" && !rewardMarkUp.len())
       return rewardMarkUp
 
-    let rewardLoc = isTaskDone(task)? ::loc("rewardReceived") : ::loc("reward")
-    rewardMarkUp.rewardText <- rewardLoc + ::loc("ui/colon") + reward
+    let rewardLoc = this.isTaskDone(task)? loc("rewardReceived") : loc("reward")
+    rewardMarkUp.rewardText <- rewardLoc + loc("ui/colon") + reward
     return rewardMarkUp
   }
 
@@ -830,38 +839,38 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     let isPromo = paramsCfg?.isPromo ?? false
     let isShortDescription = paramsCfg?.isShortDescription ?? false
 
-    let task = getTaskById(config) || ::getTblValue("originTask", config)
-    let isTaskBattleTask = isBattleTask(task)
-    let isCanGetReward = canGetReward(task)
+    let task = this.getTaskById(config) || getTblValue("originTask", config)
+    let isTaskBattleTask = this.isBattleTask(task)
+    let isCanGetReward = this.canGetReward(task)
 
     let isUnlock = "unlockType" in config
 
-    let title = isTaskBattleTask ? getLocalizedTaskNameById(task.id)
-                : (isUnlock? ::get_unlock_name_text(config.unlockType, config.id) : ::getTblValue("text", config, ""))
-    let headerCond = isUnlock ? ::UnlockConditions.getHeaderCondition(config.conditions) : null
+    let title = isTaskBattleTask ? this.getLocalizedTaskNameById(task.id)
+                : (isUnlock? getUnlockNameText(config.unlockType, config.id) : getTblValue("text", config, ""))
+    let headerCond = isUnlock ? getHeaderCondition(config.conditions) : null
 
     let id = isTaskBattleTask ? task.id : config.id
     let progressData = config?.getProgressBarData? config.getProgressBarData() : null
     let progressBarValue = config?.curVal != null && config.curVal >= 0
       ? (config.curVal.tofloat() / (config?.maxVal ?? 1) * 1000)
       : 0
-    let taskStatus = getTaskStatus(task)
+    let taskStatus = this.getTaskStatus(task)
 
     return {
       id = id
       title = title
       taskStatus = taskStatus
-      taskImage = (paramsCfg?.showUnlockImage ?? true) && (::getTblValue("image", task) || ::getTblValue("image", config))
-      taskPlayback = ::getTblValue("playback", task) || ::getTblValue("playback", config)
+      taskImage = (paramsCfg?.showUnlockImage ?? true) && (getTblValue("image", task) || getTblValue("image", config))
+      taskPlayback = getTblValue("playback", task) || getTblValue("playback", config)
       isPlaybackDownloading = !::g_sound.canPlay(id)
-      taskDifficultyImage = getDifficultyImage(task)
-      taskHeaderCondition = headerCond ? ::loc("ui/parentheses/space", { text = headerCond }) : null
-      description = isTaskBattleTask || isUnlock ? getTaskDescription(config, paramsCfg) : null
-      reward = isPromo? null : getRewardMarkUpConfig(task, config)
-      newIconWidget = isTaskBattleTask ? (isTaskActive(task)? null : NewIconWidget.createLayout()) : null
+      taskDifficultyImage = this.getDifficultyImage(task)
+      taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
+      description = isTaskBattleTask || isUnlock ? this.getTaskDescription(config, paramsCfg) : null
+      reward = isPromo? null : this.getRewardMarkUpConfig(task, config)
+      newIconWidget = isTaskBattleTask ? (this.isTaskActive(task)? null : ::NewIconWidget.createLayout()) : null
       canGetReward = isTaskBattleTask && isCanGetReward
       canReroll = isTaskBattleTask && !isCanGetReward
-      otherTasksNum = task && isPromo? getTotalActiveTasksNum() : null
+      otherTasksNum = task && isPromo? this.getTotalActiveTasksNum() : null
       isLowWidthScreen = isPromo? ::is_low_width_screen() : null
       isPromo = isPromo
       isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
@@ -879,8 +888,8 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   function getTotalActiveTasksNum()
   {
     local num = 0
-    foreach (task in getActiveTasksArray())
-      if (isTaskActual(task) && !isTaskDone(task))
+    foreach (task in this.getActiveTasksArray())
+      if (this.isTaskActual(task) && !this.isTaskDone(task))
         num++
     return num
   }
@@ -909,7 +918,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     let result = []
     foreach(t in typesArray)
     {
-      let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, currentTasksArray)
+      let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, this.currentTasksArray)
       if (arr.len() == 0)
         continue
 
@@ -928,17 +937,17 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     let res = []
     foreach(task in tasksArray)
     {
-      if (!isBattleTask(task))
+      if (!this.isBattleTask(task))
         continue
 
       let blk = ::build_conditions_config(task)
       foreach(condition in blk.conditions)
       {
-        let values = ::getTblValue("values", condition)
+        let values = getTblValue("values", condition)
         if (::u.isEmpty(values))
             continue
 
-        if (::isInArray(gameModeId, values))
+        if (isInArray(gameModeId, values))
         {
           res.append(task)
           break
@@ -951,7 +960,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   function getTasksArrayByDifficulty(searchArray, difficulty = null)
   {
     if (::u.isEmpty(searchArray))
-      searchArray = currentTasksArray
+      searchArray = this.currentTasksArray
 
     if (::u.isEmpty(difficulty))
       return searchArray
@@ -961,21 +970,21 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
   function isTaskSameDifficulty(task, difficulty)
   {
-    if (!isBattleTask(task))
+    if (!this.isBattleTask(task))
       return true
 
-    return ::isInArray(task?._choiceType ?? "", difficulty.choiceType)
+    return isInArray(task?._choiceType ?? "", difficulty.choiceType)
   }
 
   function isTaskSuitableForUnitTypeMask(task, unitTypeMask)
   {
-    if (!isBattleTask(task))
+    if (!this.isBattleTask(task))
       return false
 
     let blk = ::build_conditions_config(task)
     foreach(condition in blk.conditions)
     {
-      let values = ::getTblValue("values", condition)
+      let values = getTblValue("values", condition)
       if (::u.isEmpty(values))
         continue
 
@@ -1001,12 +1010,12 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
     if (::u.isEmpty(battleTaskId))
       return
 
-    let battleTask = getTaskById(battleTaskId)
+    let battleTask = this.getTaskById(battleTaskId)
     if (!::g_warbonds.checkOverLimit(battleTask?.amounts_warbond ?? 0,
          ::g_battle_tasks.sendReceiveRewardRequest, battleTask))
       return
 
-    sendReceiveRewardRequest(battleTask)
+    this.sendReceiveRewardRequest(battleTask)
   }
 
   function sendReceiveRewardRequest(battleTask)
@@ -1047,7 +1056,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 
     let blk = ::DataBlock()
     blk.unlockName = task.id
-    blk.metaTypeName = specialTasksId
+    blk.metaTypeName = this.specialTasksId
 
     let taskId = ::char_send_blk("cln_reroll_all_battle_tasks_for_meta", blk)
     ::g_tasker.addTask(taskId, {showProgressBox = true},
@@ -1060,32 +1069,32 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   function canActivateHardTasks()
   {
     return ::isInMenu()
-      && ::u.search(proposedTasksArray, ::Callback(isSpecialBattleTask, this )) != null
-      && ::u.search(activeTasksArray, ::Callback(isSpecialBattleTask, this )) == null
+      && ::u.search(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this )) != null
+      && ::u.search(this.activeTasksArray, Callback(this.isSpecialBattleTask, this )) == null
   }
 
   function isSpecialBattleTask(task)
   {
-    return getGenerationIdInt(task) == specTasksLastGenerationId
+    return this.getGenerationIdInt(task) == this.specTasksLastGenerationId
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
-    reset()
+    this.reset()
   }
 
-  function onEventLoginComplete(p)
+  function onEventLoginComplete(_p)
   {
-    reset()
-    updateTasksData()
+    this.reset()
+    this.updateTasksData()
   }
 
   function checkNewSpecialTasks()
   {
-    if (!canActivateHardTasks())
+    if (!this.canActivateHardTasks())
       return
 
-    let arr = ::u.filter(proposedTasksArray, ::Callback(isSpecialBattleTask, this) )
+    let arr = ::u.filter(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this) )
     ::gui_start_battle_tasks_select_new_task_wnd(arr)
   }
 
@@ -1106,21 +1115,21 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
   function canInteract(task)
   {
     let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    return ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, currentTasksArray, showAllTasksValue)
+    return ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, this.currentTasksArray, this.showAllTasksValue)
   }
 
   function updateCompleteTaskWatched() {
     local isCompleteMedium = false
     local isCompleteEasy = false
     local hasInCompleteHard = false
-    foreach (task in currentTasksArray) {
+    foreach (task in this.currentTasksArray) {
       if (isCompleteMedium && isCompleteEasy && hasInCompleteHard)
         break
 
-      if (!isTaskActive(task))
+      if (!this.isTaskActive(task))
         continue
 
-      if (!isTaskDone(task)) {
+      if (!this.isTaskDone(task)) {
         if (::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(task))
           hasInCompleteHard = true
         continue
@@ -1137,25 +1146,25 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
       }
     }
 
-    isCompleteMediumTask(isCompleteMedium)
-    isCompleteEasyTask(isCompleteEasy)
-    hasInCompleteHardTask(hasInCompleteHard)
+    this.isCompleteMediumTask(isCompleteMedium)
+    this.isCompleteEasyTask(isCompleteEasy)
+    this.hasInCompleteHardTask(hasInCompleteHard)
   }
 
   function checkCurSpecialTask()
   {
-    if (!hasInCompleteHardTask.value)
+    if (!this.hasInCompleteHardTask.value)
       return
 
     let tasksDataBlock = ::get_proposed_personal_unlocks_blk()
-    let genId = tasksDataBlock?[$"{specialTasksId}_lastGenerationId"] ?? 0
-    if (genId == 0 || specTasksLastGenerationId == genId)
+    let genId = tasksDataBlock?[$"{this.specialTasksId}_lastGenerationId"] ?? 0
+    if (genId == 0 || this.specTasksLastGenerationId == genId)
       return
 
-    updateTasksData()
+    this.updateTasksData()
   }
 
-  onEventProfileUpdated = @(p) checkCurSpecialTask()
+  onEventProfileUpdated = @(_p) this.checkCurSpecialTask()
 }
 
 

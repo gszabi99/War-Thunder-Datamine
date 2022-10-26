@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 /**
  * Caches data from leaderboard to provide always
@@ -18,12 +24,12 @@ let { format } = require("string")
   function requestProgress(event, eventEconomicName, field, callback)
   {
     //Try to get from cache
-    if (eventEconomicName in __cache && __cache[eventEconomicName])
-      return callback(__cache[eventEconomicName]?[field])
+    if (eventEconomicName in this.__cache && this.__cache[eventEconomicName])
+      return callback(this.__cache[eventEconomicName]?[field])
 
     //Try to get from userlog
-    if (fetchRowFromUserlog(event))
-      return callback(__cache[eventEconomicName]?[field])
+    if (this.fetchRowFromUserlog(event))
+      return callback(this.__cache[eventEconomicName]?[field])
 
     //Try to get from leaderbords
     let request = ::events.getMainLbRequest(event)
@@ -31,7 +37,7 @@ let { format } = require("string")
     if (request.forClans)
       request.tournament_mode = GAME_EVENT_TYPE.TM_ELO_GROUP_DETAIL
 
-    let cache = __cache
+    let cache = this.__cache
     ::events.requestSelfRow(request, function (selfRow) {
       if (!selfRow.len())
         return callback(null)
@@ -43,7 +49,7 @@ let { format } = require("string")
       {
         let msgToSend = format("Error: no field '%s' in leaderbords for event '%s' , economic name '%s'",
                                    field, event.name, eventEconomicName)
-        ::dagor.debug(msgToSend)
+        log(msgToSend)
       }
     })
   }
@@ -53,28 +59,28 @@ let { format } = require("string")
     let eventId = params?.eventId ?? ""
     let event = ::events.getEvent(eventId) || ::events.getEventByEconomicName(eventId)// if event name difference of its shared economic name
     if (event)
-      fetchRowFromUserlog(event)
+      this.fetchRowFromUserlog(event)
   }
 
   function fetchRowFromUserlog(event)
   {
     let userLogs = ::getUserLogsList({
       show = [
-        ::EULT_SESSION_RESULT
+        EULT_SESSION_RESULT
       ]
     })
 
-    foreach (log in userLogs)
+    foreach (logObj in userLogs)
     {
       let eventEconomicName = ::events.getEventEconomicName(event)
-      if (::getTblValue("eventId", log) != eventEconomicName)
+      if (getTblValue("eventId", logObj) != eventEconomicName)
         continue
 
-      let leaderbordRow = log?.tournamentResult?.newStat
+      let leaderbordRow = logObj?.tournamentResult?.newStat
       if (!leaderbordRow)
         return false
 
-      __cache[eventEconomicName] <- leaderbordRow
+      this.__cache[eventEconomicName] <- leaderbordRow
       return true
     }
   }

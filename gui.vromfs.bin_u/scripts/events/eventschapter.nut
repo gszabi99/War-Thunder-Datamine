@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::EventChapter <- class
 {
   name = ""
@@ -7,57 +13,57 @@
 
   constructor(chapter_id)
   {
-    name = chapter_id
-    eventIds = []
-    update()
+    this.name = chapter_id
+    this.eventIds = []
+    this.update()
   }
 
   function getLocName()
   {
-    return ::loc("events/chapter/" + name)
+    return loc("events/chapter/" + this.name)
   }
 
   function getEvents()
   {
-    if (!sortValid)
+    if (!this.sortValid)
     {
-      sortValid = true
-      eventIds.sort(sortChapterEvents)
+      this.sortValid = true
+      this.eventIds.sort(this.sortChapterEvents)
     }
-    return eventIds
+    return this.eventIds
   }
 
   function getSortPriority()
   {
-    if(sortPriority == -1)
-      updateSortPriority()
-    return sortPriority
+    if(this.sortPriority == -1)
+      this.updateSortPriority()
+    return this.sortPriority
   }
 
   function updateSortPriority()
   {
-    sortPriority = 0
-    foreach (eventName in getEvents())
+    this.sortPriority = 0
+    foreach (eventName in this.getEvents())
     {
       let event = ::events.getEvent(eventName)
       if (event)
-        sortPriority = max(sortPriority, ::events.getEventUiSortPriority(event))
+        this.sortPriority = max(this.sortPriority, ::events.getEventUiSortPriority(event))
     }
   }
 
   function isEmpty()
   {
-    return eventIds.len() == 0
+    return this.eventIds.len() == 0
   }
 
   function update()
   {
-    eventIds = ::events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) {
+    this.eventIds = ::events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) {
       return ::events.getEventsChapter(event) == name
              && ::events.isEventVisibleInEventsWindow(event)
-    })(name))
-    sortValid = false
-    sortPriority = -1
+    })(this.name))
+    this.sortValid = false
+    this.sortPriority = -1
   }
 
   function sortChapterEvents(eventId1, eventId2) // warning disable: -return-different-types
@@ -81,10 +87,10 @@
 
   constructor()
   {
-    chapters = []
-    chapterIndexByName = {}
+    this.chapters = []
+    this.chapterIndexByName = {}
 
-    ::add_event_listener("GameLocalizationChanged", onEventGameLocalizationChanged, this)
+    ::add_event_listener("GameLocalizationChanged", this.onEventGameLocalizationChanged, this)
   }
 
   /**
@@ -102,59 +108,59 @@
       if (event == null)
         continue
       let chapterId = ::events.getEventsChapter(event)
-      if (!getChapter(chapterId))
-        addChapter(chapterId)
+      if (!this.getChapter(chapterId))
+        this.addChapter(chapterId)
     }
 
-    foreach (chapter in chapters)
+    foreach (chapter in this.chapters)
       chapter.update()
 
-    for (local i = chapters.len() - 1; i >= 0; i--)
-      if (chapters[i].getEvents().len() == 0)
-        deleteChapter(chapters[i].name)
+    for (local i = this.chapters.len() - 1; i >= 0; i--)
+      if (this.chapters[i].getEvents().len() == 0)
+        this.deleteChapter(this.chapters[i].name)
 
-    sortChapters()
+    this.sortChapters()
   }
 
   function getChapter(chapter_name)
   {
-    let chapterIndex = chapterIndexByName?[chapter_name] ?? -1
-    return chapterIndex < 0 ? null : chapters[chapterIndex]
+    let chapterIndex = this.chapterIndexByName?[chapter_name] ?? -1
+    return chapterIndex < 0 ? null : this.chapters[chapterIndex]
   }
 
   function sortChapters()
   {
-    chapters.sort(@(a, b) b.getSortPriority() <=> a.getSortPriority())
-    reindexChapters()
+    this.chapters.sort(@(a, b) b.getSortPriority() <=> a.getSortPriority())
+    this.reindexChapters()
   }
 
   function addChapter(chapter_name)
   {
-    chapters.append(EventChapter(chapter_name))
-    sortChapters()
+    this.chapters.append(::EventChapter(chapter_name))
+    this.sortChapters()
   }
 
   function deleteChapter(chapter_name)
   {
-    chapters.remove(chapterIndexByName[chapter_name])
-    sortChapters()
+    this.chapters.remove(this.chapterIndexByName[chapter_name])
+    this.sortChapters()
   }
 
   function reindexChapters()
   {
-    chapterIndexByName.clear()
-    foreach (idx, chapter in chapters)
-      chapterIndexByName[chapter.name] <- idx
+    this.chapterIndexByName.clear()
+    foreach (idx, chapter in this.chapters)
+      this.chapterIndexByName[chapter.name] <- idx
   }
 
   function getChapters()
   {
-    return chapters
+    return this.chapters
   }
 
-  function onEventGameLocalizationChanged(params)
+  function onEventGameLocalizationChanged(_params)
   {
-    foreach (chapter in chapters)
+    foreach (chapter in this.chapters)
       chapter.sortValid = false
   }
 }

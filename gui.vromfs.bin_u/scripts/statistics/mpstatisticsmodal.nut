@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { is_replay_playing } = require("replays")
 
@@ -20,87 +26,87 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     ::in_flight_menu(true)
 
     //!!init debriefing
-    isModeStat = true
-    isRespawn = true
-    isSpectate = false
-    isTeam  = true
+    this.isModeStat = true
+    this.isRespawn = true
+    this.isSpectate = false
+    this.isTeam  = true
 
-    let tblObj1 = scene.findObject("table_kills_team1")
+    let tblObj1 = this.scene.findObject("table_kills_team1")
     if (tblObj1.childrenCount() == 0)
-      initStats()
+      this.initStats()
 
-    if (gameType & ::GT_COOPERATIVE)
+    if (this.gameType & GT_COOPERATIVE)
     {
-      scene.findObject("team1-root").show(false)
-      isTeam = false
+      this.scene.findObject("team1-root").show(false)
+      this.isTeam = false
     }
 
-    includeMissionInfoBlocksToGamercard()
-    setSceneTitle(getCurMpTitle())
-    refreshPlayerInfo()
+    this.includeMissionInfoBlocksToGamercard()
+    this.setSceneTitle(::getCurMpTitle())
+    this.refreshPlayerInfo()
 
     this.showSceneBtn("btn_back", true)
 
-    wasTimeLeft = -1
-    scene.findObject("stat_update").setUserData(this)
-    isStatScreen = true
-    forceUpdate()
-    updateListsButtons()
+    this.wasTimeLeft = -1
+    this.scene.findObject("stat_update").setUserData(this)
+    this.isStatScreen = true
+    this.forceUpdate()
+    this.updateListsButtons()
 
-    updateStats()
+    this.updateStats()
 
-    this.showSceneBtn("btn_activateorder", !isResultMPStatScreen && ::g_orders.showActivateOrderButton())
-    let ordersButton = scene.findObject("btn_activateorder")
-    if (::checkObj(ordersButton))
+    this.showSceneBtn("btn_activateorder", !this.isResultMPStatScreen && ::g_orders.showActivateOrderButton())
+    let ordersButton = this.scene.findObject("btn_activateorder")
+    if (checkObj(ordersButton))
     {
       ordersButton.setUserData(this)
       ordersButton.inactiveColor = !::g_orders.orderCanBeActivated() ? "yes" : "no"
     }
-    showMissionResult()
+    this.showMissionResult()
     tblObj1.setValue(0)
-    scene.findObject("table_kills_team2").setValue(-1)
+    this.scene.findObject("table_kills_team2").setValue(-1)
   }
 
   function reinitScreen(params)
   {
-    setParams(params)
+    this.setParams(params)
     ::set_mute_sound_in_flight_menu(false)
     ::in_flight_menu(true)
-    forceUpdate()
+    this.forceUpdate()
     if (is_replay_playing())
-      selectLocalPlayer()
-    showMissionResult()
+      this.selectLocalPlayer()
+    this.showMissionResult()
   }
 
   function forceUpdate()
   {
-    updateCooldown = -1
-    onUpdate(null, 0.0)
+    this.updateCooldown = -1
+    this.onUpdate(null, 0.0)
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
     let timeLeft = ::get_multiplayer_time_left()
-    local timeDif = wasTimeLeft - timeLeft
+    local timeDif = this.wasTimeLeft - timeLeft
     if (timeDif < 0)
       timeDif = -timeDif
-    if (timeDif >= 1 || ((wasTimeLeft * timeLeft) < 0))
+    if (timeDif >= 1 || ((this.wasTimeLeft * timeLeft) < 0))
     {
-      setGameEndStat(timeLeft)
-      wasTimeLeft = timeLeft
+      this.setGameEndStat(timeLeft)
+      this.wasTimeLeft = timeLeft
     }
-    updateTimeToKick(dt)
-    updateTables(dt)
+    this.updateTimeToKick(dt)
+    this.updateTables(dt)
   }
 
-  function goBack(obj)
+  function goBack(_obj)
   {
-    if (isResultMPStatScreen) {
-      quitToDebriefing()
+    if (this.isResultMPStatScreen) {
+      this.quitToDebriefing()
       return
     }
     ::in_flight_menu(false)
-    if (isFromGame)
+    if (this.isFromGame)
       ::close_ingame_gui()
     else
       ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
@@ -108,18 +114,18 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
   function onApply()
   {
-    goBack(null)
+    this.goBack(null)
   }
 
-  function onHideHUD(obj) {}
+  function onHideHUD(_obj) {}
 
   function quitToDebriefing() {
-    if (::get_mission_status() == ::MISSION_STATUS_SUCCESS) {
+    if (::get_mission_status() == MISSION_STATUS_SUCCESS) {
       ::quit_mission_after_complete()
       return
     }
 
-    let text = ::loc("flightmenu/questionQuitMission")
+    let text = loc("flightmenu/questionQuitMission")
     this.msgBox("question_quit_mission", text,
       [
         ["yes", function()
@@ -133,39 +139,39 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
   }
 
   function showMissionResult() {
-    if (!isResultMPStatScreen)
+    if (!this.isResultMPStatScreen)
       return
 
-    scene.findObject("root-box").bgrStyle = "transparent"
-    scene.findObject("nav-help").hasMaxWindowSize = "yes"
-    scene.findObject("flight_menu_bgd").hasMissionResultPadding = "yes"
-    scene.findObject("btn_back").setValue(::loc("flightmenu/btnQuitMission"))
-    updateMissionResultText()
-    ::g_hud_event_manager.subscribe("MissionResult", updateMissionResultText, this)
+    this.scene.findObject("root-box").bgrStyle = "transparent"
+    this.scene.findObject("nav-help").hasMaxWindowSize = "yes"
+    this.scene.findObject("flight_menu_bgd").hasMissionResultPadding = "yes"
+    this.scene.findObject("btn_back").setValue(loc("flightmenu/btnQuitMission"))
+    this.updateMissionResultText()
+    ::g_hud_event_manager.subscribe("MissionResult", this.updateMissionResultText, this)
   }
 
-  function updateMissionResultText(eventData = null) {
+  function updateMissionResultText(_eventData = null) {
     let resultIdx = ::get_mission_status()
-    if (resultIdx != ::MISSION_STATUS_SUCCESS && resultIdx != ::MISSION_STATUS_FAIL)
+    if (resultIdx != MISSION_STATUS_SUCCESS && resultIdx != MISSION_STATUS_FAIL)
       return
 
     let view = {
-      text = ::loc(resultIdx == ::MISSION_STATUS_SUCCESS ? "MISSION_SUCCESS" : "MISSION_FAIL")
+      text = loc(resultIdx == MISSION_STATUS_SUCCESS ? "MISSION_SUCCESS" : "MISSION_FAIL")
       resultIdx = resultIdx
       useMoveOut = true
     }
 
-    let nest = scene.findObject("mission_result_nest")
+    let nest = this.scene.findObject("mission_result_nest")
     let needShowAnimation = !nest.isVisible()
     nest.show(true)
     if (!needShowAnimation)
       return
 
-    let blk = ::handyman.renderCached("%gui/hud/messageStack/missionResultMessage", view)
-    guiScene.replaceContentFromText(nest, blk, blk.len(), this)
+    let blk = ::handyman.renderCached("%gui/hud/messageStack/missionResultMessage.tpl", view)
+    this.guiScene.replaceContentFromText(nest, blk, blk.len(), this)
     let objTarget = nest.findObject("mission_result_box")
     objTarget.show(true)
-    ::create_ObjMoveToOBj(scene, scene.findObject("mission_result_box_start"),
+    ::create_ObjMoveToOBj(this.scene, this.scene.findObject("mission_result_box_start"),
       objTarget, { time = 0.5, bhvFunc = "elasticSmall" })
   }
 }

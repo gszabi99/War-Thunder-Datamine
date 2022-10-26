@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { ceil } = require("math")
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let mpChatModel = require("%scripts/chat/mpChatModel.nut")
@@ -67,14 +75,14 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTimeToKick(dt)
   {
-    updateTimeToKickTimer()
-    updateTimeToKickAlert(dt)
+    this.updateTimeToKickTimer()
+    this.updateTimeToKickAlert(dt)
   }
 
   function updateTimeToKickTimer()
   {
-    let timeToKickObj = getTimeToKickObj()
-    if (!::checkObj(timeToKickObj))
+    let timeToKickObj = this.getTimeToKickObj()
+    if (!checkObj(timeToKickObj))
       return
     let timeToKickValue = ::get_mp_kick_countdown()
     // Already in battle or it's too early to show the message.
@@ -84,39 +92,39 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     {
       let timeToKickText = time.secondsToString(timeToKickValue, true, true)
       let locParams = {
-        timeToKick = ::colorize("activeTextColor", timeToKickText)
+        timeToKick = colorize("activeTextColor", timeToKickText)
       }
-      timeToKickObj.setValue(::loc("respawn/timeToKick", locParams))
+      timeToKickObj.setValue(loc("respawn/timeToKick", locParams))
     }
   }
 
   function updateTimeToKickAlert(dt)
   {
-    let timeToKickAlertObj = scene.findObject("time_to_kick_alert_text")
-    if (!::checkObj(timeToKickAlertObj))
+    let timeToKickAlertObj = this.scene.findObject("time_to_kick_alert_text")
+    if (!checkObj(timeToKickAlertObj))
       return
     let timeToKickValue = ::get_mp_kick_countdown()
-    if (timeToKickValue <= 0 || get_time_to_kick_show_alert() < timeToKickValue || isSpectate)
+    if (timeToKickValue <= 0 || ::get_time_to_kick_show_alert() < timeToKickValue || this.isSpectate)
       timeToKickAlertObj.show(false)
     else
     {
       timeToKickAlertObj.show(true)
-      let curTime = ::dagor.getCurTime()
+      let curTime = get_time_msec()
       let prevSeconds = ((curTime - 1000 * dt) / 1000).tointeger()
       let currSeconds = (curTime / 1000).tointeger()
       if (currSeconds != prevSeconds)
       {
         timeToKickAlertObj["_blink"] = "yes"
-        guiScene.playSound("kick_alert")
+        this.guiScene.playSound("kick_alert")
       }
     }
   }
 
-  function onOrderTimerUpdate(obj, dt)
+  function onOrderTimerUpdate(obj, _dt)
   {
     ::g_orders.updateActiveOrder()
     let isOrderCanBeActivated = ::g_orders.orderCanBeActivated()
-    if (::checkObj(obj))
+    if (checkObj(obj))
     {
       obj.text = ::g_orders.getActivateButtonLabel()
       obj.inactiveColor = !isOrderCanBeActivated ? "yes" : "no"
@@ -128,17 +136,17 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function setTeamInfoTeam(teamObj, team)
   {
-    if (!::checkObj(teamObj))
+    if (!checkObj(teamObj))
       return
     teamObj.team = team
   }
 
   function setTeamInfoTeamIco(teamObj, teamIco = null)
   {
-    if (!::checkObj(teamObj))
+    if (!checkObj(teamObj))
       return
     let teamImgObj = teamObj.findObject("team_img")
-    if (::checkObj(teamImgObj))
+    if (checkObj(teamImgObj))
       teamImgObj.show(teamIco != null)
     if (teamIco != null)
       teamObj.teamIco = teamIco
@@ -146,10 +154,10 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function setTeamInfoText(teamObj, text)
   {
-    if (!::checkObj(teamObj))
+    if (!checkObj(teamObj))
       return
     let textObj = teamObj.findObject("team_text")
-    if (::checkObj(textObj))
+    if (checkObj(textObj))
       textObj.setValue(text)
   }
 
@@ -159,22 +167,22 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
    */
   function setTeamInfoCountries(teamObj, enabledCountryNames)
   {
-    if (!::checkObj(teamObj))
+    if (!checkObj(teamObj))
       return
     foreach (countryName in shopCountriesList)
     {
       let countryFlagObj = teamObj.findObject(countryName)
-      if (::checkObj(countryFlagObj))
-        countryFlagObj.show(::isInArray(countryName, enabledCountryNames))
+      if (checkObj(countryFlagObj))
+        countryFlagObj.show(isInArray(countryName, enabledCountryNames))
     }
   }
 
   function updateOverrideCountry(teamObj, countryIcon) {
-    if (!::check_obj(teamObj))
+    if (!checkObj(teamObj))
       return
 
     let countryFlagObj = ::showBtn(OVERRIDE_COUNTRY_ID, countryIcon != null, teamObj)
-    if (::check_obj(countryFlagObj))
+    if (checkObj(countryFlagObj))
       countryFlagObj["background-image"] = ::get_country_icon(countryIcon)
   }
 
@@ -184,10 +192,10 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
    */
   function initTeamInfoCountries(teamObj)
   {
-    if (!::checkObj(teamObj))
+    if (!checkObj(teamObj))
       return
     let countriesBlock = teamObj.findObject("countries_block")
-    if (!::checkObj(countriesBlock))
+    if (!checkObj(countriesBlock))
       return
     let view = {
       countries = shopCountriesList
@@ -200,8 +208,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
           countryIcon = ""
         })
     }
-    let result = ::handyman.renderCached("%gui/countriesList", view)
-    guiScene.replaceContentFromText(countriesBlock, result, result.len(), this)
+    let result = ::handyman.renderCached("%gui/countriesList.tpl", view)
+    this.guiScene.replaceContentFromText(countriesBlock, result, result.len(), this)
   }
 
   function setInfo()
@@ -209,103 +217,103 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     let timeLeft = ::get_multiplayer_time_left()
     if (timeLeft < 0)
     {
-      setGameEndStat(-1)
+      this.setGameEndStat(-1)
       return
     }
-    local timeDif = wasTimeLeft - timeLeft
+    local timeDif = this.wasTimeLeft - timeLeft
     if (timeDif < 0)
       timeDif = -timeDif
-    if (timeDif >= 1 || ((wasTimeLeft * timeLeft) < 0))
+    if (timeDif >= 1 || ((this.wasTimeLeft * timeLeft) < 0))
     {
-      setGameEndStat(timeLeft)
-      wasTimeLeft = timeLeft
+      this.setGameEndStat(timeLeft)
+      this.wasTimeLeft = timeLeft
     }
   }
 
   function initScreen()
   {
-    scene.findObject("stat_update").setUserData(this)
-    needPlayersTbl = scene.findObject("table_kills_team1") != null
+    this.scene.findObject("stat_update").setUserData(this)
+    this.needPlayersTbl = this.scene.findObject("table_kills_team1") != null
 
-    includeMissionInfoBlocksToGamercard()
-    setSceneTitle(getCurMpTitle())
-    setInfo()
+    this.includeMissionInfoBlocksToGamercard()
+    this.setSceneTitle(::getCurMpTitle())
+    this.setInfo()
   }
 
   function initStats()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    initStatsMissionParams()
+    this.initStatsMissionParams()
 
-    let playerTeam = getLocalTeam()
+    let playerTeam = this.getLocalTeam()
     let friendlyTeam = ::get_player_army_for_hud()
-    let teamObj1 = scene.findObject("team1_info")
-    let teamObj2 = scene.findObject("team2_info")
+    let teamObj1 = this.scene.findObject("team1_info")
+    let teamObj2 = this.scene.findObject("team2_info")
 
-    if (!isTeamplay)
+    if (!this.isTeamplay)
     {
       foreach(obj in [teamObj1, teamObj2])
-        if (::checkObj(obj))
+        if (checkObj(obj))
           obj.show(false)
     }
-    else if (needPlayersTbl && playerTeam > 0)
+    else if (this.needPlayersTbl && playerTeam > 0)
     {
-      if (::checkObj(teamObj1))
+      if (checkObj(teamObj1))
       {
-        setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam)? "blue" : "red")
-        initTeamInfoCountries(teamObj1)
+        this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam)? "blue" : "red")
+        this.initTeamInfoCountries(teamObj1)
       }
-      if (!showLocalTeamOnly && ::checkObj(teamObj2))
+      if (!this.showLocalTeamOnly && checkObj(teamObj2))
       {
-        setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam)? "red" : "blue")
-        initTeamInfoCountries(teamObj2)
+        this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam)? "red" : "blue")
+        this.initTeamInfoCountries(teamObj2)
       }
     }
 
-    if (needPlayersTbl)
+    if (this.needPlayersTbl)
     {
-      createStats()
-      scene.findObject("table_kills_team1").setValue(-1)
-      scene.findObject("table_kills_team2").setValue(-1)
+      this.createStats()
+      this.scene.findObject("table_kills_team1").setValue(-1)
+      this.scene.findObject("table_kills_team2").setValue(-1)
     }
 
-    updateCountryFlags()
+    this.updateCountryFlags()
   }
 
   function initStatsMissionParams()
   {
-    gameMode = ::get_game_mode()
-    gameType = ::get_game_type()
-    isOnline = ::g_login.isLoggedIn()
+    this.gameMode = ::get_game_mode()
+    this.gameType = ::get_game_type()
+    this.isOnline = ::g_login.isLoggedIn()
 
-    isTeamplay = ::is_mode_with_teams(gameType)
-    isTeamsRandom = !isTeamplay || gameMode == ::GM_DOMINATION
+    this.isTeamplay = ::is_mode_with_teams(this.gameType)
+    this.isTeamsRandom = !this.isTeamplay || this.gameMode == GM_DOMINATION
     if (::SessionLobby.isInRoom() || is_replay_playing())
-      isTeamsWithCountryFlags = isTeamplay &&
+      this.isTeamsWithCountryFlags = this.isTeamplay &&
         (::get_mission_difficulty_int() > 0 || !::SessionLobby.getPublicParam("symmetricTeams", true))
 
-    missionObjectives = ::g_mission_type.getCurrentObjectives()
+    this.missionObjectives = ::g_mission_type.getCurrentObjectives()
   }
 
   function createKillsTbl(objTbl, tbl, tblConfig)
   {
-    let team = ::getTblValue("team", tblConfig, -1)
+    let team = getTblValue("team", tblConfig, -1)
     let showUnits     = tblConfig?.showAircrafts ?? false
     let showAirIcons  = tblConfig?.showAirIcons  ?? showUnits
-    let invert = ::getTblValue("invert", tblConfig, false)
+    let invert = getTblValue("invert", tblConfig, false)
 
     local tblData = [] // columns order
 
     let markupData = {
-      tr_size = statTrSize
+      tr_size = this.statTrSize
       invert = invert
       colorTeam = "blue"
       columns = {}
     }
 
-    if (gameType & ::GT_COOPERATIVE)
+    if (this.gameType & GT_COOPERATIVE)
     {
       tblData = showAirIcons ? [ "unitIcon", "name" ] : [ "name" ]
       foreach(id in tblData)
@@ -316,12 +324,12 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     }
     else
     {
-      let sourceHeaders = gameType & ::GT_FOOTBALL ? footballRowHeaders
-        : gameType & ::GT_RACE ? raceRowHeaders
-        : defaultRowHeaders
+      let sourceHeaders = this.gameType & GT_FOOTBALL ? this.footballRowHeaders
+        : this.gameType & GT_RACE ? this.raceRowHeaders
+        : this.defaultRowHeaders
 
       foreach (id in sourceHeaders)
-        if (::g_mplayer_param_type.getTypeById(id).isVisible(missionObjectives, gameType, gameMode))
+        if (::g_mplayer_param_type.getTypeById(id).isVisible(this.missionObjectives, this.gameType, this.gameMode))
           tblData.append(id)
 
       if (!showUnits)
@@ -335,49 +343,49 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       if ("name" in markupData.columns)
       {
         let col = markupData.columns["name"]
-        if (isWideScreenStatTbl && ("widthInWideScreen" in col))
+        if (this.isWideScreenStatTbl && ("widthInWideScreen" in col))
           col.width = col.widthInWideScreen
       }
 
       ::count_width_for_mptable(objTbl, markupData.columns)
 
       let teamNum = (team==2)? 2 : 1
-      let tableObj = scene.findObject($"team_table_{teamNum}")
+      let tableObj = this.scene.findObject($"team_table_{teamNum}")
       if (team == 2)
         markupData.colorTeam = "red"
-      if (::checkObj(tableObj))
+      if (checkObj(tableObj))
       {
-        let rowHeaderData = createHeaderRow(tableObj, tblData, markupData, teamNum)
+        let rowHeaderData = this.createHeaderRow(tableObj, tblData, markupData, teamNum)
         let show = rowHeaderData != ""
-        guiScene.replaceContentFromText(tableObj, rowHeaderData, rowHeaderData.len(), this)
+        this.guiScene.replaceContentFromText(tableObj, rowHeaderData, rowHeaderData.len(), this)
         tableObj.show(show)
         tableObj.normalFont = ::is_low_width_screen() ? "yes" : "no"
       }
     }
 
     if (team == -1 || team == 1)
-      tblSave1 = tbl
+      this.tblSave1 = tbl
     else
-      tblSave2 = tbl
+      this.tblSave2 = tbl
 
     if (tbl)
     {
-      if (!isTeamplay)
-        sortTable(tbl)
+      if (!this.isTeamplay)
+        this.sortTable(tbl)
 
       let data = ::build_mp_table(tbl, markupData, tblData)
-      guiScene.replaceContentFromText(objTbl, data, data.len(), this)
+      this.guiScene.replaceContentFromText(objTbl, data, data.len(), this)
     }
   }
 
   function sortTable(table)
   {
-    table.sort(::mpstat_get_sort_func(gameType))
+    table.sort(::mpstat_get_sort_func(this.gameType))
   }
 
   function setKillsTbl(objTbl, team, playerTeam, friendlyTeam, showAirIcons=true, customTbl = null)
   {
-    if (!::checkObj(objTbl))
+    if (!checkObj(objTbl))
       return
 
     local tbl = null
@@ -394,16 +402,16 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     local minRow = 0
     if (!tbl)
     {
-      if (!isTeamplay)
+      if (!this.isTeamplay)
       {
         let commonTbl = getMplayersList()
-        sortTable(commonTbl)
+        this.sortTable(commonTbl)
         if (commonTbl.len() > 0)
         {
-          local lastRow = numMaxPlayers - 1
+          local lastRow = this.numMaxPlayers - 1
           if (objTbl.id == "table_kills_team2")
           {
-            minRow = commonTbl.len() <= numMaxPlayers ? 0 : numMaxPlayers
+            minRow = commonTbl.len() <= this.numMaxPlayers ? 0 : this.numMaxPlayers
             lastRow = commonTbl.len()
           }
 
@@ -423,75 +431,75 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       else
         tbl = getMplayersList(team)
     }
-    else if (!isTeamplay && customTbl && objTbl.id == "table_kills_team2")
-      minRow = numMaxPlayers
+    else if (!this.isTeamplay && customTbl && objTbl.id == "table_kills_team2")
+      minRow = this.numMaxPlayers
 
     if (objTbl.id == "table_kills_team2")
     {
       local shouldShow = true
-      if (isTeamplay)
+      if (this.isTeamplay)
         shouldShow = tbl && tbl.len() > 0
       this.showSceneBtn("team2-root", shouldShow)
     }
 
-    if (!isTeamplay && minRow >= 0)
+    if (!this.isTeamplay && minRow >= 0)
     {
       if (minRow == 0)
-        tblSave1 = tbl
+        this.tblSave1 = tbl
       else
-        tblSave2 = tbl
+        this.tblSave2 = tbl
     }
     else
     {
-      if (team == playerTeam || playerTeam == -1 || showLocalTeamOnly)
-        tblSave1 = tbl
+      if (team == playerTeam || playerTeam == -1 || this.showLocalTeamOnly)
+        this.tblSave1 = tbl
       else
-        tblSave2 = tbl
+        this.tblSave2 = tbl
     }
 
     if (tbl != null)
     {
-      if (!customTbl && isTeamplay)
-        sortTable(tbl)
+      if (!customTbl && this.isTeamplay)
+        this.sortTable(tbl)
 
       ::set_mp_table(objTbl, tbl, {
         showAirIcons
         continueRowNum = minRow
-        numberOfWinningPlaces = numberOfWinningPlaces
+        numberOfWinningPlaces = this.numberOfWinningPlaces
         playersInfo = customTbl?.playersInfo
       })
-      ::update_team_css_label(objTbl, getLocalTeam())
+      ::update_team_css_label(objTbl, this.getLocalTeam())
 
       if (friendlyTeam > 0 && team > 0)
-        objTbl["team"] = (isTeamplay && friendlyTeam == team)? "blue" : "red"
+        objTbl["team"] = (this.isTeamplay && friendlyTeam == team)? "blue" : "red"
     }
-    updateCountryFlags()
+    this.updateCountryFlags()
   }
 
   function isShowEnemyAirs()
   {
-    return showAircrafts && ::get_mission_difficulty_int() == 0
+    return this.showAircrafts && ::get_mission_difficulty_int() == 0
   }
 
   function createStats()
   {
-    if (!needPlayersTbl)
+    if (!this.needPlayersTbl)
       return
 
-    let tblObj1 = scene.findObject("table_kills_team1")
-    let tblObj2 = scene.findObject("table_kills_team2")
-    let team1Root = scene.findObject("team1-root")
-    updateNumMaxPlayers()
+    let tblObj1 = this.scene.findObject("table_kills_team1")
+    let tblObj2 = this.scene.findObject("table_kills_team2")
+    let team1Root = this.scene.findObject("team1-root")
+    this.updateNumMaxPlayers()
 
-    if (!isTeamplay)
+    if (!this.isTeamplay)
     {
       let tbl1 = getMplayersList()
-      sortTable(tbl1)
+      this.sortTable(tbl1)
 
       let tbl2 = []
-      if (tbl1.len() >= numMaxPlayers)
+      if (tbl1.len() >= this.numMaxPlayers)
       {
-        for(local i = tbl1.len()-1; i >= numMaxPlayers; --i)
+        for(local i = tbl1.len()-1; i >= this.numMaxPlayers; --i)
         {
           if (!(i in tbl1))
             continue
@@ -503,53 +511,53 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         tbl2.reverse()
       }
 
-      createKillsTbl(tblObj1, tbl1, {team = Team.A, showAircrafts = showAircrafts})
-      createKillsTbl(tblObj2, tbl2, {team = Team.B, showAircrafts = showAircrafts})
+      this.createKillsTbl(tblObj1, tbl1, {team = Team.A, showAircrafts = this.showAircrafts})
+      this.createKillsTbl(tblObj2, tbl2, {team = Team.B, showAircrafts = this.showAircrafts})
 
-      if (::checkObj(team1Root))
+      if (checkObj(team1Root))
         team1Root.show(true)
     }
-    else if (gameType & ::GT_VERSUS)
+    else if (this.gameType & GT_VERSUS)
     {
-      if (showLocalTeamOnly)
+      if (this.showLocalTeamOnly)
       {
-        let playerTeam = getLocalTeam()
+        let playerTeam = this.getLocalTeam()
         let tbl = getMplayersList(playerTeam)
-        createKillsTbl(tblObj1, tbl, {showAircrafts = showAircrafts})
+        this.createKillsTbl(tblObj1, tbl, {showAircrafts = this.showAircrafts})
       }
       else
       {
         let tbl1 = getMplayersList(::g_team.A.code)
         let tbl2 = getMplayersList(::g_team.B.code)
-        let showEnemyAircrafts = isShowEnemyAirs()
-        let tblConfig1 = {tbl = tbl2, team = Team.A, showAircrafts = showAircrafts, invert = true}
+        let showEnemyAircrafts = this.isShowEnemyAirs()
+        let tblConfig1 = {tbl = tbl2, team = Team.A, showAircrafts = this.showAircrafts, invert = true}
         let tblConfig2 = {tbl = tbl1, team = Team.B, showAircrafts = showEnemyAircrafts}
 
-        if (getLocalTeam() == Team.A)
+        if (this.getLocalTeam() == Team.A)
         {
           tblConfig1.tbl = tbl1
           tblConfig2.tbl = tbl2
         }
 
-        createKillsTbl(tblObj1, tblConfig1.tbl, tblConfig1)
-        createKillsTbl(tblObj2, tblConfig2.tbl, tblConfig2)
+        this.createKillsTbl(tblObj1, tblConfig1.tbl, tblConfig1)
+        this.createKillsTbl(tblObj2, tblConfig2.tbl, tblConfig2)
 
-        if (::checkObj(team1Root))
+        if (checkObj(team1Root))
           team1Root.show(true)
       }
     }
     else
     {
       let tbl = getMplayersList()
-      createKillsTbl(tblObj2, tbl, {showAircrafts = showAircrafts})
+      this.createKillsTbl(tblObj2, tbl, {showAircrafts = this.showAircrafts})
 
       tblObj1.show(false)
 
-      if (::checkObj(team1Root))
+      if (checkObj(team1Root))
         team1Root.show(false)
 
-      let headerObj = scene.findObject("team2_header")
-      if (::checkObj(headerObj))
+      let headerObj = this.scene.findObject("team2_header")
+      if (checkObj(headerObj))
         headerObj.show(false)
     }
   }
@@ -559,45 +567,45 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!tbl)
       return
 
-    let teamObj1 = scene.findObject("team1_info")
-    let teamObj2 = scene.findObject("team2_info")
+    let teamObj1 = this.scene.findObject("team1_info")
+    let teamObj2 = this.scene.findObject("team2_info")
 
     let playerTeamIdx = clamp(playerTeam - 1, 0, 1)
     let teamTxt = ["", ""]
-    switch (gameType & (::GT_MP_SCORE | ::GT_MP_TICKETS))
+    switch (this.gameType & (GT_MP_SCORE | GT_MP_TICKETS))
     {
-      case ::GT_MP_SCORE:
-        if (!needPlayersTbl)
+      case GT_MP_SCORE:
+        if (!this.needPlayersTbl)
           break
 
-        let scoreFormat = "%s" + ::loc("multiplayer/score") + ::loc("ui/colon") + "%d"
+        let scoreFormat = "%s" + loc("multiplayer/score") + loc("ui/colon") + "%d"
         if (tbl.len() > playerTeamIdx)
         {
-          setTeamInfoText(teamObj1, format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
-          setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
+          this.setTeamInfoText(teamObj1, format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
+          this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
         }
-        if (tbl.len() > 1 - playerTeamIdx && !showLocalTeamOnly)
+        if (tbl.len() > 1 - playerTeamIdx && !this.showLocalTeamOnly)
         {
-          setTeamInfoText(teamObj2, format(scoreFormat, teamTxt[1], tbl[1-playerTeamIdx].score))
-          setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam)? "red" : "blue")
+          this.setTeamInfoText(teamObj2, format(scoreFormat, teamTxt[1], tbl[1-playerTeamIdx].score))
+          this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam)? "red" : "blue")
         }
         break
 
-      case ::GT_MP_TICKETS:
-        if (needPlayersTbl)
+      case GT_MP_TICKETS:
+        if (this.needPlayersTbl)
         {
-          let scoreformat = "%s" + ::loc("multiplayer/tickets") + ::loc("ui/colon") + "%d" + ", " +
-                                ::loc("multiplayer/airfields") + ::loc("ui/colon") + "%d"
+          let scoreformat = "%s" + loc("multiplayer/tickets") + loc("ui/colon") + "%d" + ", " +
+                                loc("multiplayer/airfields") + loc("ui/colon") + "%d"
 
           if (tbl.len() > playerTeamIdx)
           {
-            setTeamInfoText(teamObj1, format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
-            setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
+            this.setTeamInfoText(teamObj1, format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
+            this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
           }
-          if (tbl.len() > 1 - playerTeamIdx && !showLocalTeamOnly)
+          if (tbl.len() > 1 - playerTeamIdx && !this.showLocalTeamOnly)
           {
-            setTeamInfoText(teamObj2, format(scoreformat, teamTxt[1], tbl[1 - playerTeamIdx].tickets, tbl[1 - playerTeamIdx].score))
-            setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam)? "red" : "blue")
+            this.setTeamInfoText(teamObj2, format(scoreformat, teamTxt[1], tbl[1 - playerTeamIdx].tickets, tbl[1 - playerTeamIdx].score))
+            this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam)? "red" : "blue")
           }
         }
 
@@ -607,70 +615,70 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateStats(customTbl = null, customTblTeams = null, customFriendlyTeam = null)
   {
-    local playerTeam   = getLocalTeam()
+    local playerTeam   = this.getLocalTeam()
     let friendlyTeam = customFriendlyTeam ?? ::get_player_army_for_hud()
-    let tblObj1 = scene.findObject("table_kills_team1")
-    let tblObj2 = scene.findObject("table_kills_team2")
+    let tblObj1 = this.scene.findObject("table_kills_team1")
+    let tblObj2 = this.scene.findObject("table_kills_team2")
 
-    if (needPlayersTbl)
+    if (this.needPlayersTbl)
     {
-      if (!isTeamplay || (gameType & ::GT_VERSUS))
+      if (!this.isTeamplay || (this.gameType & GT_VERSUS))
       {
-        if (!isTeamplay)
+        if (!this.isTeamplay)
           playerTeam = Team.A
 
-        let showEnemyAirs = isShowEnemyAirs()
+        let showEnemyAirs = this.isShowEnemyAirs()
         let isLeftPlayerTeam = playerTeam == friendlyTeam
-        setKillsTbl(tblObj1, playerTeam, playerTeam, friendlyTeam, // warning disable: -param-pos
-          isLeftPlayerTeam ? showAircrafts : showEnemyAirs, customTbl)
-        if (!showLocalTeamOnly && playerTeam > 0)
-          setKillsTbl(tblObj2, 3 - playerTeam, playerTeam, friendlyTeam,
-            isLeftPlayerTeam ? showEnemyAirs : showAircrafts, customTbl)
+        this.setKillsTbl(tblObj1, playerTeam, playerTeam, friendlyTeam, // warning disable: -param-pos
+          isLeftPlayerTeam ? this.showAircrafts : showEnemyAirs, customTbl)
+        if (!this.showLocalTeamOnly && playerTeam > 0)
+          this.setKillsTbl(tblObj2, 3 - playerTeam, playerTeam, friendlyTeam,
+            isLeftPlayerTeam ? showEnemyAirs : this.showAircrafts, customTbl)
       }
       else
-        setKillsTbl(tblObj2, -1, -1, -1, showAircrafts, customTbl)
+        this.setKillsTbl(tblObj2, -1, -1, -1, this.showAircrafts, customTbl)
     }
 
     if (playerTeam > 0)
-      updateTeams(customTblTeams || ::get_mp_tbl_teams(), playerTeam, friendlyTeam)
+      this.updateTeams(customTblTeams || ::get_mp_tbl_teams(), playerTeam, friendlyTeam)
 
-    if (checkRaceDataOnStart && ::is_race_started())
+    if (this.checkRaceDataOnStart && ::is_race_started())
     {
-      let chObj = scene.findObject("gc_race_checkpoints")
-      if (::checkObj(chObj))
+      let chObj = this.scene.findObject("gc_race_checkpoints")
+      if (checkObj(chObj))
       {
         let totalCheckpointsAmount = ::get_race_checkpioints_count()
         local text = ""
         if (totalCheckpointsAmount > 0)
-          text = ::getCompoundedText(::loc("multiplayer/totalCheckpoints") + ::loc("ui/colon"), totalCheckpointsAmount, "activeTextColor")
+          text = ::getCompoundedText(loc("multiplayer/totalCheckpoints") + loc("ui/colon"), totalCheckpointsAmount, "activeTextColor")
         chObj.setValue(text)
-        checkRaceDataOnStart = false
+        this.checkRaceDataOnStart = false
       }
 
-      numberOfWinningPlaces = ::get_race_winners_count()
+      this.numberOfWinningPlaces = ::get_race_winners_count()
     }
 
-    ::update_team_css_label(scene.findObject("num_teams"), playerTeam)
+    ::update_team_css_label(this.scene.findObject("num_teams"), playerTeam)
   }
 
   function updateTables(dt)
   {
-    updateCooldown -= dt
-    if (updateCooldown <= 0)
+    this.updateCooldown -= dt
+    if (this.updateCooldown <= 0)
     {
-      updateStats()
-      updateCooldown = 3
+      this.updateStats()
+      this.updateCooldown = 3
     }
 
-    if (isStatScreen || !needPlayersTbl)
+    if (this.isStatScreen || !this.needPlayersTbl)
       return
 
-    if (isRespawn)
+    if (this.isRespawn)
     {
-      let selectedObj = getSelectedTable()
-      if (!isModeStat)
+      let selectedObj = this.getSelectedTable()
+      if (!this.isModeStat)
       {
-        let objTbl1 = scene.findObject("table_kills_team1")
+        let objTbl1 = this.scene.findObject("table_kills_team1")
         let curRow = objTbl1.getValue()
         if (curRow < 0 || curRow >= objTbl1.childrenCount())
           objTbl1.setValue(0)
@@ -678,14 +686,14 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       else
         if (selectedObj == null)
         {
-          scene.findObject("table_kills_team1").setValue(0)
-          updateListsButtons()
+          this.scene.findObject("table_kills_team1").setValue(0)
+          this.updateListsButtons()
         }
     }
     else
     {
-      scene.findObject("table_kills_team1").setValue(-1)
-      scene.findObject("table_kills_team2").setValue(-1)
+      this.scene.findObject("table_kills_team1").setValue(-1)
+      this.scene.findObject("table_kills_team2").setValue(-1)
     }
   }
 
@@ -695,12 +703,12 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         || typeof markupData != "table"
         || !("columns" in markupData)
         || !markupData.columns.len()
-        || !::checkObj(tableObj))
+        || !checkObj(tableObj))
       return ""
 
     let tblData = clone hdr
 
-    if (::getTblValue("invert", markupData, false))
+    if (getTblValue("invert", markupData, false))
       tblData.reverse()
 
     let view = {cells = []}
@@ -711,26 +719,26 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         continue
 
       view.cells.append({
-        id = ::getTblValue("id", value, name)
-        fontIcon = ::getTblValue("fontIcon", value, null)
-        tooltip = ::getTblValue("tooltip", value, null)
-        width = ::getTblValue("width", value, "")
+        id = getTblValue("id", value, name)
+        fontIcon = getTblValue("fontIcon", value, null)
+        tooltip = getTblValue("tooltip", value, null)
+        width = getTblValue("width", value, "")
       })
     }
 
-    let tdData = ::handyman.renderCached(("%gui/statistics/statTableHeaderCell"), view)
+    let tdData = ::handyman.renderCached(("%gui/statistics/statTableHeaderCell.tpl"), view)
     let trId = "team-header" + teamNum
-    let trSize = ::getTblValue("tr_size", markupData, "0,0")
+    let trSize = getTblValue("tr_size", markupData, "0,0")
     let trData = format("tr{id:t='%s'; size:t='%s'; %s}", trId, trSize, tdData)
     return trData
   }
 
-  function goBack(obj) {}
+  function goBack(_obj) {}
 
-  function onUserCard(obj)
+  function onUserCard(_obj)
   {
-    let player = getSelectedPlayer();
-    if (!player || player.isBot || !isOnline)
+    let player = this.getSelectedPlayer();
+    if (!player || player.isBot || !this.isOnline)
       return;
 
     ::gui_modal_userCard({ name = player.name /*, id = player.id*/ }); //search by nick no work, but session can be not exist at that moment
@@ -738,20 +746,20 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserRClick(obj)
   {
-    onStatsTblSelect(obj)
-    ::session_player_rmenu(this, getSelectedPlayer(), getChatLog())
+    this.onStatsTblSelect(obj)
+    ::session_player_rmenu(this, this.getSelectedPlayer(), this.getChatLog())
   }
 
-  function onUserOptions(obj)
+  function onUserOptions(_obj)
   {
-    let selectedTableObj = getSelectedTable()
-    if (!::check_obj(selectedTableObj))
+    let selectedTableObj = this.getSelectedTable()
+    if (!checkObj(selectedTableObj))
       return
 
-    onStatsTblSelect(selectedTableObj)
-    let selectedPlayer = getSelectedPlayer()
+    this.onStatsTblSelect(selectedTableObj)
+    let selectedPlayer = this.getSelectedPlayer()
     let orientation = selectedTableObj.id == "table_kills_team1"? RCLICK_MENU_ORIENT.RIGHT : RCLICK_MENU_ORIENT.LEFT
-    ::session_player_rmenu(this, selectedPlayer, getChatLog(), getSelectedRowPos(selectedTableObj, orientation), orientation)
+    ::session_player_rmenu(this, selectedPlayer, this.getChatLog(), this.getSelectedRowPos(selectedTableObj, orientation), orientation)
   }
 
   function getSelectedRowPos(selectedTableObj, orientation)
@@ -774,7 +782,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   function getPlayerInfo(name)
   {
     if (name && name != "")
-      foreach (tbl in [tblSave1, tblSave2])
+      foreach (tbl in [this.tblSave1, this.tblSave2])
         if (tbl)
           foreach(player in tbl)
             if (player.name == name)
@@ -784,28 +792,28 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function refreshPlayerInfo()
   {
-    setPlayerInfo()
+    this.setPlayerInfo()
 
-    let player = getSelectedPlayer()
-    this.showSceneBtn("btn_user_options", isOnline && player && !player.isBot && !isSpectate && ::show_console_buttons)
+    let player = this.getSelectedPlayer()
+    this.showSceneBtn("btn_user_options", this.isOnline && player && !player.isBot && !this.isSpectate && ::show_console_buttons)
     updateListLabelsSquad()
   }
 
   function setPlayerInfo()
   {
-    let playerInfo = getSelectedPlayer()
-    let teamObj = scene.findObject("player_team")
-    if (isTeam && ::checkObj(teamObj))
+    let playerInfo = this.getSelectedPlayer()
+    let teamObj = this.scene.findObject("player_team")
+    if (this.isTeam && checkObj(teamObj))
     {
       local teamTxt = ""
       let team = playerInfo? playerInfo.team : Team.Any
       if (team == Team.A)
-        teamTxt = ::loc("multiplayer/teamA")
+        teamTxt = loc("multiplayer/teamA")
       else if (team == Team.B)
-        teamTxt = ::loc("multiplayer/teamB")
+        teamTxt = loc("multiplayer/teamB")
       else
-        teamTxt = ::loc("multiplayer/teamRandom")
-      teamObj.setValue(::loc("multiplayer/team") + ::loc("ui/colon") + teamTxt)
+        teamTxt = loc("multiplayer/teamRandom")
+      teamObj.setValue(loc("multiplayer/team") + loc("ui/colon") + teamTxt)
     }
 
     ::fill_gamer_card({
@@ -814,12 +822,12 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
                       icon = (!playerInfo || playerInfo.isBot)? "cardicon_bot" : avatars.getIconById(playerInfo.pilotId)
                       country = playerInfo? playerInfo.country : ""
                     },
-                    "player_", scene)
+                    "player_", this.scene)
   }
 
-  function onComplain(obj)
+  function onComplain(_obj)
   {
-    let pInfo = getSelectedPlayer()
+    let pInfo = this.getSelectedPlayer()
     if (!pInfo || pInfo.isBot || pInfo.isLocal)
       return
 
@@ -828,7 +836,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateListsButtons()
   {
-    refreshPlayerInfo()
+    this.refreshPlayerInfo()
   }
 
   function onStatTblFocus(obj)
@@ -839,19 +847,19 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSelectedPlayer()
   {
-    local value = scene.findObject("table_kills_team1")?.getValue() ?? -1
+    local value = this.scene.findObject("table_kills_team1")?.getValue() ?? -1
     if (value >= 0)
-      return tblSave1?[value]
-    value = scene.findObject("table_kills_team2")?.getValue() ?? -1
-    return tblSave2?[value]
+      return this.tblSave1?[value]
+    value = this.scene.findObject("table_kills_team2")?.getValue() ?? -1
+    return this.tblSave2?[value]
   }
 
   function getSelectedTable()
   {
-    let objTbl1 = scene.findObject("table_kills_team1")
+    let objTbl1 = this.scene.findObject("table_kills_team1")
     if (objTbl1.getValue() >= 0)
       return objTbl1
-    let objTbl2 = scene.findObject("table_kills_team2")
+    let objTbl2 = this.scene.findObject("table_kills_team2")
     if (objTbl2.getValue() >= 0)
       return objTbl2
     return null
@@ -859,70 +867,70 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onStatsTblSelect(obj)
   {
-    if (!needPlayersTbl)
+    if (!this.needPlayersTbl)
       return
     if (obj.getValue() >= 0) {
       let table_name = obj.id == "table_kills_team2" ? "table_kills_team1" : "table_kills_team2"
-      let tblObj = scene.findObject(table_name)
+      let tblObj = this.scene.findObject(table_name)
       tblObj.setValue(-1)
     }
-    updateListsButtons()
+    this.updateListsButtons()
   }
 
   function selectLocalPlayer()
   {
-    if (!needPlayersTbl)
+    if (!this.needPlayersTbl)
       return false
-    foreach (tblIdx, tbl in [ tblSave1, tblSave2 ])
+    foreach (tblIdx, tbl in [ this.tblSave1, this.tblSave2 ])
       if (tbl)
         foreach(playerIdx, player in tbl)
-          if (::getTblValue("isLocal", player, false))
-            return selectPlayerByIndexes(tblIdx, playerIdx)
+          if (getTblValue("isLocal", player, false))
+            return this.selectPlayerByIndexes(tblIdx, playerIdx)
     return false
   }
 
   function selectPlayerByIndexes(tblIdx, playerIdx)
   {
-    if (!needPlayersTbl)
+    if (!this.needPlayersTbl)
       return false
-    let selectedObj = getSelectedTable()
+    let selectedObj = this.getSelectedTable()
     if (selectedObj)
       selectedObj.setValue(-1)
 
-    let tblObj = scene.findObject("table_kills_team" + (tblIdx + 1))
-    if (!::check_obj(tblObj) || tblObj.childrenCount() <= playerIdx)
+    let tblObj = this.scene.findObject("table_kills_team" + (tblIdx + 1))
+    if (!checkObj(tblObj) || tblObj.childrenCount() <= playerIdx)
       return false
 
     tblObj.setValue(playerIdx)
     setMousePointerInitialPosOnChildByValue(tblObj)
-    updateListsButtons()
+    this.updateListsButtons()
     return true
   }
 
   function includeMissionInfoBlocksToGamercard(fill = true)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
     let blockSample = "textareaNoTab{id:t='%s'; %s overlayTextColor:t='premiumNotEarned'; textShade:t='yes'; text:t='';}"
-    let leftBlockObj = scene.findObject("mission_texts_block_left")
-    if (::checkObj(leftBlockObj))
+    let leftBlockObj = this.scene.findObject("mission_texts_block_left")
+    if (checkObj(leftBlockObj))
     {
       local data = ""
       if (fill)
         foreach(id in ["gc_time_end", "gc_score_limit", "gc_time_to_kick"])
           data += format(blockSample, id, "")
-      guiScene.replaceContentFromText(leftBlockObj, data, data.len(), this)
+      this.guiScene.replaceContentFromText(leftBlockObj, data, data.len(), this)
     }
 
-    let rightBlockObj = scene.findObject("mission_texts_block_right")
-    if (::checkObj(rightBlockObj))
+    let rightBlockObj = this.scene.findObject("mission_texts_block_right")
+    if (checkObj(rightBlockObj))
     {
       local data = ""
       if (fill)
         foreach(id in ["gc_spawn_score", "gc_wp_respawn_balance", "gc_race_checkpoints", "gc_mp_tickets_rounds"])
           data += format(blockSample, id, "pos:t='pw-w, 0'; position:t='relative';")
-      guiScene.replaceContentFromText(rightBlockObj, data, data.len(), this)
+      this.guiScene.replaceContentFromText(rightBlockObj, data, data.len(), this)
     }
   }
 
@@ -932,44 +940,44 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
    */
   function updateCountryFlags()
   {
-    let playerTeam = getLocalTeam()
-    if (!needPlayersTbl || playerTeam <= 0)
+    let playerTeam = this.getLocalTeam()
+    if (!this.needPlayersTbl || playerTeam <= 0)
       return
-    let teamObj1 = scene.findObject("team1_info")
-    let teamObj2 = scene.findObject("team2_info")
+    let teamObj1 = this.scene.findObject("team1_info")
+    let teamObj2 = this.scene.findObject("team2_info")
     local countries
     local teamIco
 
-    if (::checkObj(teamObj1))
+    if (checkObj(teamObj1))
     {
-      let teamOverrideCountryIcon = getOverrideCountryIconByTeam(playerTeam)
-      countries = isTeamsWithCountryFlags && !teamOverrideCountryIcon
-        ? getCountriesByTeam(playerTeam)
+      let teamOverrideCountryIcon = this.getOverrideCountryIconByTeam(playerTeam)
+      countries = this.isTeamsWithCountryFlags && !teamOverrideCountryIcon
+        ? this.getCountriesByTeam(playerTeam)
         : []
-      if (isTeamsWithCountryFlags)
+      if (this.isTeamsWithCountryFlags)
         teamIco = null
       else
-        teamIco = isTeamsRandom ? "allies"
+        teamIco = this.isTeamsRandom ? "allies"
           : playerTeam == Team.A ? "allies" : "axis"
-      setTeamInfoTeamIco(teamObj1, teamIco)
-      setTeamInfoCountries(teamObj1, countries)
-      updateOverrideCountry(teamObj1, teamOverrideCountryIcon)
+      this.setTeamInfoTeamIco(teamObj1, teamIco)
+      this.setTeamInfoCountries(teamObj1, countries)
+      this.updateOverrideCountry(teamObj1, teamOverrideCountryIcon)
     }
-    if (!showLocalTeamOnly && ::checkObj(teamObj2))
+    if (!this.showLocalTeamOnly && checkObj(teamObj2))
     {
       let opponentTeam = playerTeam == Team.A ? Team.B : Team.A
-      let teamOverrideCountryIcon = getOverrideCountryIconByTeam(opponentTeam)
-      countries = isTeamsWithCountryFlags && !teamOverrideCountryIcon
-        ? getCountriesByTeam(opponentTeam)
+      let teamOverrideCountryIcon = this.getOverrideCountryIconByTeam(opponentTeam)
+      countries = this.isTeamsWithCountryFlags && !teamOverrideCountryIcon
+        ? this.getCountriesByTeam(opponentTeam)
         : []
-      if (isTeamsWithCountryFlags)
+      if (this.isTeamsWithCountryFlags)
         teamIco = null
       else
-        teamIco = isTeamsRandom ? "axis"
+        teamIco = this.isTeamsRandom ? "axis"
           : playerTeam == Team.A ? "axis" : "allies"
-      setTeamInfoTeamIco(teamObj2, teamIco)
-      setTeamInfoCountries(teamObj2, countries)
-      updateOverrideCountry(teamObj2, teamOverrideCountryIcon)
+      this.setTeamInfoTeamIco(teamObj2, teamIco)
+      this.setTeamInfoCountries(teamObj2, countries)
+      this.updateOverrideCountry(teamObj2, teamOverrideCountryIcon)
     }
   }
 
@@ -982,14 +990,14 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     let players = getMplayersList(team)
     foreach (player in players)
     {
-      local country = ::getTblValue("country", player, null)
+      local country = getTblValue("country", player, null)
 
       // If player/bot has random country we'll
       // try to retrieve country from selected unit.
       // Before spawn bots has wrong unit names.
       if (country == "country_0" && (!player.isDead || player.deaths > 0))
       {
-        let unitName = ::getTblValue("aircraftName", player, null)
+        let unitName = getTblValue("aircraftName", player, null)
         let unit = ::getAircraftByName(unitName)
         if (unit != null)
           country = ::getUnitCountry(unit)
@@ -1001,35 +1009,35 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getEndTimeObj()
   {
-    return scene.findObject("gc_time_end")
+    return this.scene.findObject("gc_time_end")
   }
 
   function getScoreLimitObj()
   {
-    return scene.findObject("gc_score_limit")
+    return this.scene.findObject("gc_score_limit")
   }
 
   function getTimeToKickObj()
   {
-    return scene.findObject("gc_time_to_kick")
+    return this.scene.findObject("gc_time_to_kick")
   }
 
   function setGameEndStat(timeLeft)
   {
-    let gameEndsObj = getEndTimeObj()
-    let scoreLimitTextObj = getScoreLimitObj()
+    let gameEndsObj = this.getEndTimeObj()
+    let scoreLimitTextObj = this.getScoreLimitObj()
 
-    if (!(gameType & ::GT_VERSUS))
+    if (!(this.gameType & GT_VERSUS))
     {
       foreach(obj in [gameEndsObj, scoreLimitTextObj])
-        if (::checkObj(obj))
+        if (checkObj(obj))
           obj.setValue("")
       return
     }
 
-    if (timeLeft < 0 || (gameType & ::GT_RACE))
+    if (timeLeft < 0 || (this.gameType & GT_RACE))
     {
-      if (!::checkObj(gameEndsObj))
+      if (!checkObj(gameEndsObj))
         return
 
       let val = gameEndsObj.getValue()
@@ -1038,14 +1046,14 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     }
     else
     {
-      if (::checkObj(gameEndsObj))
-        gameEndsObj.setValue(::getCompoundedText(::loc("multiplayer/timeLeft") + ::loc("ui/colon"),
+      if (checkObj(gameEndsObj))
+        gameEndsObj.setValue(::getCompoundedText(loc("multiplayer/timeLeft") + loc("ui/colon"),
                                                  time.secondsToString(timeLeft, false),
                                                  "activeTextColor"))
 
       let mp_ffa_score_limit = ::get_mp_ffa_score_limit()
-      if (!isTeamplay && mp_ffa_score_limit && ::checkObj(scoreLimitTextObj))
-        scoreLimitTextObj.setValue(::getCompoundedText(::loc("options/scoreLimit") + ::loc("ui/colon"),
+      if (!this.isTeamplay && mp_ffa_score_limit && checkObj(scoreLimitTextObj))
+        scoreLimitTextObj.setValue(::getCompoundedText(loc("options/scoreLimit") + loc("ui/colon"),
                                    mp_ffa_score_limit,
                                    "activeTextColor"))
     }
@@ -1053,20 +1061,20 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateNumMaxPlayers(shouldHideRows = false)
   {
-     local tblObj1 = scene.findObject("table_kills_team1")
-     if (!::checkObj(tblObj1))
+     local tblObj1 = this.scene.findObject("table_kills_team1")
+     if (!checkObj(tblObj1))
        return
 
-     let curValue = numMaxPlayers
-     numMaxPlayers = ::ceil(tblObj1.getParent().getSize()[1]/(::to_pixels("1@rows16height") || 1)).tointeger()
-     if (!shouldHideRows || curValue <= numMaxPlayers)
+     let curValue = this.numMaxPlayers
+     this.numMaxPlayers = ceil(tblObj1.getParent().getSize()[1]/(to_pixels("1@rows16height") || 1)).tointeger()
+     if (!shouldHideRows || curValue <= this.numMaxPlayers)
        return
 
-     hideTableRows(tblObj1, numMaxPlayers, curValue)
-     tblObj1 = scene.findObject("table_kills_team2")
-     if (!::checkObj(tblObj1))
+     this.hideTableRows(tblObj1, this.numMaxPlayers, curValue)
+     tblObj1 = this.scene.findObject("table_kills_team2")
+     if (!checkObj(tblObj1))
        return
-     hideTableRows(tblObj1, numMaxPlayers, curValue)
+     this.hideTableRows(tblObj1, this.numMaxPlayers, curValue)
   }
 
   function hideTableRows(tblObj, minRow, maxRow)

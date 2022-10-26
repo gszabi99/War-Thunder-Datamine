@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let ingame_chat = require("%scripts/chat/mpChatModel.nut")
@@ -71,17 +77,17 @@ local MP_CHAT_PARAMS = {
       ])
 
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
-    maxLogSize = ::g_chat.getMaxRoomMsgAmount()
-    isMouseCursorVisible = ::is_cursor_visible_in_gui()
+    this.maxLogSize = ::g_chat.getMaxRoomMsgAmount()
+    this.isMouseCursorVisible = ::is_cursor_visible_in_gui()
   }
 
   function loadScene(obj, chatBlk, handler, params = MP_CHAT_PARAMS)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return null
 
-    cleanScenesList()
-    let sceneData = findSceneDataByScene(obj)
+    this.cleanScenesList()
+    let sceneData = this.findSceneDataByScene(obj)
     if (sceneData)
     {
       sceneData.handler = handler
@@ -89,13 +95,13 @@ local MP_CHAT_PARAMS = {
     }
 
     obj.getScene().replaceContent(obj, chatBlk, this)
-    return addScene(obj, handler, params)
+    return this.addScene(obj, handler, params)
   }
 
   function addScene(newScene, handler, params)
   {
     let sceneData = MP_CHAT_PARAMS.__merge(params).__update({
-      idx = ++last_scene_idx
+      idx = ++this.last_scene_idx
       scene = newScene
       handler = handler
       transparency = 0.0
@@ -115,53 +121,53 @@ local MP_CHAT_PARAMS = {
     {
       let obj = scene.findObject(objName)
       if (obj)
-        obj.setIntProp(sceneIdxPID, sceneData.idx)
+        obj.setIntProp(this.sceneIdxPID, sceneData.idx)
     }
 
     let timerObj = scene.findObject("chat_update")
     if (timerObj && (sceneData?.selfHideInput || sceneData?.selfHideLog))
     {
-      timerObj.setIntProp(sceneIdxPID, sceneData.idx)
+      timerObj.setIntProp(this.sceneIdxPID, sceneData.idx)
       timerObj.setUserData(this)
-      updateChatScene(sceneData, 0.0)
-      updateChatInput(sceneData)
+      this.updateChatScene(sceneData, 0.0)
+      this.updateChatInput(sceneData)
     }
 
-    updateTabs(sceneData)
-    updateContent(sceneData)
-    updatePrompt(sceneData)
-    scenes.append(sceneData)
-    validateCurMode()
-    ::call_darg("hudChatHasEnableChatModeUpdate", hasEnableChatMode)
+    this.updateTabs(sceneData)
+    this.updateContent(sceneData)
+    this.updatePrompt(sceneData)
+    this.scenes.append(sceneData)
+    this.validateCurMode()
+    ::call_darg("hudChatHasEnableChatModeUpdate", this.hasEnableChatMode)
     ::handlersManager.updateControlsAllowMask()
     return sceneData
   }
 
   function cleanScenesList()
   {
-    for(local i = scenes.len() - 1; i >= 0; i--)
-      if (!::checkObj(scenes[i].scene))
-        scenes.remove(i)
+    for(local i = this.scenes.len() - 1; i >= 0; i--)
+      if (!checkObj(this.scenes[i].scene))
+        this.scenes.remove(i)
   }
 
   function findSceneDataByScene(scene)
   {
-    foreach(sceneData in scenes)
-      if (::checkObj(sceneData.scene) && sceneData.scene.isEqual(scene))
+    foreach(sceneData in this.scenes)
+      if (checkObj(sceneData.scene) && sceneData.scene.isEqual(scene))
         return sceneData
     return null
   }
 
   function findSceneDataByObj(obj)
   {
-    let idx = obj.getIntProp(sceneIdxPID, -1)
-    foreach(i, sceneData in scenes)
+    let idx = obj.getIntProp(this.sceneIdxPID, -1)
+    foreach(i, sceneData in this.scenes)
       if (sceneData.idx == idx)
-        if (::checkObj(sceneData.scene))
+        if (checkObj(sceneData.scene))
           return sceneData
         else
         {
-          scenes.remove(i)
+          this.scenes.remove(i)
           break
         }
     return null
@@ -169,18 +175,18 @@ local MP_CHAT_PARAMS = {
 
   function doForAllScenes(func)
   {
-    for(local i = scenes.len() - 1; i >= 0; i--)
-      if (::checkObj(scenes[i].scene))
-        func(scenes[i])
+    for(local i = this.scenes.len() - 1; i >= 0; i--)
+      if (checkObj(this.scenes[i].scene))
+        func(this.scenes[i])
       else
-        scenes.remove(i)
+        this.scenes.remove(i)
   }
 
   function onUpdate(obj, dt)
   {
-    let sceneData = findSceneDataByObj(obj)
+    let sceneData = this.findSceneDataByObj(obj)
     if (sceneData)
-      updateChatScene(sceneData, dt)
+      this.updateChatScene(sceneData, dt)
   }
 
   function updateChatScene(sceneData, dt)
@@ -192,10 +198,10 @@ local MP_CHAT_PARAMS = {
     local transparency = sceneData.transparency
     if (!isHudVisible)
       transparency = 0
-    else if (!isActive)
+    else if (!this.isActive)
     {
-      if (visibleTime > 0)
-        visibleTime -= dt
+      if (this.visibleTime > 0)
+        this.visibleTime -= dt
       else
         transparency -= dt / CHAT_WINDOW_DISAPPEAR_TIME
     }
@@ -203,11 +209,11 @@ local MP_CHAT_PARAMS = {
       transparency += dt / CHAT_WINDOW_APPEAR_TIME
     transparency = clamp(transparency, 0.0, 1.0)
 
-    let transValue = (isHudVisible && isVisibleWithCursor(sceneData)) ? 100 :
+    let transValue = (isHudVisible && this.isVisibleWithCursor(sceneData)) ? 100 :
       (100.0 * (3.0 - 2.0 * transparency) * transparency * transparency).tointeger()
 
     let obj = sceneData.scene.findObject("chat_log_tdiv")
-    if (::checkObj(obj))
+    if (checkObj(obj))
     {
       obj.transparent = transValue
       sceneData.scene.findObject("chat_log").transparent = transValue
@@ -216,78 +222,78 @@ local MP_CHAT_PARAMS = {
     sceneData.transparency = transparency
   }
 
-  function onEventChangedCursorVisibility(params)
+  function onEventChangedCursorVisibility(_params)
   {
-    isMouseCursorVisible = ::is_cursor_visible_in_gui()
+    this.isMouseCursorVisible = ::is_cursor_visible_in_gui()
 
-    doForAllScenes(function(sceneData) {
-      updateTabs(sceneData)
-      updateContent(sceneData)
-      updateChatInput(sceneData)
-      updateChatScene(sceneData, 0.0)
+    this.doForAllScenes(function(sceneData) {
+      this.updateTabs(sceneData)
+      this.updateContent(sceneData)
+      this.updateChatInput(sceneData)
+      this.updateChatScene(sceneData, 0.0)
     })
   }
 
   function canEnableChatInput()
   {
-    if (!isChatEnabled() || !hasEnableChatMode)
+    if (!isChatEnabled() || !this.hasEnableChatMode)
       return false
-    foreach(sceneData in scenes)
-      if (!sceneData.hiddenInput && ::checkObj(sceneData.scene) && sceneData.scene.isVisible())
+    foreach(sceneData in this.scenes)
+      if (!sceneData.hiddenInput && checkObj(sceneData.scene) && sceneData.scene.isVisible())
         return true
     return false
   }
 
   function enableChatInput(value)
   {
-    if (value == isActive)
+    if (value == this.isActive)
       return
 
-    isActive = value
-    if (isActive)
-      visibleTime = CHAT_WINDOW_VISIBLE_TIME
+    this.isActive = value
+    if (this.isActive)
+      this.visibleTime = CHAT_WINDOW_VISIBLE_TIME
 
-    doForAllScenes(updateChatInput)
-    ::broadcastEvent("MpChatInputToggled", { active = isActive })
+    this.doForAllScenes(this.updateChatInput)
+    ::broadcastEvent("MpChatInputToggled", { active = this.isActive })
     ::handlersManager.updateControlsAllowMask()
   }
 
   isVisibleChatInput = @(sceneData)
-    (isActive || !sceneData.selfHideInput)
+    (this.isActive || !sceneData.selfHideInput)
       && !sceneData.hiddenInput
       && isChatEnabled()
-      && getCurView(sceneData) == mpChatView.CHAT
-      && hasEnableChatMode
+      && this.getCurView(sceneData) == mpChatView.CHAT
+      && this.hasEnableChatMode
 
   function updateChatInput(sceneData)
   {
-    if (isActive && !sceneData.scene.isVisible())
+    if (this.isActive && !sceneData.scene.isVisible())
       return
 
-    let show = isVisibleChatInput(sceneData)
+    let show = this.isVisibleChatInput(sceneData)
     let scene = sceneData.scene
 
     ::showBtnTable(scene, {
         chat_input_back           = show
-        chat_input_placeholder    = !show && canEnableChatInput()
+        chat_input_placeholder    = !show && this.canEnableChatInput()
         show_chat_input_accesskey = !show && sceneData.isInSpectateMode
     })
     ::enableBtnTable(scene, {
         chat_input              = show
         btn_send                = show
-        chat_prompt             = show && ::g_mp_chat_mode.getNextMode(curMode.id) != null
+        chat_prompt             = show && ::g_mp_chat_mode.getNextMode(this.curMode.id) != null
         chat_mod_accesskey      = show && (sceneData.isInSpectateMode || !::is_hud_visible)
     })
     if (show && sceneData.scene.isVisible())
-      delayedSelectChatEditbox(sceneData)
+      this.delayedSelectChatEditbox(sceneData)
   }
 
   function selectChatInputWhenFocusLost(sceneData) {
     if (!sceneData.selectInputIfFocusLost || !sceneData.scene.isVisible()
-        || !isVisibleChatInput(sceneData))
+        || !this.isVisibleChatInput(sceneData))
       return
 
-    delayedSelectChatEditbox(sceneData)
+    this.delayedSelectChatEditbox(sceneData)
   }
 
   function delayedSelectChatEditbox(sceneData) {
@@ -299,9 +305,9 @@ local MP_CHAT_PARAMS = {
       if (!(obj?.isValid() ?? false))
         return
 
-      obj.setValue(chatInputText)
+      obj.setValue(this.chatInputText)
       if (sceneData?.isInputSelected ?? true)
-        selectChatEditbox(obj)
+        this.selectChatEditbox(obj)
     })
   }
 
@@ -315,33 +321,33 @@ local MP_CHAT_PARAMS = {
 
   function hideChatInput(sceneData, value)
   {
-    if (value && isActive)
-      enableChatInput(false)
+    if (value && this.isActive)
+      this.enableChatInput(false)
 
     sceneData.hiddenInput = value
-    updateChatInput(sceneData)
+    this.updateChatInput(sceneData)
   }
 
-  function onChatIngameRequestActivate(obj = null)
+  function onChatIngameRequestActivate(_obj = null)
   {
     ::toggle_ingame_chat(true)
   }
 
-  function onChatIngameRequestCancel(obj = null)
+  function onChatIngameRequestCancel(_obj = null)
   {
     ::toggle_ingame_chat(false)
   }
 
   function onChatIngameRequestEnter(obj)
   {
-    let editboxObj = ::check_obj(obj) ? obj.getParent().findObject("chat_input") : null
-    if (::check_obj(editboxObj) && editboxObj?["on_activate"] == "onChatEntered")
-      onChatEntered(editboxObj)
+    let editboxObj = checkObj(obj) ? obj.getParent().findObject("chat_input") : null
+    if (checkObj(editboxObj) && editboxObj?["on_activate"] == "onChatEntered")
+      this.onChatEntered(editboxObj)
   }
 
   function onChatEntered(obj)
   {
-    let sceneData = findSceneDataByObj(obj)
+    let sceneData = this.findSceneDataByObj(obj)
     if (!sceneData)
       return
 
@@ -349,25 +355,25 @@ local MP_CHAT_PARAMS = {
       sceneData.handler.onEmptyChatEntered()
     else
     {
-      onChatSend()
+      this.onChatSend()
       if (sceneData.handler && ("onChatEntered" in sceneData.handler))
         sceneData.handler.onChatEntered()
     }
-    enableChatInput(false)
+    this.enableChatInput(false)
     ::call_darg("hudChatInputEnableUpdate", false)
   }
 
   function onChatCancel(obj)
   {
-    let sceneData = findSceneDataByObj(obj)
+    let sceneData = this.findSceneDataByObj(obj)
     if (sceneData && sceneData.handler && ("onChatCancel" in sceneData.handler))
       sceneData.handler.onChatCancel()
-    enableChatInput(false)
+    this.enableChatInput(false)
     ::call_darg("hudChatInputEnableUpdate", false)
   }
 
   function onChatEndEdit() {
-    doForAllScenes(selectChatInputWhenFocusLost)
+    this.doForAllScenes(this.selectChatInputWhenFocusLost)
   }
 
   function checkAndPrintDevoiceMsg()
@@ -377,27 +383,27 @@ local MP_CHAT_PARAMS = {
     {
       devoiceMsgText = "<color=@chatInfoColor>" + devoiceMsgText + "</color>"
       ingame_chat.onInternalMessage(devoiceMsgText)
-      setInputField("")
+      this.setInputField("")
     }
     return devoiceMsgText != null
   }
 
   function onChatSend()
   {
-    if (checkAndPrintDevoiceMsg())
+    if (this.checkAndPrintDevoiceMsg())
       return
     ::chat_on_send()
   }
 
-  function onEventPlayerPenaltyStatusChanged(params)
+  function onEventPlayerPenaltyStatusChanged(_params)
   {
-    checkAndPrintDevoiceMsg()
+    this.checkAndPrintDevoiceMsg()
   }
 
   function onChatChanged(obj)
   {
-    chatInputText = obj.getValue()
-    ::chat_on_text_update(chatInputText)
+    this.chatInputText = obj.getValue()
+    ::chat_on_text_update(this.chatInputText)
   }
 
   function onChatWrapAttempt()
@@ -407,12 +413,12 @@ local MP_CHAT_PARAMS = {
 
   function onEventMpChatInputChanged(params)
   {
-    setInputField(params.str)
+    this.setInputField(params.str)
   }
 
   function setInputField(str)
   {
-    doForAllScenes(function(sceneData) {
+    this.doForAllScenes(function(sceneData) {
       let edit = sceneData.scene.findObject("chat_input")
       if (edit)
         edit.setValue(str)
@@ -421,25 +427,25 @@ local MP_CHAT_PARAMS = {
 
   function onChatTabChange(obj)
   {
-    let sceneData = findSceneDataByObj(obj)
+    let sceneData = this.findSceneDataByObj(obj)
     if (sceneData)
     {
       sceneData.curTab = obj.getValue()
-      updateContent(sceneData)
-      updateChatInput(sceneData)
+      this.updateContent(sceneData)
+      this.updateChatInput(sceneData)
     }
   }
 
   function onEventMpChatInputRequested(params)
   {
-    let activate = ::getTblValue("activate", params, false)
-    if (activate && canEnableChatInput())
-      foreach(sceneData in scenes)
-        if (getCurView(sceneData) != mpChatView.CHAT)
-          if (!sceneData.hiddenInput && ::checkObj(sceneData.scene) && sceneData.scene.isVisible())
+    let activate = getTblValue("activate", params, false)
+    if (activate && this.canEnableChatInput())
+      foreach(sceneData in this.scenes)
+        if (this.getCurView(sceneData) != mpChatView.CHAT)
+          if (!sceneData.hiddenInput && checkObj(sceneData.scene) && sceneData.scene.isVisible())
           {
             let obj = sceneData.scene.findObject("chat_tabs")
-            if (::checkObj(obj))
+            if (checkObj(obj))
             {
               obj.setValue(mpChatView.CHAT)
               break
@@ -447,24 +453,24 @@ local MP_CHAT_PARAMS = {
           }
   }
 
-  function onEventBattleLogMessage(params)
+  function onEventBattleLogMessage(_params)
   {
-    doForAllScenes(updateBattleLog)
+    this.doForAllScenes(this.updateBattleLog)
   }
 
   function updateContent(sceneData)
   {
-    updateChatLog(sceneData)
-    updateBattleLog(sceneData)
+    this.updateChatLog(sceneData)
+    this.updateBattleLog(sceneData)
   }
 
   function updateBattleLog(sceneData)
   {
-    if (getCurView(sceneData) != mpChatView.BATTLE)
+    if (this.getCurView(sceneData) != mpChatView.BATTLE)
       return
-    let limit = (!sceneData.selfHideLog || isVisibleWithCursor(sceneData)) ? 0 : maxLogSize
+    let limit = (!sceneData.selfHideLog || this.isVisibleWithCursor(sceneData)) ? 0 : this.maxLogSize
     let chat_log = sceneData.scene.findObject("chat_log")
-    if (::checkObj(chat_log))
+    if (checkObj(chat_log))
       chat_log.setValue(::HudBattleLog.getText(0, limit))
   }
 
@@ -474,20 +480,20 @@ local MP_CHAT_PARAMS = {
     let prompt = scene.findObject("chat_prompt")
     if (prompt)
     {
-      prompt.chatMode = curMode.name
-      if (::getTblValue("no_text", prompt, "no") != "yes")
-        prompt.setValue(curMode.getNameText())
+      prompt.chatMode = this.curMode.name
+      if (getTblValue("no_text", prompt, "no") != "yes")
+        prompt.setValue(this.curMode.getNameText())
       if ("tooltip" in prompt)
-        prompt.tooltip = ::loc("chat/to") + ::loc("ui/colon") + curMode.getDescText()
+        prompt.tooltip = loc("chat/to") + loc("ui/colon") + this.curMode.getDescText()
     }
 
     let input = scene.findObject("chat_input")
     if (input)
-      input.chatMode = curMode.name
+      input.chatMode = this.curMode.name
 
     let hint = scene.findObject("chat_hint")
     if (hint)
-      hint.setValue(getChatHint())
+      hint.setValue(this.getChatHint())
   }
 
   function getChatHint()
@@ -498,22 +504,22 @@ local MP_CHAT_PARAMS = {
   function onEventMpChatModeChanged(params)
   {
     let newMode = ::g_mp_chat_mode.getModeById(params.modeId)
-    if (newMode == curMode)
+    if (newMode == this.curMode)
       return
 
-    curMode = newMode
-    doForAllScenes(updatePrompt)
+    this.curMode = newMode
+    this.doForAllScenes(this.updatePrompt)
   }
 
   function onChatMode()
   {
-    let newModeId = ::g_mp_chat_mode.getNextMode(curMode.id)
-    setMode(::g_mp_chat_mode.getModeById(newModeId))
+    let newModeId = ::g_mp_chat_mode.getNextMode(this.curMode.id)
+    this.setMode(::g_mp_chat_mode.getModeById(newModeId))
   }
 
   function onShowChatInput()
   {
-    enableChatInput(true)
+    this.enableChatInput(true)
   }
 
   function setMode(mpChatMode)
@@ -523,27 +529,27 @@ local MP_CHAT_PARAMS = {
 
   function validateCurMode()
   {
-    if (!modeInited)
+    if (!this.modeInited)
     {
-      modeInited = true
-      hasEnableChatMode = false
+      this.modeInited = true
+      this.hasEnableChatMode = false
       // On mp session start mode is reset to TEAM
       if (::g_mp_chat_mode.SQUAD.isEnabled()) {
-        hasEnableChatMode = true
-        setMode(::g_mp_chat_mode.SQUAD)
+        this.hasEnableChatMode = true
+        this.setMode(::g_mp_chat_mode.SQUAD)
         return
       }
     }
 
-    if (curMode.isEnabled()) {
-      hasEnableChatMode = true
+    if (this.curMode.isEnabled()) {
+      this.hasEnableChatMode = true
       return
     }
 
     foreach(mode in ::g_mp_chat_mode.types)
       if (mode.isEnabled()) {
-        hasEnableChatMode = true
-        setMode(mode)
+        this.hasEnableChatMode = true
+        this.setMode(mode)
         return
      }
   }
@@ -553,19 +559,19 @@ local MP_CHAT_PARAMS = {
     playerContextMenu.showMenu(null, this, {
       playerName = playerName
       isMPChat = true
-      chatLog = getChatLogForBanhammer()
+      chatLog = this.getChatLogForBanhammer()
       canComplain = true
     })
   }
 
   getChatLogForBanhammer = @() ingame_chat.getLogForBanhammer()
 
-  function onChatLinkClick(obj, itype, link)  { onChatLink(obj, link, ::is_platform_pc) }
-  function onChatLinkRClick(obj, itype, link) { onChatLink(obj, link, false) }
+  function onChatLinkClick(obj, _itype, link)  { this.onChatLink(obj, link, is_platform_pc) }
+  function onChatLinkRClick(obj, _itype, link) { this.onChatLink(obj, link, false) }
 
   function onChatLink(obj, link, lclick)
   {
-    let sceneData = findSceneDataByObj(obj)
+    let sceneData = this.findSceneDataByObj(obj)
     if ((link && link.len() < 4) || sceneData.hiddenInput) return
 
     if(link.slice(0, 3) == "PL_")
@@ -573,52 +579,52 @@ local MP_CHAT_PARAMS = {
       if (lclick)
       {
         if (sceneData && !sceneData?.isInSpectateMode)
-          addNickToEdit(sceneData, link.slice(3))
+          this.addNickToEdit(sceneData, link.slice(3))
       }
       else
-        showPlayerRClickMenu(link.slice(3))
+        this.showPlayerRClickMenu(link.slice(3))
     }
     else if (::g_chat.checkBlockedLink(link))
     {
-      log_text = ::g_chat.revealBlockedMsg(log_text, link)
+      this.log_text = ::g_chat.revealBlockedMsg(this.log_text, link)
 
       let pureMessage = ::g_chat.convertLinkToBlockedMsg(link)
       ingame_chat.unblockMessage(pureMessage)
-      updateAllLogs()
+      this.updateAllLogs()
     }
   }
 
-  function onEventWatchedHeroSwitched(params)
+  function onEventWatchedHeroSwitched(_params)
   {
-    makeChatTextFromLog()
+    this.makeChatTextFromLog()
   }
 
-  function onEventMpChatLogUpdated(params)
+  function onEventMpChatLogUpdated(_params)
   {
-    makeChatTextFromLog()
+    this.makeChatTextFromLog()
   }
 
-  function onEventContactsBlockStatusUpdated(params) {
-    makeChatTextFromLog()
+  function onEventContactsBlockStatusUpdated(_params) {
+    this.makeChatTextFromLog()
   }
 
   function makeChatTextFromLog()
   {
-    let log = ingame_chat.getLog()
-    log_text = ""
-    for (local i = 0; i < log.len(); ++i)
-      log_text = ::g_string.implode([log_text , makeTextFromMessage(log[i])], "\n")
-    updateAllLogs()
+    let logObj = ingame_chat.getLog()
+    this.log_text = ""
+    for (local i = 0; i < logObj.len(); ++i)
+      this.log_text = ::g_string.implode([this.log_text , this.makeTextFromMessage(logObj[i])], "\n")
+    this.updateAllLogs()
 
     let autoShowOpt = ::get_option(::USEROPT_AUTO_SHOW_CHAT)
     if (autoShowOpt.value)
     {
-      doForAllScenes(function(sceneData) {
+      this.doForAllScenes(function(sceneData) {
         if (!sceneData.scene.isVisible())
           return
 
         sceneData.transparency = 1.0
-        updateChatScene(sceneData, 0.0)
+        this.updateChatScene(sceneData, 0.0)
       })
     }
   }
@@ -631,7 +637,7 @@ local MP_CHAT_PARAMS = {
       return format(
         "%s <color=@chatActiveInfoColor>%s</color>",
         timeString,
-        ::loc(message.text))
+        loc(message.text))
 
     local text = message.isAutomatic
       ? message.text
@@ -639,14 +645,14 @@ local MP_CHAT_PARAMS = {
 
     if (!message.isMyself && !message.isAutomatic)
     {
-      if (::isPlayerNickInContacts(message.sender, ::EPL_BLOCKLIST))
+      if (::isPlayerNickInContacts(message.sender, EPL_BLOCKLIST))
         text = ::g_chat.makeBlockedMsg(message.text)
       else if (!isChatEnableWithPlayer(message.sender))
         text = ::g_chat.makeXBoxRestrictedMsg(message.text)
     }
 
-    let userColor = getSenderColor(message)
-    let msgColor = getMessageColor(message)
+    let userColor = this.getSenderColor(message)
+    let msgColor = this.getMessageColor(message)
     let clanTag = ::get_player_tag(message.sender)
     let fullName = ::g_contacts.getPlayerFullName(
       platformModule.getPlayerName(message.sender),
@@ -670,29 +676,29 @@ local MP_CHAT_PARAMS = {
 
   function getSenderColor(message)
   {
-    if (isSenderMe(message))
-      return senderMeColor
+    if (this.isSenderMe(message))
+      return this.senderMeColor
     else if (::isPlayerDedicatedSpectator(message.sender))
-      return senderSpectatorColor
+      return this.senderSpectatorColor
     else if (message.team != ::get_player_army_for_hud() || !::is_mode_with_teams())
-      return senderEnemyColor
-    else if (isSenderInMySquad(message))
-      return senderMySquadColor
-    return senderColor
+      return this.senderEnemyColor
+    else if (this.isSenderInMySquad(message))
+      return this.senderMySquadColor
+    return this.senderColor
   }
 
   function getMessageColor(message)
   {
     if (message.isBlocked)
-      return blockedColor
+      return this.blockedColor
     else if (message.isAutomatic)
     {
-      if (isSenderInMySquad(message))
-        return voiceSquadColor
+      if (this.isSenderInMySquad(message))
+        return this.voiceSquadColor
       else if (message.team != ::get_player_army_for_hud())
-        return voiceEnemyColor
+        return this.voiceEnemyColor
       else
-        return voiceTeamColor
+        return this.voiceTeamColor
     }
     return ::g_mp_chat_mode.getModeById(message.mode).textColor
   }
@@ -708,7 +714,7 @@ local MP_CHAT_PARAMS = {
   {
     if (is_replay_playing())
     {
-      let player = ::u.search(::get_mplayers_list(::GET_MPLAYERS_LIST, true), @(p) p.name == message.sender)
+      let player = ::u.search(::get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.name == message.sender)
       return ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
     return ::g_squad_manager.isInMySquad(message.sender)
@@ -716,21 +722,21 @@ local MP_CHAT_PARAMS = {
 
   function updateAllLogs()
   {
-    doForAllScenes(updateChatLog)
+    this.doForAllScenes(this.updateChatLog)
   }
 
   function updateChatLog(sceneData)
   {
-    if (getCurView(sceneData) != mpChatView.CHAT)
+    if (this.getCurView(sceneData) != mpChatView.CHAT)
       return
     let chat_log = sceneData.scene.findObject("chat_log")
     if (chat_log)
-      chat_log.setValue(log_text)
+      chat_log.setValue(this.log_text)
   }
 
   function getLogText()
   {
-    return log_text
+    return this.log_text
   }
 
   function addNickToEdit(sceneData, user)
@@ -741,16 +747,16 @@ local MP_CHAT_PARAMS = {
     if (!inputObj) return
 
     ::add_text_to_editbox(inputObj, user + " ")
-    selectChatEditbox(inputObj)
+    this.selectChatEditbox(inputObj)
   }
 
   function getCurView(sceneData)
   {
-    return (!sceneData.selfHideLog || isVisibleWithCursor(sceneData)) ? sceneData.curTab : mpChatView.CHAT
+    return (!sceneData.selfHideLog || this.isVisibleWithCursor(sceneData)) ? sceneData.curTab : mpChatView.CHAT
   }
 
   function isVisibleWithCursor(sceneData) {
-    if (!isMouseCursorVisible)
+    if (!this.isMouseCursorVisible)
       return false
     let parentObj = sceneData.handler?.scene
     return (parentObj?.isValid() ?? false) && parentObj.isVisible()
@@ -758,17 +764,17 @@ local MP_CHAT_PARAMS = {
 
   function updateTabs(sceneData)
   {
-    let visible = !sceneData.selfHideLog || isVisibleWithCursor(sceneData)
+    let visible = !sceneData.selfHideLog || this.isVisibleWithCursor(sceneData)
 
     local obj = sceneData.scene.findObject("chat_tabs")
-    if (::checkObj(obj))
+    if (checkObj(obj))
     {
       if (obj.getValue() == -1)
         obj.setValue(sceneData.curTab)
       obj.show(visible)
     }
     obj = sceneData.scene.findObject("chat_log_tdiv")
-    if (::checkObj(obj))
+    if (checkObj(obj))
     {
       obj.height = visible ? obj?["max-height"] : null
       obj.scrollType = visible ? "" : "hidden"
@@ -777,21 +783,21 @@ local MP_CHAT_PARAMS = {
 
   function getControlsAllowMask()
   {
-    return isActive && canEnableChatInput()
+    return this.isActive && this.canEnableChatInput()
       ? CtrlsInGui.CTRL_IN_MP_CHAT | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE | CtrlsInGui.CTRL_ALLOW_MP_CHAT
       : CtrlsInGui.CTRL_ALLOW_FULL
   }
 
-  function onEventLoadingStateChange(params)
+  function onEventLoadingStateChange(_params)
   {
-    clearInputChat()
-    modeInited = false
+    this.clearInputChat()
+    this.modeInited = false
   }
 
   function clearInputChat()
   {
-    chatInputText = ""
-    ::chat_on_text_update(chatInputText)
+    this.chatInputText = ""
+    ::chat_on_text_update(this.chatInputText)
   }
 }
 
@@ -824,7 +830,7 @@ local MP_CHAT_PARAMS = {
 
   let handler = ::get_game_chat_handler()
   if (value && !handler.hasEnableChatMode) {
-    chat_system_message(loc("chat/no_chat"))
+    ::chat_system_message(loc("chat/no_chat"))
     return
   }
   if (!value || handler.canEnableChatInput())
@@ -838,7 +844,7 @@ local MP_CHAT_PARAMS = {
 
 ::clear_game_chat <- function clear_game_chat()
 {
-  ::debugTableData(ingame_chat)
+  debugTableData(ingame_chat)
   ingame_chat.clearLog()
 }
 
@@ -865,12 +871,12 @@ local MP_CHAT_PARAMS = {
 
 ::add_tags_for_mp_players <- function add_tags_for_mp_players()
 {
-  let tbl = ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
+  let tbl = ::get_mplayers_list(GET_MPLAYERS_LIST, true)
   if (tbl)
   {
     foreach(block in tbl)
       if(!block.isBot)
-        ::clanUserTable[block.name] <- ::getTblValue("clanTag", block, "")
+        ::clanUserTable[block.name] <- getTblValue("clanTag", block, "")
   }
 }
 
@@ -879,5 +885,5 @@ local MP_CHAT_PARAMS = {
 {
   if(!(playerNick in ::clanUserTable))
     ::add_tags_for_mp_players()
-  return ::getTblValue(playerNick, ::clanUserTable, "")
+  return getTblValue(playerNick, ::clanUserTable, "")
 }

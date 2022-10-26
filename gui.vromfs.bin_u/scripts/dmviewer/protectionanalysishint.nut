@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let results = require("%scripts/dmViewer/protectionAnalysisHintResults.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { round } = require("math")
+
 let { set_protection_analysis_editing } = require("hangarEventCommand")
 
 ::gui_handlers.ProtectionAnalysisHint <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -37,10 +46,10 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
           res[partId] <- isShow
       return res
     }
-    angle = function(params, id, resultCfg) {
+    angle = function(params, _id, _resultCfg) {
       return max((params?.angle ?? 0.0), 0.0)
     }
-    headingAngle = function(params, id, resultCfg) {
+    headingAngle = function(params, _id, _resultCfg) {
       return max((params?.headingAngle ?? 0.0), 0.0)
     }
   }
@@ -49,82 +58,82 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     penetratedArmor = function(val) {
       if (!val)
         return ""
-      return ::loc("protection_analysis/hint/armor") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val)) + " " + ::loc("measureUnits/mm")
+      return loc("protection_analysis/hint/armor") + loc("ui/colon") +
+        colorize("activeTextColor", round(val)) + " " + loc("measureUnits/mm")
     }
     ricochetProb = function(val) {
       if (val < 0.1)
         return ""
-      return ::loc("protection_analysis/hint/ricochetProb") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val * 100) + ::loc("measureUnits/percent"))
+      return loc("protection_analysis/hint/ricochetProb") + loc("ui/colon") +
+        colorize("activeTextColor", round(val * 100) + loc("measureUnits/percent"))
     }
     parts = function(val) {
       if (::u.isEmpty(val))
         return ""
-      let prefix = ::loc("ui/bullet") + " "
-      let partNames = [ ::loc("protection_analysis/hint/parts/list") + ::loc("ui/colon") ]
+      let prefix = loc("ui/bullet") + " "
+      let partNames = [ loc("protection_analysis/hint/parts/list") + loc("ui/colon") ]
       foreach (partId, isShow in val)
         if (isShow)
-          partNames.append(prefix + ::loc("dmg_msg_short/" + partId))
+          partNames.append(prefix + loc("dmg_msg_short/" + partId))
       return ::g_string.implode(partNames, "\n")
     }
     angle = function(val)
     {
-      return ::loc("bullet_properties/hitAngle") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val)) + ::loc("measureUnits/deg")
+      return loc("bullet_properties/hitAngle") + loc("ui/colon") +
+        colorize("activeTextColor", round(val)) + loc("measureUnits/deg")
     }
     headingAngle = function(val)
     {
-      return ::loc("protection_analysis/hint/headingAngle") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val)) + ::loc("measureUnits/deg")
+      return loc("protection_analysis/hint/headingAngle") + loc("ui/colon") +
+        colorize("activeTextColor", round(val)) + loc("measureUnits/deg")
     }
   }
 
   function initScreen()
   {
-    cursorObj = scene.findObject("target_cursor")
-    cursorObj.setUserData(this)
+    this.cursorObj = this.scene.findObject("target_cursor")
+    this.cursorObj.setUserData(this)
 
-    hintObj = scene.findObject("dmviewer_hint")
-    hintObj.setUserData(this)
+    this.hintObj = this.scene.findObject("dmviewer_hint")
+    this.hintObj.setUserData(this)
 
-    cursorRadius = cursorObj.getSize()[0] / 2
+    this.cursorRadius = this.cursorObj.getSize()[0] / 2
   }
 
   function onEventProtectionAnalysisResult(params)
   {
-    update(params)
+    this.update(params)
   }
 
   function getCursorIsActive() {
-    return isValid() && scene.isHovered()
+    return this.isValid() && this.scene.isHovered()
   }
 
   function update(params) {
-    let isCursorActive = getCursorIsActive()
+    let isCursorActive = this.getCursorIsActive()
     set_protection_analysis_editing(!isCursorActive)
 
-    if (::u.isEqual(params, lastHintParams))
+    if (::u.isEqual(params, this.lastHintParams))
       return
-    lastHintParams = params
+    this.lastHintParams = params
 
-    if (!::check_obj(cursorObj) || !::check_obj(hintObj))
+    if (!checkObj(this.cursorObj) || !checkObj(this.hintObj))
       return
 
     let isShow = isCursorActive && !::u.isEmpty(params)
-    hintObj.show(isShow)
+    this.hintObj.show(isShow)
 
     let resultCfg = results.getResultTypeByParams(params)
-    cursorObj["background-color"] = isCursorActive
+    this.cursorObj["background-color"] = isCursorActive
       ? ::get_main_gui_scene().getConstantValue(resultCfg.color)
       : "#00000000"
 
     if (!isShow)
       return
 
-    let getValue = getValueByResultCfg
-    let printValue = printValueByParam
-    let title = ::colorize(resultCfg.color, ::loc(resultCfg.loc))
+    let getValue = this.getValueByResultCfg
+    let printValue = this.printValueByParam
+    let title = colorize(resultCfg.color, loc(resultCfg.loc))
     local desc = ::u.map(resultCfg.params, function(id) {
       let gFunc = getValue?[id]
       let val = gFunc ? gFunc(params, id, resultCfg) : 0
@@ -133,20 +142,20 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     })
     desc = ::g_string.implode(desc, "\n")
 
-    hintObj.findObject("dmviewer_title").setValue(title)
-    hintObj.findObject("dmviewer_desc").setValue(desc)
+    this.hintObj.findObject("dmviewer_title").setValue(title)
+    this.hintObj.findObject("dmviewer_desc").setValue(desc)
   }
 
-  function onTargetingCursorTimer(obj, dt)
+  function onTargetingCursorTimer(obj, _dt)
   {
-    if(!::check_obj(obj))
+    if(!checkObj(obj))
       return
     let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
-    obj.left = cursorPos[0] - cursorRadius
-    obj.top  = cursorPos[1] - cursorRadius
+    obj.left = cursorPos[0] - this.cursorRadius
+    obj.top  = cursorPos[1] - this.cursorRadius
   }
 
-  function onDMViewerHintTimer(obj, dt)
+  function onDMViewerHintTimer(obj, _dt)
   {
     ::dmViewer.placeHint(obj)
   }
@@ -154,7 +163,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
 
 return {
   open = function (scene) {
-    if (::check_obj(scene))
+    if (checkObj(scene))
       ::handlersManager.loadHandler(::gui_handlers.ProtectionAnalysisHint, { scene = scene })
   }
 }

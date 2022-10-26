@@ -82,8 +82,8 @@
       "type": "domination",
       "environment": "Day",
       "weather": "hazy",
-      "locName": "missions/_N2M;location/air_denmark",
-      "locDesc": "missions/_N2M/desc",
+      "locName": "missions/_I2M;location/air_denmark",
+      "locDesc": "missions/_I2M/desc",
       "scoreLimit": 15000,
       "timeLimit": 180,
       "deathPenaltyMul": 0.0,
@@ -131,6 +131,34 @@
   },
   "imports": {
     "import_record": [
+      {
+        "file": "gameData/missions/cta/planes/simulator/air_denmark/cnv_convoys_template_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/simulator/air_denmark/lbt_landbattles_template_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
       {
         "file": "gameData/missions/cta/planes/simulator/air_denmark/at_assaults_template_part.blk",
         "importAreas": true,
@@ -272,6 +300,20 @@
         "excludes": {}
       },
       {
+        "file": "gameData/missions/cta/planes/simulator/air_denmark/scnv_sea_convoys_template_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/planes/simulator/air_denmark/sbt_bombers_template_part.blk",
         "importAreas": true,
         "importUnits": true,
@@ -287,20 +329,6 @@
       },
       {
         "file": "gameData/missions/cta/planes/simulator/air_denmark/flt_frontline_template_part.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/planes/simulator/air_denmark/lbt_landbattles_template_part.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -357,6 +385,10 @@
           {
             "value": 5,
             "var": "bdt_t2_active_bases_max_count"
+          },
+          {
+            "value": 2,
+            "var": "lbt_battle_max_battle_num"
           }
         ],
         "comment": [
@@ -374,13 +406,15 @@
           },
           {
             "value": "nastrojki avianoscev"
+          },
+          {
+            "value": "enabling ships spawns"
+          },
+          {
+            "value": "limit for land battles"
           }
         ],
         "varSetBool": [
-          {
-            "value": false,
-            "var": "ft_helicopters_pad_exclusive"
-          },
           {
             "value": true,
             "var": "lpt_is_launch_alowed"
@@ -396,6 +430,10 @@
           {
             "value": true,
             "var": "bt_is_launch_alowed"
+          },
+          {
+            "value": false,
+            "var": "cnv_is_launch_alowed"
           },
           {
             "value": true,
@@ -419,14 +457,14 @@
           },
           {
             "value": true,
+            "var": "pt_is_launch_alowed"
+          },
+          {
+            "value": true,
             "var": [
               "cr_t1_carriers_alowed",
               "cr_t2_carriers_alowed"
             ]
-          },
-          {
-            "value": true,
-            "var": "pt_is_launch_alowed"
           },
           {
             "value": true,
@@ -458,11 +496,16 @@
               "cr_detection_quest_is_on",
               "cr_destroy_quest_is_on"
             ]
+          },
+          {
+            "value": true,
+            "var": "pt_ship_spawn_enable"
           }
         ],
         "unitPutToSleep": {
           "target": [
             "bdt_armada",
+            "ft_armada",
             "bt_armada",
             "lbt_battles_armada",
             "sbt_armada",
@@ -4973,6 +5016,67 @@
             "t1_players_squad",
             "bt_t1_bomber",
             "at_t1_assault"
+          ]
+        }
+      },
+      {
+        "name": "bridges_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -6122.51,
+            0.0,
+            1488.16
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "air_denmark_bridges_squad"
+        }
+      },
+      {
+        "name": "all_ships_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -4668.65,
+            0.0,
+            82981.7
+          ]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": [
+            "pt_all_ships_squad",
+            "scnv_all_convoys_squad"
           ]
         }
       }

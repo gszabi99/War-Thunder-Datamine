@@ -1,6 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
+let { register_command } = require("console")
 
 let activeSeenLists = {}
 
@@ -21,7 +27,7 @@ local SeenList = class {
   constructor(listId) {
     this.id = listId
     activeSeenLists[listId] <- this
-    this.setCanBeNewFunc(@(entity) true)
+    this.setCanBeNewFunc(@(_entity) true)
 
     this.entitiesData = {}
     this.subListGetters = {}
@@ -214,24 +220,26 @@ local SeenList = class {
     }
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
     this.isInited = false
     this.entitiesData.clear()
   }
 
-  function onEventAccountReset(p)
+  function onEventAccountReset(_p)
   {
     this.clearSeenData()
   }
 }
 
+let function clearAllSeenData() {
+  foreach(seenList in activeSeenLists)
+    seenList.clearSeenData()
+}
+
+register_command(clearAllSeenData, "debug.reset_unseen")
+
 return {
   get = @(id) activeSeenLists?[id] ?? SeenList(id)
   isSeenList = @(id) activeSeenLists?[id] != null
-
-  clearAllSeenData = function() {
-    foreach(seenList in activeSeenLists)
-      seenList.clearSeenData()
-  }
 }

@@ -6,7 +6,7 @@ tdiv {
   flow:t='h-flow'
   flow-align:t='<<flowAlign>>'
 
-  include "%gui/commonParts/imgFrame"
+  include "%gui/commonParts/imgFrame.tpl"
 }
 <</ribbons>>
 
@@ -18,6 +18,6 @@ tdiv {
   flow:t='h-flow'
   flow-align:t='left'
 
-  include "%gui/commonParts/imgFrame"
+  include "%gui/commonParts/imgFrame.tpl"
 }
 <</medals>>

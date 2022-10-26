@@ -183,7 +183,7 @@
     "BombBayCd": 0.0,
     "FuseCd": 1E-06,
     "AirbrakeCd": 0.12,
-    "CockpitDoorCd": 0.007,
+    "CockpitDoorCd": 0.05321,
     "SweepAxisByMachAuto": [
       0.0,
       0.0,
@@ -475,7 +475,7 @@
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 0.0,
-        "Elevator": 2.6
+        "Elevator": 2.0
       },
       "Polar": {
         "OswaldsEfficiencyNumber": 1.0,
@@ -546,7 +546,7 @@
       "FlowInertia": 0.0500054,
       "SlipStreamDistance": 9000.0,
       "Areas": {
-        "Main": 2.7,
+        "Main": 2.1,
         "Rudder": 0.0
       },
       "Polar": {
@@ -744,7 +744,7 @@
       "RPMMin": 12500.0,
       "RPMMax": 23000.0,
       "RPMAfterburner": 23000.0,
-      "RPMMaxAllowed": 26000.0,
+      "RPMMaxAllowed": 29000.0,
       "StandbyFriction": 2E-05,
       "FuelConsumptionOnIdle": 0.175,
       "FuelConsumptionOnHalfThr": 0.8,
@@ -1382,13 +1382,13 @@
     "Geometry": {
       "Radius": 7.56,
       "NumBlades": 4,
-      "BladePitch0": 0.0,
+      "BladePitch0": 4.0,
       "BladeWidth0": 0.07,
-      "BladePitch1": 0.0,
+      "BladePitch1": 2.0,
       "BladeWidth1": 0.072,
       "BladePitch2": 0.0,
       "BladeWidth2": 0.072,
-      "BladePitch3": 0.0,
+      "BladePitch3": -2.0,
       "BladeWidth3": 0.072,
       "FlyBarStabilizationMult": 2.0,
       "FlyBarAngleMax": 45.0,
@@ -1417,13 +1417,13 @@
       ],
       "AirFlowSolver": true,
       "AirFlow1": [
-        -100.0,
-        200.0,
+        -30.0,
+        30.0,
         1.0,
         1.0
       ],
       "AirFlow2": [
-        -16.0,
+        -10.0,
         20.0,
         1.0,
         1.0
@@ -1447,10 +1447,10 @@
         1.2
       ],
       "FlapCompensatorEfficiency": [
-        240.0,
-        0.6,
-        340.0,
-        0.0
+        270.0,
+        0.9,
+        350.0,
+        0.05
       ],
       "ArcadeTangAirFlowMin": 83.0,
       "ArcadeAxialAirFlowRange": [
@@ -1461,8 +1461,8 @@
       "ScreenEffectThrustMult10Dist": 16.0,
       "ScreenEffectVelMult": 0.005,
       "VortexRingVFlowMult": [
-        0.4,
-        2.9
+        0.6,
+        1.9
       ],
       "VortexRingVFlowToReturnDist": 3.7,
       "NonAxialFlowShakeRange": [
@@ -1475,15 +1475,15 @@
     "Polar": {
       "lineClCoeff": 0.088,
       "Cl0": 0.07,
-      "alphaCritHigh": 16.5,
-      "alphaCritLow": -14.5,
+      "alphaCritHigh": 18.5,
+      "alphaCritLow": -16.5,
       "ClCritHigh": 1.15,
       "ClCritLow": -0.85,
       "CdMin": 0.011,
       "AfterCritParabAngle": 3.0,
       "AfterCritDeclineCoeff": 0.00222,
-      "AfterCritMaxDistanceAngle": 28.0,
-      "ClAfterCritHigh": 1.1,
+      "AfterCritMaxDistanceAngle": 38.0,
+      "ClAfterCritHigh": 1.4,
       "ClAfterCritLow": -1.1,
       "CxAfterCoeff": 0.01,
       "OswaldsEfficiencyNumber": 0.85,
@@ -2540,7 +2540,7 @@
         1.0
       ],
       "YawHeadingToYawRateMultByReqRoll": [
-        0.0,
+        10.0,
         1.0,
         55.0,
         0.2

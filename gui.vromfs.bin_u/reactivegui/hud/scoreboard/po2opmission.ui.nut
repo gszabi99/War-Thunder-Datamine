@@ -1,3 +1,4 @@
+from "%rGui/globals/ui_library.nut" import *
 let { roundTimeLeft, missionProgressScore } = require("%rGui/missionState.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::Popup <- class
 {
   static POPUP_BLK = "%gui/popup/popup.blk"
@@ -16,18 +22,18 @@
 
   constructor(config)
   {
-    onClickPopupAction = config.onClickPopupAction
-    buttons = config.buttons || []
-    handler = config.handler
-    groupName = config.groupName
-    title = config.title
-    message = config.msg
-    lifetime = config.lifetime
+    this.onClickPopupAction = config.onClickPopupAction
+    this.buttons = config.buttons || []
+    this.handler = config.handler
+    this.groupName = config.groupName
+    this.title = config.title
+    this.message = config.msg
+    this.lifetime = config.lifetime
   }
 
   function isValidView()
   {
-    return ::check_obj(selfObj)
+    return checkObj(this.selfObj)
   }
 
   function show(popupNestObj)
@@ -35,38 +41,38 @@
     popupNestObj.setUserData(this)
 
     let popupGuiScene = ::get_cur_gui_scene()
-    selfObj = popupGuiScene.createElementByObject(popupNestObj, POPUP_BLK, "popup", this)
+    this.selfObj = popupGuiScene.createElementByObject(popupNestObj, this.POPUP_BLK, "popup", this)
 
-    if(!::u.isEmpty(title))
-      selfObj.findObject("title").setValue(title)
+    if(!::u.isEmpty(this.title))
+      this.selfObj.findObject("title").setValue(this.title)
     else
-      selfObj.findObject("title").show(false)
+      this.selfObj.findObject("title").show(false)
 
-    selfObj.findObject("msg").setValue(message)
+    this.selfObj.findObject("msg").setValue(this.message)
 
-    let obj = selfObj.findObject("popup_buttons_place")
-    foreach (button in buttons)
+    let obj = this.selfObj.findObject("popup_buttons_place")
+    foreach (button in this.buttons)
     {
-      let buttonObj = popupGuiScene.createElementByObject(obj, POPUP_BUTTON_BLK, "Button_text", this)
+      let buttonObj = popupGuiScene.createElementByObject(obj, this.POPUP_BUTTON_BLK, "Button_text", this)
       buttonObj.id = button.id
       buttonObj.setValue(button.text)
     }
 
-    selfObj.setUserData(this)
+    this.selfObj.setUserData(this)
 
-    if (lifetime > 0)
-      selfObj.timer_interval_msec = lifetime.tostring()
+    if (this.lifetime > 0)
+      this.selfObj.timer_interval_msec = this.lifetime.tostring()
   }
 
   function destroy(isForced = false)
   {
-    if (::checkObj(selfObj))
-      selfObj.fade = isForced ? "forced" : "out"
+    if (checkObj(this.selfObj))
+      this.selfObj.fade = isForced ? "forced" : "out"
   }
 
   function requestDestroy(isForced = true)
   {
-    destroy(isForced)
+    this.destroy(isForced)
     ::g_popups.remove(this)
   }
 
@@ -74,43 +80,43 @@
   {
     if (!func)
       return
-    if (handler != null)
-      func.call(handler)
+    if (this.handler != null)
+      func.call(this.handler)
     else
       func()
   }
 
-  function onClickPopup(obj)
+  function onClickPopup(_obj)
   {
-    if (onClickPopupAction)
-      performPopupAction(onClickPopupAction)
-    requestDestroy()
+    if (this.onClickPopupAction)
+      this.performPopupAction(this.onClickPopupAction)
+    this.requestDestroy()
   }
 
-  function onRClickPopup(obj)
+  function onRClickPopup(_obj)
   {
-    requestDestroy()
+    this.requestDestroy()
   }
 
-  function onClosePopup(obj)
+  function onClosePopup(_obj)
   {
-    requestDestroy()
+    this.requestDestroy()
   }
 
   function onPopupButtonClick(obj)
   {
     let id = obj?.id
-    let button = buttons.findvalue(@(b) b.id == id)
+    let button = this.buttons.findvalue(@(b) b.id == id)
     obj.getScene().performDelayed(this, function() {
-      if (!isValidView())
+      if (!this.isValidView())
         return
-      performPopupAction(button?.func)
-      requestDestroy()
+      this.performPopupAction(button?.func)
+      this.requestDestroy()
     })
   }
 
-  function onTimerUpdate(obj, dt)
+  function onTimerUpdate(_obj, _dt)
   {
-    requestDestroy(false)
+    this.requestDestroy(false)
   }
 }

@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { startLogout } = require("%scripts/login/logout.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let {
@@ -15,8 +20,8 @@ let function onLogout() {
 
 addListenersWithoutEnv({
   SignOut = @(_) onLogout()
-  XboxSystemUIReturn = @(p) updateMultiplayerPrivilege()
-  LoginComplete = @(p) updateMultiplayerPrivilege()
+  XboxSystemUIReturn = @(_p) updateMultiplayerPrivilege()
+  LoginComplete = @(_p) updateMultiplayerPrivilege()
 })
 
 ::xbox_on_start_logout <- startLogout

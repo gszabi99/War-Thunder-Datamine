@@ -1,7 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 ::gui_handlers.ChooseAmountWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/wndLib/chooseAmountWnd"
+  sceneTplName = "%gui/wndLib/chooseAmountWnd.tpl"
   needVoiceChat = false
 
   parentObj = null
@@ -25,66 +33,66 @@
         "minValue", "maxValue", "curValue", "valueStep"])
       res[key] <- this[key]
 
-    res.needSlider <- minValue != maxValue
-    res.hasPopupMenuArrow <- ::check_obj(parentObj)
+    res.needSlider <- this.minValue != this.maxValue
+    res.hasPopupMenuArrow <- checkObj(this.parentObj)
     return res
   }
 
   function initScreen()
   {
-    if (::check_obj(parentObj))
-      align = ::g_dagui_utils.setPopupMenuPosAndAlign(parentObj, align, scene.findObject("popup_frame"))
-    updateButtons()
-    updateValueText()
+    if (checkObj(this.parentObj))
+      this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.parentObj, this.align, this.scene.findObject("popup_frame"))
+    this.updateButtons()
+    this.updateValueText()
   }
 
   function updateButtons()
   {
-    let buttonDecObj = scene.findObject("buttonDec")
-    if (::check_obj(buttonDecObj))
-      buttonDecObj.enable(curValue != minValue)
-    let buttonIncObj = scene.findObject("buttonInc")
-    if (::check_obj(buttonIncObj))
-      buttonIncObj.enable(curValue != maxValue)
+    let buttonDecObj = this.scene.findObject("buttonDec")
+    if (checkObj(buttonDecObj))
+      buttonDecObj.enable(this.curValue != this.minValue)
+    let buttonIncObj = this.scene.findObject("buttonInc")
+    if (checkObj(buttonIncObj))
+      buttonIncObj.enable(this.curValue != this.maxValue)
   }
 
   function updateValueText()
   {
-    if (!getValueText)
+    if (!this.getValueText)
       return
-    local stakeTextObj = scene.findObject("cur_value_text")
-    stakeTextObj.setValue(getValueText(curValue))
+    local stakeTextObj = this.scene.findObject("cur_value_text")
+    stakeTextObj.setValue(this.getValueText(this.curValue))
   }
 
   function onValueChange(obj)
   {
-    curValue = obj.getValue()
-    updateButtons()
-    updateValueText()
+    this.curValue = obj.getValue()
+    this.updateButtons()
+    this.updateValueText()
   }
 
   function changeSliderValue(newValue)
   {
-    newValue = clamp(newValue, minValue, maxValue)
-    if (newValue != curValue)
-      scene.findObject("amount_slider").setValue(newValue)
+    newValue = clamp(newValue, this.minValue, this.maxValue)
+    if (newValue != this.curValue)
+      this.scene.findObject("amount_slider").setValue(newValue)
   }
 
-  function onButtonDec(obj) { changeSliderValue(curValue - valueStep) }
-  function onButtonInc(obj) { changeSliderValue(curValue + valueStep) }
+  function onButtonDec(_obj) { this.changeSliderValue(this.curValue - this.valueStep) }
+  function onButtonInc(_obj) { this.changeSliderValue(this.curValue + this.valueStep) }
 
   function onCancel()
   {
-    if (onCancelCb)
-      onCancelCb()
-    goBack()
+    if (this.onCancelCb)
+      this.onCancelCb()
+    this.goBack()
   }
 
   function onAccept()
   {
-    if (onAcceptCb)
-      onAcceptCb(curValue)
-    goBack()
+    if (this.onAcceptCb)
+      this.onAcceptCb(this.curValue)
+    this.goBack()
   }
 }
 

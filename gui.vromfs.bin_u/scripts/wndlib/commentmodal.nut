@@ -1,5 +1,12 @@
-::gui_modal_comment <- function gui_modal_comment(owner=null, titleText=null, buttonText=null, callbackFunc=null, isCommentRequired=false)
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_modal_comment <- function gui_modal_comment(owner=null, titleText=null, buttonText=null, callbackFunc=null, isCommentRequired=false) {
   ::gui_start_modal_wnd(::gui_handlers.commentModalHandler, {
     titleText = titleText
     buttonText = buttonText
@@ -13,36 +20,36 @@
 {
   function initScreen()
   {
-    if (titleText && titleText.len())
-      scene.findObject("comment_wnd_title").setValue(titleText)
-    if (buttonText && buttonText.len())
-      scene.findObject("ok_btn").setValue(buttonText)
-    onChangeComment()
+    if (this.titleText && this.titleText.len())
+      this.scene.findObject("comment_wnd_title").setValue(this.titleText)
+    if (this.buttonText && this.buttonText.len())
+      this.scene.findObject("ok_btn").setValue(this.buttonText)
+    this.onChangeComment()
 
-    ::select_editbox(scene.findObject("comment_editbox"))
+    ::select_editbox(this.scene.findObject("comment_editbox"))
   }
 
   function onChangeComment()
   {
-    comment = scene.findObject("comment_editbox").getValue() || ""
-    scene.findObject("ok_btn").enable(!isCommentRequired || comment.len() > 0)
+    this.comment = this.scene.findObject("comment_editbox").getValue() || ""
+    this.scene.findObject("ok_btn").enable(!this.isCommentRequired || this.comment.len() > 0)
   }
 
   function onOk()
   {
-    isConfirmed = true
-    goBack()
+    this.isConfirmed = true
+    this.goBack()
   }
 
   function afterModalDestroy()
   {
-    if (!isConfirmed || !callbackFunc || (isCommentRequired && comment.len() == 0))
+    if (!this.isConfirmed || !this.callbackFunc || (this.isCommentRequired && this.comment.len() == 0))
       return
 
-    if (owner)
-      callbackFunc.call(owner, comment)
+    if (this.owner)
+      this.callbackFunc.call(this.owner, this.comment)
     else
-      callbackFunc(comment)
+      this.callbackFunc(this.comment)
   }
 
   comment = ""

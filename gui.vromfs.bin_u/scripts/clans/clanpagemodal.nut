@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getPlayerName,
@@ -21,18 +28,18 @@ let clan_member_list = [
   {
     id = "activity"
     lbDataType = ::g_lb_data_type.NUM
-    field = @() ::has_feature("ClanVehicles") ? "totalPeriodActivity" : "totalActivity"
+    field = @() hasFeature("ClanVehicles") ? "totalPeriodActivity" : "totalActivity"
     showByFeature = "ClanActivity"
-    getCellTooltipText = function(data) { return loc("clan/personal/" + id + "/cell/desc") }
-    getTooltipText  = @(depth) ::loc("clan/personal/activity/desc",
+    getCellTooltipText = function(_data) { return loc("clan/personal/" + this.id + "/cell/desc") }
+    getTooltipText  = @(depth) loc("clan/personal/activity/desc",
       {historyDepth = depth})
   }
   {
     id = "role",
     lbDataType = ::g_lb_data_type.ROLE,
     sortId = "roleRank"
-    sortPrepare = function(member) { member[sortId] <- ::clan_get_role_rank(member.role) }
-    getCellTooltipText = function(data) { return lbDataType.getPrimaryTooltipText(::getTblValue(id, data)) }
+    sortPrepare = function(member) { member[this.sortId] <- ::clan_get_role_rank(member.role) }
+    getCellTooltipText = function(data) { return this.lbDataType.getPrimaryTooltipText(getTblValue(this.id, data)) }
   }
   {id = "date", lbDataType = ::g_lb_data_type.DATE }
 ]
@@ -99,115 +106,115 @@ foreach(idx, item in clan_member_list)
 
   function initScreen()
   {
-    playerByRow   = []
-    playerByRowLb = []
+    this.playerByRow   = []
+    this.playerByRowLb = []
 
-    if (clanIdStrReq == "" && clanNameReq == "" && clanTagReq == "")
+    if (this.clanIdStrReq == "" && this.clanNameReq == "" && this.clanTagReq == "")
     {
-      goBack()
+      this.goBack()
       return
     }
-    curWwCategory = ::g_lb_category.EVENTS_PERSONAL_ELO
-    initLbTable()
-    curMode = getCurDMode()
-    reinitClanWindow()
+    this.curWwCategory = ::g_lb_category.EVENTS_PERSONAL_ELO
+    this.initLbTable()
+    this.curMode = this.getCurDMode()
+    this.reinitClanWindow()
   }
 
   function setDefaultSort()
   {
-    statsSortBy = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(curMode).clanDataEnding
+    this.statsSortBy = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding
   }
 
   function reinitClanWindow()
   {
     if (::is_in_clan() &&
-      (::clan_get_my_clan_id() == clanIdStrReq ||
-       ::clan_get_my_clan_name() == clanNameReq ||
-       ::clan_get_my_clan_tag() == clanTagReq))
+      (::clan_get_my_clan_id() == this.clanIdStrReq ||
+       ::clan_get_my_clan_name() == this.clanNameReq ||
+       ::clan_get_my_clan_tag() == this.clanTagReq))
     {
       ::requestMyClanData()
       if (!::my_clan_info)
         return
 
-      clanData = ::my_clan_info
+      this.clanData = ::my_clan_info
 
-      setDefaultSort()
-      fillClanPage()
+      this.setDefaultSort()
+      this.fillClanPage()
       return
     }
-    if (clanIdStrReq == "" && clanNameReq == "" && clanTagReq == "")
+    if (this.clanIdStrReq == "" && this.clanNameReq == "" && this.clanTagReq == "")
       return
 
-    taskId = ::clan_request_info(clanIdStrReq, clanNameReq, clanTagReq)
-    if (taskId >= 0)
+    this.taskId = ::clan_request_info(this.clanIdStrReq, this.clanNameReq, this.clanTagReq)
+    if (this.taskId >= 0)
     {
-      ::set_char_cb(this, slotOpCb)
-      afterSlotOp = function()
+      ::set_char_cb(this, this.slotOpCb)
+      this.afterSlotOp = function()
       {
-        clanData = ::get_clan_info_table()
-        if (!clanData)
-          return goBack()
+        this.clanData = ::get_clan_info_table()
+        if (!this.clanData)
+          return this.goBack()
 
-        setDefaultSort()
-        fillClanPage()
-        ::broadcastEvent("ClanInfoAvailable", {clanId = clanData.id})
+        this.setDefaultSort()
+        this.fillClanPage()
+        ::broadcastEvent("ClanInfoAvailable", {clanId = this.clanData.id})
       }
-      afterSlotOpError = function(result)
+      this.afterSlotOpError = function(_result)
       {
-        goBack()
+        this.goBack()
         return
       }
     }
     else
     {
-      goBack()
-      this.msgBox("unknown_identification", ::loc("charServer/updateError/13"),
+      this.goBack()
+      this.msgBox("unknown_identification", loc("charServer/updateError/13"),
         [["ok", function() {} ]], "ok")
-      ::dagor.debug(format("Failed to find clan by id: %s", clanIdStrReq))
+      log(format("Failed to find clan by id: %s", this.clanIdStrReq))
       return
     }
   }
 
   function initLbTable()
   {
-    lbTableWeak = ::gui_handlers.LeaderboardTable.create({
-      scene = scene.findObject("lb_table_nest")
-      onCategoryCb = ::Callback(onCategory, this)
-      onRowSelectCb = ::Callback(onSelectedPlayerIdxLb, this)
-      onRowHoverCb = ::show_console_buttons ? ::Callback(onSelectedPlayerIdxLb, this) : null
-      onRowDblClickCb = ::Callback(onUserCard, this)
-      onRowRClickCb = ::Callback(onUserRClick, this)
+    this.lbTableWeak = ::gui_handlers.LeaderboardTable.create({
+      scene = this.scene.findObject("lb_table_nest")
+      onCategoryCb = Callback(this.onCategory, this)
+      onRowSelectCb = Callback(this.onSelectedPlayerIdxLb, this)
+      onRowHoverCb = ::show_console_buttons ? Callback(this.onSelectedPlayerIdxLb, this) : null
+      onRowDblClickCb = Callback(this.onUserCard, this)
+      onRowRClickCb = Callback(this.onUserRClick, this)
     })
   }
 
-  function onEventClanInfoUpdate(params = {})
+  function onEventClanInfoUpdate(_params = {})
   {
-    if (clanIdStrReq == ::clan_get_my_clan_id()
-        || (clanData && clanData.id == ::clan_get_my_clan_id()))
+    if (this.clanIdStrReq == ::clan_get_my_clan_id()
+        || (this.clanData && this.clanData.id == ::clan_get_my_clan_id()))
     {
       if (!::my_clan_info)
-        return goBack()
-      clanData = ::my_clan_info
-      fillClanPage()
+        return this.goBack()
+      this.clanData = ::my_clan_info
+      this.fillClanPage()
     }
   }
 
-  function onEventProfileUpdated(p)
+  function onEventProfileUpdated(_p)
   {
-    fillClanManagment()
+    this.fillClanManagment()
   }
 
-  function onEventContactsGroupUpdate(p) {
-    doWhenActiveOnce("reinitClanWindow")
+  function onEventContactsGroupUpdate(_p) {
+    this.doWhenActiveOnce("reinitClanWindow")
   }
 
   function fillClanInfoRow(id, text, feature = "")
   {
-    let obj = scene.findObject(id)
-    if (!::check_obj(obj))
+    let obj = this.scene.findObject(id)
+    if (!checkObj(obj))
       return
 
-    if (!::u.isEmpty(feature) && !::has_feature(feature))
+    if (!::u.isEmpty(feature) && !hasFeature(feature))
       text = ""
     text = ::g_chat.filterMessageText(text, false)
 
@@ -216,93 +223,93 @@ foreach(idx, item in clan_member_list)
 
   function fillClanPage()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    clanData = ::getFilteredClanData(clanData)
+    this.clanData = ::getFilteredClanData(this.clanData)
 
-    isMyClan = ::clan_get_my_clan_id() == clanData.id;
-    scene.findObject("clan_loading").show(false)
+    this.isMyClan = ::clan_get_my_clan_id() == this.clanData.id;
+    this.scene.findObject("clan_loading").show(false)
 
     this.showSceneBtn("clan-icon", true)
 
-    fillClanInfoRow("clan-region",
-      clanData.region != "" ? ::loc("clan/clan_region") + ::loc("ui/colon") + clanData.region : "",
+    this.fillClanInfoRow("clan-region",
+      this.clanData.region != "" ? loc("clan/clan_region") + loc("ui/colon") + this.clanData.region : "",
       "ClanRegions")
-    fillClanInfoRow("clan-about",
-      clanData.desc != "" || clanData.announcement != ""
+    this.fillClanInfoRow("clan-about",
+      this.clanData.desc != "" || this.clanData.announcement != ""
         ? ::g_string.implode(
-            [clanData.desc, ::has_feature("ClanAnnouncements") ? clanData.announcement : ""],
+            [this.clanData.desc, hasFeature("ClanAnnouncements") ? this.clanData.announcement : ""],
             "\n")
         : "")
-    fillClanInfoRow("clan-motto",
-      clanData.slogan != "" ? ::loc("clan/clan_slogan") + ::loc("ui/colon") + clanData.slogan : "")
+    this.fillClanInfoRow("clan-motto",
+      this.clanData.slogan != "" ? loc("clan/clan_slogan") + loc("ui/colon") + this.clanData.slogan : "")
 
-    fillCreatorData()
+    this.fillCreatorData()
 
-    scene.findObject("nest_lock_clan_req").clan_locked = !clanMembershipAcceptance.getValue(clanData) ? "yes" : "no"
+    this.scene.findObject("nest_lock_clan_req").clan_locked = !clanMembershipAcceptance.getValue(this.clanData) ? "yes" : "no"
 
         // Showing clan name in special header object if possible.
-    let clanName = clanData.tag + " " + clanData.name
-    let headerTextObj = scene.findObject("clan_page_header_text")
-    let clanTitleObj = scene.findObject("clan-title")
-    if (::checkObj(headerTextObj))
+    let clanName = this.clanData.tag + " " + this.clanData.name
+    let headerTextObj = this.scene.findObject("clan_page_header_text")
+    let clanTitleObj = this.scene.findObject("clan-title")
+    if (checkObj(headerTextObj))
     {
-      let locId = "clan/clanInfo/" + clanData.clanType.getTypeName()
-      let text = ::colorize(clanData.clanType.color, ::loc(locId, { clanName = clanName }))
+      let locId = "clan/clanInfo/" + this.clanData.clanType.getTypeName()
+      let text = colorize(this.clanData.clanType.color, loc(locId, { clanName = clanName }))
       headerTextObj.setValue(text)
       clanTitleObj.setValue("")
     }
     else
-      clanTitleObj.setValue(::colorize(clanData.clanType.color, clanName))
+      clanTitleObj.setValue(colorize(this.clanData.clanType.color, clanName))
 
-    let clanDate = clanData.getCreationDateText()
-    let dateText = ::loc("clan/creationDate") + " " + ::colorize("activeTextColor", clanDate)
+    let clanDate = this.clanData.getCreationDateText()
+    let dateText = loc("clan/creationDate") + " " + colorize("activeTextColor", clanDate)
 
-    let membersCountText = ::g_clans.getClanMembersCountText(clanData)
-    let countText = ::loc("clan/memberListTitle")
-      + ::loc("ui/parentheses/space", { text = ::colorize("activeTextColor", membersCountText) })
-    scene.findObject("clan-memberCount-date").setValue(::g_string.implode([countText, dateText], " "))
+    let membersCountText = ::g_clans.getClanMembersCountText(this.clanData)
+    let countText = loc("clan/memberListTitle")
+      + loc("ui/parentheses/space", { text = colorize("activeTextColor", membersCountText) })
+    this.scene.findObject("clan-memberCount-date").setValue(::g_string.implode([countText, dateText], " "))
 
-    fillClanRequirements()
+    this.fillClanRequirements()
 
     local updStatsText = time.buildTimeStr(time.getUtcMidnight(), false, false)
 
-    updStatsText = ::loc("ui/parentheses/space",
-      { text = format(::loc("clan/updateStatsTime"), updStatsText) })
-    scene.findObject("update_stats_info_text").setValue(
-      "<b>{0}</b> {1}".subst(::colorize("commonTextColor", ::loc("clan/stats")), updStatsText))
+    updStatsText = loc("ui/parentheses/space",
+      { text = format(loc("clan/updateStatsTime"), updStatsText) })
+    this.scene.findObject("update_stats_info_text").setValue(
+      "<b>{0}</b> {1}".subst(colorize("commonTextColor", loc("clan/stats")), updStatsText))
 
-    fillModeListBox(scene.findObject("clan_container"), getCurDMode(),
-      ::get_show_in_squadron_statistics, getAdditionalTabsArray())
-    fillClanManagment()
+    this.fillModeListBox(this.scene.findObject("clan_container"), this.getCurDMode(),
+      ::get_show_in_squadron_statistics, this.getAdditionalTabsArray())
+    this.fillClanManagment()
 
     this.showSceneBtn("clan_main_stats", true)
-    fillClanStats(clanData.astat)
+    this.fillClanStats(this.clanData.astat)
   }
 
   function fillCreatorData()
   {
-    let obj = scene.findObject("clan-prevChanges")
-    if (!::check_obj(obj))
+    let obj = this.scene.findObject("clan-prevChanges")
+    if (!checkObj(obj))
       return
 
-    let isVisible = ::has_feature("ClanChangedInfoData")
-                      && clanData.changedByUid != ""
-                      && clanData.changedByNick != ""
-                      && clanData.changedTime
+    let isVisible = hasFeature("ClanChangedInfoData")
+                      && this.clanData.changedByUid != ""
+                      && this.clanData.changedByNick != ""
+                      && this.clanData.changedTime
 
     local text = ""
     if (isVisible)
     {
-      text += ::loc("clan/lastChanges") + ::loc("ui/colon")
-      let color = ::my_user_id_str == clanData.changedByUid? "mainPlayerColor" : "activeTextColor"
+      text += loc("clan/lastChanges") + loc("ui/colon")
+      let color = ::my_user_id_str == this.clanData.changedByUid? "mainPlayerColor" : "activeTextColor"
       text += ::g_string.implode(
         [
-          ::colorize(color, getPlayerName(clanData.changedByNick))
-          clanData.getInfoChangeDateText()
+          colorize(color, getPlayerName(this.clanData.changedByNick))
+          this.clanData.getInfoChangeDateText()
         ]
-        ::loc("ui/comma")
+        loc("ui/comma")
       )
     }
     obj.setValue(text)
@@ -310,77 +317,77 @@ foreach(idx, item in clan_member_list)
 
   function fillClanRequirements()
   {
-    if (!clanData)
+    if (!this.clanData)
       return
 
-    scene.findObject("clan-membershipReq").setValue(
-      clanInfoView.getClanRequirementsText(clanData.membershipRequirements))
+    this.scene.findObject("clan-membershipReq").setValue(
+      clanInfoView.getClanRequirementsText(this.clanData.membershipRequirements))
   }
 
 
   function fillClanManagment()
   {
-    if (!clanData)
+    if (!this.clanData)
       return
 
     let adminMode = ::clan_get_admin_editor_mode()
     let myClanId = ::clan_get_my_clan_id();
     local showMembershipsButton = false
-    isMyClan = myClanId == clanData.id;
+    this.isMyClan = myClanId == this.clanData.id;
 
-    if (!isMyClan && myClanId == "-1" && ::clan_get_requested_clan_id() != clanData.id &&
-      clanMembershipAcceptance.getValue(clanData))
+    if (!this.isMyClan && myClanId == "-1" && ::clan_get_requested_clan_id() != this.clanData.id &&
+      clanMembershipAcceptance.getValue(this.clanData))
         showMembershipsButton = true
 
-    if(isMyClan || adminMode)
-      myRights = ::clan_get_role_rights(adminMode ? ::ECMR_CLANADMIN : ::clan_get_my_role())
+    if(this.isMyClan || adminMode)
+      this.myRights = ::clan_get_role_rights(adminMode ? ECMR_CLANADMIN : ::clan_get_my_role())
     else
-      myRights = []
+      this.myRights = []
 
-    let showBtnLock = clanMembershipAcceptance.canChange(clanData)
-    let hasLeaderRight = isInArray("LEADER", myRights)
-    let showMembershipsReqEditorButton = ( ::has_feature("ClansMembershipEditor") ) && (
-                                            ( isMyClan && isInArray("CHANGE_INFO", myRights) ) || ::clan_get_admin_editor_mode() )
-    let showClanSeasonRewards = ::has_feature("ClanSeasonRewardsLog") && (clanData.rewardLog.len() > 0)
+    let showBtnLock = clanMembershipAcceptance.canChange(this.clanData)
+    let hasLeaderRight = isInArray("LEADER", this.myRights)
+    let showMembershipsReqEditorButton = ( hasFeature("ClansMembershipEditor") ) && (
+                                            ( this.isMyClan && isInArray("CHANGE_INFO", this.myRights) ) || ::clan_get_admin_editor_mode() )
+    let showClanSeasonRewards = hasFeature("ClanSeasonRewardsLog") && (this.clanData.rewardLog.len() > 0)
 
     let buttonsList = {
-      btn_showRequests = ((isMyClan && (isInArray("MEMBER_ADDING", myRights) || isInArray("MEMBER_REJECT", myRights))) || adminMode) && clanData.candidates.len() > 0
-      btn_leaveClan = isMyClan && (!hasLeaderRight || ::g_clans.getLeadersCount(clanData) > 1)
-      btn_edit_clan_info = ::ps4_is_ugc_enabled() && ((isMyClan && isInArray("CHANGE_INFO", myRights)) || adminMode)
-      btn_upgrade_clan = clanData.clanType.getNextType() != ::g_clan_type.UNKNOWN && (adminMode || (isMyClan && hasLeaderRight))
-      btn_showBlacklist = ((isMyClan && isInArray("MEMBER_BLACKLIST", myRights)) || adminMode) && clanData.blacklist.len()
+      btn_showRequests = ((this.isMyClan && (isInArray("MEMBER_ADDING", this.myRights) || isInArray("MEMBER_REJECT", this.myRights))) || adminMode) && this.clanData.candidates.len() > 0
+      btn_leaveClan = this.isMyClan && (!hasLeaderRight || ::g_clans.getLeadersCount(this.clanData) > 1)
+      btn_edit_clan_info = ::ps4_is_ugc_enabled() && ((this.isMyClan && isInArray("CHANGE_INFO", this.myRights)) || adminMode)
+      btn_upgrade_clan = this.clanData.clanType.getNextType() != ::g_clan_type.UNKNOWN && (adminMode || (this.isMyClan && hasLeaderRight))
+      btn_showBlacklist = ((this.isMyClan && isInArray("MEMBER_BLACKLIST", this.myRights)) || adminMode) && this.clanData.blacklist.len()
       btn_lock_clan_req = showBtnLock
-      img_lock_clan_req = !showBtnLock && !clanMembershipAcceptance.getValue(clanData)
-      btn_complain = !isMyClan
+      img_lock_clan_req = !showBtnLock && !clanMembershipAcceptance.getValue(this.clanData)
+      btn_complain = !this.isMyClan
       btn_membership_req = showMembershipsButton
-      btn_log = ::has_feature("ClanLog")
+      btn_log = hasFeature("ClanLog")
       btn_season_reward_log = showClanSeasonRewards
       clan_awards_container = showClanSeasonRewards
       btn_clan_membership_req_edit = showMembershipsReqEditorButton
-      btn_clanSquads = ::has_feature("ClanSquads") && isMyClan
-      btn_clanActivity = ::has_feature("ClanVehicles") && isMyClan
-      btn_clanVehicles = ::has_feature("ClanVehicles") && isMyClan
+      btn_clanSquads = hasFeature("ClanSquads") && this.isMyClan
+      btn_clanActivity = hasFeature("ClanVehicles") && this.isMyClan
+      btn_clanVehicles = hasFeature("ClanVehicles") && this.isMyClan
     }
-    ::showBtnTable(scene, buttonsList)
+    ::showBtnTable(this.scene, buttonsList)
 
     this.showSceneBtn("clan_actions", buttonsList.btn_showRequests
       || buttonsList.btn_clanSquads
       || buttonsList.btn_log)
 
-    let showRequestsBtn = scene.findObject("btn_showRequests")
-    if (::checkObj(showRequestsBtn))
+    let showRequestsBtn = this.scene.findObject("btn_showRequests")
+    if (checkObj(showRequestsBtn))
     {
-      let isShow = ::getTblValue("btn_showRequests", buttonsList, false)
-      showRequestsBtn.setValue(::loc("clan/btnShowRequests")+" ("+clanData.candidates.len()+")")
+      let isShow = getTblValue("btn_showRequests", buttonsList, false)
+      showRequestsBtn.setValue(loc("clan/btnShowRequests")+" ("+this.clanData.candidates.len()+")")
       showRequestsBtn.wink = isShow ? "yes" : "no"
     }
 
     if (showClanSeasonRewards)
     {
-      let containerObj = scene.findObject("clan_awards_container")
-      if (::checkObj(containerObj))
-        guiScene.performDelayed(this, (@(containerObj, clanData) function () {
-          if (!isValid())
+      let containerObj = this.scene.findObject("clan_awards_container")
+      if (checkObj(containerObj))
+        this.guiScene.performDelayed(this, (@(containerObj, clanData) function () {
+          if (!this.isValid())
             return
 
           let count = ::g_dagui_utils.countSizeInItems(containerObj.getParent(), "@clanMedalSizeMin", 1, 0, 0).itemsCountX
@@ -395,53 +402,53 @@ foreach(idx, item in clan_member_list)
                   + ::LayersIcon.getIconData(m.iconStyle, null, null, null, m.iconParams, m.iconConfig)
                   + "}"
 
-          guiScene.replaceContentFromText(containerObj, markup, markup.len(), this)
-        })(containerObj, clanData))
+          this.guiScene.replaceContentFromText(containerObj, markup, markup.len(), this)
+        })(containerObj, this.clanData))
     }
 
-    updateAdminModeSwitch()
-    updateUserOptionButton()
+    this.updateAdminModeSwitch()
+    this.updateUserOptionButton()
   }
 
   function getCurClan()
   {
-    return clanData?.id
+    return this.clanData?.id
   }
 
   function updateUserOptionButton()
   {
-    ::showBtnTable(scene, {
-      btn_usercard      = curPlayer != null && ::has_feature("UserCards")
-      btn_user_options  = curPlayer != null && ::show_console_buttons
+    ::showBtnTable(this.scene, {
+      btn_usercard      = this.curPlayer != null && hasFeature("UserCards")
+      btn_user_options  = this.curPlayer != null && ::show_console_buttons
     })
   }
 
   function fillClanElo()
   {
-    let difficulty = ::g_difficulty.getDifficultyByDiffCode(curMode)
-    let lbImageObj = scene.findObject("clan_elo_icon")
-    if (::check_obj(lbImageObj))
+    let difficulty = ::g_difficulty.getDifficultyByDiffCode(this.curMode)
+    let lbImageObj = this.scene.findObject("clan_elo_icon")
+    if (checkObj(lbImageObj))
       lbImageObj["background-image"] = difficulty.clanRatingImage
 
-    let eloTextObj = scene.findObject("clan_elo_value")
-    if (::check_obj(eloTextObj))
+    let eloTextObj = this.scene.findObject("clan_elo_value")
+    if (checkObj(eloTextObj))
     {
-      let clanElo = clanData.astat?[::ranked_column_prefix + difficulty.clanDataEnding] ?? 0
+      let clanElo = this.clanData.astat?[::ranked_column_prefix + difficulty.clanDataEnding] ?? 0
       eloTextObj.setValue(clanElo.tostring())
     }
   }
 
   function fillClanActivity()
   {
-    let activityTextObj = scene.findObject("clan_activity_value")
-    let activityIconObj = scene.findObject("clan_activity_icon")
-    if (!::checkObj(activityTextObj) || !::checkObj(activityIconObj))
+    let activityTextObj = this.scene.findObject("clan_activity_value")
+    let activityIconObj = this.scene.findObject("clan_activity_icon")
+    if (!checkObj(activityTextObj) || !checkObj(activityIconObj))
       return
 
-    let showActivity = ::has_feature("ClanActivity")
+    let showActivity = hasFeature("ClanActivity")
     if (showActivity)
     {
-      let clanActivity = clanData.astat?.clan_activity_by_periods ?? clanData.astat?.activity ?? 0
+      let clanActivity = this.clanData.astat?.clan_activity_by_periods ?? this.clanData.astat?.activity ?? 0
       activityTextObj.setValue(clanActivity.tostring())
       activityIconObj["background-image"] = "#ui/gameuiskin#lb_activity.svg"
     }
@@ -472,16 +479,16 @@ foreach(idx, item in clan_member_list)
   {
     let tabObj = obj.getChild(obj.getValue())
 
-    isWorldWarMode = tabObj?.isWorldWarMode == "yes"
-    this.showSceneBtn("clan_members_list", !isWorldWarMode)
-    this.showSceneBtn("lb_table_nest", isWorldWarMode)
-    this.showSceneBtn("season_over_notice", isWorldWarMode && !::g_world_war.isWWSeasonActiveShort())
+    this.isWorldWarMode = tabObj?.isWorldWarMode == "yes"
+    this.showSceneBtn("clan_members_list", !this.isWorldWarMode)
+    this.showSceneBtn("lb_table_nest", this.isWorldWarMode)
+    this.showSceneBtn("season_over_notice", this.isWorldWarMode && !::g_world_war.isWWSeasonActiveShort())
 
-    curPlayer = null
+    this.curPlayer = null
 
-    if (isWorldWarMode)
+    if (this.isWorldWarMode)
     {
-      fillClanWwMemberList()
+      this.fillClanWwMemberList()
       return
     }
 
@@ -490,34 +497,34 @@ foreach(idx, item in clan_member_list)
     if(!::get_show_in_squadron_statistics(diff))
       return
 
-    curMode = diffCode
-    setCurDMode(curMode)
-    updateSortingField()
-    fillClanMemberList(clanData.members)
-    fillClanElo()
-    fillClanActivity()
+    this.curMode = diffCode
+    this.setCurDMode(this.curMode)
+    this.updateSortingField()
+    this.fillClanMemberList(this.clanData.members)
+    this.fillClanElo()
+    this.fillClanActivity()
   }
 
   function updateSortingField()
   {
-    if (statsSortBy.len() >= ::ranked_column_prefix.len() &&
-        statsSortBy.slice(0, ::ranked_column_prefix.len()) == ::ranked_column_prefix)
-      statsSortBy = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(curMode).clanDataEnding
+    if (this.statsSortBy.len() >= ::ranked_column_prefix.len() &&
+        this.statsSortBy.slice(0, ::ranked_column_prefix.len()) == ::ranked_column_prefix)
+      this.statsSortBy = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding
   }
 
   function updateAdminModeSwitch()
   {
-    let show = isClanInfo && ::is_myself_clan_moderator()
+    let show = this.isClanInfo && ::is_myself_clan_moderator()
     let enable = ::clan_get_admin_editor_mode()
-    local obj = scene.findObject("admin_mode_switch")
-    if (!::checkObj(obj))
+    local obj = this.scene.findObject("admin_mode_switch")
+    if (!checkObj(obj))
     {
       if (!show)
         return
-      let containerObj = scene.findObject("header_buttons")
-      if (!::checkObj(containerObj))
+      let containerObj = this.scene.findObject("header_buttons")
+      if (!checkObj(containerObj))
         return
-      let text = ::loc("clan/admin_mode")
+      let text = loc("clan/admin_mode")
       let markup = ::create_option_switchbox({
         id = "admin_mode_switch"
         value = enable
@@ -525,9 +532,9 @@ foreach(idx, item in clan_member_list)
         textUnchecked = text
         cb = "onSwitchAdminMode"
       })
-      guiScene.replaceContentFromText(containerObj, markup, markup.len(), this)
+      this.guiScene.replaceContentFromText(containerObj, markup, markup.len(), this)
       obj = containerObj.findObject("admin_mode_switch")
-      if (!::checkObj(obj))
+      if (!checkObj(obj))
         return
     }
     else
@@ -537,44 +544,44 @@ foreach(idx, item in clan_member_list)
 
   function onSwitchAdminMode()
   {
-    enableAdminMode(!::clan_get_admin_editor_mode())
+    this.enableAdminMode(!::clan_get_admin_editor_mode())
   }
 
   function enableAdminMode(enable)
   {
     if (enable == ::clan_get_admin_editor_mode())
       return
-    if (enable && (!isClanInfo || !::is_myself_clan_moderator()))
+    if (enable && (!this.isClanInfo || !::is_myself_clan_moderator()))
       return
     ::clan_set_admin_editor_mode(enable)
-    fillClanManagment()
-    onSelectUser()
+    this.fillClanManagment()
+    this.onSelectUser()
   }
 
   function onShowRequests()
   {
-    if ((!isMyClan || !isInArray("MEMBER_ADDING", myRights)) && !::clan_get_admin_editor_mode())
+    if ((!this.isMyClan || !isInArray("MEMBER_ADDING", this.myRights)) && !::clan_get_admin_editor_mode())
       return;
 
-    showClanRequests(clanData.candidates, clanData.id, this)
+    ::showClanRequests(this.clanData.candidates, this.clanData.id, this)
   }
 
   function onLockNewReqests()
   {
-    let value = clanMembershipAcceptance.getValue(clanData)
-    clanMembershipAcceptance.setValue(clanData, !value, this)
+    let value = clanMembershipAcceptance.getValue(this.clanData)
+    clanMembershipAcceptance.setValue(this.clanData, !value, this)
   }
 
   function onLeaveClan()
   {
-    if (!isMyClan)
+    if (!this.isMyClan)
       return;
 
-    this.msgBox("leave_clan", ::loc("clan/leaveConfirmation"),
+    this.msgBox("leave_clan", loc("clan/leaveConfirmation"),
       [
         ["yes", function()
         {
-          leaveClan();
+          this.leaveClan();
         }],
         ["no",  function() {} ],
       ], "no", { cancel_fn = function(){}} )
@@ -583,32 +590,32 @@ foreach(idx, item in clan_member_list)
   function leaveClan()
   {
     if (!::is_in_clan())
-      return afterClanLeave()
+      return this.afterClanLeave()
 
-    taskId = ::clan_request_leave()
+    this.taskId = ::clan_request_leave()
 
-    if (taskId >= 0)
+    if (this.taskId >= 0)
     {
-      ::set_char_cb(this, slotOpCb)
-      showTaskProgressBox()
+      ::set_char_cb(this, this.slotOpCb)
+      this.showTaskProgressBox()
       ::sync_handler_simulate_signal("clan_info_reload")
-      afterSlotOp = guiScene.performDelayed(this,function()
+      this.afterSlotOp = this.guiScene.performDelayed(this,function()
         {
           ::update_gamercards()
-          this.msgBox("left_clan", ::loc("clan/leftClan"),
-            [["ok", function() { if (isValid()) afterClanLeave() } ]], "ok")
+          this.msgBox("left_clan", loc("clan/leftClan"),
+            [["ok", function() { if (this.isValid()) this.afterClanLeave() } ]], "ok")
         })
     }
   }
 
   function afterClanLeave()
   {
-    goBack()
+    this.goBack()
   }
 
   function fillClanStats(data)
   {
-    let clanTableObj = scene.findObject("clan_stats_table");
+    let clanTableObj = this.scene.findObject("clan_stats_table");
     local rowIdx = 0
     local rowBlock = ""
     let rowHeader = [{width = "0.25pw"}]
@@ -655,78 +662,79 @@ foreach(idx, item in clan_member_list)
       rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowParams, null, "")
       rowIdx++
     }
-    guiScene.replaceContentFromText(clanTableObj, rowBlock, rowBlock.len(), this)
+    this.guiScene.replaceContentFromText(clanTableObj, rowBlock, rowBlock.len(), this)
   }
 
   function fillClanWwMemberList()
   {
-    if (curWwMembers == null)
-      updateCurWwMembers() //fill default wwMembers list
-    lbTableWeak.updateParams(
+    if (this.curWwMembers == null)
+      this.updateCurWwMembers() //fill default wwMembers list
+    this.lbTableWeak.updateParams(
       ::leaderboardModel,
       ::ww_leaderboards_list,
-      curWwCategory,
+      this.curWwCategory,
       {lbMode = "ww_users_clan"})
 
-    sortWwMembers()
-    playerByRowLb = curWwMembers.map(@(member) member.name)
-    curPlayer = null
-    let myPos = curWwMembers.findindex(@(member) member.name == ::my_user_name) ?? -1
-    lbTableWeak.fillTable(curWwMembers, null, myPos, true, true)
+    this.sortWwMembers()
+    this.playerByRowLb = this.curWwMembers.map(@(member) member.name)
+    this.curPlayer = null
+    let myPos = this.curWwMembers.findindex(@(member) member.name == ::my_user_name) ?? -1
+    this.lbTableWeak.fillTable(this.curWwMembers, null, myPos, true, true)
 
-    updateUserOptionButton()
+    this.updateUserOptionButton()
   }
 
   function sortWwMembers()
   {
-    let field = curWwCategory.field
+    let field = this.curWwCategory.field
     let addField = ::g_lb_category.EVENTS_PERSONAL_ELO.field
     local idx = 0
+    this.curWwMembers.sort(@(a, b) (b?[field] ?? 0) <=> (a?[field] ?? 0)
+      || (b?[addField] ?? 0) <=> (a?[addField] ?? 0))
 
-    curWwMembers = ::u.map(curWwMembers.sort(@(a, b) (b?[field] ?? 0) <=> (a?[field] ?? 0)
-      || (b?[addField] ?? 0) <=> (a?[addField] ?? 0)), @(member) member.__update({ pos = idx++ }))
+    this.curWwMembers = this.curWwMembers.map(@(member) member.__update({ pos = idx++ }))
   }
 
   function fillClanMemberList(membersData)
   {
-    sortMembers(membersData)
+    this.sortMembers(membersData)
 
     let headerRow = [{text = "#clan/number", width = "0.1@sf"}]
     foreach(column in clan_member_list)
     {
-      if (!needShowColumn(column))
+      if (!this.needShowColumn(column))
         continue
 
       let rowData = {
         id       = column.id,
-        text     = ::getTblValue("needHeader", column, true) ? "#clan/" + ::getTblValue("loc", column, column.id) : "",
-        tdalign  = ::getTblValue("align", column, "center"),
+        text     = getTblValue("needHeader", column, true) ? "#clan/" + getTblValue("loc", column, column.id) : "",
+        tdalign  = getTblValue("align", column, "center"),
         callback = "onStatsCategory",
-        active   = isSortByColumn(column.id)
-        tooltip  = column?.getTooltipText(clanData?.historyDepth.tostring()) ?? column.tooltip
+        active   = this.isSortByColumn(column.id)
+        tooltip  = column?.getTooltipText(this.clanData?.historyDepth.tostring()) ?? column.tooltip
       }
       // It is important to set width to
       // all rows if column has fixed width.
       // Next two lines fix table layout issue.
-      if (::getTblValue("iconStyle", column, false))
+      if (getTblValue("iconStyle", column, false))
         rowData.width <- "0.01@sf"
       headerRow.append(rowData)
     }
 
-    playerByRow = []
-    curPlayer = null
+    this.playerByRow = []
+    this.curPlayer = null
     local markup = []
     let isConsoleOnlyPlayers = getSeparateLeaderboardPlatformValue()
     let consoleConst = isPlatformSony
-      ? [::TP_PS4, ::TP_PS5]
+      ? [TP_PS4, TP_PS5]
       : isPlatformXboxOne
-        ? [::TP_XBOXONE, ::TP_XBOX_SCARLETT]
-        : [::TP_UNKNOWN]
+        ? [TP_XBOXONE, TP_XBOX_SCARLETT]
+        : [TP_UNKNOWN]
 
     foreach(member in membersData) {
       if (isConsoleOnlyPlayers) {
         if (member?.platform != null) {
-          if (!::isInArray(member.platform, consoleConst))
+          if (!isInArray(member.platform, consoleConst))
             continue
         }
         else {
@@ -736,38 +744,38 @@ foreach(idx, item in clan_member_list)
         }
       }
 
-      let rowIdx = playerByRow.len()
+      let rowIdx = this.playerByRow.len()
       let rowData = [{ text = (rowIdx + 1).tostring() }]
       let isMe = member.nick == ::my_user_name
       foreach(column in clan_member_list)
       {
-        if (!needShowColumn(column))
+        if (!this.needShowColumn(column))
           continue
-        rowData.append(getClanMembersCell(member, column))
+        rowData.append(this.getClanMembersCell(member, column))
       }
 
       markup.append(::buildTableRowNoPad($"row_{rowIdx}", rowData, rowIdx % 2 != 0, isMe ? "mainPlayer:t='yes';" : ""))
-      playerByRow.append(member.nick)
+      this.playerByRow.append(member.nick)
     }
 
     markup.insert(0, ::buildTableRowNoPad("row_header", headerRow, null,"isLeaderBoardHeader:t='yes'"))
     markup = "".join(markup)
 
-    guiScene.setUpdatesEnabled(false, false)
-    let tblObj = scene.findObject("clan_members_list")
-    guiScene.replaceContentFromText(tblObj, markup, markup.len(), this)
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(false, false)
+    let tblObj = this.scene.findObject("clan_members_list")
+    this.guiScene.replaceContentFromText(tblObj, markup, markup.len(), this)
+    this.guiScene.setUpdatesEnabled(true, true)
 
-    onSelectUser()
-    updateMembersStatus()
+    this.onSelectUser()
+    this.updateMembersStatus()
   }
 
   function needShowColumn(column)
   {
-    if ((column?.myClanOnly ?? false) && !isMyClan)
+    if ((column?.myClanOnly ?? false) && !this.isMyClan)
       return false
 
-    if (column?.showByFeature != null && !::has_feature(column?.showByFeature))
+    if (column?.showByFeature != null && !hasFeature(column?.showByFeature))
       return false
 
     return true
@@ -777,7 +785,7 @@ foreach(idx, item in clan_member_list)
   {
     local fieldName = columnId
     if (columnId == ::ranked_column_prefix)
-      fieldName = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(curMode).clanDataEnding
+      fieldName = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding
     else
     {
       let category = ::u.search(clan_member_list, (@(columnId) function(category) { return category.id == columnId })(columnId))
@@ -789,21 +797,21 @@ foreach(idx, item in clan_member_list)
 
   function isSortByColumn(columnId)
   {
-    return getFieldNameByColumn(columnId) == statsSortBy
+    return this.getFieldNameByColumn(columnId) == this.statsSortBy
   }
 
   function getClanMembersCell(member, column)
   {
-    let id = getFieldId(column)
+    let id = this.getFieldId(column)
     let res = {
       text = column.lbDataType.getShortTextByValue(member[id])
-      tdalign = ::getTblValue("align", column, "center")
+      tdalign = getTblValue("align", column, "center")
     }
 
     if ("getCellTooltipText" in column)
       res.tooltip <- column.getCellTooltipText(member)
 
-    if (::getTblValue("iconStyle", column, false))
+    if (getTblValue("iconStyle", column, false))
     {
       res.id       <- "icon_" + member.nick
       res.needText <- false
@@ -825,7 +833,7 @@ foreach(idx, item in clan_member_list)
     let field = column?.field ?? column.id
     local fieldId = ::u.isFunction(field) ? field() : field
     if (column.byDifficulty)
-      fieldId += ::g_difficulty.getDifficultyByDiffCode(curMode).clanDataEnding
+      fieldId += ::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding
     return fieldId
   }
 
@@ -834,8 +842,8 @@ foreach(idx, item in clan_member_list)
     if (typeof members != "array")
       return
 
-    let columnData = getColumnDataById(statsSortBy)
-    let sortId = ::getTblValue("sortId", columnData, statsSortBy)
+    let columnData = this.getColumnDataById(this.statsSortBy)
+    let sortId = getTblValue("sortId", columnData, this.statsSortBy)
     if ("sortPrepare" in columnData)
       foreach(m in members)
         columnData.sortPrepare(m)
@@ -860,67 +868,67 @@ foreach(idx, item in clan_member_list)
           res = -1
       }
       return statsSortReverse ? -res : res
-    })(sortId, statsSortReverse))
+    })(sortId, this.statsSortReverse))
   }
 
   function onEventClanRoomMembersChanged(params = {})
   {
-    if (!isMyClan)
+    if (!this.isMyClan)
       return
 
-    let presence = ::getTblValue("presence", params, ::g_contact_presence.UNKNOWN)
-    let nick = ::getTblValue("nick", params, "")
+    let presence = getTblValue("presence", params, ::g_contact_presence.UNKNOWN)
+    let nick = getTblValue("nick", params, "")
 
     if (nick == "")
     {
-      updateMembersStatus()
+      this.updateMembersStatus()
       return
     }
 
-    if (!("members" in my_clan_info))
+    if (!("members" in ::my_clan_info))
       return
 
     let member = ::u.search(
-      my_clan_info.members,
+      ::my_clan_info.members,
       (@(nick) function (member) { return member.nick == nick })(nick)
     )
 
     if (member)
     {
       member.onlineStatus = presence
-      drawIcon(nick, presence)
+      this.drawIcon(nick, presence)
     }
   }
 
-  function onEventClanRquirementsChanged(params)
+  function onEventClanRquirementsChanged(_params)
   {
-    fillClanRequirements()
+    this.fillClanRequirements()
   }
 
   function updateMembersStatus()
   {
-    if (!isMyClan)
+    if (!this.isMyClan)
       return
     if (!::gchat_is_connected())
       return
-    if ("members" in my_clan_info)
-      foreach (it in my_clan_info.members)
+    if ("members" in ::my_clan_info)
+      foreach (it in ::my_clan_info.members)
       {
         it.onlineStatus = ::getMyClanMemberPresence(it.nick)
-        drawIcon(it.nick, it.onlineStatus)
+        this.drawIcon(it.nick, it.onlineStatus)
       }
   }
 
   function drawIcon(nick, presence)
   {
-    let gObj = scene.findObject("clan_members_list")
+    let gObj = this.scene.findObject("clan_members_list")
     let imgObj = gObj.findObject("img_icon_" + nick)
-    if (!::checkObj(imgObj))
+    if (!checkObj(imgObj))
       return
 
     imgObj["background-image"] = presence.getIcon()
     imgObj["background-color"] = presence.getIconColor()
-    imgObj["tooltip"] = ::loc(presence.getTooltip())
+    imgObj["tooltip"] = loc(presence.getTooltip())
   }
 
   function getColumnDataById(id)
@@ -933,118 +941,118 @@ foreach(idx, item in clan_member_list)
     if (!obj)
       return
     let value = obj.id
-    let sortBy = getFieldNameByColumn(value)
+    let sortBy = this.getFieldNameByColumn(value)
 
-    if (statsSortBy == sortBy)
-      statsSortReverse = !statsSortReverse
+    if (this.statsSortBy == sortBy)
+      this.statsSortReverse = !this.statsSortReverse
     else
     {
-      statsSortBy = sortBy
-      local columnData = getColumnDataById(value)
-      statsSortReverse = ::getTblValue("inverse", columnData, false)
+      this.statsSortBy = sortBy
+      local columnData = this.getColumnDataById(value)
+      this.statsSortReverse = getTblValue("inverse", columnData, false)
     }
-    guiScene.performDelayed(this, function() { fillClanMemberList(clanData.members) })
+    this.guiScene.performDelayed(this, function() { this.fillClanMemberList(this.clanData.members) })
   }
 
   function onSelectUser(obj = null)
   {
     if (::show_console_buttons)
       return
-    obj = obj ?? scene.findObject("clan_members_list")
-    if (!::check_obj(obj))
+    obj = obj ?? this.scene.findObject("clan_members_list")
+    if (!checkObj(obj))
       return
 
     let dataIdx = obj.getValue() - 1 // skiping header row
-    onSelectedPlayerIdx(dataIdx)
+    this.onSelectedPlayerIdx(dataIdx)
   }
 
   function onRowHover(obj)
   {
     if (!::show_console_buttons)
       return
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let isHover = obj.isHovered()
     let dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
-    if (isHover == (dataIdx == lastHoveredDataIdx))
+    if (isHover == (dataIdx == this.lastHoveredDataIdx))
      return
 
-    lastHoveredDataIdx = isHover ? dataIdx : -1
-    onSelectedPlayerIdx(lastHoveredDataIdx)
+    this.lastHoveredDataIdx = isHover ? dataIdx : -1
+    this.onSelectedPlayerIdx(this.lastHoveredDataIdx)
   }
 
   function onSelectedPlayerIdx(dataIdx)
   {
-    curPlayer = playerByRow?[dataIdx]
-    updateUserOptionButton()
+    this.curPlayer = this.playerByRow?[dataIdx]
+    this.updateUserOptionButton()
   }
 
   function onSelectedPlayerIdxLb(dataIdx)
   {
-    curPlayer = playerByRowLb?[dataIdx]
-    updateUserOptionButton()
+    this.curPlayer = this.playerByRowLb?[dataIdx]
+    this.updateUserOptionButton()
   }
 
   function onChangeMembershipRequirementsWnd()
   {
-    if (::has_feature("Clans") && ::has_feature("ClansMembershipEditor")){
-      gui_start_modal_wnd(::gui_handlers.clanChangeMembershipReqWnd,
+    if (hasFeature("Clans") && hasFeature("ClansMembershipEditor")){
+      ::gui_start_modal_wnd(::gui_handlers.clanChangeMembershipReqWnd,
         {
-          clanData = clanData,
+          clanData = this.clanData,
           owner = this,
         })
     }
     else
-      notAvailableYetMsgBox();
+      this.notAvailableYetMsgBox();
   }
 
   function onOpenClanBlacklist()
   {
-    ::gui_start_clan_blacklist(clanData)
+    ::gui_start_clan_blacklist(this.clanData)
   }
 
   function onUserCard()
   {
-    if (curPlayer && ::has_feature("UserCards"))
-      ::gui_modal_userCard({ name = curPlayer })
+    if (this.curPlayer && hasFeature("UserCards"))
+      ::gui_modal_userCard({ name = this.curPlayer })
   }
 
   function onUserRClick()
   {
-    openUserRClickMenu()
+    this.openUserRClickMenu()
   }
 
   function openUserRClickMenu()
   {
-    if (!curPlayer)
+    if (!this.curPlayer)
       return
 
-    let curMember = ::u.search(clanData.members, (@(member) member.nick == curPlayer).bindenv(this))
+    let curMember = ::u.search(this.clanData.members, (@(member) member.nick == this.curPlayer).bindenv(this))
     if (!curMember)
       return
 
     playerContextMenu.showMenu(null, this, {
       uid = curMember.uid
       playerName = curMember.nick
-      clanData = clanData
+      clanData = this.clanData
     })
   }
 
-  function onMembershipReq(obj = null)
+  function onMembershipReq(_obj = null)
   {
-    let curClan = getCurClan()
+    let curClan = this.getCurClan()
     if (curClan)
       ::g_clans.requestMembership(curClan)
   }
 
-  function onClanAverageActivity(obj = null)
+  function onClanAverageActivity(_obj = null)
   {
-    if (clanData)
-      ::gui_handlers.clanAverageActivityModal.open(clanData)
+    if (this.clanData)
+      ::gui_handlers.clanAverageActivityModal.open(this.clanData)
   }
 
-  function onClanVehicles(obj = null)
+  function onClanVehicles(_obj = null)
   {
     vehiclesModal.open(@(u)u.isSquadronVehicle() && u.isVisibleInShop(), {
       wndTitleLocId = "clan/vehicles"
@@ -1052,51 +1060,51 @@ foreach(idx, item in clan_member_list)
     })
   }
 
-  function onClanSquads(obj = null)
+  function onClanSquads(_obj = null)
   {
-    if (clanData)
+    if (this.clanData)
       ::gui_handlers.MyClanSquadsListModal.open()
   }
 
-  function onClanLog(obj = null)
+  function onClanLog(_obj = null)
   {
-    if (clanData)
-      ::show_clan_log(clanData.id)
+    if (this.clanData)
+      ::show_clan_log(this.clanData.id)
   }
 
-  function onClanSeasonRewardLog(obj = null)
+  function onClanSeasonRewardLog(_obj = null)
   {
-    if (clanData)
-      ::g_clans.showClanRewardLog(clanData)
+    if (this.clanData)
+      ::g_clans.showClanRewardLog(this.clanData)
   }
 
-  function onEventClanMembershipRequested(p)
+  function onEventClanMembershipRequested(_p)
   {
-    fillClanManagment()
+    this.fillClanManagment()
   }
 
-  function onEventClanMemberDismissed(p)
+  function onEventClanMemberDismissed(_p)
   {
     if (::clan_get_admin_editor_mode())
       ::sync_handler_simulate_signal("clan_info_reload")
 
     if (::clan_get_admin_editor_mode())
-      reinitClanWindow()
+      this.reinitClanWindow()
   }
 
   function onEditClanInfo()
   {
-    gui_modal_edit_clan(clanData, this)
+    ::gui_modal_edit_clan(this.clanData, this)
   }
 
   function onUpgradeClan()
   {
-    gui_modal_upgrade_clan(clanData, this)
+    ::gui_modal_upgrade_clan(this.clanData, this)
   }
 
   function onClanComplain()
   {
-    ::g_clans.openComplainWnd(clanData)
+    ::g_clans.openComplainWnd(this.clanData)
   }
 
   function goBack()
@@ -1108,36 +1116,36 @@ foreach(idx, item in clan_member_list)
 
   function onUserOption()
   {
-    openUserRClickMenu()
+    this.openUserRClickMenu()
   }
 
-  function onMembersListFocus(obj)
+  function onMembersListFocus(_obj)
   {
-    guiScene.performDelayed(this, function() {
-      if (::check_obj(scene))
-        onSelectUser()
+    this.guiScene.performDelayed(this, function() {
+      if (checkObj(this.scene))
+        this.onSelectUser()
     })
   }
 
   function onEventClanMembersUpgraded(p)
   {
-    if (::clan_get_admin_editor_mode() && p.clanId == clanIdStrReq)
-      reinitClanWindow()
+    if (::clan_get_admin_editor_mode() && p.clanId == this.clanIdStrReq)
+      this.reinitClanWindow()
   }
 
-  function onEventClanMemberRoleChanged(p)
+  function onEventClanMemberRoleChanged(_p)
   {
     if (::clan_get_admin_editor_mode())
-      reinitClanWindow()
+      this.reinitClanWindow()
   }
 
-  function onEventClanMembershipAcceptanceChanged(p)
+  function onEventClanMembershipAcceptanceChanged(_p)
   {
     if (::clan_get_admin_editor_mode())
-      reinitClanWindow()
+      this.reinitClanWindow()
   }
 
-  function onCategory(obj)
+  function onCategory(_obj)
   {
   }
 
@@ -1145,7 +1153,7 @@ foreach(idx, item in clan_member_list)
   {
     let res = {
       textsBlk = "%gui/clans/clanPageModalHelp.blk"
-      objContainer = scene.findObject("clan_container")
+      objContainer = this.scene.findObject("clan_container")
     }
 
     let links = [
@@ -1184,18 +1192,18 @@ foreach(idx, item in clan_member_list)
 
   function requestWwMembersList()
   {
-    let cb = ::Callback(function(membersData) {
-        updateCurWwMembers(membersData)
-        updateWwMembersList()
+    let cb = Callback(function(membersData) {
+        this.updateCurWwMembers(membersData)
+        this.updateWwMembersList()
       }, this)
     wwLeaderboardData.requestWwLeaderboardData(
       "ww_users_clan",
       {
         gameMode = "ww_users_clan"
         table    = "season"
-        group    = clanData.id.tostring()
+        group    = this.clanData.id.tostring()
         start    = 0
-        count    = clanData.mlimit
+        count    = this.clanData.mlimit
         category = ::g_lb_category.EVENTS_PERSONAL_ELO.field
       },
       @(membersData) cb(membersData))
@@ -1203,20 +1211,20 @@ foreach(idx, item in clan_member_list)
 
   function getAdditionalTabsArray()
   {
-    if (!::is_worldwar_enabled() || !::has_feature("WorldWarLeaderboards"))
+    if (!::is_worldwar_enabled() || !hasFeature("WorldWarLeaderboards"))
       return []
 
-    if (getSeparateLeaderboardPlatformValue() && !::has_feature("ConsoleSeparateWWLeaderboards"))
+    if (getSeparateLeaderboardPlatformValue() && !hasFeature("ConsoleSeparateWWLeaderboards"))
       return []
 
-    requestWwMembersList()
+    this.requestWwMembersList()
     return [{
       id = "worldwar_mode"
       hidden = false
-      tabName = ::loc("userlog/page/worldWar")
+      tabName = loc("userlog/page/worldWar")
       selected = false
       isWorldWarMode = true
-      tooltip = ::loc("worldwar/ClanMembersLeaderboard/tooltip")
+      tooltip = loc("worldwar/ClanMembersLeaderboard/tooltip")
     }]
   }
 
@@ -1232,9 +1240,9 @@ foreach(idx, item in clan_member_list)
   function updateDataByUnitRank(membersData)
   {
     let res = {}
-    foreach (member in clanData.members)
+    foreach (member in this.clanData.members)
     {
-      res[member.nick] <- getDefaultWwMemberData(member)
+      res[member.nick] <- this.getDefaultWwMemberData(member)
       let data = ::u.search(membersData, @(inst) inst?._id == member.uid.tointeger())
       if (data != null)
         res[member.nick].__update(data)
@@ -1244,17 +1252,17 @@ foreach(idx, item in clan_member_list)
 
   function updateCurWwMembers(membersData = {})
   {
-    curWwMembers = wwLeaderboardData.convertWwLeaderboardData(
-      updateDataByUnitRank(membersData)).rows
+    this.curWwMembers = wwLeaderboardData.convertWwLeaderboardData(
+      this.updateDataByUnitRank(membersData)).rows
   }
 
 
   function updateWwMembersList()
   {
-    if (!isClanInfo)
+    if (!this.isClanInfo)
       return
 
-    if(isWorldWarMode)
-      fillClanWwMemberList()
+    if(this.isWorldWarMode)
+      this.fillClanWwMemberList()
   }
 }

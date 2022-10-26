@@ -1,10 +1,16 @@
-let platformModule = require("%scripts/clientState/platform.nut")
+from "%scripts/dagui_library.nut" import *
 
-::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let platformModule = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/leaderboard/leaderboardTable"
+  sceneTplName = "%gui/leaderboard/leaderboardTable.tpl"
 
   isLastPage = false
   lbParams   = null
@@ -34,11 +40,11 @@ let platformModule = require("%scripts/clientState/platform.nut")
 
   function updateParams(curModel, curPresets, curCategory, curParams, isCurClanLb = false)
   {
-    lbModel = curModel
-    lbPresets = curPresets
-    lbCategory = curCategory
-    lbParams = curParams
-    isClanLb = isCurClanLb
+    this.lbModel = curModel
+    this.lbPresets = curPresets
+    this.lbCategory = curCategory
+    this.lbParams = curParams
+    this.isClanLb = isCurClanLb
   }
 
   function showLoadingAnimation()
@@ -55,12 +61,12 @@ let platformModule = require("%scripts/clientState/platform.nut")
     {
       let headerRow = [
         { text = "#multiplayer/place", width = "0.1@sf" },
-        { text = isClanLb ? "#clan/clan_name" : "#multiplayer/name",
-          tdalign = "center", width = isClanLb ? 0 : "0.12@sf" }
+        { text = this.isClanLb ? "#clan/clan_name" : "#multiplayer/name",
+          tdalign = "center", width = this.isClanLb ? 0 : "0.12@sf" }
       ]
-      foreach(category in lbPresets)
+      foreach(category in this.lbPresets)
       {
-        if (!lbModel.checkLbRowVisibility(category, lbParams))
+        if (!this.lbModel.checkLbRowVisibility(category, this.lbParams))
           continue
 
         let block = {
@@ -68,36 +74,36 @@ let platformModule = require("%scripts/clientState/platform.nut")
           image = category.headerImage
           tooltip = category.headerTooltip
           needText = false
-          active = lbCategory == category
+          active = this.lbCategory == category
           callback = "onCategory"
         }
         headerRow.append(block)
       }
-      data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+      data += ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
     }
 
-    isLastPage = false
+    this.isLastPage = false
     if (hasTable)
     {
       local rowIdx = 0
       foreach(row in lbRows)
-        data += getTableRowMarkup(row, rowIdx++, selfPos)
+        data += this.getTableRowMarkup(row, rowIdx++, selfPos)
 
-      if (rowIdx < rowsInPage)
+      if (rowIdx < this.rowsInPage)
       {
-        for(local i = rowIdx; i < rowsInPage; i++)
-          data += buildTableRow("row_" + i, [], i % 2 == 0, "inactive:t='yes';")
-        isLastPage = true
+        for(local i = rowIdx; i < this.rowsInPage; i++)
+          data += ::buildTableRow("row_" + i, [], i % 2 == 0, "inactive:t='yes';")
+        this.isLastPage = true
       }
 
-      data += generateSelfRow(selfRow)
+      data += this.generateSelfRow(selfRow)
     }
 
-    let lbTable = scene.findObject("lb_table")
-    guiScene.replaceContentFromText(lbTable, data, data.len(), this)
+    let lbTable = this.scene.findObject("lb_table")
+    this.guiScene.replaceContentFromText(lbTable, data, data.len(), this)
 
     if (hasTable)
-      onRowSelect(lbTable)
+      this.onRowSelect(lbTable)
 
     this.showSceneBtn("wait_animation", !hasHeader && !hasTable)
     this.showSceneBtn("no_leaderboads_text", hasHeader && !hasTable)
@@ -111,7 +117,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
     let playerName = platformModule.getPlayerName(row?.name ?? "")
     let rowData = [
       {
-        text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
+        text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
       }
       {
         id = "name"
@@ -121,17 +127,17 @@ let platformModule = require("%scripts/clientState/platform.nut")
           : playerName
       }
     ]
-    foreach(category in lbPresets)
+    foreach(category in this.lbPresets)
     {
-      if (!lbModel.checkLbRowVisibility(category, lbParams))
+      if (!this.lbModel.checkLbRowVisibility(category, this.lbParams))
         continue
 
-      rowData.append(getItemCell(category, row))
+      rowData.append(this.getItemCell(category, row))
     }
     let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     let highlightRow = selfPos == row.pos && row.pos >= 0
     let rowParamsText = $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
-    let data = buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
+    let data = ::buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
 
     return data
   }
@@ -140,7 +146,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
   {
     let value = curLbCategory.field in row ? row[curLbCategory.field] : 0
     let res = curLbCategory.getItemCell(value, row)
-    res.active <- lbCategory == curLbCategory
+    res.active <- this.lbCategory == curLbCategory
 
     return res
   }
@@ -150,10 +156,10 @@ let platformModule = require("%scripts/clientState/platform.nut")
     if (!selfRow || selfRow.len() <= 0)
       return ""
 
-    let emptyRow = buildTableRow("row_"+rowsInPage, ["..."], null,
+    let emptyRow = ::buildTableRow("row_"+this.rowsInPage, ["..."], null,
       "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;'; ")
 
-    return emptyRow + generateRowTableData(selfRow[0], rowsInPage + 1, selfRow)
+    return emptyRow + this.generateRowTableData(selfRow[0], this.rowsInPage + 1, selfRow)
   }
 
   function generateRowTableData(row, rowIdx, selfRow)
@@ -164,7 +170,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
     let playerName = platformModule.getPlayerName(row?.name ?? "")
     let rowData = [
       {
-        text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
+        text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
       },
       {
         id = "name"
@@ -174,17 +180,17 @@ let platformModule = require("%scripts/clientState/platform.nut")
           : playerName
       }
     ]
-    foreach(category in lbPresets)
+    foreach(category in this.lbPresets)
     {
-      if (!lbModel.checkLbRowVisibility(category, lbParams))
+      if (!this.lbModel.checkLbRowVisibility(category, this.lbParams))
         continue
 
-      rowData.append(getItemCell(category, row))
+      rowData.append(this.getItemCell(category, row))
     }
 
     let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     let highlightRow = selfRow == row.pos && row.pos >= 0
-    let data = buildTableRow(rowName, rowData, rowIdx % 2 == 0,
+    let data = ::buildTableRow(rowName, rowData, rowIdx % 2 == 0,
       $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}")
 
     return data
@@ -194,44 +200,44 @@ let platformModule = require("%scripts/clientState/platform.nut")
   {
     if (::show_console_buttons)
       return
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let dataIdx = obj.getValue() - 1 // skiping header row
-    onRowSelectCb?(dataIdx)
+    this.onRowSelectCb?(dataIdx)
   }
 
   function onRowHover(obj)
   {
     if (!::show_console_buttons)
       return
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let isHover = obj.isHovered()
     let dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
-    if (isHover == (dataIdx == lastHoveredDataIdx))
+    if (isHover == (dataIdx == this.lastHoveredDataIdx))
      return
 
-    lastHoveredDataIdx = isHover ? dataIdx : -1
-    onRowHoverCb?(lastHoveredDataIdx)
+    this.lastHoveredDataIdx = isHover ? dataIdx : -1
+    this.onRowHoverCb?(this.lastHoveredDataIdx)
   }
 
   function onRowDblClick()
   {
-    if (onRowDblClickCb)
-      onRowDblClickCb()
+    if (this.onRowDblClickCb)
+      this.onRowDblClickCb()
   }
 
   function onRowRClick()
   {
-    if (onRowRClickCb)
-      onRowRClickCb()
+    if (this.onRowRClickCb)
+      this.onRowRClickCb()
   }
 
   function onCategory(obj)
   {
-    if (onCategoryCb)
-      onCategoryCb(obj)
+    if (this.onCategoryCb)
+      this.onCategoryCb(obj)
   }
 }

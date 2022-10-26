@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
 ::items_classes.ModUpgrade <- class extends BaseItemModClass
@@ -14,18 +20,18 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   getConditionsBlk = @(configBlk) configBlk?.modUpgradeParams
 
-  getActivateInfo  = @() ::loc("item/modUpgrade/activateInModifications")
+  getActivateInfo  = @() loc("item/modUpgrade/activateInModifications")
 
   function initConditions(conditionsBlk)
   {
     base.initConditions(conditionsBlk)
-    level = conditionsBlk?.level ?? 0
+    this.level = conditionsBlk?.level ?? 0
   }
 
   function getDescriptionIntroArray()
   {
-    if (level)
-      return [ ::loc("multiplayer/level") + ::loc("ui/colon") + ::colorize("activeTextColor", level) ]
+    if (this.level)
+      return [ loc("multiplayer/level") + loc("ui/colon") + colorize("activeTextColor", this.level) ]
     return null
   }
 
@@ -33,23 +39,23 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   function canActivateOnMod(unit, mod)
   {
-    if (modsList && !::isInArray(mod.name, modsList)
-      && !::isInArray(::get_modifications_blk()?.modifications?[mod.name]?.modUpgradeType, modsList))
+    if (this.modsList && !isInArray(mod.name, this.modsList)
+      && !isInArray(::get_modifications_blk()?.modifications?[mod.name]?.modUpgradeType, this.modsList))
       return false
-    if (countries && !::isInArray(unit.shopCountry, countries))
+    if (this.countries && !isInArray(unit.shopCountry, this.countries))
       return false
-    if (rankRange && (unit.rank < rankRange.x || unit.rank > rankRange.y))
+    if (this.rankRange && (unit.rank < this.rankRange.x || unit.rank > this.rankRange.y))
       return false
-    if (unitTypes && !::isInArray(unit.unitType.lowerName, unitTypes))
+    if (this.unitTypes && !isInArray(unit.unitType.lowerName, this.unitTypes))
       return false
-    if (level - 1 != ::get_modification_level(unit.name, mod.name))
+    if (this.level - 1 != ::get_modification_level(unit.name, mod.name))
       return false
     return true
   }
 
   function activateOnMod(unit, mod, extSuccessCb = null)
   {
-    let uid = uids?[0]
+    let uid = this.uids?[0]
     if (uid == null)
       return false
 

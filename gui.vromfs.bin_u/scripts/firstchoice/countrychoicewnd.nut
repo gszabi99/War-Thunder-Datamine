@@ -1,9 +1,17 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { fillUserNick, getFirstChosenUnitType,
   isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -40,77 +48,77 @@ enum CChoiceState {
   {
     isFirstChoiceShown(true)
 
-    unitTypesList = []
+    this.unitTypesList = []
     let visibleCountries = {}
     foreach(unitType in unitTypes.types)
     {
       local isAvailable = false
-      foreach(country in getCountriesByUnitType(unitType.esUnitType))
+      foreach(country in this.getCountriesByUnitType(unitType.esUnitType))
         if (unitType.isAvailableForFirstChoice(country))
         {
           isAvailable = true
           visibleCountries[country] <- true
         }
       if (isAvailable)
-        unitTypesList.append(unitType)
+        this.unitTypesList.append(unitType)
     }
-    if (!unitTypesList.len())
-      return goBack()
+    if (!this.unitTypesList.len())
+      return this.goBack()
 
-    if (unitTypesList.len() == 1)
+    if (this.unitTypesList.len() == 1)
     {
-      selectedUnitType = unitTypesList[0]
-      isFixedUnitType = true
+      this.selectedUnitType = this.unitTypesList[0]
+      this.isFixedUnitType = true
     }
 
-    countriesUnits = ::get_unit_types_in_countries()
-    countries = []
+    this.countriesUnits = ::get_unit_types_in_countries()
+    this.countries = []
     foreach(country in shopCountriesList)
       if (country in visibleCountries)
-        countries.append(country)
+        this.countries.append(country)
 
-    updateState()
+    this.updateState()
   }
 
   function startNextState()
   {
-    state++
-    updateState()
+    this.state++
+    this.updateState()
   }
 
   function updateState()
   {
-    if (state == CChoiceState.COUNTRY_SELECT)
-      createPrefferedUnitTypeCountries()
-    else if (state == CChoiceState.UNIT_TYPE_SELECT)
+    if (this.state == CChoiceState.COUNTRY_SELECT)
+      this.createPrefferedUnitTypeCountries()
+    else if (this.state == CChoiceState.UNIT_TYPE_SELECT)
     {
-      if (isFixedUnitType)
-        startNextState()
+      if (this.isFixedUnitType)
+        this.startNextState()
       else
-        createUnitTypeChoice()
+        this.createUnitTypeChoice()
     } else
-      applySelection()
-    updateButtons()
+      this.applySelection()
+    this.updateButtons()
   }
 
   function updateButtons()
   {
-    this.showSceneBtn("back_button", !isFixedUnitType && state > 0)
+    this.showSceneBtn("back_button", !this.isFixedUnitType && this.state > 0)
   }
 
   function checkSelection(country, unitType)
   {
-    let availData = get_unit_types_in_countries()
+    let availData = ::get_unit_types_in_countries()
     return availData?[country][unitType.esUnitType] ?? false
   }
 
   function applySelection()
   {
-    if (!checkSelection(selectedCountry, selectedUnitType))
+    if (!this.checkSelection(this.selectedCountry, this.selectedUnitType))
       return
 
-    ::switch_profile_country(selectedCountry)
-    goBack()
+    switchProfileCountry(this.selectedCountry)
+    this.goBack()
     ::broadcastEvent("UnitTypeChosen")
   }
 
@@ -119,53 +127,53 @@ enum CChoiceState {
     if (!unitType.isAvailableForFirstChoice(country))
       return false
 
-    return countriesUnits?[country][unitType.esUnitType]
+    return this.countriesUnits?[country][unitType.esUnitType]
   }
 
   function createUnitTypeChoice()
   {
-    local columns = guiScene.calcString("1@rw-1@countryChoiceInterval", null)
-      / guiScene.calcString("@unitChoiceImageWidth+@countryChoiceInterval", null)
-    columns = min(columns < 4 ? 2 : columns, unitTypesList.len())//Just cause 3 columns look weird here
-    setFrameWidth($"{columns}@unitChoiceImageWidth + {columns+1}@countryChoiceInterval")
+    local columns = this.guiScene.calcString("1@rw-1@countryChoiceInterval", null)
+      / this.guiScene.calcString("@unitChoiceImageWidth+@countryChoiceInterval", null)
+    columns = min(columns < 4 ? 2 : columns, this.unitTypesList.len())//Just cause 3 columns look weird here
+    this.setFrameWidth($"{columns}@unitChoiceImageWidth + {columns+1}@countryChoiceInterval")
 
     let view = {
       unitTypeItems = function ()
       {
         let items = []
-        foreach(unitType in unitTypesList)
+        foreach(unitType in this.unitTypesList)
         {
           let uType = unitType
-          let countriesList = countries.filter(function(c) {
-            return isCountryAvailable(c, uType)}.bindenv(this)
-          ).map(@(c) ::loc("unlockTag/" + c))
+          let countriesList = this.countries.filter(function(c) {
+            return this.isCountryAvailable(c, uType)}.bindenv(this)
+          ).map(@(c) loc("unlockTag/" + c))
           let armyName = unitType.armyId
 
           items.append({
             backgroundImage = $"#ui/images/first_{armyName}.jpg?P1"
             tooltip = "".concat(
-              ::loc("unit_type"),
-              ::loc("ui/colon"),
-              ::loc($"mainmenu/{armyName}"),
+              loc("unit_type"),
+              loc("ui/colon"),
+              loc($"mainmenu/{armyName}"),
               "\n",
               ", ".join(countriesList)
             )
-            text = ::loc($"mainmenu/{armyName}")
-            videoPreview = ::has_feature("VideoPreview") ? $"video/unitTypePreview/{armyName}.ivf" : null
-            desription = ::loc("{armyName}/choiseDescription", "")
+            text = loc($"mainmenu/{armyName}")
+            videoPreview = hasFeature("VideoPreview") ? $"video/unitTypePreview/{armyName}.ivf" : null
+            desription = loc("{armyName}/choiseDescription", "")
           })
         }
         return items
       }.bindenv(this)
     }
 
-    let data = ::handyman.renderCached("%gui/firstChoice/unitTypeChoice", view)
-    if (selectedUnitType == null) {
+    let data = ::handyman.renderCached("%gui/firstChoice/unitTypeChoice.tpl", view)
+    if (this.selectedUnitType == null) {
       let preselectUnits = [unitTypes.AIRCRAFT, unitTypes.TANK]
-      selectedUnitType = preselectUnits[::math.rnd() % preselectUnits.len()]
+      this.selectedUnitType = preselectUnits[::math.rnd() % preselectUnits.len()]
     }
 
-    fillChoiceScene(data, ::find_in_array(unitTypesList, selectedUnitType, 0), "firstUnit")
+    this.fillChoiceScene(data, ::find_in_array(this.unitTypesList, this.selectedUnitType, 0), "firstUnit")
   }
 
   function fillChoiceScene(data, focusItemNum, headerLocId)
@@ -173,13 +181,13 @@ enum CChoiceState {
     if (data == "")
       return
 
-    let headerObj = scene.findObject("choice_header")
-    if (::checkObj(headerObj))
-      headerObj.setValue(::loc("mainmenu/" + headerLocId))
-    fillUserNick(scene.findObject("usernick_place"))
+    let headerObj = this.scene.findObject("choice_header")
+    if (checkObj(headerObj))
+      headerObj.setValue(loc("mainmenu/" + headerLocId))
+    fillUserNick(this.scene.findObject("usernick_place"))
 
-    let listObj = scene.findObject("first_choices_block")
-    guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    let listObj = this.scene.findObject("first_choices_block")
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     let listBoxObj = listObj.getChild(0)
     if (focusItemNum != null) {
@@ -193,24 +201,24 @@ enum CChoiceState {
     let availUnitTypes = []
     foreach(unitType in unitTypes.types)
       if (unitType.isAvailableForFirstChoice(country)
-        && ::isInArray(country, getCountriesByUnitType(unitType.esUnitType)))
+        && isInArray(country, this.getCountriesByUnitType(unitType.esUnitType)))
         availUnitTypes.append(unitType)
 
     if (availUnitTypes.len())
-      return ::loc("mainmenu/onlyArmyAvailableForCountry",  { army = ", ".join(availUnitTypes.map(@(t) ::colorize("activeTextColor", t.getArmyLocName()))) })
-    return ::loc("msg/countryNotAvailableForUnitType")
+      return loc("mainmenu/onlyArmyAvailableForCountry",  { army = ", ".join(availUnitTypes.map(@(t) colorize("activeTextColor", t.getArmyLocName()))) })
+    return loc("msg/countryNotAvailableForUnitType")
   }
 
   countSize = @(ratio) {
-    width = guiScene.calcString($"1@countryChoiceInterval + {ratio.w}*(1@countryChoiceImageWidth + 1@countryChoiceInterval)", null),
-    height = guiScene.calcString($"1@countryChoiceInterval + {ratio.h} * (1@firstChoiceCountryFullHeight + 1@countryChoiceInterval)", null)
+    width = this.guiScene.calcString($"1@countryChoiceInterval + {ratio.w}*(1@countryChoiceImageWidth + 1@countryChoiceInterval)", null),
+    height = this.guiScene.calcString($"1@countryChoiceInterval + {ratio.h} * (1@firstChoiceCountryFullHeight + 1@countryChoiceInterval)", null)
   }
 
   function getMaxSizeInItems()
   {
-    let freeWidth = guiScene.calcString("1@rw", null)
-    let freeHeight = guiScene.calcString("1@firstChoiceAvailableHeight", null)
-    let singleItemSizeTable = countSize({w = 1, h = 1})
+    let freeWidth = this.guiScene.calcString("1@rw", null)
+    let freeHeight = this.guiScene.calcString("1@firstChoiceAvailableHeight", null)
+    let singleItemSizeTable = this.countSize({w = 1, h = 1})
 
     return {
       inRow = freeWidth / singleItemSizeTable.width,
@@ -220,7 +228,7 @@ enum CChoiceState {
 
   function updateScreenSize()
   {
-    let maxAvailRatio = getMaxSizeInItems()
+    let maxAvailRatio = this.getMaxSizeInItems()
     let maxItemsInColumn = maxAvailRatio.inColumn
 
     local itemsInRow = maxAvailRatio.inRow
@@ -228,8 +236,8 @@ enum CChoiceState {
 
     for (local row = MIN_ITEMS_IN_ROW; row <= maxAvailRatio.inRow ; row++)
     {
-      let column = countries.len() / row
-      if (column <= maxItemsInColumn && ((column * row) >= countries.len()))
+      let column = this.countries.len() / row
+      if (column <= maxItemsInColumn && ((column * row) >= this.countries.len()))
       {
         itemsInColumn = column
         itemsInRow = row
@@ -237,17 +245,17 @@ enum CChoiceState {
       }
     }
 
-    return countSize({w = itemsInRow, h = itemsInColumn})
+    return this.countSize({w = itemsInRow, h = itemsInColumn})
   }
 
   function createPrefferedUnitTypeCountries()
   {
-    let screenSize = updateScreenSize()
-    setFrameWidth(screenSize.width)
+    let screenSize = this.updateScreenSize()
+    this.setFrameWidth(screenSize.width)
 
-    let availCountries = selectedUnitType ? getCountriesByUnitType(selectedUnitType.esUnitType) : countries
+    let availCountries = this.selectedUnitType ? this.getCountriesByUnitType(this.selectedUnitType.esUnitType) : this.countries
     for (local i = availCountries.len() - 1; i >= 0; i--)
-      if (!isCountryAvailable(availCountries[i], selectedUnitType))
+      if (!this.isCountryAvailable(availCountries[i], this.selectedUnitType))
         availCountries.remove(i)
 
     local data = ""
@@ -255,22 +263,22 @@ enum CChoiceState {
       width = screenSize.width
       countries = function () {
         let res = []
-        let curArmyName = selectedUnitType ? selectedUnitType.armyId  : unitTypes.AIRCRAFT.armyId
-        foreach(country in countries)
+        let curArmyName = this.selectedUnitType ? this.selectedUnitType.armyId  : unitTypes.AIRCRAFT.armyId
+        foreach(country in this.countries)
         {
           local image = ::get_country_flag_img($"first_choice_{country}_{curArmyName}")
           if (image == "")
             image = ::get_country_flag_img($"first_choice_{country}_{unitTypes.AIRCRAFT.armyId}")
 
           let cData = {
-            countryName = ::loc(country)
+            countryName = loc(country)
             backgroundImage = image
-            desription = ::loc($"{country}/choiseDescription", "")
+            desription = loc($"{country}/choiseDescription", "")
             lockText = null
           }
 
-          if (!::isInArray(country, availCountries))
-            cData.lockText = getNotAvailableCountryMsg(country)
+          if (!isInArray(country, availCountries))
+            cData.lockText = this.getNotAvailableCountryMsg(country)
 
           res.append(cData)
         }
@@ -278,55 +286,55 @@ enum CChoiceState {
       }.bindenv(this)
     }
 
-    data = ::handyman.renderCached("%gui/firstChoice/countryFirstChoiceItem", view)
+    data = ::handyman.renderCached("%gui/firstChoice/countryFirstChoiceItem.tpl", view)
 
     if (!availCountries.len())
     {
       let message = format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
                                ::my_user_id_str,
-                               selectedUnitType.name,
-                               ::toString(countries),
-                               ::toString(::get_unit_types_in_countries(), 2)
+                               this.selectedUnitType.name,
+                               toString(this.countries),
+                               toString(::get_unit_types_in_countries(), 2)
                               )
       ::script_net_assert_once("empty countries list", message)
     }
-    else if (!::isInArray(selectedCountry, availCountries))
+    else if (!isInArray(this.selectedCountry, availCountries))
     {
       local rndC = ::math.rnd() % availCountries.len()
       if (::is_vietnamese_version())
         rndC = ::find_in_array(availCountries, "country_ussr", rndC)
-      selectedCountry = availCountries[rndC]
+      this.selectedCountry = availCountries[rndC]
     }
 
-    let selectId = ::find_in_array(countries, selectedCountry, 0)
-    fillChoiceScene(data, selectId, "firstCountry")
+    let selectId = ::find_in_array(this.countries, this.selectedCountry, 0)
+    this.fillChoiceScene(data, selectId, "firstCountry")
   }
 
   function onBack()
   {
-    if (state <= 0)
+    if (this.state <= 0)
       return
 
-    state--
-    updateState()
+    this.state--
+    this.updateState()
   }
 
-  function onEnterChoice(obj)
+  function onEnterChoice(_obj)
   {
-    sendFirstChooseStatistic()
-    startNextState()
+    this.sendFirstChooseStatistic()
+    this.startNextState()
   }
 
   function onSelectCountry(obj)
   {
-    let newCountry = countries?[obj.getValue()]
+    let newCountry = this.countries?[obj.getValue()]
     if (newCountry)
-      selectedCountry = newCountry
+      this.selectedCountry = newCountry
   }
 
   function onSelectUnitType(obj)
   {
-    selectedUnitType = unitTypesList[obj.getValue()]
+    this.selectedUnitType = this.unitTypesList[obj.getValue()]
   }
 
   /**
@@ -342,7 +350,7 @@ enum CChoiceState {
     {
       if (c.country != country)
         continue
-      foreach(idInCountry, crewBlock in c.crews)
+      foreach(_idInCountry, crewBlock in c.crews)
       {
         local unitName = ""
         if (checkCurrentCrewAircrafts)
@@ -377,17 +385,17 @@ enum CChoiceState {
   function createNewbiePresetsData()
   {
     let presetDataItems = []
-    local selEsUnitType = ::ES_UNIT_TYPE_INVALID
+    local selEsUnitType = ES_UNIT_TYPE_INVALID
     foreach (crewData in ::g_crews_list.get())
     {
       let country = crewData.country
       foreach(unitType in unitTypes.types)
       {
         if (!unitType.isAvailable()
-            || !getCountriesByUnitType(unitType.esUnitType).len())
+            || !this.getCountriesByUnitType(unitType.esUnitType).len())
           continue
 
-        let tasksData = createReserveTasksData(country, unitType, false, true)
+        let tasksData = this.createReserveTasksData(country, unitType, false, true)
         // Used for not creating empty presets.
         local hasUnits = false
         foreach (taskData in tasksData)
@@ -405,16 +413,16 @@ enum CChoiceState {
         })
 
         if (hasUnits) {
-          selectedCountry = selectedCountry ?? country
-          selectedUnitType = selectedUnitType ?? unitType
-          if (unitType == selectedUnitType || selEsUnitType == ::ES_UNIT_TYPE_INVALID)
+          this.selectedCountry = this.selectedCountry ?? country
+          this.selectedUnitType = this.selectedUnitType ?? unitType
+          if (unitType == this.selectedUnitType || selEsUnitType == ES_UNIT_TYPE_INVALID)
             selEsUnitType = unitType.esUnitType
         }
       }
     }
     return {
       presetDataItems = presetDataItems
-      selectedCountry = selectedCountry
+      selectedCountry = this.selectedCountry
       selectedUnitType = selEsUnitType
     }
   }
@@ -431,7 +439,7 @@ enum CChoiceState {
 
   function clnSetStartingInfo(presetsData, onComplete)
   {
-    let blk = createBatchRequestByPresetsData(presetsData)
+    let blk = this.createBatchRequestByPresetsData(presetsData)
     blk.setStr("country", presetsData.selectedCountry)
     blk.setInt("unitType", presetsData.selectedUnitType)
 
@@ -443,11 +451,11 @@ enum CChoiceState {
 
     blk.unlock <- "chosen_" + presetsData.selectedCountry
 
-    if (getFirstChosenUnitType() == ::ES_UNIT_TYPE_INVALID)
-      if (selectedUnitType.firstChosenTypeUnlockName)
-        blk.unlock <- selectedUnitType.firstChosenTypeUnlockName
+    if (getFirstChosenUnitType() == ES_UNIT_TYPE_INVALID)
+      if (this.selectedUnitType.firstChosenTypeUnlockName)
+        blk.unlock <- this.selectedUnitType.firstChosenTypeUnlockName
 
-    let taskCallback = ::Callback(onComplete, this)
+    let taskCallback = Callback(onComplete, this)
     let taskId = ::char_send_blk("cln_set_starting_info", blk)
     let taskOptions = {
       showProgressBox = true
@@ -458,9 +466,9 @@ enum CChoiceState {
 
   function goBack()
   {
-    let presetsData = createNewbiePresetsData()
+    let presetsData = this.createNewbiePresetsData()
     let handler = this
-    clnSetStartingInfo(presetsData, (@(presetsData, handler) function () {
+    this.clnSetStartingInfo(presetsData, (@(presetsData, handler) function () {
         // This call won't procude any additional char-requests
         // as all units are already set previously as a single
         // batch char request.
@@ -474,22 +482,22 @@ enum CChoiceState {
 
   function afterModalDestroy()
   {
-    restoreMainOptions()
+    this.restoreMainOptions()
   }
 
   function setFrameWidth(width)
   {
-    let frameObj = scene.findObject("country_choice_block")
-    if (::checkObj(frameObj))
+    let frameObj = this.scene.findObject("country_choice_block")
+    if (checkObj(frameObj))
       frameObj.width = width
   }
 
   function sendFirstChooseStatistic()
   {
-    if (state == CChoiceState.UNIT_TYPE_SELECT && selectedUnitType)
-      ::add_big_query_record("choose_unit_type_screen", selectedUnitType.lowerName)
-    else if (state == CChoiceState.COUNTRY_SELECT)
-      ::add_big_query_record("choose_country_screen", selectedCountry)
+    if (this.state == CChoiceState.UNIT_TYPE_SELECT && this.selectedUnitType)
+      ::add_big_query_record("choose_unit_type_screen", this.selectedUnitType.lowerName)
+    else if (this.state == CChoiceState.COUNTRY_SELECT)
+      ::add_big_query_record("choose_country_screen", this.selectedCountry)
   }
 
   function getCountriesByUnitType(unitType)

@@ -89,9 +89,9 @@
     0.0,
     1.0
   ],
-  "AileronMaxDv": 40.0,
-  "ElevatorMaxDv": 40.0,
-  "RudderMaxDv": 30.0,
+  "AileronMaxDv": 8.0,
+  "ElevatorMaxDv": 8.0,
+  "RudderMaxDv": 8.0,
   "VneControl": 340.0,
   "CockpitOpenedDoorBreakSpeed": 600.0,
   "MomentOfInertia": [
@@ -163,8 +163,8 @@
     },
     "ModePreset3": {
       "Mode": "Separate",
-      "AileronsMode": "Vel",
-      "ElevatorMode": "Vel",
+      "AileronsMode": "Pos",
+      "ElevatorMode": "Pos",
       "RudderMode": "Rate",
       "ThrottleMode": "Climb",
       "PropulsorMode": "Manual",
@@ -183,7 +183,7 @@
     "BombBayCd": 0.0,
     "FuseCd": 1E-06,
     "AirbrakeCd": 0.12,
-    "CockpitDoorCd": 0.007,
+    "CockpitDoorCd": 0.05321,
     "SweepAxisByMachAuto": [
       0.0,
       0.0,
@@ -756,7 +756,7 @@
       "MinThrMult": 0.2,
       "MaxThrMult": 1.1,
       "IsWaterCooled": false,
-      "EngineInertiaMoment": 1.001,
+      "EngineInertiaMoment": 2.001,
       "RPMAmplitude0": [
         8000.0,
         0.0
@@ -1429,15 +1429,15 @@
         1.0
       ],
       "AirFlow4": [
-        9.0,
-        -6.0,
-        0.2,
+        8.0,
+        -8.0,
+        0.5,
         1.0
       ],
       "AirFlow5": [
         14.0,
-        -10.0,
-        0.1,
+        -14.0,
+        0.15,
         1.0
       ],
       "FlapCompensatorEfficiency": [
@@ -1522,7 +1522,7 @@
     "Mass": {
       "Mass": 450.0,
       "Diameter": 14.6,
-      "InertiaMomentCoeff": 1.0
+      "InertiaMomentCoeff": 0.4
     },
     "Governor": {
       "PitchMin": 0.0,
@@ -2512,7 +2512,7 @@
       "HeadingToRollMultByIas": [
         10.0,
         0.0,
-        110.0,
+        150.0,
         1.0
       ],
       "RollLim": 45.0,
@@ -2531,10 +2531,10 @@
         1.0
       ],
       "YawHeadingToYawRateMultByReqRoll": [
-        0.0,
+        10.0,
         1.0,
-        55.0,
-        0.2
+        40.0,
+        0.15
       ],
       "ThrottleToYawRateMult": [
         0.8,

@@ -38,7 +38,7 @@ battlePassStage {
     tdiv {
       left:t='50%pw-50%w'
       position:t='absolute'
-      include "%gui/items/item"
+      include "%gui/items/item.tpl"
     }
 
     <<#stageIcon>>

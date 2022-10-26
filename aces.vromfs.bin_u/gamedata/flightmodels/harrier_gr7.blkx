@@ -2256,7 +2256,7 @@
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/us_an_alr_67.blk"
+        "blk": "gameData/sensors/uk_ari_23333.blk"
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk"
@@ -2283,11 +2283,11 @@
     },
     "TV": {
       "pos": [
-        0.3,
+        0.8,
         -0.2,
         0.0
       ],
-      "head": "optic1_turret",
+      "head": "optic2_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -38.0,
@@ -2295,7 +2295,7 @@
         -55.0,
         38.0
       ],
-      "opticType": "tv",
+      "opticType": "",
       "turretNo": 0
     }
   },
@@ -2411,7 +2411,7 @@
               "blk": "gameData/Weapons/dummy_weapon.blk",
               "emitter": "optic1_gun",
               "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
+              "defaultPitch": 15.0,
               "speedYaw": 200.0,
               "speedPitch": 200.0,
               "parkInDeadzone": true,
@@ -2441,7 +2441,7 @@
                 "trigger": "gunner0",
                 "triggerGroup": "primary",
                 "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
+                "emitter": "optic2_gun",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "speedYaw": 200.0,
@@ -2449,8 +2449,8 @@
                 "parkInDeadzone": true,
                 "aimForOperatedShell": true,
                 "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
+                  "head": "optic2_turret",
+                  "gun": "optic2_gun",
                   "mainTurret": true
                 },
                 "limits": {
@@ -2527,10 +2527,7 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": [
-              "us_aim_9l",
-              "uk_ltc_bol"
-            ],
+            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": "bol_304_container001"
             },
@@ -2538,7 +2535,7 @@
               {
                 "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_inversion_l",
                 "bullets": 160,
                 "external": true,
@@ -2579,10 +2576,10 @@
           {
             "iconType": "bombs_middle",
             "name": "uk_500lbs",
-            "reqModification": "sea_hawk_2x500lb",
+            "reqModification": "uk_mk_n1_540lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
               "emitter": "500lb_he_mc_mk2_001",
               "bullets": 1,
               "external": true,
@@ -2741,11 +2738,8 @@
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
-            "name": "aim9l_bol",
-            "reqModification": [
-              "us_aim_9l",
-              "uk_ltc_bol"
-            ],
+            "name": "aim9l_bol_aim_default",
+            "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": "bol_304_container003"
             },
@@ -2761,7 +2755,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
                 "emitter": "aim_9_003",
                 "bullets": 1,
                 "external": true,
@@ -2910,10 +2904,6 @@
               "traceOffset": 1,
               "counterIndex": 1,
               "external": true
-            },
-            "DependentWeaponPreset": {
-              "slot": 7,
-              "preset": "aden_25_right"
             }
           },
           {
@@ -2940,10 +2930,6 @@
               "mass": 120.0,
               "mass_lbs": 260.0,
               "dragCx": 0.1
-            },
-            "BannedWeaponPreset": {
-              "slot": 7,
-              "preset": "aden_25_right"
             }
           }
         ]
@@ -2995,10 +2981,6 @@
             "traceOffset": 1,
             "counterIndex": 1,
             "external": true
-          },
-          "DependentWeaponPreset": {
-            "slot": 5,
-            "preset": "aden_25_left"
           }
         }
       },
@@ -3151,11 +3133,8 @@
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
-            "name": "aim9l_bol",
-            "reqModification": [
-              "us_aim_9l",
-              "uk_ltc_bol"
-            ],
+            "name": "aim9l_bol_aim_default",
+            "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": "bol_304_container004"
             },
@@ -3171,7 +3150,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
                 "emitter": "aim_9_004",
                 "bullets": 1,
                 "external": true,
@@ -3315,10 +3294,7 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": [
-              "us_aim_9l",
-              "uk_ltc_bol"
-            ],
+            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": "bol_304_container002"
             },
@@ -3326,7 +3302,7 @@
               {
                 "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_inversion_r",
                 "bullets": 160,
                 "external": true,
@@ -3367,10 +3343,10 @@
           {
             "iconType": "bombs_middle",
             "name": "uk_500lbs",
-            "reqModification": "sea_hawk_2x500lb",
+            "reqModification": "uk_mk_n1_540lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
               "emitter": "500lb_he_mc_mk2_002",
               "bullets": 1,
               "external": true,
@@ -3422,6 +3398,15 @@
   "arcadeOverride": {
     "maxSpeedMultiplier": 1.3,
     "wepOverspeed": 1.3
+  },
+  "nightVision": {
+    "sightTPodThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05
+    }
   },
   "wiki": {
     "general": {
@@ -3569,14 +3554,14 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
-    "sea_hawk_2x500lb": {
+    "uk_mk_n1_540lb": {
       "modClass": "weapon",
       "tier": 2
     },
     "uk_mk_10_1000lb": {
       "modClass": "weapon",
       "tier": 4,
-      "reqModification": "sea_hawk_2x500lb"
+      "reqModification": "uk_mk_n1_540lb"
     },
     "uk_tiald_pod": {
       "modClass": "weapon",

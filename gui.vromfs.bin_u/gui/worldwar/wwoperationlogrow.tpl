@@ -69,7 +69,7 @@ tdiv {
           id:t='army_container'
           top:t='50%ph-50%h'
           position:t='absolute'
-          include "%gui/worldWar/wwOperationLogArmyItem"
+          include "%gui/worldWar/wwOperationLogArmyItem.tpl"
         }
       }
 
@@ -95,7 +95,7 @@ tdiv {
             top:t='50%ph-50%h'
             position:t='absolute'
             <<#battleArmy>>
-            include "%gui/worldWar/wwOperationLogArmyItem"
+            include "%gui/worldWar/wwOperationLogArmyItem.tpl"
             <</battleArmy>>
           }
         }
@@ -136,7 +136,7 @@ tdiv {
             top:t='50%ph-50%h'
             position:t='absolute'
             <<#battleArmy>>
-            include "%gui/worldWar/wwOperationLogArmyItem"
+            include "%gui/worldWar/wwOperationLogArmyItem.tpl"
             <</battleArmy>>
           }
         }
@@ -160,7 +160,7 @@ tdiv {
             id:t='army_container'
             top:t='50%ph-50%h'
             position:t='relative'
-            include "%gui/worldWar/wwOperationLogArmyItem"
+            include "%gui/worldWar/wwOperationLogArmyItem.tpl"
           }
         }
       }

@@ -32,11 +32,12 @@
   "soundLoop": true,
   "bullet": [
     {
-      "mass": 0.0403,
+      "mass": 0.040304918,
       "caliber": 0.0127,
       "speed": 887.0,
       "Cx": 0.335,
-      "maxDistance": 3000.0,
+      "maxDistance": 3400.0,
+      "bulletName": "ap_i_ball_M8",
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.0,
@@ -45,21 +46,11 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_i_ball_M8",
       "slopeEffectPreset": "ap",
-      "bulletName": "ap_i_ball_M8",
       "onHitChanceMultFire": 10.0,
+      "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
-        1000.0
-      ],
-      "armorFragmentsDamage": true,
-      "armorFragmentsDamageRadius": 1.5,
-      "armorFragmentsDamageAngle": 15.0,
-      "armorFragmentsAmount": 5,
-      "armorFragmentsArmorPower": 2.0,
-      "armorFragmentsHit": 4.0,
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
+        3000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -85,48 +76,39 @@
         ]
       },
       "hitpower": {
-        "HitPower0m": [
+        "HitPower10m": [
           1.0,
-          0.0
-        ],
-        "HitPower1000m": [
-          0.9,
-          0.0
-        ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
-        ]
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          23.0,
           10.0
         ],
-        "ArmorPower100m": [
-          22.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          16.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          10.0,
+        "HitPower1000m": [
+          0.95,
           1000.0
         ],
-        "ArmorPower1500m": [
-          6.0,
+        "HitPower1500m": [
+          0.85,
           1500.0
         ],
-        "ArmorPower2000m": [
-          5.0,
+        "HitPower2000m": [
+          0.3,
           2000.0
         ],
-        "ArmorPower2500m": [
-          3.0,
+        "HitPower2500m": [
+          0.2,
           2500.0
+        ],
+        "HitPower3000m": [
+          0.1,
+          3000.0
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -218,11 +200,12 @@
       }
     },
     {
-      "mass": 0.0403,
+      "mass": 0.040304918,
       "caliber": 0.0127,
       "speed": 887.0,
       "Cx": 0.335,
-      "maxDistance": 3000.0,
+      "maxDistance": 3400.0,
+      "bulletName": "ap_i_ball_M8",
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.0,
@@ -231,21 +214,11 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_i_ball_M8",
       "slopeEffectPreset": "ap",
-      "bulletName": "ap_i_ball_M8",
       "onHitChanceMultFire": 10.0,
+      "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
-        1000.0
-      ],
-      "armorFragmentsDamage": true,
-      "armorFragmentsDamageRadius": 1.5,
-      "armorFragmentsDamageAngle": 15.0,
-      "armorFragmentsAmount": 5,
-      "armorFragmentsArmorPower": 2.0,
-      "armorFragmentsHit": 4.0,
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
+        3000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -271,48 +244,39 @@
         ]
       },
       "hitpower": {
-        "HitPower0m": [
+        "HitPower10m": [
           1.0,
-          0.0
-        ],
-        "HitPower1000m": [
-          0.9,
-          0.0
-        ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
-        ]
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          23.0,
           10.0
         ],
-        "ArmorPower100m": [
-          22.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          16.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          10.0,
+        "HitPower1000m": [
+          0.95,
           1000.0
         ],
-        "ArmorPower1500m": [
-          6.0,
+        "HitPower1500m": [
+          0.85,
           1500.0
         ],
-        "ArmorPower2000m": [
-          5.0,
+        "HitPower2000m": [
+          0.3,
           2000.0
         ],
-        "ArmorPower2500m": [
-          3.0,
+        "HitPower2500m": [
+          0.2,
           2500.0
+        ],
+        "HitPower3000m": [
+          0.1,
+          3000.0
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -404,11 +368,12 @@
       }
     },
     {
-      "mass": 0.0403,
+      "mass": 0.040304918,
       "caliber": 0.0127,
       "speed": 887.0,
       "Cx": 0.335,
-      "maxDistance": 3000.0,
+      "maxDistance": 3400.0,
+      "bulletName": "ap_i_ball_M8",
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.0,
@@ -417,21 +382,11 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_i_ball_M8",
       "slopeEffectPreset": "ap",
-      "bulletName": "ap_i_ball_M8",
       "onHitChanceMultFire": 10.0,
+      "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
-        1000.0
-      ],
-      "armorFragmentsDamage": true,
-      "armorFragmentsDamageRadius": 1.5,
-      "armorFragmentsDamageAngle": 15.0,
-      "armorFragmentsAmount": 5,
-      "armorFragmentsArmorPower": 2.0,
-      "armorFragmentsHit": 4.0,
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
+        3000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -457,48 +412,39 @@
         ]
       },
       "hitpower": {
-        "HitPower0m": [
+        "HitPower10m": [
           1.0,
-          0.0
-        ],
-        "HitPower1000m": [
-          0.9,
-          0.0
-        ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
-        ]
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          23.0,
           10.0
         ],
-        "ArmorPower100m": [
-          22.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          16.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          10.0,
+        "HitPower1000m": [
+          0.95,
           1000.0
         ],
-        "ArmorPower1500m": [
-          6.0,
+        "HitPower1500m": [
+          0.85,
           1500.0
         ],
-        "ArmorPower2000m": [
-          5.0,
+        "HitPower2000m": [
+          0.3,
           2000.0
         ],
-        "ArmorPower2500m": [
-          3.0,
+        "HitPower2500m": [
+          0.2,
           2500.0
+        ],
+        "HitPower3000m": [
+          0.1,
+          3000.0
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -590,11 +536,12 @@
       }
     },
     {
-      "mass": 0.0403,
+      "mass": 0.040304918,
       "caliber": 0.0127,
       "speed": 887.0,
       "Cx": 0.335,
-      "maxDistance": 3000.0,
+      "maxDistance": 3400.0,
+      "bulletName": "ap_i_ball_M8",
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.0,
@@ -603,21 +550,11 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_i_ball_M8",
       "slopeEffectPreset": "ap",
-      "bulletName": "ap_i_ball_M8",
       "onHitChanceMultFire": 10.0,
+      "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
-        1000.0
-      ],
-      "armorFragmentsDamage": true,
-      "armorFragmentsDamageRadius": 1.5,
-      "armorFragmentsDamageAngle": 15.0,
-      "armorFragmentsAmount": 5,
-      "armorFragmentsArmorPower": 2.0,
-      "armorFragmentsHit": 4.0,
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
+        3000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -643,48 +580,39 @@
         ]
       },
       "hitpower": {
-        "HitPower0m": [
+        "HitPower10m": [
           1.0,
-          0.0
-        ],
-        "HitPower1000m": [
-          0.9,
-          0.0
-        ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
-        ]
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          23.0,
           10.0
         ],
-        "ArmorPower100m": [
-          22.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          16.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          10.0,
+        "HitPower1000m": [
+          0.95,
           1000.0
         ],
-        "ArmorPower1500m": [
-          6.0,
+        "HitPower1500m": [
+          0.85,
           1500.0
         ],
-        "ArmorPower2000m": [
-          5.0,
+        "HitPower2000m": [
+          0.3,
           2000.0
         ],
-        "ArmorPower2500m": [
-          3.0,
+        "HitPower2500m": [
+          0.2,
           2500.0
+        ],
+        "HitPower3000m": [
+          0.1,
+          3000.0
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -776,11 +704,12 @@
       }
     },
     {
-      "mass": 0.0403,
+      "mass": 0.03965693,
       "caliber": 0.0127,
       "speed": 887.0,
       "Cx": 0.335,
-      "maxDistance": 3000.0,
+      "maxDistance": 3400.0,
+      "bulletName": "ap_i_t_ball_M20",
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.0,
@@ -789,12 +718,11 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_i_t_ball_M20",
       "slopeEffectPreset": "ap",
-      "bulletName": "ap_i_t_ball_M20",
-      "hitPowerMult": 8.0,
       "onHitChanceMultFire": 10.0,
+      "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
-        1000.0
+        3000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -820,17 +748,29 @@
         ]
       },
       "hitpower": {
-        "HitPower0m": [
+        "HitPower10m": [
           1.0,
-          0.0
+          10.0
         ],
         "HitPower1000m": [
-          0.9,
-          0.0
+          0.95,
+          1000.0
         ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
+        "HitPower1500m": [
+          0.85,
+          1500.0
+        ],
+        "HitPower2000m": [
+          0.3,
+          2000.0
+        ],
+        "HitPower2500m": [
+          0.2,
+          2500.0
+        ],
+        "HitPower3000m": [
+          0.1,
+          3000.0
         ]
       },
       "damage": {
@@ -936,11 +876,12 @@
   "12mm_usa_M2HB_API": {
     "bullet": [
       {
-        "mass": 0.0403,
+        "mass": 0.03965693,
         "caliber": 0.0127,
         "speed": 887.0,
         "Cx": 0.335,
-        "maxDistance": 3000.0,
+        "maxDistance": 3400.0,
+        "bulletName": "ap_i_t_ball_M20",
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.0,
@@ -949,12 +890,11 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "ap_i_t_ball_M20",
         "slopeEffectPreset": "ap",
-        "bulletName": "ap_i_t_ball_M20",
-        "hitPowerMult": 8.0,
         "onHitChanceMultFire": 10.0,
+        "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
-          1000.0
+          3000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -980,17 +920,29 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
+          "HitPower10m": [
             1.0,
-            0.0
+            10.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.95,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.85,
+            1500.0
+          ],
+          "HitPower2000m": [
+            0.3,
+            2000.0
+          ],
+          "HitPower2500m": [
+            0.2,
+            2500.0
+          ],
+          "HitPower3000m": [
+            0.1,
+            3000.0
           ]
         },
         "damage": {
@@ -1093,11 +1045,12 @@
         }
       },
       {
-        "mass": 0.0403,
+        "mass": 0.040304918,
         "caliber": 0.0127,
         "speed": 887.0,
         "Cx": 0.335,
-        "maxDistance": 3000.0,
+        "maxDistance": 3400.0,
+        "bulletName": "ap_i_ball_M8",
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.0,
@@ -1106,21 +1059,11 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "ap_i_ball_M8",
         "slopeEffectPreset": "ap",
-        "bulletName": "ap_i_ball_M8",
         "onHitChanceMultFire": 10.0,
+        "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
-          1000.0
-        ],
-        "armorFragmentsDamage": true,
-        "armorFragmentsDamageRadius": 1.5,
-        "armorFragmentsDamageAngle": 15.0,
-        "armorFragmentsAmount": 5,
-        "armorFragmentsArmorPower": 2.0,
-        "armorFragmentsHit": 4.0,
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
+          3000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1146,48 +1089,39 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
+          "HitPower10m": [
             1.0,
-            0.0
-          ],
-          "HitPower1000m": [
-            0.9,
-            0.0
-          ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
-          ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            23.0,
             10.0
           ],
-          "ArmorPower100m": [
-            22.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            16.0,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            10.0,
+          "HitPower1000m": [
+            0.95,
             1000.0
           ],
-          "ArmorPower1500m": [
-            6.0,
+          "HitPower1500m": [
+            0.85,
             1500.0
           ],
-          "ArmorPower2000m": [
-            5.0,
+          "HitPower2000m": [
+            0.3,
             2000.0
           ],
-          "ArmorPower2500m": [
-            3.0,
+          "HitPower2500m": [
+            0.2,
             2500.0
+          ],
+          "HitPower3000m": [
+            0.1,
+            3000.0
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1279,11 +1213,12 @@
         }
       },
       {
-        "mass": 0.0403,
+        "mass": 0.03965693,
         "caliber": 0.0127,
         "speed": 887.0,
         "Cx": 0.335,
-        "maxDistance": 3000.0,
+        "maxDistance": 3400.0,
+        "bulletName": "ap_i_t_ball_M20",
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.0,
@@ -1292,12 +1227,11 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "ap_i_t_ball_M20",
         "slopeEffectPreset": "ap",
-        "bulletName": "ap_i_t_ball_M20",
-        "hitPowerMult": 8.0,
         "onHitChanceMultFire": 10.0,
+        "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
-          1000.0
+          3000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1323,17 +1257,29 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
+          "HitPower10m": [
             1.0,
-            0.0
+            10.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.95,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.85,
+            1500.0
+          ],
+          "HitPower2000m": [
+            0.3,
+            2000.0
+          ],
+          "HitPower2500m": [
+            0.2,
+            2500.0
+          ],
+          "HitPower3000m": [
+            0.1,
+            3000.0
           ]
         },
         "damage": {
@@ -1440,11 +1386,12 @@
   "12mm_usa_M2HB_AP": {
     "bullet": [
       {
-        "mass": 0.046,
+        "mass": 0.045877624,
         "caliber": 0.0127,
         "speed": 856.0,
         "Cx": 0.335,
-        "maxDistance": 3000.0,
+        "maxDistance": 3400.0,
+        "bulletName": "ap_ball_M2",
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.0,
@@ -1453,14 +1400,10 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "ap_ball_M2",
         "slopeEffectPreset": "ap",
-        "bulletName": "ap_ball_M2",
+        "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
+          3000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1486,17 +1429,29 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
+          "HitPower10m": [
             1.0,
-            0.0
+            10.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.95,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.85,
+            1500.0
+          ],
+          "HitPower2000m": [
+            0.3,
+            2000.0
+          ],
+          "HitPower2500m": [
+            0.2,
+            2500.0
+          ],
+          "HitPower3000m": [
+            0.1,
+            3000.0
           ]
         },
         "damage": {
@@ -1598,11 +1553,12 @@
         }
       },
       {
-        "mass": 0.046,
+        "mass": 0.045877624,
         "caliber": 0.0127,
         "speed": 856.0,
         "Cx": 0.335,
-        "maxDistance": 3000.0,
+        "maxDistance": 3400.0,
+        "bulletName": "ap_ball_M2",
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.0,
@@ -1611,14 +1567,10 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "ap_ball_M2",
         "slopeEffectPreset": "ap",
-        "bulletName": "ap_ball_M2",
+        "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
+          3000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1644,17 +1596,29 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
+          "HitPower10m": [
             1.0,
-            0.0
+            10.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.95,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.85,
+            1500.0
+          ],
+          "HitPower2000m": [
+            0.3,
+            2000.0
+          ],
+          "HitPower2500m": [
+            0.2,
+            2500.0
+          ],
+          "HitPower3000m": [
+            0.1,
+            3000.0
           ]
         },
         "damage": {
@@ -1756,11 +1720,12 @@
         }
       },
       {
-        "mass": 0.0403,
+        "mass": 0.03965693,
         "caliber": 0.0127,
         "speed": 887.0,
         "Cx": 0.335,
-        "maxDistance": 3000.0,
+        "maxDistance": 3400.0,
+        "bulletName": "ap_i_t_ball_M20",
         "normalizationPreset": "default",
         "ricochetPreset": "default",
         "stabilityThreshold": 0.0,
@@ -1769,12 +1734,11 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "ap_i_t_ball_M20",
         "slopeEffectPreset": "ap",
-        "bulletName": "ap_i_t_ball_M20",
-        "hitPowerMult": 8.0,
         "onHitChanceMultFire": 10.0,
+        "effectiveDistance": 3000.0,
         "relativeVelHitShift": [
           300.0,
-          1000.0
+          3000.0
         ],
         "groundCollisionEffect": "hit_12_18mm_dirt_ap",
         "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1800,17 +1764,29 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
+          "HitPower10m": [
             1.0,
-            0.0
+            10.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.95,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.85,
+            1500.0
+          ],
+          "HitPower2000m": [
+            0.3,
+            2000.0
+          ],
+          "HitPower2500m": [
+            0.2,
+            2500.0
+          ],
+          "HitPower3000m": [
+            0.1,
+            3000.0
           ]
         },
         "damage": {
@@ -1916,11 +1892,12 @@
   },
   "12mm_usa_M2HB_APIT": {
     "bullet": {
-      "mass": 0.0403,
+      "mass": 0.03965693,
       "caliber": 0.0127,
       "speed": 887.0,
       "Cx": 0.335,
-      "maxDistance": 3000.0,
+      "maxDistance": 3400.0,
+      "bulletName": "ap_i_t_ball_M20",
       "normalizationPreset": "default",
       "ricochetPreset": "default",
       "stabilityThreshold": 0.0,
@@ -1929,12 +1906,11 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_i_t_ball_M20",
       "slopeEffectPreset": "ap",
-      "bulletName": "ap_i_t_ball_M20",
-      "hitPowerMult": 8.0,
       "onHitChanceMultFire": 10.0,
+      "effectiveDistance": 3000.0,
       "relativeVelHitShift": [
         300.0,
-        1000.0
+        3000.0
       ],
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "ricochetEffect": "hit_12_18mm_metal_ap",
@@ -1960,17 +1936,29 @@
         ]
       },
       "hitpower": {
-        "HitPower0m": [
+        "HitPower10m": [
           1.0,
-          0.0
+          10.0
         ],
         "HitPower1000m": [
-          0.9,
-          0.0
+          0.95,
+          1000.0
         ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
+        "HitPower1500m": [
+          0.85,
+          1500.0
+        ],
+        "HitPower2000m": [
+          0.3,
+          2000.0
+        ],
+        "HitPower2500m": [
+          0.2,
+          2500.0
+        ],
+        "HitPower3000m": [
+          0.1,
+          3000.0
         ]
       },
       "damage": {

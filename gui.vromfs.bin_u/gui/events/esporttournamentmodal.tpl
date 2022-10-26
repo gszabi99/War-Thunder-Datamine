@@ -270,7 +270,7 @@ root {
           size:t='1@eSItemWidth, ph'
           flow:t='vertical'
           position:t='relative'
-          include "%gui/events/eSportScheduler"
+          include "%gui/events/eSportScheduler.tpl"
 
           tdiv {
             id:t='wait_time_block'

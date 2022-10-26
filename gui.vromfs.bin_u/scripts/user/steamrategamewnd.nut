@@ -1,15 +1,21 @@
-let { openUrl } = require("%scripts/onlineShop/url.nut")
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
 
-::gui_handlers.SteamRateGame <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+
+::gui_handlers.SteamRateGame <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/steamRateGame/steamRateGame"
+  sceneTplName = "%gui/steamRateGame/steamRateGame.tpl"
 
   getSceneTplView = @() {}
   initScreen = @() null
 
-  onApply = @() openUrl(::loc("url/steam/community", {appId = ::steam_get_app_id()} ))
-  onEventDestroyEmbeddedBrowser = @(p) goBack()
+  onApply = @() openUrl(loc("url/steam/community", {appId = ::steam_get_app_id()} ))
+  onEventDestroyEmbeddedBrowser = @(_p) this.goBack()
 }
 
 return {

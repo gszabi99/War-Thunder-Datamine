@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 
 ::gui_handlers.QiHandlerBase <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -21,82 +29,82 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
   function initScreen()
   {
-    initTimer()
-    checkCurQueue(true)
+    this.initTimer()
+    this.checkCurQueue(true)
   }
 
   function initTimer()
   {
-    if (!hasTimerText || !timerUpdateObjId)
+    if (!this.hasTimerText || !this.timerUpdateObjId)
       return
 
-    let timerObj = scene.findObject(timerUpdateObjId)
+    let timerObj = this.scene.findObject(this.timerUpdateObjId)
     timerObj.setUserData(this)
     timerObj.timer_handler_func = "onUpdate"
   }
 
   function destroy()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
-    scene.show(false)
-    guiScene.replaceContentFromText(scene, "", 0, null)
-    scene = null
+    this.scene.show(false)
+    this.guiScene.replaceContentFromText(this.scene, "", 0, null)
+    this.scene = null
   }
 
   function checkCurQueue(forceUpdate = false)
   {
-    local q = ::queues.findQueue({}, queueTypeMask)
+    local q = ::queues.findQueue({}, this.queueTypeMask)
     if (q && !::queues.isQueueActive(q))
       q = null
 
-    if (needAutoDestroy && !q)
-      return destroy()
+    if (this.needAutoDestroy && !q)
+      return this.destroy()
 
-    let isQueueChanged = q != queue
+    let isQueueChanged = q != this.queue
     if (!isQueueChanged && !forceUpdate)
       return isQueueChanged
 
-    queue = q
-    event = queue && ::queues.getQueueEvent(queue)
-    if (!isStatsCreated)
+    this.queue = q
+    this.event = this.queue && ::queues.getQueueEvent(this.queue)
+    if (!this.isStatsCreated)
     {
-      createStats()
-      isStatsCreated = true
+      this.createStats()
+      this.isStatsCreated = true
     }
-    onQueueChange()
+    this.onQueueChange()
     return isQueueChanged
   }
 
   function onQueueChange()
   {
-    scene.show(queue != null)
-    if (!queue)
+    this.scene.show(this.queue != null)
+    if (!this.queue)
       return
 
-    updateTimer()
-    updateStats()
+    this.updateTimer()
+    this.updateStats()
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, _dt)
   {
-    if (queue)
-      updateTimer()
+    if (this.queue)
+      this.updateTimer()
   }
 
   function updateTimer()
   {
-    let textObj = scene.findObject(timerTextObjId)
-    let timerObj = scene.findObject("wait_time_block")
-    let iconObj = scene.findObject("queue_wait_icon")
+    let textObj = this.scene.findObject(this.timerTextObjId)
+    let timerObj = this.scene.findObject("wait_time_block")
+    let iconObj = this.scene.findObject("queue_wait_icon")
     ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
-      iconObj, ::loc("yn1/waiting_for_game_query"))
+      iconObj, loc("yn1/waiting_for_game_query"))
   }
 
-  function leaveQueue(obj) { if (leaveQueueCb) leaveQueueCb() }
+  function leaveQueue(_obj) { if (this.leaveQueueCb) this.leaveQueueCb() }
 
-  function onEventQueueChangeState(p)     { checkCurQueue() }
-  function onEventQueueInfoUpdated(p)     { if (queue) updateStats() }
+  function onEventQueueChangeState(_p)     { this.checkCurQueue() }
+  function onEventQueueInfoUpdated(_p)     { if (this.queue) this.updateStats() }
 
   function createStats() {}
   function updateStats() {}

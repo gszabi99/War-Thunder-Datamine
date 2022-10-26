@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
+
 ::dagui_propid.add_name_id("_set_aabb_by_object")
 
 ::HudTutorialObject <- class
@@ -11,71 +19,71 @@
 
   constructor(id, scene)
   {
-    refreshObj(id, scene)
+    this.refreshObj(id, scene)
   }
 
   function refreshObj(id, scene)
   {
-    obj = scene.findObject(id)
-    show(isVisible)
-    initAabb()
+    this.obj = scene.findObject(id)
+    this.show(this.isVisible)
+    this.initAabb()
   }
 
   function isValid()
   {
-    return ::checkObj(obj)
+    return checkObj(this.obj)
   }
 
   function show(value)
   {
-    if (::checkObj(obj))
-      obj.show(value)
-    isVisible = value
+    if (checkObj(this.obj))
+      this.obj.show(value)
+    this.isVisible = value
   }
 
   function setTime(timeSec)
   {
     if (timeSec > 0)
-      showUpTo = ::dagor.getCurTime() + 1000 * timeSec
+      this.showUpTo = get_time_msec() + 1000 * timeSec
   }
 
   function getTimeLeft()
   {
-    return 0.001 * (showUpTo - ::dagor.getCurTime())
+    return 0.001 * (this.showUpTo - get_time_msec())
   }
 
   function hasTimer()
   {
-    return showUpTo > 0
+    return this.showUpTo > 0
   }
 
   function isVisibleByTime()
   {
-    return isVisible && (!hasTimer() || showUpTo < ::dagor.getCurTime())
+    return this.isVisible && (!this.hasTimer() || this.showUpTo < get_time_msec())
   }
 
   function initAabb()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
 
-    aabbFromName = obj?._set_aabb_by_object
-    if (aabbFromName && !aabbFromName.len())
-      aabbFromName = null
-    updateAabb()
+    this.aabbFromName = this.obj?._set_aabb_by_object
+    if (this.aabbFromName && !this.aabbFromName.len())
+      this.aabbFromName = null
+    this.updateAabb()
   }
 
   function updateAabb()
   {
-    if (!aabbFromName || !isValid())
+    if (!this.aabbFromName || !this.isValid())
       return
 
-    let aabb = ::g_hud_tutorial_elements.getAABB(aabbFromName)
+    let aabb = ::g_hud_tutorial_elements.getAABB(this.aabbFromName)
     if (!aabb || aabb.size[0] <= 0)
       return
 
-    obj.size = aabb.size[0] + ", " + aabb.size[1]
-    obj.pos = aabb.pos[0] + ", " + aabb.pos[1]
-    obj.position = "root"
+    this.obj.size = aabb.size[0] + ", " + aabb.size[1]
+    this.obj.pos = aabb.pos[0] + ", " + aabb.pos[1]
+    this.obj.position = "root"
   }
 }

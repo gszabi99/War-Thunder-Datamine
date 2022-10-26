@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -14,7 +21,7 @@ let { needShowOverrideSlotbar, getCustomViewCountryData } = require("%scripts/ev
 let { eachParam } = require("%sqstd/datablock.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -42,7 +49,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   local eventId = null
-  local chapterId = ::getTblValue ("chapter", options, null)
+  local chapterId = getTblValue ("chapter", options, null)
 
   if (chapterId)
   {
@@ -54,12 +61,12 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     }
   }
 
-  eventId = eventId || ::getTblValue("event", options, null)
+  eventId = eventId || getTblValue("event", options, null)
 
   if (eventId == null)
   {
     local lastPlayedEvent = ::events.getLastPlayedEvent()
-    eventId = ::getTblValue("name", lastPlayedEvent, ::events.getFeaturedEvent())
+    eventId = getTblValue("name", lastPlayedEvent, ::events.getFeaturedEvent())
     chapterId = ::events.getEventsChapter(::events.getEvent(eventId))
   }
 
@@ -96,88 +103,88 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   function initScreen()
   {
-    mainOptionsMode = getGuiOptionsMode()
+    this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
-    eventsListObj = scene.findObject("items_list")
-    if (!::checkObj(eventsListObj))
-      return goBack()
+    this.eventsListObj = this.scene.findObject("items_list")
+    if (!checkObj(this.eventsListObj))
+      return this.goBack()
 
-    updateMouseMode()
-    eventDescription = ::create_event_description(scene)
-    skipCheckQueue = true
-    fillEventsList()
-    skipCheckQueue = false
+    this.updateMouseMode()
+    this.eventDescription = ::create_event_description(this.scene)
+    this.skipCheckQueue = true
+    this.fillEventsList()
+    this.skipCheckQueue = false
 
-    updateQueueInterface()
-    updateButtons()
-    updateClusters()
+    this.updateQueueInterface()
+    this.updateButtons()
+    this.updateClusters()
 
-    scene.findObject("event_update").setUserData(this)
-    guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child_by_value(eventsListObj)
+    this.scene.findObject("event_update").setUserData(this)
+    this.guiScene.applyPendingChanges(false)
+    ::move_mouse_on_child_by_value(this.eventsListObj)
   }
 
   //----CONTROLLER----//
   function onItemSelect()
   {
-    onItemSelectAction()
+    this.onItemSelectAction()
   }
 
   function onItemSelectAction(onlyChanged = true)
   {
-    let curEventIdx = eventsListObj.getValue()
-    let rowId = listMap?[curEventIdx]
+    let curEventIdx = this.eventsListObj.getValue()
+    let rowId = this.listMap?[curEventIdx]
     if (rowId == null)
       return
     let newEvent = ::events.getEvent(rowId)
     let newEventId = newEvent?.name ?? ""
     let newChapterId = newEvent != null ? ::events.getEventsChapter(newEvent) : rowId
 
-    if(onlyChanged && newChapterId == curChapterId && curEventId == newEventId)
+    if(onlyChanged && newChapterId == this.curChapterId && this.curEventId == newEventId)
       return
 
-    if (newChapterId == curChapterId && curEventId==newEventId)
-      return updateWindow()
+    if (newChapterId == this.curChapterId && this.curEventId==newEventId)
+      return this.updateWindow()
 
-    checkQueue((@(newEventId) function () {
-        curChapterId = newChapterId
-        curEventId = newEventId
-        selectedIdx = curEventIdx
-        updateWindow()
+    this.checkQueue((@(newEventId) function () {
+        this.curChapterId = newChapterId
+        this.curEventId = newEventId
+        this.selectedIdx = curEventIdx
+        this.updateWindow()
       })(newEventId),
-      function() { selectEvent(curEventId) })
+      function() { this.selectEvent(this.curEventId) })
   }
 
   function updateWindow()
   {
-    let event = ::events.getEvent(curEventId)
-    let showOverrideSlotbar = needShowOverrideSlotbar(::events.getEvent(curEventId))
+    let event = ::events.getEvent(this.curEventId)
+    let showOverrideSlotbar = needShowOverrideSlotbar(::events.getEvent(this.curEventId))
     if (showOverrideSlotbar)
-      updateOverrideSlotbar(::events.getEventMission(curEventId))
+      updateOverrideSlotbar(::events.getEventMission(this.curEventId))
     else
       resetSlotbarOverrided()
-    createSlotbar({
-      eventId = curEventId
-      afterSlotbarSelect = updateButtons
-      afterFullUpdate = updateButtons
+    this.createSlotbar({
+      eventId = this.curEventId
+      afterSlotbarSelect = this.updateButtons
+      afterFullUpdate = this.updateButtons
       needPresetsPanel = !showOverrideSlotbar
       showAlwaysFullSlotbar = true
       customViewCountryData = getCustomViewCountryData(event)
       needCheckUnitUnlock = showOverrideSlotbar
     })
-    showEventDescription(curEventId)
-    updateButtons()
+    this.showEventDescription(this.curEventId)
+    this.updateButtons()
   }
 
   function selectEvent(eventId)
   {
-    if (eventId == "" || !::checkObj(eventsListObj))
+    if (eventId == "" || !checkObj(this.eventsListObj))
       return false
-    for(local i = 0; i < eventsListObj.childrenCount(); i++)
-      if (eventsListObj.getChild(i).id == eventId)
+    for(local i = 0; i < this.eventsListObj.childrenCount(); i++)
+      if (this.eventsListObj.getChild(i).id == eventId)
       {
-        eventsListObj.setValue(i)
-        onItemSelectAction()
+        this.eventsListObj.setValue(i)
+        this.onItemSelectAction()
         return true
       }
     return false
@@ -185,17 +192,17 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   function onJoinEvent()
   {
-    joinEvent()
+    this.joinEvent()
   }
 
   function goToBattleFromDebriefing()
   {
-    joinEvent(true)
+    this.joinEvent(true)
   }
 
   function joinEvent(isFromDebriefing = false)
   {
-    let event = ::events.getEvent(curEventId)
+    let event = ::events.getEvent(this.curEventId)
     if (!event)
       return
 
@@ -206,7 +213,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       return
     }
 
-    isQueueWasStartedWithRoomsList = ::events.isEventWithLobby(event)
+    this.isQueueWasStartedWithRoomsList = ::events.isEventWithLobby(event)
     let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"
       economicName = ::events.getEventEconomicName(event)
@@ -216,53 +223,53 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     }
 
     ::EventJoinProcess(event, null,
-      @(event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+      @(_event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
       function() {
         configForStatistic.canIntoToBattle <- false
         ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
       })
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, _dt)
   {
-    checkAskOpenRoomsList()
+    this.checkAskOpenRoomsList()
   }
 
   function checkAskOpenRoomsList()
   {
-    if (!canAskAboutRoomsList
-        || !isQueueWasStartedWithRoomsList
-        || !queueToShow)
+    if (!this.canAskAboutRoomsList
+        || !this.isQueueWasStartedWithRoomsList
+        || !this.queueToShow)
       return
 
     let eventRoomsListCfgBlk = GUI.get()?.eventRoomsList
 
     let delay = eventRoomsListCfgBlk?.timeToAskShowRoomsListSec ?? SHOW_RLIST_ASK_DELAY_DEFAULT
-    if (queueToShow.getActiveTime() < delay)
+    if (this.queueToShow.getActiveTime() < delay)
       return
 
     let maxCount = eventRoomsListCfgBlk?.askBeforeOpenCount ?? SHOW_RLIST_BEFORE_OPEN_DEFAULT
     if (maxCount < ::load_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0))
     {
-      canAskAboutRoomsList = false
+      this.canAskAboutRoomsList = false
       return
     }
 
-    let economicName = ::events.getEventEconomicName(::events.getEvent(curEventId))
+    let economicName = ::events.getEventEconomicName(::events.getEvent(this.curEventId))
     let roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = economicName })
     if (!roomsListData.getList().len())
       return
 
-    canAskAboutRoomsList = false
+    this.canAskAboutRoomsList = false
     ::gui_handlers.InfoWnd.openChecked({
       checkId = "askOpenRoomsList"
-      header = ::loc("multiplayer/hint")
-      message = ::loc("multiplayer/rooms_list/askToOpen")
+      header = loc("multiplayer/hint")
+      message = loc("multiplayer/rooms_list/askToOpen")
       buttons = [
         {
           text = "#multiplayer/rooms_list"
           shortcut = "A"
-          onClick = onRoomsList
+          onClick = this.onRoomsList
         }
       ]
       buttonsContext = this
@@ -273,10 +280,10 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   function onLeaveEvent()
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel" },
-                                             ::Callback(onLeaveEventActions, this)))
+                                             Callback(this.onLeaveEventActions, this)))
       return
     else
-      onLeaveEventActions()
+      this.onLeaveEventActions()
   }
 
   function getCurEventQueue()
@@ -287,12 +294,12 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   function isInEventQueue()
   {
-    return queueToShow != null  //to all interface work consistent with view
+    return this.queueToShow != null  //to all interface work consistent with view
   }
 
   function onLeaveEventActions()
   {
-    let q = getCurEventQueue()
+    let q = this.getCurEventQueue()
     if (!q)
       return
 
@@ -304,17 +311,17 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     if (!::queues.isEventQueue(p?.queue))
       return
 
-    updateQueueInterface()
+    this.updateQueueInterface()
 
-    if (isInEventQueue())
-      hoveredIdx = -1
+    if (this.isInEventQueue())
+      this.hoveredIdx = -1
     else
-      ::move_mouse_on_child_by_value(eventsListObj)
+      ::move_mouse_on_child_by_value(this.eventsListObj)
 
-    updateButtons()
+    this.updateButtons()
   }
 
-  function onEventAfterJoinEventRoom(event)
+  function onEventAfterJoinEventRoom(_event)
   {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
@@ -322,66 +329,66 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   function onOpenClusterSelect(obj)
   {
     ::queues.checkAndStart(
-      ::Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
+      Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
   }
 
-  function onEventEventsDataUpdated(params)
+  function onEventEventsDataUpdated(_params)
   {
-    fillEventsList()
+    this.fillEventsList()
   }
 
-  function onEventClusterChange(params)
+  function onEventClusterChange(_params)
   {
-    updateClusters()
+    this.updateClusters()
   }
 
   function updateClusters()
   {
-    clustersModule.updateClusters(scene.findObject("cluster_select_button"))
+    clustersModule.updateClusters(this.scene.findObject("cluster_select_button"))
   }
 
   function goBack()
   {
-    checkedForward(base.goBack)
+    this.checkedForward(base.goBack)
   }
 
   function goBackShortcut()
   {
-    if (isInEventQueue())
-      onLeaveEvent()
+    if (this.isInEventQueue())
+      this.onLeaveEvent()
     else
-      goBack()
+      this.goBack()
   }
 
   function checkQueue(func, cancelFunc = null)
   {
-    if (skipCheckQueue)
+    if (this.skipCheckQueue)
       return func()
 
-    checkedModifyQueue(QUEUE_TYPE_BIT.EVENT, func, cancelFunc)
+    this.checkedModifyQueue(QUEUE_TYPE_BIT.EVENT, func, cancelFunc)
   }
 
   function restoreQueueParams()
   {
-    if (!queueToShow || !::checkObj(scene))
+    if (!this.queueToShow || !checkObj(this.scene))
       return
 
-    skipCheckQueue = true
-    selectEvent(::queues.getQueueMode(queueToShow))
-    skipCheckQueue = false
+    this.skipCheckQueue = true
+    this.selectEvent(::queues.getQueueMode(this.queueToShow))
+    this.skipCheckQueue = false
   }
 
   function onItemDblClick() {
     if (::show_console_buttons)
       return
 
-    if (curEventId == "") {
-      collapseChapter(curChapterId)
-      updateButtons()
+    if (this.curEventId == "") {
+      this.collapseChapter(this.curChapterId)
+      this.updateButtons()
     } else
-      joinEvent()
+      this.joinEvent()
   }
 
   function onItemHover(obj)
@@ -389,38 +396,38 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
-    let idx = obj.getIntProp(listIdxPID, -1)
-    if (isHover == (hoveredIdx == idx))
+    let idx = obj.getIntProp(this.listIdxPID, -1)
+    if (isHover == (this.hoveredIdx == idx))
       return
-    hoveredIdx = isHover ? idx : -1
-    updateMouseMode()
-    updateButtons()
+    this.hoveredIdx = isHover ? idx : -1
+    this.updateMouseMode()
+    this.updateButtons()
   }
 
-  function onHoveredItemSelect(obj)
+  function onHoveredItemSelect(_obj)
   {
-    if (hoveredIdx != -1 && ::check_obj(eventsListObj))
-      eventsListObj.setValue(hoveredIdx)
+    if (this.hoveredIdx != -1 && checkObj(this.eventsListObj))
+      this.eventsListObj.setValue(this.hoveredIdx)
   }
 
   function updateMouseMode()
   {
-    isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+    this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
-  function onEventSquadStatusChanged(params)
+  function onEventSquadStatusChanged(_params)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
-  function onEventSquadSetReady(params)
+  function onEventSquadSetReady(_params)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
-  function onEventSquadDataUpdated(p)
+  function onEventSquadDataUpdated(_p)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
   function onDestroy()
@@ -432,26 +439,26 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   function getHandlerRestoreData()
   {
     return {
-      openData = { curEventId = curEventId }
+      openData = { curEventId = this.curEventId }
     }
   }
 
   function onRoomsList()
   {
-    ::gui_handlers.EventRoomsHandler.open(::events.getEvent(curEventId), true)
-    canAskAboutRoomsList = false
+    ::gui_handlers.EventRoomsHandler.open(::events.getEvent(this.curEventId), true)
+    this.canAskAboutRoomsList = false
     ::save_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID,
       ::load_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0) + 1)
   }
 
   function onDownloadPack()
   {
-    ::events.checkEventFeaturePacks(::events.getEvent(curEventId))
+    ::events.checkEventFeaturePacks(::events.getEvent(this.curEventId))
   }
 
   function onQueueOptions(obj)
   {
-    let optionsData = ::queue_classes.Event.getOptions(curEventId)
+    let optionsData = ::queue_classes.Event.getOptions(this.curEventId)
     if (!optionsData)
       return
 
@@ -459,7 +466,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       options = optionsData.options
       optionsConfig = optionsData.context
       wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
-      wndGameMode = ::GM_DOMINATION
+      wndGameMode = GM_DOMINATION
       align = ALIGN.TOP
       alignObj = obj
       columnsRatio = 0.6
@@ -476,54 +483,54 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   function showEventDescription(eventId)
   {
     let event = ::events.getEvent(eventId)
-    eventDescription.selectEvent(event)
+    this.eventDescription.selectEvent(event)
     if (event != null)
       seenEvents.markSeen(event.name)
   }
 
   function onEventItemBought(params)
   {
-    let item = ::getTblValue("item", params)
-    if (item && item.isForEvent(curEventId))
-      updateButtons()
+    let item = getTblValue("item", params)
+    if (item && item.isForEvent(this.curEventId))
+      this.updateButtons()
   }
 
   function checkQueueInfoBox()
   {
-    if (!queueToShow || ::handlersManager.isHandlerValid(queueInfoHandlerWeak))
+    if (!this.queueToShow || ::handlersManager.isHandlerValid(this.queueInfoHandlerWeak))
       return
 
     let queueObj = this.showSceneBtn("div_before_chapters_list", true)
     queueObj.height = "ph"
-    let queueHandlerClass = queueToShow && ::queues.getQueuePreferredViewClass(queueToShow)
+    let queueHandlerClass = this.queueToShow && ::queues.getQueuePreferredViewClass(this.queueToShow)
     let queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
       scene = queueObj,
-      leaveQueueCb = ::Callback(onLeaveEvent, this)
+      leaveQueueCb = Callback(this.onLeaveEvent, this)
     })
-    registerSubHandler(queueHandler)
-    queueInfoHandlerWeak = queueHandler
+    this.registerSubHandler(queueHandler)
+    this.queueInfoHandlerWeak = queueHandler
   }
 
   function updateQueueInterface()
   {
-    if (!queueToShow || !::queues.isQueueActive(queueToShow))
-      queueToShow = getCurEventQueue()
-    checkQueueInfoBox()
-    restoreQueueParams()
-    scene.findObject("chapters_list_place").show(!isInEventQueue())
-    let slotbar = getSlotbar()
+    if (!this.queueToShow || !::queues.isQueueActive(this.queueToShow))
+      this.queueToShow = this.getCurEventQueue()
+    this.checkQueueInfoBox()
+    this.restoreQueueParams()
+    this.scene.findObject("chapters_list_place").show(!this.isInEventQueue())
+    let slotbar = this.getSlotbar()
     if (slotbar)
-      slotbar.shade(isInEventQueue())
+      slotbar.shade(this.isInEventQueue())
   }
 
   function updateButtons()
   {
-    let event = ::events.getEvent(curEventId)
+    let event = ::events.getEvent(this.curEventId)
     let isEvent = event != null
-    let isHeader = curChapterId != "" && curEventId == ""
-    let isInQueue = isInEventQueue()
+    let isHeader = this.curChapterId != "" && this.curEventId == ""
+    let isInQueue = this.isInEventQueue()
 
-    let isCurItemInFocus = (isEvent || isHeader) && (isMouseMode || hoveredIdx == selectedIdx || isInQueue)
+    let isCurItemInFocus = (isEvent || isHeader) && (this.isMouseMode || this.hoveredIdx == this.selectedIdx || isInQueue)
 
     let reasonData = ::events.getCantJoinReasonData(isCurItemInFocus ? event : null)
     let isReady = ::g_squad_manager.isMeReady()
@@ -532,7 +539,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     this.showSceneBtn("btn_select_console", !isCurItemInFocus && (isEvent || isHeader))
 
     let showJoinBtn = isCurItemInFocus && (isEvent && (!isInQueue || (isSquadMember && !isReady)))
-    let joinButtonObj = scene.findObject("btn_join_event")
+    let joinButtonObj = this.scene.findObject("btn_join_event")
     joinButtonObj.show(showJoinBtn)
     joinButtonObj.enable(showJoinBtn)
     joinButtonObj.inactiveColor = (reasonData.activeJoinButton && !isInQueue)
@@ -542,7 +549,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     local startText = "events/join_event"
     if (isSquadMember)
       startText = isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady"
-    startText = ::loc(startText)
+    startText = loc(startText)
 
     // Used for proper button width calculation.
     local uncoloredStartText = startText
@@ -555,8 +562,8 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
         event, "activeTextColor", true, false))
     }
 
-    setDoubleTextToButton(scene, "btn_join_event", uncoloredStartText, startText)
-    let leaveButtonObj = scene.findObject("btn_leave_event")
+    setDoubleTextToButton(this.scene, "btn_join_event", uncoloredStartText, startText)
+    let leaveButtonObj = this.scene.findObject("btn_leave_event")
     leaveButtonObj.show(isInQueue)
     leaveButtonObj.enable(isInQueue)
 
@@ -564,12 +571,12 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isShowCollapseBtn)
     if (isShowCollapseBtn)
     {
-      let isCollapsedChapter = getCollapsedChapters()?[curChapterId]
-      startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
+      let isCollapsedChapter = this.getCollapsedChapters()?[this.curChapterId]
+      startText = loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
 
-    let reasonTextObj = scene.findObject("cant_join_reason")
+    let reasonTextObj = this.scene.findObject("cant_join_reason")
     reasonTextObj.setValue(reasonData.reasonText)
     reasonTextObj.show(reasonData.reasonText.len() > 0 && !isInQueue)
 
@@ -582,7 +589,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     if (needDownloadPack && packBtn)
     {
       packBtn.tooltip = ::get_pkg_loc_name(pack)
-      packBtn.setValue(::loc("msgbox/btn_download") + " " + ::get_pkg_loc_name(pack, true))
+      packBtn.setValue(loc("msgbox/btn_download") + " " + ::get_pkg_loc_name(pack, true))
     }
 
     this.showSceneBtn("btn_queue_options", isCurItemInFocus && isEvent
@@ -607,7 +614,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
         eventItems.append({
           itemIcon = ::events.getDifficultyImg(eventName)
           id = eventName
-          itemText = getEventNameForListBox(event)
+          itemText = this.getEventNameForListBox(event)
           unseenIcon = bhvUnseen.makeConfigStr(SEEN.EVENTS, eventName)
           isNeedOnHover = ::show_console_buttons
         })
@@ -625,26 +632,26 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       view.items.extend(eventItems)
     }
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-    guiScene.replaceContentFromText(eventsListObj, data, data.len(), this)
-    for (local i = 0; i < eventsListObj.childrenCount(); i++)
-      eventsListObj.getChild(i).setIntProp(listIdxPID, i)
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    this.guiScene.replaceContentFromText(this.eventsListObj, data, data.len(), this)
+    for (local i = 0; i < this.eventsListObj.childrenCount(); i++)
+      this.eventsListObj.getChild(i).setIntProp(this.listIdxPID, i)
 
-    let cId = curEventId
-    listMap = view.items.map(@(v) v.id)
-    selectedIdx = listMap.findindex(@(rowId) rowId == cId ) ?? 0
+    let cId = this.curEventId
+    this.listMap = view.items.map(@(v) v.id)
+    this.selectedIdx = this.listMap.findindex(@(rowId) rowId == cId ) ?? 0
 
-    if (selectedIdx <= 0)
+    if (this.selectedIdx <= 0)
     {
-      selectedIdx = 1 //0 index is header
-      curEventId = "" //curEvent not found
-      curChapterId = ""
+      this.selectedIdx = 1 //0 index is header
+      this.curEventId = "" //curEvent not found
+      this.curChapterId = ""
     }
 
-    eventsListObj.setValue(selectedIdx)
-    onItemSelectAction(false)
+    this.eventsListObj.setValue(this.selectedIdx)
+    this.onItemSelectAction(false)
 
-    eachParam(getCollapsedChapters(), @(_, chapterId) collapseChapter(chapterId), this)
+    eachParam(this.getCollapsedChapters(), @(_, chapterId) this.collapseChapter(chapterId), this)
   }
 
   function getEventNameForListBox(event)
@@ -655,44 +662,44 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       let isPlatformOnlyAllowed = ::events.isEventPlatformOnlyAllowed(event)
       text = getTextWithCrossplayIcon(!isPlatformOnlyAllowed, text)
       if (!isPlatformOnlyAllowed && !isCrossPlayEnabled())
-        text = ::colorize("warningTextColor", text)
+        text = colorize("warningTextColor", text)
     }
 
     if (::events.isEventEnded(event))
-      text = ::colorize("oldTextColor", text)
+      text = colorize("oldTextColor", text)
 
     return text
   }
 
   function getCurrentEdiff()
   {
-    let event = ::events.getEvent(curEventId)
+    let event = ::events.getEvent(this.curEventId)
     let ediff = event ? ::events.getEDiffByEvent(event) : -1
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
-  function onEventCountryChanged(p)
+  function onEventCountryChanged(_p)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
   function onCollapse(obj)
   {
     if (!obj?.id)
       return
-    collapseChapter(::g_string.cutPrefix(obj.id, "btn_", obj.id))
-    updateButtons()
+    this.collapseChapter(::g_string.cutPrefix(obj.id, "btn_", obj.id))
+    this.updateButtons()
   }
 
   function onCollapsedChapter()
   {
-    collapseChapter(curChapterId)
-    updateButtons()
+    this.collapseChapter(this.curChapterId)
+    this.updateButtons()
   }
 
   function collapseChapter(chapterId)
   {
-    let chapterObj = eventsListObj.findObject(chapterId)
+    let chapterObj = this.eventsListObj.findObject(chapterId)
     if ( ! chapterObj)
       return
     let collapsed = chapterObj.collapsed == "yes" ? true : false
@@ -701,14 +708,14 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       return
     foreach (eventName in curChapter.getEvents())
     {
-      let eventObj = eventsListObj.findObject(eventName)
-      if( ! ::checkObj(eventObj))
+      let eventObj = this.eventsListObj.findObject(eventName)
+      if( ! checkObj(eventObj))
         continue
       eventObj.show(collapsed)
       eventObj.enable(collapsed)
     }
 
-    if (chapterId == curChapterId)
+    if (chapterId == this.curChapterId)
     {
       let chapters = ::events.getChapters()
       local totalRows = -1
@@ -716,9 +723,9 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
         if (chapter.getEvents().len() > 0)
         {
           totalRows++
-          if (chapter.name == curChapterId)
+          if (chapter.name == this.curChapterId)
           {
-            eventsListObj.setValue(totalRows)
+            this.eventsListObj.setValue(totalRows)
             break
           }
 
@@ -727,15 +734,15 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     }
 
     chapterObj.collapsed = collapsed ? "no" : "yes"
-    getCollapsedChapters()[chapterId] = collapsed ? null : true
-    ::saveLocalByAccount(COLLAPSED_CHAPTERS_SAVE_ID, getCollapsedChapters())
+    this.getCollapsedChapters()[chapterId] = collapsed ? null : true
+    ::saveLocalByAccount(COLLAPSED_CHAPTERS_SAVE_ID, this.getCollapsedChapters())
   }
 
   function getCollapsedChapters()
   {
-    if(collapsedChapters == null)
-      collapsedChapters = ::loadLocalByAccount(COLLAPSED_CHAPTERS_SAVE_ID, ::DataBlock())
-    return collapsedChapters
+    if(this.collapsedChapters == null)
+      this.collapsedChapters = ::loadLocalByAccount(COLLAPSED_CHAPTERS_SAVE_ID, ::DataBlock())
+    return this.collapsedChapters
   }
   //----END_VIEW----//
 }
@@ -753,39 +760,39 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
 let function openEventsWndFromPromo(owner, params = []) {
   let eventId = params.len() > 0? params[0] : null
-  owner.checkedForward(@() goForwardIfOnline(
+  owner.checkedForward(@() this.goForwardIfOnline(
     @() ::gui_start_modal_events({event = eventId}), false, true))
 }
 
 let getEventsPromoText = @() ::events.getEventsVisibleInEventsWindowCount() == 0
-  ? ::loc("mainmenu/events/eventlist_btn_no_active_events")
-  : ::loc("mainmenu/btnTournamentsAndEvents")
+  ? loc("mainmenu/events/eventlist_btn_no_active_events")
+  : loc("mainmenu/btnTournamentsAndEvents")
 
-addPromoAction("events", @(handler, params, obj) openEventsWndFromPromo(handler, params))
+addPromoAction("events", @(handler, params, _obj) openEventsWndFromPromo(handler, params))
 
 let promoButtonId = "events_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   getText = getEventsPromoText
-  collapsedIcon = ::loc("icon/events")
+  collapsedIcon = loc("icon/events")
   getCustomSeenId = @() bhvUnseen.makeConfigStr(SEEN.EVENTS, SEEN.S_EVENTS_WINDOW)
   updateFunctionInHandler = function() {
     let id = promoButtonId
     local buttonObj = null
-    local show = isShowAllCheckBoxEnabled()
+    local show = this.isShowAllCheckBoxEnabled()
     if (show)
-      buttonObj = ::showBtn(id, show, scene)
+      buttonObj = ::showBtn(id, show, this.scene)
     else
     {
-      show = ::has_feature("Events")
+      show = hasFeature("Events")
         && ::events.getEventsVisibleInEventsWindowCount()
         && isMultiplayerPrivilegeAvailable.value
         && ::g_promo.getVisibilityById(id)
-      buttonObj = ::showBtn(id, show, scene)
+      buttonObj = ::showBtn(id, show, this.scene)
     }
 
-    if (!show || !::checkObj(buttonObj))
+    if (!show || !checkObj(buttonObj))
       return
 
     ::g_promo.setButtonText(buttonObj, id, getEventsPromoText())

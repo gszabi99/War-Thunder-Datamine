@@ -1,10 +1,17 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { round } = require("math")
 ::tonemappingMode_list <- ["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"];
 ::lut_list <- ["#options/hudDefault"];
 ::lut_textures <- [""];
 ::lenseFlareMode_list <- ["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"];
 
-::g_script_reloader.registerPersistentData("PostFxGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("PostFxGlobals", getroottable(),
   [
     "lut_list", "lut_textures"
   ])
@@ -26,12 +33,12 @@ const firstColumnWidth = 0.45
 
 ::get_default_lut_texture <- function get_default_lut_texture()
 {
-  return ::getTblValue(0, ::lut_textures, "")
+  return getTblValue(0, ::lut_textures, "")
 }
 
 ::check_cur_lut_texture <- function check_cur_lut_texture()
 {
-  if (!::isInArray(::get_lut_texture(), ::lut_textures))
+  if (!isInArray(::get_lut_texture(), ::lut_textures))
     ::set_lut_texture(::get_default_lut_texture())
 }
 
@@ -47,28 +54,28 @@ const firstColumnWidth = 0.45
     let reinard = tm == 1;
     let polynom = tm == 2;
 
-    scene.findObject("L_inv_white").show(reinard);
-    scene.findObject("U_A").show(polynom);
-    scene.findObject("U_B").show(polynom);
-    scene.findObject("U_C").show(polynom);
-    scene.findObject("U_D").show(polynom);
-    scene.findObject("U_E").show(polynom);
-    scene.findObject("U_F").show(polynom);
-    scene.findObject("UWhite").show(polynom);
+    this.scene.findObject("L_inv_white").show(reinard);
+    this.scene.findObject("U_A").show(polynom);
+    this.scene.findObject("U_B").show(polynom);
+    this.scene.findObject("U_C").show(polynom);
+    this.scene.findObject("U_D").show(polynom);
+    this.scene.findObject("U_E").show(polynom);
+    this.scene.findObject("U_F").show(polynom);
+    this.scene.findObject("UWhite").show(polynom);
 
     //lensFlare
     if (::use_lense_flares())
     {
       let lfm = ::get_lenseFlareMode();
       let showLenseFlareSettings = lfm > 0;
-      scene.findObject("lenseFlareHaloPower").show(showLenseFlareSettings);
-      scene.findObject("lenseFlareGhostsPower").show(showLenseFlareSettings);
+      this.scene.findObject("lenseFlareHaloPower").show(showLenseFlareSettings);
+      this.scene.findObject("lenseFlareGhostsPower").show(showLenseFlareSettings);
     }
   }
 
   function updateSliderValue(name, value)
   {
-    let valueObj = scene.findObject(name+"_value")
+    let valueObj = this.scene.findObject(name+"_value")
     if (!valueObj) return
     let valueText = value.tostring();
     valueObj.setValue(valueText)
@@ -84,73 +91,73 @@ const firstColumnWidth = 0.45
 
   function createOneSlider(name, value, cb, params, showValue)
   {
-    params.step <- params?.step ?? max(1, ::round((params.max - params.min) / maxSliderSteps).tointeger())
+    params.step <- params?.step ?? max(1, round((params.max - params.min) / maxSliderSteps).tointeger())
     local markuo = ::create_option_slider("postfx_settings_" + name, value.tointeger(), cb, true, "slider", params)
     if (showValue)
       markuo += format(" optionValueText { id:t='%s' } ", name+"_value");
-    markuo = createRowMarkup(name, markuo)
+    markuo = this.createRowMarkup(name, markuo)
 
-    let dObj = scene.findObject("postfx_table")
-    guiScene.appendWithBlk(dObj, markuo, this)
+    let dObj = this.scene.findObject("postfx_table")
+    this.guiScene.appendWithBlk(dObj, markuo, this)
 
     if (showValue)
-      updateSliderValue(name, value * recScale)
+      this.updateSliderValue(name, value * recScale)
   }
 
   function createOneSpinner(name, list, value, cb)
   {
     local markuo = ::create_option_list("postfx_settings_" + name, list, value, cb, true)
-    markuo = createRowMarkup(name, markuo)
-    let dObj = scene.findObject("postfx_table")
-    guiScene.appendWithBlk(dObj, markuo, this)
+    markuo = this.createRowMarkup(name, markuo)
+    let dObj = this.scene.findObject("postfx_table")
+    this.guiScene.appendWithBlk(dObj, markuo, this)
   }
 
   function createObjects()
   {
-    createOneSlider("vignette", (1 - ::get_postfx_vignette_multiplier()) * scale, "onVignetteChanged",
+    this.createOneSlider("vignette", (1 - ::get_postfx_vignette_multiplier()) * scale, "onVignetteChanged",
       { min = 0.01 * scale, max = scale }, false)
 
-    createOneSlider("sharpenTPS", ::get_sharpenTPS() * scale, "onSharpenTPSChanged",
+    this.createOneSlider("sharpenTPS", ::get_sharpenTPS() * scale, "onSharpenTPSChanged",
       { min = 0, max = 0.4 * scale }, false)
-    createOneSlider("sharpenGunner", ::get_sharpenGunner() * scale, "onSharpenGunnerChanged",
+    this.createOneSlider("sharpenGunner", ::get_sharpenGunner() * scale, "onSharpenGunnerChanged",
       { min = 0, max = 0.7 * scale }, false)
-    createOneSlider("sharpenBomber", ::get_sharpenBomber() * scale, "onSharpenBomberChanged",
+    this.createOneSlider("sharpenBomber", ::get_sharpenBomber() * scale, "onSharpenBomberChanged",
       { min = 0, max = 0.7 * scale }, false)
-    createOneSlider("sharpenCockpit", ::get_sharpenCockpit() * scale, "onSharpenCockpitChanged",
+    this.createOneSlider("sharpenCockpit", ::get_sharpenCockpit() * scale, "onSharpenCockpitChanged",
       { min = 0, max = 0.7 * scale }, false)
 
-    createOneSpinner("lutTexture", ::lut_list, get_lut_index_by_texture(::get_lut_texture()), "onLutTextureChanged");
+    this.createOneSpinner("lutTexture", ::lut_list, ::get_lut_index_by_texture(::get_lut_texture()), "onLutTextureChanged");
 
     if (::use_lense_flares())
     {
-      createOneSpinner("lenseFlareMode", ::lenseFlareMode_list, ::get_lenseFlareMode(), "onLenseFlareModeChanged")
-      createOneSlider("lenseFlareHaloPower", ::get_lenseFlareHaloPower() * scale, "onLenseFlareHaloPowerChanged",
+      this.createOneSpinner("lenseFlareMode", ::lenseFlareMode_list, ::get_lenseFlareMode(), "onLenseFlareModeChanged")
+      this.createOneSlider("lenseFlareHaloPower", ::get_lenseFlareHaloPower() * scale, "onLenseFlareHaloPowerChanged",
         { min = 0, max = scale }, true)
-      createOneSlider("lenseFlareGhostsPower", ::get_lenseFlareGhostsPower() * scale, "onLenseFlareGhostsPowerChanged",
+      this.createOneSlider("lenseFlareGhostsPower", ::get_lenseFlareGhostsPower() * scale, "onLenseFlareGhostsPowerChanged",
         { min = 0, max = scale }, true)
     }
-    createOneSpinner("tonemappingMode", ::tonemappingMode_list, ::get_tonemappingMode(), "onTonemappingModeChanged")
-    createOneSlider("L_inv_white", ::get_L_inv_white() * scale, "onLInvWhiteChanged", { min = 0, max = scale }, true)
-    createOneSlider("U_A", ::get_U_A() * scale, "onUAChanged", { min = 0.01 * scale, max = 5 * scale }, true)
-    createOneSlider("U_B", ::get_U_B() * scale, "onUBChanged", { min = 0.01 * scale, max = 5 * scale }, true)
-    createOneSlider("U_C", ::get_U_C() * scale, "onUCChanged", { min = 0.01 * scale, max = 5 * scale }, true)
-    createOneSlider("U_D", ::get_U_D() * scale, "onUDChanged", { min = 0.01 * scale, max = 5 * scale }, true)
-    createOneSlider("U_E", ::get_U_E() * scale, "onUEChanged", { min = 0.01 * scale, max = 5 * scale }, true)
-    createOneSlider("U_F", ::get_U_F() * scale, "onUFChanged", { min = 0.01 * scale, max = 5 * scale }, true)
-    createOneSlider("UWhite", ::get_UWhite() * scale, "onUWhiteChanged", { min = 0.01 * scale, max = 4 * scale }, true)
+    this.createOneSpinner("tonemappingMode", ::tonemappingMode_list, ::get_tonemappingMode(), "onTonemappingModeChanged")
+    this.createOneSlider("L_inv_white", ::get_L_inv_white() * scale, "onLInvWhiteChanged", { min = 0, max = scale }, true)
+    this.createOneSlider("U_A", ::get_U_A() * scale, "onUAChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    this.createOneSlider("U_B", ::get_U_B() * scale, "onUBChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    this.createOneSlider("U_C", ::get_U_C() * scale, "onUCChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    this.createOneSlider("U_D", ::get_U_D() * scale, "onUDChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    this.createOneSlider("U_E", ::get_U_E() * scale, "onUEChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    this.createOneSlider("U_F", ::get_U_F() * scale, "onUFChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    this.createOneSlider("UWhite", ::get_UWhite() * scale, "onUWhiteChanged", { min = 0.01 * scale, max = 4 * scale }, true)
 
-    updateVisibility();
+    this.updateVisibility();
   }
 
   function setValue(name, value)
   {
-    let sliderObj = scene.findObject(name);
-    if (::checkObj(sliderObj))
+    let sliderObj = this.scene.findObject(name);
+    if (checkObj(sliderObj))
       sliderObj.setValue(value);
   }
   function getValue(name)
   {
-    let sliderObj = scene.findObject(name);
+    let sliderObj = this.scene.findObject(name);
     return sliderObj.getValue();
   }
 
@@ -162,33 +169,33 @@ const firstColumnWidth = 0.45
     if (::use_lense_flares())
       ::set_lenseFlareMode(::get_lenseFlareMode());
 
-    createObjects();
-    ::move_mouse_on_child(scene.findObject("postfx_table"), 0)
+    this.createObjects();
+    ::move_mouse_on_child(this.scene.findObject("postfx_table"), 0)
   }
 
-  function onResetToDefaults(obj)
+  function onResetToDefaults(_obj)
   {
-    setValue("postfx_settings_vignette", ::get_default_postfx_vignette_multiplier() * scale);
-    setValue("postfx_settings_sharpenTPS", ::get_default_sharpenTPS() * scale);
-    setValue("postfx_settings_sharpenGunner", ::get_default_sharpenGunner() * scale);
-    setValue("postfx_settings_sharpenBomber", ::get_default_sharpenBomber() * scale);
-    setValue("postfx_settings_sharpenCockpit", ::get_default_sharpenCockpit() * scale);
-    setValue("postfx_settings_L_inv_white", ::get_default_L_inv_white() * scale);
-    setValue("postfx_settings_U_A", ::get_default_U_A() * scale);
-    setValue("postfx_settings_U_B", ::get_default_U_B() * scale);
-    setValue("postfx_settings_U_C", ::get_default_U_C() * scale);
-    setValue("postfx_settings_U_D", ::get_default_U_D() * scale);
-    setValue("postfx_settings_U_E", ::get_default_U_E() * scale);
-    setValue("postfx_settings_U_F", ::get_default_U_F() * scale);
-    setValue("postfx_settings_UWhite", ::get_default_UWhite() * scale);
-    setValue("postfx_settings_fxaa", ::get_default_fxaa());
-    setValue("postfx_settings_lutTexture", get_lut_index_by_texture(::get_default_lut_texture()));
-    setValue("postfx_settings_tonemappingMode", ::get_default_tonemappingMode());
+    this.setValue("postfx_settings_vignette", ::get_default_postfx_vignette_multiplier() * scale);
+    this.setValue("postfx_settings_sharpenTPS", ::get_default_sharpenTPS() * scale);
+    this.setValue("postfx_settings_sharpenGunner", ::get_default_sharpenGunner() * scale);
+    this.setValue("postfx_settings_sharpenBomber", ::get_default_sharpenBomber() * scale);
+    this.setValue("postfx_settings_sharpenCockpit", ::get_default_sharpenCockpit() * scale);
+    this.setValue("postfx_settings_L_inv_white", ::get_default_L_inv_white() * scale);
+    this.setValue("postfx_settings_U_A", ::get_default_U_A() * scale);
+    this.setValue("postfx_settings_U_B", ::get_default_U_B() * scale);
+    this.setValue("postfx_settings_U_C", ::get_default_U_C() * scale);
+    this.setValue("postfx_settings_U_D", ::get_default_U_D() * scale);
+    this.setValue("postfx_settings_U_E", ::get_default_U_E() * scale);
+    this.setValue("postfx_settings_U_F", ::get_default_U_F() * scale);
+    this.setValue("postfx_settings_UWhite", ::get_default_UWhite() * scale);
+    this.setValue("postfx_settings_fxaa", ::get_default_fxaa());
+    this.setValue("postfx_settings_lutTexture", ::get_lut_index_by_texture(::get_default_lut_texture()));
+    this.setValue("postfx_settings_tonemappingMode", ::get_default_tonemappingMode());
     if (::use_lense_flares())
     {
-      setValue("postfx_settings_lenseFlareMode", ::get_default_lenseFlareMode());
-      setValue("postfx_settings_lenseFlareHaloPower", ::get_default_lenseFlareHaloPower() * scale);
-      setValue("postfx_settings_lenseFlareGhostsPower", ::get_default_lenseFlareGhostsPower() * scale);
+      this.setValue("postfx_settings_lenseFlareMode", ::get_default_lenseFlareMode());
+      this.setValue("postfx_settings_lenseFlareHaloPower", ::get_default_lenseFlareHaloPower() * scale);
+      this.setValue("postfx_settings_lenseFlareGhostsPower", ::get_default_lenseFlareGhostsPower() * scale);
     }
 
     ::set_postfx_vignette_multiplier(::get_default_postfx_vignette_multiplier());
@@ -263,19 +270,19 @@ const firstColumnWidth = 0.45
     if (!obj) return;
     ::set_lenseFlareMode(obj.getValue());
 
-    updateVisibility();
+    this.updateVisibility();
   }
   function onLenseFlareHaloPowerChanged(obj)
   {
     if (!obj) return;
     ::set_lenseFlareHaloPower(obj.getValue() * recScale);
-    updateSliderValue("lenseFlareHaloPower", obj.getValue() * recScale)
+    this.updateSliderValue("lenseFlareHaloPower", obj.getValue() * recScale)
   }
   function onLenseFlareGhostsPowerChanged(obj)
   {
     if (!obj) return;
     ::set_lenseFlareGhostsPower(obj.getValue() * recScale);
-    updateSliderValue("lenseFlareGhostsPower", obj.getValue() * recScale)
+    this.updateSliderValue("lenseFlareGhostsPower", obj.getValue() * recScale)
   }
 
   function onTonemappingModeChanged(obj)
@@ -283,56 +290,56 @@ const firstColumnWidth = 0.45
     if (!obj) return;
     ::set_tonemappingMode(obj.getValue());
 
-    updateVisibility();
+    this.updateVisibility();
   }
   function onLInvWhiteChanged(obj)
   {
     if (!obj) return;
     ::set_L_inv_white(obj.getValue() * recScale);
-    updateSliderValue("L_inv_white", obj.getValue() * recScale)
+    this.updateSliderValue("L_inv_white", obj.getValue() * recScale)
   }
 
   function onUAChanged(obj)
   {
     if (!obj) return;
     ::set_U_A(obj.getValue() * recScale, true);
-    updateSliderValue("U_A", obj.getValue() * recScale)
+    this.updateSliderValue("U_A", obj.getValue() * recScale)
   }
   function onUBChanged(obj)
   {
     if (!obj) return;
     ::set_U_B(obj.getValue() * recScale, true);
-    updateSliderValue("U_B", obj.getValue() * recScale)
+    this.updateSliderValue("U_B", obj.getValue() * recScale)
   }
   function onUCChanged(obj)
   {
     if (!obj) return;
     ::set_U_C(obj.getValue() * recScale, true);
-    updateSliderValue("U_C", obj.getValue() * recScale)
+    this.updateSliderValue("U_C", obj.getValue() * recScale)
   }
   function onUDChanged(obj)
   {
     if (!obj) return;
     ::set_U_D(obj.getValue() * recScale, true);
-    updateSliderValue("U_D", obj.getValue() * recScale)
+    this.updateSliderValue("U_D", obj.getValue() * recScale)
   }
   function onUEChanged(obj)
   {
     if (!obj) return;
     ::set_U_E(obj.getValue() * recScale, true);
-    updateSliderValue("U_E", obj.getValue() * recScale)
+    this.updateSliderValue("U_E", obj.getValue() * recScale)
   }
   function onUFChanged(obj)
   {
     if (!obj) return;
     ::set_U_F(obj.getValue() * recScale, true);
-    updateSliderValue("U_F", obj.getValue() * recScale)
+    this.updateSliderValue("U_F", obj.getValue() * recScale)
   }
   function onUWhiteChanged(obj)
   {
     if (!obj) return;
     ::set_UWhite(obj.getValue() * recScale, true);
-    updateSliderValue("UWhite", obj.getValue() * recScale)
+    this.updateSliderValue("UWhite", obj.getValue() * recScale)
   }
 }
 

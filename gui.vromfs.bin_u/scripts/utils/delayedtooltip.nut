@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
 let { fillTooltip } = require("genericTooltip.nut")
@@ -159,14 +164,14 @@ let function onPush(obj, listObj = null) {
     showWaitIconForObj(obj)
 }
 
-let function onHoldStart(obj, listObj = null) {
+let function onHoldStart(obj, _listObj = null) {
   hideWaitIcon()
   hideHint()
   if (hasTooltip(obj))
     showTooltipForObj(obj)
 }
 
-let function onHoldStop(obj, listObj = null) {
+let function onHoldStop(_obj, _listObj = null) {
   hideWaitIcon()
   hideTooltip()
 }
@@ -215,7 +220,7 @@ let function getHoveredChild(listObj) {
   return null
 }
 
-let mkListCb = @(func, emptyObjFunc = null) function(listObj, params) {
+let mkListCb = @(func, emptyObjFunc = null) function(listObj, _params) {
   let tgt = getHoveredChild(listObj)
   if (tgt != null)
     func(tgt, listObj)
@@ -223,7 +228,7 @@ let mkListCb = @(func, emptyObjFunc = null) function(listObj, params) {
     emptyObjFunc?(tgt, listObj)
 }
 
-let mkChildCb = @(func, emptyObjFunc = null) function(childObj, params) {
+let mkChildCb = @(func, emptyObjFunc = null) function(childObj, _params) {
   local tgt = childObj.getParent()
   while(tgt != null && "tooltipId" not in tgt)
     tgt = tgt.getParent()
@@ -234,10 +239,10 @@ let mkChildCb = @(func, emptyObjFunc = null) function(childObj, params) {
 }
 
 let actions = {
-  delayedTooltipPush             = @(obj, params) onPush(obj)
-  delayedTooltipHoldStart        = @(obj, params) onHoldStart(obj)
-  delayedTooltipHoldStop         = @(obj, params) onHoldStop(obj)
-  delayedTooltipHover             = @(obj, params) onHover(obj)
+  delayedTooltipPush             = @(obj, _params) onPush(obj)
+  delayedTooltipHoldStart        = @(obj, _params) onHoldStart(obj)
+  delayedTooltipHoldStop         = @(obj, _params) onHoldStop(obj)
+  delayedTooltipHover             = @(obj, _params) onHover(obj)
 
   delayedTooltipListPush         = mkListCb(onPush)
   delayedTooltipListHoldStart    = mkListCb(onHoldStart, onHoldStop)

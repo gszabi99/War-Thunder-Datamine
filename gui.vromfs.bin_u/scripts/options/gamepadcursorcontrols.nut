@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { send } = require("eventbus")
+
 const GAMEPAD_CURSOR_CONTROL_CONFIG_NAME = "use_gamepad_cursor_control"
 const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
 
@@ -6,14 +13,14 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
 
   function init()
   {
-    currentOptionValue = getValue()
-    ::get_cur_gui_scene()?.setUseGamepadCursorControl(currentOptionValue)
+    this.currentOptionValue = this.getValue()
+    ::get_cur_gui_scene()?.setUseGamepadCursorControl(this.currentOptionValue)
   }
 
 
   function setValue(newValue)
   {
-    if (!canChangeValue() || currentOptionValue == newValue)
+    if (!this.canChangeValue() || this.currentOptionValue == newValue)
       return
     ::get_cur_gui_scene()?.setUseGamepadCursorControl(newValue)
     if (::g_login.isProfileReceived())
@@ -22,16 +29,16 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
         newValue,
         ::OPTIONS_MODE_GAMEPLAY
       )
-    currentOptionValue = newValue
-    ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, currentOptionValue)
+    this.currentOptionValue = newValue
+    ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, this.currentOptionValue)
     ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
-    ::call_darg("updateExtWatched", { gamepadCursorControl = newValue })
+    send("updateExtWatched", { gamepadCursorControl = newValue })
   }
 
 
   function getValue()
   {
-    if (!canChangeValue())
+    if (!this.canChangeValue())
       return IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
     if (!::g_login.isProfileReceived())
       return ::getSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, IS_GAMEPAD_CURSOR_ENABLED_DEFAULT)
@@ -47,16 +54,13 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
     return false // ::is_mouse_available()
   }
 
-  function onEventProfileUpdated(p)
+  function onEventProfileUpdated(_p)
   {
     if (!::g_login.isLoggedIn())
-      setValue(getValue())
+      this.setValue(this.getValue())
   }
 }
 
 ::subscribe_handler(::g_gamepad_cursor_controls, ::g_listener_priority.CONFIG_VALIDATION)
 
 ::g_gamepad_cursor_controls.init()
-
-::cross_call_api.getValueGamepadCursorControl <- @() ::g_gamepad_cursor_controls.getValue()
-::cross_call_api.haveXinputDevice <- @() ::have_xinput_device() //FIX ME: remove "haveXinputDevice" when in darg scene will be determined correctly that joystick has controller

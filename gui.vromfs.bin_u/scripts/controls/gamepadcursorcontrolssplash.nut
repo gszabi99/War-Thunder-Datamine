@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
@@ -93,34 +100,34 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
 
   function initScreen()
   {
-    let contentObj = scene.findObject("content")
-    if (!::check_obj(contentObj))
-      goBack()
+    let contentObj = this.scene.findObject("content")
+    if (!checkObj(contentObj))
+      this.goBack()
 
-    let view = isPlatformPS4 ? controllerDualshock4View
-               : isPlatformPS5 ? controllerDualsenseView
-               :                 controllerXboxOneView
+    let view = isPlatformPS4 ? this.controllerDualshock4View
+               : isPlatformPS5 ? this.controllerDualsenseView
+               :                 this.controllerXboxOneView
 
     view.isGamepadCursorControlsEnabled <- ::g_gamepad_cursor_controls.getValue()
 
-    let markUp = ::handyman.renderCached("%gui/controls/gamepadCursorcontrolsController", view)
-    guiScene.replaceContentFromText(contentObj, markUp, markUp.len(), this)
+    let markUp = ::handyman.renderCached("%gui/controls/gamepadCursorcontrolsController.tpl", view)
+    this.guiScene.replaceContentFromText(contentObj, markUp, markUp.len(), this)
 
-    let linkingObjsContainer = getObj("gamepad_image")
+    let linkingObjsContainer = this.getObj("gamepad_image")
     let linesGeneratorConfig = {
       startObjContainer = linkingObjsContainer
       endObjContainer   = linkingObjsContainer
       lineInterval = "@helpLineInterval"
-      links = bubblesList.map(@(id) { start = $"bubble_{id}", end = $"dot_{id}" })
+      links = this.bubblesList.map(@(id) { start = $"bubble_{id}", end = $"dot_{id}" })
     }
     let linesMarkup = ::LinesGenerator.getLinkLinesMarkup(linesGeneratorConfig)
-    guiScene.replaceContentFromText(getObj("lines_block"), linesMarkup, linesMarkup.len(), this)
+    this.guiScene.replaceContentFromText(this.getObj("lines_block"), linesMarkup, linesMarkup.len(), this)
   }
 
 
   function goBack()
   {
-    markDisplayed()
+    this.markDisplayed()
     base.goBack()
   }
 

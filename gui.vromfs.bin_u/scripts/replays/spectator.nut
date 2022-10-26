@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
@@ -7,7 +15,7 @@ let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getActionBarUnitName } = ::require_native("hudActionBar")
+let { getHudUnitType } = require("hudState")
 let { guiStartMPStatScreen, getWeaponTypeIcoByWeapon
 } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { onSpectatorMode, switchSpectatorTargetById,
@@ -16,6 +24,8 @@ let { onSpectatorMode, switchSpectatorTargetById,
 } = require("guiSpectator")
 let { get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchors,
   get_replay_info, get_replay_props, move_to_anchor } = require("replays")
+let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
+let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -31,9 +41,9 @@ enum SPECTATOR_CHAT_TAB {
 }
 
 let weaponIconsReloadBits = {
-  bomb = ::BMS_OUT_OF_BOMBS
-  rocket = ::BMS_OUT_OF_ROCKETS
-  torpedo = ::BMS_OUT_OF_TORPEDOES
+  bomb = BMS_OUT_OF_BOMBS
+  rocket = BMS_OUT_OF_ROCKETS
+  torpedo = BMS_OUT_OF_TORPEDOES
 }
 
 ::Spectator <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -77,7 +87,7 @@ let weaponIconsReloadBits = {
     team = -1
   }
   lastSelectedTableId = ""
-  lastHudUnitType = ::ES_UNIT_TYPE_INVALID
+  lastHudUnitType = ""
   lastFriendlyTeam = 0
   statSelPlayerId = [ null, null ]
 
@@ -108,17 +118,17 @@ let weaponIconsReloadBits = {
   actionBar = null
 
   supportedMsgTypes = [
-    ::HUD_MSG_MULTIPLAYER_DMG,
-    ::HUD_MSG_STREAK_EX,
-    ::HUD_MSG_STREAK,
-    ::HUD_MSG_OBJECTIVE,
-    ::HUD_MSG_DIALOG,
-    ::HUD_MSG_DAMAGE,
-    ::HUD_MSG_ENEMY_DAMAGE,
-    ::HUD_MSG_ENEMY_CRITICAL_DAMAGE,
-    ::HUD_MSG_ENEMY_FATAL_DAMAGE,
-    ::HUD_MSG_DEATH_REASON,
-    ::HUD_MSG_EVENT,
+    HUD_MSG_MULTIPLAYER_DMG,
+    HUD_MSG_STREAK_EX,
+    HUD_MSG_STREAK,
+    HUD_MSG_OBJECTIVE,
+    HUD_MSG_DIALOG,
+    HUD_MSG_DAMAGE,
+    HUD_MSG_ENEMY_DAMAGE,
+    HUD_MSG_ENEMY_CRITICAL_DAMAGE,
+    HUD_MSG_ENEMY_FATAL_DAMAGE,
+    HUD_MSG_DEATH_REASON,
+    HUD_MSG_EVENT,
     -200 // historyLogCustomMsgType
   ]
 
@@ -145,7 +155,7 @@ let weaponIconsReloadBits = {
   {
     ::g_script_reloader.registerPersistentData("Spectator", this, [ "debugMode" ])
 
-    gameType = ::get_game_type()
+    this.gameType = ::get_game_type()
     let mplayerTable = ::get_local_mplayer() || {}
     let isReplay = is_replay_playing()
     let replayProps = get_replay_props()
@@ -160,67 +170,67 @@ let weaponIconsReloadBits = {
       replayMetadata.restoreReplayScriptCommentsBlk(::current_replay)
     }
 
-    gotRefereeRights = ::getTblValue("spectator", mplayerTable, 0) == 1
-    mode = isReplay ? SPECTATOR_MODE.REPLAY : SPECTATOR_MODE.SKIRMISH
-    isMultiplayer = !!(gameType & ::GT_VERSUS) || !!(gameType & ::GT_COOPERATIVE)
-    canControlTimeline  = mode == SPECTATOR_MODE.REPLAY && ::getTblValue("timeSpeedAllowed", replayProps, false)
-    canControlCameras   = mode == SPECTATOR_MODE.REPLAY || gotRefereeRights
-    canSeeMissionTimer  = !canControlTimeline && mode == SPECTATOR_MODE.SKIRMISH
-    canSeeOppositeTeam  = mode != SPECTATOR_MODE.RESPAWN
-    canSendChatMessages = mode != SPECTATOR_MODE.REPLAY
-    let canRewind = canControlTimeline && ::has_feature("replayRewind")
+    this.gotRefereeRights = getTblValue("spectator", mplayerTable, 0) == 1
+    this.mode = isReplay ? SPECTATOR_MODE.REPLAY : SPECTATOR_MODE.SKIRMISH
+    this.isMultiplayer = !!(this.gameType & GT_VERSUS) || !!(this.gameType & GT_COOPERATIVE)
+    this.canControlTimeline  = this.mode == SPECTATOR_MODE.REPLAY && getTblValue("timeSpeedAllowed", replayProps, false)
+    this.canControlCameras   = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
+    this.canSeeMissionTimer  = !this.canControlTimeline && this.mode == SPECTATOR_MODE.SKIRMISH
+    this.canSeeOppositeTeam  = this.mode != SPECTATOR_MODE.RESPAWN
+    this.canSendChatMessages = this.mode != SPECTATOR_MODE.REPLAY
+    let canRewind = this.canControlTimeline && hasFeature("replayRewind")
     let anchors = get_replay_anchors()
-    let curAnchorIdx = getCurAnchorIdx(anchors)
+    let curAnchorIdx = this.getCurAnchorIdx(anchors)
 
-    fillTabs()
-    historyLog = []
+    this.fillTabs()
+    this.historyLog = []
 
-    loadGameChat()
-    if (!isMultiplayer)
-      ::showBtnTable(scene, {
+    this.loadGameChat()
+    if (!this.isMultiplayer)
+      ::showBtnTable(this.scene, {
           btn_tab_chat  = false
           target_stats  = false
       })
 
-    let objReplayControls = scene.findObject("controls_div")
+    let objReplayControls = this.scene.findObject("controls_div")
     ::showBtnTable(objReplayControls, {
         ID_FLIGHTMENU               = useTouchscreen
-        ID_MPSTATSCREEN             = mode != SPECTATOR_MODE.REPLAY
-        controls_mpstats_replays    = mode == SPECTATOR_MODE.REPLAY
+        ID_MPSTATSCREEN             = this.mode != SPECTATOR_MODE.REPLAY
+        controls_mpstats_replays    = this.mode == SPECTATOR_MODE.REPLAY
         ID_PREV_PLANE               = true
         ID_NEXT_PLANE               = true
-        controls_cameras_icon       = canControlCameras
-        ID_CAMERA_DEFAULT           = canControlCameras
-        ID_TOGGLE_FOLLOWING_CAMERA  = canControlCameras
-        ID_REPLAY_CAMERA_OPERATOR   = canControlCameras
-        ID_REPLAY_CAMERA_FLYBY      = canControlCameras
-        ID_REPLAY_CAMERA_WING       = canControlCameras
-        ID_REPLAY_CAMERA_GUN        = canControlCameras
-        ID_REPLAY_CAMERA_RANDOMIZE  = canControlCameras
-        ID_REPLAY_CAMERA_FREE       = canControlCameras
-        ID_REPLAY_CAMERA_FREE_PARENTED = canControlCameras
-        ID_REPLAY_CAMERA_FREE_ATTACHED = canControlCameras
-        ID_REPLAY_CAMERA_HOVER      = canControlCameras
+        controls_cameras_icon       = this.canControlCameras
+        ID_CAMERA_DEFAULT           = this.canControlCameras
+        ID_TOGGLE_FOLLOWING_CAMERA  = this.canControlCameras
+        ID_REPLAY_CAMERA_OPERATOR   = this.canControlCameras
+        ID_REPLAY_CAMERA_FLYBY      = this.canControlCameras
+        ID_REPLAY_CAMERA_WING       = this.canControlCameras
+        ID_REPLAY_CAMERA_GUN        = this.canControlCameras
+        ID_REPLAY_CAMERA_RANDOMIZE  = this.canControlCameras
+        ID_REPLAY_CAMERA_FREE       = this.canControlCameras
+        ID_REPLAY_CAMERA_FREE_PARENTED = this.canControlCameras
+        ID_REPLAY_CAMERA_FREE_ATTACHED = this.canControlCameras
+        ID_REPLAY_CAMERA_HOVER      = this.canControlCameras
         ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT = true
-        ID_REPLAY_SHOW_MARKERS      = mode == SPECTATOR_MODE.REPLAY
-        ID_REPLAY_SLOWER            = canControlTimeline
-        ID_REPLAY_FASTER            = canControlTimeline
-        ID_REPLAY_PAUSE             = canControlTimeline
+        ID_REPLAY_SHOW_MARKERS      = this.mode == SPECTATOR_MODE.REPLAY
+        ID_REPLAY_SLOWER            = this.canControlTimeline
+        ID_REPLAY_FASTER            = this.canControlTimeline
+        ID_REPLAY_PAUSE             = this.canControlTimeline
         ID_REPLAY_BACKWARD          = canRewind
         ID_REPLAY_FORWARD           = canRewind
     })
     ::enableBtnTable(objReplayControls, {
-        ID_PREV_PLANE               = mode != SPECTATOR_MODE.REPLAY || isMultiplayer
-        ID_NEXT_PLANE               = mode != SPECTATOR_MODE.REPLAY || isMultiplayer
+        ID_PREV_PLANE               = this.mode != SPECTATOR_MODE.REPLAY || this.isMultiplayer
+        ID_NEXT_PLANE               = this.mode != SPECTATOR_MODE.REPLAY || this.isMultiplayer
         ID_REPLAY_BACKWARD          = curAnchorIdx >= 0
         ID_REPLAY_FORWARD           = anchors.len() > 0 && (curAnchorIdx + 1) < anchors.len()
     })
     foreach(id, show in {
-          txt_replay_time_speed       = canControlTimeline
-          controls_timeline           = canControlTimeline
-          controls_timer              = canSeeMissionTimer
+          txt_replay_time_speed       = this.canControlTimeline
+          controls_timeline           = this.canControlTimeline
+          controls_timer              = this.canSeeMissionTimer
         })
-      scene.findObject(id).show(show)
+      this.scene.findObject(id).show(show)
 
     for (local i = 0; i < objReplayControls.childrenCount(); i++)
     {
@@ -234,77 +244,77 @@ let weaponIconsReloadBits = {
           strip_tags = true
         })
         if (hotkeys.len())
-          hotkeys = "<color=@hotkeyColor>" + ::loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
-        obj.tooltip = ::loc("hotkeys/" + obj.id) + hotkeys
+          hotkeys = "<color=@hotkeyColor>" + loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
+        obj.tooltip = loc("hotkeys/" + obj.id) + hotkeys
       }
     }
 
-    if (canControlCameras)
+    if (this.canControlCameras)
     {
-      ::showBtnTable(scene, {
-          ID_CAMERA_DEFAULT           = mode == SPECTATOR_MODE.REPLAY || gotRefereeRights
-          ID_TOGGLE_FOLLOWING_CAMERA  = mode == SPECTATOR_MODE.REPLAY || gotRefereeRights
-          ID_REPLAY_CAMERA_OPERATOR   = mode == SPECTATOR_MODE.REPLAY && !gotRefereeRights
-          ID_REPLAY_CAMERA_FLYBY      = mode == SPECTATOR_MODE.REPLAY && !gotRefereeRights
-          ID_REPLAY_CAMERA_WING       = mode == SPECTATOR_MODE.REPLAY && !gotRefereeRights
-          ID_REPLAY_CAMERA_GUN        = mode == SPECTATOR_MODE.REPLAY && !gotRefereeRights
-          ID_REPLAY_CAMERA_RANDOMIZE  = mode == SPECTATOR_MODE.REPLAY && !gotRefereeRights
-          ID_REPLAY_CAMERA_FREE       = mode == SPECTATOR_MODE.REPLAY && !gotRefereeRights
-          ID_REPLAY_CAMERA_FREE_PARENTED = mode == SPECTATOR_MODE.REPLAY && !gotRefereeRights
-          ID_REPLAY_CAMERA_FREE_ATTACHED = mode == SPECTATOR_MODE.REPLAY && !gotRefereeRights
+      ::showBtnTable(this.scene, {
+          ID_CAMERA_DEFAULT           = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
+          ID_TOGGLE_FOLLOWING_CAMERA  = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
+          ID_REPLAY_CAMERA_OPERATOR   = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
+          ID_REPLAY_CAMERA_FLYBY      = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
+          ID_REPLAY_CAMERA_WING       = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
+          ID_REPLAY_CAMERA_GUN        = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
+          ID_REPLAY_CAMERA_RANDOMIZE  = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
+          ID_REPLAY_CAMERA_FREE       = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
+          ID_REPLAY_CAMERA_FREE_PARENTED = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
+          ID_REPLAY_CAMERA_FREE_ATTACHED = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
       })
     }
 
-    if (mode == SPECTATOR_MODE.REPLAY)
+    if (this.mode == SPECTATOR_MODE.REPLAY)
     {
       let timeSpeeds = get_time_speeds_list()
-      replayTimeSpeedMin = timeSpeeds[0]
-      replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
+      this.replayTimeSpeedMin = timeSpeeds[0]
+      this.replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
 
       let info = ::current_replay.len() && get_replay_info(::current_replay)
-      let comments = info && ::getTblValue("comments", info)
+      let comments = info && getTblValue("comments", info)
       if (comments)
       {
-        replayAuthorUserId = ::getTblValue("authorUserId", comments, replayAuthorUserId)
-        replayTimeTotal = ::getTblValue("timePlayed", comments, replayTimeTotal)
-        scene.findObject("txt_replay_time_total").setValue(time.preciseSecondsToString(replayTimeTotal))
+        this.replayAuthorUserId = getTblValue("authorUserId", comments, this.replayAuthorUserId)
+        this.replayTimeTotal = getTblValue("timePlayed", comments, this.replayTimeTotal)
+        this.scene.findObject("txt_replay_time_total").setValue(time.preciseSecondsToString(this.replayTimeTotal))
       }
 
-      let replaySessionId = ::getTblValue("sessionId", replayProps, "")
-      scene.findObject("txt_replay_session_id").setValue(replaySessionId)
+      let replaySessionId = getTblValue("sessionId", replayProps, "")
+      this.scene.findObject("txt_replay_session_id").setValue(replaySessionId)
     }
 
-    funcSortPlayersSpectator = mpstatSortSpectator.bindenv(this)
-    funcSortPlayersDefault   = ::mpstat_get_sort_func(gameType)
+    this.funcSortPlayersSpectator = this.mpstatSortSpectator.bindenv(this)
+    this.funcSortPlayersDefault   = ::mpstat_get_sort_func(this.gameType)
 
-    ::g_hud_live_stats.init(scene, "spectator_live_stats_nest", false)
-    actionBar = ActionBar(scene.findObject("spectator_hud_action_bar"))
-    actionBar.reinit()
-    if (!::has_feature("SpectatorUnitDmgIndicator"))
-      scene.findObject("xray_render_dmg_indicator_spectator").show(false)
-    reinitDmgIndicator()
+    ::g_hud_live_stats.init(this.scene, "spectator_live_stats_nest", false)
+    this.actionBar = ::ActionBar(this.scene.findObject("spectator_hud_action_bar"))
+    this.actionBar.reinit()
+    if (!hasFeature("SpectatorUnitDmgIndicator"))
+      this.scene.findObject("xray_render_dmg_indicator_spectator").show(false)
+    this.reinitDmgIndicator()
 
     ::g_hud_event_manager.subscribe("HudMessage", function(eventData)
       {
-        onHudMessage(eventData)
+        this.onHudMessage(eventData)
       }, this)
 
-    onUpdate()
-    scene.findObject("update_timer").setUserData(this)
+    this.onUpdate()
+    this.scene.findObject("update_timer").setUserData(this)
 
-    updateClientHudOffset()
-    fillAnchorsMarkers()
+    this.updateClientHudOffset()
+    this.fillAnchorsMarkers()
   }
 
   function reinitScreen()
   {
-    updateHistoryLog(true)
-    loadGameChat()
+    this.updateHistoryLog(true)
+    this.loadGameChat()
 
     ::g_hud_live_stats.update()
-    actionBar.reinit()
-    reinitDmgIndicator()
-    updateTarget(true)
+    this.actionBar.reinit()
+    this.reinitDmgIndicator()
+    this.updateTarget(true)
   }
 
   function fillTabs()
@@ -312,9 +322,9 @@ let weaponIconsReloadBits = {
     let view = {
       tabs = []
     }
-    foreach(tab in tabsList)
+    foreach(tab in this.tabsList)
       view.tabs.append({
-        tabName = ::loc(tab.locId)
+        tabName = loc(tab.locId)
         id = tab.id
         alert = "no"
         cornerImg = "#ui/gameuiskin#new_icon.svg"
@@ -323,96 +333,96 @@ let weaponIconsReloadBits = {
       })
 
     let tabsObj = this.showSceneBtn("tabs", true)
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
   }
 
   function loadGameChat()
   {
-    if (isMultiplayer)
+    if (this.isMultiplayer)
     {
-      chatData = ::loadGameChatToObj(scene.findObject("chat_container"), "%gui/chat/gameChatSpectator.blk", this,
-                                     {selfHideInput = true, hiddenInput = !canSendChatMessages })
+      this.chatData = ::loadGameChatToObj(this.scene.findObject("chat_container"), "%gui/chat/gameChatSpectator.blk", this,
+                                     {selfHideInput = true, hiddenInput = !this.canSendChatMessages })
 
-      let objGameChat = scene.findObject("gamechat")
+      let objGameChat = this.scene.findObject("gamechat")
       ::showBtnTable(objGameChat, {
-          chat_input_div         = canSendChatMessages
-          chat_input_placeholder = canSendChatMessages
+          chat_input_div         = this.canSendChatMessages
+          chat_input_placeholder = this.canSendChatMessages
       })
       let objChatLogDiv = objGameChat.findObject("chat_log_tdiv")
-      objChatLogDiv.size = canSendChatMessages ? objChatLogDiv.sizeWithInput : objChatLogDiv.sizeWithoutInput
+      objChatLogDiv.size = this.canSendChatMessages ? objChatLogDiv.sizeWithInput : objChatLogDiv.sizeWithoutInput
 
-      if (mode == SPECTATOR_MODE.SKIRMISH || mode == SPECTATOR_MODE.SUPERVISOR)
+      if (this.mode == SPECTATOR_MODE.SKIRMISH || this.mode == SPECTATOR_MODE.SUPERVISOR)
         ::chat_set_mode(CHAT_MODE_ALL, "")
     }
   }
 
-  function onShowHud(show = true, needApplyPending = false)
+  function onShowHud(_show = true, _needApplyPending = false)
   {
   }
 
-  function onUpdate(obj=null, dt=0.0)
+  function onUpdate(_obj=null, dt=0.0)
   {
-    if (!spectatorModeInited && is_in_flight())
+    if (!this.spectatorModeInited && ::is_in_flight())
     {
-      if (!getTargetPlayer())
+      if (!this.getTargetPlayer())
       {
-        spectatorModeInited = true
+        this.spectatorModeInited = true
         onSpectatorMode(true)
-        catchingFirstTarget = isMultiplayer && gotRefereeRights
-        ::dagor.debug("Spectator: init " + ::getEnumValName("SPECTATOR_MODE", mode))
+        this.catchingFirstTarget = this.isMultiplayer && this.gotRefereeRights
+        log($"Spectator: init {getEnumValName("SPECTATOR_MODE", this.mode)}")
       }
-      updateCooldown = 0.0
+      this.updateCooldown = 0.0
     }
 
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    updateCooldown -= dt
-    let isUpdateByCooldown = updateCooldown <= 0.0
+    this.updateCooldown -= dt
+    let isUpdateByCooldown = this.updateCooldown <= 0.0
 
     let targetNick  = getSpectatorTargetName()
-    let hudUnitType = ::getAircraftByName(getActionBarUnitName())?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
-    let isTargetSwitched = targetNick != lastTargetNick || hudUnitType != lastHudUnitType
-    lastTargetNick  = targetNick
-    lastHudUnitType = hudUnitType
+    let hudUnitType = getHudUnitType()
+    let isTargetSwitched = targetNick != this.lastTargetNick || hudUnitType != this.lastHudUnitType
+    this.lastTargetNick  = targetNick
+    this.lastHudUnitType = hudUnitType
 
     let friendlyTeam = ::get_player_army_for_hud()
-    let friendlyTeamSwitched = friendlyTeam != lastFriendlyTeam
-    lastFriendlyTeam = friendlyTeam
+    let friendlyTeamSwitched = friendlyTeam != this.lastFriendlyTeam
+    this.lastFriendlyTeam = friendlyTeam
 
     if (isUpdateByCooldown || isTargetSwitched || friendlyTeamSwitched)
     {
-      updateTarget(isTargetSwitched)
-      updateStats()
+      this.updateTarget(isTargetSwitched)
+      this.updateStats()
     }
 
     if (friendlyTeamSwitched || isTargetSwitched)
     {
-      ::g_hud_live_stats.show(isMultiplayer, null, spectatorWatchedHero.id)
+      ::g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
       ::broadcastEvent("WatchedHeroSwitched")
-      updateHistoryLog()
+      this.updateHistoryLog()
     }
 
-    updateControls(isTargetSwitched)
+    this.updateControls(isTargetSwitched)
 
     if (isUpdateByCooldown)
     {
-      updateCooldown = 0.5
+      this.updateCooldown = 0.5
 
       // Forced switching target to catch the first target
-      if (spectatorModeInited && catchingFirstTarget)
+      if (this.spectatorModeInited && this.catchingFirstTarget)
       {
-        if (getTargetPlayer())
-          catchingFirstTarget = false
+        if (this.getTargetPlayer())
+          this.catchingFirstTarget = false
         else
         {
-          foreach (info in teams)
+          foreach (info in this.teams)
             foreach (p in info.players)
-              if (p.state == ::PLAYER_IN_FLIGHT && !p.isDead)
+              if (p.state == PLAYER_IN_FLIGHT && !p.isDead)
               {
-                switchTargetPlayer(p.id)
+                this.switchTargetPlayer(p.id)
                 break
               }
         }
@@ -432,9 +442,9 @@ let weaponIconsReloadBits = {
     local name = ::g_contacts.getPlayerFullName(
       getPlayerName(player.name), // can add platform icon
       needClanTag && !player.isBot ? player.clanTag : "")
-    if (mode == SPECTATOR_MODE.REPLAY && player?.realName != "")
+    if (this.mode == SPECTATOR_MODE.REPLAY && player?.realName != "")
       name = $"{name} ({player.realName})"
-    return needColored ? ::colorize(getPlayerColor(player), name) : name
+    return needColored ? colorize(this.getPlayerColor(player), name) : name
   }
 
   function getPlayerColor(player)
@@ -448,44 +458,44 @@ let weaponIconsReloadBits = {
   function getPlayerStateDesc(player)
   {
     return !player ? "" :
-      !player.ingame ? ::loc(player.deaths ? "spectator/player_quit" : "multiplayer/state/player_not_in_game") :
-      player.isDead ? ::loc(player.deaths ? "spectator/player_vehicle_lost" : "spectator/player_connecting") :
-      !player.canBeSwitchedTo ? ::loc("multiplayer/state/player_in_game/location_unknown") : ""
+      !player.ingame ? loc(player.deaths ? "spectator/player_quit" : "multiplayer/state/player_not_in_game") :
+      player.isDead ? loc(player.deaths ? "spectator/player_vehicle_lost" : "spectator/player_connecting") :
+      !player.canBeSwitchedTo ? loc("multiplayer/state/player_in_game/location_unknown") : ""
   }
 
   function getUnitMalfunctionDesc(player)
   {
     if (!player || !player.ingame || player.isDead)
       return ""
-    let briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
+    let briefMalfunctionState = getTblValue("briefMalfunctionState", player, 0)
     let list = []
-    if (::getTblValue("isExtinguisherActive", player, false))
-      list.append(::loc("fire_extinguished"))
-    else if (::getTblValue("isBurning", player, false))
-      list.append(::loc("fire_in_unit"))
-    if (briefMalfunctionState & ::BMS_ENGINE_BROKEN)
-      list.append(::loc("my_dmg_msg/tank_engine"))
-    if (briefMalfunctionState & ::BMS_MAIN_GUN_BROKEN)
-      list.append(::loc("my_dmg_msg/tank_gun_barrel"))
-    if (briefMalfunctionState & ::BMS_TRACK_BROKEN)
-      list.append(::loc("my_dmg_msg/tank_track"))
-    if (briefMalfunctionState & ::BMS_OUT_OF_AMMO)
-      list.append(::loc("controls/no_bullets_left"))
-    if (briefMalfunctionState & ::BMS_OUT_OF_BOMBS)
-      list.append(::loc("controls/no_bombs_left"))
-    if (briefMalfunctionState & ::BMS_OUT_OF_ROCKETS)
-      list.append(::loc("controls/no_rockets_left"))
-    if (briefMalfunctionState & ::BMS_OUT_OF_TORPEDOES)
-      list.append(::loc("controls/no_torpedoes_left"))
-    local desc = ::g_string.implode(list, ::loc("ui/semicolon"))
+    if (getTblValue("isExtinguisherActive", player, false))
+      list.append(loc("fire_extinguished"))
+    else if (getTblValue("isBurning", player, false))
+      list.append(loc("fire_in_unit"))
+    if (briefMalfunctionState & BMS_ENGINE_BROKEN)
+      list.append(loc("my_dmg_msg/tank_engine"))
+    if (briefMalfunctionState & BMS_MAIN_GUN_BROKEN)
+      list.append(loc("my_dmg_msg/tank_gun_barrel"))
+    if (briefMalfunctionState & BMS_TRACK_BROKEN)
+      list.append(loc("my_dmg_msg/tank_track"))
+    if (briefMalfunctionState & BMS_OUT_OF_AMMO)
+      list.append(loc("controls/no_bullets_left"))
+    if (briefMalfunctionState & BMS_OUT_OF_BOMBS)
+      list.append(loc("controls/no_bombs_left"))
+    if (briefMalfunctionState & BMS_OUT_OF_ROCKETS)
+      list.append(loc("controls/no_rockets_left"))
+    if (briefMalfunctionState & BMS_OUT_OF_TORPEDOES)
+      list.append(loc("controls/no_torpedoes_left"))
+    local desc = ::g_string.implode(list, loc("ui/semicolon"))
     if (desc.len())
-      desc = ::colorize("warningTextColor", desc)
+      desc = colorize("warningTextColor", desc)
     return desc
   }
 
   function getPlayer(id)
   {
-    foreach (info in teams)
+    foreach (info in this.teams)
       foreach (p in info.players)
         if (p.id == id)
           return p
@@ -494,7 +504,7 @@ let weaponIconsReloadBits = {
 
   function getPlayerByUserId(userId)
   {
-    foreach (info in teams)
+    foreach (info in this.teams)
       foreach (p in info.players)
         if (p.userId == userId.tostring())
           return p
@@ -503,47 +513,47 @@ let weaponIconsReloadBits = {
 
   function getTargetPlayer()
   {
-    if (!isMultiplayer)
-      return (getSpectatorTargetName().len() && teams.len() && teams[0].players.len())
-        ? teams[0].players[0]
+    if (!this.isMultiplayer)
+      return (getSpectatorTargetName().len() && this.teams.len() && this.teams[0].players.len())
+        ? this.teams[0].players[0]
         : null
 
     let targetId = getSpectatorTargetId()
     if (targetId >= 0)
-      return getPlayer(targetId)
+      return this.getPlayer(targetId)
 
-    return (mode == SPECTATOR_MODE.RESPAWN && lastTargetData.id >= 0)
-      ? getPlayer(lastTargetData.id)
+    return (this.mode == SPECTATOR_MODE.RESPAWN && this.lastTargetData.id >= 0)
+      ? this.getPlayer(this.lastTargetData.id)
       : null
   }
 
   function setTargetInfo(player)
   {
-    let infoObj = scene.findObject("target_info")
-    let waitingObj = scene.findObject("waiting_for_target_spawn")
-    if (!::checkObj(infoObj) || !::checkObj(waitingObj))
+    let infoObj = this.scene.findObject("target_info")
+    let waitingObj = this.scene.findObject("waiting_for_target_spawn")
+    if (!checkObj(infoObj) || !checkObj(waitingObj))
       return
 
-    infoObj.show(player != null && isMultiplayer)
-    waitingObj.show(player == null && catchingFirstTarget)
+    infoObj.show(player != null && this.isMultiplayer)
+    waitingObj.show(player == null && this.catchingFirstTarget)
 
-    if (!player || !isMultiplayer)
+    if (!player || !this.isMultiplayer)
       return
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
 
-    if (isMultiplayer)
+    if (this.isMultiplayer)
     {
       let statusObj = infoObj.findObject("target_state")
-      statusObj.setValue(getPlayerStateDesc(player))
+      statusObj.setValue(this.getPlayerStateDesc(player))
     }
 
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function updateTarget(targetSwitched = false, needFocusTargetTable = false)
   {
-    let player = getTargetPlayer()
+    let player = this.getTargetPlayer()
 
     if (targetSwitched)
     {
@@ -554,80 +564,81 @@ let weaponIconsReloadBits = {
 
     local isFocused = false
     if (needFocusTargetTable)
-      isFocused = selectTargetTeamBlock()
+      isFocused = this.selectTargetTeamBlock()
 
-    ::g_hud_live_stats.show(isMultiplayer, null, spectatorWatchedHero.id)
-    actionBar.reinit()
-    reinitDmgIndicator()
+    ::g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
+    this.actionBar.reinit()
+    this.reinitDmgIndicator()
 
-    setTargetInfo(player)
+    this.setTargetInfo(player)
     return isFocused
   }
 
   function updateControls(targetSwitched = false)
   {
-    if (canControlTimeline)
+    if (this.canControlTimeline)
     {
-      if (::is_game_paused() != replayPaused)
+      if (::is_game_paused() != this.replayPaused)
       {
-        replayPaused = ::is_game_paused()
-        scene.findObject("ID_REPLAY_PAUSE").findObject("icon")["background-image"] = replayPaused ? "#ui/gameuiskin#replay_play.svg" : "#ui/gameuiskin#replay_pause.svg"
+        this.replayPaused = ::is_game_paused()
+        this.scene.findObject("ID_REPLAY_PAUSE").findObject("icon")["background-image"] = this.replayPaused ? "#ui/gameuiskin#replay_play.svg" : "#ui/gameuiskin#replay_pause.svg"
       }
-      if (get_time_speed() != replayTimeSpeed)
+      if (get_time_speed() != this.replayTimeSpeed)
       {
-        replayTimeSpeed = get_time_speed()
-        scene.findObject("txt_replay_time_speed").setValue(format("%.3fx", replayTimeSpeed))
-        scene.findObject("ID_REPLAY_SLOWER").enable(replayTimeSpeed > replayTimeSpeedMin)
-        scene.findObject("ID_REPLAY_FASTER").enable(replayTimeSpeed < replayTimeSpeedMax)
+        this.replayTimeSpeed = get_time_speed()
+        this.scene.findObject("txt_replay_time_speed").setValue(format("%.3fx", this.replayTimeSpeed))
+        this.scene.findObject("ID_REPLAY_SLOWER").enable(this.replayTimeSpeed > this.replayTimeSpeedMin)
+        this.scene.findObject("ID_REPLAY_FASTER").enable(this.replayTimeSpeed < this.replayTimeSpeedMax)
       }
-      if (::is_replay_markers_enabled() != replayMarkersEnabled)
+      if (::is_replay_markers_enabled() != this.replayMarkersEnabled)
       {
-        replayMarkersEnabled = ::is_replay_markers_enabled()
-        scene.findObject("ID_REPLAY_SHOW_MARKERS").highlighted = replayMarkersEnabled ? "yes" : "no"
+        this.replayMarkersEnabled = ::is_replay_markers_enabled()
+        this.scene.findObject("ID_REPLAY_SHOW_MARKERS").highlighted = this.replayMarkersEnabled ? "yes" : "no"
       }
       let replayTimeCurrent = ::get_usefull_total_time()
-      scene.findObject("txt_replay_time_current").setValue(time.preciseSecondsToString(replayTimeCurrent))
-      let progress = (replayTimeTotal > 0) ? (1000 * replayTimeCurrent / replayTimeTotal).tointeger() : 0
-      if (progress != replayTimeProgress)
+      this.scene.findObject("txt_replay_time_current").setValue(time.preciseSecondsToString(replayTimeCurrent))
+      let progress = (this.replayTimeTotal > 0) ? (1000 * replayTimeCurrent / this.replayTimeTotal).tointeger() : 0
+      if (progress != this.replayTimeProgress)
       {
-        replayTimeProgress = progress
-        scene.findObject("timeline_progress").setValue(replayTimeProgress)
+        this.replayTimeProgress = progress
+        this.scene.findObject("timeline_progress").setValue(this.replayTimeProgress)
       }
 
-      if (::has_feature("replayRewind")) {
+      if (hasFeature("replayRewind")) {
         let anchors = get_replay_anchors()
-        let curAnchorIdx = getCurAnchorIdx(anchors)
-        ::enableBtnTable(scene, {
+        let curAnchorIdx = this.getCurAnchorIdx(anchors)
+        ::enableBtnTable(this.scene, {
           ID_REPLAY_BACKWARD          = curAnchorIdx >= 0
           ID_REPLAY_FORWARD           = anchors.len() > 0 && (curAnchorIdx + 1) < anchors.len()
         })
       }
     }
 
-    if (canSeeMissionTimer)
+    if (this.canSeeMissionTimer)
     {
-      scene.findObject("txt_mission_timer").setValue(time.secondsToString(::get_usefull_total_time(), false))
+      this.scene.findObject("txt_mission_timer").setValue(time.secondsToString(::get_usefull_total_time(), false))
     }
 
-    if (::is_spectator_rotation_forced() != cameraRotationByMouse)
+    if (::is_spectator_rotation_forced() != this.cameraRotationByMouse)
     {
-      cameraRotationByMouse = ::is_spectator_rotation_forced()
-      scene.findObject("ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT").highlighted = cameraRotationByMouse ? "yes" : "no"
+      this.cameraRotationByMouse = ::is_spectator_rotation_forced()
+      this.scene.findObject("ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT").highlighted = this.cameraRotationByMouse ? "yes" : "no"
     }
 
-    if (canControlCameras && targetSwitched)
+    if (this.canControlCameras && targetSwitched)
     {
-      let player = getTargetPlayer()
+      let player = this.getTargetPlayer()
       let isValid = player != null
       let isPlayer = player ? !player.isBot : false
-      let userId   = player ? ::getTblValue("userId", player, 0) : 0
-      let isAuthor = userId == replayAuthorUserId
-      let isAuthorUnknown = replayAuthorUserId == -1
-      let isAircraft = ::isInArray(lastHudUnitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER])
+      let userId   = player ? getTblValue("userId", player, 0) : 0
+      let isAuthor = userId == this.replayAuthorUserId
+      let isAuthorUnknown = this.replayAuthorUserId == -1
+      let isAircraft = isInArray(this.lastHudUnitType,
+        [HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER])
 
-      ::enableBtnTable(scene, {
+      ::enableBtnTable(this.scene, {
           ID_CAMERA_DEFAULT           = isValid
-          ID_TOGGLE_FOLLOWING_CAMERA  = isValid && isPlayer && (gotRefereeRights || isAuthor || isAuthorUnknown)
+          ID_TOGGLE_FOLLOWING_CAMERA  = isValid && isPlayer && (this.gotRefereeRights || isAuthor || isAuthorUnknown)
           ID_REPLAY_CAMERA_OPERATOR   = isValid
           ID_REPLAY_CAMERA_FLYBY      = isValid
           ID_REPLAY_CAMERA_WING       = isValid
@@ -643,9 +654,9 @@ let weaponIconsReloadBits = {
 
   function reinitDmgIndicator()
   {
-    let obj = scene.findObject("spectator_hud_damage")
-    if (::check_obj(obj))
-      obj.show(getTargetPlayer() != null)
+    let obj = this.scene.findObject("spectator_hud_damage")
+    if (checkObj(obj))
+      obj.show(this.getTargetPlayer() != null)
   }
 
   function statTblGetSelectedPlayer(obj)
@@ -654,7 +665,7 @@ let weaponIconsReloadBits = {
     if (!teamNum || (teamNum != "1" && teamNum != "2"))
       return null
     let teamIndex = teamNum.tointeger() - 1
-    let players =  teams[teamIndex].players
+    let players =  this.teams[teamIndex].players
     let value = obj.getValue()
     if (value < 0 || value >= players.len())
       return null
@@ -664,24 +675,24 @@ let weaponIconsReloadBits = {
 
   function onPlayerClick(obj)
   {
-    if (ignoreUiInput)
+    if (this.ignoreUiInput)
       return
 
-    selectPlayer(statTblGetSelectedPlayer(obj), obj)
+    this.selectPlayer(this.statTblGetSelectedPlayer(obj), obj)
   }
 
-  function selectPlayer(player, tableObj)
+  function selectPlayer(player, _tableObj)
   {
     if (!player)
       return
 
-    statSelPlayerId[teamIdToIndex(player.team)] = player.id
-    switchTargetPlayer(player.id)
+    this.statSelPlayerId[this.teamIdToIndex(player.team)] = player.id
+    this.switchTargetPlayer(player.id)
   }
 
   function onPlayerRClick(obj)
   {
-    let player = statTblGetSelectedPlayer(obj)
+    let player = this.statTblGetSelectedPlayer(obj)
     if (player)
       ::session_player_rmenu(
         this,
@@ -700,42 +711,42 @@ let weaponIconsReloadBits = {
 
   function saveLastTargetPlayerData(player)
   {
-    lastTargetData.team = teamIdToIndex(player.team)
-    lastTargetData.id = player.id
+    this.lastTargetData.team = this.teamIdToIndex(player.team)
+    this.lastTargetData.id = player.id
   }
 
   function selectTargetTeamBlock()
   {
-    let player = getTargetPlayer()
+    let player = this.getTargetPlayer()
     if (!player)
       return false
 
-    saveLastTargetPlayerData(player)
-    statSelPlayerId[lastTargetData.team] = player.id
+    this.saveLastTargetPlayerData(player)
+    this.statSelPlayerId[this.lastTargetData.team] = player.id
 
-    let tblObj = getTeamTableObj(player.team)
+    let tblObj = this.getTeamTableObj(player.team)
     if (!tblObj)
       return false
     ::move_mouse_on_child_by_value(tblObj)
     return true
   }
 
-  function selectControlsBlock(obj)
+  function selectControlsBlock(_obj)
   {
     if (::get_is_console_mode_enabled())
-      selectTargetTeamBlock()
+      this.selectTargetTeamBlock()
   }
 
   function onSelectPlayer(obj)
   {
-    if (ignoreUiInput)
+    if (this.ignoreUiInput)
       return
 
-    let player = statTblGetSelectedPlayer(obj)
+    let player = this.statTblGetSelectedPlayer(obj)
     if (!player)
       return
 
-    let curPlayer = getTargetPlayer()
+    let curPlayer = this.getTargetPlayer()
     if (::get_is_console_mode_enabled() && u.isEqual(curPlayer, player))
     {
       let selIndex = ::get_obj_valid_index(obj)
@@ -754,18 +765,18 @@ let weaponIconsReloadBits = {
       return
     }
 
-    saveLastTargetPlayerData(player)
-    selectPlayer(player, obj)
+    this.saveLastTargetPlayerData(player)
+    this.selectPlayer(player, obj)
   }
 
   function onChangeFocusTable(obj)
   {
-    lastSelectedTableId = obj.id
+    this.lastSelectedTableId = obj.id
   }
 
-  function onBtnMpStatScreen(obj)
+  function onBtnMpStatScreen(_obj)
   {
-    if (isMultiplayer)
+    if (this.isMultiplayer)
       guiStartMPStatScreen()
     else
       ::gui_start_tactical_map()
@@ -773,18 +784,18 @@ let weaponIconsReloadBits = {
 
   function onBtnShortcut(obj)
   {
-    let id = ::check_obj(obj) ? (obj?.id ?? "") : ""
+    let id = checkObj(obj) ? (obj?.id ?? "") : ""
     if (id.len() > 3 && id.slice(0, 3) == "ID_")
       toggleShortcut(id)
   }
 
-  function onMapClick(obj = null)
+  function onMapClick(_obj = null)
   {
-    let mapLargePanelObj = scene.findObject("map_large_div")
-    if (!::checkObj(mapLargePanelObj))
+    let mapLargePanelObj = this.scene.findObject("map_large_div")
+    if (!checkObj(mapLargePanelObj))
       return
     let mapLargeObj = mapLargePanelObj.findObject("tactical_map")
-    if (!::checkObj(mapLargeObj))
+    if (!checkObj(mapLargeObj))
       return
 
     let toggle = !mapLargePanelObj.isVisible()
@@ -795,23 +806,23 @@ let weaponIconsReloadBits = {
 
   function onToggleButtonClick(obj)
   {
-    if (!::checkObj(obj) || !("toggleObj" in obj))
+    if (!checkObj(obj) || !("toggleObj" in obj))
       return
-    let toggleObj = scene.findObject(obj?.toggleObj)
-    if (!::checkObj(toggleObj))
+    let toggleObj = this.scene.findObject(obj?.toggleObj)
+    if (!checkObj(toggleObj))
       return
 
     let toggle = !toggleObj.isVisible()
     toggleObj.show(toggle)
     obj.toggled = toggle ? "yes" : "no"
 
-    updateHistoryLog(true)
-    updateClientHudOffset()
+    this.updateHistoryLog(true)
+    this.updateClientHudOffset()
   }
 
   function teamIdToIndex(teamId)
   {
-    foreach (info in teams)
+    foreach (info in this.teams)
       if (info.teamId == teamId)
         return info.index
     return 0
@@ -819,13 +830,13 @@ let weaponIconsReloadBits = {
 
   function getTableObj(index)
   {
-    let obj = scene.findObject($"table_team{index + 1}")
-    return ::check_obj(obj) ? obj : null
+    let obj = this.scene.findObject($"table_team{index + 1}")
+    return checkObj(obj) ? obj : null
   }
 
   function getTeamTableObj(teamId)
   {
-    return getTableObj(teamIdToIndex(teamId))
+    return this.getTableObj(this.teamIdToIndex(teamId))
   }
 
   function getTeamPlayers(teamId)
@@ -835,35 +846,35 @@ let weaponIconsReloadBits = {
     {
       let player = tbl[i]
       if (player.spectator
-        || (mode == SPECTATOR_MODE.SKIRMISH
-          && (player.state != ::PLAYER_IN_FLIGHT || player.isDead) && !player.deaths))
+        || (this.mode == SPECTATOR_MODE.SKIRMISH
+          && (player.state != PLAYER_IN_FLIGHT || player.isDead) && !player.deaths))
       {
         tbl.remove(i)
         continue
       }
 
       player.team = teamId
-      player.ingame <- player.state == ::PLAYER_IN_FLIGHT || player.state == ::PLAYER_IN_RESPAWN
+      player.ingame <- player.state == PLAYER_IN_FLIGHT || player.state == PLAYER_IN_RESPAWN
       player.isActing <- player.ingame
-        && (!(gameType & ::GT_RACE) || player.raceFinishTime < 0)
-        && (!(gameType & ::GT_LAST_MAN_STANDING) || player.deaths == 0)
-      if (mode == SPECTATOR_MODE.REPLAY && !player.isBot)
-        player.isBot = player.userId == "0" || ::getTblValue("invitedName", player) != null
-      local unitId = (!player.isDead && player.state == ::PLAYER_IN_FLIGHT) ? player.aircraftName : null
+        && (!(this.gameType & GT_RACE) || player.raceFinishTime < 0)
+        && (!(this.gameType & GT_LAST_MAN_STANDING) || player.deaths == 0)
+      if (this.mode == SPECTATOR_MODE.REPLAY && !player.isBot)
+        player.isBot = player.userId == "0" || getTblValue("invitedName", player) != null
+      local unitId = (!player.isDead && player.state == PLAYER_IN_FLIGHT) ? player.aircraftName : null
       unitId = (unitId != "dummy_plane" && unitId != "") ? unitId : null
       player.aircraftName = unitId || ""
       player.canBeSwitchedTo = unitId ? player.canBeSwitchedTo : false
       player.isLocal = spectatorWatchedHero.id == player.id
       player.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
-    tbl.sort(funcSortPlayersSpectator)
+    tbl.sort(this.funcSortPlayersSpectator)
     return tbl
   }
 
   function mpstatSortSpectator(a, b)
   {
     return b.isActing <=> a.isActing
-      || (!a.isActing && funcSortPlayersDefault(a, b))
+      || (!a.isActing && this.funcSortPlayersDefault(a, b))
       || a.isBot <=> b.isBot
       || a.id <=> b.id
   }
@@ -882,11 +893,11 @@ let weaponIconsReloadBits = {
   function getPlayersData()
   {
     let _teams = array(2, null)
-    let isMpMode = !!(gameType & ::GT_VERSUS) || !!(gameType & ::GT_COOPERATIVE)
-    let isPvP = !!(gameType & ::GT_VERSUS)
-    let isTeamplay = isPvP && ::is_mode_with_teams(gameType)
+    let isMpMode = !!(this.gameType & GT_VERSUS) || !!(this.gameType & GT_COOPERATIVE)
+    let isPvP = !!(this.gameType & GT_VERSUS)
+    let isTeamplay = isPvP && ::is_mode_with_teams(this.gameType)
 
-    if (isTeamplay || !canSeeOppositeTeam)
+    if (isTeamplay || !this.canSeeOppositeTeam)
     {
       let localTeam = ::get_mp_local_team() != 2 ? 1 : 2
       let isMyTeamFriendly = localTeam == ::get_player_army_for_hud()
@@ -895,7 +906,7 @@ let weaponIconsReloadBits = {
       {
         let teamId = ((i == 0) == (localTeam == 1)) ? Team.A : Team.B
         let color = ((i == 0) == isMyTeamFriendly)? "blue" : "red"
-        let players = getTeamPlayers(teamId)
+        let players = this.getTeamPlayers(teamId)
 
         _teams[i] = {
           active = true
@@ -903,15 +914,15 @@ let weaponIconsReloadBits = {
           teamId = teamId
           players = players
           color = color
-          clanTag = getTeamClanTag(players)
+          clanTag = this.getTeamClanTag(players)
         }
       }
     }
     else if (isMpMode)
     {
-      let teamId = isTeamplay ? ::get_mp_local_team() : ::GET_MPLAYERS_LIST
+      let teamId = isTeamplay ? ::get_mp_local_team() : GET_MPLAYERS_LIST
       let color  = isTeamplay ? "blue" : "red"
-      let players = getTeamPlayers(teamId)
+      let players = this.getTeamPlayers(teamId)
 
       _teams[0] = {
         active = true
@@ -919,7 +930,7 @@ let weaponIconsReloadBits = {
         teamId = teamId
         players = players
         color = color
-        clanTag = isTeamplay ? getTeamClanTag(players) : ""
+        clanTag = isTeamplay ? this.getTeamClanTag(players) : ""
       }
       _teams[1] = {
         active = false
@@ -934,7 +945,7 @@ let weaponIconsReloadBits = {
     {
       let teamId = 0
       let color = "blue"
-      let players = getTeamPlayers(teamId)
+      let players = this.getTeamPlayers(teamId)
 
       _teams[0] = {
         active = false
@@ -958,29 +969,29 @@ let weaponIconsReloadBits = {
     foreach (info in _teams)
       length = max(length, info.players.len())
     let maxNoScroll = ::global_max_players_versus / 2
-    statNumRows = min(maxNoScroll, length)
+    this.statNumRows = min(maxNoScroll, length)
     return _teams
   }
 
   function updateStats()
   {
-    let _teams = getPlayersData()
+    let _teams = this.getPlayersData()
     foreach (idx, info in _teams)
     {
-      let tblObj = getTableObj(info.index)
+      let tblObj = this.getTableObj(info.index)
       if (tblObj)
       {
-        let infoPrev = ::getTblValue(idx, teams)
+        let infoPrev = getTblValue(idx, this.teams)
         if (info.active)
-          statTblUpdateInfo(tblObj, info, infoPrev)
-        if (info.active != ::getTblValue("active", infoPrev, true))
+          this.statTblUpdateInfo(tblObj, info, infoPrev)
+        if (info.active != getTblValue("active", infoPrev, true))
         {
           tblObj.getParent().getParent().show(info.active)
-          scene.findObject("btnToggleStats" + (idx + 1)).show(info.active)
+          this.scene.findObject("btnToggleStats" + (idx + 1)).show(info.active)
         }
       }
     }
-    teams = _teams
+    this.teams = _teams
   }
 
   function addPlayerRows(objTbl, teamInfo)
@@ -993,46 +1004,46 @@ let weaponIconsReloadBits = {
     let view = { rows = array(newRows, 1)
                    iconLeft = teamInfo.index == 0
                  }
-    let data = ::handyman.renderCached(("%gui/hud/spectatorTeamRow"), view)
-    guiScene.appendWithBlk(objTbl, data, this)
+    let data = ::handyman.renderCached(("%gui/hud/spectatorTeamRow.tpl"), view)
+    this.guiScene.appendWithBlk(objTbl, data, this)
     return totalRows
   }
 
   function isPlayerChanged(p1, p2)
   {
-    if (debugMode)
+    if (this.debugMode)
       return true
     if (!p1 != !p2)
       return true
     if (!p1)
       return false
-    foreach(param in scanPlayerParams)
-      if (::getTblValue(param, p1) != ::getTblValue(param, p2))
+    foreach(param in this.scanPlayerParams)
+      if (getTblValue(param, p1) != getTblValue(param, p2))
         return true
     return false
   }
 
   function statTblUpdateInfo(objTbl, teamInfo, infoPrev = null)
   {
-    let players = ::getTblValue("players", teamInfo)
-    if (!::checkObj(objTbl) || !players)
+    let players = getTblValue("players", teamInfo)
+    if (!checkObj(objTbl) || !players)
       return
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
 
-    let prevPlayers = ::getTblValue("players", infoPrev)
-    let wasRows = addPlayerRows(objTbl, teamInfo)
+    let prevPlayers = getTblValue("players", infoPrev)
+    let wasRows = this.addPlayerRows(objTbl, teamInfo)
     let totalRows = objTbl.childrenCount()
 
-    let selPlayerId = getTblValue(teamInfo.index, statSelPlayerId)
+    let selPlayerId = getTblValue(teamInfo.index, this.statSelPlayerId)
     local selIndex = null
 
     let needClanTags = (teamInfo?.clanTag ?? "") == ""
 
     for(local i = 0; i < totalRows; i++)
     {
-      let player = ::getTblValue(i, players)
-      if (i < wasRows && !isPlayerChanged(player, ::getTblValue(i, prevPlayers)))
+      let player = getTblValue(i, players)
+      if (i < wasRows && !this.isPlayerChanged(player, getTblValue(i, prevPlayers)))
         continue
 
       let obj = objTbl.getChild(i)
@@ -1041,11 +1052,11 @@ let weaponIconsReloadBits = {
         continue
 
       let nameObj = obj.findObject("name")
-      if (!::checkObj(nameObj)) //some validation
+      if (!checkObj(nameObj)) //some validation
         continue
 
-      let playerName = getPlayerNick(player)
-      let playerNameShort = needClanTags ? playerName : getPlayerNick(player, false, false)
+      let playerName = this.getPlayerNick(player)
+      let playerNameShort = needClanTags ? playerName : this.getPlayerNick(player, false, false)
       nameObj.setValue(playerNameShort)
 
       let unitId = player.aircraftName != "" ? player.aircraftName : null
@@ -1053,26 +1064,26 @@ let weaponIconsReloadBits = {
         : unitId ? ::getUnitClassIco(unitId)
         : "#ui/gameuiskin#dead.svg"
       let iconType = unitId ? getUnitRole(unitId) : ""
-      let stateDesc = getPlayerStateDesc(player)
-      let malfunctionDesc = getUnitMalfunctionDesc(player)
+      let stateDesc = this.getPlayerStateDesc(player)
+      let malfunctionDesc = this.getUnitMalfunctionDesc(player)
 
       obj.hero = player.isLocal ? "yes" : "no"
       obj.squad = player.isInHeroSquad ? "yes" : "no"
       obj.dead = player.canBeSwitchedTo ? "no" : "yes"
       obj.isBot = player.isBot ? "yes" : "no"
-      obj.findObject("unit").setValue(getUnitName(unitId || "dummy_plane"))
-      obj.tooltip = playerName + (unitId ? ::loc("ui/parentheses/space", {text = ::getUnitName(unitId, false)}) : "")
+      obj.findObject("unit").setValue(::getUnitName(unitId || "dummy_plane"))
+      obj.tooltip = playerName + (unitId ? loc("ui/parentheses/space", {text = ::getUnitName(unitId, false)}) : "")
         + (stateDesc != "" ? ("\n" + stateDesc) : "")
         + (malfunctionDesc != "" ? ("\n" + malfunctionDesc) : "")
 
-      if (debugMode)
-        obj.tooltip += "\n\n" + getPlayerDebugTooltipText(player)
+      if (this.debugMode)
+        obj.tooltip += "\n\n" + this.getPlayerDebugTooltipText(player)
 
       let unitIcoObj = obj.findObject("unit-ico")
       unitIcoObj["background-image"] = iconImg
       unitIcoObj.shopItemType = iconType
 
-      let briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
+      let briefMalfunctionState = getTblValue("briefMalfunctionState", player, 0)
       let weaponIcons = (unitId && ("weapon" in player)) ? getWeaponTypeIcoByWeapon(unitId, player.weapon)
         : getWeaponTypeIcoByWeapon("", "")
 
@@ -1097,12 +1108,12 @@ let weaponIconsReloadBits = {
 
       let battleStateIconClass =
         (!player.ingame || player.isDead)                     ? "" :
-        ::getTblValue("isExtinguisherActive", player, false)  ? "ExtinguisherActive" :
-        ::getTblValue("isBurning", player, false)             ? "IsBurning" :
-        (briefMalfunctionState & ::BMS_ENGINE_BROKEN)         ? "BrokenEngine" :
-        (briefMalfunctionState & ::BMS_MAIN_GUN_BROKEN)       ? "BrokenGun" :
-        (briefMalfunctionState & ::BMS_TRACK_BROKEN)          ? "BrokenTrack" :
-        (briefMalfunctionState & ::BMS_OUT_OF_AMMO)           ? "OutOfAmmo" :
+        getTblValue("isExtinguisherActive", player, false)  ? "ExtinguisherActive" :
+        getTblValue("isBurning", player, false)             ? "IsBurning" :
+        (briefMalfunctionState & BMS_ENGINE_BROKEN)         ? "BrokenEngine" :
+        (briefMalfunctionState & BMS_MAIN_GUN_BROKEN)       ? "BrokenGun" :
+        (briefMalfunctionState & BMS_TRACK_BROKEN)          ? "BrokenTrack" :
+        (briefMalfunctionState & BMS_OUT_OF_AMMO)           ? "OutOfAmmo" :
                                                                 ""
       obj.findObject("battle-state-ico")["class"] = battleStateIconClass
 
@@ -1112,19 +1123,19 @@ let weaponIconsReloadBits = {
 
     if (selIndex != null && objTbl.getValue() != selIndex && objTbl.isFocused())
     {
-      ignoreUiInput = true
+      this.ignoreUiInput = true
       objTbl.setValue(selIndex)
-      ignoreUiInput = false
+      this.ignoreUiInput = false
     }
 
     if (objTbl.team != teamInfo.color)
       objTbl.team = teamInfo.color
 
     let headerObj = objTbl.getParent().getParent().findObject("header")
-    if (::check_obj(headerObj))
+    if (checkObj(headerObj))
       headerObj.setValue(teamInfo.clanTag)
 
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function getPlayerDebugTooltipText(player)
@@ -1136,7 +1147,7 @@ let weaponIconsReloadBits = {
     {
       if (i == "uid")
         continue
-      let val = (i == "state") ? playerStateToString(v) : v
+      let val = (i == "state") ? this.playerStateToString(v) : v
       extra.append(i + " = " + val)
     }
     extra.sort()
@@ -1147,29 +1158,29 @@ let weaponIconsReloadBits = {
   {
     switch (state)
     {
-      case ::PLAYER_NOT_EXISTS:                 return "PLAYER_NOT_EXISTS"
-      case ::PLAYER_HAS_LEAVED_GAME:            return "PLAYER_HAS_LEAVED_GAME"
-      case ::PLAYER_IN_LOBBY_NOT_READY:         return "PLAYER_IN_LOBBY_NOT_READY"
-      case ::PLAYER_IN_LOADING:                 return "PLAYER_IN_LOADING"
-      case ::PLAYER_IN_STATISTICS_BEFORE_LOBBY: return "PLAYER_IN_STATISTICS_BEFORE_LOBBY"
-      case ::PLAYER_IN_LOBBY_READY:             return "PLAYER_IN_LOBBY_READY"
-      case ::PLAYER_READY_TO_START:             return "PLAYER_READY_TO_START"
-      case ::PLAYER_IN_FLIGHT:                  return "PLAYER_IN_FLIGHT"
-      case ::PLAYER_IN_RESPAWN:                 return "PLAYER_IN_RESPAWN"
+      case PLAYER_NOT_EXISTS:                 return "PLAYER_NOT_EXISTS"
+      case PLAYER_HAS_LEAVED_GAME:            return "PLAYER_HAS_LEAVED_GAME"
+      case PLAYER_IN_LOBBY_NOT_READY:         return "PLAYER_IN_LOBBY_NOT_READY"
+      case PLAYER_IN_LOADING:                 return "PLAYER_IN_LOADING"
+      case PLAYER_IN_STATISTICS_BEFORE_LOBBY: return "PLAYER_IN_STATISTICS_BEFORE_LOBBY"
+      case PLAYER_IN_LOBBY_READY:             return "PLAYER_IN_LOBBY_READY"
+      case PLAYER_READY_TO_START:             return "PLAYER_READY_TO_START"
+      case PLAYER_IN_FLIGHT:                  return "PLAYER_IN_FLIGHT"
+      case PLAYER_IN_RESPAWN:                 return "PLAYER_IN_RESPAWN"
       default:                                  return "" + state
     }
   }
 
   function updateClientHudOffset()
   {
-    guiScene.setUpdatesEnabled(true, true)
-    let obj = scene.findObject("stats_left")
-    ::spectator_air_hud_offset_x = (::checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
+    this.guiScene.setUpdatesEnabled(true, true)
+    let obj = this.scene.findObject("stats_left")
+    ::spectator_air_hud_offset_x = (checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
   }
 
   function onBtnLogTabSwitch(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let tabIdx = obj.getValue()
@@ -1178,76 +1189,76 @@ let weaponIconsReloadBits = {
 
     let tabObj = obj.getChild(tabIdx)
     let newTabId = tabObj?.id
-    if (!newTabId || newTabId == curTabId)
+    if (!newTabId || newTabId == this.curTabId)
       return
 
-    foreach(tab in tabsList)
+    foreach(tab in this.tabsList)
     {
-      let objContainer = scene.findObject(tab.containerId)
-      if (!::checkObj(objContainer))
+      let objContainer = this.scene.findObject(tab.containerId)
+      if (!checkObj(objContainer))
         continue
 
       objContainer.show(tab.id == newTabId)
     }
-    curTabId = newTabId
+    this.curTabId = newTabId
     tabObj.findObject("new_msgs").show(false)
 
-    ::g_orders.showOrdersContainer(curTabId == SPECTATOR_CHAT_TAB.ORDERS)
+    ::g_orders.showOrdersContainer(this.curTabId == SPECTATOR_CHAT_TAB.ORDERS)
 
-    if (curTabId == SPECTATOR_CHAT_TAB.CHAT)
-      loadGameChat()
-    updateHistoryLog(true)
+    if (this.curTabId == SPECTATOR_CHAT_TAB.CHAT)
+      this.loadGameChat()
+    this.updateHistoryLog(true)
   }
 
   function updateNewMsgImg(tabId)
   {
-    if (!scene.isValid() || tabId == curTabId)
+    if (!this.scene.isValid() || tabId == this.curTabId)
       return
-    let obj = scene.findObject(tabId)
-    if (::checkObj(obj))
+    let obj = this.scene.findObject(tabId)
+    if (checkObj(obj))
       obj.findObject("new_msgs").show(true)
   }
 
-  function onEventMpChatLogUpdated(params)
+  function onEventMpChatLogUpdated(_params)
   {
-    updateNewMsgImg(SPECTATOR_CHAT_TAB.CHAT)
+    this.updateNewMsgImg(SPECTATOR_CHAT_TAB.CHAT)
   }
 
-  function onEventActiveOrderChanged(params)
+  function onEventActiveOrderChanged(_params)
   {
-    updateNewMsgImg(SPECTATOR_CHAT_TAB.ORDERS)
+    this.updateNewMsgImg(SPECTATOR_CHAT_TAB.ORDERS)
   }
 
   function onEventMpChatInputRequested(params)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
-    if (!canSendChatMessages)
+    if (!this.canSendChatMessages)
       return
 
-    local obj = scene.findObject("btnToggleLog")
-    if (::checkObj(obj) && obj?.toggled != "yes")
-      onToggleButtonClick(obj)
+    local obj = this.scene.findObject("btnToggleLog")
+    if (checkObj(obj) && obj?.toggled != "yes")
+      this.onToggleButtonClick(obj)
 
-    obj = scene.findObject("tabs")
+    obj = this.scene.findObject("tabs")
     let chatTabId = SPECTATOR_CHAT_TAB.CHAT
-    if (::checkObj(obj) && curTabId != chatTabId)
-      obj.setValue(tabsList.findindex(@(t) t.id == chatTabId) ?? -1)
+    if (checkObj(obj) && this.curTabId != chatTabId)
+      obj.setValue(this.tabsList.findindex(@(t) t.id == chatTabId) ?? -1)
 
-    if (::getTblValue("activate", params, false))
+    if (getTblValue("activate", params, false))
       ::game_chat_input_toggle_request(true)
   }
 
   function onPlayerRequestedArtillery(userId)
   {
-    let player = getPlayerByUserId(userId)
-    let color = isPlayerFriendly(player) ? "hudColorDarkBlue" : "hudColorDarkRed"
-    addHistroyLogMessage(::colorize(color, ::loc("artillery_strike/called_by_player", { player =  getPlayerNick(player, true) })))
+    let player = this.getPlayerByUserId(userId)
+    let color = this.isPlayerFriendly(player) ? "hudColorDarkBlue" : "hudColorDarkRed"
+    this.addHistroyLogMessage(colorize(color, loc("artillery_strike/called_by_player", { player =  this.getPlayerNick(player, true) })))
   }
 
   function onHudMessage(msg)
   {
-    if (!::isInArray(msg.type, supportedMsgTypes))
+    if (!isInArray(msg.type, this.supportedMsgTypes))
       return
 
     if (!("id" in msg))
@@ -1257,67 +1268,67 @@ let weaponIconsReloadBits = {
 
     msg.time <- ::get_usefull_total_time()
 
-    historyLog = historyLog || []
+    this.historyLog = this.historyLog || []
     if (msg.id != -1)
-      foreach (m in historyLog)
+      foreach (m in this.historyLog)
         if (m.id == msg.id)
           return
     if (msg.id == -1 && msg.text != "")
     {
-      let skipDupTime = msg.time - historySkipDuplicatesSec
-      for (local i = historyLog.len() - 1; i >= 0; i--)
+      let skipDupTime = msg.time - this.historySkipDuplicatesSec
+      for (local i = this.historyLog.len() - 1; i >= 0; i--)
       {
-        if (historyLog[i].time < skipDupTime && msg.type != ::HUD_MSG_DEATH_REASON)
+        if (this.historyLog[i].time < skipDupTime && msg.type != HUD_MSG_DEATH_REASON)
           break
-        if (historyLog[i].text == msg.text)
+        if (this.historyLog[i].text == msg.text)
           return
       }
     }
 
-    msg.message <- buildHistoryLogMessage(msg)
+    msg.message <- this.buildHistoryLogMessage(msg)
     if (msg.message == "")
       return
 
-    if (historyLog.len() == historyMaxLen)
-      historyLog.remove(0)
-    historyLog.append(msg)
+    if (this.historyLog.len() == this.historyMaxLen)
+      this.historyLog.remove(0)
+    this.historyLog.append(msg)
 
-    updateHistoryLog()
+    this.updateHistoryLog()
   }
 
   function addHistroyLogMessage(text)
   {
-    onHudMessage({
+    this.onHudMessage({
       id   = -1
       text = text
-      type = historyLogCustomMsgType
+      type = this.historyLogCustomMsgType
     })
   }
 
   function clearHistoryLog()
   {
-    if (!historyLog)
+    if (!this.historyLog)
       return
-    historyLog.clear()
-    updateHistoryLog()
+    this.historyLog.clear()
+    this.updateHistoryLog()
   }
 
   function updateHistoryLog(updateVisibility = false)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let obj = scene.findObject("history_log")
-    if (::checkObj(obj))
+    let obj = this.scene.findObject("history_log")
+    if (checkObj(obj))
     {
       if (updateVisibility)
-        guiScene.setUpdatesEnabled(true, true)
-      historyLog = historyLog || []
+        this.guiScene.setUpdatesEnabled(true, true)
+      this.historyLog = this.historyLog || []
 
-      foreach (msg in historyLog)
-        msg.message <- buildHistoryLogMessage(msg)
+      foreach (msg in this.historyLog)
+        msg.message <- this.buildHistoryLogMessage(msg)
 
-      let historyLogMessages = u.map(historyLog, @(msg) msg.message)
+      let historyLogMessages = u.map(this.historyLog, @(msg) msg.message)
       obj.setValue(obj.isVisible() ? ::g_string.implode(historyLogMessages, "\n") : "")
     }
   }
@@ -1328,39 +1339,39 @@ let weaponIconsReloadBits = {
     switch (msg.type)
     {
       // All players messages
-      case ::HUD_MSG_MULTIPLAYER_DMG: // Any player or ai unit damaged or destroyed
+      case HUD_MSG_MULTIPLAYER_DMG: // Any player or ai unit damaged or destroyed
         let text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
         let icon = ::HudBattleLog.getActionTextIconic(msg)
-        return timestamp + ::colorize("userlogColoredText", $"{icon} {text}")
+        return timestamp + colorize("userlogColoredText", $"{icon} {text}")
         break
 
-      case ::HUD_MSG_STREAK_EX: // Any player got streak
+      case HUD_MSG_STREAK_EX: // Any player got streak
         let text = ::HudBattleLog.msgStreakToText(msg, true)
-        return timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
+        return timestamp + colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text)
         break
 
       // Mission objectives
-      case ::HUD_MSG_OBJECTIVE: // Hero team mission objective
+      case HUD_MSG_OBJECTIVE: // Hero team mission objective
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + ::colorize("white", ::loc("sm_objective") + ::loc("ui/colon") + text)
+        return timestamp + colorize("white", loc("sm_objective") + loc("ui/colon") + text)
         break
 
       // Team progress
-      case ::HUD_MSG_DIALOG: // Hero team base capture events
+      case HUD_MSG_DIALOG: // Hero team base capture events
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + ::colorize("commonTextColor", text)
+        return timestamp + colorize("commonTextColor", text)
         break
 
       // Hero (spectated target) messages
-      case ::HUD_MSG_DAMAGE: // Hero air unit damaged
-      case ::HUD_MSG_ENEMY_DAMAGE: // Hero target air unit damaged
-      case ::HUD_MSG_ENEMY_CRITICAL_DAMAGE: // Hero target air unit damaged
-      case ::HUD_MSG_ENEMY_FATAL_DAMAGE: // Hero target air unit damaged
-      case ::HUD_MSG_DEATH_REASON: // Hero unit destroyed, killer name
-      case ::HUD_MSG_EVENT: // Hero tank unit damaged, and some system messages
-      case historyLogCustomMsgType: // Custom messages sent by script
+      case HUD_MSG_DAMAGE: // Hero air unit damaged
+      case HUD_MSG_ENEMY_DAMAGE: // Hero target air unit damaged
+      case HUD_MSG_ENEMY_CRITICAL_DAMAGE: // Hero target air unit damaged
+      case HUD_MSG_ENEMY_FATAL_DAMAGE: // Hero target air unit damaged
+      case HUD_MSG_DEATH_REASON: // Hero unit destroyed, killer name
+      case HUD_MSG_EVENT: // Hero tank unit damaged, and some system messages
+      case this.historyLogCustomMsgType: // Custom messages sent by script
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + ::colorize("commonTextColor", text)
+        return timestamp + colorize("commonTextColor", text)
         break
       default:
         return ""
@@ -1369,18 +1380,18 @@ let weaponIconsReloadBits = {
 
   function setHotkeysToObjTooltips(scanObj, objects)
   {
-    if (::checkObj(scanObj))
+    if (checkObj(scanObj))
       foreach (objId, keys in objects)
       {
         let obj = scanObj.findObject(objId)
-        if (::checkObj(obj))
+        if (checkObj(obj))
         {
           local hotkeys = ""
           if ("shortcuts" in keys)
           {
             let shortcuts = ::get_shortcuts(keys.shortcuts)
             let locNames = []
-            foreach (idx, data in shortcuts)
+            foreach (idx, _data in shortcuts)
             {
               let shortcutsText = ::get_shortcut_text({
                 shortcuts = shortcuts,
@@ -1390,18 +1401,18 @@ let weaponIconsReloadBits = {
               if (shortcutsText != "")
                 locNames.append(shortcutsText)
             }
-            hotkeys = ::g_string.implode(locNames, ::loc("ui/comma"))
+            hotkeys = ::g_string.implode(locNames, loc("ui/comma"))
           }
           else if ("keys" in keys)
           {
-            let keysLocalized = u.map(keys.keys, ::loc)
-            hotkeys = ::g_string.implode(keysLocalized, ::loc("ui/comma"))
+            let keysLocalized = u.map(keys.keys, loc)
+            hotkeys = ::g_string.implode(keysLocalized, loc("ui/comma"))
           }
 
           if (hotkeys != "")
           {
             let tooltip = obj?.tooltip ?? ""
-            let add = "<color=@hotkeyColor>" + ::loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
+            let add = "<color=@hotkeyColor>" + loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
             obj.tooltip = tooltip + add
           }
         }
@@ -1419,36 +1430,36 @@ let weaponIconsReloadBits = {
 
   function moveToNextAnchor(directionIdx) {
     let anchors = get_replay_anchors()
-    let nextIdx = getCurAnchorIdx(anchors) + directionIdx
+    let nextIdx = this.getCurAnchorIdx(anchors) + directionIdx
     if (nextIdx < 0 || nextIdx >= anchors.len())
       return
     move_to_anchor(nextIdx)
   }
 
-  onBtnBackward = @() moveToNextAnchor(-1)
-  onBtnForward  = @() moveToNextAnchor(1)
+  onBtnBackward = @() this.moveToNextAnchor(-1)
+  onBtnForward  = @() this.moveToNextAnchor(1)
   onAnchorMarkerClick = @(obj) move_to_anchor(obj.id.tointeger())
 
   function fillAnchorsMarkers() {
-    if (!canControlTimeline || !::has_feature("replayRewind"))
+    if (!this.canControlTimeline || !hasFeature("replayRewind"))
       return
     let anchors = get_replay_anchors()
-    if (anchors.len() == 0 || replayTimeTotal <= 0)
+    if (anchors.len() == 0 || this.replayTimeTotal <= 0)
       return
 
-    let timeTotal = replayTimeTotal
-    let data = ::handyman.renderCached("%gui/replays/replayAnchorMark", {
+    let timeTotal = this.replayTimeTotal
+    let data = ::handyman.renderCached("%gui/replays/replayAnchorMark.tpl", {
       anchors = anchors.map(function(v, idx) {
         let anchorTimeS = v/1000.0
         return {
           idx
           posX = $"{anchorTimeS/timeTotal}pw - 2@dp"
-          tooltip = ::loc("replay/move_to_time", {
+          tooltip = loc("replay/move_to_time", {
             time = time.preciseSecondsToString(anchorTimeS) })
         }
       })
     })
-    guiScene.replaceContentFromText(scene.findObject("timeline_progress"),
+    this.guiScene.replaceContentFromText(this.scene.findObject("timeline_progress"),
       data, data.len(), this)
   }
 }
@@ -1469,7 +1480,7 @@ let weaponIconsReloadBits = {
     let member = ::SessionLobby.isInRoom() ? ::SessionLobby.getMemberByName(name) : null
     return member ? !!::SessionLobby.getMemberPublicParam(member, "spectator") : false
   }
-  return !!::getTblValue("spectator", ::get_local_mplayer() || {}, 0)
+  return !!getTblValue("spectator", ::get_local_mplayer() || {}, 0)
 }
 ::cross_call_api.isPlayerDedicatedSpectator <- ::isPlayerDedicatedSpectator
 

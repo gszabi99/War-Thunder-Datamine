@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 
@@ -81,7 +87,7 @@ global enum WW_LB_MODE
   if (name in lbModeNames)
     return lbModeNames[name]
 
-  ::dagor.logerr("Invalid leaderboard mode '" + name + "'")
+  logerr("Invalid leaderboard mode '" + name + "'")
   return 0
 }
 
@@ -94,27 +100,27 @@ global enum WW_LB_MODE
   }
 }
 
-g_lb_category.getTypeById <- function getTypeById(id)
+::g_lb_category.getTypeById <- function getTypeById(id)
 {
   return enums.getCachedType("id", id, ::g_lb_category.cache.byId,
-    ::g_lb_category, UNKNOWN)
+    ::g_lb_category, this.UNKNOWN)
 }
 
-g_lb_category.getTypeByField <- function getTypeByField(field)
+::g_lb_category.getTypeByField <- function getTypeByField(field)
 {
   return enums.getCachedType("field", field, ::g_lb_category.cache.byField,
-    ::g_lb_category, UNKNOWN)
+    ::g_lb_category, this.UNKNOWN)
 }
 
-g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(row)
+::g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(row)
 {
-  if (!additionalTooltipCategoryes || !row)
+  if (!this.additionalTooltipCategoryes || !row)
     return ""
 
   local res = ""
   local additionalCategory = null
 
-  foreach (categoryTypeName in additionalTooltipCategoryes)
+  foreach (categoryTypeName in this.additionalTooltipCategoryes)
   {
     additionalCategory = ::g_lb_category[categoryTypeName]
     if (!(additionalCategory.field in row))
@@ -139,7 +145,7 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
       tooltipKey = tooltipKey.slice(1)
 
     res += (res.len() ? "\n" : "") +
-      ::loc(tooltipKey) + ::loc("ui/colon") + ::g_string.stripTags("" + value)
+      loc(tooltipKey) + loc("ui/colon") + ::g_string.stripTags("" + value)
   }
 
   return res
@@ -168,8 +174,8 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
 
   getItemCell = function(value, row = null, allowNegative = false, forceDataType = null)
   {
-    let res = ::getLbItemCell(id, value, (forceDataType ? forceDataType : lbDataType), allowNegative)
-    let additionalTooltipPart = getAdditionalTooltipPart(row)
+    let res = ::getLbItemCell(this.id, value, (forceDataType ? forceDataType : this.lbDataType), allowNegative)
+    let additionalTooltipPart = this.getAdditionalTooltipPart(row)
     if (additionalTooltipPart != "")
       res.tooltip <- (("tooltip" in res) ? res.tooltip + "\n" : "") + additionalTooltipPart
 
@@ -179,35 +185,35 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
   isVisibleByFeature = function()
   {
     // check reqFeature
-    return hasAllFeatures(reqFeature)
+    return hasAllFeatures(this.reqFeature)
   }
 
   isVisibleByLbModeName = function(modeName)
   {
     // check modesMask
-    return ((modesMask == LB_MODE.ALL) || ((::get_lb_mode(modeName) & modesMask) != 0)) &&
-      ((wwModesMask == WW_LB_MODE.ALL) || ((::get_lb_mode(modeName, true) & wwModesMask) != 0))
+    return ((this.modesMask == LB_MODE.ALL) || ((::get_lb_mode(modeName) & this.modesMask) != 0)) &&
+      ((this.wwModesMask == WW_LB_MODE.ALL) || ((::get_lb_mode(modeName, true) & this.wwModesMask) != 0))
   }
 
   isVisibleInEvent = function(event)
   {
-    if (showFieldFilter && !::isInArray(::events.getEventTournamentMode(event), showFieldFilter))
+    if (this.showFieldFilter && !isInArray(::events.getEventTournamentMode(event), this.showFieldFilter))
       return false
 
-    if (showEventFilterFunc && !showEventFilterFunc(event))
+    if (this.showEventFilterFunc && !this.showEventFilterFunc(event))
       return false
 
     return true
   }
 
-  isDefaultSortRowInEvent = @(event) isSortDefaultFilter && isVisibleInEvent(event)
+  isDefaultSortRowInEvent = @(event) this.isSortDefaultFilter && this.isVisibleInEvent(event)
 }
 
 
-g_lb_category._typeConstructor <- function _typeConstructor ()
+::g_lb_category._typeConstructor <- function _typeConstructor ()
 {
-  headerImage = "#ui/gameuiskin#lb_" + (headerImage != "" ? headerImage : visualKey) + ".svg"
-  headerTooltip = "#multiplayer/" + (headerTooltip != "" ? headerTooltip : visualKey)
+  this.headerImage = "#ui/gameuiskin#lb_" + (this.headerImage != "" ? this.headerImage : this.visualKey) + ".svg"
+  this.headerTooltip = "#multiplayer/" + (this.headerTooltip != "" ? this.headerTooltip : this.visualKey)
 }
 
 enums.addTypesByGlobalName("g_lb_category", {

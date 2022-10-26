@@ -2072,32 +2072,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA552.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 150,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA552.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon2_dm",
-        "bullets": 150,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "colt_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2106,550 +2084,1062 @@
         "blk": "gameData/FlightModels/weaponPresets/a_4h_iaf_default.blk"
       },
       {
-        "name": "a_4e_early_iaf_bomb_100gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_100gp.blk",
-        "reqModification": "is_100_50_gp",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
-            "tier": [
-              {
-                "idx": 2,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_small"
-              },
-              {
-                "idx": 3,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 4,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 5,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 7,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 8,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 9,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 10,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_small"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4e_early_iaf_bomb_250gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_250gp.blk",
-        "reqModification": "is_250_50_gp",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
-            "tier": [
-              {
-                "idx": 3,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_middle"
-              },
-              {
-                "idx": 4,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 5,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 7,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 8,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 9,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_middle"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4e_early_iaf_bomb_360gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_360gp.blk",
-        "reqModification": "is_500_50_gp"
-      },
-      {
-        "name": "a_4e_early_iaf_bomb_500gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_500gp.blk",
-        "reqModification": "is_500_50_gp",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
-            "iconType": "bombs_special",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 6
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4e_early_iaf_bomb_mk84",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_mk84.blk",
-        "reqModification": "us_2000lb_mk84",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
-            "iconType": "bombs_heavy",
-            "tier": {
-              "idx": 6
-            }
-          }
-        }
-      },
-      {
-        "name": "a_4h_iaf_bomb_mk84_250kg",
-        "blk": "gameData/FlightModels/weaponPresets/a_4h_iaf_bomb_mk84_250kg.blk",
-        "reqModification": [
-          "us_2000lb_mk84",
-          "is_250_50_gp"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
-              "iconType": "bombs_heavy",
-              "tier": {
-                "idx": 6
-              }
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
-              "iconType": "bombs_middle",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4h_iaf_bomb_mk84_500kg_250kg",
-        "blk": "gameData/FlightModels/weaponPresets/a_4h_iaf_bomb_mk84_500kg_250kg.blk",
-        "reqModification": [
-          "is_500_50_gp",
-          "is_250_50_gp",
-          "us_2000lb_mk84"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
-              "iconType": "bombs_heavy",
-              "tier": {
-                "idx": 6
-              }
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
-              "iconType": "bombs_middle",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
+        "name": "a_4e_early_iaf_rockets_lau18",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_lau18.blk"
       },
       {
         "name": "a_4e_early_iaf_rockets_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_zuni.blk",
-        "reqModification": "f4c_zuni",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-            "amountPerTier": 4.0,
-            "iconType": "nar_ap_block",
-            "tier": [
-              {
-                "idx": 2
-              },
-              {
-                "idx": 3
-              },
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 6
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              },
-              {
-                "idx": 9
-              },
-              {
-                "idx": 10
-              }
-            ]
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_zuni.blk"
       },
       {
-        "name": "a_4e_early_iaf_rockets_zuni_100gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_zuni_100gp.blk",
-        "reqModification": [
-          "is_100_50_gp",
-          "f4c_zuni"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_small_group",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-              "amountPerTier": 4.0,
-              "iconType": "nar_ap_block",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            }
-          ]
-        }
+        "name": "a_4e_early_iaf_bomb_100gp",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_100gp.blk"
       },
       {
-        "name": "a_4e_early_iaf_rockets_zuni_250gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_zuni_250gp.blk",
-        "reqModification": [
-          "is_250_50_gp",
-          "f4c_zuni"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_middle_group",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-              "amountPerTier": 4.0,
-              "iconType": "nar_ap_block",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            }
-          ]
-        }
+        "name": "a_4e_early_iaf_bomb_250gp",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_250gp.blk"
       },
       {
-        "name": "a_4e_early_iaf_rockets_zuni_360gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_zuni_360gp.blk",
-        "reqModification": [
-          "is_500_50_gp",
-          "f4c_zuni"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/il_360_50_kg_gp.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": {
-                "idx": 6
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-              "amountPerTier": 4.0,
-              "iconType": "nar_ap_block",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
+        "name": "a_4e_early_iaf_bomb_360gp",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_360gp.blk"
       },
       {
-        "name": "a_4e_early_iaf_rockets_lau18",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_lau18.blk",
-        "reqModification": "us_2_75_in_ffar_lau_3a"
+        "name": "a_4e_early_iaf_bomb_500gp",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_500gp.blk"
       },
       {
-        "name": "a_4e_early_iaf_rockets_lau18_100gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_lau18_100gp.blk",
-        "reqModification": [
-          "is_100_50_gp",
-          "us_2_75_in_ffar_lau_3a"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_small_group",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 19.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4e_early_iaf_rockets_lau18_250gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_lau18_250gp.blk",
-        "reqModification": [
-          "is_250_50_gp",
-          "us_2_75_in_ffar_lau_3a"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_middle_group",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 19.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4e_early_iaf_rockets_lau18_360gp",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_rockets_lau18_360gp.blk",
-        "reqModification": [
-          "is_500_50_gp",
-          "us_2_75_in_ffar_lau_3a"
-        ]
-      },
-      {
-        "name": "a_4e_early_iaf_mk4_mod0",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_mk4_mod0.blk",
-        "reqModification": "mk4_mod0_gunpod"
+        "name": "a_4e_early_iaf_bomb_mk84",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_mk84.blk"
       },
       {
         "name": "a_4e_early_iaf_bomb_mk77",
-        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_mk77.blk",
-        "reqModification": "us_mk_77",
-        "weaponConfig": {
-          "Weapon": {
-            "iconType": "napalm_middle",
-            "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk"
-          }
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_mk77.blk"
+      },
+      {
+        "name": "a_4h_mk4_mod0",
+        "blk": "gameData/FlightModels/weaponPresets/a_4h_mk4_mod0.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 2710.0,
+    "maxloadMassLeftConsoles": 1355.0,
+    "maxloadMassRightConsoles": 1355.0,
+    "maxDisbalance": 900.0,
+    "HideNodes": {
+      "node": [
+        "pylon_001",
+        "pylon_001_upor",
+        "aero_5a_001",
+        "pylon_002",
+        "pylon_002_upor",
+        "us_mk4_mod0_pod_001",
+        "aero_3b_001",
+        "aero_5a_002",
+        "pylon_003",
+        "pylon_003_upor",
+        "us_mk4_mod0_pod_002",
+        "aero_5a_003",
+        "pylon_004",
+        "pylon_004_upor",
+        "us_mk4_mod0_pod_003",
+        "aero_5a_004",
+        "aero_3b_002",
+        "pylon_005",
+        "pylon_005_upor",
+        "aero_5a_005"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cannon3_dm",
+        "cannon4_dm",
+        "cannon5_dm",
+        "cover6_dm",
+        "cannon6_dm",
+        "cover7_dm",
+        "cannon7_dm",
+        "cover8_dm",
+        "cannon8_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "colt_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA552.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA552.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            }
+          ]
         }
+      },
+      {
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large",
+            "name": "ffar_x1",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_b001",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "zuni_x1",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "zuni_lau_10a_b001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "is_100_50_gp_x1",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
+              "emitter": "250lb_mk_81_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "fr_130kg_samp_mk81",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_130kg_samp_mk81.blk",
+              "emitter": "250lb_mk_81_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "is_250_50_gp_x1",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
+              "emitter": "500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "fr_250kg_samp_mk82",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_250kg_samp_mk82.blk",
+              "emitter": "500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "mk77_x1",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk",
+              "emitter": "500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "ffar_left_x2",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse_left_wing_x2.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special_group",
+            "name": "zuni_left_x2",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32_x2_left_wing.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "is_100_50_gp_x6",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_il_100_50_kg_gp_x6.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "mer_fr_130kg_samp_mk81_x6",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_fr_130kg_samp_mk81_x6.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "is_250_50_gp_x3",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_il_250_50_kg_gp.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "ter_fr_250kg_samp_mk82",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_fr_250kg_samp_mk82.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "is_360_50_gp_x1",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_360_50_kg_gp.blk",
+              "emitter": "1000lb_mk_83_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "is_500_50_gp_x1",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
+              "emitter": "1000lb_mk_83_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "fr_500kg_samp_mk83",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_500kg_samp_mk83.blk",
+              "emitter": "1000lb_mk_83_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "napalm_large_group_x2",
+            "name": "mk77_left_x2",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_us_mk77_mod4_x2_left_wing.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mk11",
+            "reqModification": "mk4_mod0_gunpod",
+            "ShowNodes": {
+              "node": [
+                "pylon_002",
+                "us_mk4_mod0_pod_001"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover6_dm",
+                "cannon6_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon6_dm",
+              "shell": "emtr_shellrejection3",
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "external": true,
+              "bullets": 750,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large_group_x3",
+            "name": "ffar_central",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special_group_x3",
+            "name": "zuni_central",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ter_lau_10a_ffar_mighty_mouse.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "is_100_50_gp_x6",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_il_100_50_kg_gp_x6.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "mer_fr_130kg_samp_mk81_x6",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_fr_130kg_samp_mk81_x6.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "is_250_50_gp_x6",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_il_250_50_kg_gp_x6.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "mer_fr_250kg_samp_mk82_x6",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_fr_250kg_samp_mk82_x6.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "is_360_50_gp_x1",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_360_50_kg_gp.blk",
+              "emitter": "750lb_m117_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "is_500_50_gp_x3",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
+              "emitter": "750lb_m117_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special_group_x3",
+            "name": "ter_fr_500kg_samp_mk83",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_fr_500kg_samp_mk83.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "mk84_x1_central",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "2000lb_mk_84_001",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large_group_x2",
+            "name": "mk77_x3_central",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_us_mk77_mod4.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mk11",
+            "reqModification": "mk4_mod0_gunpod",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "us_mk4_mod0_pod_002"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover7_dm",
+                "cannon7_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon7_dm",
+              "shell": "emtr_shellrejection5",
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "external": true,
+              "bullets": 750,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "ffar_right_x2",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse_right_wing_x2.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special_group",
+            "name": "zuni_right_x2",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32_x2_right_wing.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "is_100_50_gp_x6",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_il_100_50_kg_gp_x6.blk",
+              "emitter": "mer_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "mer_fr_130kg_samp_mk81_x6",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_fr_130kg_samp_mk81_x6.blk",
+              "emitter": "mer_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "is_250_50_gp_x3",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_il_250_50_kg_gp.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "ter_fr_250kg_samp_mk82",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_fr_250kg_samp_mk82.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "is_360_50_gp_x1",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_360_50_kg_gp.blk",
+              "emitter": "750lb_m117_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "is_500_50_gp_x1",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
+              "emitter": "1000lb_mk_83_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "fr_500kg_samp_mk83",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_500kg_samp_mk83.blk",
+              "emitter": "1000lb_mk_83_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "napalm_large_group_x2",
+            "name": "mk77_right_x2",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": "pylon_004"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_us_mk77_mod4_x2_right_wing.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mk11",
+            "reqModification": "mk4_mod0_gunpod",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "us_mk4_mod0_pod_003"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover8_dm",
+                "cannon8_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "cannon8_dm",
+              "shell": "emtr_shellrejection5",
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "external": true,
+              "bullets": 750,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large",
+            "name": "ffar_x1",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_b009",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "zuni_x1",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "zuni_lau_10a_b009",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "is_100_50_gp_x1",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
+              "emitter": "250lb_mk_81_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "fr_130kg_samp_mk81",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_130kg_samp_mk81.blk",
+              "emitter": "250lb_mk_81_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "is_250_50_gp_x1",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
+              "emitter": "500lb_mk_82_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "fr_250kg_samp_mk82",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_250kg_samp_mk82.blk",
+              "emitter": "500lb_mk_82_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "mk77_x1",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk",
+              "emitter": "500lb_mk_82_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
       }
     ]
   },

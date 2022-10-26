@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 let results = {
@@ -7,16 +13,18 @@ let results = {
 results.template <- {
   id = "" //used from type name
   checkOrder = -1
-  checkParams = @(params) false
+  criticalDamageTestName = ""
+  checkParams = @(_params) false
 }
 
 local checkOrder = 0
 enums.addTypes(results, {
   RICOCHETED = {
     checkOrder = checkOrder++
-    checkParams = @(params) params?.lower?.ricochet == ::CHECK_PROT_RICOCHET_GUARANTEED &&
+    checkParams = @(params) params?.lower?.ricochet == CHECK_PROT_RICOCHET_GUARANTEED &&
                             !params?.lower?.effectiveHit &&
                             !params?.upper?.effectiveHit
+    criticalDamageTestName = "ricochet"
     color = "minorTextColor"
     loc = "hitcamera/result/ricochet"
     infoSrc = [ "lower", "upper"]
@@ -25,7 +33,8 @@ enums.addTypes(results, {
   POSSIBLEEFFECTIVE = {
     checkOrder = checkOrder++
     checkParams = @(params) (params?.upper?.effectiveHit ?? false)
-      || ((params?.lower?.effectiveHit ?? false) && params?.lower?.ricochet == ::CHECK_PROT_RICOCHET_POSSIBLE)
+      || ((params?.lower?.effectiveHit ?? false) && params?.lower?.ricochet == CHECK_PROT_RICOCHET_POSSIBLE)
+    criticalDamageTestName = "possibleEffective"
     color = "cardProgressTextBonusColor"
     loc = "protection_analysis/result/possible_effective"
     infoSrc = [ "lower", "upper" ]
@@ -34,7 +43,8 @@ enums.addTypes(results, {
   EFFECTIVE = {
     checkOrder = checkOrder++
     checkParams = @(params) (params?.lower?.effectiveHit ?? false)
-      && params?.lower?.ricochet != ::CHECK_PROT_RICOCHET_POSSIBLE
+      && params?.lower?.ricochet != CHECK_PROT_RICOCHET_POSSIBLE
+    criticalDamageTestName = "effective"
     color = "goodTextColor"
     loc = "protection_analysis/result/effective"
     infoSrc = [ "lower", "upper"]
@@ -47,6 +57,7 @@ enums.addTypes(results, {
         (params?.max?.penetratedArmor?.genericLongRod ?? false) ||
         (params?.max?.penetratedArmor?.explosiveFormedProjectile ?? false) ||
         (params?.max?.penetratedArmor?.cumulative ?? false))
+    criticalDamageTestName = "notPenetrate"
     color = "badTextColor"
     loc = "protection_analysis/result/not_penetrated"
     infoSrc = [ "max" ]
@@ -54,7 +65,8 @@ enums.addTypes(results, {
   }
   INEFFECTIVE = {
     checkOrder = checkOrder++
-    checkParams = @(params) true
+    checkParams = @(_params) true
+    criticalDamageTestName = "ineffective"
     color = "minorTextColor"
     loc = "protection_analysis/result/ineffective"
     infoSrc = [ "max"]
@@ -65,10 +77,10 @@ results.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
 results.getResultTypeByParams <- function(params)
 {
-  foreach (t in types)
-    if (t.checkParams(params))
+  foreach (t in this.types)
+    if (params?.criticalDamageTest == t.criticalDamageTestName || t.checkParams(params))
       return t
-  return INEFFECTIVE
+  return this.INEFFECTIVE
 }
 
 return results

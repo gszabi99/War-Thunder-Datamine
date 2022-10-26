@@ -1,5 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 local { getOperationById, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -17,21 +25,21 @@ local { getOperationById, getOperationGroupByMapId
 
   function initScreen()
   {
-    if (!map)
-      return goBack()
+    if (!this.map)
+      return this.goBack()
 
-    opListObj = scene.findObject("items_list")
-    fillOperationList()
+    this.opListObj = this.scene.findObject("items_list")
+    this.fillOperationList()
   }
 
   function getOpGroup()
   {
-    return getOperationGroupByMapId(map.getId())
+    return getOperationGroupByMapId(this.map.getId())
   }
 
   function getSortedOperationsData()
   {
-    let opDataList = ::u.map(getOpGroup().getOperationsList(),
+    let opDataList = ::u.map(this.getOpGroup().getOperationsList(),
                                function(o) { return { operation = o, priority = o.getPriority() } })
 
     opDataList.sort(
@@ -44,17 +52,17 @@ local { getOperationById, getOperationGroupByMapId
 
   function getOperationsListView()
   {
-    if (isDescrOnly)
+    if (this.isDescrOnly)
       return null
 
-    let sortedOperationsDataList = getSortedOperationsData()
+    let sortedOperationsDataList = this.getSortedOperationsData()
     if (!sortedOperationsDataList.len())
       return null
 
     let view = { items = [] }
     local isActiveChapterAdded = false
     local isFinishedChapterAdded = false
-    foreach (idx, opData in sortedOperationsDataList)
+    foreach (_idx, opData in sortedOperationsDataList)
     {
       let operation = opData.operation
       let isAvailableToJoin = operation.isAvailableToJoin()
@@ -65,7 +73,7 @@ local { getOperationById, getOperationGroupByMapId
         {
           view.items.append({
             id = "active_group"
-            itemText = ::colorize(itemColor, ::loc("worldwar/operation/active"))
+            itemText = colorize(itemColor, loc("worldwar/operation/active"))
             isCollapsable = true
           })
           isActiveChapterAdded = true
@@ -75,7 +83,7 @@ local { getOperationById, getOperationGroupByMapId
       {
         view.items.append({
           id = "finished_group"
-          itemText = ::colorize(itemColor, ::loc("worldwar/operation/finished"))
+          itemText = colorize(itemColor, loc("worldwar/operation/finished"))
           isCollapsable = true
         })
         isFinishedChapterAdded = true
@@ -95,7 +103,7 @@ local { getOperationById, getOperationGroupByMapId
       view.items.append({
         itemIcon = icon
         id = operation.id.tostring()
-        itemText = ::colorize(itemColor, operation.getNameText(false))
+        itemText = colorize(itemColor, operation.getNameText(false))
         isLastPlayedIcon = isLastPlayed
       })
     }
@@ -105,14 +113,14 @@ local { getOperationById, getOperationGroupByMapId
 
   function fillOperationList()
   {
-    let view = getOperationsListView()
+    let view = this.getOperationsListView()
     let isOperationListVisible = view != null
     this.showSceneBtn("chapter_place", isOperationListVisible)
     this.showSceneBtn("separator_line", isOperationListVisible)
-    let data = ::handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList", view)
-    guiScene.replaceContentFromText(opListObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList.tpl", view)
+    this.guiScene.replaceContentFromText(this.opListObj, data, data.len(), this)
 
-    selectFirstItem(opListObj)
+    this.selectFirstItem(this.opListObj)
   }
 
   function selectFirstItem(containerObj)
@@ -122,53 +130,53 @@ local { getOperationById, getOperationGroupByMapId
       let itemObj = containerObj.getChild(i)
       if (!itemObj?.collapse_header && itemObj.isEnabled())
       {
-        selOperation = null //force refresh description
+        this.selOperation = null //force refresh description
         containerObj.setValue(i)
         break
       }
     }
-    onItemSelect()
+    this.onItemSelect()
   }
 
   function refreshSelOperation()
   {
-    let idx = opListObj.getValue()
-    if (idx < 0 || idx >= opListObj.childrenCount())
+    let idx = this.opListObj.getValue()
+    if (idx < 0 || idx >= this.opListObj.childrenCount())
       return false
-    let opObj = opListObj.getChild(idx)
-    if(!::checkObj(opObj))
+    let opObj = this.opListObj.getChild(idx)
+    if(!checkObj(opObj))
       return false
 
     let newOperation = opObj?.collapse_header ? null
       : getOperationById(::to_integer_safe(opObj?.id))
-    if (newOperation == selOperation)
+    if (newOperation == this.selOperation)
       return false
-    let isChanged = !newOperation || !selOperation || !selOperation.isEqual(newOperation)
-    selOperation = newOperation
+    let isChanged = !newOperation || !this.selOperation || !this.selOperation.isEqual(newOperation)
+    this.selOperation = newOperation
     return isChanged
   }
 
   function onCollapse(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
 
     let headerObj = obj.getParent()
-    if (::check_obj(headerObj))
-      doCollapse(headerObj)
+    if (checkObj(headerObj))
+      this.doCollapse(headerObj)
   }
 
   function onCollapsedChapter()
   {
-    let rowObj = opListObj.getChild(opListObj.getValue())
-    if (::check_obj(rowObj))
-      doCollapse(rowObj)
+    let rowObj = this.opListObj.getChild(this.opListObj.getValue())
+    if (checkObj(rowObj))
+      this.doCollapse(rowObj)
   }
 
   function doCollapse(obj)
   {
     let containerObj = obj.getParent()
-    if (!::check_obj(containerObj))
+    if (!checkObj(containerObj))
       return
 
     obj.collapsing = "yes"
@@ -203,122 +211,122 @@ local { getOperationById, getOperationGroupByMapId
     }
 
     let selectedObj = containerObj.getChild(containerObj.getValue())
-    if (needReselect || (::check_obj(selectedObj) && !selectedObj.isVisible()))
-      selectFirstItem(containerObj)
+    if (needReselect || (checkObj(selectedObj) && !selectedObj.isVisible()))
+      this.selectFirstItem(containerObj)
 
-    updateButtons()
+    this.updateButtons()
   }
 
   //operation select
   _wasSelectedOnce = false
   function onItemSelect()
   {
-    if (!refreshSelOperation() && _wasSelectedOnce)
-      return updateButtons()
+    if (!this.refreshSelOperation() && this._wasSelectedOnce)
+      return this.updateButtons()
 
-    _wasSelectedOnce = true
+    this._wasSelectedOnce = true
 
-    updateWindow()
+    this.updateWindow()
   }
 
   function updateWindow()
   {
-    updateTitle()
-    updateDescription()
-    updateButtons()
+    this.updateTitle()
+    this.updateDescription()
+    this.updateButtons()
   }
 
   function updateTitle()
   {
-    let titleObj = scene.findObject("wnd_title")
-    if (!::check_obj(titleObj))
+    let titleObj = this.scene.findObject("wnd_title")
+    if (!checkObj(titleObj))
       return
 
-    titleObj.setValue(selOperation ?
-      selOperation.getNameText() : map.getNameText())
+    titleObj.setValue(this.selOperation ?
+      this.selOperation.getNameText() : this.map.getNameText())
   }
 
   function updateDescription()
   {
-    if (descHandlerWeak)
-      return descHandlerWeak.setDescItem(selOperation)
+    if (this.descHandlerWeak)
+      return this.descHandlerWeak.setDescItem(this.selOperation)
 
-    let handler = ::gui_handlers.WwMapDescription.link(scene.findObject("item_desc"), selOperation, map)
-    descHandlerWeak = handler.weakref()
-    registerSubHandler(handler)
+    let handler = ::gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), this.selOperation, this.map)
+    this.descHandlerWeak = handler.weakref()
+    this.registerSubHandler(handler)
   }
 
   function updateButtons()
   {
-    ::showBtn("operation_join_block", selOperation, scene)
+    ::showBtn("operation_join_block", this.selOperation, this.scene)
 
-    if (!selOperation)
+    if (!this.selOperation)
     {
-      let isListEmpty = opListObj.getValue() < 0
-      let collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, scene)
+      let isListEmpty = this.opListObj.getValue() < 0
+      let collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, this.scene)
       if (!isListEmpty && collapsedChapterBtnObj != null)
       {
-        let rowObj = opListObj.getChild(opListObj.getValue())
+        let rowObj = this.opListObj.getChild(this.opListObj.getValue())
         if (rowObj?.isValid())
           collapsedChapterBtnObj.setValue(rowObj?.collapsed == "yes"
-            ? ::loc("mainmenu/btnExpand")
-            : ::loc("mainmenu/btnCollapse"))
+            ? loc("mainmenu/btnExpand")
+            : loc("mainmenu/btnCollapse"))
       }
 
-      let operationDescText = scene.findObject("operation_short_info_text")
-      operationDescText.setValue(getOpGroup().getOperationsList().len() == 0
-        ? ::loc("worldwar/msg/noActiveOperations")
+      let operationDescText = this.scene.findObject("operation_short_info_text")
+      operationDescText.setValue(this.getOpGroup().getOperationsList().len() == 0
+        ? loc("worldwar/msg/noActiveOperations")
         : "" )
       return
     }
 
     foreach(side in ::g_world_war.getCommonSidesOrder())
     {
-      let cantJoinReasonData = selOperation.getCantJoinReasonDataBySide(side)
+      let cantJoinReasonData = this.selOperation.getCantJoinReasonDataBySide(side)
 
       let sideName = ::ww_side_val_to_name(side)
-      let joinBtn = scene.findObject("btn_join_" + sideName)
+      let joinBtn = this.scene.findObject("btn_join_" + sideName)
       joinBtn.inactiveColor = cantJoinReasonData.canJoin ? "no" : "yes"
-      joinBtn.findObject("is_clan_participate_img").show(selOperation.isMyClanSide(side))
+      joinBtn.findObject("is_clan_participate_img").show(this.selOperation.isMyClanSide(side))
 
       let joinBtnFlagsObj = joinBtn.findObject("side_countries")
-      if (::checkObj(joinBtnFlagsObj))
+      if (checkObj(joinBtnFlagsObj))
       {
-        let wwMap = selOperation.getMap()
+        let wwMap = this.selOperation.getMap()
         let markUpData = wwMap.getCountriesViewBySide(side, false)
-        guiScene.replaceContentFromText(joinBtnFlagsObj, markUpData, markUpData.len(), this)
+        this.guiScene.replaceContentFromText(joinBtnFlagsObj, markUpData, markUpData.len(), this)
       }
     }
   }
 
   function onCreateOperation()
   {
-    goBack()
+    this.goBack()
     ::ww_event("CreateOperation")
   }
 
   function onJoinOperationSide1()
   {
-    if (selOperation)
-      joinOperationBySide(::SIDE_1)
+    if (this.selOperation)
+      this.joinOperationBySide(SIDE_1)
   }
 
   function onJoinOperationSide2()
   {
-    if (selOperation)
-      joinOperationBySide(::SIDE_2)
+    if (this.selOperation)
+      this.joinOperationBySide(SIDE_2)
   }
 
   function joinOperationBySide(side)
   {
-    if (isOperationJoining)
+    if (this.isOperationJoining)
       return
 
-    let reasonData = selOperation.getCantJoinReasonDataBySide(side)
+    let reasonData = this.selOperation.getCantJoinReasonDataBySide(side)
     if (reasonData.canJoin)
     {
-      isOperationJoining = true
-      return selOperation.join(reasonData.country)
+      this.isOperationJoining = true
+      return this.selOperation.join(reasonData.country)
     }
 
     ::scene_msg_box(
@@ -330,20 +338,20 @@ local { getOperationById, getOperationGroupByMapId
     )
   }
 
-  function onEventWWStopWorldWar(params)
+  function onEventWWStopWorldWar(_params)
   {
-    isOperationJoining = false
+    this.isOperationJoining = false
   }
 
   function onEventWWGlobalStatusChanged(p)
   {
     if (p.changedListsMask & WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS)
-      fillOperationList()
+      this.fillOperationList()
   }
 
-  function onEventQueueChangeState(params)
+  function onEventQueueChangeState(_params)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
   function onModalWndDestroy()

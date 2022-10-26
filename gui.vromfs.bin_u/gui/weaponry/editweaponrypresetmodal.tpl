@@ -2,7 +2,7 @@ root {
   blur {}
   blur_foreground {}
   frame {
-    width:t='13@tierIconSize + 1@modPresetTextMaxWidth + 2@blockInterval'
+    id:t='edit_wnd'
     class:t='wndNav'
     pos:t='0.5pw-0.5w, 0.5ph-0.5h'
     position:t='absolute'
@@ -16,7 +16,7 @@ root {
     }
     tdiv {
       id:t='presetNest'
-      include "%gui/weaponry/weaponryPreset"
+      include "%gui/weaponry/weaponryPreset.tpl"
     }
     tdiv {
       width:t='pw'

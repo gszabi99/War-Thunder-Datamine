@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
@@ -8,9 +14,9 @@ elemModelType.addTypes({
   COUNTRY_DISCOUN_ICON = {
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
 
-    onEventDiscountsDataUpdated = @(p) notify([])
-    onEventPromoteUnitsChanged = @(p) notify([])
-    onEventShopWndSwitched = @(p) notify([])
+    onEventDiscountsDataUpdated = @(_p) this.notify([])
+    onEventPromoteUnitsChanged = @(_p) this.notify([])
+    onEventShopWndSwitched = @(_p) this.notify([])
   }
 })
 
@@ -19,7 +25,7 @@ elemViewType.addTypes({
   COUNTRY_DISCOUN_ICON = {
     model = elemModelType.COUNTRY_DISCOUN_ICON
 
-    updateView = function(obj, params)
+    updateView = function(obj, _params)
     {
       let discountData = ::g_discount.generateDiscountInfo(
         ::g_discount.getUnitDiscountList(obj.countryId))

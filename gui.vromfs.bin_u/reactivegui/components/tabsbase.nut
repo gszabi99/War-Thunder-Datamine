@@ -1,5 +1,4 @@
-from "daRg" import *
-from "frp" import *
+from "%rGui/globals/ui_library.nut" import *
 
 let function defTab(tab_item, is_current, handler) {
   let grp = ElemGroup()

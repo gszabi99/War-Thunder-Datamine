@@ -1,4 +1,9 @@
-require("scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+require("%scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
@@ -46,7 +51,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
   },
   {
     name = "pvp"
-    getText = function(totalSections = 0) { return "#topmenu/battle" }
+    getText = function(_totalSections = 0) { return "#topmenu/battle" }
     mergeIndex = topMenuLeftSideMergeIndex.PVP
     buttons = [
       [
@@ -66,7 +71,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
   },
   {
     name = "community"
-    getText = function(totalSections = 0) { return "#topmenu/community" }
+    getText = function(_totalSections = 0) { return "#topmenu/community" }
     mergeIndex = topMenuLeftSideMergeIndex.COMMUNITY
     buttons = [
       [
@@ -98,8 +103,8 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
     name = "shop"
     visualStyle = "noFrameGold"
     hoverMenuPos = "pw-w-"
-    getText = function(totalSections = 0) { return ::is_low_width_screen()? null : "#mainmenu/btnOnlineShop" }
-    getImage = function(totalSections = 0) { return "#ui/gameuiskin#store_icon.svg" }
+    getText = function(_totalSections = 0) { return ::is_low_width_screen()? null : "#mainmenu/btnOnlineShop" }
+    getImage = function(_totalSections = 0) { return "#ui/gameuiskin#store_icon.svg" }
     getWinkImage = function () { return "#ui/gameuiskin#hovermenu_shop_button_glow.png" }
     haveTmDiscount = true
     isWide = true
@@ -124,7 +129,7 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
   {
     name = "help"
     hoverMenuPos = "pw-w-"
-    getImage = function(totalSections = 0) { return "#ui/gameuiskin#btn_help.svg" }
+    getImage = function(_totalSections = 0) { return "#ui/gameuiskin#btn_help.svg" }
     buttons = [
       [
         buttonsList.WINDOW_HELP

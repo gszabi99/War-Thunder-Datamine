@@ -1,5 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { GUI } = require("%scripts/utils/configs.nut")
 
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
 ::g_chat_categories <- {
@@ -11,22 +18,22 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
   searchCategories = []
 }
 
-g_chat_categories.isEnabled <- function isEnabled()
+::g_chat_categories.isEnabled <- function isEnabled()
 {
-  return list.len() > 0 && ::has_feature("ChatThreadCategories")
+  return this.list.len() > 0 && hasFeature("ChatThreadCategories")
 }
 
-g_chat_categories.onEventLoginComplete <- function onEventLoginComplete(p)
+::g_chat_categories.onEventLoginComplete <- function onEventLoginComplete(_p)
 {
-  initThreadCategories()
+  this.initThreadCategories()
 }
 
-g_chat_categories.initThreadCategories <- function initThreadCategories()
+::g_chat_categories.initThreadCategories <- function initThreadCategories()
 {
-  list.clear()
-  listSorted.clear()
-  searchCategories.clear()
-  defaultCategoryName = ""
+  this.list.clear()
+  this.listSorted.clear()
+  this.searchCategories.clear()
+  this.defaultCategoryName = ""
 
   let guiBlk = GUI.get()
   let listBlk = guiBlk?.chat_categories
@@ -40,59 +47,59 @@ g_chat_categories.initThreadCategories <- function initThreadCategories()
     let name = cBlk.getBlockName()
     let category = ::buildTableFromBlk(cBlk)
     category.id <- name
-    list[name] <- category
-    listSorted.append(category)
+    this.list[name] <- category
+    this.listSorted.append(category)
 
-    if (cBlk?.isDefault == true || defaultCategoryName == "")
-      defaultCategoryName = name
+    if (cBlk?.isDefault == true || this.defaultCategoryName == "")
+      this.defaultCategoryName = name
   }
 
-  loadSearchCategories()
+  this.loadSearchCategories()
 }
 
-g_chat_categories.loadSearchCategories <- function loadSearchCategories()
+::g_chat_categories.loadSearchCategories <- function loadSearchCategories()
 {
   let blk = ::load_local_account_settings(SEARCH_CATEGORIES_SAVE_ID)
   if (::u.isDataBlock(blk))
   {
-    foreach(cat in listSorted)
+    foreach(cat in this.listSorted)
       if (blk?[cat.id])
-        searchCategories.append(cat.id)
+        this.searchCategories.append(cat.id)
   }
-  if (!searchCategories.len())
-    searchCategories = ::u.map(listSorted, function(c) { return c.id })
+  if (!this.searchCategories.len())
+    this.searchCategories = ::u.map(this.listSorted, function(c) { return c.id })
 }
 
-g_chat_categories.saveSearchCategories <- function saveSearchCategories()
+::g_chat_categories.saveSearchCategories <- function saveSearchCategories()
 {
   local blk = null
-  if (!isSearchAnyCategory())
+  if (!this.isSearchAnyCategory())
   {
     blk = ::DataBlock()
-    foreach(catName in searchCategories)
+    foreach(catName in this.searchCategories)
       blk[catName] <- true
   }
   ::save_local_account_settings(SEARCH_CATEGORIES_SAVE_ID, blk)
 }
 
-g_chat_categories.getSearchCategoriesLList <- function getSearchCategoriesLList()
+::g_chat_categories.getSearchCategoriesLList <- function getSearchCategoriesLList()
 {
-  return searchCategories
+  return this.searchCategories
 }
 
-g_chat_categories.isSearchAnyCategory <- function isSearchAnyCategory()
+::g_chat_categories.isSearchAnyCategory <- function isSearchAnyCategory()
 {
-  return searchCategories.len() == 0 || searchCategories.len() >= list.len()
+  return this.searchCategories.len() == 0 || this.searchCategories.len() >= this.list.len()
 }
 
-g_chat_categories.getCategoryNameText <- function getCategoryNameText(categoryName)
+::g_chat_categories.getCategoryNameText <- function getCategoryNameText(categoryName)
 {
-  return ::loc("chat/category/" + categoryName)
+  return loc("chat/category/" + categoryName)
 }
 
-g_chat_categories.fillCategoriesListObj <- function fillCategoriesListObj(listObj, selCategoryName, handler)
+::g_chat_categories.fillCategoriesListObj <- function fillCategoriesListObj(listObj, selCategoryName, handler)
 {
-  if (!::checkObj(listObj))
+  if (!checkObj(listObj))
     return
 
   let view = {
@@ -100,48 +107,48 @@ g_chat_categories.fillCategoriesListObj <- function fillCategoriesListObj(listOb
     options= []
   }
   local selIdx = -1
-  foreach(idx, category in listSorted)
+  foreach(idx, category in this.listSorted)
   {
     let name = category.id
     if (name == selCategoryName)
       selIdx = idx
 
     view.options.append({
-      text = getCategoryNameText(name)
+      text = this.getCategoryNameText(name)
       enabled = true
     })
   }
 
-  let data = ::handyman.renderCached(("%gui/options/spinnerOptions"), view)
+  let data = ::handyman.renderCached(("%gui/options/spinnerOptions.tpl"), view)
   listObj.getScene().replaceContentFromText(listObj, data, data.len(), handler)
 
   if (selIdx >= 0)
     listObj.setValue(selIdx)
 }
 
-g_chat_categories.getSelCategoryNameByListObj <- function getSelCategoryNameByListObj(listObj, defValue)
+::g_chat_categories.getSelCategoryNameByListObj <- function getSelCategoryNameByListObj(listObj, defValue)
 {
-  if (!::checkObj(listObj))
+  if (!checkObj(listObj))
     return defValue
 
-  let category = ::getTblValue(listObj.getValue(), listSorted)
+  let category = getTblValue(listObj.getValue(), this.listSorted)
   if (category)
     return category.id
   return defValue
 }
 
-g_chat_categories.openChooseCategoriesMenu <- function openChooseCategoriesMenu(align = "top", alignObj = null)
+::g_chat_categories.openChooseCategoriesMenu <- function openChooseCategoriesMenu(align = "top", alignObj = null)
 {
-  if (!isEnabled())
+  if (!this.isEnabled())
     return
 
   let optionsList = []
-  let curCategories = getSearchCategoriesLList()
-  foreach(cat in listSorted)
+  let curCategories = this.getSearchCategoriesLList()
+  foreach(cat in this.listSorted)
     optionsList.append({
-      text = getCategoryNameText(cat.id)
+      text = this.getCategoryNameText(cat.id)
       value = cat.id
-      selected = ::isInArray(cat.id, curCategories)
+      selected = isInArray(cat.id, curCategories)
     })
 
   ::gui_start_multi_select_menu({
@@ -152,10 +159,10 @@ g_chat_categories.openChooseCategoriesMenu <- function openChooseCategoriesMenu(
   })
 }
 
-g_chat_categories._setSearchCategories <- function _setSearchCategories(newValues)
+::g_chat_categories._setSearchCategories <- function _setSearchCategories(newValues)
 {
-  searchCategories = newValues
-  saveSearchCategories()
+  this.searchCategories = newValues
+  this.saveSearchCategories()
   ::broadcastEvent("ChatSearchCategoriesChanged")
 }
 

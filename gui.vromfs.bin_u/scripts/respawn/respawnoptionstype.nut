@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
@@ -11,46 +17,46 @@ let options = {
 }
 
 let _isVisible = @(p) p.unit != null
-  && isAvailableInMission()
-  && (!p.isRandomUnit || isShowForRandomUnit)
-  && isShowForUnit(p)
+  && this.isAvailableInMission()
+  && (!p.isRandomUnit || this.isShowForRandomUnit)
+  && this.isShowForUnit(p)
 
-let _isNeedUpdateByTrigger = @(trigger) isAvailableInMission() && (trigger & triggerUpdateBitMask) != 0
-let _isNeedUpdContentByTrigger = @(trigger, p) (trigger & triggerUpdContentBitMask) != 0
+let _isNeedUpdateByTrigger = @(trigger) this.isAvailableInMission() && (trigger & this.triggerUpdateBitMask) != 0
+let _isNeedUpdContentByTrigger = @(trigger, _p) (trigger & this.triggerUpdContentBitMask) != 0
 
 let function _update(p, trigger, isAlreadyFilled) {
-  if (!isNeedUpdateByTrigger(trigger))
+  if (!this.isNeedUpdateByTrigger(trigger))
     return false
 
-  let isShow = isVisible(p)
+  let isShow = this.isVisible(p)
   let isEnable = isShow && p.canChangeAircraft
-  let isNeedUpdateContent = !isAlreadyFilled || isNeedUpdContentByTrigger(trigger, p)
+  let isNeedUpdateContent = !isAlreadyFilled || this.isNeedUpdContentByTrigger(trigger, p)
   local isFilled = false
 
-  let obj = p.handler.scene.findObject(id)
+  let obj = p.handler.scene.findObject(this.id)
   if (obj?.isValid()) {
     obj.enable(isEnable)
     if (isShow) {
-      let opt = getUseropt(p)
+      let opt = this.getUseropt(p)
       let objOptionValue = obj.getValue()
       if (isNeedUpdateContent) {
-        if (cType == optionControlType.LIST) {
+        if (this.cType == optionControlType.LIST) {
           let markup = ::create_option_list(null, opt.items, opt.value, null, false)
           p.handler.guiScene.replaceContentFromText(obj, markup, markup.len(), p.handler)
         }
-        else if (cType == optionControlType.CHECKBOX)
+        else if (this.cType == optionControlType.CHECKBOX)
           if (objOptionValue != opt.value)
             obj.setValue(opt.value)
         isFilled = true
-        if (needCallCbOnContentUpdate)
-          p.handler?[cb].call(p.handler, obj)
+        if (this.needCallCbOnContentUpdate)
+          p.handler?[this.cb].call(p.handler, obj)
       }
-      if (needCheckValueWhenOptionUpdate && objOptionValue != opt.value)
+      if (this.needCheckValueWhenOptionUpdate && objOptionValue != opt.value)
         obj.setValue(opt.value)
     }
   }
 
-  let rowObj = p.handler.scene.findObject($"{id}_tr")
+  let rowObj = p.handler.scene.findObject($"{this.id}_tr")
   if (rowObj?.isValid()) {
     rowObj.show(isShow)
   }
@@ -60,7 +66,7 @@ let function _update(p, trigger, isAlreadyFilled) {
 options.template <- {
   id = "" // Generated from type name
   sortId = 0
-  getLabelText = @() ::loc($"options/{id}")
+  getLabelText = @() loc($"options/{this.id}")
   userOption = -1
   triggerUpdateBitMask = 0
   triggerUpdContentBitMask = 0
@@ -71,9 +77,9 @@ options.template <- {
   isShowForRandomUnit = true
 
   isAvailableInMission = @() true
-  isShowForUnit = @(p) false
+  isShowForUnit = @(_p) false
   isVisible = _isVisible
-  getUseropt = @(p) ::get_option(userOption)
+  getUseropt = @(_p) ::get_option(this.userOption)
   isNeedUpdateByTrigger = _isNeedUpdateByTrigger
   isNeedUpdContentByTrigger = _isNeedUpdContentByTrigger
   update = _update
@@ -83,7 +89,7 @@ options.template <- {
 
 options.addTypes <- function(typesTable) {
   enums.addTypes(this, typesTable, null, "id")
-  types.sort(@(a, b) a.sortIdx <=> b.sortIdx)
+  this.types.sort(@(a, b) a.sortIdx <=> b.sortIdx)
 }
 
 local idx = -1
@@ -100,11 +106,11 @@ options.addTypes({
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
-    isShowForUnit = @(p) true
+    isShowForUnit = @(_p) true
     getUseropt = function(p) {
       let skinsOpt = ::g_decorator.getSkinsOption(p.unit?.name ?? "")
       skinsOpt.items = skinsOpt.items.map(@(v, idx) v.__merge({
-        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[idx].id, ::UNLOCKABLE_SKIN) }
+        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[idx].id, UNLOCKABLE_SKIN) }
       }))
       return skinsOpt
     }
@@ -115,8 +121,8 @@ options.addTypes({
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
-    isAvailableInMission = @() ::has_feature("UserSkins")
-    isShowForUnit = @(p) true
+    isAvailableInMission = @() hasFeature("UserSkins")
+    isShowForUnit = @(_p) true
   }
   gun_target_dist = {
     sortIdx = idx++
@@ -267,6 +273,6 @@ options.addTypes({
   }
 })
 
-options.get <- @(id) this?[id] ?? unknown
+options.get <- @(id) this?[id] ?? this.unknown
 
 return options

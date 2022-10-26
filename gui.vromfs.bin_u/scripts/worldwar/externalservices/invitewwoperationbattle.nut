@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
@@ -17,11 +23,11 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
   function updateCustomParams(params, initial = false)
   {
-    operationId = params?.operationId ?? operationId
-    battleId = params?.battleId ?? battleId
+    this.operationId = params?.operationId ?? this.operationId
+    this.battleId = params?.battleId ?? this.battleId
 
     //do not set delayed when scipt reload to not receive invite popup on each script reload
-    setDelayed(!::g_script_reloader.isInReloading && !getOperation())
+    this.setDelayed(!::g_script_reloader.isInReloading && !this.getOperation())
 
     if (!initial)
       return
@@ -32,38 +38,38 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
         if (!(p.changedListsMask & WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS))
           return
 
-        if (getOperation())
-          setDelayed(false)
-        else if (!isDelayed)
-          remove()
+        if (this.getOperation())
+          this.setDelayed(false)
+        else if (!this.isDelayed)
+          this.remove()
       },
       this)
-    ::add_event_listener("QueueChangeState", onEventQueueChangeState, this)
+    ::add_event_listener("QueueChangeState", this.onEventQueueChangeState, this)
 
-    setTimedParams(0, ::get_charserver_time_sec() + WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC)
+    this.setTimedParams(0, ::get_charserver_time_sec() + WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC)
   }
 
   function getOperation()
   {
-    return getOperationById(operationId)
+    return getOperationById(this.operationId)
   }
 
   function isValid()
   {
-    return isDelayed || !!getOperation()
+    return this.isDelayed || !!this.getOperation()
   }
 
   function getInviteText()
   {
-    let operation = getOperation()
-    return ::loc("worldwar/inviteSquadsText", {
-      operation = ::colorize(inviteActiveColor, operation ? operation.getNameText() : operationId)
+    let operation = this.getOperation()
+    return loc("worldwar/inviteSquadsText", {
+      operation = colorize(this.inviteActiveColor, operation ? operation.getNameText() : this.operationId)
     })
   }
 
   function getPopupText()
   {
-    return getInviteText()
+    return this.getInviteText()
   }
 
   function getIcon()
@@ -78,18 +84,18 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
   function getRestrictionText()
   {
-    if (haveRestrictions())
-      return ::loc("invite/session/cant_apply_in_flight")
+    if (this.haveRestrictions())
+      return loc("invite/session/cant_apply_in_flight")
     return ""
   }
 
   function accept()
   {
     ::queues.checkAndStart(
-      ::Callback(function() {
-        ::g_world_war.joinOperationById(operationId, null, false,
-          ::Callback(function() {
-            let wwBattle = ::g_world_war.getBattleById(battleId)
+      Callback(function() {
+        ::g_world_war.joinOperationById(this.operationId, null, false,
+          Callback(function() {
+            let wwBattle = ::g_world_war.getBattleById(this.battleId)
             ::gui_handlers.WwBattleDescription.open(wwBattle)
           }, this))
       }, this),
@@ -98,8 +104,8 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
   function onEventQueueChangeState(p)
   {
-    if (p?.queue?.params?.operationId == operationId &&
-        p?.queue?.params?.battleId == battleId)
-      remove()
+    if (p?.queue?.params?.operationId == this.operationId &&
+        p?.queue?.params?.battleId == this.battleId)
+      this.remove()
   }
 }

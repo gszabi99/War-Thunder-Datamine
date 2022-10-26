@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { set_gui_option } = require("guiOptions")
 let optionsListModule = require("%scripts/options/optionsList.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
@@ -32,8 +41,8 @@ let function openOptionsWnd(group = null) {
 
   let params = {
     titleText = isInFlight
-      ? ::is_multiplayer() ? null : ::loc("flightmenu/title")
-      : ::loc("mainmenu/btnGameplay")
+      ? ::is_multiplayer() ? null : loc("flightmenu/title")
+      : loc("mainmenu/btnGameplay")
     optGroups = options
     wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
     sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
@@ -63,7 +72,7 @@ let function openOptionsWnd(group = null) {
 
   function initScreen()
   {
-    if (!optGroups)
+    if (!this.optGroups)
       base.goBack()
 
     base.initScreen()
@@ -71,27 +80,27 @@ let function openOptionsWnd(group = null) {
 
     let view = { tabs = [] }
     local curOption = 0
-    foreach(idx, gr in optGroups)
+    foreach(idx, gr in this.optGroups)
     {
       view.tabs.append({
         id = gr.name
         visualDisable = gr.name == "voicechat" && !isCrossNetworkChatEnabled()
         tabName = "#options/" + gr.name
-        navImagesText = ::get_navigation_images_text(idx, optGroups.len())
+        navImagesText = ::get_navigation_images_text(idx, this.optGroups.len())
       })
 
-      if (::getTblValue("selected", gr) == true)
+      if (getTblValue("selected", gr) == true)
         curOption = idx
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    let groupsObj = scene.findObject("groups_list")
-    optionIdToObjCache.clear()
-    guiScene.replaceContentFromText(groupsObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let groupsObj = this.scene.findObject("groups_list")
+    this.optionIdToObjCache.clear()
+    this.guiScene.replaceContentFromText(groupsObj, data, data.len(), this)
     groupsObj.show(true)
     groupsObj.setValue(curOption)
 
-    let showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
+    let showWebUI = is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
     this.showSceneBtn("web_ui_button", showWebUI)
   }
 
@@ -101,101 +110,101 @@ let function openOptionsWnd(group = null) {
       return
 
     let newGroup = obj.getValue()
-    if (curGroup==newGroup && !(newGroup in optGroups))
+    if (this.curGroup==newGroup && !(newGroup in this.optGroups))
       return
 
-    resetNavigation()
+    this.resetNavigation()
 
-    if (curGroup>=0)
+    if (this.curGroup>=0)
     {
-      applyFunc = (@(newGroup) function() {
-        fillOptions(newGroup)
-        applyFunc = null
+      this.applyFunc = (@(newGroup) function() {
+        this.fillOptions(newGroup)
+        this.applyFunc = null
       })(newGroup)
-      applyOptions()
+      this.applyOptions()
     } else
-      fillOptions(newGroup)
+      this.fillOptions(newGroup)
 
-    let groupName = optGroups[newGroup].name
-    setupSearch()
-    joinEchoChannel(false)
+    let groupName = this.optGroups[newGroup].name
+    this.setupSearch()
+    this.joinEchoChannel(false)
     ::handlersManager.setLastBaseHandlerStartFunc(@() openOptionsWnd(groupName))
   }
 
   function fillOptions(group)
   {
-    let config = optGroups[group]
+    let config = this.optGroups[group]
 
     if ("fillFuncName" in config)
     {
-      curGroup = group
+      this.curGroup = group
       this[config.fillFuncName](group);
       return;
     }
 
     if ("options" in config)
-      fillOptionsList(group, "optionslist")
+      this.fillOptionsList(group, "optionslist")
 
-    updateLinkedOptions()
+    this.updateLinkedOptions()
   }
 
   function fillInternetRadioOptions(group)
   {
-    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/internetRadioOptions.blk", this);
-    fillLocalInternetRadioOptions(group)
-    updateInternerRadioButtons()
+    this.guiScene.replaceContent(this.scene.findObject("optionslist"), "%gui/options/internetRadioOptions.blk", this);
+    this.fillLocalInternetRadioOptions(group)
+    this.updateInternerRadioButtons()
   }
 
-  function fillSocialOptions(group)
+  function fillSocialOptions(_group)
   {
-    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/socialOptions.blk", this)
+    this.guiScene.replaceContent(this.scene.findObject("optionslist"), "%gui/options/socialOptions.blk", this)
 
     let hasFacebook = isAvailableFacebook()
     let fObj = this.showSceneBtn("facebook_frame", hasFacebook)
     if (hasFacebook && fObj)
     {
-      fObj.findObject("facebook_like_btn").tooltip = ::loc("guiHints/facebookLike") + ::loc("ui/colon") + ::get_unlock_reward("facebook_like")
-      checkFacebookLoginStatus()
+      fObj.findObject("facebook_like_btn").tooltip = loc("guiHints/facebookLike") + loc("ui/colon") + ::get_unlock_reward("facebook_like")
+      this.checkFacebookLoginStatus()
     }
   }
 
   function setupSearch()
   {
-    this.showSceneBtn("search_container", isSearchInCurrentGroupAvaliable())
-    resetSearch()
+    this.showSceneBtn("search_container", this.isSearchInCurrentGroupAvaliable())
+    this.resetSearch()
   }
 
   function isSearchInCurrentGroupAvaliable()
   {
-    return ::getTblValue("isSearchAvaliable", optGroups[curGroup])
+    return getTblValue("isSearchAvaliable", this.optGroups[this.curGroup])
   }
 
   function onFilterEditBoxChangeValue()
   {
-    applySearchFilter()
+    this.applySearchFilter()
   }
 
   function onFilterEditBoxCancel(obj = null)
   {
     if ((obj?.getValue() ?? "") != "")
-      resetSearch()
+      this.resetSearch()
     else
-      guiScene.performDelayed(this, function() {
-        if (isValid())
-          goBack()
+      this.guiScene.performDelayed(this, function() {
+        if (this.isValid())
+          this.goBack()
       })
   }
 
   function applySearchFilter()
   {
-    let filterEditBox = scene.findObject("filter_edit_box")
-    if (!::checkObj(filterEditBox))
+    let filterEditBox = this.scene.findObject("filter_edit_box")
+    if (!checkObj(filterEditBox))
       return
 
-    filterText = ::g_string.utf8ToLower(filterEditBox.getValue())
+    this.filterText = ::g_string.utf8ToLower(filterEditBox.getValue())
 
-    if( ! filterText.len()) {
-      showOptionsSelectedNavigation()
+    if( ! this.filterText.len()) {
+      this.showOptionsSelectedNavigation()
       this.showSceneBtn("filter_notify", false)
       return
     }
@@ -203,9 +212,9 @@ let function openOptionsWnd(group = null) {
     let searchResultOptions = []
     let visibleHeadersArray = {}
     local needShowSearchNotify = false
-    foreach(option in getCurrentOptionsList())
+    foreach(option in this.getCurrentOptionsList())
     {
-      local show = ::g_string.utf8ToLower(option.getTitle()).indexof(filterText) != null
+      local show = ::g_string.utf8ToLower(option.getTitle()).indexof(this.filterText) != null
       needShowSearchNotify = needShowSearchNotify
         || (show && searchResultOptions.len() >= MAX_NUM_VISIBLE_FILTER_OPTIONS)
       show = show && !needShowSearchNotify
@@ -221,7 +230,7 @@ let function openOptionsWnd(group = null) {
         continue
       }
 
-      let header = getOptionHeader(option)
+      let header = this.getOptionHeader(option)
       if (header == null || (visibleHeadersArray?[header.id] ?? false))
         continue
 
@@ -232,34 +241,34 @@ let function openOptionsWnd(group = null) {
 
     let filterNotifyObj = this.showSceneBtn("filter_notify", needShowSearchNotify)
     if (needShowSearchNotify && filterNotifyObj != null)
-      filterNotifyObj.setValue(::loc("menu/options/maxNumFilterOptions",
+      filterNotifyObj.setValue(loc("menu/options/maxNumFilterOptions",
         { num = MAX_NUM_VISIBLE_FILTER_OPTIONS }))
   }
 
   function resetSearch()
   {
-    let filterEditBox = scene.findObject("filter_edit_box")
-    if ( ! ::checkObj(filterEditBox))
+    let filterEditBox = this.scene.findObject("filter_edit_box")
+    if ( ! checkObj(filterEditBox))
       return
 
     filterEditBox.setValue("")
   }
 
-  function doNavigateToSection(navItem)
+  function doNavigateToSection(_navItem)
   {
-    resetSearch()
-    showOptionsSelectedNavigation()
+    this.resetSearch()
+    this.showOptionsSelectedNavigation()
   }
 
   function showOptionRow(id, show)
   {
-    resetSearch()
+    this.resetSearch()
     base.showOptionRow(id, show)
   }
 
   function onFacebookLogin()
   {
-    make_facebook_login_and_do(checkFacebookLoginStatus, this)
+    ::make_facebook_login_and_do(this.checkFacebookLoginStatus, this)
   }
 
   function onFacebookLike()
@@ -267,38 +276,38 @@ let function openOptionsWnd(group = null) {
     if (!::facebook_is_logged_in())
       return;
 
-    ::facebook_like(::loc("facebook/like_url"), "");
-    onFacebookLikeShared();
+    ::facebook_like(loc("facebook/like_url"), "");
+    this.onFacebookLikeShared();
   }
 
   function onFacebookLikeShared()
   {
-    scene.findObject("facebook_like_btn").enable(false);
+    this.scene.findObject("facebook_like_btn").enable(false);
   }
 
-  function onEventCheckFacebookLoginStatus(params)
+  function onEventCheckFacebookLoginStatus(_params)
   {
-    checkFacebookLoginStatus()
+    this.checkFacebookLoginStatus()
   }
 
   function checkFacebookLoginStatus()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let fbObj = scene.findObject("facebook_frame")
-    if (!::checkObj(fbObj))
+    let fbObj = this.scene.findObject("facebook_frame")
+    if (!checkObj(fbObj))
       return
 
     let facebookLogged = ::facebook_is_logged_in();
     ::showBtn("facebook_login_btn", !facebookLogged, fbObj)
     fbObj.findObject("facebook_friends_btn").enable(facebookLogged)
 
-    let showLikeBtn = ::has_feature("FacebookWallPost")
+    let showLikeBtn = hasFeature("FacebookWallPost")
     let likeBtn = ::showBtn("facebook_like_btn", showLikeBtn, fbObj)
-    if (::checkObj(likeBtn) && showLikeBtn)
+    if (checkObj(likeBtn) && showLikeBtn)
     {
-      let alreadyLiked = ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, "facebook_like")
+      let alreadyLiked = ::is_unlocked_scripted(UNLOCKABLE_ACHIEVEMENT, "facebook_like")
       likeBtn.enable(facebookLogged && !alreadyLiked && !isPlatformSony)
       likeBtn.show(!isPlatformSony)
     }
@@ -310,7 +319,7 @@ let function openOptionsWnd(group = null) {
     local data = ::get_shortcut_text({shortcuts = shortcut, shortcutId = 0})
     if (data == "")
       data = "---";
-    scene.findObject(shortcut_object_name).setValue(data);
+    this.scene.findObject(shortcut_object_name).setValue(data);
   }
   function bindShortcutButton(devs, btns, shortcut_id_name, shortcut_object_name)
   {
@@ -325,10 +334,10 @@ let function openOptionsWnd(group = null) {
     ::set_controls_preset(""); //custom mode
 
     ::set_shortcuts(shortcut, [shortcut_id_name]);
-    save(false);
+    this.save(false);
 
     let data = ::get_shortcut_text({shortcuts = shortcut, shortcutId = 0})
-    scene.findObject(shortcut_object_name).setValue(data);
+    this.scene.findObject(shortcut_object_name).setValue(data);
   }
 
   function onClearShortcutButton(shortcut_id_name, shortcut_object_name)
@@ -340,65 +349,65 @@ let function openOptionsWnd(group = null) {
     ::set_controls_preset(""); //custom mode
 
     ::set_shortcuts(shortcut, [shortcut_id_name]);
-    save(false);
+    this.save(false);
 
-    scene.findObject(shortcut_object_name).setValue("---");
+    this.scene.findObject(shortcut_object_name).setValue("---");
   }
 
   function fillLocalInternetRadioOptions(group)
   {
-    let config = optGroups[group]
+    let config = this.optGroups[group]
 
     if ("options" in config)
-      fillOptionsList(group, "internetRadioOptions")
+      this.fillOptionsList(group, "internetRadioOptions")
 
-    fillShortcutInfo("ID_INTERNET_RADIO", "internet_radio_shortcut");
-    fillShortcutInfo("ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut");
-    fillShortcutInfo("ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut");
+    this.fillShortcutInfo("ID_INTERNET_RADIO", "internet_radio_shortcut");
+    this.fillShortcutInfo("ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut");
+    this.fillShortcutInfo("ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut");
   }
 
   function onAssignInternetRadioButton()
   {
-    assignButtonWindow(this, bindInternetRadioButton);
+    ::assignButtonWindow(this, this.bindInternetRadioButton);
   }
   function bindInternetRadioButton(devs, btns)
   {
-    bindShortcutButton(devs, btns, "ID_INTERNET_RADIO", "internet_radio_shortcut");
+    this.bindShortcutButton(devs, btns, "ID_INTERNET_RADIO", "internet_radio_shortcut");
   }
   function onClearInternetRadioButton()
   {
-    onClearShortcutButton("ID_INTERNET_RADIO", "internet_radio_shortcut");
+    this.onClearShortcutButton("ID_INTERNET_RADIO", "internet_radio_shortcut");
   }
   function onAssignInternetRadioPrevButton()
   {
-    assignButtonWindow(this, bindInternetRadioPrevButton);
+    ::assignButtonWindow(this, this.bindInternetRadioPrevButton);
   }
   function bindInternetRadioPrevButton(devs, btns)
   {
-    bindShortcutButton(devs, btns, "ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut");
+    this.bindShortcutButton(devs, btns, "ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut");
   }
   function onClearInternetRadioPrevButton()
   {
-    onClearShortcutButton("ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut");
+    this.onClearShortcutButton("ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut");
   }
   function onAssignInternetRadioNextButton()
   {
-    assignButtonWindow(this, bindInternetRadioNextButton);
+    ::assignButtonWindow(this, this.bindInternetRadioNextButton);
   }
   function bindInternetRadioNextButton(devs, btns)
   {
-    bindShortcutButton(devs, btns, "ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut");
+    this.bindShortcutButton(devs, btns, "ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut");
   }
   function onClearInternetRadioNextButton()
   {
-    onClearShortcutButton("ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut");
+    this.onClearShortcutButton("ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut");
   }
 
   function fillVoiceChatOptions(group)
   {
-    let config = optGroups[group]
+    let config = this.optGroups[group]
 
-    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/voicechatOptions.blk", this)
+    this.guiScene.replaceContent(this.scene.findObject("optionslist"), "%gui/options/voicechatOptions.blk", this)
 
     let needShowOptions = isCrossNetworkChatEnabled()
     this.showSceneBtn("voice_disable_warning", !needShowOptions)
@@ -408,7 +417,7 @@ let function openOptionsWnd(group = null) {
       return
 
     if ("options" in config)
-      fillOptionsList(group, "voiceOptions")
+      this.fillOptionsList(group, "voiceOptions")
 
     let ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
     local data = ::get_shortcut_text({shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false});
@@ -417,16 +426,16 @@ let function openOptionsWnd(group = null) {
     else
       data = "<color=@hotkeyColor>" + ::hackTextAssignmentForR2buttonOnPS4(data) + "</color>"
 
-    scene.findObject("ptt_shortcut").setValue(data)
-    ::showBtn("ptt_buttons_block", get_option(::USEROPT_PTT).value, scene)
+    this.scene.findObject("ptt_shortcut").setValue(data)
+    ::showBtn("ptt_buttons_block", ::get_option(::USEROPT_PTT).value, this.scene)
 
-    let echoButton = scene.findObject("joinEchoButton");
+    let echoButton = this.scene.findObject("joinEchoButton");
     if (echoButton) echoButton.enable(true)
   }
 
   function onAssignVoiceButton()
   {
-    assignButtonWindow(this, bindVoiceButton);
+    ::assignButtonWindow(this, this.bindVoiceButton);
   }
 
   function bindVoiceButton(devs, btns)
@@ -442,11 +451,11 @@ let function openOptionsWnd(group = null) {
     ::set_controls_preset(""); //custom mode
 
     ::set_shortcuts(ptt_shortcut, ["ID_PTT"]);
-    save(false);
+    this.save(false);
 
     local data = ::get_shortcut_text({shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false})
     data = "<color=@hotkeyColor>" + ::hackTextAssignmentForR2buttonOnPS4(data) + "</color>"
-    scene.findObject("ptt_shortcut").setValue(data);
+    this.scene.findObject("ptt_shortcut").setValue(data);
   }
 
   function onClearVoiceButton()
@@ -458,33 +467,33 @@ let function openOptionsWnd(group = null) {
     ::set_controls_preset(""); //custom mode
 
     ::set_shortcuts(ptt_shortcut, ["ID_PTT"]);
-    save(false);
+    this.save(false);
 
-    scene.findObject("ptt_shortcut").setValue("---");
+    this.scene.findObject("ptt_shortcut").setValue("---");
   }
 
   function joinEchoChannel(join)
   {
-    echoTest = join;
+    this.echoTest = join;
     ::gchat_voice_echo_test(join);
   }
 
   function onEchoTestButton()
   {
-    let echoButton = scene.findObject("joinEchoButton");
+    let echoButton = this.scene.findObject("joinEchoButton");
 
-    joinEchoChannel(!echoTest);
+    this.joinEchoChannel(!this.echoTest);
     if(echoButton)
     {
-      echoButton.text = (echoTest)? (::loc("options/leaveEcho")) : (::loc("options/joinEcho"));
-      echoButton.tooltip = (echoTest)? (::loc("guiHints/leaveEcho")) : (::loc("guiHints/joinEcho"));
+      echoButton.text = (this.echoTest)? (loc("options/leaveEcho")) : (loc("options/joinEcho"));
+      echoButton.tooltip = (this.echoTest)? (loc("guiHints/leaveEcho")) : (loc("guiHints/joinEcho"));
     }
   }
 
-  function fillSystemOptions(group)
+  function fillSystemOptions(_group)
   {
-    optionsContainers = [{ name="options_systemOptions", data=[] }]
-    fillSystemGuiOptions(scene.findObject("optionslist"), this)
+    this.optionsContainers = [{ name="options_systemOptions", data=[] }]
+    fillSystemGuiOptions(this.scene.findObject("optionslist"), this)
   }
 
   function onSystemOptionChanged(obj)
@@ -492,23 +501,23 @@ let function openOptionsWnd(group = null) {
     onSystemGuiOptionChanged(obj)
   }
 
-  function onSystemOptionsRestartClient(obj)
+  function onSystemOptionsRestartClient(_obj)
   {
-    applyOptions()
+    this.applyOptions()
     onRestartClient()
   }
 
-  function onSystemOptionsReset(obj)
+  function onSystemOptionsReset(_obj)
   {
     resetSystemGuiOptions()
   }
 
   function passValueToParent(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
     let objParent = obj.getParent()
-    if (!::checkObj(objParent))
+    if (!checkObj(objParent))
       return
     let val = obj.getValue()
     if (objParent.getValue() != val)
@@ -517,36 +526,36 @@ let function openOptionsWnd(group = null) {
 
   function fillOptionsList(group, objName)
   {
-    curGroup = group
-    let config = optGroups[group]
+    this.curGroup = group
+    let config = this.optGroups[group]
 
-    if(optionsConfig == null)
-      optionsConfig = {
+    if(this.optionsConfig == null)
+      this.optionsConfig = {
         onTblClick = "onTblSelect"
         containerCb = "onChangeOptionValue"
       }
 
-    currentContainerName = "options_" + config.name
-    let container = ::create_options_container(currentContainerName, config.options, true, columnsRatio,
-      true, optionsConfig)
-    optionsContainers = [container.descr]
+    this.currentContainerName = "options_" + config.name
+    let container = ::create_options_container(this.currentContainerName, config.options, true, this.columnsRatio,
+      true, this.optionsConfig)
+    this.optionsContainers = [container.descr]
 
-    guiScene.setUpdatesEnabled(false, false)
-    optionIdToObjCache.clear()
-    guiScene.replaceContentFromText(scene.findObject(objName), container.tbl, container.tbl.len(), this)
-    setNavigationItems()
-    showOptionsSelectedNavigation()
-    updateNavbar()
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(false, false)
+    this.optionIdToObjCache.clear()
+    this.guiScene.replaceContentFromText(this.scene.findObject(objName), container.tbl, container.tbl.len(), this)
+    this.setNavigationItems()
+    this.showOptionsSelectedNavigation()
+    this.updateNavbar()
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function showOptionsSelectedNavigation() {
-    let currentHeaderId = navigationHandlerWeak?.getCurrentItem().id
+    let currentHeaderId = this.navigationHandlerWeak?.getCurrentItem().id
     if (currentHeaderId == null)
       return
 
     local isCurrentSection = false
-    foreach(option in getCurrentOptionsList())
+    foreach(option in this.getCurrentOptionsList())
     {
       if (option.controlType == optionControlType.HEADER) {
         isCurrentSection = currentHeaderId == option.id
@@ -562,18 +571,18 @@ let function openOptionsWnd(group = null) {
     showGpuBenchmarkWnd()
   }
 
-  function onPostFxSettings(obj)
+  function onPostFxSettings(_obj)
   {
-    applyFunc = gui_start_postfx_settings
-    applyOptions()
-    joinEchoChannel(false)
+    this.applyFunc = ::gui_start_postfx_settings
+    this.applyOptions()
+    this.joinEchoChannel(false)
   }
 
-  function onHdrSettings(obj)
+  function onHdrSettings(_obj)
   {
-    applyFunc = fxOptions.openHdrSettings
-    applyOptions()
-    joinEchoChannel(false)
+    this.applyFunc = fxOptions.openHdrSettings
+    this.applyOptions()
+    this.joinEchoChannel(false)
   }
 
   function onPreloaderSettings()
@@ -590,16 +599,16 @@ let function openOptionsWnd(group = null) {
   }
 
   function fullReloadScene() {
-    doApply()
+    this.doApply()
     base.fullReloadScene()
   }
 
   function doApply()
   {
-    joinEchoChannel(false);
+    this.joinEchoChannel(false);
     let result = base.doApply();
 
-    let group = curGroup == -1 ? null : optGroups[curGroup];
+    let group = this.curGroup == -1 ? null : this.optGroups[this.curGroup];
     if (group && ("onApplyHandler" in group) && group.onApplyHandler)
       group.onApplyHandler();
 
@@ -615,7 +624,7 @@ let function openOptionsWnd(group = null) {
   {
     let radio = ::get_internet_radio_options()
     if (!radio)
-      return updateInternerRadioButtons()
+      return this.updateInternerRadioButtons()
 
     openAddRadioWnd(radio?.station ?? "")
   }
@@ -624,12 +633,12 @@ let function openOptionsWnd(group = null) {
   {
     let radio = ::get_internet_radio_options()
     if (!radio)
-      return updateInternerRadioButtons()
+      return this.updateInternerRadioButtons()
     let nameRadio = radio?.station
     if (!nameRadio)
       return
     this.msgBox("warning",
-      format(::loc("options/msg_remove_radio"), nameRadio),
+      format(loc("options/msg_remove_radio"), nameRadio),
       [
         ["ok", (@(nameRadio) function() {
           ::remove_internet_radio_station(nameRadio);
@@ -639,23 +648,23 @@ let function openOptionsWnd(group = null) {
       ], "ok")
   }
 
-  function onEventUpdateListRadio(params)
+  function onEventUpdateListRadio(_params)
   {
-    let obj = scene.findObject("groups_list")
+    let obj = this.scene.findObject("groups_list")
     if (!obj)
       return
-    fillOptionsList(obj.getValue(), "internetRadioOptions")
-    updateInternerRadioButtons()
+    this.fillOptionsList(obj.getValue(), "internetRadioOptions")
+    this.updateInternerRadioButtons()
   }
 
   function updateInternerRadioButtons()
   {
     let radio = ::get_internet_radio_options()
     let isEnable = radio?.station ? ::is_internet_radio_station_removable(radio.station) : false
-    let btnEditRadio = scene.findObject("btn_edit_radio")
+    let btnEditRadio = this.scene.findObject("btn_edit_radio")
     if (btnEditRadio)
       btnEditRadio.enable(isEnable)
-    let btnRemoveRadio = scene.findObject("btn_remove_radio")
+    let btnRemoveRadio = this.scene.findObject("btn_remove_radio")
     if (btnRemoveRadio)
       btnRemoveRadio.enable(isEnable)
   }
@@ -664,9 +673,9 @@ let function openOptionsWnd(group = null) {
   {
     ::scene_msg_box("ask_reveal_notifications",
       null,
-      ::loc("mainmenu/btnRevealNotifications/askPlayer"),
+      loc("mainmenu/btnRevealNotifications/askPlayer"),
       [
-        ["yes", ::Callback(resetNotifications, this)],
+        ["yes", Callback(this.resetNotifications, this)],
         ["no", @() null]
       ],
       "yes", { cancel_fn = @() null })
@@ -677,7 +686,7 @@ let function openOptionsWnd(group = null) {
     foreach (opt in [::USEROPT_SKIP_LEFT_BULLETS_WARNING,
                      ::USEROPT_SKIP_WEAPON_WARNING
                     ])
-      ::set_gui_option(opt, false)
+      set_gui_option(opt, false)
 
     ::save_local_account_settings("skipped_msg", null)
     resetTutorialSkip()
@@ -685,21 +694,21 @@ let function openOptionsWnd(group = null) {
 
     //To notify player about success, it is only for player,
     // to be sure, that operation is done.
-    ::g_popups.add("", ::loc("mainmenu/btnRevealNotifications/onSuccess"))
+    ::g_popups.add("", loc("mainmenu/btnRevealNotifications/onSuccess"))
   }
 
   function resetVolumes()
   {
     reset_volumes()
-    fillOptionsList(curGroup, "optionslist")
+    this.fillOptionsList(this.curGroup, "optionslist")
   }
 
   function isRestartPending() {
-    foreach (container in optionsContainers) {
+    foreach (container in this.optionsContainers) {
       foreach(option in container.data) {
         if (!option.needRestartClient)
           continue
-        let obj = scene.findObject(option.id)
+        let obj = this.scene.findObject(option.id)
         if (!(obj?.isValid() ?? false))
           continue
 
@@ -711,23 +720,23 @@ let function openOptionsWnd(group = null) {
   }
 
   function updateNavbar() {
-    let group = optGroups?[curGroup]
+    let group = this.optGroups?[this.curGroup]
     if (group == null)
       return
 
-    let showRestartText = isRestartPending()
+    let showRestartText = this.isRestartPending()
     this.showSceneBtn("restart_suggestion", showRestartText)
     this.showSceneBtn("btn_restart", showRestartText && canRestartClient())
   }
 
   function onChangeOptionValue(obj) {
-    let option = get_option_by_id(obj?.id)
+    let option = this.get_option_by_id(obj?.id)
     if (!option)
       return
 
     if (option.needRestartClient) {
       setOptionReqRestartValue(option)
-      updateNavbar()
+      this.updateNavbar()
     }
 
     if (option.optionCb != null)

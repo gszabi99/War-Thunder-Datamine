@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let time = require("%scripts/time.nut")
 let statsd = require("statsd")
 let exitGame = require("%scripts/utils/exitGame.nut")
@@ -13,7 +22,7 @@ local authDataByTypes = {
 ::gui_handlers.twoStepModal <- class extends ::BaseGuiHandler
 {
   wndType              = handlerType.MODAL
-  sceneTplName         = "%gui/login/twoStepModal"
+  sceneTplName         = "%gui/login/twoStepModal.tpl"
   loginScene           = null
   continueLogin        = null
   curTimeTimer         = null
@@ -45,7 +54,7 @@ local authDataByTypes = {
   {
     this.curTimeTimer = null
     let timerObj = this.scene.findObject("currTimeText")
-    if (!::check_obj(timerObj))
+    if (!checkObj(timerObj))
       return
 
     let timerCb = @() timerObj.setValue(time.buildTimeStr(::get_charserver_time_sec(), true))
@@ -53,11 +62,11 @@ local authDataByTypes = {
     timerCb()
   }
 
-  function onSubmit(obj)
+  function onSubmit(_obj)
   {
     ::disable_autorelogin_once <- false
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "regular"})
-    ::dagor.debug("Login: check_login_pass")
+    log("Login: check_login_pass")
     let result = ::check_login_pass(
       ::get_object_value(this.loginScene, "loginbox_username",""),
       ::get_object_value(this.loginScene, "loginbox_password", ""), "",
@@ -70,11 +79,11 @@ local authDataByTypes = {
   function showErrorMsg()
   {
     let txtObj = this.scene.findObject("verStatus")
-    if (!::check_obj(txtObj))
+    if (!checkObj(txtObj))
       return
 
-    let errorText = "".concat(::loc("mainmenu/2step/wrongCode"), ::loc("ui/colon"))
-    let errorTimerCb = @() txtObj.setValue(::colorize("badTextColor", "".concat(errorText,
+    let errorText = "".concat(loc("mainmenu/2step/wrongCode"), loc("ui/colon"))
+    let errorTimerCb = @() txtObj.setValue(colorize("badTextColor", "".concat(errorText,
         time.buildTimeStr(::get_charserver_time_sec(), true))))
     ::Timer(txtObj, 1, errorTimerCb, this, true)
     errorTimerCb()
@@ -87,12 +96,12 @@ local authDataByTypes = {
   {
     switch (result)
     {
-      case ::YU2_OK:
+      case YU2_OK:
         this.continueLogin(::get_object_value(this.loginScene, "loginbox_username",""))
         break
 
-      case ::YU2_2STEP_AUTH:
-      case ::YU2_WRONG_2STEP_CODE:
+      case YU2_2STEP_AUTH:
+      case YU2_WRONG_2STEP_CODE:
         this.showErrorMsg()
         break
 

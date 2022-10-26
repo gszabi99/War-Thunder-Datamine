@@ -1,8 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE,
   MISSION_TEAM_LEAD_ZONE
 } = require_native("guiMission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
+let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 
 local heightPID = ::dagui_propid.add_name_id("height")
@@ -26,52 +33,52 @@ local heightPID = ::dagui_propid.add_name_id("height")
 
   setScene = function(inScene, inTimers)
   {
-    scene = inScene
-    guiScene = scene.getScene()
-    timers = inTimers
-    nest = scene.findObject(nestId)
+    this.scene = inScene
+    this.guiScene = this.scene.getScene()
+    this.timers = inTimers
+    this.nest = this.scene.findObject(this.nestId)
   }
-  reinit  = @(inScene, inTimers) setScene(inScene, inTimers)
-  clearStack    = @() stack.clear()
+  reinit  = @(inScene, inTimers) this.setScene(inScene, inTimers)
+  clearStack    = @() this.stack.clear()
   onMessage     = function() {}
   removeMessage = function(inMessage)
   {
-    foreach (idx, message in stack)
+    foreach (idx, message in this.stack)
       if (inMessage == message)
-        return stack.remove(idx)
+        return this.stack.remove(idx)
   }
 
   findMessageById = function(id) {
-    return ::u.search(stack, (@(id) function(m) { return ::getTblValue("id", m.messageData, -1) == id })(id))
+    return ::u.search(this.stack, (@(id) function(m) { return getTblValue("id", m.messageData, -1) == id })(id))
   }
 
   subscribeHudEvents = function()
   {
-    ::g_hud_event_manager.subscribe(messageEvent, onMessage, this)
-    if (hudEvents)
-      foreach(name, func in hudEvents)
+    ::g_hud_event_manager.subscribe(this.messageEvent, this.onMessage, this)
+    if (this.hudEvents)
+      foreach(name, func in this.hudEvents)
         ::g_hud_event_manager.subscribe(name, func, this)
   }
 
-  getCleanUpId = @(total) 0
+  getCleanUpId = @(_total) 0
 
   cleanUp = function()
   {
-    if (stack.len() < messagesMax)
+    if (this.stack.len() < this.messagesMax)
       return
 
-    let lastId = getCleanUpId(stack.len())
-    let obj = stack[lastId].obj
-    if (::check_obj(obj))
+    let lastId = this.getCleanUpId(this.stack.len())
+    let obj = this.stack[lastId].obj
+    if (checkObj(obj))
     {
       if (obj.isVisible())
-        stack[lastId].obj.remove = "yes"
+        this.stack[lastId].obj.remove = "yes"
       else
         obj.getScene().destroyElement(obj)
     }
-    if (stack[lastId].timer)
-      timers.removeTimer(stack[lastId].timer)
-    stack.remove(lastId)
+    if (this.stack[lastId].timer)
+      this.timers.removeTimer(this.stack[lastId].timer)
+    this.stack.remove(lastId)
   }
 }
 
@@ -86,14 +93,14 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function(messageData)
     {
-      if (messageData.type != ::HUD_MSG_OBJECTIVE)
+      if (messageData.type != HUD_MSG_OBJECTIVE)
         return
 
-      let curMsg = findMessageById(messageData.id)
+      let curMsg = this.findMessageById(messageData.id)
       if (curMsg)
-        updateMessage(curMsg, messageData)
+        this.updateMessage(curMsg, messageData)
       else
-        createMessage(messageData)
+        this.createMessage(messageData)
     }
 
     getMsgObjId = function(messageData)
@@ -103,58 +110,58 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     createMessage = function(messageData)
     {
-      if (!::getTblValue("show", messageData, true))
+      if (!getTblValue("show", messageData, true))
         return
 
-      cleanUp()
+      this.cleanUp()
       let mainMessage = {
         obj         = null
         messageData = messageData
         timer       = null
         needShowAfterReinit = false
       }
-      stack.insert(0, mainMessage)
+      this.stack.insert(0, mainMessage)
 
-      if (!::checkObj(nest))
+      if (!checkObj(this.nest))
       {
-        stack[0].needShowAfterReinit <- true
+        this.stack[0].needShowAfterReinit <- true
         return
       }
 
-      showNest(true)
+      this.showNest(true)
       let view = {
-        id = getMsgObjId(messageData)
+        id = this.getMsgObjId(messageData)
         text = messageData.text
       }
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/mainCenterMessage", view)
-      guiScene.prependWithBlk(nest, blk, this)
-      mainMessage.obj = nest.getChild(0)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/mainCenterMessage.tpl", view)
+      this.guiScene.prependWithBlk(this.nest, blk, this)
+      mainMessage.obj = this.nest.getChild(0)
 
-      if (nest.isVisible())
+      if (this.nest.isVisible())
       {
         mainMessage.obj["height-end"] = mainMessage.obj.getSize()[1]
         mainMessage.obj.setIntProp(heightPID, 0)
         mainMessage.obj.slideDown = "yes"
-        guiScene.setUpdatesEnabled(true, true)
+        this.guiScene.setUpdatesEnabled(true, true)
       }
 
-      if (!::getTblValue("alwaysShow", mainMessage.messageData, false))
-        setDestroyTimer(mainMessage)
+      if (!getTblValue("alwaysShow", mainMessage.messageData, false))
+        this.setDestroyTimer(mainMessage)
     }
 
     updateMessage = function(message, messageData)
     {
-      if (!::getTblValue("show", messageData, true))
+      if (!getTblValue("show", messageData, true))
       {
-        animatedRemoveMessage(message)
+        this.animatedRemoveMessage(message)
         return
       }
 
       let msgObj = message.obj
-      if (!::checkObj(msgObj))
+      if (!checkObj(msgObj))
       {
-        removeMessage(message)
-        createMessage(messageData)
+        this.removeMessage(message)
+        this.createMessage(messageData)
         return
       }
 
@@ -162,55 +169,55 @@ enums.addTypesByGlobalName("g_hud_messages", {
       message.needShowAfterReinit <- false
       msgObj.findObject("text").setValue(messageData.text)
       msgObj.state = "old"
-      if (::getTblValue("alwaysShow", message.messageData, false))
+      if (getTblValue("alwaysShow", message.messageData, false))
       {
         if (message.timer)
           message.timer.destroy()
       }
       else if (!message.timer)
-        setDestroyTimer(message)
+        this.setDestroyTimer(message)
     }
 
     showNest = function(show)
     {
-      if (::checkObj(nest))
-        nest.show(show)
+      if (checkObj(this.nest))
+        this.nest.show(show)
     }
 
     setDestroyTimer = function(message)
     {
-      message.timer = timers.addTimer(showSec,
-        (@() animatedRemoveMessage(message)).bindenv(this)).weakref()
+      message.timer = this.timers.addTimer(this.showSec,
+        (@() this.animatedRemoveMessage(message)).bindenv(this)).weakref()
     }
 
     animatedRemoveMessage = function(message)
     {
-      removeMessage(message)
-      onNotificationRemoved(message.obj)
-      if (::checkObj(message.obj))
+      this.removeMessage(message)
+      this.onNotificationRemoved(message.obj)
+      if (checkObj(message.obj))
         message.obj.remove = "yes"
     }
 
-    onNotificationRemoved = function(obj)
+    onNotificationRemoved = function(_obj)
     {
-      if (stack.len() || !::checkObj(nest))
+      if (this.stack.len() || !checkObj(this.nest))
         return
 
-      timers.addTimer(0.5, function () {
-        if (stack.len() == 0)
-          showNest(false)
+      this.timers.addTimer(0.5, function () {
+        if (this.stack.len() == 0)
+          this.showNest(false)
       }.bindenv(this))
     }
 
     reinit = function (inScene, inTimers)
     {
-      setScene(inScene, inTimers)
-      if (!::checkObj(nest))
+      this.setScene(inScene, inTimers)
+      if (!checkObj(this.nest))
         return
-      foreach (message in stack)
+      foreach (message in this.stack)
       {
         if (message.needShowAfterReinit)
-          updateMessage(message, message.messageData)
+          this.updateMessage(message, message.messageData)
       }
     }
   }
@@ -223,47 +230,47 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (messageData)
     {
-      if (messageData.type != ::HUD_MSG_DAMAGE && messageData.type != ::HUD_MSG_EVENT)
+      if (messageData.type != HUD_MSG_DAMAGE && messageData.type != HUD_MSG_EVENT)
         return
-      if (!::checkObj(nest))
+      if (!checkObj(this.nest))
         return
 
       let checkField = (messageData.id != -1) ? "id" : "text"
-      let oldMessage = ::u.search(stack, @(message) message.messageData[checkField] == messageData[checkField])
+      let oldMessage = ::u.search(this.stack, @(message) message.messageData[checkField] == messageData[checkField])
       if (oldMessage)
-        refreshMessage(messageData, oldMessage)
+        this.refreshMessage(messageData, oldMessage)
       else
-        addMessage(messageData)
+        this.addMessage(messageData)
     }
 
     addMessage = function (messageData)
     {
-      cleanUp()
+      this.cleanUp()
       let message = {
         timer = null
         messageData = messageData
         obj = null
       }
-      stack.append(message)
+      this.stack.append(message)
       let view = {
         text = messageData.text
       }
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage", view)
-      guiScene.appendWithBlk(nest, blk, blk.len(), this)
-      message.obj = nest.getChild(nest.childrenCount() - 1)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
+      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
+      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
-      if (nest.isVisible())
+      if (this.nest.isVisible())
       {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
         message.obj.slideDown = "yes"
-        guiScene.setUpdatesEnabled(true, true)
+        this.guiScene.setUpdatesEnabled(true, true)
       }
 
-      message.timer = timers.addTimer(showSec, function () {
-        if (::check_obj(message.obj))
+      message.timer = this.timers.addTimer(this.showSec, function () {
+        if (checkObj(message.obj))
           message.obj.remove = "yes"
-        removeMessage(message)
+        this.removeMessage(message)
       }.bindenv(this)).weakref()
     }
 
@@ -272,8 +279,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
       let updateText = message.messageData.text != messageData.text
       message.messageData = messageData
       if (message.timer)
-        timers.setTimerTime(message.timer, showSec)
-      if (updateText && ::checkObj(message.obj))
+        this.timers.setTimerTime(message.timer, this.showSec)
+      if (updateText && checkObj(message.obj))
         message.obj.findObject("text").setValue(messageData.text)
     }
   }
@@ -286,88 +293,88 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     reinit = function (inScene, inTimers)
     {
-      setScene(inScene, inTimers)
-      if (!::checkObj(nest))
+      this.setScene(inScene, inTimers)
+      if (!checkObj(this.nest))
         return
-      nest.deleteChildren()
+      this.nest.deleteChildren()
 
-      let timeDelete = ::dagor.getCurTime() - showSec * 1000
-      let killLogNotificationsOld = stack
-      stack = []
+      let timeDelete = get_time_msec() - this.showSec * 1000
+      let killLogNotificationsOld = this.stack
+      this.stack = []
 
       foreach (killLogMessage in killLogNotificationsOld)
         if (killLogMessage.timestamp > timeDelete)
-          addMessage(killLogMessage.messageData, killLogMessage.timestamp)
+          this.addMessage(killLogMessage.messageData, killLogMessage.timestamp)
     }
 
     clearStack = function ()
     {
-      if (!::checkObj(nest))
+      if (!checkObj(this.nest))
         return
-      nest.deleteChildren()
+      this.nest.deleteChildren()
     }
 
     onMessage = function (messageData)
     {
-      if (messageData.type != ::HUD_MSG_MULTIPLAYER_DMG
-        && messageData.type != ::HUD_MSG_ENEMY_DAMAGE
-        && messageData.type != ::HUD_MSG_ENEMY_CRITICAL_DAMAGE
-        && messageData.type != ::HUD_MSG_ENEMY_FATAL_DAMAGE)
+      if (messageData.type != HUD_MSG_MULTIPLAYER_DMG
+        && messageData.type != HUD_MSG_ENEMY_DAMAGE
+        && messageData.type != HUD_MSG_ENEMY_CRITICAL_DAMAGE
+        && messageData.type != HUD_MSG_ENEMY_FATAL_DAMAGE)
         return
-      if (!::checkObj(nest))
+      if (!checkObj(this.nest))
         return
-      if (messageData.type == ::HUD_MSG_MULTIPLAYER_DMG
+      if (messageData.type == HUD_MSG_MULTIPLAYER_DMG
         && !(messageData?.isKill ?? true) && ::mission_settings.maxRespawns != 1)
         return
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.KILLLOG))
         return
-      addMessage(messageData)
+      this.addMessage(messageData)
     }
 
     addMessage = function (messageData, timestamp = null)
     {
-      cleanUp()
+      this.cleanUp()
       let message = {
         timer = null
-        timestamp = timestamp || ::dagor.getCurTime()
+        timestamp = timestamp || get_time_msec()
         messageData = messageData
         obj = null
       }
-      stack.append(message)
+      this.stack.append(message)
       local text = null
-      if (messageData.type == ::HUD_MSG_MULTIPLAYER_DMG)
+      if (messageData.type == HUD_MSG_MULTIPLAYER_DMG)
         text = ::HudBattleLog.msgMultiplayerDmgToText(messageData, true)
-      else if (messageData.type == ::HUD_MSG_ENEMY_CRITICAL_DAMAGE)
-        text = ::colorize("orange", messageData.text)
-      else if (messageData.type == ::HUD_MSG_ENEMY_FATAL_DAMAGE)
-        text = ::colorize("red", messageData.text)
+      else if (messageData.type == HUD_MSG_ENEMY_CRITICAL_DAMAGE)
+        text = colorize("orange", messageData.text)
+      else if (messageData.type == HUD_MSG_ENEMY_FATAL_DAMAGE)
+        text = colorize("red", messageData.text)
       else
-        text = ::colorize("silver", messageData.text)
+        text = colorize("silver", messageData.text)
       let view = { text = text }
 
       let timeToShow = timestamp
-       ? showSec - (::dagor.getCurTime() - timestamp) / 1000.0
-       : showSec
+       ? this.showSec - (get_time_msec() - timestamp) / 1000.0
+       : this.showSec
 
-      message.timer = timers.addTimer(timeToShow, function () {
-        if (::checkObj(message.obj))
+      message.timer = this.timers.addTimer(timeToShow, function () {
+        if (checkObj(message.obj))
           message.obj.remove = "yes"
-        removeMessage(message)
+        this.removeMessage(message)
       }.bindenv(this)).weakref()
 
-      if (!::checkObj(nest))
+      if (!checkObj(this.nest))
         return
 
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage", view)
-      guiScene.appendWithBlk(nest, blk, blk.len(), this)
-      message.obj = nest.getChild(nest.childrenCount() - 1)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
+      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
+      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
-      if (nest.isVisible() && !timestamp && ::checkObj(message.obj))
+      if (this.nest.isVisible() && !timestamp && checkObj(message.obj))
       {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
         message.obj.appear = "yes"
-        guiScene.setUpdatesEnabled(true, true)
+        this.guiScene.setUpdatesEnabled(true, true)
       }
     }
   }
@@ -387,27 +394,27 @@ enums.addTypesByGlobalName("g_hud_messages", {
         && eventData.eventId != MISSION_TEAM_LEAD_ZONE)
         return
 
-      cleanUp()
-      addNotification(eventData)
+      this.cleanUp()
+      this.addNotification(eventData)
     }
 
     addNotification = function (eventData)
     {
-      if (!::checkObj(::g_hud_messages.ZONE_CAPTURE.nest))
+      if (!checkObj(::g_hud_messages.ZONE_CAPTURE.nest))
         return
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.CAPTURE_ZONE_INFO))
         return
 
-      let message = createMessage(eventData)
+      let message = this.createMessage(eventData)
       let view = {
         text = eventData.text
         team = eventData.isMyTeam ? "ally" : "enemy"
       }
 
-      createSceneObjectForMessage(view, message)
+      this.createSceneObjectForMessage(view, message)
 
-      setAnimationStartValues(message)
-      setTimer(message)
+      this.setAnimationStartValues(message)
+      this.setTimer(message)
     }
 
     createMessage = function (eventData)
@@ -417,39 +424,39 @@ enums.addTypesByGlobalName("g_hud_messages", {
         messageData = eventData
         timer       = null
       }
-      stack.insert(0, message)
-      return stack[0]
+      this.stack.insert(0, message)
+      return this.stack[0]
     }
 
     setTimer = function (message)
     {
       if (message.timer)
-        timers.setTimerTime(message.timer, showSec)
+        this.timers.setTimerTime(message.timer, this.showSec)
       else
-        message.timer = timers.addTimer(showSec,
+        message.timer = this.timers.addTimer(this.showSec,
           function () {
-            if (::checkObj(message.obj))
+            if (checkObj(message.obj))
               message.obj.remove = "yes"
-            removeMessage(message)
+            this.removeMessage(message)
           }.bindenv(this)).weakref()
     }
 
     function createSceneObjectForMessage(view, message)
     {
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/zoneCaptureNotification", view)
-      guiScene.prependWithBlk(nest, blk, this)
-      message.obj = nest.getChild(0)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/zoneCaptureNotification.tpl", view)
+      this.guiScene.prependWithBlk(this.nest, blk, this)
+      message.obj = this.nest.getChild(0)
     }
 
     function setAnimationStartValues(message)
     {
-      if (!nest.isVisible() || !::checkObj(message.obj))
+      if (!this.nest.isVisible() || !checkObj(message.obj))
         return
 
       message.obj["height-end"] = message.obj.getSize()[1]
       message.obj.setIntProp(heightPID, 0)
       message.obj.slideDown = "yes"
-      guiScene.setUpdatesEnabled(true, true)
+      this.guiScene.setUpdatesEnabled(true, true)
     }
   }
 
@@ -459,8 +466,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
     showSec = 2
     messageEvent = "InBattleReward"
     hudEvents = {
-      LocalPlayerDead  = @(ed) clearRewardMessage()
-      ReinitHud        = @(ed) clearRewardMessage()
+      LocalPlayerDead  = @(_ed) this.clearRewardMessage()
+      ReinitHud        = @(_ed) this.clearRewardMessage()
     }
 
     rewardWp = 0.0
@@ -472,76 +479,76 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     reinit = function (inScene, inTimers)
     {
-      setScene(inScene, inTimers)
-      timers.removeTimer(rewardClearTimer)
-      clearRewardMessage()
+      this.setScene(inScene, inTimers)
+      this.timers.removeTimer(this.rewardClearTimer)
+      this.clearRewardMessage()
     }
 
     onMessage = function (messageData)
     {
-      if (!::checkObj(::g_hud_messages.REWARDS.nest))
+      if (!checkObj(::g_hud_messages.REWARDS.nest))
         return
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.REWARDS_MSG))
         return
 
-      let isSeries = curRewardPriority != REWARD_PRIORITY.noPriority
-      rewardWp += messageData.warpoints
-      rewardXp += messageData.experience
+      let isSeries = this.curRewardPriority != REWARD_PRIORITY.noPriority
+      this.rewardWp += messageData.warpoints
+      this.rewardXp += messageData.experience
 
       let newPriority = ::g_hud_reward_message.getMessageByCode(messageData.messageCode).priority
-      if (newPriority >= curRewardPriority)
+      if (newPriority >= this.curRewardPriority)
       {
-        curRewardPriority = newPriority
-        showNewRewardMessage(messageData)
+        this.curRewardPriority = newPriority
+        this.showNewRewardMessage(messageData)
       }
 
-      updateRewardValue(isSeries)
+      this.updateRewardValue(isSeries)
 
-      if (rewardClearTimer)
-        timers.setTimerTime(rewardClearTimer, showSec)
+      if (this.rewardClearTimer)
+        this.timers.setTimerTime(this.rewardClearTimer, this.showSec)
       else
-        rewardClearTimer = timers.addTimer(showSec, clearRewardMessage.bindenv(this)).weakref()
+        this.rewardClearTimer = this.timers.addTimer(this.showSec, this.clearRewardMessage.bindenv(this)).weakref()
     }
 
     showNewRewardMessage = function (newRewardMessage)
     {
-      let messageObj = ::showBtn("reward_message", true, nest)
+      let messageObj = ::showBtn("reward_message", true, this.nest)
       let textObj = messageObj.findObject("reward_message_text")
       let rewardType = ::g_hud_reward_message.getMessageByCode(newRewardMessage.messageCode)
 
       textObj.setValue(rewardType.getText(newRewardMessage.warpoints, newRewardMessage.counter, newRewardMessage?.expClass))
       textObj.view_class = rewardType.getViewClass(newRewardMessage.warpoints)
 
-      messageObj.setFloatProp(_animTimerPid, 0.0)
+      messageObj.setFloatProp(this._animTimerPid, 0.0)
     }
 
     roundRewardValue = @(val) val > 10 ? (val.tointeger() / 10 * 10) : val.tointeger()
 
     updateRewardValue = function (isSeries)
     {
-      let reward = ::Cost(roundRewardValue(rewardWp), 0, roundRewardValue(rewardXp))
-      nest.findObject("reward_message").setFloatProp(_animTimerPid, 0.0)
-      nest.findObject("reward_total").setValue(reward.getUncoloredText())
+      let reward = ::Cost(this.roundRewardValue(this.rewardWp), 0, this.roundRewardValue(this.rewardXp))
+      this.nest.findObject("reward_message").setFloatProp(this._animTimerPid, 0.0)
+      this.nest.findObject("reward_total").setValue(reward.getUncoloredText())
 
       if (isSeries)
-        nest.findObject("reward_value_container")._blink = "yes"
+        this.nest.findObject("reward_value_container")._blink = "yes"
     }
 
     clearRewardMessage = function ()
     {
-      if (::check_obj(nest))
+      if (checkObj(this.nest))
       {
-        ::showBtn("reward_message", false, nest)
-        nest.findObject("reward_message_text").setValue("")
-        nest.findObject("reward_message_text").view_class = ""
-        nest.findObject("reward_total").setValue("")
-        nest.findObject("reward_value_container")._blink = "no"
+        ::showBtn("reward_message", false, this.nest)
+        this.nest.findObject("reward_message_text").setValue("")
+        this.nest.findObject("reward_message_text").view_class = ""
+        this.nest.findObject("reward_total").setValue("")
+        this.nest.findObject("reward_value_container")._blink = "no"
       }
-      curRewardPriority = REWARD_PRIORITY.noPriority
-      rewardWp = 0.0
-      rewardXp = 0.0
-      timers.removeTimer(rewardClearTimer)
-      rewardClearTimer = null
+      this.curRewardPriority = REWARD_PRIORITY.noPriority
+      this.rewardWp = 0.0
+      this.rewardXp = 0.0
+      this.timers.removeTimer(this.rewardClearTimer)
+      this.rewardClearTimer = null
     }
   }
 
@@ -552,36 +559,36 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (eventData)
     {
-      if (!::checkObj(nest) || !(::get_game_type() & ::GT_RACE))
+      if (!checkObj(this.nest) || !(::get_game_type() & GT_RACE))
         return
 
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
         return
 
-      let statusObj = nest.findObject("race_status")
-      if (::check_obj(statusObj))
+      let statusObj = this.nest.findObject("race_status")
+      if (checkObj(statusObj))
       {
-        local text = ::loc("HUD_RACE_FINISH")
+        local text = loc("HUD_RACE_FINISH")
         if (!eventData.isRaceFinishedByPlayer)
         {
-          text = ::loc("HUD_RACE_CHECKPOINT") + " "
-          text += eventData.passedCheckpointsInLap + ::loc("ui/slash")
+          text = loc("HUD_RACE_CHECKPOINT") + " "
+          text += eventData.passedCheckpointsInLap + loc("ui/slash")
           text += eventData.checkpointsPerLap + "  "
-          text += ::loc("HUD_RACE_LAP") + " "
-          text += eventData.currentLap + ::loc("ui/slash") + eventData.totalLaps
+          text += loc("HUD_RACE_LAP") + " "
+          text += eventData.currentLap + loc("ui/slash") + eventData.totalLaps
         }
         statusObj.setValue(text)
       }
 
-      let playerTime = ::getTblValue("time", ::getTblValue("player", eventData, {}), 0.0)
+      let playerTime = getTblValue("time", getTblValue("player", eventData, {}), 0.0)
 
       foreach (blockName in ["beforePlayer", "leader", "afterPlayer", "player"])
       {
-        let textBlockObj = nest.findObject(blockName)
-        if (!::check_obj(textBlockObj))
+        let textBlockObj = this.nest.findObject(blockName)
+        if (!checkObj(textBlockObj))
           continue
 
-        let data = ::getTblValue(blockName, eventData)
+        let data = getTblValue(blockName, eventData)
         let showBlock = data != null
         textBlockObj.show(showBlock)
         if (showBlock)
@@ -593,7 +600,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
             else
             {
               let textObj = textBlockObj.findObject(param)
-              if (!::check_obj(textObj))
+              if (!checkObj(textObj))
                 continue
 
               local text = value
@@ -606,7 +613,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
                 {
                   adjustedTime -= playerTime
                   if (adjustedTime > 0)
-                    prefix = ::loc("keysPlus")
+                    prefix = loc("keysPlus")
                 }
                 text = prefix + time.preciseSecondsToString(adjustedTime, isPlayerBlock)
               }
@@ -631,17 +638,17 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     onMessage = function (messageData)
     {
-      if (!::checkObj(nest) || !(::get_game_type() & ::GT_RACE))
+      if (!checkObj(this.nest) || !(::get_game_type() & GT_RACE))
         return
 
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
         return
 
-      addMessage(messageData)
+      this.addMessage(messageData)
     }
 
     updatePlayerPlaceAnimation = function(nestObj, animationValue) {
-      if (!::check_obj(nestObj))
+      if (!checkObj(nestObj))
         return
 
       foreach (objName in ["time"])
@@ -650,40 +657,40 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     addMessage = function (messageData)
     {
-      cleanUp()
+      this.cleanUp()
       let message = {
         timer = null
         messageData = messageData
         obj = null
       }
-      stack.append(message)
+      this.stack.append(message)
       let deltaTime = messageData.deltaTime
       let view = {
-        text = ::loc(deltaTime > 0 ? "hints/penalty_time" : "hints/bonus_time", { timeSec = deltaTime })
+        text = loc(deltaTime > 0 ? "hints/penalty_time" : "hints/bonus_time", { timeSec = deltaTime })
       }
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage", view)
-      guiScene.appendWithBlk(nest, blk, blk.len(), this)
-      message.obj = nest.getChild(nest.childrenCount() - 1)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
+      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
+      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
-      if (nest.isVisible())
+      if (this.nest.isVisible())
       {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
         message.obj.slideDown = "yes"
-        guiScene.setUpdatesEnabled(true, true)
+        this.guiScene.setUpdatesEnabled(true, true)
       }
 
-      let racePlaceNest = scene.findObject("hud_messages_race_messages")
+      let racePlaceNest = this.scene.findObject("hud_messages_race_messages")
       local playerPlaceObj = null
-      if (::check_obj(racePlaceNest))
+      if (checkObj(racePlaceNest))
         playerPlaceObj = racePlaceNest.findObject("player")
-      updatePlayerPlaceAnimation(playerPlaceObj, "fast")
+      this.updatePlayerPlaceAnimation(playerPlaceObj, "fast")
 
-      message.timer = timers.addTimer(showSec, function () {
-        if (::check_obj(message.obj))
+      message.timer = this.timers.addTimer(this.showSec, function () {
+        if (checkObj(message.obj))
           message.obj.remove = "yes"
-        updatePlayerPlaceAnimation(playerPlaceObj, "no")
-        removeMessage(message)
+        this.updatePlayerPlaceAnimation(playerPlaceObj, "no")
+        this.removeMessage(message)
       }.bindenv(this)).weakref()
     }
   }
@@ -692,20 +699,20 @@ enums.addTypesByGlobalName("g_hud_messages", {
     nestId = "hud_message_center_mission_result"
     messageEvent = "MissionResult"
     hudEvents = {
-      MissionContinue = @(ed) destroy()
+      MissionContinue = @(_ed) this.destroy()
     }
 
-    clearStack = function () { stack = {} }
+    clearStack = function () { this.stack = {} }
 
     onMessage = function (eventData)
     {
-      if (!::checkObj(nest)
-          || ::get_game_mode() == ::GM_TEST_FLIGHT)
+      if (!checkObj(this.nest)
+          || ::get_game_mode() == GM_TEST_FLIGHT)
         return
 
-      let oldResultIdx = ::getTblValue("resultIdx", stack, GO_NONE)
+      let oldResultIdx = getTblValue("resultIdx", this.stack, GO_NONE)
 
-      let resultIdx = ::getTblValue("resultNum", eventData, GO_NONE)
+      let resultIdx = getTblValue("resultNum", eventData, GO_NONE)
       let checkResending = eventData?.checkResending ?? eventData?.waitingForResult ?? false //!!! waitingForResult need only for compatibiliti with 1.99.0.X
 
       /*Have to check this, because, on guiStateChange GUI_STATE_FINISH_SESSION
@@ -716,37 +723,37 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (checkResending && (oldResultIdx == GO_WIN || oldResultIdx == GO_FAIL))
         return
 
-      let noLives = ::getTblValue("noLives", eventData, false)
-      let place = ::getTblValue("place", eventData, -1)
-      let total = ::getTblValue("total", eventData, -1)
+      let noLives = getTblValue("noLives", eventData, false)
+      let place = getTblValue("place", eventData, -1)
+      let total = getTblValue("total", eventData, -1)
 
-      let resultLocId = getMissionResultLocId(resultIdx, checkResending, noLives)
-      local text = ::loc(resultLocId)
+      let resultLocId = this.getMissionResultLocId(resultIdx, checkResending, noLives)
+      local text = loc(resultLocId)
       if (place >= 0 && total >= 0)
-        text += "\n" + ::loc("HUD_RACE_PLACE", {place = place, total = total})
+        text += "\n" + loc("HUD_RACE_PLACE", {place = place, total = total})
 
-      stack = {
+      this.stack = {
         text = text
         resultIdx = resultIdx
         useMoveOut = resultIdx == GO_WIN || resultIdx == GO_FAIL
       }
 
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/missionResultMessage", stack)
-      guiScene.replaceContentFromText(nest, blk, blk.len(), this)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/missionResultMessage.tpl", this.stack)
+      this.guiScene.replaceContentFromText(this.nest, blk, blk.len(), this)
 
-      let objTarget = nest.findObject("mission_result_box")
-      if (!::check_obj(objTarget))
+      let objTarget = this.nest.findObject("mission_result_box")
+      if (!checkObj(objTarget))
         return
       objTarget.show(true)
 
-      if (stack.useMoveOut && nest.isVisible()) //no need animation when scene invisible
+      if (this.stack.useMoveOut && this.nest.isVisible()) //no need animation when scene invisible
       {
-        let objStart = scene.findObject("mission_result_box_start")
-        ::create_ObjMoveToOBj(scene, objStart, objTarget, { time = 0.5, bhvFunc = "elasticSmall" })
+        let objStart = this.scene.findObject("mission_result_box_start")
+        ::create_ObjMoveToOBj(this.scene, objStart, objTarget, { time = 0.5, bhvFunc = "elasticSmall" })
       }
     }
 
-    getMissionResultLocId = function (resultNum, checkResending, noLives)
+    getMissionResultLocId = function (resultNum, _checkResending, noLives)
     {
       if (noLives)
         return "MF_NoAttempts"
@@ -764,17 +771,17 @@ enums.addTypesByGlobalName("g_hud_messages", {
         case GO_WAITING_FOR_RESULT:
           return "FINALIZING"
         default:
-          return ::getTblValue("result", stack, "")
+          return getTblValue("result", this.stack, "")
       }
       return ""
     }
 
     destroy = function()
     {
-      if (!::checkObj(nest))
+      if (!checkObj(this.nest))
         return
-      let msgObj = nest.findObject("mission_result_box")
-      if (!::checkObj(msgObj))
+      let msgObj = this.nest.findObject("mission_result_box")
+      if (!checkObj(msgObj))
         return
 
       msgObj["_transp-timer"] = "1"
@@ -790,56 +797,56 @@ enums.addTypesByGlobalName("g_hud_messages", {
     messagesMax = 2
     messageEvent = "HudMessage"
     hudEvents = {
-      HudMessageHide = @(ed) destroy()
+      HudMessageHide = @(_ed) this.destroy()
     }
 
     onMessage = function (messageData)
     {
-      if (messageData.type != ::HUD_MSG_UNDER_RADAR && messageData.type != ::HUD_MSG_DEATH_REASON)
+      if (messageData.type != HUD_MSG_UNDER_RADAR && messageData.type != HUD_MSG_DEATH_REASON)
         return
-      if (!::checkObj(nest))
+      if (!checkObj(this.nest))
         return
 
-      let oldMessage = findMessageById(messageData.id)
+      let oldMessage = this.findMessageById(messageData.id)
       if (oldMessage)
-        refreshMessage(messageData, oldMessage)
+        this.refreshMessage(messageData, oldMessage)
       else
-        addMessage(messageData)
+        this.addMessage(messageData)
     }
 
     addMessage = function (messageData, timestamp = null, needAnimations = true)
     {
-      cleanUp()
+      this.cleanUp()
       let message = {
         timer = null
-        timestamp = timestamp || ::dagor.getCurTime()
+        timestamp = timestamp || get_time_msec()
         messageData = messageData
         obj = null
       }
-      stack.append(message)
+      this.stack.append(message)
       let view = {
         text = messageData.text
       }
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/deathReasonMessage", view)
-      guiScene.appendWithBlk(nest, blk, blk.len(), this)
-      message.obj = nest.getChild(nest.childrenCount() - 1)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/deathReasonMessage.tpl", view)
+      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
+      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
-      if (nest.isVisible() && needAnimations)
+      if (this.nest.isVisible() && needAnimations)
       {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
         message.obj.slideDown = "yes"
-        guiScene.setUpdatesEnabled(true, true)
+        this.guiScene.setUpdatesEnabled(true, true)
       }
 
       let timeToShow = timestamp
-       ? showSec - (::dagor.getCurTime() - timestamp) / 1000.0
-       : showSec
+       ? this.showSec - (get_time_msec() - timestamp) / 1000.0
+       : this.showSec
 
-      message.timer = timers.addTimer(timeToShow, function () {
-        if (::check_obj(message.obj))
+      message.timer = this.timers.addTimer(timeToShow, function () {
+        if (checkObj(message.obj))
           message.obj.remove = "yes"
-        removeMessage(message)
+        this.removeMessage(message)
       }.bindenv(this)).weakref()
     }
 
@@ -848,38 +855,38 @@ enums.addTypesByGlobalName("g_hud_messages", {
       let shouldUpdateText = message.messageData.text != messageData.text
       message.messageData = messageData
       if (message.timer)
-        timers.setTimerTime(message.timer, showSec)
-      if (shouldUpdateText && ::checkObj(message.obj))
+        this.timers.setTimerTime(message.timer, this.showSec)
+      if (shouldUpdateText && checkObj(message.obj))
         message.obj.findObject("text").setValue(messageData.text)
     }
 
     clearStack = function () {}
 
     destroy = function () {
-      stack.clear()
-      if (!::checkObj(nest))
+      this.stack.clear()
+      if (!checkObj(this.nest))
         return
-      nest.deleteChildren()
+      this.nest.deleteChildren()
     }
 
     reinit = function (inScene, inTimers)
     {
-      setScene(inScene, inTimers)
-      if (!::checkObj(nest))
+      this.setScene(inScene, inTimers)
+      if (!checkObj(this.nest))
         return
-      nest.deleteChildren()
+      this.nest.deleteChildren()
 
-      let timeDelete = ::dagor.getCurTime() - showSec * 1000
-      let oldStack = stack
-      stack = []
+      let timeDelete = get_time_msec() - this.showSec * 1000
+      let oldStack = this.stack
+      this.stack = []
 
       foreach (message in oldStack)
         if (message.timestamp > timeDelete)
-          addMessage(message.messageData, message.timestamp, false)
+          this.addMessage(message.messageData, message.timestamp, false)
     }
   }
 },
 function()
 {
-  stack = []
+  this.stack = []
 })

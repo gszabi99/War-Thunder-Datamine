@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /**
  * This is Actionbar's Wheelmenu configs for gamepad controls (also known as "KillStreaks" menu).
  * Each action used here must have isForWheelMenu() func defined in hudActionBarType.nut, which should return true.
@@ -12,8 +17,10 @@ let { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNI
   EII_EXTINGUISHER, EII_TOOLKIT, EII_REPAIR_BREACHES, EII_SPEED_BOOSTER,
   EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR,
   EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2, EII_SUPPORT_PLANE_CHANGE,
-  EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK
-} = ::require_native("hudActionBarConst")
+  EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK, EII_NIGHT_VISION,
+  EII_SIGHT_STABILIZATION
+} = require_native("hudActionBarConst")
+let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -95,8 +102,8 @@ let cfgMenuAircraft = [
     EII_SUPPORT_PLANE_CHANGE,
     EII_SUPPORT_PLANE_GROUP_ATTACK,
     EII_SMOKE_SCREEN,
-    null,
-    null,
+    EII_NIGHT_VISION,
+    EII_SIGHT_STABILIZATION,
     null,
     null,
     null,
@@ -105,12 +112,12 @@ let cfgMenuAircraft = [
 
 /******************************** CONFIGS END *********************************/
 
-let function getCfgByUnit(unit) {
-  return [ "combat_track_a", "combat_track_h" ].contains(unit?.name) ? cfgMenuTankArachisCombatTrack
-       : unit?.isTank()       ? cfgMenuTank
-       : unit?.isShipOrBoat() ? cfgMenuShip
-       : unit?.isAir()        ? cfgMenuAircraft
-       : unit?.isSubmarine()  ? cfgMenuSubmarine
+let function getCfgByUnit(unitId, hudUnitType) {
+  return [ "combat_track_a", "combat_track_h" ].contains(unitId) ? cfgMenuTankArachisCombatTrack
+       : hudUnitType == HUD_UNIT_TYPE.TANK       ? cfgMenuTank
+       : hudUnitType == HUD_UNIT_TYPE.SHIP_EX    ? cfgMenuSubmarine
+       : hudUnitType == HUD_UNIT_TYPE.SHIP       ? cfgMenuShip
+       : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT   ? cfgMenuAircraft
        : []
 }
 
@@ -132,9 +139,9 @@ let function isActionMatch(cfgItem, action) {
   return false
 }
 
-let function arrangeStreakWheelActions(unit, actions) {
-  let res = getCfgByUnit(unit).map(@(c) c != null ? actions.findvalue(@(a) isActionMatch(c, a)) : null)
-  local filledLen = res.reduce(@(lastIdx, a, idx) lastIdx = a != null ? idx : lastIdx, -1) + 1
+let function arrangeStreakWheelActions(unitId, hudUnitType, actions) {
+  let res = getCfgByUnit(unitId, hudUnitType).map(@(c) c != null ? actions.findvalue(@(a) isActionMatch(c, a)) : null)
+  local filledLen = res.reduce(@(lastIdx, a, idx) a != null ? idx : lastIdx, -1) + 1
   let pagesCount = (filledLen + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE
   res.resize(pagesCount * ITEMS_PER_PAGE, null)
   foreach (a in actions)

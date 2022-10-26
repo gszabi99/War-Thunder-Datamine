@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
 ::items_classes.ModOverdrive <- class extends BaseItemModClass
@@ -15,20 +21,20 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
   {
     base.constructor(blk, invBlk, slotData)
 
-    isActiveOverdrive = slotData?.isActive ?? false
+    this.isActiveOverdrive = slotData?.isActive ?? false
   }
 
   getConditionsBlk = @(configBlk) configBlk?.modOverdriveParams
-  canActivate = @() isInventoryItem && !isActive()
-  isActive = @(...) isActiveOverdrive
+  canActivate = @() this.isInventoryItem && !this.isActive()
+  isActive = @(...) this.isActiveOverdrive
 
   getIconMainLayer = @() ::LayersIcon.findLayerCfg("mod_overdrive")
 
   function getMainActionData(isShort = false, params = {})
   {
-    if (amount && canActivate())
+    if (this.amount && this.canActivate())
       return {
-        btnName = ::loc("item/activate")
+        btnName = loc("item/activate")
       }
 
     return base.getMainActionData(isShort, params)
@@ -36,14 +42,14 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
   function doMainAction(cb, handler, params = null)
   {
-    if (canActivate())
-      return activate(cb, handler)
+    if (this.canActivate())
+      return this.activate(cb, handler)
     return base.doMainAction(cb, handler, params)
   }
 
-  function activate(cb, handler = null)
+  function activate(cb, _handler = null)
   {
-    let uid = uids?[0]
+    let uid = this.uids?[0]
     if (uid == null)
       return false
 

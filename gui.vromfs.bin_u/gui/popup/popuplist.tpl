@@ -10,6 +10,6 @@ popup_menu {
     on_r_click:t='<<underPopupDblClick>>'
   }
 
-  include "%gui/commonParts/buttonsList"
+  include "%gui/commonParts/buttonsList.tpl"
   popup_menu_arrow {}
 }

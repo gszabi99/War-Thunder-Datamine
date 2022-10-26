@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { isDataBlock } = require("%sqstd/underscore.nut")
 
 //to use table by DataBlock api
@@ -25,13 +31,13 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 
   constructor(tbl, name = null)
   {
-    ___blockName___ = name
-    ___originData___ = tbl
+    this.___blockName___ = name
+    this.___originData___ = tbl
   }
 
   function getBlockName()
   {
-    return ___blockName___
+    return this.___blockName___
   }
 
   function ___checkReturn___(val, key)
@@ -39,14 +45,14 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
     if (typeof(val) == "table")
       return ::DataBlockAdapter(val, key)
     if (typeof(val) == "array")
-      return ___checkReturn___(val[0], key)
+      return this.___checkReturn___(val[0], key)
     return val
   }
 
   function _nexti(prevKey)
   {
     local isFound = prevKey == null
-    foreach (key, val in ___originData___)
+    foreach (key, _val in this.___originData___)
     {
       if (isFound)
         return key
@@ -57,34 +63,34 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 
   function _get(key)
   {
-    if (!(key in ___originData___))
+    if (!(key in this.___originData___))
       throw null
-    return ___checkReturn___(___originData___[key], key)
+    return this.___checkReturn___(this.___originData___[key], key)
   }
 
   function _modulo(key)
   {
     let res = []
-    if (!(key in ___originData___))
+    if (!(key in this.___originData___))
       return res
 
-    let valList = ___originData___[key]
+    let valList = this.___originData___[key]
     if (typeof(valList) != "array")
     {
-      res.append(___checkReturn___(valList, key))
+      res.append(this.___checkReturn___(valList, key))
       return res
     }
 
     foreach(val in valList)
-      res.append(___checkReturn___(val, key))
+      res.append(this.___checkReturn___(val, key))
     return res
   }
 
   function getBlockByName(key)
   {
-    if (!(key in ___originData___))
+    if (!(key in this.___originData___))
       return null
-    let realVal = ___checkReturn___(___originData___[key], key)
+    let realVal = this.___checkReturn___(this.___originData___[key], key)
     if (!isDataBlock(realVal))
       return null
     return realVal
@@ -92,86 +98,86 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 
   function ___addToParamsList___(val, key)
   {
-    let realVal = ___checkReturn___(val, key)
+    let realVal = this.___checkReturn___(val, key)
     if (realVal == null)
       return
 
     if (isDataBlock(realVal))
     {
-      ___blocksList___.append(realVal)
+      this.___blocksList___.append(realVal)
       return
     }
-    ___paramsList___.append(realVal)
-    ___paramsListNames___.append(key)
+    this.___paramsList___.append(realVal)
+    this.___paramsListNames___.append(key)
   }
 
   function ___initCountsOnce___()
   {
-    if (___paramsList___)
+    if (this.___paramsList___)
       return
 
-    ___blocksList___ = []
-    ___paramsList___ = []
-    ___paramsListNames___ = []
-    foreach(key, val in ___originData___)
+    this.___blocksList___ = []
+    this.___paramsList___ = []
+    this.___paramsListNames___ = []
+    foreach(key, val in this.___originData___)
     {
       if (typeof(val) != "array")
       {
-        ___addToParamsList___(val, key)
+        this.___addToParamsList___(val, key)
         continue
       }
       foreach(v in val)
-        ___addToParamsList___(v, key)
+        this.___addToParamsList___(v, key)
     }
   }
 
   function blockCount()
   {
-    ___initCountsOnce___()
-    return ___blocksList___.len()
+    this.___initCountsOnce___()
+    return this.___blocksList___.len()
   }
 
   function getBlock(i)
   {
-    ___initCountsOnce___()
-    return ___blocksList___[i]
+    this.___initCountsOnce___()
+    return this.___blocksList___[i]
   }
 
   function paramCount()
   {
-    ___initCountsOnce___()
-    return ___paramsList___.len()
+    this.___initCountsOnce___()
+    return this.___paramsList___.len()
   }
 
   function getParamValue(i)
   {
-    ___initCountsOnce___()
-    return ___paramsList___[i]
+    this.___initCountsOnce___()
+    return this.___paramsList___[i]
   }
 
   function getParamName(i)
   {
-    ___initCountsOnce___()
-    return ___paramsListNames___[i]
+    this.___initCountsOnce___()
+    return this.___paramsListNames___[i]
   }
 
   function addBlock(name)
   {
     let val = ::DataBlockAdapter({}, name)
-    ___initCountsOnce___()
-    ___blocksList___.append(val)
+    this.___initCountsOnce___()
+    this.___blocksList___.append(val)
     return val
   }
 
   function formatAsString()
   {
     let res = []
-    ::debugTableData(___originData___, {
+    debugTableData(this.___originData___, {
       recursionLevel = 4,
       showBlockBrackets = true,
       silentMode = true,
       printFn = @(str) res.append(str)
     })
-    return "".concat($"{getBlockName()} = DataBlockAdapter ", "\n".join(res))
+    return "".concat($"{this.getBlockName()} = DataBlockAdapter ", "\n".join(res))
   }
 }

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -41,53 +48,53 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
   constructor(roomsListId, request)
   {
-    id = roomsListId
-    roomsList = []
-    requestParams = request || {}
+    this.id = roomsListId
+    this.roomsList = []
+    this.requestParams = request || {}
   }
 
 
   function isNewest() {
-    return !isInUpdate && ::dagor.getCurTime() - lastUpdateTimeMsec < ROOM_LIST_REFRESH_MIN_TIME
+    return !this.isInUpdate && get_time_msec() - this.lastUpdateTimeMsec < ROOM_LIST_REFRESH_MIN_TIME
   }
 
   function isThrottled(curTime) {
-    return ((curTime - lastUpdateTimeMsec < ROOM_LIST_REFRESH_MIN_TIME) ||
-            (curTime - lastRequestTimeMsec < ROOM_LIST_REFRESH_MIN_TIME))
+    return ((curTime - this.lastUpdateTimeMsec < ROOM_LIST_REFRESH_MIN_TIME) ||
+            (curTime - this.lastRequestTimeMsec < ROOM_LIST_REFRESH_MIN_TIME))
   }
 
   function isUpdateTimedout(curTime) {
-    return curTime - lastRequestTimeMsec >= ROOM_LIST_REQUEST_TIME_OUT
+    return curTime - this.lastRequestTimeMsec >= ROOM_LIST_REQUEST_TIME_OUT
   }
 
   function validateList()
   {
-    if (::dagor.getCurTime() - lastUpdateTimeMsec >= ROOM_LIST_TIME_OUT)
-      roomsList.clear()
+    if (get_time_msec() - this.lastUpdateTimeMsec >= ROOM_LIST_TIME_OUT)
+      this.roomsList.clear()
   }
 
   function getList()
   {
-    validateList()
-    return roomsList
+    this.validateList()
+    return this.roomsList
   }
 
   function getRoom(roomId)
   {
-    return ::u.search(getList(), (@(roomId) function(r) { return r.roomId == roomId })(roomId))
+    return ::u.search(this.getList(), (@(roomId) function(r) { return r.roomId == roomId })(roomId))
   }
 
   function requestList(filter)
   {
-    let roomsFilter = getFetchRoomsParams(filter)
-    let curTime = ::dagor.getCurTime()
-    if (isUpdateTimedout(curTime))
-      isInUpdate = false
+    let roomsFilter = this.getFetchRoomsParams(filter)
+    let curTime = get_time_msec()
+    if (this.isUpdateTimedout(curTime))
+      this.isInUpdate = false
 
-    if (isThrottled(curTime) || isInUpdate) {
-      if (!u.isEqual(roomsFilter, curRoomsFilter)) {
-        if (isInUpdate) {
-          queuedRoomsFilter = roomsFilter
+    if (this.isThrottled(curTime) || this.isInUpdate) {
+      if (!u.isEqual(roomsFilter, this.curRoomsFilter)) {
+        if (this.isInUpdate) {
+          this.queuedRoomsFilter = roomsFilter
           return false
         }
       }
@@ -95,10 +102,10 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
         return false
     }
 
-    isInUpdate = true
-    lastRequestTimeMsec = curTime
+    this.isInUpdate = true
+    this.lastRequestTimeMsec = curTime
 
-    curRoomsFilter = roomsFilter
+    this.curRoomsFilter = roomsFilter
     let hideFullRooms = filter?.hideFullRooms ?? true
     let roomsData = this
     ::fetch_rooms_list(roomsFilter, @(p) roomsData.requestListCb(p, hideFullRooms))
@@ -112,19 +119,19 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
   function requestListCb(p, hideFullRooms)
   {
-    isInUpdate = false
+    this.isInUpdate = false
 
-    let digest = ::checkMatchingError(p, false) ? ::getTblValue("digest", p) : null
+    let digest = ::checkMatchingError(p, false) ? getTblValue("digest", p) : null
     if (!digest)
       return
 
-    lastUpdateTimeMsec = ::dagor.getCurTime()
-    updateRoomsList(digest, hideFullRooms)
+    this.lastUpdateTimeMsec = get_time_msec()
+    this.updateRoomsList(digest, hideFullRooms)
     ::broadcastEvent("SearchedRoomsChanged", { roomsList = this })
 
-    if (queuedRoomsFilter != null) {
-      requestList(queuedRoomsFilter)
-      queuedRoomsFilter = null
+    if (this.queuedRoomsFilter != null) {
+      this.requestList(this.queuedRoomsFilter)
+      this.queuedRoomsFilter = null
     }
   }
 
@@ -192,8 +199,8 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
       }
     }
 
-    if ("eventEconomicName" in requestParams) {
-      let economicName = requestParams.eventEconomicName
+    if ("eventEconomicName" in this.requestParams) {
+      let economicName = this.requestParams.eventEconomicName
       let modesList = ::g_matching_game_modes.getGameModeIdsByEconomicName(economicName)
       res.group = "matching-lobby"
 
@@ -213,7 +220,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
             }
       }
     }
-    setPlatformFilter(filter)
+    this.setPlatformFilter(filter)
     return res
   }
 
@@ -227,16 +234,16 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
       rooms.resize(MAX_SESSIONS_LIST_LEN)
     }
 
-    roomsList.clear()
+    this.roomsList.clear()
     foreach(room in rooms)
-      if (isRoomVisible(room, hideFullRooms))
-        roomsList.append(room)
+      if (this.isRoomVisible(room, hideFullRooms))
+        this.roomsList.append(room)
   }
 
   function isRoomVisible(room, hideFullRooms)
   {
     let userUid = ::SessionLobby.getRoomCreatorUid(room)
-    if (userUid && ::isPlayerInContacts(userUid, ::EPL_BLOCKLIST))
+    if (userUid && ::isPlayerInContacts(userUid, EPL_BLOCKLIST))
       return false
 
     if (hideFullRooms) {
@@ -244,6 +251,6 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
       if (::SessionLobby.getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
         return false
     }
-    return ::SessionLobby.getMisListType(room.public).canJoin(::GM_SKIRMISH)
+    return ::SessionLobby.getMisListType(room.public).canJoin(GM_SKIRMISH)
   }
 }

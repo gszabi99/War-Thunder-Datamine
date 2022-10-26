@@ -45,6 +45,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ball",
       "slopeEffectPreset": "ap",
+      "effectiveDistance": 400.0,
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -53,6 +54,7 @@
         200.0,
         1000.0
       ],
+      "hitPowerMult": 2.9,
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
@@ -77,47 +79,59 @@
         ]
       },
       "hitpower": {
-        "HitPower0m": [
-          1.0,
-          0.0
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
         ],
         "HitPower1000m": [
-          0.9,
-          0.0
+          0.2,
+          1000.0
         ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
+        "HitPower1500m": [
+          0.01,
+          1500.0
         ]
       },
       "armorpower": {
         "ArmorPower0m": [
-          8.0,
-          10.0
+          5.0,
+          5.0
         ],
         "ArmorPower100m": [
-          7.0,
+          4.0,
           100.0
         ],
         "ArmorPower500m": [
-          5.0,
+          2.0,
           500.0
         ],
         "ArmorPower1000m": [
-          3.0,
+          1.0,
           1000.0
         ],
+        "ArmorPower1450m": [
+          0.1,
+          1450.0
+        ],
         "ArmorPower1500m": [
-          2.0,
+          0.0,
           1500.0
-        ],
-        "ArmorPower2000m": [
-          2.0,
-          2000.0
-        ],
-        "ArmorPower2500m": [
-          1.0,
-          2500.0
         ]
       },
       "visual": {
@@ -222,10 +236,17 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "t_ball",
       "slopeEffectPreset": "ap",
+      "onHitChanceMultFire": 1.5,
+      "effectiveDistance": 400.0,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
+      "hitPowerMult": 2.9,
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
       "ricochetEffect": "hit_8_11mm_metal_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
@@ -250,47 +271,59 @@
         ]
       },
       "hitpower": {
-        "HitPower0m": [
-          1.0,
-          0.0
+        "HitPower10m": [
+          1.45,
+          10.0
+        ],
+        "HitPower100m": [
+          1.43,
+          100.0
+        ],
+        "HitPower200m": [
+          1.37,
+          300.0
+        ],
+        "HitPower400m": [
+          1.2,
+          400.0
+        ],
+        "HitPower600m": [
+          1.1,
+          600.0
         ],
         "HitPower1000m": [
-          0.9,
-          0.0
+          0.2,
+          1000.0
         ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
+        "HitPower1500m": [
+          0.01,
+          1500.0
         ]
       },
       "armorpower": {
         "ArmorPower0m": [
-          8.0,
-          10.0
+          5.0,
+          5.0
         ],
         "ArmorPower100m": [
-          7.0,
+          4.0,
           100.0
         ],
         "ArmorPower500m": [
-          5.0,
+          2.0,
           500.0
         ],
         "ArmorPower1000m": [
-          3.0,
+          1.0,
           1000.0
         ],
+        "ArmorPower1450m": [
+          0.1,
+          1450.0
+        ],
         "ArmorPower1500m": [
-          2.0,
+          0.0,
           1500.0
-        ],
-        "ArmorPower2000m": [
-          2.0,
-          2000.0
-        ],
-        "ArmorPower2500m": [
-          1.0,
-          2500.0
         ]
       },
       "visual": {
@@ -396,11 +429,6 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "i_t_ball",
       "slopeEffectPreset": "ap",
-      "effectiveDistance": 400.0,
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
       "explodeTreshold": 3.0,
       "explodeHitPower": 5.5,
       "explodeArmorPower": 2.5,
@@ -408,10 +436,16 @@
         0.03,
         0.035
       ],
+      "effectiveDistance": 400.0,
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
       "relativeVelArmorShift": [
         200.0,
         1000.0
       ],
+      "hitPowerMult": 2.5,
       "groundCollisionEffect": "hit_8_11mm_dirt_he",
       "ricochetEffect": "hit_8_11mm_metal_he",
       "waterCollisionEffect": "hit_8_11mm_water",
@@ -596,6 +630,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -628,17 +663,33 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
+          "HitPower10m": [
+            1.45,
+            10.0
+          ],
+          "HitPower100m": [
+            1.43,
+            100.0
+          ],
+          "HitPower200m": [
+            1.37,
+            300.0
+          ],
+          "HitPower400m": [
+            1.2,
+            400.0
+          ],
+          "HitPower600m": [
+            1.1,
+            600.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.2,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.01,
+            1500.0
           ]
         },
         "armorpower": {
@@ -647,28 +698,28 @@
             10.0
           ],
           "ArmorPower100m": [
-            11.0,
+            12.0,
             100.0
           ],
-          "ArmorPower500m": [
+          "ArmorPower300m": [
             9.0,
-            500.0
+            300.0
+          ],
+          "ArmorPower500m": [
+            6.0,
+            600.0
           ],
           "ArmorPower1000m": [
-            7.0,
+            3.0,
             1000.0
           ],
-          "ArmorPower1500m": [
-            4.0,
+          "ArmorPower150m": [
+            1.5,
             1500.0
           ],
-          "ArmorPower2000m": [
-            2.0,
-            2000.0
-          ],
-          "ArmorPower2500m": [
-            1.0,
-            2500.0
+          "ArmorPower1600m": [
+            0.0,
+            1600.0
           ]
         },
         "visual": {
@@ -773,10 +824,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "onHitChanceMultFire": 1.5,
+        "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "hitPowerMult": 2.9,
         "groundCollisionEffect": "hit_8_11mm_dirt_ap",
         "ricochetEffect": "hit_8_11mm_metal_ap",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -801,47 +859,59 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
+          "HitPower10m": [
+            1.45,
+            10.0
+          ],
+          "HitPower100m": [
+            1.43,
+            100.0
+          ],
+          "HitPower200m": [
+            1.37,
+            300.0
+          ],
+          "HitPower400m": [
+            1.2,
+            400.0
+          ],
+          "HitPower600m": [
+            1.1,
+            600.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.2,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.01,
+            1500.0
           ]
         },
         "armorpower": {
           "ArmorPower0m": [
-            8.0,
-            10.0
+            5.0,
+            5.0
           ],
           "ArmorPower100m": [
-            7.0,
+            4.0,
             100.0
           ],
           "ArmorPower500m": [
-            5.0,
+            2.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
+            1.0,
             1000.0
           ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
           "ArmorPower1500m": [
-            2.0,
+            0.0,
             1500.0
-          ],
-          "ArmorPower2000m": [
-            2.0,
-            2000.0
-          ],
-          "ArmorPower2500m": [
-            1.0,
-            2500.0
           ]
         },
         "visual": {
@@ -947,11 +1017,6 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "i_t_ball",
         "slopeEffectPreset": "ap",
-        "effectiveDistance": 400.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
         "explodeTreshold": 3.0,
         "explodeHitPower": 5.5,
         "explodeArmorPower": 2.5,
@@ -959,10 +1024,16 @@
           0.03,
           0.035
         ],
+        "effectiveDistance": 400.0,
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "hitPowerMult": 2.5,
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -1144,6 +1215,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ball",
         "slopeEffectPreset": "ap",
+        "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -1152,6 +1224,7 @@
           200.0,
           1000.0
         ],
+        "hitPowerMult": 2.9,
         "groundCollisionEffect": "hit_8_11mm_dirt_ap",
         "ricochetEffect": "hit_8_11mm_metal_ap",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -1176,47 +1249,59 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
+          "HitPower10m": [
+            1.45,
+            10.0
+          ],
+          "HitPower100m": [
+            1.43,
+            100.0
+          ],
+          "HitPower200m": [
+            1.37,
+            300.0
+          ],
+          "HitPower400m": [
+            1.2,
+            400.0
+          ],
+          "HitPower600m": [
+            1.1,
+            600.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.2,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.01,
+            1500.0
           ]
         },
         "armorpower": {
           "ArmorPower0m": [
-            8.0,
-            10.0
+            5.0,
+            5.0
           ],
           "ArmorPower100m": [
-            7.0,
+            4.0,
             100.0
           ],
           "ArmorPower500m": [
-            5.0,
+            2.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
+            1.0,
             1000.0
           ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
           "ArmorPower1500m": [
-            2.0,
+            0.0,
             1500.0
-          ],
-          "ArmorPower2000m": [
-            2.0,
-            2000.0
-          ],
-          "ArmorPower2500m": [
-            1.0,
-            2500.0
           ]
         },
         "visual": {
@@ -1325,11 +1410,6 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "i_t_ball",
         "slopeEffectPreset": "ap",
-        "effectiveDistance": 400.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
         "explodeTreshold": 3.0,
         "explodeHitPower": 5.5,
         "explodeArmorPower": 2.5,
@@ -1337,10 +1417,16 @@
           0.03,
           0.035
         ],
+        "effectiveDistance": 400.0,
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "hitPowerMult": 2.5,
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -1522,11 +1608,6 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "i_t_ball",
         "slopeEffectPreset": "ap",
-        "effectiveDistance": 400.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
         "explodeTreshold": 3.0,
         "explodeHitPower": 5.5,
         "explodeArmorPower": 2.5,
@@ -1534,10 +1615,16 @@
           0.03,
           0.035
         ],
+        "effectiveDistance": 400.0,
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "hitPowerMult": 2.5,
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -1719,6 +1806,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -1751,17 +1839,33 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
+          "HitPower10m": [
+            1.45,
+            10.0
+          ],
+          "HitPower100m": [
+            1.43,
+            100.0
+          ],
+          "HitPower200m": [
+            1.37,
+            300.0
+          ],
+          "HitPower400m": [
+            1.2,
+            400.0
+          ],
+          "HitPower600m": [
+            1.1,
+            600.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.2,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.01,
+            1500.0
           ]
         },
         "armorpower": {
@@ -1770,28 +1874,28 @@
             10.0
           ],
           "ArmorPower100m": [
-            11.0,
+            12.0,
             100.0
           ],
-          "ArmorPower500m": [
+          "ArmorPower300m": [
             9.0,
-            500.0
+            300.0
+          ],
+          "ArmorPower500m": [
+            6.0,
+            600.0
           ],
           "ArmorPower1000m": [
-            7.0,
+            3.0,
             1000.0
           ],
-          "ArmorPower1500m": [
-            4.0,
+          "ArmorPower150m": [
+            1.5,
             1500.0
           ],
-          "ArmorPower2000m": [
-            2.0,
-            2000.0
-          ],
-          "ArmorPower2500m": [
-            1.0,
-            2500.0
+          "ArmorPower1600m": [
+            0.0,
+            1600.0
           ]
         },
         "visual": {
@@ -1896,10 +2000,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "onHitChanceMultFire": 1.5,
+        "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "hitPowerMult": 2.9,
         "groundCollisionEffect": "hit_8_11mm_dirt_ap",
         "ricochetEffect": "hit_8_11mm_metal_ap",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -1924,47 +2035,59 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
+          "HitPower10m": [
+            1.45,
+            10.0
+          ],
+          "HitPower100m": [
+            1.43,
+            100.0
+          ],
+          "HitPower200m": [
+            1.37,
+            300.0
+          ],
+          "HitPower400m": [
+            1.2,
+            400.0
+          ],
+          "HitPower600m": [
+            1.1,
+            600.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.2,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.01,
+            1500.0
           ]
         },
         "armorpower": {
           "ArmorPower0m": [
-            8.0,
-            10.0
+            5.0,
+            5.0
           ],
           "ArmorPower100m": [
-            7.0,
+            4.0,
             100.0
           ],
           "ArmorPower500m": [
-            5.0,
+            2.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
+            1.0,
             1000.0
           ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
           "ArmorPower1500m": [
-            2.0,
+            0.0,
             1500.0
-          ],
-          "ArmorPower2000m": [
-            2.0,
-            2000.0
-          ],
-          "ArmorPower2500m": [
-            1.0,
-            2500.0
           ]
         },
         "visual": {
@@ -2074,6 +2197,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -2106,17 +2230,33 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
+          "HitPower10m": [
+            1.45,
+            10.0
+          ],
+          "HitPower100m": [
+            1.43,
+            100.0
+          ],
+          "HitPower200m": [
+            1.37,
+            300.0
+          ],
+          "HitPower400m": [
+            1.2,
+            400.0
+          ],
+          "HitPower600m": [
+            1.1,
+            600.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.2,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.01,
+            1500.0
           ]
         },
         "armorpower": {
@@ -2125,28 +2265,28 @@
             10.0
           ],
           "ArmorPower100m": [
-            11.0,
+            12.0,
             100.0
           ],
-          "ArmorPower500m": [
+          "ArmorPower300m": [
             9.0,
-            500.0
+            300.0
+          ],
+          "ArmorPower500m": [
+            6.0,
+            600.0
           ],
           "ArmorPower1000m": [
-            7.0,
+            3.0,
             1000.0
           ],
-          "ArmorPower1500m": [
-            4.0,
+          "ArmorPower150m": [
+            1.5,
             1500.0
           ],
-          "ArmorPower2000m": [
-            2.0,
-            2000.0
-          ],
-          "ArmorPower2500m": [
-            1.0,
-            2500.0
+          "ArmorPower1600m": [
+            0.0,
+            1600.0
           ]
         },
         "visual": {
@@ -2251,6 +2391,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -2283,17 +2424,33 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
+          "HitPower10m": [
+            1.45,
+            10.0
+          ],
+          "HitPower100m": [
+            1.43,
+            100.0
+          ],
+          "HitPower200m": [
+            1.37,
+            300.0
+          ],
+          "HitPower400m": [
+            1.2,
+            400.0
+          ],
+          "HitPower600m": [
+            1.1,
+            600.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.2,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.01,
+            1500.0
           ]
         },
         "armorpower": {
@@ -2302,28 +2459,28 @@
             10.0
           ],
           "ArmorPower100m": [
-            11.0,
+            12.0,
             100.0
           ],
-          "ArmorPower500m": [
+          "ArmorPower300m": [
             9.0,
-            500.0
+            300.0
+          ],
+          "ArmorPower500m": [
+            6.0,
+            600.0
           ],
           "ArmorPower1000m": [
-            7.0,
+            3.0,
             1000.0
           ],
-          "ArmorPower1500m": [
-            4.0,
+          "ArmorPower150m": [
+            1.5,
             1500.0
           ],
-          "ArmorPower2000m": [
-            2.0,
-            2000.0
-          ],
-          "ArmorPower2500m": [
-            1.0,
-            2500.0
+          "ArmorPower1600m": [
+            0.0,
+            1600.0
           ]
         },
         "visual": {
@@ -2428,11 +2585,6 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "i_t_ball",
         "slopeEffectPreset": "ap",
-        "effectiveDistance": 400.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
         "explodeTreshold": 3.0,
         "explodeHitPower": 5.5,
         "explodeArmorPower": 2.5,
@@ -2440,10 +2592,16 @@
           0.03,
           0.035
         ],
+        "effectiveDistance": 400.0,
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "hitPowerMult": 2.5,
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -2625,10 +2783,17 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "onHitChanceMultFire": 1.5,
+        "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "hitPowerMult": 2.9,
         "groundCollisionEffect": "hit_8_11mm_dirt_ap",
         "ricochetEffect": "hit_8_11mm_metal_ap",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -2653,47 +2818,59 @@
           ]
         },
         "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
+          "HitPower10m": [
+            1.45,
+            10.0
+          ],
+          "HitPower100m": [
+            1.43,
+            100.0
+          ],
+          "HitPower200m": [
+            1.37,
+            300.0
+          ],
+          "HitPower400m": [
+            1.2,
+            400.0
+          ],
+          "HitPower600m": [
+            1.1,
+            600.0
           ],
           "HitPower1000m": [
-            0.9,
-            0.0
+            0.2,
+            1000.0
           ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
+          "HitPower1500m": [
+            0.01,
+            1500.0
           ]
         },
         "armorpower": {
           "ArmorPower0m": [
-            8.0,
-            10.0
+            5.0,
+            5.0
           ],
           "ArmorPower100m": [
-            7.0,
+            4.0,
             100.0
           ],
           "ArmorPower500m": [
-            5.0,
+            2.0,
             500.0
           ],
           "ArmorPower1000m": [
-            3.0,
+            1.0,
             1000.0
           ],
+          "ArmorPower1450m": [
+            0.1,
+            1450.0
+          ],
           "ArmorPower1500m": [
-            2.0,
+            0.0,
             1500.0
-          ],
-          "ArmorPower2000m": [
-            2.0,
-            2000.0
-          ],
-          "ArmorPower2500m": [
-            1.0,
-            2500.0
           ]
         },
         "visual": {

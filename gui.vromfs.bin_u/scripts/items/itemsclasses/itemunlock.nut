@@ -1,21 +1,27 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.Unlock <- class extends ItemCouponBase {
   static iType = itemType.UNLOCK
   static typeIcon = "#ui/gameuiskin#item_type_unlock.svg"
 
-  getUnlockId          = @() metaBlk?.unlock ?? metaBlk?.unlockAddProgress
-  canConsume           = @() isInventoryItem && canReceivePrize()
+  getUnlockId          = @() this.metaBlk?.unlock ?? this.metaBlk?.unlockAddProgress
+  canConsume           = @() this.isInventoryItem && this.canReceivePrize()
 
   function canReceivePrize() {
-    let unlockId = getUnlockId()
+    let unlockId = this.getUnlockId()
     return unlockId != null && !::is_unlocked_scripted(-1, unlockId)
   }
 
   function getSmallIconName() {
-    let unlock = getUnlock()
+    let unlock = this.getUnlock()
     if (unlock == null)
-      return typeIcon
+      return this.typeIcon
 
     let config = ::build_conditions_config(unlock)
     if ((config?.reward.gold ?? 0) > 0)
@@ -27,16 +33,16 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     if ((config?.rewardWarbonds?.wbAmount ?? 0) > 0)
       return "#ui/gameuiskin#item_type_warbonds.svg"
 
-    return typeIcon
+    return this.typeIcon
   }
 
   function getUnlock() {
-    let unlockId = getUnlockId()
+    let unlockId = this.getUnlockId()
     if (unlockId == null)
       return null
 
     return ::g_unlocks.getUnlockById(unlockId)
   }
 
-  getWarbondsAmount = @() getUnlock()?.amount_warbonds ?? 0
+  getWarbondsAmount = @() this.getUnlock()?.amount_warbonds ?? 0
 }

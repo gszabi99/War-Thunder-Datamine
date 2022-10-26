@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_top_menu_sections <- {
   template = {
@@ -5,8 +11,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     visualStyle = "noFrame"
     onClick = "onDropDownToggle"
     hoverMenuPos = "0"
-    getText = function(totalSections = 0) { return null }
-    getImage = function(totalSections = 0) { return null }
+    getText = function(_totalSections = 0) { return null }
+    getImage = function(_totalSections = 0) { return null }
     getWinkImage = function() { return null }
     btnName = null
     buttons = null
@@ -15,39 +21,39 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     forceHoverWidth = null
     isWide = false
 
-    getTopMenuButtonDivId = function() { return "topmenu_" + name }
-    getTopMenuDiscountId = function() { return getTopMenuButtonDivId() + "_discount" }
+    getTopMenuButtonDivId = function() { return "topmenu_" + this.name }
+    getTopMenuDiscountId = function() { return this.getTopMenuButtonDivId() + "_discount" }
   }
 }
 
-g_top_menu_sections.isSeparateTab <- function isSeparateTab(section, totalSections)
+::g_top_menu_sections.isSeparateTab <- function isSeparateTab(section, totalSections)
 {
   return section? section.mergeIndex < totalSections : true
 }
 
-g_top_menu_sections.getSectionsOrder <- function getSectionsOrder(sectionsStructure, maxSectionsCount)
+::g_top_menu_sections.getSectionsOrder <- function getSectionsOrder(sectionsStructure, maxSectionsCount)
 {
   let sections = []
-  foreach (idx, section in sectionsStructure.types)
+  foreach (_idx, section in sectionsStructure.types)
   {
-    if (!isSeparateTab(section, maxSectionsCount))
+    if (!this.isSeparateTab(section, maxSectionsCount))
       continue
 
     let result = clone section
-    result.buttons = _proceedButtonsArray(section.buttons, maxSectionsCount, sectionsStructure)
+    result.buttons = this._proceedButtonsArray(section.buttons, maxSectionsCount, sectionsStructure)
     sections.append(result)
   }
 
   foreach (section in sections)
-    clearEmptyColumns(section.buttons)
+    this.clearEmptyColumns(section.buttons)
 
   return sections
 }
 
-g_top_menu_sections._proceedButtonsArray <- function _proceedButtonsArray(itemsArray, maxSectionsCount, sectionsStructure)
+::g_top_menu_sections._proceedButtonsArray <- function _proceedButtonsArray(itemsArray, maxSectionsCount, sectionsStructure)
 {
   let result = []
-  foreach (idx, column in itemsArray)
+  foreach (_idx, column in itemsArray)
   {
     result.append([])
     foreach (item in column)
@@ -59,7 +65,7 @@ g_top_menu_sections._proceedButtonsArray <- function _proceedButtonsArray(itemsA
       }
 
       let newSection = sectionsStructure.getSectionByName(item)
-      if (isSeparateTab(newSection, maxSectionsCount))
+      if (this.isSeparateTab(newSection, maxSectionsCount))
         continue
 
       let newSectionResult = _proceedButtonsArray(newSection.buttons, maxSectionsCount, sectionsStructure)
@@ -71,7 +77,7 @@ g_top_menu_sections._proceedButtonsArray <- function _proceedButtonsArray(itemsA
   return result
 }
 
-g_top_menu_sections.clearEmptyColumns <- function clearEmptyColumns(itemsArray)
+::g_top_menu_sections.clearEmptyColumns <- function clearEmptyColumns(itemsArray)
 {
   for (local i = itemsArray.len()-1; i >= 0; i--)
   {
@@ -82,7 +88,7 @@ g_top_menu_sections.clearEmptyColumns <- function clearEmptyColumns(itemsArray)
   }
 }
 
-g_top_menu_sections.getSectionByName <- function getSectionByName(name)
+::g_top_menu_sections.getSectionByName <- function getSectionByName(name)
 {
-  return enums.getCachedType("name", name, cache.byName, this, template)
+  return enums.getCachedType("name", name, this.cache.byName, this, this.template)
 }

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.InternalItem <- class extends ItemCouponBase
@@ -7,14 +13,14 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
   getContentItem   = function()
   {
-    let contentItem = metaBlk?.item ?? metaBlk?.trophy
+    let contentItem = this.metaBlk?.item ?? this.metaBlk?.trophy
     return contentItem && ::ItemsManager.findItemById(contentItem)
   }
 
   function canConsume()
   {
-    let item = getContentItem()
-    if (!isInventoryItem || !item)
+    let item = this.getContentItem()
+    if (!this.isInventoryItem || !item)
       return false
 
     if (item.iType == itemType.TROPHY) {
@@ -32,56 +38,56 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
   function updateShopFilterMask()
   {
-    shopFilterMask = iType
-    let contentItem = getContentItem()
+    this.shopFilterMask = this.iType
+    let contentItem = this.getContentItem()
     if (contentItem)
-      shopFilterMask = shopFilterMask | contentItem.iType
+      this.shopFilterMask = this.shopFilterMask | contentItem.iType
   }
 
   getContentIconData   = function()
   {
-    let contentItem = getContentItem()
+    let contentItem = this.getContentItem()
     return contentItem ? { contentIcon = contentItem.typeIcon } : null
   }
 
-  getIcon = @(addItemName = true) showAsContentItem()
-    ? getContentItem()?.getIcon(addItemName) ?? base.getIcon(addItemName)
+  getIcon = @(addItemName = true) this.showAsContentItem()
+    ? this.getContentItem()?.getIcon(addItemName) ?? base.getIcon(addItemName)
     : base.getIcon(addItemName)
-  getSmallIconName = @() getContentItem()?.getSmallIconName() ?? typeIcon
-  getBigIcon = @() showAsContentItem()
-    ? getContentItem()?.getBigIcon() ?? base.getBigIcon()
+  getSmallIconName = @() this.getContentItem()?.getSmallIconName() ?? this.typeIcon
+  getBigIcon = @() this.showAsContentItem()
+    ? this.getContentItem()?.getBigIcon() ?? base.getBigIcon()
     : base.getBigIcon()
 
-  needShowRewardWnd = @() !metaBlk?.trophy
+  needShowRewardWnd = @() !this.metaBlk?.trophy
 
   function getViewData(params = {}) {
-    if (showAsContentItem())
-      return getContentItem()?.getViewData(
-          params.__update({count = (params?.count ?? 0) * (metaBlk?.count ?? 0)}))
+    if (this.showAsContentItem())
+      return this.getContentItem()?.getViewData(
+          params.__update({count = (params?.count ?? 0) * (this.metaBlk?.count ?? 0)}))
         ?? base.getViewData(params)
     return base.getViewData(params)
   }
 
-  showAsContentItem = @() itemDef?.tags?.showAsContentItem ?? false
+  showAsContentItem = @() this.itemDef?.tags?.showAsContentItem ?? false
 
   function getPrizeDescription(count = 1, colored = true)
   {
-    let itemText = getShortDescription(colored)
-    let quantity = count * (metaBlk?.count ?? 1)
+    let itemText = this.getShortDescription(colored)
+    let quantity = count * (this.metaBlk?.count ?? 1)
     let quantityText = quantity == 1
       ? ""
       : $"x{quantity}"
     return  $"{itemText} {quantityText}"
   }
 
-  getShortDescription = @(colored = true) showAsContentItem()
-    ? getContentItem()?.getShortDescription(colored) ?? base.getShortDescription(colored)
+  getShortDescription = @(colored = true) this.showAsContentItem()
+    ? this.getContentItem()?.getShortDescription(colored) ?? base.getShortDescription(colored)
     : base.getShortDescription(colored)
 
   function getSubstitutionItem()
   {
-    if (showAsContentItem())
-      return getContentItem()
+    if (this.showAsContentItem())
+      return this.getContentItem()
 
     return base.getSubstitutionItem()
   }

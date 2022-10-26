@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let path = "%scripts/dirtyWords"
 let dirtyWordsFilter = require($"{path}/dirtyWords.nut")
 

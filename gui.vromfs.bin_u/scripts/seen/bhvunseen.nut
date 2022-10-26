@@ -1,7 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
-let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
 /*
   behaviour config params:
@@ -14,27 +19,27 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
 let BhvUnseen = class
 {
-  eventMask    = ::EV_ON_CMD
+  eventMask    = EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
 
   function onAttach(obj)
   {
     if (obj?.value)
-      setNewConfig(obj, buildConfig(obj.value))
-    updateView(obj)
-    return ::RETCODE_NOTHING
+      this.setNewConfig(obj, this.buildConfig(obj.value))
+    this.updateView(obj)
+    return RETCODE_NOTHING
   }
 
   function buildConfig(value)
   {
-    local seenData = getVerifiedData(value)
+    local seenData = this.getVerifiedData(value)
 
     if (!::u.isArray(seenData))
-      return [getConfig(seenData)]
+      return [this.getConfig(seenData)]
 
-    seenData = ::u.map(seenData, (@(s) getVerifiedData(s)).bindenv(this))
+    seenData = ::u.map(seenData, (@(s) this.getVerifiedData(s)).bindenv(this))
 
-    return ::u.map(seenData, (@(s) getConfig(s)).bindenv(this))
+    return ::u.map(seenData, (@(s) this.getConfig(s)).bindenv(this))
   }
 
   function getVerifiedData(value)
@@ -67,8 +72,8 @@ let BhvUnseen = class
 
   function setValue(obj, valueTbl)
   {
-    setNewConfig(obj, buildConfig(valueTbl))
-    updateView(obj)
+    this.setNewConfig(obj, this.buildConfig(valueTbl))
+    this.updateView(obj)
     return u.isString(valueTbl) || u.isTable(valueTbl)
   }
 
@@ -95,14 +100,14 @@ let BhvUnseen = class
           }
 
       seenListEvents.subscribe(seenData.seen.id, entities,
-        Callback(getOnSeenChangedCb(obj), seenData))
+        Callback(this.getOnSeenChangedCb(obj), seenData))
     }
   }
 
   function getOnSeenChangedCb(obj)
   {
     let bhvClass = this
-    return @() ::check_obj(obj) && bhvClass.updateView(obj)
+    return @() checkObj(obj) && bhvClass.updateView(obj)
   }
 
   function updateView(obj)
@@ -138,6 +143,6 @@ return {
   configToString = @(config) ::save_to_json(config)
   makeConfig = @(listId, entity = null) { listId = listId, entity = entity }
   makeConfigStr = @(listId, entity = null)
-    entity ? configToString(makeConfig(listId, entity)) : listId
-  makeConfigStrByList = @(unseenList) configToString(unseenList)
+    entity ? this.configToString(this.makeConfig(listId, entity)) : listId
+  makeConfigStrByList = @(unseenList) this.configToString(unseenList)
 }

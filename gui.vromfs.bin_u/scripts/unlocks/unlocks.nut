@@ -1,125 +1,137 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format, strip, split_by_chars } = require("string")
 let regexp2 = require("regexp2")
 let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { hasFeatureBasic } = require("%scripts/user/features.nut")
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { isPlatformSony,
-        isPlatformXboxOne,
-        isPlatformPC } = require("%scripts/clientState/platform.nut")
-let psnUser = require("sony.user");
-let { isLoadingBgUnlock,
-        getLoadingBgName,
-        getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { statsTanks } = require("%scripts/user/userInfoStats.nut")
-let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockConditionsText,
-  getUnlockMultDesc, getUnlockMainCondText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.nut")
+let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
+  getUnlockMultDescByCfg, getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getUnlockMultDesc,
+  getUnlockNameText, getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockConditions, getMainProgressCondition, getProgressBarData, loadMainProgressCondition,
+  loadConditionsFromBlk, getMultipliersTable, isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
+let { isUnlockVisibleOnCurPlatform } = require("%scripts/unlocks/unlocksModule.nut")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
-::unlocks_punctuation_without_space <- ","
-::map_mission_type_to_localization <- null
+let getEmptyConditionsConfig = @() {
+  id = ""
+  unlockType = -1
+  locId = ""
+  locDescId = ""
+  locStagesDescId = ""
+  useSubUnlockName = false
+  hideSubunlocks = false
+  curVal = 0
+  maxVal = 0
+  stages = []
+  curStage = -1
+  link = ""
+  forceExternalBrowser = false
+  iconStyle = ""
+  iconParams = null
+  image = ""
+  lockStyle = ""
+  imgRatio = 1.0
+  playback = null
+  type = ""
+  conditions = []
+  hasCustomUnlockableList = false
+  isExpired = false
+  needToFillStages = true
+  needToAddCurStageToName = true
+  useLastStageAsUnlockOpening = false
+  names = [] //bit progress names. better to rename it.
 
-const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
+  showProgress = true
+  getProgressBarData = function() {
+    let res = getProgressBarData(this.type, this.curVal, this.maxVal)
+    res.show = res.show && this.showProgress
+    return res
+  }
+}
 
-::show_next_award_modetypes <- { //modeTypeName = localizationId
+let unlockConditionUnitclasses = {
+  aircraft          = ES_UNIT_TYPE_AIRCRAFT
+  tank              = ES_UNIT_TYPE_TANK
+  typeLightTank     = ES_UNIT_TYPE_TANK
+  typeMediumTank    = ES_UNIT_TYPE_TANK
+  typeHeavyTank     = ES_UNIT_TYPE_TANK
+  typeSPG           = ES_UNIT_TYPE_TANK
+  typeSPAA          = ES_UNIT_TYPE_TANK
+  typeTankDestroyer = ES_UNIT_TYPE_TANK
+  typeFighter       = ES_UNIT_TYPE_AIRCRAFT
+  typeDiveBomber    = ES_UNIT_TYPE_AIRCRAFT
+  typeBomber        = ES_UNIT_TYPE_AIRCRAFT
+  typeAssault       = ES_UNIT_TYPE_AIRCRAFT
+  typeStormovik     = ES_UNIT_TYPE_AIRCRAFT
+  typeTransport     = ES_UNIT_TYPE_AIRCRAFT
+  typeStrikeFighter = ES_UNIT_TYPE_AIRCRAFT
+}
+
+let showNextAwardModeTypes = { // modeTypeName = localizationId
   char_versus_battles_end_count_and_rank_test = "battle_participate_award"
   char_login_count                            = "day_login_award"
 }
 
-::air_stats_list <- [
-  { id="victories", icon = "lb_each_player_victories", text = "multiplayer/each_player_victories" },
-  { id="sessions", icon = "lb_each_player_session", text = "multiplayer/each_player_session"
-    countFunc = function(statBlk)
-    {
-      local sessions = statBlk?.victories ?? 0
-      sessions += statBlk?.defeats ?? 0
-      return sessions
-    }
-  },
-  { id="victories_battles", type = ::g_lb_data_type.PERCENT
-    countFunc = function(statBlk)
-    {
-      let victories = statBlk?.victories ?? 0
-      let sessions = victories + (statBlk?.defeats ?? 0)
-      if (sessions > 0)
-        return victories.tofloat() / sessions
-      return 0
-    }
-  },
-  "flyouts",
-  "deaths",
-  "air_kills",
-  "ground_kills",
-  {
-    id   = "naval_kills",
-    icon = "lb_naval_kills",
-    text = "multiplayer/naval_kills",
-    reqFeature = ["Ships"]
-  },
-  { id="wp_total", icon = "lb_wp_total_gained", text = "multiplayer/wp_total_gained", ownProfileOnly = true },
-  { id="online_exp_total", icon = "lb_online_exp_gained_for_common", text = "multiplayer/online_exp_gained_for_common" },
-]
-foreach(idx, a in ::air_stats_list)
-{
-  if (typeof(a) == "string")
-    ::air_stats_list[idx] = { id=a }
-  if (!("type" in ::air_stats_list[idx]))
-    ::air_stats_list[idx].type <- ::g_lb_data_type.NUM
+let function doesUnlockExist(unlockId) {
+  return ::get_unlock_type_by_id(unlockId) != UNLOCKABLE_UNKNOWN
 }
 
-::unlock_time_range_conditions <- ["timeRange", "char_time_range"]
+let function checkAwardsAmountPeerSession(res, config, streak, name) {
+  local maxStreak = streak
 
-local unlockConditionUnitclasses = {
-  aircraft          = ::ES_UNIT_TYPE_AIRCRAFT
-  tank              = ::ES_UNIT_TYPE_TANK
-  typeLightTank     = ::ES_UNIT_TYPE_TANK
-  typeMediumTank    = ::ES_UNIT_TYPE_TANK
-  typeHeavyTank     = ::ES_UNIT_TYPE_TANK
-  typeSPG           = ::ES_UNIT_TYPE_TANK
-  typeSPAA          = ::ES_UNIT_TYPE_TANK
-  typeTankDestroyer = ::ES_UNIT_TYPE_TANK
-  typeFighter       = ::ES_UNIT_TYPE_AIRCRAFT
-  typeDiveBomber    = ::ES_UNIT_TYPE_AIRCRAFT
-  typeBomber        = ::ES_UNIT_TYPE_AIRCRAFT
-  typeAssault       = ::ES_UNIT_TYPE_AIRCRAFT
-  typeStormovik     = ::ES_UNIT_TYPE_AIRCRAFT
-  typeTransport     = ::ES_UNIT_TYPE_AIRCRAFT
-  typeStrikeFighter = ::ES_UNIT_TYPE_AIRCRAFT
-}
-
-::is_unlocked_scripted <- function is_unlocked_scripted(unlockType, id)
-{
-  local isUnlocked = ::is_unlocked(unlockType, id)
-  if (isUnlocked)
-  {
-    if (unlockType < 0)
-      unlockType = ::get_unlock_type_by_id(id)
-
-    if (isPlatformSony && unlockType == ::UNLOCKABLE_TROPHY_PSN)
-      isUnlocked = ::ps4_is_trophy_unlocked(id)
-    else if (isPlatformXboxOne && unlockType == ::UNLOCKABLE_TROPHY_XBOXONE)
-      isUnlocked = ::xbox_is_achievement_unlocked(id)
+  res.similarAwardNamesList <- {}
+  foreach (simAward in config.similarAwards) {
+    let simUnlock = ::g_unlocks.getUnlockById(simAward.unlockId)
+    let simStreak = simUnlock.stage.param.tointeger() + simAward.stage
+    maxStreak = max(simStreak, maxStreak)
+    let simAwName = format(name, simStreak)
+    if (simAwName in res.similarAwardNamesList)
+      res.similarAwardNamesList[simAwName]++
+    else
+      res.similarAwardNamesList[simAwName] <- 1
   }
-  return isUnlocked
+
+  let mainAwName = format(name, streak)
+  if (mainAwName in res.similarAwardNamesList)
+    res.similarAwardNamesList[mainAwName]++
+  else
+    res.similarAwardNamesList[mainAwName] <- 1
+  res.similarAwardNamesList.maxStreak <- maxStreak
 }
 
-::build_unlock_desc <- function build_unlock_desc(item)
-{
-  let progressText = ::UnlockConditions.getMainConditionText(item.conditions, item.curVal, item.maxVal)
-  item.showProgress <- progressText != ""
-
-  item.text = getFullUnlockDesc(item)
-  return item
+let function getRewardCostFromBlk(blk) {
+  let res = ::Cost()
+  res.wp = typeof(blk?.amount_warpoints) == "instance" ? blk?.amount_warpoints.x.tointeger() : blk.getInt("amount_warpoints", 0)
+  res.gold = typeof(blk?.amount_gold) == "instance" ? blk?.amount_gold.x.tointeger() : blk.getInt("amount_gold", 0)
+  res.frp = typeof(blk?.amount_exp) == "instance" ? blk?.amount_exp.x.tointeger() : blk.getInt("amount_exp", 0)
+  return res
 }
 
-::set_image_by_unlock_type <- function set_image_by_unlock_type(config, unlockBlk)
-{
-  let unlockType = ::get_unlock_type(::getTblValue("type", unlockBlk, ""))
-  if (unlockType == ::UNLOCKABLE_MEDAL)
-  {
-    if (::getTblValue("subType", unlockBlk) == "clan_season_reward")
-    {
+let function setDescriptionByUnlockType(config, unlockBlk) {
+  let unlockType = ::get_unlock_type(getTblValue("type", unlockBlk, ""))
+  if (unlockType == UNLOCKABLE_MEDAL) {
+    if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
+      let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
+      config.desc <- unlock.desc()
+    }
+  }
+  else if (unlockType == UNLOCKABLE_DECAL)
+    config.desc <- loc("decals/" + unlockBlk.id + "/desc", "")
+  else
+    config.desc <- loc(unlockBlk.id + "/desc", "")
+}
+
+let function setImageByUnlockType(config, unlockBlk) {
+  let unlockType = ::get_unlock_type(getTblValue("type", unlockBlk, ""))
+  if (unlockType == UNLOCKABLE_MEDAL) {
+    if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
       let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
       config.iconStyle <- unlock.iconStyle()
       config.iconParams <- unlock.iconParams()
@@ -129,108 +141,56 @@ local unlockConditionUnitclasses = {
 
     return
   }
-  else if (unlockType == ::UNLOCKABLE_CHALLENGE && unlockBlk?.showAsBattleTask)
+  else if (unlockType == UNLOCKABLE_CHALLENGE && unlockBlk?.showAsBattleTask)
     config.image <- unlockBlk?.image
   else if (unlockBlk?.battlePassSeason != null)
     config.image = "#ui/gameuiskin#item_challenge.png"
 
   let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
-  if (decoratorType != ::g_decorator_type.UNKNOWN && !::is_in_loading_screen())
-  {
+  if (decoratorType != ::g_decorator_type.UNKNOWN && !::is_in_loading_screen()) {
     let decorator = ::g_decorator.getDecorator(unlockBlk.id, decoratorType)
     config.image <- decoratorType.getImage(decorator)
     config.imgRatio <- decoratorType.getRatio(decorator)
   }
 }
 
+::unlocks_punctuation_without_space <- ","
 
-::parse_personal_unlock_for_clan_season_id <- function parse_personal_unlock_for_clan_season_id(id)
+::unlock_time_range_conditions <- ["timeRange", "char_time_range"]
+
+::is_unlocked_scripted <- function is_unlocked_scripted(unlockType, id)
 {
-  let parts = ::g_string.split(id, "_")
-  return {
-    place = ::getTblValue(0, parts, "")
-    difficultyName = ::getTblValue(1, parts, "")
-    era = ::getTblValue(2, parts, "")
-    seasonId = ::getTblValue(3, parts, "")
+  local isUnlocked = ::is_unlocked(unlockType, id)
+  if (isUnlocked)
+  {
+    if (unlockType < 0)
+      unlockType = ::get_unlock_type_by_id(id)
+
+    if (isPlatformSony && unlockType == UNLOCKABLE_TROPHY_PSN)
+      isUnlocked = ::ps4_is_trophy_unlocked(id)
+    else if (isPlatformXboxOne && unlockType == UNLOCKABLE_TROPHY_XBOXONE)
+      isUnlocked = ::xbox_is_achievement_unlocked(id)
   }
+  return isUnlocked
 }
 
+::build_unlock_desc <- function build_unlock_desc(item)
+{
+  let mainCond = getMainProgressCondition(item.conditions)
+  let progressText = getUnlockMainCondDesc(mainCond, item.curVal, item.maxVal)
+  item.showProgress <- progressText != ""
+  return item
+}
 
 ::get_image_for_unlockable_medal <- function get_image_for_unlockable_medal(id, big = false)
 {
   return big ? $"!@ui/medals/{id}_big.ddsx" : $"!@ui/medals/{id}.ddsx"
 }
 
-
-::set_description_by_unlock_type <- function set_description_by_unlock_type(config, unlockBlk)
-{
-  let unlockType = ::get_unlock_type(::getTblValue("type", unlockBlk, ""))
-  if (unlockType == ::UNLOCKABLE_MEDAL)
-  {
-
-    if (::getTblValue("subType", unlockBlk) == "clan_season_reward")
-    {
-      let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
-      config.desc <- unlock.desc()
-    }
-  }
-  else if (unlockType == ::UNLOCKABLE_DECAL)
-  {
-    config.desc <- ::loc("decals/" + unlockBlk.id + "/desc", "")
-  }
-  else
-  {
-    config.desc <- ::loc(unlockBlk.id + "/desc", "")
-  }
-}
-
-
-::get_empty_conditions_config <- function get_empty_conditions_config()
-{
-  return {
-    id = ""
-    unlockType = -1
-    text = ""
-    locId = ""
-    locDescId = ""
-    locStagesDescId = ""
-    useSubUnlockName = false
-    hideSubunlocks = false
-    curVal = 0
-    maxVal = 0
-    stages = []
-    curStage = -1
-    link = ""
-    forceExternalBrowser = false
-    iconStyle = ""
-    iconParams = null
-    image = ""
-    lockStyle = ""
-    imgRatio = 1.0
-    playback = null
-    type = ""
-    conditions = []
-    hasCustomUnlockableList = false
-    isExpired = false
-    needToFillStages = true
-    needToAddCurStageToName = true
-    useLastStageAsUnlockOpening = false
-    names = [] //bit progress names. better to rename it.
-
-    showProgress = true
-    getProgressBarData = function()
-    {
-      let res = ::UnlockConditions.getProgressBarData(this.type, curVal, maxVal)
-      res.show = res.show && showProgress
-      return res
-    }
-  }
-}
-
 ::build_conditions_config <- function build_conditions_config(blk, showStage = -1)
 {
   let id = blk.getStr("id", "")
-  let config = ::get_empty_conditions_config()
+  let config = getEmptyConditionsConfig()
   config.id = id
   config.imgRatio = blk.getReal("aspect_ratio", 1.0)
 
@@ -258,7 +218,7 @@ local unlockConditionUnitclasses = {
   if (config.image == "" && !config?.iconData)
     ::g_unlocks.setUnlockIconCfg(config, blk)
 
-  ::set_description_by_unlock_type(config, blk)
+  setDescriptionByUnlockType(config, blk)
 
   if (blk?.isRevenueShare)
     config.isRevenueShare <- true
@@ -278,19 +238,19 @@ local unlockConditionUnitclasses = {
     let modeType = mode?.type ?? ""
     config.type = modeType
 
-    if (config.unlockType == ::UNLOCKABLE_TROPHY_PSN)
+    if (config.unlockType == UNLOCKABLE_TROPHY_PSN)
     {
       //do not show secondary conditions anywhere for psn trophies
       config.conditions = []
-      let mainCond = ::UnlockConditions.loadMainProgressCondition(mode)
+      let mainCond = loadMainProgressCondition(mode)
       if (mainCond)
         config.conditions.append(mainCond)
     } else
-      config.conditions = ::UnlockConditions.loadConditionsFromBlk(mode, blk)
+      config.conditions = loadConditionsFromBlk(mode, blk)
 
-    let mainCond = ::UnlockConditions.getMainProgressCondition(config.conditions)
+    let mainCond = getMainProgressCondition(config.conditions)
 
-    config.hasCustomUnlockableList = ::getTblValue("hasCustomUnlockableList", mainCond, false)
+    config.hasCustomUnlockableList = getTblValue("hasCustomUnlockableList", mainCond, false)
 
     if (mainCond && mainCond.values && (mainCond.values.len() > 1 || config.hasCustomUnlockableList))
       config.names = mainCond.values //for easy support old values list
@@ -300,7 +260,7 @@ local unlockConditionUnitclasses = {
 
     if (modeType=="rank")
       config.curVal = ::get_player_rank_by_country(config.country)
-    else if (::does_unlock_exist(id))
+    else if (doesUnlockExist(id))
     {
       let progress = ::get_unlock_progress(id, modeIdx)
       if (modeType == "char_player_exp")
@@ -312,11 +272,11 @@ local unlockConditionUnitclasses = {
       {
         if (!::g_battle_tasks.isBattleTask(id))
         {
-          if (config.unlockType == ::UNLOCKABLE_STREAK)
+          if (config.unlockType == UNLOCKABLE_STREAK)
           {
             config.minVal <- mode?.minVal ?? 0
             config.maxVal = mode?.maxVal ?? 0
-            config.multiplier <- ::UnlockConditions.getMultipliersTable(mode)
+            config.multiplier <- getMultipliersTable(mode)
           }
           else
             config.maxVal = progress.maxVal
@@ -334,7 +294,7 @@ local unlockConditionUnitclasses = {
       }
     }
 
-    if (::UnlockConditions.isBitModeType(modeType) && mainCond)
+    if (isBitModeType(modeType) && mainCond)
       config.curVal = ((1 << mainCond.values.len()) - 1) & config.curVal
     else if (config.curVal > config.maxVal)
       config.curVal = config.maxVal
@@ -355,7 +315,7 @@ local unlockConditionUnitclasses = {
                           : stage.getInt("param", 1)
                   }
     if (haveBasicRewards)
-      sData.reward <- ::get_reward_cost_from_blk(stage)
+      sData.reward <- getRewardCostFromBlk(stage)
     config.stages.append(sData)
   }
 
@@ -397,12 +357,12 @@ local unlockConditionUnitclasses = {
 
   if (haveBasicRewards)
   {
-    let reward = ::get_reward_cost_from_blk(blk)
+    let reward = getRewardCostFromBlk(blk)
     if (reward > ::zero_money)
       config.reward <- reward
   }
 
-  if (config.unlockType == ::UNLOCKABLE_WARBOND)
+  if (config.unlockType == UNLOCKABLE_WARBOND)
   {
     let wbAmount = blk?.amount_warbonds
     if (wbAmount)
@@ -417,16 +377,6 @@ local unlockConditionUnitclasses = {
   return config
 }
 
-::get_unlock_rewards_text <- function get_unlock_rewards_text(config)
-{
-  let textsList = []
-  if ("reward" in config)
-    textsList.append(config.reward.tostring())
-  if ("rewardWarbonds" in config)
-    textsList.append(::g_warbonds.getWarbondPriceText(config.rewardWarbonds.wbAmount))
-  return ::g_string.implode(textsList, ", ")
-}
-
 ::get_icon_from_unlock_blk <- function get_icon_from_unlock_blk(unlockBlk)
 {
   let unlockType = ::get_unlock_type(unlockBlk.type)
@@ -437,25 +387,16 @@ local unlockConditionUnitclasses = {
     return decoratorType.getImage(decorator)
   }
 
-  if (unlockType == ::UNLOCKABLE_AIRCRAFT)
+  if (unlockType == UNLOCKABLE_AIRCRAFT)
   {
     let unit = ::getAircraftByName(unlockBlk.id)
     if (unit)
       return unit.getUnlockImage()
   }
-  else if (unlockType == ::UNLOCKABLE_PILOT)
+  else if (unlockType == UNLOCKABLE_PILOT)
     return $"#ui/images/avatars/{unlockBlk.id}.png"
 
   return unlockBlk?.icon
-}
-
-::get_reward_cost_from_blk <- function get_reward_cost_from_blk(blk)
-{
-  let res = ::Cost()
-  res.wp = typeof(blk?.amount_warpoints) == "instance" ? blk?.amount_warpoints.x.tointeger() : blk.getInt("amount_warpoints", 0)
-  res.gold = typeof(blk?.amount_gold) == "instance" ? blk?.amount_gold.x.tointeger() : blk.getInt("amount_gold", 0)
-  res.frp = typeof(blk?.amount_exp) == "instance" ? blk?.amount_exp.x.tointeger() : blk.getInt("amount_exp", 0)
-  return res
 }
 
 ::is_unlock_visible <- function is_unlock_visible(unlockBlk, needCheckVisibilityByPlatform = true)
@@ -465,7 +406,7 @@ local unlockConditionUnitclasses = {
   if (unlockBlk?.hidden)
     return false
 
-  if (needCheckVisibilityByPlatform && ! is_unlock_visible_on_cur_platform(unlockBlk))
+  if (needCheckVisibilityByPlatform && !isUnlockVisibleOnCurPlatform(unlockBlk))
     return false
 
   let unlockId = unlockBlk?.id
@@ -478,11 +419,11 @@ local unlockConditionUnitclasses = {
   if ((unlockBlk % "hideForLang").indexof(::g_language.getLanguageName()) != null)
     return false
   foreach (feature in unlockBlk % "reqFeature")
-    if (!::has_feature(feature))
+    if (!hasFeature(feature))
       return false
   if (unlockBlk?.mode != null && unlockBlk.mode.blockCount() > 0)
     foreach (cond in getUnlockConditions(unlockBlk.mode))
-      if (cond?.type == "playerHasFeature" && cond?.feature != null && !::has_feature(cond.feature))
+      if (cond?.type == "playerHasFeature" && cond?.feature != null && !hasFeature(cond.feature))
         return false
   if (!hasFeatureBasic("Tanks") && ::is_unlock_tanks_related(unlockId, unlockBlk))
     return false
@@ -491,45 +432,6 @@ local unlockConditionUnitclasses = {
   if (::g_unlocks.isHiddenByUnlockedUnlocks(unlockBlk))
     return false
 
-  return true
-}
-
-::is_unlock_visible_on_cur_platform <- function is_unlock_visible_on_cur_platform(unlockBlk)
-{
-  if (!!unlockBlk?.psn && !isPlatformSony)
-    return false
-  if (!!unlockBlk?.ps_plus && !psnUser.hasPremium())
-    return false
-  if (unlockBlk?.hide_for_platform == ::target_platform)
-    return false
-
-  let unlockType = ::get_unlock_type(unlockBlk?.type ?? "")
-  if (unlockType == ::UNLOCKABLE_TROPHY_PSN && !isPlatformSony)
-    return false
-  if (unlockType == ::UNLOCKABLE_TROPHY_XBOXONE && !isPlatformXboxOne)
-    return false
-  if (unlockType == ::UNLOCKABLE_TROPHY_STEAM && !isPlatformPC)
-    return false
-  return true
-}
-
-::is_decal_visible <- function is_decal_visible(decalBlk)
-{
-  if (!::is_decal_allowed(decalBlk.getBlockName(), ""))
-    return false
-  if (decalBlk?.psn && !isPlatformSony)
-    return false
-  if (decalBlk?.ps_plus && !psnUser.hasPremium())
-    return false
-  if (decalBlk?.hideUntilUnlocked && !::player_have_decal(decalBlk.getBlockName()))
-    return false
-  if (decalBlk?.showByEntitlement && !::has_entitlement(decalBlk.showByEntitlement))
-    return false
-  if ((decalBlk % "hideForLang").indexof(::g_language.getLanguageName()) != null)
-    return false
-  foreach (feature in decalBlk % "reqFeature")
-    if (!::has_feature(feature))
-      return false
   return true
 }
 
@@ -555,7 +457,7 @@ local unlockConditionUnitclasses = {
   foreach (mode in unlockBlk % "mode")
   {
     if (mode.unitClass)
-      return mode.unitClass == "tank" || ::getTblValue(mode.unitClass, ::mapWpUnitClassToWpUnitType, "") == "Tank"
+      return mode.unitClass == "tank" || getTblValue(mode.unitClass, ::mapWpUnitClassToWpUnitType, "") == "Tank"
 
     if (mode.type == "char_unit_exist")
       return ::getAircraftByName(mode.unit)?.isTank()
@@ -571,10 +473,10 @@ local unlockConditionUnitclasses = {
       if (condition.type == "playerType")
       {
         foreach (unitType in condition % "unitType")
-          if (::isInArray(unitType, statsTanks))
+          if (isInArray(unitType, statsTanks))
             return true
         foreach (unitClass in condition % "unitClass")
-          if ((unlockConditionUnitclasses?[unitClass] ?? ::ES_UNIT_TYPE_INVALID) == ::ES_UNIT_TYPE_TANK)
+          if ((unlockConditionUnitclasses?[unitClass] ?? ES_UNIT_TYPE_INVALID) == ES_UNIT_TYPE_TANK)
             return true
       }
       else if (condition.type == "playerUnit")
@@ -611,47 +513,46 @@ local unlockConditionUnitclasses = {
   tObj.setValue("title" in config? config.title : "")
 
   let uObj = obj.findObject("unlock_name")
-  uObj.setValue(::getTblValue("name", config, ""))
+  uObj.setValue(getTblValue("name", config, ""))
 
-  let amount = ::getTblValue("amount", config, 1)
+  let amount = getTblValue("amount", config, 1)
 
   if ("similarAwardNamesList" in config)
   {
-    let maxStreak = ::getTblValue("maxStreak", config.similarAwardNamesList, 1)
-    local repeatText = ::loc("streaks/rewarded_count", { count = ::colorize("activeTextColor", amount) })
+    let maxStreak = getTblValue("maxStreak", config.similarAwardNamesList, 1)
+    local repeatText = loc("streaks/rewarded_count", { count = colorize("activeTextColor", amount) })
     if (!::g_unlocks.hasSpecialMultiStageLocId(config.id, maxStreak))
-      repeatText = format(::loc("streaks/max_streak_amount"), maxStreak.tostring()) + "\n" + repeatText
+      repeatText = format(loc("streaks/max_streak_amount"), maxStreak.tostring()) + "\n" + repeatText
     obj.findObject("mult_awards_text").setValue(repeatText)
   }
 
   if (config?.isUnlockDesc ?? false) {
     obj.findObject("desc_text").setValue(getUnlockDesc(config.unlockCfg))
-    obj.findObject("mainCond").setValue(getUnlockMainCondText(config.unlockCfg))
-    obj.findObject("multDesc").setValue(getUnlockMultDesc(config.unlockCfg))
-    obj.findObject("conds").setValue(getUnlockConditionsText(config.unlockCfg))
+    obj.findObject("mainCond").setValue(getUnlockMainCondDescByCfg(config.unlockCfg))
+    obj.findObject("multDesc").setValue(getUnlockMultDescByCfg(config.unlockCfg))
+    obj.findObject("conds").setValue(getUnlockCondsDescByCfg(config.unlockCfg))
     obj.findObject("obtain_info").setValue(config?.obtainInfo ?? "")
 
     if (isForTooltip) {
       let view = ::g_unlock_view.getSubunlocksView(config.unlockCfg)
       if (view) {
-        let markup = ::handyman.renderCached("%gui/unlocks/subunlocks", view)
+        let markup = ::handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
         let nestObj = obj.findObject("subunlocks")
         nestObj.show(true)
         obj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
       }
     }
   }
-  else if (config?.type == ::UNLOCKABLE_STREAK) {
+  else if (config?.type == UNLOCKABLE_STREAK) {
     local cond = ""
     if (config?.minVal && config.maxVal)
-      cond = format(::loc("streaks/min_max_limit"), config.minVal, config.maxVal)
+      cond = format(loc("streaks/min_max_limit"), config.minVal, config.maxVal)
     else if (config?.minVal)
-      cond = format(::loc("streaks/min_limit"), config.minVal)
+      cond = format(loc("streaks/min_limit"), config.minVal)
     else if (config.maxVal)
-      cond = format(::loc("streaks/max_limit"), config.maxVal)
+      cond = format(loc("streaks/max_limit"), config.maxVal)
 
-    let desc = ::g_string.implode([config?.desc ?? "", cond,
-      ::UnlockConditions.getMultipliersText(config)], "\n")
+    let desc = ::g_string.implode([config?.desc ?? "", cond, getUnlockMultDesc(config)], "\n")
     obj.findObject("desc_text").setValue(desc)
   }
   else
@@ -667,9 +568,9 @@ local unlockConditionUnitclasses = {
   if (config?.showAsTrophyContent)
   {
     let isUnlocked = ::is_unlocked_scripted(-1, config?.id)
-    local text = ::loc(isUnlocked ? "mainmenu/itemReceived" : "mainmenu/itemCanBeReceived")
+    local text = loc(isUnlocked ? "mainmenu/itemReceived" : "mainmenu/itemCanBeReceived")
     if (isUnlocked)
-      text += "\n" + ::colorize("badTextColor", ::loc("mainmenu/receiveOnlyOnce"))
+      text += "\n" + colorize("badTextColor", loc("mainmenu/receiveOnlyOnce"))
     obj.findObject("state").show(true)
     obj.findObject("state_text").setValue(text)
     obj.findObject("state_icon")["background-image"] = isUnlocked ? "#ui/gameuiskin#favorite.png" : "#ui/gameuiskin#locked.svg"
@@ -677,11 +578,11 @@ local unlockConditionUnitclasses = {
 
   let rObj = obj.findObject("award_text")
   rObj.setValue((config?.rewardText ?? "") != ""
-    ? $"{::loc("challenge/reward")} {config.rewardText}"
+    ? $"{loc("challenge/reward")} {config.rewardText}"
     : "")
 
   let awMultObj = obj.findObject("award_multiplier")
-  if (::checkObj(awMultObj))
+  if (checkObj(awMultObj))
   {
     let show = amount > 1
     awMultObj.show(show)
@@ -693,7 +594,7 @@ local unlockConditionUnitclasses = {
 ::set_unlock_icon_by_config <- function set_unlock_icon_by_config(obj, config, isForTooltip = false, containerSizePx = 0)
 {
   let iconStyle = ("iconStyle" in config)? config.iconStyle : ""
-  let iconParams = ::getTblValue("iconParams", config, null)
+  let iconParams = getTblValue("iconParams", config, null)
   let ratio = (("descrImage" in config) && ("descrImageRatio" in config))? config.descrImageRatio : 1.0
   local image = ("descrImage" in config)? config.descrImage : ""
   if (isForTooltip)
@@ -744,167 +645,6 @@ local unlockConditionUnitclasses = {
   return clone ::default_unlock_data
 }
 
-::getDifficultyLocalizationText <- function getDifficultyLocalizationText(difficulty)
-{
-  if (difficulty == "hardcore")
-    return ::loc("difficulty2")
-  else if (difficulty == "realistic")
-    return ::loc("difficulty1")
-  else
-    return ::loc("difficulty0")
-}
-
-::get_mode_localization_text <- function get_mode_localization_text(modeInt)
-{
-  if (::map_mission_type_to_localization == null)
-  {
-    let blk = ::get_game_settings_blk()
-    if (!blk?.mapIntDiffToName)
-      return null
-
-    ::map_mission_type_to_localization = ::buildTableFromBlk(blk.mapIntDiffToName)
-  }
-
-  return ::getTblValue(modeInt.tostring(), ::map_mission_type_to_localization, "")
-}
-
-::get_unlock_name_text <- function get_unlock_name_text(unlockType, id)
-  //unlockType = -1 will find unlock by id, so better to use correct unlocktype when already known
-{
-  if (::g_battle_tasks.isBattleTask(id))
-    return ::g_battle_tasks.getLocalizedTaskNameById(id)
-
-  if (unlockType < 0)
-    unlockType = ::get_unlock_type_by_id(id)
-  switch (unlockType)
-  {
-    case ::UNLOCKABLE_AIRCRAFT:
-      return ::getUnitName(id)
-
-    case ::UNLOCKABLE_SKIN:
-      let unitName = ::g_unlocks.getPlaneBySkinId(id)
-      local res = ::g_decorator.getDecoratorById(id)?.getDesc() ?? ""
-      if (unitName != "")
-        res += ::loc("ui/parentheses/space", { text = ::getUnitName(unitName) })
-      return res
-
-    case ::UNLOCKABLE_DECAL:
-      return ::loc("decals/" + id)
-
-    case ::UNLOCKABLE_ATTACHABLE:
-      return ::loc("attachables/" + id)
-
-    case ::UNLOCKABLE_WEAPON:
-      return ""
-
-    case ::UNLOCKABLE_ACHIEVEMENT:
-    case ::UNLOCKABLE_CHALLENGE:
-    case ::UNLOCKABLE_INVENTORY:
-      let unlockBlk = ::g_unlocks.getUnlockById(id)
-      if (unlockBlk?.useSubUnlockName)
-        return getSubUnlockLocName(unlockBlk)
-      if (unlockBlk?.locId)
-        return getUnlockLocName(unlockBlk)
-      return ::loc(id + "/name")
-
-    case ::UNLOCKABLE_DIFFICULTY:
-      return ::getDifficultyLocalizationText(id)
-
-    case ::UNLOCKABLE_ENCYCLOPEDIA:
-      let index = id.indexof("/")
-      if (index != null)
-        return ::loc("encyclopedia/" + id.slice(index + 1))
-      return ::loc("encyclopedia/" + id)
-
-    case ::UNLOCKABLE_SINGLEMISSION:
-      let index = id.indexof("/")
-      if (index != null)
-        return ::loc("missions/" + id.slice(index + 1))
-      return ::loc("missions/" + id)
-
-    case ::UNLOCKABLE_TITLE:
-      return ::loc("title/"+id)
-
-    case ::UNLOCKABLE_PILOT:
-      return ::loc($"{id}/name", "")
-
-    case ::UNLOCKABLE_STREAK:
-      let unlockBlk = ::g_unlocks.getUnlockById(id)
-      if (unlockBlk?.useSubUnlockName)
-        return getSubUnlockLocName(unlockBlk)
-      if (unlockBlk?.locId)
-        return getUnlockLocName(unlockBlk)
-      local res = ::loc("streaks/" + id)
-      if (res.indexof("%d") != null)
-          res = ::loc("streaks/" + id + "/multiple")
-      return res
-
-    case ::UNLOCKABLE_AWARD:
-      if (isLoadingBgUnlock(id))
-        return getLoadingBgName(getLoadingBgIdByUnlockId(id))
-      return ::loc("award/"+id)
-
-    case ::UNLOCKABLE_ENTITLEMENT:
-      return getEntitlementName(getEntitlementConfig(id))
-
-    case ::UNLOCKABLE_COUNTRY:
-      return ::loc(id)
-
-    case ::UNLOCKABLE_AUTOCOUNTRY:
-      return ::loc("award/autocountry")
-
-    case ::UNLOCKABLE_SLOT:
-      return ::loc("options/crew")
-
-    case ::UNLOCKABLE_DYNCAMPAIGN:
-      let parts = split_by_chars(id, "_")
-      local countryId = (parts.len() > 1) ? "country_" + parts[parts.len() - 1] : null
-      if (::isInArray(countryId, shopCountriesList))
-        parts.pop()
-      else
-        countryId = null
-      let locId = "dynamic/" + ::g_string.implode(parts, "_")
-      return ::loc(locId) + (countryId ? ::loc("ui/parentheses/space", { text = ::loc(countryId) }) : "")
-
-    case ::UNLOCKABLE_TROPHY:
-      let item = ::ItemsManager.findItemById(id, itemType.TROPHY)
-      return item ? item.getName(false) : ::loc("item/" + id)
-
-    case ::UNLOCKABLE_YEAR:
-      return id.len() > 4 ? id.slice(id.len()-4, id.len()) : ""
-
-    case ::UNLOCKABLE_MEDAL:
-      let unlockBlk = ::g_unlocks.getUnlockById(id)
-      if (::getTblValue("subType", unlockBlk) == "clan_season_reward")
-      {
-        let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
-        return unlock.name()
-      }
-      break
-  }
-
-  return ::loc(id + "/name")
-}
-
-::get_unlock_type_text <- function get_unlock_type_text(unlockType, id = null)
-{
-  if (unlockType == ::UNLOCKABLE_AUTOCOUNTRY)
-    return ::loc("unlocks/country")
-
-  if (id && ::g_battle_tasks.isBattleTask(id))
-    return ::loc("unlocks/battletask")
-
-  if (id && isLoadingBgUnlock(id))
-    return ::loc("unlocks/loading_bg")
-
-  return ::loc("unlocks/" + ::get_name_by_unlock_type(unlockType))
-}
-
-::does_unlock_exist <- function does_unlock_exist(unlockId)
-{
-  return ::get_unlock_type_by_id(unlockId) != ::UNLOCKABLE_UNKNOWN
-}
-
 ::build_log_unlock_data <- function build_log_unlock_data(config)
 {
   let showLocalState = config?.showLocalState ?? true
@@ -923,13 +663,13 @@ local unlockConditionUnitclasses = {
   let id = config?.displayId ?? realId
 
   res.desc = null
-  local cond = {}
+  local cond = null
   if (unlockBlk)
   {
     cond = ::build_conditions_config(unlockBlk, stage)
     let isProgressing = showProgress && (stage == -1 || stage == cond.curStage) && cond.curVal < cond.maxVal
     let progressData = isProgressing ? cond.getProgressBarData() : null
-    let haveProgress = ::getTblValue("show", progressData, false)
+    let haveProgress = getTblValue("show", progressData, false)
     if (haveProgress)
       res.progressBar <- progressData
     cond = ::build_unlock_desc(cond)
@@ -941,25 +681,25 @@ local unlockConditionUnitclasses = {
   res.id = id
   res.type = uType
   res.rewardText = ""
-  res.amount = ::getTblValue("amount", config, res.amount)
+  res.amount = getTblValue("amount", config, res.amount)
 
   let battleTask = ::g_battle_tasks.getTaskById(realId)
   let isBattleTask = ::g_battle_tasks.isBattleTask(battleTask)
   if (isBattleTask)
   {
     if (needTitle)
-      res.title = ::loc("unlocks/battletask")
+      res.title = loc("unlocks/battletask")
     res.name = ::g_battle_tasks.getLocalizedTaskNameById(battleTask)
     res.image = ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask).image
     if (::g_battle_tasks.isTaskDone(battleTask))
       res.image2 <- "#ui/gameuiskin#icon_primary_ok.svg"
     else if (::g_battle_tasks.isTaskTimeExpired(battleTask))
       res.image2 <- "#ui/gameuiskin#icon_primary_fail.svg"
-  } else
-  {
-    res.name = ::get_unlock_name_text(uType, id)
+  }
+  else {
+    res.name = getUnlockNameText(uType, id)
     if (needTitle)
-      res.title = ::get_unlock_type_text(uType, id)
+      res.title = getUnlockTypeText(uType, id)
   }
 
   if (config?.showAsTrophyContent)
@@ -967,9 +707,9 @@ local unlockConditionUnitclasses = {
 
   switch (uType)
   {
-    case ::UNLOCKABLE_SKIN:
-    case ::UNLOCKABLE_ATTACHABLE:
-    case ::UNLOCKABLE_DECAL:
+    case UNLOCKABLE_SKIN:
+    case UNLOCKABLE_ATTACHABLE:
+    case UNLOCKABLE_DECAL:
       let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(uType)
       res.image = decoratorType.userlogPurchaseIcon
       res.name = decoratorType.getLocName(id)
@@ -984,7 +724,7 @@ local unlockConditionUnitclasses = {
       }
       break
 
-    case ::UNLOCKABLE_MEDAL:
+    case UNLOCKABLE_MEDAL:
       if (id != "")
       {
         let imagePath = ::get_image_for_unlockable_medal(id)
@@ -996,21 +736,21 @@ local unlockConditionUnitclasses = {
       }
       break
 
-    case ::UNLOCKABLE_CHALLENGE:
-      let challengeDescription = ::loc(id+"/desc", "")
+    case UNLOCKABLE_CHALLENGE:
+      let challengeDescription = loc(id+"/desc", "")
       if (challengeDescription && challengeDescription != "")
         res.desc = challengeDescription
       res.image = "#ui/gameuiskin#unlock_challenge.png"
       res.isLocked <- !::is_unlocked_scripted(-1, id)
       break
 
-    case ::UNLOCKABLE_SINGLEMISSION:
+    case UNLOCKABLE_SINGLEMISSION:
       res.image = "#ui/gameuiskin#unlock_mission.png"
       break
 
-    case ::UNLOCKABLE_TITLE:
-    case ::UNLOCKABLE_ACHIEVEMENT:
-      let challengeDescription = ::loc(id+"/desc", "")
+    case UNLOCKABLE_TITLE:
+    case UNLOCKABLE_ACHIEVEMENT:
+      let challengeDescription = loc(id+"/desc", "")
       if (challengeDescription && challengeDescription != "")
         res.desc = challengeDescription
       if (unlockBlk?.battlePassSeason != null)
@@ -1022,11 +762,11 @@ local unlockConditionUnitclasses = {
       res.image = "#ui/gameuiskin#unlock_achievement.png"
       break
 
-    case ::UNLOCKABLE_TROPHY_STEAM:
+    case UNLOCKABLE_TROPHY_STEAM:
       res.image = "#ui/gameuiskin#unlock_achievement.png"
       break
 
-    case ::UNLOCKABLE_PILOT:
+    case UNLOCKABLE_PILOT:
       if (id!="")
       {
         res.descrImage <- $"#ui/images/avatars/{id}.png"
@@ -1035,9 +775,9 @@ local unlockConditionUnitclasses = {
       }
       break
 
-    case ::UNLOCKABLE_STREAK:
-      local name = ::loc("streaks/" + id)
-      local desc = ::loc("streaks/" + id + "/desc", "")
+    case UNLOCKABLE_STREAK:
+      local name = loc("streaks/" + id)
+      local desc = loc("streaks/" + id + "/desc", "")
       local iconStyle = "streak_" + id
 
       if (isMultiStage && stage >= 0 && unlockBlk?.stage.param != null)
@@ -1046,15 +786,15 @@ local unlockConditionUnitclasses = {
         local maxStreak = unlockBlk.stage.param.tointeger() + stage
         if ((config?.similarAwards.len() ?? 0) > 0)
         {
-          ::checkAwardsAmountPeerSession(res, config, maxStreak, name)
+          checkAwardsAmountPeerSession(res, config, maxStreak, name)
           maxStreak = res.similarAwardNamesList.maxStreak
-          name = ::loc("streaks/" + id + "/multiple", name)
-          desc = ::loc("streaks/" + id + "/multiple/desc", desc)
+          name = loc("streaks/" + id + "/multiple", name)
+          desc = loc("streaks/" + id + "/multiple/desc", desc)
         }
         else if (::g_unlocks.isUnlockMultiStageLocId(id))
         {
           let stageId = ::g_unlocks.getMultiStageId(id, maxStreak)
-          name = ::loc("streaks/" + stageId)
+          name = loc("streaks/" + stageId)
           iconStyle = "streak_" + stageId
         }
 
@@ -1064,14 +804,14 @@ local unlockConditionUnitclasses = {
       else
       {
         if (name.indexof("%d") != null)
-          name = ::loc("streaks/" + id + "/multiple")
+          name = loc("streaks/" + id + "/multiple")
         if (desc.indexof("%d") != null)
         {
           let descValue = unlockBlk?.stage ? (unlockBlk?.stage.param ?? 0) : (unlockBlk?.mode.num ?? 0)
           if (descValue > 0)
             desc = format(desc, descValue)
           else
-            desc = ::loc("streaks/" + id + "/multiple/desc", desc)
+            desc = loc("streaks/" + id + "/multiple/desc", desc)
         }
       }
 
@@ -1084,17 +824,17 @@ local unlockConditionUnitclasses = {
       res.multiplier <- cond?.multiplier ?? {}
       break
 
-    case ::UNLOCKABLE_AWARD:
+    case UNLOCKABLE_AWARD:
       if (isBattleTask)
         break
 
-      res.desc = ::loc("award/"+id+"/desc", "")
+      res.desc = loc("award/"+id+"/desc", "")
       if (id == "money_back")
       {
         let unitName = config?.unit
         if (unitName)
           res.desc = "".concat(res.desc, (res.desc == "")? "" : "\n",
-            ::loc("award/money_back/unit", { unitName = ::getUnitName(unitName)}))
+            loc("award/money_back/unit", { unitName = ::getUnitName(unitName)}))
       }
       if (config?.isAerobaticSmoke)
       {
@@ -1104,60 +844,60 @@ local unlockConditionUnitclasses = {
       }
       break
 
-    case ::UNLOCKABLE_AUTOCOUNTRY:
-      res.rewardText = ::loc("award/autocountry")
+    case UNLOCKABLE_AUTOCOUNTRY:
+      res.rewardText = loc("award/autocountry")
       break
 
-    case ::UNLOCKABLE_SLOT:
-      let slotNum = ::getTblValue("slot", config, 0)
+    case UNLOCKABLE_SLOT:
+      let slotNum = getTblValue("slot", config, 0)
       res.name = (slotNum > 0)
-        ? ::loc("options/crewName") + slotNum.tostring()
-        : ::loc("options/crew")
-      res.desc = ::loc("slot/"+id+"/desc", "")
+        ? loc("options/crewName") + slotNum.tostring()
+        : loc("options/crew")
+      res.desc = loc("slot/"+id+"/desc", "")
       res.image = "#ui/gameuiskin#log_crew.png"
       break;
 
-    case ::UNLOCKABLE_DYNCAMPAIGN:
-    case ::UNLOCKABLE_YEAR:
+    case UNLOCKABLE_DYNCAMPAIGN:
+    case UNLOCKABLE_YEAR:
       if (unlockBlk?.mode.country)
         res.image = ::get_country_icon(unlockBlk.mode.country)
       break
 
-    case ::UNLOCKABLE_SKILLPOINTS:
-      let slotId = ::getTblValue("slot", config, -1)
+    case UNLOCKABLE_SKILLPOINTS:
+      let slotId = getTblValue("slot", config, -1)
       let crew = ::get_crew_by_id(slotId)
-      let crewName = crew? ::g_crew.getCrewName(crew) : ::loc("options/crew")
+      let crewName = crew? ::g_crew.getCrewName(crew) : loc("options/crew")
       let country = crew? crew.country : config?.country ?? ""
-      let skillPoints = ::getTblValue("sp" ,config, 0)
+      let skillPoints = getTblValue("sp" ,config, 0)
       let skillPointsStr = ::getCrewSpText(skillPoints)
 
       if (::checkCountry(country, "userlog EULT_*_CREW"))
         res.image2 = ::get_country_icon(country)
 
-      res.desc = crewName + ::loc("unlocks/skillpoints/desc") + skillPointsStr
+      res.desc = crewName + loc("unlocks/skillpoints/desc") + skillPointsStr
       res.image = "#ui/gameuiskin#log_crew.png"
       break
 
-    case ::UNLOCKABLE_TROPHY:
+    case UNLOCKABLE_TROPHY:
       let item = ::ItemsManager.findItemById(id)
       if (item)
       {
-        res.title = ::get_unlock_type_text(uType, realId)
-        res.name = ::get_unlock_name_text(uType, realId)
+        res.title = getUnlockTypeText(uType, realId)
+        res.name = getUnlockNameText(uType, realId)
         res.image = item.getSmallIconName()
         res.desc = item.getDescription()
         res.rewardText = item.getName()
       }
       break
 
-    case ::UNLOCKABLE_WARBOND:
+    case UNLOCKABLE_WARBOND:
       let wbAmount = config?.warbonds
       let wbStageName = config?.warbondStageName
       let wb = ::g_warbonds.findWarbond(id, wbStageName)
       if (wb !=null && wbAmount != null)
         res.rewardText = wb.getPriceText(wbAmount, true, false)
       break
-    case ::UNLOCKABLE_AIRCRAFT:
+    case UNLOCKABLE_AIRCRAFT:
       let unit = ::getAircraftByName(id)
       if (unit)
         res.image = unit.getUnlockImage()
@@ -1170,27 +910,29 @@ local unlockConditionUnitclasses = {
     res.name = getUnlockLocName(unlockBlk)
 
   if ((unlockBlk?.customDescription ?? "") != "")
-    res.desc = ::loc(unlockBlk.customDescription, "")
+    res.desc = loc(unlockBlk.customDescription, "")
 
-  if (res.desc == null)
-    if ((cond?.text ?? "") != "") {
-      res.desc = cond.text
+  if (res.desc == null) {
+    let unlockDesc = cond ? getFullUnlockDesc(cond) : ""
+    if (unlockDesc != "") {
+      res.desc = unlockDesc
       res.isUnlockDesc <- true
       res.unlockCfg <- cond
     }
     else
-      res.desc = (id != realId) ? ::loc($"{id}/desc", "") : ""
+      res.desc = (id != realId) ? loc($"{id}/desc", "") : ""
+  }
 
-  if (uType == ::UNLOCKABLE_PILOT
+  if (uType == UNLOCKABLE_PILOT
       && unlockBlk?.marketplaceItemdefId
       && id != "" && !::is_unlocked_scripted(-1, id)) {
-    res.obtainInfo <- ::colorize("userlogColoredText", ::loc("shop/pilot/coupon/info"))
+    res.obtainInfo <- colorize("userlogColoredText", loc("shop/pilot/coupon/info"))
     res.desc = "\n".join([res.desc, res.obtainInfo], true)
   }
 
   let rewards = {wp = "amount_warpoints", exp = "amount_exp", gold = "amount_gold"}
   local rewardsWasLoadedFromLog = false;
-  foreach( nameInConfig, nameInBlk in rewards) //try load rewards data from log first because
+  foreach( nameInConfig, _nameInBlk in rewards) //try load rewards data from log first because
     if (nameInConfig in config)                //award message can haven't appropriate unlock
     {
       res[nameInConfig] = config[nameInConfig]
@@ -1223,7 +965,7 @@ local unlockConditionUnitclasses = {
     // isMultiStage=false means stages are hard-coded (usually used for challenges and achievements).
     // isMultiStage=true means stages are auto-generated (usually used only for streaks).
     // there are streaks with stages and isMultiStage=false and they should have own name, icon, etc
-    if (stage >= 0 && !isMultiStage && uType != ::UNLOCKABLE_STREAK)
+    if (stage >= 0 && !isMultiStage && uType != UNLOCKABLE_STREAK)
     {
       local curStage = -1
       for (local j = 0; j < unlockBlk.blockCount(); j++)
@@ -1261,12 +1003,12 @@ local unlockConditionUnitclasses = {
     if (rBlock?.iconStyle)
       res.iconStyle <- rBlock.iconStyle
 
-    if (::getTblValue("descrImage", res, "") == "")
+    if (getTblValue("descrImage", res, "") == "")
     {
       let icon = ::get_icon_from_unlock_blk(unlockBlk)
       if (icon)
         res.descrImage <- icon
-      else if (::getTblValue("iconStyle", res, "") == "")
+      else if (getTblValue("iconStyle", res, "") == "")
         res.iconStyle <- !showLocalState || ::is_unlocked_scripted(uType, id) ? "default_unlocked"
           : "default_locked"
     }
@@ -1290,12 +1032,12 @@ local unlockConditionUnitclasses = {
 
   if (showLocalState)
   {
-    let cost = ::Cost(::getTblValue("wp", res, 0),
-                        ::getTblValue("gold", res, 0),
-                        ::getTblValue("frp", res, 0),
-                        ::getTblValue("rp", res, 0))
+    let cost = ::Cost(getTblValue("wp", res, 0),
+                        getTblValue("gold", res, 0),
+                        getTblValue("frp", res, 0),
+                        getTblValue("rp", res, 0))
 
-    res.rewardText = ::colorize("activeTextColor", res.rewardText + cost.tostring())
+    res.rewardText = colorize("activeTextColor", res.rewardText + cost.tostring())
     res.showShareBtn <- true
   }
 
@@ -1307,7 +1049,7 @@ local unlockConditionUnitclasses = {
 ::get_next_award_text <- function get_next_award_text(unlockId)
 {
   local res = ""
-  if (!::has_feature("ShowNextUnlockInfo"))
+  if (!hasFeature("ShowNextUnlockInfo"))
     return res
 
   let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
@@ -1319,7 +1061,7 @@ local unlockConditionUnitclasses = {
   foreach (mode in unlockBlk % "mode")
   {
     let mType = mode.getStr("type", "")
-    if (mType in ::show_next_award_modetypes)
+    if (mType in showNextAwardModeTypes)
     {
       modeType = mType
       num = mode.getInt("num", 0)
@@ -1343,7 +1085,7 @@ local unlockConditionUnitclasses = {
   local nextStage = -1
   local nextNum = -1
   foreach(cb in ::g_unlocks.getAllUnlocksWithBlkOrder())
-    if (!cb.hidden || (cb.type && ::get_unlock_type(cb.type) == ::UNLOCKABLE_AUTOCOUNTRY))
+    if (!cb.hidden || (cb.type && ::get_unlock_type(cb.type) == UNLOCKABLE_AUTOCOUNTRY))
       foreach (modeIdx, mode in cb % "mode")
         if (mode.getStr("type", "") == modeType)
         {
@@ -1360,41 +1102,16 @@ local unlockConditionUnitclasses = {
     return res
 
   let diff = nextNum - num
-  local locId = ::show_next_award_modetypes[modeType]
+  local locId = showNextAwardModeTypes[modeType]
   locId += "/" + ((diff == 1)? "one_more" : "several")
 
   let unlockData = ::build_log_unlock_data({ id = nextUnlock.id, stage = nextStage })
-  res = ::loc("next_award", { awardName = unlockData.name })
+  res = loc("next_award", { awardName = unlockData.name })
   if (unlockData.rewardText != "")
-    res += ::loc("ui/colon") + "\n" + ::loc(locId, { amount = diff
+    res += loc("ui/colon") + "\n" + loc(locId, { amount = diff
                                                      reward = unlockData.rewardText
                                                    })
   return res
-}
-
-::checkAwardsAmountPeerSession <- function checkAwardsAmountPeerSession(res, config, streak, name)
-{
-  local maxStreak = streak
-
-  res.similarAwardNamesList <- {}
-  foreach(simAward in config.similarAwards)
-  {
-    let simUnlock = ::g_unlocks.getUnlockById(simAward.unlockId)
-    let simStreak = simUnlock.stage.param.tointeger() + simAward.stage
-    maxStreak = max(simStreak, maxStreak)
-    let simAwName = format(name, simStreak)
-    if (simAwName in res.similarAwardNamesList)
-      res.similarAwardNamesList[simAwName]++
-    else
-      res.similarAwardNamesList[simAwName] <- 1
-  }
-
-  let mainAwName = format(name, streak)
-  if (mainAwName in res.similarAwardNamesList)
-    res.similarAwardNamesList[mainAwName]++
-  else
-    res.similarAwardNamesList[mainAwName] <- 1
-  res.similarAwardNamesList.maxStreak <- maxStreak
 }
 
 ::combineSimilarAwards <- function combineSimilarAwards(awardsList)
@@ -1404,11 +1121,11 @@ local unlockConditionUnitclasses = {
   foreach(award in awardsList)
   {
     local found = false
-    if ("unlockType" in award && award.unlockType == ::UNLOCKABLE_STREAK)
+    if ("unlockType" in award && award.unlockType == UNLOCKABLE_STREAK)
     {
       let unlockId = award.unlockId
       let isMultiStageLoc = ::g_unlocks.isUnlockMultiStageLocId(unlockId)
-      let stage = ::getTblValue("stage", award, 0)
+      let stage = getTblValue("stage", award, 0)
       let hasSpecialMultiStageLoc = ::g_unlocks.hasSpecialMultiStageLocIdByStage(unlockId, stage)
       foreach(approvedAward in res)
       {
@@ -1416,7 +1133,7 @@ local unlockConditionUnitclasses = {
           continue
         if (isMultiStageLoc)
         {
-          let approvedStage = ::getTblValue("stage", approvedAward, 0)
+          let approvedStage = getTblValue("stage", approvedAward, 0)
           if (stage != approvedStage
             && (hasSpecialMultiStageLoc || ::g_unlocks.hasSpecialMultiStageLocIdByStage(unlockId, approvedStage)))
            continue
@@ -1458,17 +1175,15 @@ local unlockConditionUnitclasses = {
 ::req_unlock_by_client <- function req_unlock_by_client(id, disableLog)
 {
   let unlock = ::g_unlocks.getUnlockById(id)
-  let featureName =  ::getTblValue("check_client_feature", unlock, null)
-  if (featureName == null || ::has_feature(featureName))
+  let featureName =  getTblValue("check_client_feature", unlock, null)
+  if (featureName == null || hasFeature(featureName))
       return ::req_unlock(id, disableLog)
 
   return -1
 }
 
 ::g_unlocks <- {
-  [PERSISTENT_DATA_PARAMS] = ["cache", "cacheArray", "favoriteUnlocks", "favoriteInvisibleUnlocks"] //to do not parse again on script reload
-
-  favoriteUnlocksLimit = 20
+  [PERSISTENT_DATA_PARAMS] = ["cache", "cacheArray"] //to do not parse again on script reload
 
   unitNameReg = regexp2(@"[.*/].+")
   skinNameReg = regexp2(@"^[^/]*/")
@@ -1476,39 +1191,12 @@ local unlockConditionUnitclasses = {
   cacheArray = []
   cacheByType = {} //<unlockTypeName> = { byName = { <unlockId> = <unlockBlk> }, inOrder = [<unlockBlk>] }
   isCacheValid = false
-  isFavUnlockCacheValid = false
-  favoriteUnlocks = null
-  favoriteInvisibleUnlocks = null
 
   multiStageLocId =
   {
     multi_kill_air =    {[2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air"}
     multi_kill_ship =   {[2] = "double_kill_ship",   [3] = "triple_kill_ship",   def = "multi_kill_ship"}
     multi_kill_ground = {[2] = "double_kill_ground", [3] = "triple_kill_ground", def = "multi_kill_ground"}
-  }
-
-  getTotalFavoriteCount = @() ::g_unlocks.getFavoriteUnlocks().blockCount() + favoriteInvisibleUnlocks.blockCount()
-  canAddFavorite = @() getTotalFavoriteCount() < favoriteUnlocksLimit
-  isUnlockFav = @(id) id in getFavoriteUnlocks()
-
-  function toggleFav(unlockId) {
-    if (!unlockId)
-      return
-
-    let isFav = isUnlockFav(unlockId)
-    if (isFav) {
-      removeUnlockFromFavorites(unlockId)
-      return
-    }
-
-    if (!canAddFavorite()) {
-      let num = favoriteUnlocksLimit
-      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
-      ::showInfoMsgBox(msg)
-      return
-    }
-
-    addUnlockToFavorites(unlockId)
   }
 
   function getTimeCondition(unlockBlk) {
@@ -1523,18 +1211,18 @@ local unlockConditionUnitclasses = {
     if (unlockBlk?.mode == null)
       return false
 
-    let timeCond = getTimeCondition(unlockBlk)
+    let timeCond = this.getTimeCondition(unlockBlk)
     return !timeCond || isInTimerangeByUtcStrings(timeCond.beginDate, timeCond.endDate)
   }
 
   function isUnlockExpired(unlockBlk) {
-    let timeCond = getTimeCondition(unlockBlk)
+    let timeCond = this.getTimeCondition(unlockBlk)
     return timeCond && !::u.isEmpty(timeCond.endDate)
       && getTimestampFromStringUtc(timeCond.endDate) <= ::get_charserver_time_sec()
   }
 
   function isUnlockComplete(cfg) {
-    return ::UnlockConditions.isBitModeType(cfg.type)
+    return isBitModeType(cfg.type)
       ? number_of_set_bits(cfg.curVal) >= number_of_set_bits(cfg.maxVal)
       : cfg.curVal >= cfg.maxVal
   }
@@ -1575,7 +1263,7 @@ local unlockConditionUnitclasses = {
     }
 
     let prize = item.getTopPrize()
-    if (prize?.unlock && ::get_unlock_type_by_id(prize.unlock) ==  ::UNLOCKABLE_PILOT) {
+    if (prize?.unlock && ::get_unlock_type_by_id(prize.unlock) ==  UNLOCKABLE_PILOT) {
       cfg.image <- $"#ui/images/avatars/{prize.unlock}.png"
       cfg.isTrophyLocked <- !unlocked
       return
@@ -1598,59 +1286,59 @@ local unlockConditionUnitclasses = {
     if (icon)
       cfg.image = icon
     else
-      ::set_image_by_unlock_type(cfg, blk)
+      setImageByUnlockType(cfg, blk)
   }
 }
 
-g_unlocks.validateCache <- function validateCache()
+::g_unlocks.validateCache <- function validateCache()
 {
-  if (isCacheValid)
+  if (this.isCacheValid)
     return
 
-  isCacheValid = true
-  cache.clear()
-  cacheArray.clear()
-  cacheByType.clear()
-  _convertblkToCache(::get_unlocks_blk())
-  _convertblkToCache(::get_personal_unlocks_blk())
+  this.isCacheValid = true
+  this.cache.clear()
+  this.cacheArray.clear()
+  this.cacheByType.clear()
+  this._convertblkToCache(::get_unlocks_blk())
+  this._convertblkToCache(::get_personal_unlocks_blk())
 }
 
-g_unlocks._convertblkToCache <- function _convertblkToCache(blk)
+::g_unlocks._convertblkToCache <- function _convertblkToCache(blk)
 {
   foreach(unlock in (blk % "unlockable"))
   {
     if (unlock?.id == null) {
-      let unlockConfigString = ::toString(unlock, 2) // warning disable: -declared-never-used
+      let unlockConfigString = toString(unlock, 2) // warning disable: -declared-never-used
       ::script_net_assert_once("missing id in unlock", "Unlocks: Missing id in unlock. Cannot cache unlock.")
       continue
     }
-    cache[unlock.id] <- unlock
-    cacheArray.append(unlock)
+    this.cache[unlock.id] <- unlock
+    this.cacheArray.append(unlock)
 
     let typeName = unlock.type
-    if (!(typeName in cacheByType))
-      cacheByType[typeName] <- { byName = {}, inOrder = [] }
-    cacheByType[typeName].byName[unlock.id] <- unlock
-    cacheByType[typeName].inOrder.append(unlock)
+    if (!(typeName in this.cacheByType))
+      this.cacheByType[typeName] <- { byName = {}, inOrder = [] }
+    this.cacheByType[typeName].byName[unlock.id] <- unlock
+    this.cacheByType[typeName].inOrder.append(unlock)
   }
 }
 
-g_unlocks.getAllUnlocks <- function getAllUnlocks()
+::g_unlocks.getAllUnlocks <- function getAllUnlocks()
 {
-  validateCache()
-  return cache
+  this.validateCache()
+  return this.cache
 }
 
-g_unlocks.getAllUnlocksWithBlkOrder <- function getAllUnlocksWithBlkOrder()
+::g_unlocks.getAllUnlocksWithBlkOrder <- function getAllUnlocksWithBlkOrder()
 {
-  validateCache()
-  return cacheArray
+  this.validateCache()
+  return this.cacheArray
 }
 
-g_unlocks.getUnlockById <- function getUnlockById(unlockId)
+::g_unlocks.getUnlockById <- function getUnlockById(unlockId)
 {
   if (::g_login.isLoggedIn())
-    return ::getTblValue(unlockId, getAllUnlocks())
+    return getTblValue(unlockId, this.getAllUnlocks())
 
   //For before login actions.
   let blk = ::get_unlocks_blk()
@@ -1660,41 +1348,41 @@ g_unlocks.getUnlockById <- function getUnlockById(unlockId)
   return null
 }
 
-g_unlocks.getUnlocksByType <- function getUnlocksByType(typeName)
+::g_unlocks.getUnlocksByType <- function getUnlocksByType(typeName)
 {
-  validateCache()
-  let data = ::getTblValue(typeName, cacheByType)
+  this.validateCache()
+  let data = getTblValue(typeName, this.cacheByType)
   return data ? data.byName : {}
 }
 
-g_unlocks.getUnlocksByTypeInBlkOrder <- function getUnlocksByTypeInBlkOrder(typeName)
+::g_unlocks.getUnlocksByTypeInBlkOrder <- function getUnlocksByTypeInBlkOrder(typeName)
 {
-  validateCache()
-  let data = ::getTblValue(typeName, cacheByType)
+  this.validateCache()
+  let data = getTblValue(typeName, this.cacheByType)
   return data ? data.inOrder : []
 }
 
-g_unlocks.getPlaneBySkinId <- function getPlaneBySkinId(id)
+::g_unlocks.getPlaneBySkinId <- function getPlaneBySkinId(id)
 {
-  return unitNameReg.replace("", id)
+  return this.unitNameReg.replace("", id)
 }
 
-g_unlocks.getSkinNameBySkinId <- function getSkinNameBySkinId(id)
+::g_unlocks.getSkinNameBySkinId <- function getSkinNameBySkinId(id)
 {
-  return skinNameReg.replace("", id)
+  return this.skinNameReg.replace("", id)
 }
 
-g_unlocks.getSkinId <- function getSkinId(unitName, skinName)
+::g_unlocks.getSkinId <- function getSkinId(unitName, skinName)
 {
   return unitName + "/" + skinName
 }
 
-g_unlocks.isDefaultSkin <- function isDefaultSkin(id)
+::g_unlocks.isDefaultSkin <- function isDefaultSkin(id)
 {
-  return getSkinNameBySkinId(id) == "default"
+  return this.getSkinNameBySkinId(id) == "default"
 }
 
-g_unlocks.checkDependingUnlocks <- function checkDependingUnlocks(unlockBlk)
+::g_unlocks.checkDependingUnlocks <- function checkDependingUnlocks(unlockBlk)
 {
   if (!unlockBlk || !unlockBlk?.hideUntilPrevUnlocked)
     return true
@@ -1706,58 +1394,57 @@ g_unlocks.checkDependingUnlocks <- function checkDependingUnlocks(unlockBlk)
   return true
 }
 
-g_unlocks.onEventSignOut <- function onEventSignOut(p)
+::g_unlocks.onEventSignOut <- function onEventSignOut(_p)
 {
-  invalidateUnlocksCache()
+  this.invalidateUnlocksCache()
 }
 
-g_unlocks.onEventLoginComplete <- function onEventLoginComplete(p)
+::g_unlocks.onEventLoginComplete <- function onEventLoginComplete(_p)
 {
-  invalidateUnlocksCache()
+  this.invalidateUnlocksCache()
 }
 
-g_unlocks.onEventProfileUpdated <- function onEventProfileUpdated(p)
+::g_unlocks.onEventProfileUpdated <- function onEventProfileUpdated(_p)
 {
-  invalidateUnlocksCache()
+  this.invalidateUnlocksCache()
 }
 
-g_unlocks.invalidateUnlocksCache <- function invalidateUnlocksCache()
+::g_unlocks.invalidateUnlocksCache <- function invalidateUnlocksCache()
 {
-  isCacheValid = false
-  isFavUnlockCacheValid = null
+  this.isCacheValid = false
   ::broadcastEvent("UnlocksCacheInvalidate")
 }
 
-g_unlocks.isUnlockMultiStageLocId <- function isUnlockMultiStageLocId(unlockId)
+::g_unlocks.isUnlockMultiStageLocId <- function isUnlockMultiStageLocId(unlockId)
 {
-  return unlockId in multiStageLocId
+  return unlockId in this.multiStageLocId
 }
 
-g_unlocks.getUnlockRepeatInARow <- function getUnlockRepeatInARow(unlockId, stage)
+::g_unlocks.getUnlockRepeatInARow <- function getUnlockRepeatInARow(unlockId, stage)
 {
   return stage + (::g_unlocks.getUnlockById(unlockId)?.stage.param ?? 0)
 }
 
 //has not default multistage id. Used to combine similar unlocks.
-g_unlocks.hasSpecialMultiStageLocId <- function hasSpecialMultiStageLocId(unlockId, repeatInARow)
+::g_unlocks.hasSpecialMultiStageLocId <- function hasSpecialMultiStageLocId(unlockId, repeatInARow)
 {
-  return isUnlockMultiStageLocId(unlockId) && repeatInARow in multiStageLocId[unlockId]
+  return this.isUnlockMultiStageLocId(unlockId) && repeatInARow in this.multiStageLocId[unlockId]
 }
 
-g_unlocks.hasSpecialMultiStageLocIdByStage <- function hasSpecialMultiStageLocIdByStage(unlockId, stage)
+::g_unlocks.hasSpecialMultiStageLocIdByStage <- function hasSpecialMultiStageLocIdByStage(unlockId, stage)
 {
-  return hasSpecialMultiStageLocId(unlockId, getUnlockRepeatInARow(unlockId, stage))
+  return this.hasSpecialMultiStageLocId(unlockId, this.getUnlockRepeatInARow(unlockId, stage))
 }
 
-g_unlocks.getMultiStageId <- function getMultiStageId(unlockId, repeatInARow)
+::g_unlocks.getMultiStageId <- function getMultiStageId(unlockId, repeatInARow)
 {
-  if (!isUnlockMultiStageLocId(unlockId))
+  if (!this.isUnlockMultiStageLocId(unlockId))
     return unlockId
-  let config = multiStageLocId[unlockId]
-  return ::getTblValue(repeatInARow, config) || ::getTblValue("def", config, unlockId)
+  let config = this.multiStageLocId[unlockId]
+  return getTblValue(repeatInARow, config) || getTblValue("def", config, unlockId)
 }
 
-g_unlocks.checkUnlockString <- function checkUnlockString(string)
+::g_unlocks.checkUnlockString <- function checkUnlockString(string)
 {
   let unlocks = split_by_chars(string, ";")
   foreach (unlockIdSrc in unlocks)
@@ -1780,7 +1467,7 @@ g_unlocks.checkUnlockString <- function checkUnlockString(string)
   return true
 }
 
-g_unlocks.buyUnlock <- function buyUnlock(unlockData, onSuccessCb = null, onAfterCheckCb = null)
+::g_unlocks.buyUnlock <- function buyUnlock(unlockData, onSuccessCb = null, onAfterCheckCb = null)
 {
   local unlock = unlockData
   if (::u.isString(unlockData))
@@ -1793,121 +1480,16 @@ g_unlocks.buyUnlock <- function buyUnlock(unlockData, onSuccessCb = null, onAfte
   ::g_tasker.addTask(taskId, {
       showProgressBox = true,
       showErrorMessageBox = false
-      progressBoxText = ::loc("charServer/purchase")
+      progressBoxText = loc("charServer/purchase")
     },
     onSuccessCb,
     @(result) ::g_popups.add(::getErrorText(result), "")
   )
 }
 
-// Favorite Unlocks
-
-g_unlocks.getFavoriteUnlocks <- function getFavoriteUnlocks()
+::g_unlocks.isVisibleByTime <- function isVisibleByTime(id, hasIncludTimeBefore = true, resWhenNoTimeLimit = true)
 {
-  if( ! isFavUnlockCacheValid || favoriteUnlocks == null)
-    loadFavorites()
-  return favoriteUnlocks
-}
-
-g_unlocks.loadFavorites <- function loadFavorites()
-{
-  if (favoriteUnlocks)
-  {
-    favoriteUnlocks.reset()
-    favoriteInvisibleUnlocks.reset()
-  }
-  else
-  {
-    favoriteUnlocks = ::DataBlock()
-    favoriteInvisibleUnlocks = ::DataBlock()
-  }
-
-  if (!::g_login.isProfileReceived())
-    return
-
-  let loaded = ::load_local_account_settings(FAVORITE_UNLOCKS_LIST_SAVE_ID)
-  if (loaded)
-  {
-    for (local i = 0; i < loaded.paramCount(); i++)
-    {
-      let unlockId = loaded.getParamName(i)
-      let unlock = ::g_unlocks.getUnlockById(unlockId)
-      if (::is_unlock_visible(unlock, false))
-      {
-        if ( ! ::is_unlock_visible_on_cur_platform(unlock))
-          favoriteInvisibleUnlocks[unlockId] = true  // unlock not avaliable on current platform
-        else
-        {
-          favoriteUnlocks.addBlock(unlockId)  // valid unlock
-          favoriteUnlocks[unlockId] = unlock
-        }
-      }
-
-      if (favoriteUnlocks.blockCount() >= favoriteUnlocksLimit)
-        break
-    }
-  }
-  isFavUnlockCacheValid = true
-}
-
-g_unlocks.addUnlockToFavorites <- function addUnlockToFavorites(unlockId)
-{
-  if (unlockId in getFavoriteUnlocks())
-    return
-
-  getFavoriteUnlocks().addBlock(unlockId)
-  getFavoriteUnlocks()[unlockId] = ::g_unlocks.getUnlockById(unlockId)
-  saveFavorites()
-  ::broadcastEvent("FavoriteUnlocksChanged", {changedId = unlockId, value = true})
-}
-
-g_unlocks.removeUnlockFromFavorites <- function removeUnlockFromFavorites(unlockId)
-{
-  if (unlockId in getFavoriteUnlocks())
-  {
-    getFavoriteUnlocks().removeBlock(unlockId)
-    saveFavorites()
-    ::broadcastEvent("FavoriteUnlocksChanged", {changedId = unlockId, value = false})
-  }
-}
-
-g_unlocks.saveFavorites <- function saveFavorites()
-{
-  let saveBlk = ::DataBlock()
-  saveBlk.setFrom(favoriteInvisibleUnlocks)
-  foreach(unlockId, unlockValue in getFavoriteUnlocks())
-    if( ! (unlockId in saveBlk))
-      saveBlk[unlockId] = true
-  ::save_local_account_settings(FAVORITE_UNLOCKS_LIST_SAVE_ID, saveBlk)
-}
-
-g_unlocks.unlockToFavorites <- function unlockToFavorites(obj, updateCb = null)
-{
-  let unlockId = obj?.unlockId
-
-  if (::u.isEmpty(unlockId))
-    return
-
-  if (!canAddFavorite()
-    && obj.getValue() // Don't notify if value set to false
-    && !(unlockId in getFavoriteUnlocks())) //Don't notify if unlock wasn't in list already
-  {
-    ::g_popups.add("", ::colorize("warningTextColor",
-      ::loc("mainmenu/unlockAchievements/limitReached", {num = ::g_unlocks.favoriteUnlocksLimit})))
-    obj.setValue(false)
-    return
-  }
-
-  obj.tooltip = obj.getValue() ?
-    addUnlockToFavorites(unlockId) : removeUnlockFromFavorites(unlockId)
-  ::g_unlock_view.fillUnlockFavCheckbox(obj)
-  if(updateCb)
-    updateCb()
-}
-
-g_unlocks.isVisibleByTime <- function isVisibleByTime(id, hasIncludTimeBefore = true, resWhenNoTimeLimit = true)
-{
-  let unlock = getUnlockById(id)
+  let unlock = this.getUnlockById(id)
   if (!unlock)
     return false
 
@@ -1918,7 +1500,7 @@ g_unlocks.isVisibleByTime <- function isVisibleByTime(id, hasIncludTimeBefore = 
   {
     foreach (cond in getUnlockConditions(unlock?.mode))
     {
-      if (!::isInArray(cond.type, unlock_time_range_conditions))
+      if (!isInArray(cond.type, ::unlock_time_range_conditions))
         continue
 
       let startTime = getTimestampFromStringUtc(cond.beginDate) -
@@ -1927,7 +1509,7 @@ g_unlocks.isVisibleByTime <- function isVisibleByTime(id, hasIncludTimeBefore = 
         : 0)
       let endTime = getTimestampFromStringUtc(cond.endDate) +
         daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0)
-      let currentTime = get_charserver_time_sec()
+      let currentTime = ::get_charserver_time_sec()
 
       isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
       break
@@ -1936,9 +1518,9 @@ g_unlocks.isVisibleByTime <- function isVisibleByTime(id, hasIncludTimeBefore = 
   return isVisibleUnlock
 }
 
-g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id)
+::g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id)
 {
-  let unlock = getUnlockById(id)
+  let unlock = this.getUnlockById(id)
   if (!unlock)
     return
 
@@ -1948,18 +1530,18 @@ g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id)
   {
     foreach (cond in getUnlockConditions(unlock.mode))
     {
-      if (!::isInArray(cond?.type, unlock_time_range_conditions))
+      if (!isInArray(cond?.type, ::unlock_time_range_conditions))
         continue
 
       let startTime = getTimestampFromStringUtc(cond.beginDate) -
         daysToSeconds(unlock?.visibleDaysBefore ?? unlock?.visibleDays ?? 0)
       let endTime = getTimestampFromStringUtc(cond.endDate) +
         daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0)
-      let currentTime = get_charserver_time_sec()
+      let currentTime = ::get_charserver_time_sec()
       let isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
 
-      ::dagor.debug("unlock " + id + " is visible by time ? " + isVisibleUnlock)
-      ::dagor.debug("curTime = " + currentTime + ", visibleDiapason = " + startTime + ", " + endTime
+      log("unlock " + id + " is visible by time ? " + isVisibleUnlock)
+      log("curTime = " + currentTime + ", visibleDiapason = " + startTime + ", " + endTime
         + ", beginDate = " + cond.beginDate + ", endDate = " + cond.endDate
         + ", visibleDaysBefore = " + (unlock?.visibleDaysBefore ?? "?")
         + ", visibleDays = " + (unlock?.visibleDays ?? "?")
@@ -1970,7 +1552,7 @@ g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id)
   }
 }
 
-g_unlocks.isHiddenByUnlockedUnlocks <- function isHiddenByUnlockedUnlocks(unlockBlk)
+::g_unlocks.isHiddenByUnlockedUnlocks <- function isHiddenByUnlockedUnlocks(unlockBlk)
 {
   if (::is_unlocked_scripted(-1, unlockBlk?.id))
     return false

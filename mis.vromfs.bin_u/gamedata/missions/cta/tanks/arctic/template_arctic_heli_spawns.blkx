@@ -1,0 +1,748 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "t1_helipad",
+        "tm": [
+          [
+            0.692829,
+            0.0,
+            -0.721103
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.721103,
+            0.0,
+            0.692829
+          ],
+          [
+            6033.52,
+            -11.7545,
+            -53.2338
+          ]
+        ],
+        "unit_class": "dynHelipad_snow_c",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "isDelayed": true,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_helipad_farspawn",
+        "tm": [
+          [
+            0.475088,
+            0.0,
+            0.879939
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.879939,
+            0.0,
+            0.475088
+          ],
+          [
+            4440.96,
+            -7.57666,
+            6234.88
+          ]
+        ],
+        "unit_class": "dynHelipad_snow_c",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "isDelayed": true,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_helipad",
+        "tm": [
+          [
+            -0.869423,
+            0.0,
+            0.494067
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.494067,
+            0.0,
+            -0.869423
+          ],
+          [
+            -1693.97,
+            2.12637,
+            4580.4
+          ]
+        ],
+        "unit_class": "dynHelipad_snow_c",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "isDelayed": true,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_helipad_farspawn",
+        "tm": [
+          [
+            -0.471874,
+            0.0,
+            -0.881666
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.881666,
+            0.0,
+            -0.471874
+          ],
+          [
+            -5.4729,
+            -3.70279,
+            -1670.01
+          ]
+        ],
+        "unit_class": "dynHelipad_snow_c",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "isDelayed": true,
+          "active": true
+        }
+      }
+    ],
+    "air_defence": [
+      {
+        "name": "t1_helipad_defence_01",
+        "tm": [
+          [
+            0.284174,
+            0.0,
+            0.958773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.958773,
+            0.0,
+            0.284174
+          ],
+          [
+            5808.88,
+            13.2662,
+            -63.2143
+          ]
+        ],
+        "unit_class": "germ_20mm_flak38_longrange_helipad",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_helipad_defence_02",
+        "tm": [
+          [
+            -0.52264,
+            0.0,
+            -0.852554
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.852554,
+            0.0,
+            -0.52264
+          ],
+          [
+            4648.65,
+            9.5,
+            6331.55
+          ]
+        ],
+        "unit_class": "germ_20mm_flak38_longrange_helipad",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_helipad_defence_03",
+        "tm": [
+          [
+            0.874987,
+            0.0,
+            -0.484146
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.484146,
+            0.0,
+            0.874987
+          ],
+          [
+            6022.07,
+            5.099,
+            -263.999
+          ]
+        ],
+        "unit_class": "germ_20mm_flak38_helipad",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_helipad_defence_04",
+        "tm": [
+          [
+            -0.52264,
+            0.0,
+            -0.852554
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.852554,
+            0.0,
+            -0.52264
+          ],
+          [
+            4375.65,
+            0.5,
+            6483.35
+          ]
+        ],
+        "unit_class": "germ_20mm_flak38_helipad",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_helipad_defence_01",
+        "tm": [
+          [
+            0.282691,
+            0.0,
+            0.959211
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.959211,
+            0.0,
+            0.282691
+          ],
+          [
+            -1826.45,
+            12.6151,
+            4602.09
+          ]
+        ],
+        "unit_class": "germ_20mm_flak38_longrange_helipad",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_helipad_defence_02",
+        "tm": [
+          [
+            0.282691,
+            0.0,
+            0.959211
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.959211,
+            0.0,
+            0.282691
+          ],
+          [
+            -258.85,
+            9.3,
+            -1805.8
+          ]
+        ],
+        "unit_class": "germ_20mm_flak38_longrange_helipad",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_helipad_defence_03",
+        "tm": [
+          [
+            0.282691,
+            0.0,
+            0.959211
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.959211,
+            0.0,
+            0.282691
+          ],
+          [
+            -1643.89,
+            10.4774,
+            4830.84
+          ]
+        ],
+        "unit_class": "germ_20mm_flak38_helipad",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_helipad_defence_04",
+        "tm": [
+          [
+            0.282691,
+            0.0,
+            0.959211
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.959211,
+            0.0,
+            0.282691
+          ],
+          [
+            74.14,
+            11.5351,
+            -1916.37
+          ]
+        ],
+        "unit_class": "germ_20mm_flak38_helipad",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "t1_helipad_aaa_squad",
+        "tm": [
+          [
+            0.756409,
+            0.0,
+            -0.654099
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.654099,
+            0.0,
+            0.756409
+          ],
+          [
+            6024.56,
+            2.60069,
+            -48.7531
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_helipad_defence_04",
+            "t1_helipad_defence_02",
+            "t1_helipad_defence_01",
+            "t1_helipad_defence_03"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t2_helipad_aaa_squad",
+        "tm": [
+          [
+            0.282691,
+            0.0,
+            0.959211
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.959211,
+            0.0,
+            0.282691
+          ],
+          [
+            -1657.7,
+            29.1037,
+            4605.31
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_helipad_defence_01",
+            "t2_helipad_defence_02",
+            "t2_helipad_defence_03",
+            "t2_helipad_defence_04"
+          ],
+          "object_marking": 0
+        }
+      }
+    ]
+  },
+  "areas": {
+    "heli_4000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5868.34,
+          0.0,
+          -5437.15
+        ],
+        [
+          0.0,
+          8000.0,
+          0.0
+        ],
+        [
+          5437.15,
+          0.0,
+          -5868.34
+        ],
+        [
+          2367.61,
+          4.5415,
+          2245.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

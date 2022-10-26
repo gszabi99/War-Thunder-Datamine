@@ -586,6 +586,9 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -1588,9 +1591,17 @@
     }
   },
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
-    }
+    "sensor": [
+      {
+        "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+        "turretIndex": 0,
+        "designationTurretIndex": 0,
+        "dmPart": "optic_gun_dm"
+      },
+      {
+        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+      }
+    ]
   },
   "controlDevices": {
     "device": [
@@ -2736,6 +2747,12 @@
         "sensors": {
           "sensor": [
             {
+              "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
               "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
             },
             {
@@ -3224,7 +3241,6 @@
       "tier": 2
     },
     "tank_support_ucav": {
-      "rcostAddParam": 0.92,
       "effects": {
         "allowSupportPlane": true
       },

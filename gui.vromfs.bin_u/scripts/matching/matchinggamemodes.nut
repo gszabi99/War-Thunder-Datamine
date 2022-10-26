@@ -1,8 +1,18 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { startLogout } = require("%scripts/login/logout.nut")
+let { format } = require("string")
 
 // -------------------------------------------------------
 // Matching game modes managment
 // -------------------------------------------------------
+
+const MAX_FETCH_RETRIES = 5
 
 let requestedGameModesTimeOut = 10000 //ms
 local lastRequestTimeMsec = - requestedGameModesTimeOut
@@ -19,32 +29,32 @@ local requestedGameModes = []
     if (!::is_online_available())
       return
 
-    __fetching = false
-    __fetch_counter = 0
-    fetchGameModes()
+    this.__fetching = false
+    this.__fetch_counter = 0
+    this.fetchGameModes()
   }
 
   function fetchGameModes()
   {
-    if (__fetching)
+    if (this.__fetching)
       return
 
-    __gameModes.clear()
-    __fetching = true
-    __fetch_counter++
+    this.__gameModes.clear()
+    this.__fetching = true
+    this.__fetch_counter++
     ::fetch_game_modes_digest({timeout = 60},
       function (result)
       {
         if (!this)
           return
 
-        __fetching = false
+        this.__fetching = false
 
-        let canRetry = __fetch_counter < MAX_FETCH_RETRIES
+        let canRetry = this.__fetch_counter < MAX_FETCH_RETRIES
         if (::checkMatchingError(result, !canRetry))
         {
-          __loadGameModesFromList(result?.modes ?? [])
-          __fetch_counter = 0
+          this.__loadGameModesFromList(result?.modes ?? [])
+          this.__fetch_counter = 0
           return
         }
 
@@ -55,8 +65,8 @@ local requestedGameModes = []
         }
         else
         {
-          ::dagor.debug("fetch gamemodes error, retry - " + __fetch_counter)
-          fetchGameModes()
+          log("fetch gamemodes error, retry - " + this.__fetch_counter)
+          this.fetchGameModes()
         }
       }.bindenv(::g_matching_game_modes)
     )
@@ -64,7 +74,7 @@ local requestedGameModes = []
 
   function getModeById(gameModeId)
   {
-    return __gameModes?[gameModeId]
+    return this.__gameModes?[gameModeId]
   }
 
   function  onGameModesChangedNotify(added_list, removed_list, changed_list)
@@ -77,8 +87,8 @@ local requestedGameModes = []
       foreach (modeInfo in removed_list)
       {
         let { gameModeId = -1, name = "" } = modeInfo
-        ::dagor.debug($"matching game mode removed '{name}' [{gameModeId}]")
-        __removeGameMode(gameModeId)
+        log($"matching game mode removed '{name}' [{gameModeId}]")
+        this.__removeGameMode(gameModeId)
         needNotify = true
       }
     }
@@ -88,7 +98,7 @@ local requestedGameModes = []
       foreach (modeInfo in added_list)
       {
         let { gameModeId = -1, name = "" } = modeInfo
-        ::dagor.debug($"matching game mode added '{name}' [{gameModeId}]")
+        log($"matching game mode added '{name}' [{gameModeId}]")
         needToFetchGmList.append(gameModeId)
       }
     }
@@ -106,40 +116,40 @@ local requestedGameModes = []
         let visible  = modeInfo?.visible
         let active   = modeInfo?.active
 
-        ::dagor.debug($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
+        log($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
 
         if (disabled && visible == false && active == false)
         {
           needNotify = true
-          __removeGameMode(gameModeId)
+          this.__removeGameMode(gameModeId)
           continue
         }
 
         needToFetchGmList.append(gameModeId) //need refresh full mode-info because may updated mode params
 
         if (disabled == null || visible == null || active == null
-            || !(gameModeId in __gameModes))
+            || !(gameModeId in this.__gameModes))
           continue
 
         needNotify = true
-        let fullModeInfo = __gameModes[gameModeId]
+        let fullModeInfo = this.__gameModes[gameModeId]
         fullModeInfo.disabled = disabled
         fullModeInfo.visible = visible
       }
     }
 
     if (needToFetchGmList.len() > 0)
-      __loadGameModesFromList(needToFetchGmList)
+      this.__loadGameModesFromList(needToFetchGmList)
 
     if (needNotify)
-      __notifyGmChanged()
+      this.__notifyGmChanged()
   }
 
 // private section
   function __notifyGmChanged()
   {
     let gameEventsOldFormat = {}
-    foreach (gm_id, modeInfo in __gameModes)
+    foreach (_gm_id, modeInfo in this.__gameModes)
     {
       if (::events.isCustomGameMode(modeInfo))
         continue
@@ -152,8 +162,8 @@ local requestedGameModes = []
 
   function __removeGameMode(game_mode_id)
   {
-    if (game_mode_id in __gameModes)
-      delete __gameModes[game_mode_id]
+    if (game_mode_id in this.__gameModes)
+      delete this.__gameModes[game_mode_id]
   }
 
   function __onGameModesUpdated(modes_list)
@@ -164,11 +174,11 @@ local requestedGameModes = []
       let idx = requestedGameModes.indexof(gameModeId)
       if (idx != null)
         requestedGameModes.remove(idx)
-      ::dagor.debug(format("matching game mode fetched '%s' [%d]",
+      log(format("matching game mode fetched '%s' [%d]",
                          modeInfo.name, gameModeId))
-      __gameModes[gameModeId] <- modeInfo
+      this.__gameModes[gameModeId] <- modeInfo
     }
-    __notifyGmChanged();
+    this.__notifyGmChanged();
   }
 
   function __loadGameModesFromList(gm_list)
@@ -182,47 +192,47 @@ local requestedGameModes = []
       })
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
-    __gameModes.clear()
-    __fetching = false
-    __fetch_counter = 0
+    this.__gameModes.clear()
+    this.__fetching = false
+    this.__fetch_counter = 0
   }
 
-  function onEventScriptsReloaded(p)
+  function onEventScriptsReloaded(_p)
   {
-    forceUpdateGameModes()
+    this.forceUpdateGameModes()
   }
 
   //no need to request gameModes before configs inited
-  function onEventLoginComplete(p)
+  function onEventLoginComplete(_p)
   {
-    forceUpdateGameModes()
+    this.forceUpdateGameModes()
   }
 
   function getGameModesByEconomicName(economicName)
   {
-    return ::u.filter(__gameModes,
+    return ::u.filter(this.__gameModes,
       (@(economicName) function(g) { return ::events.getEventEconomicName(g) == economicName })(economicName))
   }
 
   function requestGameModeById(gameModeId)
   {
-    let isRequested = ::isInArray(gameModeId, requestedGameModes)
+    let isRequested = isInArray(gameModeId, requestedGameModes)
     if (isRequested
-      && (::dagor.getCurTime() - lastRequestTimeMsec <= requestedGameModesTimeOut))
+      && (get_time_msec() - lastRequestTimeMsec <= requestedGameModesTimeOut))
       return
 
     if (!isRequested)
       requestedGameModes.append(gameModeId)
-    lastRequestTimeMsec = ::dagor.getCurTime()
-    __loadGameModesFromList([gameModeId])
+    lastRequestTimeMsec = get_time_msec()
+    this.__loadGameModesFromList([gameModeId])
   }
 
   function getGameModeIdsByEconomicName(economicName)
   {
     let res = []
-    foreach(id, gm in __gameModes)
+    foreach(id, gm in this.__gameModes)
       if (::events.getEventEconomicName(gm) == economicName)
         res.append(id)
     return res

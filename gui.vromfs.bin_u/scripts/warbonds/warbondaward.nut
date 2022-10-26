@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
@@ -5,7 +11,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 {
   id = ""
   idx = 0
-  awardType = ::g_wb_award_type[::EWBAT_INVALID]
+  awardType = ::g_wb_award_type[EWBAT_INVALID]
   warbondWeak = null
   blk = null
   ordinaryTasks = 0
@@ -18,144 +24,144 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
   constructor(warbond, awardBlk, idxInWbList)
   {
-    id = awardBlk?.name
-    idx = idxInWbList
-    warbondWeak = warbond.weakref()
-    blk = ::DataBlock()
-    blk.setFrom(awardBlk)
-    awardType = ::g_wb_award_type.getTypeByBlk(blk)
-    ordinaryTasks = blk?.Ordinary ?? 0
-    specialTasks = blk?.Special ?? 0
-    reqMaxUnitRank = blk?.reqMaxUnitRank ?? -1
-    imgNestDoubleSize = awardType?.imgNestDoubleSize ?? "no"
+    this.id = awardBlk?.name
+    this.idx = idxInWbList
+    this.warbondWeak = warbond.weakref()
+    this.blk = ::DataBlock()
+    this.blk.setFrom(awardBlk)
+    this.awardType = ::g_wb_award_type.getTypeByBlk(this.blk)
+    this.ordinaryTasks = this.blk?.Ordinary ?? 0
+    this.specialTasks = this.blk?.Special ?? 0
+    this.reqMaxUnitRank = this.blk?.reqMaxUnitRank ?? -1
+    this.imgNestDoubleSize = this.awardType?.imgNestDoubleSize ?? "no"
   }
 
-  canPreview = @() awardType.canPreview(blk)
-  doPreview = @() awardType.doPreview(blk)
+  canPreview = @() this.awardType.canPreview(this.blk)
+  doPreview = @() this.awardType.doPreview(this.blk)
 
   function isValid()
   {
-    return warbondWeak != null
+    return this.warbondWeak != null
   }
 
   function getFullId()
   {
-    if (!warbondWeak)
+    if (!this.warbondWeak)
       return ""
-    return warbondWeak.getFullId() + ::g_warbonds.FULL_ID_SEPARATOR + idx
+    return this.warbondWeak.getFullId() + ::g_warbonds.FULL_ID_SEPARATOR + this.idx
   }
 
   function getLayeredImage()
   {
-    return awardType.getLayeredImage(blk, warbondWeak)
+    return this.awardType.getLayeredImage(this.blk, this.warbondWeak)
   }
 
   function getDescriptionImage()
   {
-    return awardType.getDescriptionImage(blk, warbondWeak)
+    return this.awardType.getDescriptionImage(this.blk, this.warbondWeak)
   }
 
   function getCost()
   {
-    return blk?.cost ?? 0
+    return this.blk?.cost ?? 0
   }
 
   function getCostText()
   {
-    if (!warbondWeak)
+    if (!this.warbondWeak)
       return ""
-    return warbondWeak.getPriceText(getCost())
+    return this.warbondWeak.getPriceText(this.getCost())
   }
 
   function canBuy()
   {
-    return !isItemLocked() && awardType.canBuy(warbondWeak, blk)
+    return !this.isItemLocked() && this.awardType.canBuy(this.warbondWeak, this.blk)
   }
 
   function isItemLocked()
   {
-    return !isValid()
-       || !isAvailableForCurrentWarbondShop()
-       || !isAvailableByShopLevel()
-       || !isAvailableByMedalsCount()
-       || !isAvailableByUnitsRank()
-       || isAllBought()
+    return !this.isValid()
+       || !this.isAvailableForCurrentWarbondShop()
+       || !this.isAvailableByShopLevel()
+       || !this.isAvailableByMedalsCount()
+       || !this.isAvailableByUnitsRank()
+       || this.isAllBought()
   }
 
   function isAvailableForCurrentWarbondShop()
   {
-    if (!warbondWeak || !(blk?.forCurrentShopOnly ?? false))
+    if (!this.warbondWeak || !(this.blk?.forCurrentShopOnly ?? false))
       return true
-    return warbondWeak.isCurrent()
+    return this.warbondWeak.isCurrent()
   }
 
   function getWarbondShopLevelImage()
   {
-    if (!warbondWeak)
+    if (!this.warbondWeak)
       return ""
 
-    let level = warbondWeak.getShopLevel(ordinaryTasks)
+    let level = this.warbondWeak.getShopLevel(this.ordinaryTasks)
     if (level == 0)
       return ""
 
-    return ::g_warbonds_view.getLevelItemMarkUp(warbondWeak, level, "0")
+    return ::g_warbonds_view.getLevelItemMarkUp(this.warbondWeak, level, "0")
   }
 
   function getWarbondMedalImage()
   {
-    let medals = getMedalsCountNum()
-    if (!warbondWeak || medals == 0)
+    let medals = this.getMedalsCountNum()
+    if (!this.warbondWeak || medals == 0)
       return ""
 
-    return ::g_warbonds_view.getSpecialMedalsMarkUp(warbondWeak, medals)
+    return ::g_warbonds_view.getSpecialMedalsMarkUp(this.warbondWeak, medals)
   }
 
   function getBuyText(isShort = true)
   {
-    let res = ::loc("mainmenu/btnBuy")
+    let res = loc("mainmenu/btnBuy")
     if (isShort)
       return res
 
-    let cost = getCost()
-    let costText = warbondWeak ? warbondWeak.getPriceText(cost) : cost
-    return res + ((costText == "")? "" : ::loc("ui/parentheses/space", { text = costText }))
+    let cost = this.getCost()
+    let costText = this.warbondWeak ? this.warbondWeak.getPriceText(cost) : cost
+    return res + ((costText == "")? "" : loc("ui/parentheses/space", { text = costText }))
   }
 
   function buy()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
-    if (!canBuy())
+    if (!this.canBuy())
     {
-      local reason = ::loc("warbond/msg/alreadyBoughtMax", { purchase = ::colorize("userlogColoredText", getNameText()) })
-      if (!isAvailableForCurrentWarbondShop())
-        reason = getNotAvailableForCurrentShopText(false)
-      else if (!awardType.canBuy(warbondWeak, blk))
-        reason = getAwardTypeCannotBuyReason(false)
-      else if (!isAvailableByShopLevel())
-        reason = getRequiredShopLevelText(false)
-      else if (!isAvailableByMedalsCount())
-        reason = getRequiredMedalsLevelText(false)
-      else if (!isAvailableByUnitsRank())
-        reason = getRequiredUnitsRankLevel(false)
+      local reason = loc("warbond/msg/alreadyBoughtMax", { purchase = colorize("userlogColoredText", this.getNameText()) })
+      if (!this.isAvailableForCurrentWarbondShop())
+        reason = this.getNotAvailableForCurrentShopText(false)
+      else if (!this.awardType.canBuy(this.warbondWeak, this.blk))
+        reason = this.getAwardTypeCannotBuyReason(false)
+      else if (!this.isAvailableByShopLevel())
+        reason = this.getRequiredShopLevelText(false)
+      else if (!this.isAvailableByMedalsCount())
+        reason = this.getRequiredMedalsLevelText(false)
+      else if (!this.isAvailableByUnitsRank())
+        reason = this.getRequiredUnitsRankLevel(false)
       return ::showInfoMsgBox(reason)
     }
 
-    let costWb = getCost()
-    let balanceWb = warbondWeak.getBalance()
+    let costWb = this.getCost()
+    let balanceWb = this.warbondWeak.getBalance()
     if (costWb > balanceWb)
-      return ::showInfoMsgBox(::loc("not_enough_currency",
-                                    { currency = warbondWeak.getPriceText(costWb - balanceWb, true, false) }))
+      return ::showInfoMsgBox(loc("not_enough_currency",
+                                    { currency = this.warbondWeak.getPriceText(costWb - balanceWb, true, false) }))
 
 
-    let msgText = ::loc("onlineShop/needMoneyQuestion",
-                          { purchase = ::colorize("userlogColoredText", getNameText()),
-                            cost = ::colorize("activeTextColor", getCostText())
+    let msgText = loc("onlineShop/needMoneyQuestion",
+                          { purchase = colorize("userlogColoredText", this.getNameText()),
+                            cost = colorize("activeTextColor", this.getCostText())
                           })
 
     ::scene_msg_box("purchase_ask", null, msgText,
       [
-        ["purchase", ::Callback(_buy, this) ],
+        ["purchase", Callback(this._buy, this) ],
         ["cancel", function() {} ]
       ],
       "purchase",
@@ -165,11 +171,11 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
   function _buy()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
 
-    let taskId = awardType.requestBuy(warbondWeak, blk)
-    let cb = ::Callback(onBought, this)
+    let taskId = this.awardType.requestBuy(this.warbondWeak, this.blk)
+    let cb = Callback(this.onBought, this)
     ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
   }
 
@@ -181,192 +187,192 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
   function isAllBought()
   {
-    if (!isValid())
+    if (!this.isValid())
       return false
 
-    let maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
-    return !awardType.hasIncreasingLimit() && maxBoughtCount > 0
-      && getLeftBoughtCount() == 0
+    let maxBoughtCount = this.awardType.getMaxBoughtCount(this.warbondWeak, this.blk)
+    return !this.awardType.hasIncreasingLimit() && maxBoughtCount > 0
+      && this.getLeftBoughtCount() == 0
   }
 
   function getAvailableAmountText()
   {
-    if (!isValid())
+    if (!this.isValid())
       return ""
 
-    let maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
-    let hasIncreasingLimit = awardType.hasIncreasingLimit()
+    let maxBoughtCount = this.awardType.getMaxBoughtCount(this.warbondWeak, this.blk)
+    let hasIncreasingLimit = this.awardType.hasIncreasingLimit()
     if (!hasIncreasingLimit && maxBoughtCount <= 0)
       return ""
-    let leftAmount = getLeftBoughtCount()
+    let leftAmount = this.getLeftBoughtCount()
     if (!hasIncreasingLimit && leftAmount == 0)
-      return ::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax"))
-    if (!awardType.showAvailableAmount)
+      return colorize("warningTextColor", loc("warbond/alreadyBoughtMax"))
+    if (!this.awardType.showAvailableAmount)
       return ""
-    return ::loc("warbond/availableForPurchase") + ::loc("ui/colon") + leftAmount
+    return loc("warbond/availableForPurchase") + loc("ui/colon") + leftAmount
   }
 
-  getLeftBoughtCount = @() isValid()
-    ? max(awardType.getMaxBoughtCount(warbondWeak, blk) -  awardType.getBoughtCount(warbondWeak, blk), 0)
+  getLeftBoughtCount = @() this.isValid()
+    ? max(this.awardType.getMaxBoughtCount(this.warbondWeak, this.blk) -  this.awardType.getBoughtCount(this.warbondWeak, this.blk), 0)
     : 0
 
   function addAmountTextToDesc(desc)
   {
     return ::g_string.implode([
-      ::g_string.implode(getAdditionalTextsArray(), "\n"),
-      desc, getRequiredUnitsRankLevel()], "\n\n")
+      ::g_string.implode(this.getAdditionalTextsArray(), "\n"),
+      desc, this.getRequiredUnitsRankLevel()], "\n\n")
   }
 
   function getAdditionalTextsArray()
   {
     return [
-      getNotAvailableForCurrentShopText(),
-      getAwardTypeCannotBuyReason(),
-      getRequiredShopLevelText(),
-      getRequiredMedalsLevelText(),
-      getAvailableAmountText()
+      this.getNotAvailableForCurrentShopText(),
+      this.getAwardTypeCannotBuyReason(),
+      this.getRequiredShopLevelText(),
+      this.getRequiredMedalsLevelText(),
+      this.getAvailableAmountText()
     ]
   }
 
   function fillItemDesc(descObj, handler)
   {
-    let item = awardType.getDescItem(blk)
+    let item = this.awardType.getDescItem(this.blk)
     if (!item)
       return false
 
     descObj.scrollToView(true)
     fillItemDescr(item, descObj, handler, true, true,
-                                 { descModifyFunc = addAmountTextToDesc.bindenv(this) })
+                                 { descModifyFunc = this.addAmountTextToDesc.bindenv(this) })
     return true
   }
 
   function getDescText()
   {
-    return addAmountTextToDesc(awardType.getDescText(blk))
+    return this.addAmountTextToDesc(this.awardType.getDescText(this.blk))
   }
 
-  function hasCommonDesc() { return awardType.hasCommonDesc }
-  function getNameText()   { return awardType.getNameText(blk) }
+  function hasCommonDesc() { return this.awardType.hasCommonDesc }
+  function getNameText()   { return this.awardType.getNameText(this.blk) }
 
   function haveOrdinaryRequirement()
   {
-    return ordinaryTasks > 0
+    return this.ordinaryTasks > 0
   }
 
   function haveSpecialRequirement()
   {
-    return specialTasks > 0
+    return this.specialTasks > 0
   }
 
   function getShopLevelText(tasksNum)
   {
-    if (!warbondWeak)
+    if (!this.warbondWeak)
       return ""
 
-    let level = warbondWeak.getShopLevel(tasksNum)
-    return warbondWeak.getShopLevelText(level)
+    let level = this.warbondWeak.getShopLevel(tasksNum)
+    return this.warbondWeak.getShopLevelText(level)
   }
 
   function isAvailableByShopLevel()
   {
-    if (!haveOrdinaryRequirement())
+    if (!this.haveOrdinaryRequirement())
       return true
 
-    let shopLevel = warbondWeak? warbondWeak.getShopLevel(ordinaryTasks) : 0
-    let execTasks = warbondWeak? warbondWeak.getCurrentShopLevel() : 0
+    let shopLevel = this.warbondWeak? this.warbondWeak.getShopLevel(this.ordinaryTasks) : 0
+    let execTasks = this.warbondWeak? this.warbondWeak.getCurrentShopLevel() : 0
     return shopLevel <= execTasks
   }
 
   function isAvailableByMedalsCount()
   {
-    if (!haveSpecialRequirement())
+    if (!this.haveSpecialRequirement())
       return true
 
-    let curMedalsCount = warbondWeak? warbondWeak.getCurrentMedalsCount() : 0
-    let reqMedalsCount = getMedalsCountNum()
+    let curMedalsCount = this.warbondWeak? this.warbondWeak.getCurrentMedalsCount() : 0
+    let reqMedalsCount = this.getMedalsCountNum()
     return reqMedalsCount <= curMedalsCount
   }
 
   function isAvailableByUnitsRank()
   {
-    if (reqMaxUnitRank <= 1 || reqMaxUnitRank > ::max_country_rank)
+    if (this.reqMaxUnitRank <= 1 || this.reqMaxUnitRank > ::max_country_rank)
       return true
 
-    return reqMaxUnitRank <= ::get_max_unit_rank()
+    return this.reqMaxUnitRank <= ::get_max_unit_rank()
   }
 
   function getMedalsCountNum()
   {
-    return warbondWeak? warbondWeak.getMedalsCount(specialTasks) : 0
+    return this.warbondWeak? this.warbondWeak.getMedalsCount(this.specialTasks) : 0
   }
 
   function getAwardTypeCannotBuyReason(colored = true)
   {
-    if (!isValid() || !isRequiredSpecialTasksComplete())
+    if (!this.isValid() || !this.isRequiredSpecialTasksComplete())
       return ""
 
-    let text = ::loc(awardType.canBuyReasonLocId(warbondWeak, blk))
-    return colored? ::colorize("warningTextColor", text) : text
+    let text = loc(this.awardType.canBuyReasonLocId(this.warbondWeak, this.blk))
+    return colored? colorize("warningTextColor", text) : text
   }
 
   function isRequiredSpecialTasksComplete()
   {
-    return isValid() && awardType.isReqSpecialTasks
-      && !awardType.canBuy(warbondWeak, blk) && isAvailableForCurrentWarbondShop()
+    return this.isValid() && this.awardType.isReqSpecialTasks
+      && !this.awardType.canBuy(this.warbondWeak, this.blk) && this.isAvailableForCurrentWarbondShop()
   }
 
   function getNotAvailableForCurrentShopText(colored = true)
   {
-    if (isAvailableForCurrentWarbondShop())
+    if (this.isAvailableForCurrentWarbondShop())
       return ""
 
-    let text = ::loc("warbonds/shop/notAvailableForCurrentShop")
-    return colored? ::colorize("badTextColor", text) : text
+    let text = loc("warbonds/shop/notAvailableForCurrentShop")
+    return colored? colorize("badTextColor", text) : text
   }
 
   function getRequiredShopLevelText(colored = true)
   {
-    if (!haveOrdinaryRequirement())
+    if (!this.haveOrdinaryRequirement())
       return ""
 
-    let text = ::loc("warbonds/shop/requiredLevel", {
-      level = getShopLevelText(ordinaryTasks)
+    let text = loc("warbonds/shop/requiredLevel", {
+      level = this.getShopLevelText(this.ordinaryTasks)
     })
-    return isAvailableByShopLevel() || !colored? text : ::colorize("badTextColor", text)
+    return this.isAvailableByShopLevel() || !colored? text : colorize("badTextColor", text)
   }
 
   function getRequiredMedalsLevelText(colored = true)
   {
-    if (!haveSpecialRequirement())
+    if (!this.haveSpecialRequirement())
       return ""
 
-    let text = ::loc("warbonds/shop/requiredMedals", {
-      count = getMedalsCountNum()
+    let text = loc("warbonds/shop/requiredMedals", {
+      count = this.getMedalsCountNum()
     })
-    return isAvailableByMedalsCount() || !colored? text : ::colorize("badTextColor", text)
+    return this.isAvailableByMedalsCount() || !colored? text : colorize("badTextColor", text)
   }
 
   function getRequiredUnitsRankLevel(colored = true)
   {
-    if (reqMaxUnitRank < 2)
+    if (this.reqMaxUnitRank < 2)
       return ""
 
-    let text = ::loc("warbonds/shop/requiredUnitRank", {
-      unitRank = reqMaxUnitRank
+    let text = loc("warbonds/shop/requiredUnitRank", {
+      unitRank = this.reqMaxUnitRank
     })
-    return isAvailableByUnitsRank() || !colored? text : ::colorize("badTextColor", text)
+    return this.isAvailableByUnitsRank() || !colored? text : colorize("badTextColor", text)
   }
 
-  getSeenId = @() (isValid() ? (warbondWeak.getSeenId() + "_") : "") + id
+  getSeenId = @() (this.isValid() ? (this.warbondWeak.getSeenId() + "_") : "") + this.id
 
   /******************* params override to use in item.tpl ***********************************/
-  function modActionName() { return canBuy() ? getBuyText(true) : null }
-  function price() { return getCostText() }
-  function contentIconData() { return awardType.getContentIconData(blk) }
-  function tooltipId() { return awardType.getTooltipId(blk, warbondWeak) }
-  function amount() { return blk?.amount ?? 0 }
-  function itemIndex() { return getFullId() }
-  function headerText() { return awardType.getIconHeaderText(blk) }
-  unseenIcon = @() !isItemLocked() && bhvUnseen.makeConfigStr(SEEN.WARBONDS_SHOP, getSeenId())
+  function modActionName() { return this.canBuy() ? this.getBuyText(true) : null }
+  function price() { return this.getCostText() }
+  function contentIconData() { return this.awardType.getContentIconData(this.blk) }
+  function tooltipId() { return this.awardType.getTooltipId(this.blk, this.warbondWeak) }
+  function amount() { return this.blk?.amount ?? 0 }
+  function itemIndex() { return this.getFullId() }
+  function headerText() { return this.awardType.getIconHeaderText(this.blk) }
+  unseenIcon = @() !this.isItemLocked() && bhvUnseen.makeConfigStr(SEEN.WARBONDS_SHOP, this.getSeenId())
   /************************** end of params override ****************************************/
 }

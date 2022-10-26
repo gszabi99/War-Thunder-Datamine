@@ -1,5 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { debug_dump_stack } = require("dagor.debug")
 
 local dbgStartCheck = 0
 
@@ -8,8 +14,8 @@ local dbgStartCheck = 0
   if (dbgStartCheck++)
   {
     let msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
-    ::dagor.debug(msg)
-    ::callstack()
+    log(msg)
+    debug_dump_stack()
     ::script_net_assert_once("mainmenu recursion", msg)
   }
 
@@ -34,12 +40,12 @@ local dbgStartCheck = 0
 
 ::gui_start_mainmenu_reload <- function gui_start_mainmenu_reload(showShop = false)
 {
-  ::dagor.debug("Forced reload mainmenu")
+  log("Forced reload mainmenu")
   if (dbgStartCheck)
   {
     let msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
-    ::dagor.debug(msg)
-    ::callstack()
+    log(msg)
+    debug_dump_stack()
     ::script_net_assert_once("mainmenu recursion", msg)
   }
 

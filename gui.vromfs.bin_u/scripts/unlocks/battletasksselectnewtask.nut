@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_start_battle_tasks_select_new_task_wnd <- function gui_start_battle_tasks_select_new_task_wnd(battleTasksArray = null)
 {
@@ -12,7 +19,7 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
-  sceneTplName = "%gui/unlocks/battleTasksSelectNewTask"
+  sceneTplName = "%gui/unlocks/battleTasksSelectNewTask.tpl"
 
   battleTasksArray = null
   battleTasksConfigsArray = null
@@ -20,32 +27,32 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
   function getSceneTplView()
   {
     return {
-      items = getBattleTasksViewData()
+      items = this.getBattleTasksViewData()
     }
   }
 
   function getSceneTplContainerObj()
   {
-    return scene.findObject("root-box")
+    return this.scene.findObject("root-box")
   }
 
   function getBattleTasksViewData()
   {
-    battleTasksConfigsArray = ::u.map(battleTasksArray, @(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
-    return ::u.map(battleTasksConfigsArray, @(config) ::g_battle_tasks.generateItemView(config))
+    this.battleTasksConfigsArray = ::u.map(this.battleTasksArray, @(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
+    return ::u.map(this.battleTasksConfigsArray, @(config) ::g_battle_tasks.generateItemView(config))
   }
 
   function initScreen()
   {
-    let listObj = getConfigsListObj()
+    let listObj = this.getConfigsListObj()
     if (listObj)
     {
       let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
-      let filteredTasksArray = ::g_battle_tasks.filterTasksByGameModeId(battleTasksArray, currentGameModeId)
+      let filteredTasksArray = ::g_battle_tasks.filterTasksByGameModeId(this.battleTasksArray, currentGameModeId)
 
       local index = 0
       if (filteredTasksArray.len())
-        index = battleTasksArray.findindex(@(task) filteredTasksArray[0].id == task.id) ?? 0
+        index = this.battleTasksArray.findindex(@(task) filteredTasksArray[0].id == task.id) ?? 0
 
       listObj.setValue(index)
     }
@@ -53,25 +60,25 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 
   function getCurrentConfig()
   {
-    let listObj = getConfigsListObj()
+    let listObj = this.getConfigsListObj()
     if (listObj)
-      return battleTasksConfigsArray[listObj.getValue()]
+      return this.battleTasksConfigsArray[listObj.getValue()]
 
     return null
   }
 
-  function onSelectTask(obj)
+  function onSelectTask(_obj)
   {
-    let config = getCurrentConfig()
-    let taskObj = getCurrentTaskObj()
+    let config = this.getCurrentConfig()
+    let taskObj = this.getCurrentTaskObj()
 
     ::showBtn("btn_reroll", false, taskObj)
-    this.showSceneBtn("btn_requirements_list", ::show_console_buttons && isConfigHaveConditions(config))
+    this.showSceneBtn("btn_requirements_list", ::show_console_buttons && this.isConfigHaveConditions(config))
   }
 
-  function onSelect(obj)
+  function onSelect(_obj)
   {
-    let config = getCurrentConfig()
+    let config = this.getCurrentConfig()
     if (!config)
       return
 
@@ -82,8 +89,8 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
     let taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
     ::g_tasker.addTask(taskId,
       {showProgressBox = true},
-      ::Callback(function() {
-          goBack()
+      Callback(function() {
+          this.goBack()
           ::broadcastEvent("BattleTasksIncomeUpdate")
         }, this)
     )
@@ -91,13 +98,13 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 
   function isConfigHaveConditions(config)
   {
-    return ::getTblValue("names", config, []).len() != 0
+    return getTblValue("names", config, []).len() != 0
   }
 
   function onViewBattleTaskRequirements()
   {
-    let config = getCurrentConfig()
-    if (!isConfigHaveConditions(config))
+    let config = this.getCurrentConfig()
+    if (!this.isConfigHaveConditions(config))
       return
 
     let awardsList = ::u.map(config.names,
@@ -108,23 +115,20 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
       )
     )
 
-    showUnlocksGroupWnd([{
-      unlocksList = awardsList
-      titleText = ::loc("unlocks/requirements")
-    }])
+    showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }
 
   function getConfigsListObj()
   {
-    if (::checkObj(scene))
-      return scene.findObject("tasks_list")
+    if (checkObj(this.scene))
+      return this.scene.findObject("tasks_list")
     return null
   }
 
   function getCurrentTaskObj()
   {
-    let listObj = getConfigsListObj()
-    if (!::checkObj(listObj))
+    let listObj = this.getConfigsListObj()
+    if (!checkObj(listObj))
       return null
 
     let value = listObj.getValue()
@@ -134,5 +138,5 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
     return listObj.getChild(value)
   }
 
-  function onTaskReroll(obj) {}
+  function onTaskReroll(_obj) {}
 }

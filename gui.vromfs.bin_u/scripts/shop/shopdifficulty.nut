@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local shopDiffMode = null
@@ -31,7 +36,7 @@ let getShopDiffCode = @() isAutoDiff()
   : getShopDiffMode() ?? ::get_current_ediff()
 
 addListenersWithoutEnv({
-  SignOut = @(p) shopDiffMode = null
+  SignOut = @(_p) shopDiffMode = null
 })
 
 return {

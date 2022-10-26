@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { get_gui_option } = require("guiOptions")
+
 let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText,
         getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -33,29 +42,29 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function initScreen()
   {
-    playerUnitId = showedUnit.value.name
+    this.playerUnitId = showedUnit.value.name
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
 
-    setSceneTitle(::loc("mainmenu/btnDynamicPreview"), scene, "menu-title")
+    this.setSceneTitle(loc("mainmenu/btnDynamicPreview"), this.scene, "menu-title")
 
-    unitsBlk = DataBlock()
-    ::dynamic_get_units(::mission_settings.missionFull, unitsBlk)
+    this.unitsBlk = ::DataBlock()
+    ::dynamic_get_units(::mission_settings.missionFull, this.unitsBlk)
 
-    let list = createOptions()
-    let listObj = scene.findObject("optionslist")
-    guiScene.replaceContentFromText(listObj, list, list.len(), this)
+    let list = this.createOptions()
+    let listObj = this.scene.findObject("optionslist")
+    this.guiScene.replaceContentFromText(listObj, list, list.len(), this)
 
     //mission preview
-    ::g_map_preview.setMapPreview(scene.findObject("tactical-map"), ::mission_settings.missionFull)
+    ::g_map_preview.setMapPreview(this.scene.findObject("tactical-map"), ::mission_settings.missionFull)
 
     local misObj = ""
-    misObj = ::loc(format("mb/%s/objective", ::mission_settings.mission.getStr("name", "")), "")
-    scene.findObject("mission-objectives").setValue(misObj)
+    misObj = loc(format("mb/%s/objective", ::mission_settings.mission.getStr("name", "")), "")
+    this.scene.findObject("mission-objectives").setValue(misObj)
 
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
-    ::move_mouse_on_obj(scene.findObject("btn_apply"))
+    ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
   }
 
   function buildAircraftOption(id, units, selUnitId)
@@ -73,11 +82,11 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function buildWeaponOption(id, unitId, selWeapon, weapTags, isFull = true)
   {
-    local weapons = getWeaponsList(unitId, weapTags)
+    local weapons = this.getWeaponsList(unitId, weapTags)
     if (weapons.values.len() == 0)
     {
-      ::dagor.debug($"Bomber without bombs: {unitId}")
-      weapons = getWeaponsList(unitId)
+      log($"Bomber without bombs: {unitId}")
+      weapons = this.getWeaponsList(unitId)
     }
 
     let value = weapons.values.indexof(selWeapon) ?? 0
@@ -146,7 +155,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
         }
       if (!tagsOk)
         continue
-      if (!hasWeaponsChoice(unit, weapTags))
+      if (!this.hasWeaponsChoice(unit, weapTags))
         continue
       suitableUnits.append(unit.name)
     }
@@ -156,33 +165,33 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function createOptions()
   {
-    listA = []
-    listW = []
-    listS = []
-    listC = []
-    wtags = []
-    defaultW = {}
-    defaultS = {}
+    this.listA = []
+    this.listW = []
+    this.listS = []
+    this.listC = []
+    this.wtags = []
+    this.defaultW = {}
+    this.defaultS = {}
 
     let rowsView = []
 
     let isFreeFlight = ::mission_settings.missionFull.mission_settings.mission.isFreeFlight;
 
-    for (local i = 0; i < unitsBlk.blockCount(); i++)
+    for (local i = 0; i < this.unitsBlk.blockCount(); i++)
     {
-      let armada = unitsBlk.getBlock(i)
+      let armada = this.unitsBlk.getBlock(i)
 
       // Player's squad units
       if (armada?.isPlayer ?? false)
       {
-        playerIdx = i
-        listA.append([playerUnitId])
-        listW.append([getLastWeapon(playerUnitId)])
-        listS.append([::g_decorator.getLastSkin(playerUnitId)])
-        listC.append([commonSquadSize])
-        wtags.append([])
-        defaultW[playerUnitId] <- listW[i]
-        defaultS[playerUnitId] <- listS[i]
+        this.playerIdx = i
+        this.listA.append([this.playerUnitId])
+        this.listW.append([getLastWeapon(this.playerUnitId)])
+        this.listS.append([::g_decorator.getLastSkin(this.playerUnitId)])
+        this.listC.append([this.commonSquadSize])
+        this.wtags.append([])
+        this.defaultW[this.playerUnitId] <- this.listW[i]
+        this.defaultS[this.playerUnitId] <- this.listS[i]
         continue
       }
 
@@ -190,30 +199,30 @@ let { cutPostfix } = require("%sqstd/string.nut")
       let aircraft = armada.getStr("unit_class", "");
       local weapon = armada.getStr("weapons", "");
       local skin = armada.getStr("skin", "");
-      let count = armada.getInt("count", commonSquadSize);
+      let count = armada.getInt("count", this.commonSquadSize);
       let army = armada.getInt("army", 1); //1-ally, 2-enemy
       let isBomber = armada.getBool("mustBeBomber", false);
       let isFighter = armada.getBool("mustBeFighter", false);
       let isAssault = armada.getBool("mustBeAssault", false);
       let minCount = armada.getInt("minCount", 1);
-      let maxCount = max(armada.getInt("maxCount", maxSquadSize), count)
+      let maxCount = max(armada.getInt("maxCount", this.maxSquadSize), count)
       let excludeTag = isFreeFlight ? "not_in_free_flight" : "not_in_dynamic_campaign";
 
       if ((name == "") || (aircraft == ""))
         break;
 
       // Overriding ally unit params by player's squad unit params, when class is the same.
-      if (aircraft == playerUnitId)
+      if (aircraft == this.playerUnitId)
       {
-        weapon = getLastWeapon(playerUnitId)
-        skin = ::g_decorator.getLastSkin(playerUnitId)
+        weapon = getLastWeapon(this.playerUnitId)
+        skin = ::g_decorator.getLastSkin(this.playerUnitId)
       }
 
       let adesc = armada.description
       let fmTags = adesc % "needFmTag"
       let weapTags = adesc % "weaponOrTag"
 
-      let aircrafts = getSuitableUnits(excludeTag, fmTags, weapTags)
+      let aircrafts = this.getSuitableUnits(excludeTag, fmTags, weapTags)
       // make sure that aircraft exists in aircrafts array
       ::u.appendOnce(aircraft, aircrafts)
 
@@ -221,39 +230,39 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
       //aircraft type
       let trId = "".concat(
-        (army == (unitsBlk?.playerSide ?? 1) ? "ally" : "enemy"),
+        (army == (this.unitsBlk?.playerSide ?? 1) ? "ally" : "enemy"),
         (isBomber ? "Bomber" : isFighter ? "Fighter" : isAssault ? "Assault" : ""))
 
       local option
 
-      wtags.append(weapTags)
-      defaultW[aircraft] <- weapon
-      defaultS[aircraft] <- skin
+      this.wtags.append(weapTags)
+      this.defaultW[aircraft] <- weapon
+      this.defaultS[aircraft] <- skin
 
       let airSeparatorStyle = i == 0 ? "" : "margin-top:t='10@sf/@pf';"
 
       // Aircraft
-      option = buildAircraftOption($"{i}_a", aircrafts, aircraft)
-      rowsView.append(mkOptionRowView($"#options/{trId}", option.markup, $"iconType:t='aircraft'; {airSeparatorStyle}"))
-      listA.append(option.values)
+      option = this.buildAircraftOption($"{i}_a", aircrafts, aircraft)
+      rowsView.append(this.mkOptionRowView($"#options/{trId}", option.markup, $"iconType:t='aircraft'; {airSeparatorStyle}"))
+      this.listA.append(option.values)
 
       // Weapon
-      option = buildWeaponOption($"{i}_w", aircraft, weapon, weapTags)
-      rowsView.append(mkOptionRowView("#options/secondary_weapons", option.markup))
-      listW.append(option.values)
+      option = this.buildWeaponOption($"{i}_w", aircraft, weapon, weapTags)
+      rowsView.append(this.mkOptionRowView("#options/secondary_weapons", option.markup))
+      this.listW.append(option.values)
 
       // Skin
-      option = buildSkinOption($"{i}_s", aircraft, skin)
-      rowsView.append(mkOptionRowView("#options/skin", option.markup))
-      listS.append(option.values)
+      option = this.buildSkinOption($"{i}_s", aircraft, skin)
+      rowsView.append(this.mkOptionRowView("#options/skin", option.markup))
+      this.listS.append(option.values)
 
       // Count
-      option = buildCountOption($"{i}_c", minCount, maxCount, count)
-      rowsView.append(mkOptionRowView("#options/count", option.markup))
-      listC.append(option.values)
+      option = this.buildCountOption($"{i}_c", minCount, maxCount, count)
+      rowsView.append(this.mkOptionRowView("#options/count", option.markup))
+      this.listC.append(option.values)
     }
 
-    return ::handyman.renderCached("%gui/options/optionsContainer", {
+    return ::handyman.renderCached("%gui/options/optionsContainer.tpl", {
       id = "tuner_options"
       topPos = "(ph-h)/2"
       position = "absolute"
@@ -265,47 +274,47 @@ let { cutPostfix } = require("%sqstd/string.nut")
   function onChangeAircraft(obj)
   {
     let i = ::to_integer_safe(cutPostfix(obj?.id ?? "", "_a", "-1"), -1)
-    if (listA?[i] == null)
+    if (this.listA?[i] == null)
       return
 
-    let unitId = listA[i][obj.getValue()]
+    let unitId = this.listA[i][obj.getValue()]
     local option
     local optObj
 
     // Weapon
-    option = buildWeaponOption(null, unitId, defaultW?[unitId], wtags[i], false)
-    listW[i] = option.values
-    optObj = scene.findObject($"{i}_w")
-    guiScene.replaceContentFromText(optObj, option.markup, option.markup.len(), this)
+    option = this.buildWeaponOption(null, unitId, this.defaultW?[unitId], this.wtags[i], false)
+    this.listW[i] = option.values
+    optObj = this.scene.findObject($"{i}_w")
+    this.guiScene.replaceContentFromText(optObj, option.markup, option.markup.len(), this)
 
     // Skin
-    option = buildSkinOption(null, unitId, defaultS?[unitId], false)
-    listS[i] = option.values
-    optObj = scene.findObject($"{i}_s")
-    guiScene.replaceContentFromText(optObj, option.markup, option.markup.len(), this)
+    option = this.buildSkinOption(null, unitId, this.defaultS?[unitId], false)
+    this.listS[i] = option.values
+    optObj = this.scene.findObject($"{i}_s")
+    this.guiScene.replaceContentFromText(optObj, option.markup, option.markup.len(), this)
   }
 
-  function onApply(obj)
+  function onApply(_obj)
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
-        maxSquadSize = ::get_max_players_for_gamemode(::GM_BUILDER)
+        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return
 
-    for (local i = 0; i < listA.len(); i++)
+    for (local i = 0; i < this.listA.len(); i++)
     {
-      let isPlayer = i == playerIdx
-      let armada = unitsBlk.getBlock(i)
-      armada.setStr("unit_class", listA[i][isPlayer ? 0 : scene.findObject($"{i}_a").getValue()])
-      armada.setStr("weapons",    listW[i][isPlayer ? 0 : scene.findObject($"{i}_w").getValue()])
-      armada.setStr("skin",       listS[i][isPlayer ? 0 : scene.findObject($"{i}_s").getValue()])
-      armada.setInt("count",      listC[i][isPlayer ? 0 : scene.findObject($"{i}_c").getValue()])
+      let isPlayer = i == this.playerIdx
+      let armada = this.unitsBlk.getBlock(i)
+      armada.setStr("unit_class", this.listA[i][isPlayer ? 0 : this.scene.findObject($"{i}_a").getValue()])
+      armada.setStr("weapons",    this.listW[i][isPlayer ? 0 : this.scene.findObject($"{i}_w").getValue()])
+      armada.setStr("skin",       this.listS[i][isPlayer ? 0 : this.scene.findObject($"{i}_s").getValue()])
+      armada.setInt("count",      this.listC[i][isPlayer ? 0 : this.scene.findObject($"{i}_c").getValue()])
     }
 
-    ::mission_settings.mission.setInt("_gameMode", ::GM_BUILDER)
-    ::mission_settings.mission.player_class = playerUnitId
-    ::dynamic_set_units(::mission_settings.missionFull, unitsBlk)
+    ::mission_settings.mission.setInt("_gameMode", GM_BUILDER)
+    ::mission_settings.mission.player_class = this.playerUnitId
+    ::dynamic_set_units(::mission_settings.missionFull, this.unitsBlk)
     ::select_mission_full(::mission_settings.mission,
        ::mission_settings.missionFull)
 
@@ -315,24 +324,24 @@ let { cutPostfix } = require("%sqstd/string.nut")
     {
       ::broadcastEvent("BeforeStartMissionBuilder")
       if (::SessionLobby.isInRoom())
-        goForward(::gui_start_mp_lobby);
+        this.goForward(::gui_start_mp_lobby);
       else if (::mission_settings.coop)
       {
         // ???
       }
       else
-        goForward(::gui_start_flight)
+        this.goForward(::gui_start_flight)
     }
 
-    if (::get_gui_option(::USEROPT_DIFFICULTY) == "custom")
+    if (get_gui_option(::USEROPT_DIFFICULTY) == "custom")
       ::gui_start_cd_options(appFunc, this)
     else
       appFunc()
   }
 
-  function onBack(obj)
+  function onBack(_obj)
   {
-    goBack()
+    this.goBack()
   }
 
   function hasWeaponsChoice(unit, weapTags)

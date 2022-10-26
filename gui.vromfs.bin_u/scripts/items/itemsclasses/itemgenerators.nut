@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { round } = require("math")
+let { get_time_msec } = require("dagor.time")
 let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
@@ -25,17 +33,17 @@ local ItemGenerator = class {
 
   constructor(itemDefDesc)
   {
-    id = itemDefDesc.itemdefid
-    genType = itemDefDesc?.type ?? ""
-    exchange = itemDefDesc?.exchange ?? ""
-    bundle   = itemDefDesc?.bundle ?? ""
-    isPack   = ::isInArray(genType, [ "bundle", "delayedexchange" ])
-    tags     = itemDefDesc?.tags
-    timestamp = itemDefDesc?.Timestamp ?? ""
-    rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
+    this.id = itemDefDesc.itemdefid
+    this.genType = itemDefDesc?.type ?? ""
+    this.exchange = itemDefDesc?.exchange ?? ""
+    this.bundle   = itemDefDesc?.bundle ?? ""
+    this.isPack   = isInArray(this.genType, [ "bundle", "delayedexchange" ])
+    this.tags     = itemDefDesc?.tags
+    this.timestamp = itemDefDesc?.Timestamp ?? ""
+    this.rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
     let lifetimeModifierText = itemDefDesc?.lifetime_modifier
-    if (!u.isEmpty(lifetimeModifierText))
-      lifetimeModifier = ItemLifetimeModifier(lifetimeModifierText)
+    if (!::u.isEmpty(lifetimeModifierText))
+      this.lifetimeModifier = ItemLifetimeModifier(lifetimeModifierText)
   }
 
   _exchangeRecipes = null
@@ -43,10 +51,10 @@ local ItemGenerator = class {
 
   function getCraftTime()
   {
-    local result = rawCraftTime
-    if (lifetimeModifier != null)
+    local result = this.rawCraftTime
+    if (this.lifetimeModifier != null)
     {
-      let mul = lifetimeModifier.calculate()
+      let mul = this.lifetimeModifier.calculate()
       result = max(1, round(result * mul))
     }
     return result
@@ -54,18 +62,18 @@ local ItemGenerator = class {
 
   function getRecipes(needUpdateRecipesList = true)
   {
-    if (!_exchangeRecipes
-      || (needUpdateRecipesList && _exchangeRecipesUpdateTime <= ::ItemsManager.extInventoryUpdateTime))
+    if (!this._exchangeRecipes
+      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= ::ItemsManager.extInventoryUpdateTime))
     {
-      let generatorId = id
-      let generatorCraftTime = getCraftTime()
-      let parsedRecipes = inventoryClient.parseRecipesString(exchange)
-      let isDisassemble = tags?.isDisassemble ?? false
-      let localizationPresetName = tags?.customLocalizationPreset
-      let effectOnStartCraftPresetName = tags?.effectOnStartCraft
-      let allowableComponents = getAllowableRecipeComponents()
-      let showRecipeAsProduct = tags?.showRecipeAsProduct
-      _exchangeRecipes = ::u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
+      let generatorId = this.id
+      let generatorCraftTime = this.getCraftTime()
+      let parsedRecipes = inventoryClient.parseRecipesString(this.exchange)
+      let isDisassemble = this.tags?.isDisassemble ?? false
+      let localizationPresetName = this.tags?.customLocalizationPreset
+      let effectOnStartCraftPresetName = this.tags?.effectOnStartCraft
+      let allowableComponents = this.getAllowableRecipeComponents()
+      let showRecipeAsProduct = this.tags?.showRecipeAsProduct
+      this._exchangeRecipes = ::u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
          parsedRecipe
          generatorId
          craftTime = generatorCraftTime
@@ -78,7 +86,7 @@ local ItemGenerator = class {
 
       // Adding additional recipes
       local hasAdditionalRecipes = false
-      foreach (itemBlk in workshop.getItemAdditionalRecipesById(id))
+      foreach (itemBlk in workshop.getItemAdditionalRecipesById(this.id))
       {
         foreach (paramName in ["fakeRecipe", "trueRecipe"])
           foreach (itemdefId in itemBlk % paramName)
@@ -86,7 +94,7 @@ local ItemGenerator = class {
             ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
             let gen = collection?[itemdefId]
             let additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
-            _exchangeRecipes.extend(::u.map(additionalParsedRecipes, @(pr) ExchangeRecipes({
+            this._exchangeRecipes.extend(::u.map(additionalParsedRecipes, @(pr) ExchangeRecipes({
               parsedRecipe = pr
               generatorId = gen.id
               craftTime = gen.getCraftTime()
@@ -103,22 +111,22 @@ local ItemGenerator = class {
       }
       if (hasAdditionalRecipes)
       {
-        local minIdx = _exchangeRecipes[0].idx
-        ::math.init_rnd(::my_user_id_int64 + id)
-        _exchangeRecipes = ::u.shuffle(_exchangeRecipes)
-        foreach (recipe in _exchangeRecipes)
+        local minIdx = this._exchangeRecipes[0].idx
+        ::math.init_rnd(::my_user_id_int64 + this.id)
+        this._exchangeRecipes = ::u.shuffle(this._exchangeRecipes)
+        foreach (recipe in this._exchangeRecipes)
           recipe.idx = minIdx++
         ::randomize()
       }
 
-      _exchangeRecipesUpdateTime = ::dagor.getCurTime()
+      this._exchangeRecipesUpdateTime = get_time_msec()
     }
-    return ::u.filter(_exchangeRecipes, @(ec) ec.isEnabled())
+    return ::u.filter(this._exchangeRecipes, @(ec) ec.isEnabled())
   }
 
   function getUsableRecipes() {
-    let showAllowableRecipesOnly = tags?.showAllowableRecipesOnly ?? false
-    let recipes = getRecipes() ?? []
+    let showAllowableRecipesOnly = this.tags?.showAllowableRecipesOnly ?? false
+    let recipes = this.getRecipes() ?? []
     if (!showAllowableRecipesOnly)
       return recipes
 
@@ -143,13 +151,13 @@ local ItemGenerator = class {
 
   function getRecipesWithComponent(componentItemdefId)
   {
-    return ::u.filter(getRecipes(), @(ec) ec.hasComponent(componentItemdefId))
+    return ::u.filter(this.getRecipes(), @(ec) ec.hasComponent(componentItemdefId))
   }
 
   function _unpackContent(contentRank = null)
   {
-    _contentUnpacked = []
-    let parsedBundles = inventoryClient.parseRecipesString(bundle)
+    this._contentUnpacked = []
+    let parsedBundles = inventoryClient.parseRecipesString(this.bundle)
     let trophyWeightsBlk = ::get_game_settings_blk()?.visualizationTrophyWeights
     let trophyWeightsBlockCount = trophyWeightsBlk?.blockCount() ?? 0
     foreach (set in parsedBundles)
@@ -165,41 +173,41 @@ local ItemGenerator = class {
           let b = ::DataBlock()
           b.item =  item.id
           b.rank = rank
-          if (tags?.showFreq)
-            b.dropChance = tags.showFreq.tointeger() / 100.0
+          if (this.tags?.showFreq)
+            b.dropChance = this.tags.showFreq.tointeger() / 100.0
           if (trophyWeightsBlk != null && trophyWeightsBlockCount > 0
             && rank <= trophyWeightsBlockCount)
           {
             let weightBlock = trophyWeightsBlk.getBlock(rank - 1)
             b.weight = weightBlock.getBlockName()
           }
-          _contentUnpacked.append(b)
+          this._contentUnpacked.append(b)
         }
         else if (generator)
         {
           let content = generator.getContent(rank)
-          hasHiddenItems = hasHiddenItems || generator.hasHiddenItems
-          hiddenTopPrizeParams = hiddenTopPrizeParams || generator.hiddenTopPrizeParams
-          _contentUnpacked.extend(content)
+          this.hasHiddenItems = this.hasHiddenItems || generator.hasHiddenItems
+          this.hiddenTopPrizeParams = this.hiddenTopPrizeParams || generator.hiddenTopPrizeParams
+          this._contentUnpacked.extend(content)
         }
       }
 
-    let isBundleHidden = !_contentUnpacked.len()
-    hasHiddenItems = hasHiddenItems || isBundleHidden
-    hiddenTopPrizeParams = isBundleHidden ? tags : hiddenTopPrizeParams
+    let isBundleHidden = !this._contentUnpacked.len()
+    this.hasHiddenItems = this.hasHiddenItems || isBundleHidden
+    this.hiddenTopPrizeParams = isBundleHidden ? this.tags : this.hiddenTopPrizeParams
   }
 
   function getContent(contentRank = null)
   {
-    if (!_contentUnpacked)
-      _unpackContent(contentRank)
-    return _contentUnpacked
+    if (!this._contentUnpacked)
+      this._unpackContent(contentRank)
+    return this._contentUnpacked
   }
 
   function isHiddenTopPrize(prize)
   {
-    let content = getContent()
-    if (!hasHiddenItems || !prize?.item)
+    let content = this.getContent()
+    if (!this.hasHiddenItems || !prize?.item)
       return false
     foreach (v in content)
       if (prize.item == v?.item)
@@ -209,12 +217,12 @@ local ItemGenerator = class {
 
   function getRecipeByUid(uid)
   {
-    return ::u.search(getRecipes(), @(r) r.uid == uid)
+    return ::u.search(this.getRecipes(), @(r) r.uid == uid)
   }
 
   function markAllRecipes()
   {
-    let recipes = getRecipes()
+    let recipes = this.getRecipes()
     if (!ExchangeRecipes.hasFakeRecipes(recipes))
       return
 
@@ -226,11 +234,11 @@ local ItemGenerator = class {
     ExchangeRecipes.saveMarkedRecipes(markedRecipes)
   }
 
-  isDelayedxchange = @() genType == "delayedexchange"
-  getContentNoRecursion = @() getContent()
+  isDelayedxchange = @() this.genType == "delayedexchange"
+  getContentNoRecursion = @() this.getContent()
 
   function getAllowableRecipeComponents() {
-    let allowableItemsForRecipes = tags?.allowableItemsForRecipes
+    let allowableItemsForRecipes = this.tags?.allowableItemsForRecipes
     if (allowableItemsForRecipes == null)
       return null
 

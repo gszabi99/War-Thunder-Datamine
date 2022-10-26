@@ -1,4 +1,7 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let interopGen = require("interopGen.nut")
+let {interop} = require("%rGui/globals/interop.nut")
 let { NUM_ENGINES_MAX } = require("hudState")
 
 const NUM_TRANSMISSIONS_MAX = 6
@@ -495,76 +498,76 @@ let helicopterState = {
   TurretSightLineWidthFactor,
 }
 
-::interop.updateIsCannonEmpty <- function(index, is_empty) {
+interop.updateIsCannonEmpty <- function(index, is_empty) {
   if (is_empty != IsCannonEmpty.value[index])
     IsCannonEmpty.mutate(@(v) v[index] = is_empty)
 }
 
-::interop.updateCannonsArray <- function(index, count, seconds, selected, _time, _endTime) {
+interop.updateCannonsArray <- function(index, count, seconds, selected, _time, _endTime) {
   CannonState[index]({count, seconds, selected})
 
   if (selected != CannonSelectedArray.value[index])
     CannonSelectedArray.mutate(@(v) v[index] = selected)
 }
 
-::interop.updateMachineGunsArray <- function(index, count, seconds, selected, _time, _endTime) {
+interop.updateMachineGunsArray <- function(index, count, seconds, selected, _time, _endTime) {
   MachineGunState[index]({count, seconds, selected})
 
   if (selected != MachineGunsSelectedArray.value[index])
     MachineGunsSelectedArray.mutate(@(v) v[index] = selected)
 }
 
-::interop.updateBombs <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
+interop.updateBombs <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
   BombsState({count, seconds, mode, selected, salvo, name, actualCount})
 
-::interop.updateRockets <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
+interop.updateRockets <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
   RocketsState({count, seconds, mode, selected, salvo, name, actualCount})
 
-::interop.updateTorpedoes <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
+interop.updateTorpedoes <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
   TorpedoesState({count, seconds, mode, selected, salvo, name, actualCount})
 
-::interop.updateRwrPosSize <- @(x, y, w, h = null) RwrPosSize([x, y, w, h ?? w])
+interop.updateRwrPosSize <- @(x, y, w, h = null) RwrPosSize([x, y, w, h ?? w])
 
-::interop.updateMfdSightPosSize <- function(x, y, w, h) {
+interop.updateMfdSightPosSize <- function(x, y, w, h) {
   MfdSightPosSize[0] = x
   MfdSightPosSize[1] = y
   MfdSightPosSize[2] = w
   MfdSightPosSize[3] = h
 }
 
-::interop.updateIlsPosSize <- function(x, y, w, h) {
+interop.updateIlsPosSize <- function(x, y, w, h) {
   IlsPosSize[0] = x
   IlsPosSize[1] = y
   IlsPosSize[2] = w
   IlsPosSize[3] = h
 }
 
-::interop.updateIsMachineGunsEmpty <- function(index, is_empty) {
+interop.updateIsMachineGunsEmpty <- function(index, is_empty) {
   if (is_empty != IsMachineGunsEmpty.value[index])
     IsMachineGunsEmpty.mutate(@(v) v[index] = is_empty)
 }
 
-::interop.updateAdditionalCannons <- function(count, seconds, mode, selected) {
+interop.updateAdditionalCannons <- function(count, seconds, mode, selected) {
   AdditionalCannonsState({count, seconds, mode, selected})
 }
 
-::interop.updateAgm <- function(count, seconds, timeToHit, timeToWarning, selected, name, actualCount) {
+interop.updateAgm <- function(count, seconds, timeToHit, timeToWarning, selected, name, actualCount) {
   AgmState({count, seconds, timeToHit, timeToWarning, selected, name, actualCount})
 }
 
-::interop.updateAam <- function(count, seconds, selected, name, actualCount) {
+interop.updateAam <- function(count, seconds, selected, name, actualCount) {
   AamState({count, seconds, selected, name, actualCount})
 }
 
-::interop.updateGuidedBombs <- function(count, seconds,  mode, selected, name, actualCount) {
+interop.updateGuidedBombs <- function(count, seconds,  mode, selected, name, actualCount) {
   GuidedBombsState({count, seconds,  mode, selected, name, actualCount})
 }
 
-::interop.updateFlares <- function(count, mode, seconds) {
+interop.updateFlares <- function(count, mode, seconds) {
   FlaresState({count, mode, seconds})
 }
 
-::interop.updateChaffs <- function(count, mode, seconds) {
+interop.updateChaffs <- function(count, mode, seconds) {
   ChaffsState({count, mode, seconds})
 }
 
@@ -609,11 +612,11 @@ interopGen({
   postfix = "Update"
 })
 
-::interop.updateTurretsVisibility <- function (visible, index) {
+interop.updateTurretsVisibility <- function (visible, index) {
   TurretsVisible[index](visible)
 }
 
-::interop.updateTurrets <- function (X, Y, overheat, isReloading, empty, visible, index) {
+interop.updateTurrets <- function (X, Y, overheat, isReloading, empty, visible, index) {
   TurretsDirectionX[index](X)
   TurretsDirectionY[index](Y)
   TurretsOverheat[index](overheat)
@@ -622,48 +625,48 @@ interopGen({
   TurretsVisible[index](visible)
 }
 
-::interop.updateOilTemperature <- function (temperature, state, index) {
+interop.updateOilTemperature <- function (temperature, state, index) {
   OilTemperature[index](temperature)
   OilState[index](state)
 }
 
-::interop.updateWaterTemperature <- function (temperature, state, index) {
+interop.updateWaterTemperature <- function (temperature, state, index) {
   WaterTemperature[index](temperature)
   WaterState[index](state)
 }
 
-::interop.updateEngineTemperature <- function (temperature, state, index) {
+interop.updateEngineTemperature <- function (temperature, state, index) {
   EngineTemperature[index](temperature)
   EngineState[index](state)
 }
 
-::interop.updateTransmissionOilState <- function (state, index) {
+interop.updateTransmissionOilState <- function (state, index) {
   TransmissionOilState[index](state)
 }
 
-::interop.updateOilAlert <- function (value, index) {
+interop.updateOilAlert <- function (value, index) {
   OilAlert[index](value)
 }
 
-::interop.updateTransmissionOilAlert <- function (value, index) {
+interop.updateTransmissionOilAlert <- function (value, index) {
   IsTransmissionOilAlert[index](value)
 }
 
-::interop.updateWaterAlert <- function (value, index) {
+interop.updateWaterAlert <- function (value, index) {
   WaterAlert[index](value)
 }
 
-::interop.updateEngineAlert <- function (value, index) {
+interop.updateEngineAlert <- function (value, index) {
   EngineAlert[index](value)
 }
 
-::interop.updateEnginesThrottle <- function(mode, trt, state, index) {
+interop.updateEnginesThrottle <- function(mode, trt, state, index) {
   TrtMode[index](mode)
   Trt[index](trt)
   ThrottleState[index](state)
 }
 
-::interop.updateEngineControl <- function(index, is_controlled) {
+interop.updateEngineControl <- function(index, is_controlled) {
   isEngineControled[index](is_controlled)
 }
 

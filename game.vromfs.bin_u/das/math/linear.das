@@ -1,5 +1,6 @@
 module linear shared
 require math
+require DagorSystem
 require %dasGameLibs.math.base
 
 [generic]
@@ -64,11 +65,24 @@ def convex_hull(source : array<float2>) : array<float2>
   erase(outside, minXIdx)
   erase(outside, maxXIdx)
 
-  while length(outside) > 0
+  var lastSuccess = 0
+  var stepLimit = length(outside) * 3 //JIC
+  while length(outside) > 0 && stepLimit-- > 0
     var i = 0
     while i < length(list)
       if !extend_hull(list, outside, i)
+        if i == lastSuccess - 1 //we've gone full circle and no progress has been made
+          for p in outside
+            print("outside: {p}")
+          for p in list
+            print("list: {p}")
+          //I think this should never happen.
+          //But I leave it here JIC, since freezes are nasty and hard to diagnose.
+          logerr("Convex hull algo is wrong. Aborting prematurely to avoid endless cycle.")
+          return <- list
         i++
+      else
+        lastSuccess = i
   return <- list
 
 
@@ -101,7 +115,7 @@ def private extend_hull(var hull : array<float2>; var outside : array<float2>; f
     if dst > maxDst
       maxDst = dst
       maxP = idx
-  if maxDst > .0
+  if maxDst > -0.001 //tolerance for precision errors
     var newOutside : array<float2>
     let polygon = [[float2[3] hull[from]; outside[maxP]; hull[to]]]
     for p in outside
@@ -109,6 +123,6 @@ def private extend_hull(var hull : array<float2>; var outside : array<float2>; f
         push(newOutside, p)
     push(hull, outside[maxP], to)
     outside := newOutside
-  return maxDst > .0
+  return maxDst > -0.001
 
 

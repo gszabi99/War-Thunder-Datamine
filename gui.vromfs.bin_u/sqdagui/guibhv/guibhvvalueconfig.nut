@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 local configId = 0
 
 let configs = {}

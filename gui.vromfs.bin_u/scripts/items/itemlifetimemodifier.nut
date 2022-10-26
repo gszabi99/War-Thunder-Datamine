@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let regexp2 = require("regexp2")
 
 let class ItemLifetimeModifier {
@@ -8,34 +14,34 @@ let class ItemLifetimeModifier {
 
   constructor(formulaStr)
   {
-    if (typeof formulaStr != "string" || u.isEmpty(formulaStr))
+    if (typeof formulaStr != "string" || ::u.isEmpty(formulaStr))
       return
 
     // for compatibility
-    if (dependenciesRe?.multiExtract == null)
+    if (this.dependenciesRe?.multiExtract == null)
       return
 
-    let parsedDependencies = dependenciesRe.multiExtract("\\1", formulaStr)
-    dependencies = []
+    let parsedDependencies = this.dependenciesRe.multiExtract("\\1", formulaStr)
+    this.dependencies = []
     foreach (dependencyStr in parsedDependencies)
     {
-      dependencies.append(dependencyStr.tointeger())
+      this.dependencies.append(dependencyStr.tointeger())
     }
     let body = "return @(s) (" + formulaStr + ")"
-    modifierFunction = compilestring(body)()
+    this.modifierFunction = compilestring(body)()
   }
 
   function calculate()
   {
-    if (modifierFunction == null)
+    if (this.modifierFunction == null)
       return 1.0
 
     let params = {}
-    foreach (dependency in dependencies)
+    foreach (dependency in this.dependencies)
     {
       params["count_" + dependency.tostring()] <- ::ItemsManager.getRawInventoryItemAmount(dependency)
     }
-    return modifierFunction(params)
+    return this.modifierFunction(params)
   }
 }
 

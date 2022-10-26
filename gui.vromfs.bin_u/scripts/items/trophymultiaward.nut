@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isDataBlock } = require("%sqstd/underscore.nut")
@@ -38,65 +44,65 @@ let class TrophyMultiAward
 
   constructor(v_blk, trophy = null, idx_in_trophy = 0)
   {
-    blk = v_blk
+    this.blk = v_blk
     if (trophy)
     {
-      trophyWeak = trophy.weak()
-      idxInTrophy = idx_in_trophy
+      this.trophyWeak = trophy.weak()
+      this.idxInTrophy = idx_in_trophy
     }
   }
 
   function getCost()
   {
-    return ::Cost(0, blk?.multiAwardsOnWorthGold ?? 0)
+    return ::Cost(0, this.blk?.multiAwardsOnWorthGold ?? 0)
   }
 
   function getName()
   {
-    let awardType = getAwardsType()
-    let showCount = haveCount()
+    let awardType = this.getAwardsType()
+    let showCount = this.haveCount()
     local key = ""
     if (showCount)
       key = (awardType == "") ? "multiAward/name/count" : "multiAward/name/count/singleType"
     else
       key = (awardType == "") ? "multiAward/name" : "multiAward/name/singleType"
-    return ::loc(key,
+    return loc(key,
                  {
-                   awardType = ::loc("multiAward/type/" + awardType)
-                   awardCost = getCost().tostring()
-                   awardCount = showCount ? ::colorize(headerActiveColor, getCount()) : ""
+                   awardType = loc("multiAward/type/" + awardType)
+                   awardCost = this.getCost().tostring()
+                   awardCount = showCount ? colorize(this.headerActiveColor, this.getCount()) : ""
                  })
   }
 
   function getDescription(useBoldAsSmaller = false)
   {
-    let resDesc = getResultDescription()
+    let resDesc = this.getResultDescription()
     if (resDesc != "")
       return resDesc
 
-    local header = ::colorize(headerColor, getName())
-    if (blk?.fromLastBattle)
+    local header = colorize(this.headerColor, this.getName())
+    if (this.blk?.fromLastBattle)
     {
-      local text = ::loc("multiAward/fromLastBattle")
+      local text = loc("multiAward/fromLastBattle")
       if (useBoldAsSmaller)
         text = "<b>" + text + "</b>"
       header += "\n" + text
     }
 
     let textList = []
-    let skipUnconditional = getAwardsType() != ""
-    let count = blk.blockCount()
+    let skipUnconditional = this.getAwardsType() != ""
+    let count = this.blk.blockCount()
     for(local i = 0; i < count; i++)
     {
-      let text = getAwardText(blk.getBlock(i), skipUnconditional, useBoldAsSmaller)
+      let text = this.getAwardText(this.blk.getBlock(i), skipUnconditional, useBoldAsSmaller)
       if (text.len())
         textList.append(text)
     }
     if (!textList.len())
       return header
 
-    textList.insert(0, header + ::loc("ui/colon"))
-    return ::g_string.implode(textList, (skipUnconditional && count == 1) ? "\n" : listDiv)
+    textList.insert(0, header + loc("ui/colon"))
+    return ::g_string.implode(textList, (skipUnconditional && count == 1) ? "\n" : this.listDiv)
   }
 
   function getAwardText(awardBlk, skipUnconditional = false, useBoldAsSmaller = false)
@@ -111,8 +117,8 @@ let class TrophyMultiAward
         return ""
 
       let uTypes = ::u.map(awardBlk % "type",
-                                 function(t) { return ::colorize(goodsColor, ::loc("multiAward/type/" + t)) }.bindenv(this))
-      return ::g_string.implode(uTypes, listDiv)
+                                 function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
+      return ::g_string.implode(uTypes, this.listDiv)
     }
 
     if (curAwardType == "modificationsList")
@@ -120,8 +126,8 @@ let class TrophyMultiAward
       if (skipUnconditional)
         return ""
 
-      local res = ::colorize(goodsColor, ::loc("multiAward/type/modification"))
-      res += ::colorize(condColor, " x" + awardBlk.paramCount())
+      local res = colorize(this.goodsColor, loc("multiAward/type/modification"))
+      res += colorize(this.condColor, " x" + awardBlk.paramCount())
       return res
     }
 
@@ -131,20 +137,20 @@ let class TrophyMultiAward
         return ""
 
       let uTypes = ::u.map(awardBlk % "resourceType",
-                                 function(t) { return ::colorize(goodsColor, ::loc("multiAward/type/" + t)) }.bindenv(this))
-      return ::g_string.implode(uTypes, listDiv)
+                                 function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
+      return ::g_string.implode(uTypes, this.listDiv)
     }
 
     local res = ""
-    if (!skipUnconditional && haveCount())
+    if (!skipUnconditional && this.haveCount())
     {
       let count = awardBlk?.count ?? 1
       res = "".concat(
-        ::colorize(goodsColor, ::loc("multiAward/type/" + curAwardType)),
-        ::colorize(condColor, " x" + count))
+        colorize(this.goodsColor, loc("multiAward/type/" + curAwardType)),
+        colorize(this.condColor, " x" + count))
     }
 
-    local conditions = getConditionsText(awardBlk)
+    local conditions = this.getConditionsText(awardBlk)
     if (conditions == "")
       return skipUnconditional ? "" : res
 
@@ -159,18 +165,18 @@ let class TrophyMultiAward
   function getConditionsText(awardBlk)
   {
     let condList = []
-    _addCondSpecialization(awardBlk, condList)
-    _addCondCountries(awardBlk, condList)
-    _addCondRanks(awardBlk, condList)
-    _addCondUnitClass(awardBlk, condList)
-    _addCondExistingUnit(awardBlk, condList)
+    this._addCondSpecialization(awardBlk, condList)
+    this._addCondCountries(awardBlk, condList)
+    this._addCondRanks(awardBlk, condList)
+    this._addCondUnitClass(awardBlk, condList)
+    this._addCondExistingUnit(awardBlk, condList)
     return ::g_string.implode(condList, "; ")
   }
 
   function _addCondExistingUnit(awardBlk, condList)
   {
     if (awardBlk?.forExistingUnits)
-      condList.append(::loc("conditions/unitExists"))
+      condList.append(loc("conditions/unitExists"))
   }
 
   function _addCondSpecialization(awardBlk, condList)
@@ -178,8 +184,8 @@ let class TrophyMultiAward
     if ((awardBlk?.specAce ?? false) == (awardBlk?.aceExpert ?? false))
       return
 
-    let text = ::loc(blk?.specAce ? "crew/qualification/1" : "crew/qualification/2")
-    condList.append(::colorize(condColor, text))
+    let text = loc(this.blk?.specAce ? "crew/qualification/1" : "crew/qualification/2")
+    condList.append(colorize(this.condColor, text))
   }
 
   function _addCondCountries(awardBlk, condList)
@@ -188,9 +194,9 @@ let class TrophyMultiAward
     if (!countries.len())
       return
 
-    local text = ::loc("options/country") + ::loc("ui/colon")
+    local text = loc("options/country") + loc("ui/colon")
     countries = ::u.map(countries,
-                            function(val) { return ::colorize(condColor ::loc(val)) }.bindenv(this))
+                            function(val) { return colorize(this.condColor loc(val)) }.bindenv(this))
     text += ::g_string.implode(countries, ", ")
     condList.append(text)
   }
@@ -201,18 +207,18 @@ let class TrophyMultiAward
     if (!ranks.len())
       return
 
-    local text = ::loc("shop/age") + ::loc("ui/colon")
+    local text = loc("shop/age") + loc("ui/colon")
     ranks = ::u.map(ranks,
                         function(val) {
                           if (typeof(val) != "instance" || !(val instanceof ::Point2))
                             return ""
 
-                          let res = ::colorize(condColor, ::get_roman_numeral(val.x))
+                          let res = colorize(this.condColor, ::get_roman_numeral(val.x))
                           if (val.x == val.y)
                             return res
 
                           let div = (val.y - val.x == 1) ? ", " : "-"
-                          return res + div + ::colorize(condColor, ::get_roman_numeral(val.y))
+                          return res + div + colorize(this.condColor, ::get_roman_numeral(val.y))
                         }.bindenv(this))
 
     text += ::g_string.implode(ranks, ", ")
@@ -225,14 +231,14 @@ let class TrophyMultiAward
     if (!classes.len())
       return
 
-    local text = ::loc("unit_type") + ::loc("ui/colon")
+    local text = loc("unit_type") + loc("ui/colon")
     classes = ::u.map(classes,
                           function(val) {
                             local role = val.tolower()
                             role = ::g_string.cutPrefix(role, "exp_", role)
                             if (role == "aircraft")
-                              return ::colorize(condColor, ::loc("unlockTag/unit_aircraft"))
-                            return ::colorize(condColor, getRoleText(role))
+                              return colorize(this.condColor, loc("unlockTag/unit_aircraft"))
+                            return colorize(this.condColor, getRoleText(role))
                           }.bindenv(this))
 
     text += ::g_string.implode(classes, ", ")
@@ -241,7 +247,7 @@ let class TrophyMultiAward
 
   function getResultDescription()
   {
-    let resList = getResultPrizesList()
+    let resList = this.getResultPrizesList()
     if (!resList || !resList.len())
       return ""
 
@@ -251,16 +257,16 @@ let class TrophyMultiAward
   function getResultPrizesList()
   {
     let res = []
-    let resBlk = blk?.result
+    let resBlk = this.blk?.result
     if (!isDataBlock(resBlk))
       return res
 
-    _addResUnlocks(resBlk, res)
-    _addResModifications(resBlk, res)
-    _addResSpare(resBlk, res)
-    _addResSpecialization(resBlk, res)
-    _addResUCurrency(resBlk, res)
-    _addResResources(resBlk, res)
+    this._addResUnlocks(resBlk, res)
+    this._addResModifications(resBlk, res)
+    this._addResSpare(resBlk, res)
+    this._addResSpecialization(resBlk, res)
+    this._addResUCurrency(resBlk, res)
+    this._addResResources(resBlk, res)
     return res
   }
 
@@ -285,8 +291,8 @@ let class TrophyMultiAward
 
   function _addResModifications(resBlk, resList)
   {
-    _addResModificationsFromBlock(resBlk?.modification, resList)
-    _addResModificationsFromBlock(resBlk?.premExpMul, resList)
+    this._addResModificationsFromBlock(resBlk?.modification, resList)
+    this._addResModificationsFromBlock(resBlk?.premExpMul, resList)
   }
 
   function _addResModificationsFromBlock(resModBlk, resList)
@@ -330,7 +336,7 @@ let class TrophyMultiAward
     }
 
     if (!list.len())
-      list = getSpareListFromOldUserlogFormat(spareBlk)
+      list = this.getSpareListFromOldUserlogFormat(spareBlk)
 
     list.sort(function(a,b) { return a.spare > b.spare ? 1 : (a.spare < b.spare ? -1 : 0) })
     foreach(data in list)
@@ -401,7 +407,7 @@ let class TrophyMultiAward
         continue
 
       let prizesList = list[country]
-      prizesList.sort(_resSpecializationSort)
+      prizesList.sort(this._resSpecializationSort)
       foreach(data in prizesList)
         resList.append(::DataBlockAdapter(data))
     }
@@ -418,9 +424,9 @@ let class TrophyMultiAward
     return 0
   }
 
-  function _addResUCurrency(resBlk, resList)
+  function _addResUCurrency(_resBlk, resList)
   {
-    let gold = blk?.gold //not mistake, it in the root now.
+    let gold = this.blk?.gold //not mistake, it in the root now.
     if (!gold)
       return
     resList.append(::DataBlockAdapter({ gold = gold }))
@@ -448,39 +454,39 @@ let class TrophyMultiAward
 
   function haveCount()
   {
-    return !blk?.multiAwardsOnWorthGold
+    return !this.blk?.multiAwardsOnWorthGold
   }
 
   _count = -1
   function getCount()
   {
-    if (!haveCount())
+    if (!this.haveCount())
       return 0
 
-    if (_count < 0)
-      initParams()
-    return _count
+    if (this._count < 0)
+      this.initParams()
+    return this._count
   }
 
   _awardType = null
   function getAwardsType() //return "" when multitype
   {
-    if (!_awardType)
-      initParams()
-    return _awardType
+    if (!this._awardType)
+      this.initParams()
+    return this._awardType
   }
 
   function initParams()
   {
-    let count = blk.blockCount()
+    let count = this.blk.blockCount()
     local multiType = false
-    let needCount = haveCount()
+    let needCount = this.haveCount()
     local awardsCount = 0
     for(local i = 0; i < count; i++)  //country
     {
-      let awardBlk = blk.getBlock(i)
+      let awardBlk = this.blk.getBlock(i)
       local awardType = awardBlk.getBlockName()
-      if (!(awardType in typesBlocks))
+      if (!(awardType in this.typesBlocks))
         continue
 
       if (awardType == "modificationsList")
@@ -506,9 +512,9 @@ let class TrophyMultiAward
         }
       }
 
-      if (!_awardType)
-        _awardType = awardType
-      else if (_awardType != awardType)
+      if (!this._awardType)
+        this._awardType = awardType
+      else if (this._awardType != awardType)
       {
         multiType = true
         if (!needCount)
@@ -516,23 +522,23 @@ let class TrophyMultiAward
       }
     }
 
-    if (multiType || !_awardType)
-      _awardType = ""
-    _count = awardsCount
+    if (multiType || !this._awardType)
+      this._awardType = ""
+    this._count = awardsCount
   }
 
   function getFullTypesList()
   {
-    if (_awardType && _awardType != "") //to not force recount awardType if it not counted yet.
-      return [_awardType]
+    if (this._awardType && this._awardType != "") //to not force recount awardType if it not counted yet.
+      return [this._awardType]
 
     let res = []
-    let count = blk.blockCount()
+    let count = this.blk.blockCount()
     for(local i = 0; i < count; i++)  //country
     {
-      let awardBlk = blk.getBlock(i)
+      let awardBlk = this.blk.getBlock(i)
       let awardType = awardBlk.getBlockName()
-      if (!(awardType in typesBlocks))
+      if (!(awardType in this.typesBlocks))
         continue
 
       if (awardType == "unlocks" || awardType == "resource")
@@ -551,7 +557,7 @@ let class TrophyMultiAward
 
   function getTypeIcon()
   {
-    let awardType = getAwardsType()
+    let awardType = this.getAwardsType()
     if (awardType == "decal")
       return "#ui/gameuiskin#item_type_decal.svg"
     if (awardType == "skin")
@@ -570,23 +576,23 @@ let class TrophyMultiAward
   function getAvailRouletteIcons()
   {
     let res = []
-    let typesList = getFullTypesList()
+    let typesList = this.getFullTypesList()
     foreach(t in typesList)
-      if (t in rouletteIcons)
-        res.extend(rouletteIcons[t])
+      if (t in this.rouletteIcons)
+        res.extend(this.rouletteIcons[t])
     return res
   }
 
   function getRewardImage()
   {
-    local res = _getIconsLayer()
-    res += _getTextLayer()
+    local res = this._getIconsLayer()
+    res += this._getTextLayer()
     return res
   }
 
   function getOnlyRewardImage()
   {
-    return _getIconsLayer()
+    return this._getIconsLayer()
   }
 
   function _chooseIconsForLayer(iconsList, total)
@@ -603,15 +609,15 @@ let class TrophyMultiAward
 
   function _getIconsLayer()
   {
-    let awardsType = getAwardsType()
-    let iconsList = getAvailRouletteIcons()
+    let awardsType = this.getAwardsType()
+    let iconsList = this.getAvailRouletteIcons()
     if (!iconsList.len())
       return ""
 
     local res = ""
     let singleType = awardsType != ""
     let layerName = singleType ? "item_multiaward_single" : "item_multiaward"
-    let chosen = _chooseIconsForLayer(iconsList, singleType ? maxRouletteIconsSingleType : maxRouletteIcons)
+    let chosen = this._chooseIconsForLayer(iconsList, singleType ? this.maxRouletteIconsSingleType : this.maxRouletteIcons)
     for(local idx = chosen.len() - 1; idx >= 0; idx--)
     {
       let layerCfg = ::LayersIcon.findLayerCfg(layerName + idx)
@@ -630,7 +636,7 @@ let class TrophyMultiAward
     if (!layerCfg)
       return ""
 
-    layerCfg.text <- haveCount() ? "x" + getCount() : getCost().tostring()
+    layerCfg.text <- this.haveCount() ? "x" + this.getCount() : this.getCost().tostring()
     return ::LayersIcon.getTextDataFromLayer(layerCfg)
   }
 }

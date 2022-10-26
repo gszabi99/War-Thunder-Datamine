@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut")
 
 ::Input.NullInput <- class extends ::Input.InputBase
@@ -6,15 +11,15 @@ let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut
 
   function getMarkup()
   {
-    return showPlaceholder
-      ? ::handyman.renderCached("%gui/controls/input/nullInput", { text = getText() })
+    return this.showPlaceholder
+      ? ::handyman.renderCached("%gui/controls/input/nullInput.tpl", { text = this.getText() })
       : null
   }
 
   function getText()
   {
-    return (showPlaceholder && shortcutId != "")
-      ? getLocalizedShortcutName(shortcutId)
+    return (this.showPlaceholder && this.shortcutId != "")
+      ? getLocalizedShortcutName(this.shortcutId)
       : ""
   }
 
@@ -22,8 +27,8 @@ let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut
   {
     return {
       inputName = "nullInput"
-      shortcutId = shortcutId
-      showPlaceholder = showPlaceholder
+      shortcutId = this.shortcutId
+      showPlaceholder = this.showPlaceholder
     }
   }
 }

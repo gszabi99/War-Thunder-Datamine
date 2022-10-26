@@ -1,8 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { get_gui_option } = require("guiOptions")
 
-::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null)
-{
+::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
   ::handlersManager.loadHandler(::gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
 }
 
@@ -47,63 +55,63 @@ let chatLogToString = function(chatLog)
 
   function initScreen()
   {
-    if (!scene || !player || !canBan())
-      return goBack()
+    if (!this.scene || !this.player || !this.canBan())
+      return this.goBack()
 
-    playerName = ::getTblValue("name", player, "")
-    if (!::getTblValue("uid", player))
+    this.playerName = getTblValue("name", this.player, "")
+    if (!getTblValue("uid", this.player))
     {
-      taskId = ::find_contact_by_name_and_do(playerName, ::Callback(onPlayerFound, this))
-      if (taskId!=null && taskId<0)
+      this.taskId = ::find_contact_by_name_and_do(this.playerName, Callback(this.onPlayerFound, this))
+      if (this.taskId!=null && this.taskId<0)
       {
-        notFoundPlayerMsg()
+        this.notFoundPlayerMsg()
         return
       }
     }
 
-    let titleObj = scene.findObject("complaint_title")
-    if (::checkObj(titleObj))
-      titleObj.setValue(::loc("contacts/moderator_ban/title"))
+    let titleObj = this.scene.findObject("complaint_title")
+    if (checkObj(titleObj))
+      titleObj.setValue(loc("contacts/moderator_ban/title"))
 
-    let nameObj = scene.findObject("complain_text")
-    if (::checkObj(nameObj))
-      nameObj.setValue(::loc("clan/nick") + ::loc("ui/colon"))
+    let nameObj = this.scene.findObject("complain_text")
+    if (checkObj(nameObj))
+      nameObj.setValue(loc("clan/nick") + loc("ui/colon"))
 
-    let clanTag = ::getTblValue("clanTag", player, "")
-    let targetObj = scene.findObject("complain_target")
-    if (::checkObj(targetObj))
-      targetObj.setValue((clanTag.len() > 0? (clanTag + " ") : "") + platformModule.getPlayerName(playerName))
+    let clanTag = getTblValue("clanTag", this.player, "")
+    let targetObj = this.scene.findObject("complain_target")
+    if (checkObj(targetObj))
+      targetObj.setValue((clanTag.len() > 0? (clanTag + " ") : "") + platformModule.getPlayerName(this.playerName))
 
     let options = [
       ::USEROPT_COMPLAINT_CATEGORY,
       ::USEROPT_BAN_PENALTY,
       ::USEROPT_BAN_TIME
     ]
-    optionsList = []
+    this.optionsList = []
     foreach(o in options)
-      optionsList.append(::get_option(o))
+      this.optionsList.append(::get_option(o))
 
-    let optionsBox = scene.findObject("options_rows_div")
+    let optionsBox = this.scene.findObject("options_rows_div")
     let objForClones = optionsBox.getChild(0)
-    for(local i=1; i<=optionsList.len(); i++)
+    for(local i=1; i<=this.optionsList.len(); i++)
     {
-      let idx = (i<optionsList.len())? i : 0
-      let opt = optionsList[idx]
+      let idx = (i<this.optionsList.len())? i : 0
+      let opt = this.optionsList[idx]
       local optRow = null
       if (idx==0)
         optRow = objForClones
       else
         optRow = objForClones.getClone(optionsBox, this)
 
-      optRow.findObject("option_name").setValue(::loc("options/" + opt.id))
+      optRow.findObject("option_name").setValue(loc("options/" + opt.id))
       let typeObj = optRow.findObject("option_list")
-      let data = create_option_list(opt.id, opt.items, opt.value, null, false)
-      guiScene.replaceContentFromText(typeObj, data, data.len(), this)
+      let data = ::create_option_list(opt.id, opt.items, opt.value, null, false)
+      this.guiScene.replaceContentFromText(typeObj, data, data.len(), this)
       typeObj.id = opt.id
     }
 
-    onTypeChange()
-    updateButtons()
+    this.onTypeChange()
+    this.updateButtons()
   }
 
   function canBan()
@@ -113,15 +121,15 @@ let chatLogToString = function(chatLog)
 
   function notFoundPlayerMsg()
   {
-    this.msgBox("incorrect_user", ::loc("chat/error/item-not-found", { nick = platformModule.getPlayerName(playerName) }),
+    this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = platformModule.getPlayerName(this.playerName) }),
         [
-          ["ok", function() { goBack() } ]
+          ["ok", function() { this.goBack() } ]
         ], "ok")
   }
 
   function updateButtons()
   {
-    let haveUid = ::getTblValue("uid", player) != null
+    let haveUid = getTblValue("uid", this.player) != null
     this.showSceneBtn("info_loading", !haveUid)
     this.showSceneBtn("btn_send", haveUid)
   }
@@ -129,55 +137,55 @@ let chatLogToString = function(chatLog)
   function onPlayerFound(contact)
   {
     if (!contact)
-      return notFoundPlayerMsg()
+      return this.notFoundPlayerMsg()
 
-    player = contact
-    if (::checkObj(scene))
-      updateButtons()
+    this.player = contact
+    if (checkObj(this.scene))
+      this.updateButtons()
   }
 
-  onTypeChange = @() ::select_editbox(scene.findObject("complaint_text"))
+  onTypeChange = @() ::select_editbox(this.scene.findObject("complaint_text"))
 
   function onApply()
   {
-    if (!canBan())
-      return goBack()
+    if (!this.canBan())
+      return this.goBack()
 
-    let comment = clearBorderSymbolsMultiline(  scene.findObject("complaint_text").getValue()  )
+    let comment = clearBorderSymbolsMultiline(  this.scene.findObject("complaint_text").getValue()  )
     if (comment.len() < 10)
     {
-      this.msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
+      this.msgBox("need_text", loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
     }
 
-    let uid = ::getTblValue("uid", player)
+    let uid = getTblValue("uid", this.player)
     if (!uid)
       return
 
-    foreach(opt in optionsList)
+    foreach(opt in this.optionsList)
     {
-      let obj = scene.findObject(opt.id)
+      let obj = this.scene.findObject(opt.id)
       ::set_option(opt.type, obj.getValue(), opt)
     }
 
-    let duration = ::get_gui_option(::USEROPT_BAN_TIME)
-    let category = ::get_gui_option(::USEROPT_COMPLAINT_CATEGORY)
-    let penalty =  ::get_gui_option(::USEROPT_BAN_PENALTY)
+    let duration = get_gui_option(::USEROPT_BAN_TIME)
+    let category = get_gui_option(::USEROPT_COMPLAINT_CATEGORY)
+    let penalty =  get_gui_option(::USEROPT_BAN_PENALTY)
 
-    ::dagor.debug(format("%s user: %s, for %s, for %d sec.\n comment: %s",
-                       penalty, playerName, category, duration, comment))
-    taskId = char_ban_user(uid, duration, "", category, penalty,
-                           comment, ""/*hidden_note*/, chatLogToString(chatLog ?? {}))
-    if (taskId >= 0)
+    log(format("%s user: %s, for %s, for %d sec.\n comment: %s",
+                       penalty, this.playerName, category, duration, comment))
+    this.taskId = ::char_ban_user(uid, duration, "", category, penalty,
+                           comment, ""/*hidden_note*/, chatLogToString(this.chatLog ?? {}))
+    if (this.taskId >= 0)
     {
-      ::set_char_cb(this, slotOpCb)
-      showTaskProgressBox(::loc("charServer/send"))
-      afterSlotOp = function()
+      ::set_char_cb(this, this.slotOpCb)
+      this.showTaskProgressBox(loc("charServer/send"))
+      this.afterSlotOp = function()
         {
-          ::dagor.debug("[IRC] sending /reauth " + playerName)
-          ::gchat_raw_command("reauth " + ::gchat_escape_target(playerName))
-          goBack()
+          log("[IRC] sending /reauth " + this.playerName)
+          ::gchat_raw_command("reauth " + ::gchat_escape_target(this.playerName))
+          this.goBack()
         }
     }
   }
@@ -197,61 +205,61 @@ let chatLogToString = function(chatLog)
 
   function initScreen()
   {
-    if (!scene || !pInfo || typeof(pInfo) != "table")
-      return goBack()
+    if (!this.scene || !this.pInfo || typeof(this.pInfo) != "table")
+      return this.goBack()
 
-    let gameMode = "GameMode = " + ::loc(format("multiplayer/%sMode", ::get_game_mode_name(::get_game_mode())))
-    location = gameMode
-    if (chatLog != null)
+    let gameMode = "GameMode = " + loc(format("multiplayer/%sMode", ::get_game_mode_name(::get_game_mode())))
+    this.location = gameMode
+    if (this.chatLog != null)
     {
-      if ("roomId" in pInfo && "roomName" in pInfo && pInfo.roomName != "")
-        location = "Main Chat, Channel = " + pInfo.roomName + " (" + pInfo.roomId + ")"
+      if ("roomId" in this.pInfo && "roomName" in this.pInfo && this.pInfo.roomName != "")
+        this.location = "Main Chat, Channel = " + this.pInfo.roomName + " (" + this.pInfo.roomId + ")"
       else
-        location = "In-game Chat; " + gameMode
+        this.location = "In-game Chat; " + gameMode
     }
     else
-      chatLog = {}
+      this.chatLog = {}
 
-    local pName = platformModule.getPlayerName(pInfo.name)
+    local pName = platformModule.getPlayerName(this.pInfo.name)
     local clanTag
-    if("clanData" in pInfo)
+    if("clanData" in this.pInfo)
     {
-      let clanData = pInfo.clanData
+      let clanData = this.pInfo.clanData
       clanTag = ("tag" in clanData) ? clanData.tag : null
 
-      clanInfo = ("id" in clanData ? "clan id = " + clanData.id + "\n" : "") +
+      this.clanInfo = ("id" in clanData ? "clan id = " + clanData.id + "\n" : "") +
                 ("tag" in clanData ? "clan tag = " + clanData.tag + "\n" : "") +
                 ("name" in clanData ? "clan name = " + clanData.name + "\n" : "") +
                 ("slogan" in clanData ? "clan slogan = " + clanData.slogan + "\n" : "") +
                 ("desc" in clanData ? "clan description = " + clanData.desc : "")
     }
-    clanTag = clanTag || ( ("clanTag" in pInfo && pInfo.clanTag != "") ? pInfo.clanTag : null )
+    clanTag = clanTag || ( ("clanTag" in this.pInfo && this.pInfo.clanTag != "") ? this.pInfo.clanTag : null )
     pName = clanTag ? (clanTag + " " + pName) : pName
 
-    let titleObj = scene.findObject("complaint_title")
-    if (::checkObj(titleObj))
-      titleObj.setValue(::loc("mainmenu/btnComplain"))
+    let titleObj = this.scene.findObject("complaint_title")
+    if (checkObj(titleObj))
+      titleObj.setValue(loc("mainmenu/btnComplain"))
 
-    let nameObj = scene.findObject("complain_text")
-    if (::checkObj(nameObj))
-      nameObj.setValue(::loc("clan/nick") + ::loc("ui/colon"))
-    let targetObj = scene.findObject("complain_target")
-    if (::checkObj(targetObj))
+    let nameObj = this.scene.findObject("complain_text")
+    if (checkObj(nameObj))
+      nameObj.setValue(loc("clan/nick") + loc("ui/colon"))
+    let targetObj = this.scene.findObject("complain_target")
+    if (checkObj(targetObj))
       targetObj.setValue(pName)
 
-    let typeObj = scene.findObject("option_list")
+    let typeObj = this.scene.findObject("option_list")
 
-    optionsList = []
+    this.optionsList = []
     let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
-    optionsList.append(option)
-    let data = create_option_list(option.id, option.items, option.value, null, false)
-    guiScene.replaceContentFromText(typeObj, data, data.len(), this)
+    this.optionsList.append(option)
+    let data = ::create_option_list(option.id, option.items, option.value, null, false)
+    this.guiScene.replaceContentFromText(typeObj, data, data.len(), this)
     typeObj.id = option.id
 
-    onTypeChange()
+    this.onTypeChange()
   }
 
-  onTypeChange = @() ::select_editbox(scene.findObject("complaint_text"))
+  onTypeChange = @() ::select_editbox(this.scene.findObject("complaint_text"))
 
   function collectThreadListForTribunal()
   {
@@ -284,46 +292,46 @@ let chatLogToString = function(chatLog)
 
   function onApply()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
 
-    let user_comment = clearBorderSymbolsMultiline( scene.findObject("complaint_text").getValue() )
+    let user_comment = clearBorderSymbolsMultiline( this.scene.findObject("complaint_text").getValue() )
     if (user_comment.len() < 10)
     {
-      this.msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
+      this.msgBox("need_text", loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
     }
 
     let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
-    let cValue = scene.findObject(option.id).getValue()
+    let cValue = this.scene.findObject(option.id).getValue()
     let category = (cValue in option.values)? option.values[cValue] : option.values[0]
     let details = ::save_to_json({
-      own      = collectUserDetailsForTribunal( ::get_local_mplayer() ),
-      offender = collectUserDetailsForTribunal( pInfo ),
-      chats    = collectThreadListForTribunal()
+      own      = this.collectUserDetailsForTribunal( ::get_local_mplayer() ),
+      offender = this.collectUserDetailsForTribunal( this.pInfo ),
+      chats    = this.collectThreadListForTribunal()
     });
 
-    chatLog.location <- location
-    chatLog.clanInfo <- clanInfo
-    let strChatLog = chatLogToString(chatLog)
+    this.chatLog.location <- this.location
+    this.chatLog.clanInfo <- this.clanInfo
+    let strChatLog = chatLogToString(this.chatLog)
 
-    ::dagor.debug("Send complaint " + category + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
-    ::dagor.debug("pInfo:")
-    ::debugTableData(pInfo)
+    log("Send complaint " + category + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
+    log("pInfo:")
+    debugTableData(this.pInfo)
 
-    taskId = -1
-    if (("userId" in pInfo) && pInfo.userId)
-      taskId = send_complaint_by_uid(pInfo.userId, category, user_comment, strChatLog, details)
-    else if ("name" in pInfo)
-      taskId = send_complaint_by_nick(pInfo.name, category, user_comment, strChatLog, details)
+    this.taskId = -1
+    if (("userId" in this.pInfo) && this.pInfo.userId)
+      this.taskId = ::send_complaint_by_uid(this.pInfo.userId, category, user_comment, strChatLog, details)
+    else if ("name" in this.pInfo)
+      this.taskId = ::send_complaint_by_nick(this.pInfo.name, category, user_comment, strChatLog, details)
     else
-      taskId = send_complaint(pInfo.id, category, user_comment, strChatLog, details)
-    if (taskId >= 0)
+      this.taskId = ::send_complaint(this.pInfo.id, category, user_comment, strChatLog, details)
+    if (this.taskId >= 0)
     {
-      ::set_char_cb(this, slotOpCb)
-      showTaskProgressBox(::loc("charServer/send"))
-      afterSlotOp = goBack
+      ::set_char_cb(this, this.slotOpCb)
+      this.showTaskProgressBox(loc("charServer/send"))
+      this.afterSlotOp = this.goBack
     }
   }
 }

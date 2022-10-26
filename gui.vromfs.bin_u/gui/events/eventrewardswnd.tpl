@@ -13,7 +13,7 @@ frame {
       activeAccesskeys:t='RS'
       class:t='header'
       on_select:t = 'onTabChange'
-      include "%gui/frameHeaderTabs"
+      include "%gui/frameHeaderTabs.tpl"
     }
     textarea {
       id:t='info_txt'

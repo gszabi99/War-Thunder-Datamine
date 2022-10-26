@@ -1,19 +1,24 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 
-::ww_gui_bhv.worldWarMapControls <- class
-{
-  eventMask = ::EV_MOUSE_L_BTN | ::EV_MOUSE_EXT_BTN | ::EV_MOUSE_WHEEL | ::EV_PROCESS_SHORTCUTS | ::EV_TIMER | ::EV_MOUSE_MOVE
+::ww_gui_bhv.worldWarMapControls <- class {
+  eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_WHEEL | EV_PROCESS_SHORTCUTS | EV_TIMER | EV_MOUSE_MOVE
 
   selectedObjectPID    = ::dagui_propid.add_name_id("selectedObject")
   airfieldPID    = ::dagui_propid.add_name_id("selectedAirfield")
   selectedArmiesID = "selectedArmies"
   objectsHoverEnabledID = ::dagui_propid.add_name_id("objectsHoverEnabled")
 
-  function onLMouse(obj, mx, my, is_up, bits)
+  function onLMouse(obj, mx, my, is_up, _bits)
   {
     if (is_up)
-      return ::RETCODE_NOTHING
+      return RETCODE_NOTHING
 
     ::ww_event("ClearSelectFromLogArmy")
     ::ww_clear_outlined_zones()
@@ -23,77 +28,77 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (curActionMode != null)
     {
       curActionMode.useAction(mapPos)
-      return ::RETCODE_PROCESSED
+      return RETCODE_PROCESSED
     }
 
-    if (ww_is_append_path_mode_active())
+    if (::ww_is_append_path_mode_active())
     {
-      onMoveCommand(obj, mapPos, true)
-      return ::RETCODE_PROCESSED
+      this.onMoveCommand(obj, mapPos, true)
+      return RETCODE_PROCESSED
     }
 
     local selectedObject = mapObjectSelect.NONE
-    if (checkBattle(obj, mapPos))
+    if (this.checkBattle(obj, mapPos))
       selectedObject = mapObjectSelect.BATTLE
-    else if (checkArmy(obj, mapPos))
-      return ::RETCODE_PROCESSED
-    else if (checkAirfield(obj, mapPos))
-      return ::RETCODE_PROCESSED
-    else if (checkRearZone(obj, mapPos))
-      return ::RETCODE_PROCESSED
+    else if (this.checkArmy(obj, mapPos))
+      return RETCODE_PROCESSED
+    else if (this.checkAirfield(obj, mapPos))
+      return RETCODE_PROCESSED
+    else if (this.checkRearZone(obj, mapPos))
+      return RETCODE_PROCESSED
 
-    setSelectedObject(obj, selectedObject)
-    sendMapEvent("ClearSelection")
+    this.setSelectedObject(obj, selectedObject)
+    this.sendMapEvent("ClearSelection")
 
-    return ::RETCODE_PROCESSED
+    return RETCODE_PROCESSED
   }
 
-  function onMouseMove(obj, mx, my, bits)
+  function onMouseMove(obj, _mx, _my, _bits)
   {
-    enableObjectsHover(obj, true)
+    this.enableObjectsHover(obj, true)
 
-    return ::RETCODE_PROCESSED
+    return RETCODE_PROCESSED
   }
 
   function isObjectsHoverEnabled(obj)
   {
-    return obj.getIntProp(objectsHoverEnabledID, 1) != 0
+    return obj.getIntProp(this.objectsHoverEnabledID, 1) != 0
   }
 
   function enableObjectsHover(obj, enable)
   {
-    obj.setIntProp(objectsHoverEnabledID, enable ? 1 : 0)
+    obj.setIntProp(this.objectsHoverEnabledID, enable ? 1 : 0)
   }
 
   function clearSelectionBySelectedObject(obj, value)
   {
     if (value != mapObjectSelect.ARMY)
-      clearSelectedArmies(obj)
+      this.clearSelectedArmies(obj)
 
     if (value != mapObjectSelect.AIRFIELD)
-      clearAirfields(obj)
+      this.clearAirfields(obj)
 
     if (value != mapObjectSelect.REINFORCEMENT)
-      sendMapEvent("ClearSelectionBySelectedObject", {objSelected = value})
+      this.sendMapEvent("ClearSelectionBySelectedObject", {objSelected = value})
   }
 
   function setSelectedObject(obj, value)
   {
-    obj.setIntProp(selectedObjectPID, value)
-    clearSelectionBySelectedObject(obj, value)
-    clearAllHover()
-    enableObjectsHover(obj, false)
+    obj.setIntProp(this.selectedObjectPID, value)
+    this.clearSelectionBySelectedObject(obj, value)
+    this.clearAllHover()
+    this.enableObjectsHover(obj, false)
   }
 
   function getSelectedObject(obj)
   {
-    return obj.getIntProp(selectedObjectPID, mapObjectSelect.NONE)
+    return obj.getIntProp(this.selectedObjectPID, mapObjectSelect.NONE)
   }
 
   function selectedReinforcement(obj, reinforcementName)
   {
-    sendMapEvent("SelectedReinforcement", {name = reinforcementName})
-    setSelectedObject(obj, mapObjectSelect.REINFORCEMENT)
+    this.sendMapEvent("SelectedReinforcement", {name = reinforcementName})
+    this.setSelectedObject(obj, mapObjectSelect.REINFORCEMENT)
     ::ww_event("ArmyStatusChanged")
   }
 
@@ -102,8 +107,8 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (append && !::ww_can_append_path_point_for_selected_armies())
       return
 
-    let currentSelectedObject = getSelectedObject(obj)
-    let armyTargetName = findHoverBattle(clickPos.x, clickPos.y)?.id ?? ::ww_find_army_name_by_coordinates(clickPos.x, clickPos.y)
+    let currentSelectedObject = this.getSelectedObject(obj)
+    let armyTargetName = this.findHoverBattle(clickPos.x, clickPos.y)?.id ?? ::ww_find_army_name_by_coordinates(clickPos.x, clickPos.y)
 
     if (currentSelectedObject == mapObjectSelect.AIRFIELD)
     {
@@ -112,55 +117,55 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
           let army = ::ww_find_last_flew_out_army_name_by_airfield(airfieldIdx)
           if ( army && army != "" )
           {
-            selectArmy(obj, army, true)
-            setSelectedObject(obj, mapObjectSelect.ARMY)
+            this.selectArmy(obj, army, true)
+            this.setSelectedObject(obj, mapObjectSelect.ARMY)
           }
         })(obj, airfieldIdx)
 
       let mapCell = ::ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
       if (::ww_is_cell_generally_passable(mapCell))
         ::gui_handlers.WwAirfieldFlyOut.open(
-          airfieldIdx, clickPos, armyTargetName, ::Callback(checkFlewOutArmy, this))
+          airfieldIdx, clickPos, armyTargetName, Callback(checkFlewOutArmy, this))
       else
-        ::g_popups.add("", ::loc("worldwar/charError/MOVE_REJECTED"),
+        ::g_popups.add("", loc("worldwar/charError/MOVE_REJECTED"),
           null, null, null, "send_air_army_error")
     }
     else if (currentSelectedObject == mapObjectSelect.ARMY)
       ::g_world_war.moveSelectedArmes(clickPos.x, clickPos.y, armyTargetName, append)
   }
 
-  function onExtMouse(obj, mx, my, btn_id, is_up, bits)
+  function onExtMouse(obj, mx, my, btn_id, is_up, _bits)
   {
     if (is_up)
-      return ::RETCODE_NOTHING
+      return RETCODE_NOTHING
 
     if (btn_id != 2)  //right mouse button
-      return ::RETCODE_NOTHING
+      return RETCODE_NOTHING
 
     let curActionMode = actionModesManager.getCurActionMode()
     if (curActionMode != null)
     {
       actionModesManager.setActionMode()
-      return ::RETCODE_NOTHING
+      return RETCODE_NOTHING
     }
 
     //-- rclick ---- (easy to search)
-    if (ww_is_append_path_mode_active())
-      return ::RETCODE_NOTHING
+    if (::ww_is_append_path_mode_active())
+      return RETCODE_NOTHING
 
     ::ww_clear_outlined_zones()
     let mapPos = ::Point2(mx, my)
 
-    sendMapEvent("RequestReinforcement", {cellIdx = ::ww_get_map_cell_by_coords(mapPos.x, mapPos.y)})
+    this.sendMapEvent("RequestReinforcement", {cellIdx = ::ww_get_map_cell_by_coords(mapPos.x, mapPos.y)})
 
-    let currentSelectedObject = getSelectedObject(obj)
+    let currentSelectedObject = this.getSelectedObject(obj)
     if (currentSelectedObject != mapObjectSelect.NONE)
-      onMoveCommand(obj, mapPos, false)
+      this.onMoveCommand(obj, mapPos, false)
 
-    return ::RETCODE_PROCESSED
+    return RETCODE_PROCESSED
   }
 
-  function onTimer(obj, dt)
+  function onTimer(obj, _dt)
   {
     let params = obj.getUserData() || {}
     let isMapObjHovered = obj.isHovered()
@@ -170,12 +175,12 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (isMapObjHovered)
     {
       if (!params.isMapHovered)
-        onMapHover(obj)
+        this.onMapHover(obj)
     }
     else
     {
       if (params.isMapHovered)
-        onMapUnhover(obj)
+        this.onMapUnhover(obj)
       return
     }
     params.isMapHovered = true
@@ -183,16 +188,16 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     let mousePos = ::get_dagui_mouse_cursor_pos_RC()
     local hoverChanged = false
 
-    let hoverEnabled = isObjectsHoverEnabled(obj)
+    let hoverEnabled = this.isObjectsHoverEnabled(obj)
 
     if (hoverEnabled)
     {
       local hoverBattleId = null
-      let hoverBattle = findHoverBattle(mousePos[0], mousePos[1])
+      let hoverBattle = this.findHoverBattle(mousePos[0], mousePos[1])
       if (hoverBattle)
         hoverBattleId = hoverBattle.id
 
-      let lastSavedBattleName = ::getTblValue("battleName", params)
+      let lastSavedBattleName = getTblValue("battleName", params)
       if (hoverBattleId != lastSavedBattleName)
       {
         if (!hoverBattleId)
@@ -204,7 +209,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
       }
 
       let armyName = ::ww_find_army_name_by_coordinates(mousePos[0], mousePos[1])
-      let lastSavedArmyName = ::getTblValue("armyName", params)
+      let lastSavedArmyName = getTblValue("armyName", params)
       if (armyName != lastSavedArmyName)
       {
         if (!armyName)
@@ -216,7 +221,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
       }
 
       let airfieldIndex = ::ww_find_airfield_by_coordinates(mousePos[0], mousePos[1])
-      let lastAirfieldIndex = ::getTblValue("airfieldIndex", params)
+      let lastAirfieldIndex = getTblValue("airfieldIndex", params)
       if (airfieldIndex != lastAirfieldIndex)
       {
         if (airfieldIndex < 0)
@@ -229,7 +234,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     }
 
     let zoneIndex = ::ww_get_zone_idx(mousePos[0], mousePos[1])
-    let lastZoneIndex = ::getTblValue("zoneIndex", params)
+    let lastZoneIndex = getTblValue("zoneIndex", params)
     if (zoneIndex != lastZoneIndex)
     {
       if (zoneIndex < 0)
@@ -243,37 +248,37 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (!hoverChanged)
       return
 
-    updateHoveredObjects(params)
+    this.updateHoveredObjects(params)
 
     obj.setUserData(params)
-    sendMapEvent("UpdateCursorByTimer", params)
+    this.sendMapEvent("UpdateCursorByTimer", params)
   }
 
-  function onMapHover(obj)
+  function onMapHover(_obj)
   {
-    ::g_world_war_render.setCategory(::ERC_AIRFIELD_ARROW, true)
+    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
   }
 
   function onMapUnhover(obj)
   {
     let params = {isMapHovered = false}
-    updateHoveredObjects(params)
-    sendMapEvent("UpdateCursorByTimer", params)
+    this.updateHoveredObjects(params)
+    this.sendMapEvent("UpdateCursorByTimer", params)
     obj.setUserData(params)
-    ::g_world_war_render.setCategory(::ERC_AIRFIELD_ARROW, false)
+    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
   }
 
-  function onMouseWheel(obj, mx, my, is_up, buttons)
+  function onMouseWheel(_obj, _mx, _my, is_up, _buttons)
   {
     let curActionMode = actionModesManager.getCurActionMode()
     if (curActionMode?.onMouseWheel != null)
     {
       curActionMode.onMouseWheel(is_up)
-      return ::RETCODE_PROCESSED
+      return RETCODE_PROCESSED
     }
 
     ::ww_zoom_map(is_up)
-    return ::RETCODE_PROCESSED
+    return RETCODE_PROCESSED
   }
 
   function checkArmy(obj, mapPos)
@@ -283,7 +288,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
       return false
 
     local lastClickedArmyName = ""
-    let selectedArmies = getSelectedArmiesOnMap(obj)
+    let selectedArmies = this.getSelectedArmiesOnMap(obj)
     if (selectedArmies.len())
       lastClickedArmyName = selectedArmies.top()
 
@@ -291,26 +296,26 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     let nextArmyIdx = armyIdx + 1
     let nextArmyName = nextArmyIdx in armyList? armyList[nextArmyIdx] : armyList[0]
 
-    return nextArmyName ? selectArmy(obj, nextArmyName) : false
+    return nextArmyName ? this.selectArmy(obj, nextArmyName) : false
   }
 
   function getSelectedArmiesOnMap(obj)
   {
-    let selectedArmies = ::getTblValue(selectedArmiesID, obj.getUserData(), "")
+    let selectedArmies = getTblValue(this.selectedArmiesID, obj.getUserData(), "")
     return split_by_chars(selectedArmies, ",")
   }
 
   function selectArmy(obj, armyName, forceReplace = false, armyType = mapObjectSelect.ARMY)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     ::ww_event("SelectLogArmyByName", {name = armyName})
 
-    let selectedArmies = getSelectedArmiesOnMap(obj)
-    if (::isInArray(armyName, selectedArmies))
+    let selectedArmies = this.getSelectedArmiesOnMap(obj)
+    if (isInArray(armyName, selectedArmies))
     {
-      sendMapEvent("ArmySelected", { armyName = armyName, armyType = armyType })
+      this.sendMapEvent("ArmySelected", { armyName = armyName, armyType = armyType })
       return true
     }
 
@@ -321,9 +326,9 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     }
 
     selectedArmies.append(armyName)
-    setSelectedArmies(obj, selectedArmies)
-    setSelectedObject(obj, mapObjectSelect.ARMY)
-    sendMapEvent("ArmySelected", {
+    this.setSelectedArmies(obj, selectedArmies)
+    this.setSelectedObject(obj, mapObjectSelect.ARMY)
+    this.sendMapEvent("ArmySelected", {
       armyName = armyName,
       armyType = armyType,
       addToSelection = addToSelection })
@@ -335,7 +340,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
   function setSelectedArmies(obj, selectedArmies)
   {
     let params = obj.getUserData() || {}
-    params[selectedArmiesID] <- ::g_string.implode(selectedArmies, ",")
+    params[this.selectedArmiesID] <- ::g_string.implode(selectedArmies, ",")
     obj.setUserData(params)
     let selectedArmiesInfo = []
     foreach (armyName in selectedArmies)
@@ -352,30 +357,30 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
 
   function clearSelectedArmies(obj)
   {
-    setSelectedArmies(obj, [])
+    this.setSelectedArmies(obj, [])
   }
 
   function selectAirfield(obj, params)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return false
 
-    obj.setIntProp(airfieldPID, params.airfieldIdx)
+    obj.setIntProp(this.airfieldPID, params.airfieldIdx)
     ::ww_select_airfield(params.airfieldIdx)
     if (params.airfieldIdx >= 0)
     {
-      setSelectedObject(obj, mapObjectSelect.AIRFIELD)
-      sendMapEvent("AirfieldSelected", params)
+      this.setSelectedObject(obj, mapObjectSelect.AIRFIELD)
+      this.sendMapEvent("AirfieldSelected", params)
       ::get_cur_gui_scene()?.playSound("ww_airfield_select")
     }
     else
-      sendMapEvent("AirfieldCleared")
+      this.sendMapEvent("AirfieldCleared")
     return true
   }
 
   function clearAirfields(obj)
   {
-    selectAirfield(obj, {airfieldIdx = -1})
+    this.selectAirfield(obj, {airfieldIdx = -1})
   }
 
   function checkAirfield(obj, mapPos)
@@ -384,28 +389,28 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (airfieldIndex < 0)
       return false
 
-    return selectAirfield(obj, {airfieldIdx = airfieldIndex})
+    return this.selectAirfield(obj, {airfieldIdx = airfieldIndex})
   }
 
   function checkBattle(obj, screenPos)
   {
-    let battle = findHoverBattle(screenPos.x, screenPos.y)
+    let battle = this.findHoverBattle(screenPos.x, screenPos.y)
     if (!battle)
       return false
 
-    setSelectedObject(obj, mapObjectSelect.BATTLE)
-    sendMapEvent("SelectedBattle", {battle = battle})
+    this.setSelectedObject(obj, mapObjectSelect.BATTLE)
+    this.sendMapEvent("SelectedBattle", {battle = battle})
 
     return true
   }
 
-  function checkRearZone(obj, mapPos)
+  function checkRearZone(_obj, mapPos)
   {
     let zoneName = ::ww_get_zone_name(::ww_get_zone_idx(mapPos.x, mapPos.y))
     foreach (side in ::g_world_war.getCommonSidesOrder())
-      if (::isInArray(zoneName, ::g_world_war.getRearZonesOwnedToSide(side)))
+      if (isInArray(zoneName, ::g_world_war.getRearZonesOwnedToSide(side)))
       {
-        sendMapEvent("RearZoneSelected", { side = ::ww_side_val_to_name(side) })
+        this.sendMapEvent("RearZoneSelected", { side = ::ww_side_val_to_name(side) })
         return true
       }
   }
@@ -464,7 +469,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
       return false
 
     let mapPos = ::ww_convert_map_to_world_position(screenPosX, screenPosY)
-    let battleIconRadSquare = getBattleIconRadius() * getBattleIconRadius()
+    let battleIconRadSquare = this.getBattleIconRadius() * this.getBattleIconRadius()
     let filterFunc = (@(mapPos, battleIconRadSquare) function(battle) {
       let diff = battle.pos - mapPos
       return diff.lengthSq() <= battleIconRadSquare && !battle.isFinished()
@@ -498,10 +503,10 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
   if (!::g_world_war.haveManagementAccessForSelectedArmies())
     return false
 
-  return ::is_keyboard_btn_down(::DKEY_LSHIFT) || ::is_keyboard_btn_down(::DKEY_RSHIFT)
+  return ::is_keyboard_btn_down(DKEY_LSHIFT) || ::is_keyboard_btn_down(DKEY_RSHIFT)
 }
 
 ::ww_is_add_selected_army_mode_active <- function ww_is_add_selected_army_mode_active()
 {
-  return false//::is_keyboard_btn_down(::DKEY_LCONTROL) || ::is_keyboard_btn_down(::DKEY_RCONTROL)
+  return false//::is_keyboard_btn_down(DKEY_LCONTROL) || ::is_keyboard_btn_down(DKEY_RCONTROL)
 }

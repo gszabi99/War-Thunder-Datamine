@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
 let function shouldUseEac(event)
@@ -10,11 +15,11 @@ let function showMsgboxIfEacInactive(event)
   if (::is_eac_inited() || !shouldUseEac(event))
     return true
 
-  let eac = isPlatformSteamDeck && ::is_platform_windows
+  let eac = isPlatformSteamDeck && is_platform_windows
     ? "eac/eac_for_linux"
     : "eac/eac_not_inited_restart"
 
-  ::scene_msg_box("eac_required", null, ::loc(eac),
+  ::scene_msg_box("eac_required", null, loc(eac),
        [
          ["restart",  function() {::restart_game(true)}],
          ["cancel", function() {}]

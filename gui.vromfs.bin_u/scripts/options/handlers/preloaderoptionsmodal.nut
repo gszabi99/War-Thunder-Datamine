@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg,
   getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -5,6 +11,7 @@ let { isLoadingScreenBanned,
   toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 
 local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -16,14 +23,14 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    let listboxFilterHolder = scene.findObject("listbox_filter_holder")
-    guiScene.replaceContent(listboxFilterHolder, "%gui/chapter_include_filter.blk", this)
+    let listboxFilterHolder = this.scene.findObject("listbox_filter_holder")
+    this.guiScene.replaceContent(listboxFilterHolder, "%gui/chapter_include_filter.blk", this)
 
-    fillLoadingScreenList()
-    this.showSceneBtn("items_list_msg", false).setValue(::loc("shop/search/global/notFound"))
+    this.fillLoadingScreenList()
+    this.showSceneBtn("items_list_msg", false).setValue(loc("shop/search/global/notFound"))
 
-    updateListItems()
-    updateButtons()
+    this.updateListItems()
+    this.updateButtons()
   }
 
   function fillLoadingScreenList()
@@ -43,10 +50,10 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     view.items.sort(@(a, b) a.itemText <=> b.itemText)
-    let selectedIdx = view.items.findindex((@(a) a.id == selectedId).bindenv(this)) ?? 0
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-    let itemsListObj = scene.findObject("items_list")
-    guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
+    let selectedIdx = view.items.findindex((@(a) a.id == this.selectedId).bindenv(this)) ?? 0
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    let itemsListObj = this.scene.findObject("items_list")
+    this.guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
     itemsListObj.setValue(selectedIdx)
 
     ::move_mouse_on_child_by_value(itemsListObj)
@@ -54,7 +61,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateListItems()
   {
-    let itemsListObj = scene.findObject("items_list")
+    let itemsListObj = this.scene.findObject("items_list")
     let numItems = itemsListObj.childrenCount()
     for (local i = 0; i < numItems; i++) {
       let itemObj = itemsListObj.getChild(i)
@@ -64,36 +71,36 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateBg()
   {
-    animBgLoad(selectedId, scene.findObject("animated_bg_picture"))
+    animBgLoad(this.selectedId, this.scene.findObject("animated_bg_picture"))
   }
 
   function updateSelectedListItem()
   {
-    scene.findObject(selectedId).banned = isLoadingScreenBanned(selectedId) ? "yes" : "no"
+    this.scene.findObject(this.selectedId).banned = isLoadingScreenBanned(this.selectedId) ? "yes" : "no"
   }
 
   function updateButtons()
   {
     let isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
-    let isUnlocked = isBgUnlocked(selectedId)
-    let isBtnVisible = (isMouseMode && scene.findObject(selectedId).isVisible()) || hoveredId == selectedId
+    let isUnlocked = isBgUnlocked(this.selectedId)
+    let isBtnVisible = (isMouseMode && this.scene.findObject(this.selectedId).isVisible()) || this.hoveredId == this.selectedId
     let isBanBtnVisible = isUnlocked && isBtnVisible
     let isFavBtnVisible = !isUnlocked && isBtnVisible
 
-    this.showSceneBtn("btn_select", !isMouseMode && hoveredId != selectedId && isHovered)
+    this.showSceneBtn("btn_select", !isMouseMode && this.hoveredId != this.selectedId && this.isHovered)
 
     let banBtnObj = this.showSceneBtn("btn_ban", isBanBtnVisible)
     if (isBanBtnVisible)
-      banBtnObj.setValue(havePremium.value && isLoadingScreenBanned(selectedId)
-        ? ::loc("maps/preferences/removeBan")
-        : ::loc("maps/preferences/ban"))
+      banBtnObj.setValue(havePremium.value && isLoadingScreenBanned(this.selectedId)
+        ? loc("maps/preferences/removeBan")
+        : loc("maps/preferences/ban"))
 
     let favBtnObj = this.showSceneBtn("btn_fav", isFavBtnVisible)
     if (isFavBtnVisible) {
-      let unlockId = getUnlockIdByLoadingBg(selectedId)
-      favBtnObj.setValue(::g_unlocks.isUnlockFav(unlockId)
-        ? ::loc("preloaderSettings/untrackProgress")
-        : ::loc("preloaderSettings/trackProgress"))
+      let unlockId = getUnlockIdByLoadingBg(this.selectedId)
+      favBtnObj.setValue(isUnlockFav(unlockId)
+        ? loc("preloaderSettings/untrackProgress")
+        : loc("preloaderSettings/trackProgress"))
     }
   }
 
@@ -102,34 +109,34 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function toggleBan()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
 
     if (!havePremium.value)
-      return this.msgBox("need_money", ::loc("mainmenu/onlyWithPremium"), [
-        ["purchase", (@() onOnlineShopPremium()).bindenv(this)],
+      return this.msgBox("need_money", loc("mainmenu/onlyWithPremium"), [
+        ["purchase", (@() this.onOnlineShopPremium()).bindenv(this)],
         ["cancel"]], "purchase")
 
-    if (!isLoadingScreenBanned(selectedId) && !canBan())
-      return this.msgBox("max_banned_count", ::loc("preloaderSettings/maxBannedCount"), [
+    if (!isLoadingScreenBanned(this.selectedId) && !this.canBan())
+      return this.msgBox("max_banned_count", loc("preloaderSettings/maxBannedCount"), [
         ["ok"]], "ok")
 
-    toggleLoadingScreenBan(selectedId)
+    toggleLoadingScreenBan(this.selectedId)
 
-    updateButtons()
-    updateSelectedListItem()
+    this.updateButtons()
+    this.updateSelectedListItem()
   }
 
   function onToggleFav() {
-    let unlockId = getUnlockIdByLoadingBg(selectedId)
-    ::g_unlocks.toggleFav(unlockId)
-    updateButtons()
+    let unlockId = getUnlockIdByLoadingBg(this.selectedId)
+    toggleUnlockFav(unlockId)
+    this.updateButtons()
   }
 
   function onItemDblClick()
   {
     if (!::show_console_buttons)
-      toggleBan()
+      this.toggleBan()
   }
 
   function onItemHover(obj)
@@ -137,31 +144,31 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!::show_console_buttons)
       return
 
-    if (!obj.isHovered() && obj.id != hoveredId)
+    if (!obj.isHovered() && obj.id != this.hoveredId)
       return
 
-    isHovered = obj.isHovered()
-    hoveredId = isHovered ? obj.id : null
+    this.isHovered = obj.isHovered()
+    this.hoveredId = this.isHovered ? obj.id : null
 
-    updateButtons()
+    this.updateButtons()
   }
 
-  function onItemSelect(obj)
+  function onItemSelect(_obj)
   {
-    let itemsListObj = scene.findObject("items_list")
-    selectedId = itemsListObj.getChild(itemsListObj.getValue()).id
+    let itemsListObj = this.scene.findObject("items_list")
+    this.selectedId = itemsListObj.getChild(itemsListObj.getValue()).id
 
-    updateBg()
-    updateButtons()
+    this.updateBg()
+    this.updateButtons()
   }
 
   function onFilterEditBoxCancel()
   {
-    let editBoxObj = scene.findObject("filter_edit_box")
+    let editBoxObj = this.scene.findObject("filter_edit_box")
     if (editBoxObj.getValue() != "")
       editBoxObj.setValue("")
     else
-      guiScene.performDelayed(this, @() isValid() && goBack())
+      this.guiScene.performDelayed(this, @() this.isValid() && this.goBack())
   }
 
   function onFilterEditBoxChangeValue(obj)
@@ -169,10 +176,10 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     let value = obj.getValue()
     let searchStr = ::g_string.utf8ToLower(::g_string.trim(value))
     local isFound = false
-    let itemsListObj = scene.findObject("items_list")
+    let itemsListObj = this.scene.findObject("items_list")
     let numItems = itemsListObj.childrenCount()
 
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
     for (local i = 0; i < numItems; i++) {
       let itemObj = itemsListObj.getChild(i)
       let titleStr = itemObj.findObject($"txt_{itemObj.id}").getValue()
@@ -184,15 +191,15 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
     this.showSceneBtn("filter_edit_cancel_btn", value.len() != 0)
     this.showSceneBtn("items_list_msg", !isFound)
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
-    updateButtons()
+    this.updateButtons()
   }
 
-  function onEventProfileUpdated(p)
+  function onEventProfileUpdated(_p)
   {
-    updateListItems()
-    updateButtons()
+    this.updateListItems()
+    this.updateButtons()
   }
 
   onFilterEditBoxActivate = @() null

@@ -202,15 +202,7 @@
       "Mode": "Separate",
       "AileronsMode": "Manual",
       "ElevatorMode": "Rate",
-      "RudderMode": "Rate",
-      "ThrottleMode": "Manual",
-      "allowOverrideByForcedStabilization": true
-    },
-    "ModePreset2": {
-      "Mode": "Separate",
-      "AileronsMode": "Manual",
-      "ElevatorMode": "Angle",
-      "RudderMode": "Rate",
+      "RudderMode": "Manual",
       "ThrottleMode": "Manual",
       "allowOverrideByForcedStabilization": true
     }
@@ -979,7 +971,7 @@
         "TorqueMultMinRpm": 0.25,
         "TorqueMultMaxRpm": 0.1,
         "ConsumptionMult": 2.0,
-        "TurbineTimeConstantMult": 5.0
+        "TurbineTimeConstantMult": 3.0
       },
       "Mode1": {
         "Throttle": 0.0,
@@ -988,7 +980,7 @@
         "TorqueMultMinRpm": 0.3,
         "TorqueMultMaxRpm": 0.1,
         "ConsumptionMult": 1.1,
-        "TurbineTimeConstantMult": 0.6
+        "TurbineTimeConstantMult": 1.0
       },
       "Mode2": {
         "Throttle": 0.45,
@@ -997,7 +989,7 @@
         "TorqueMultMinRpm": 0.6,
         "TorqueMultMaxRpm": 0.2,
         "ConsumptionMult": 1.0,
-        "TurbineTimeConstantMult": 0.6
+        "TurbineTimeConstantMult": 0.7
       },
       "Mode3": {
         "Throttle": 0.65,
@@ -1006,7 +998,7 @@
         "TorqueMultMinRpm": 1.5,
         "TorqueMultMaxRpm": 0.5,
         "ConsumptionMult": 1.1,
-        "TurbineTimeConstantMult": 1.0
+        "TurbineTimeConstantMult": 0.6
       },
       "Mode4": {
         "Throttle": 0.8,
@@ -1015,7 +1007,7 @@
         "TorqueMultMinRpm": 1.5,
         "TorqueMultMaxRpm": 0.5,
         "ConsumptionMult": 0.87,
-        "TurbineTimeConstantMult": 0.6
+        "TurbineTimeConstantMult": 0.5
       },
       "Mode5": {
         "Throttle": 0.9,
@@ -1024,7 +1016,7 @@
         "TorqueMultMinRpm": 2.46,
         "TorqueMultMaxRpm": 0.82,
         "ConsumptionMult": 0.89,
-        "TurbineTimeConstantMult": 0.6
+        "TurbineTimeConstantMult": 0.4
       },
       "Mode6": {
         "Throttle": 1.0,
@@ -1033,7 +1025,7 @@
         "TorqueMultMinRpm": 3.0,
         "TorqueMultMaxRpm": 1.0,
         "ConsumptionMult": 0.977,
-        "TurbineTimeConstantMult": 0.6
+        "TurbineTimeConstantMult": 0.3
       },
       "Mode7": {
         "Throttle": 1.1,
@@ -1243,8 +1235,8 @@
     },
     "FireExtinguisher": {
       "Num": 0,
-      "UseTime": 5.0,
-      "Power": 2500.0,
+      "UseTime": 0.0,
+      "Power": 0.0,
       "Automatic": false
     }
   },
@@ -1454,7 +1446,7 @@
     "SinkRateMult": 0.2,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
-    "GearOffset": -0.3,
+    "GearOffset": -0.27,
     "UseCenterOfGravity": true,
     "HasWheels": true,
     "Height": 1.5,
@@ -1473,7 +1465,7 @@
     ],
     "StrutL": {
       "SpringHeight": 0.35,
-      "SpringCoeff": 120000.0,
+      "SpringCoeff": 170000.0,
       "WheelRadus": 0.45,
       "Retractable": true,
       "LeftBrake": true,
@@ -1484,7 +1476,7 @@
     },
     "StrutR": {
       "SpringHeight": 0.35,
-      "SpringCoeff": 120000.0,
+      "SpringCoeff": 170000.0,
       "WheelRadus": 0.45,
       "Retractable": true,
       "LeftBrake": false,
@@ -1796,12 +1788,12 @@
     },
     "Pitch": {
       "RateMax": [
-        -40.0,
-        60.0
+        0.0,
+        0.0
       ],
       "AngleMax": [
-        -55.0,
-        70.0
+        0.0,
+        0.0
       ],
       "VelMax": [
         0.0,
@@ -1820,7 +1812,7 @@
       ],
       "ClimbAngleToLoadFactor": 0.7,
       "RatePID": {
-        "Kp": 1.0,
+        "Kp": 0.0,
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
@@ -1831,7 +1823,7 @@
         ]
       },
       "AnglePID": {
-        "Kp": 1.0,
+        "Kp": 0.0,
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
@@ -1888,8 +1880,8 @@
     },
     "Yaw": {
       "RateMax": [
-        -50.0,
-        50.0
+        0.0,
+        0.0
       ],
       "LateralLoadFactorTimeMult": 1.0,
       "AosTimeMult": 1.0,
@@ -1902,7 +1894,7 @@
         ]
       },
       "RatePID": {
-        "Kp": 1.0,
+        "Kp": 0.0,
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,

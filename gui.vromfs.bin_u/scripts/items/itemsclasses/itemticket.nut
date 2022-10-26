@@ -1,7 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText,
   getConditionText } = require("%scripts/events/eventRewards.nut")
+let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 
 ::items_classes.Ticket <- class extends ::BaseItem
 {
@@ -32,69 +39,69 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
     base.constructor(blk, invBlk, slotData)
 
     let params = blk?.tournamentTicketParams
-    maxDefeatCount = params?.maxDefeatCount ?? 0
-    maxSequenceDefeatCount = params?.maxSequenceDefeatCount ?? 0
-    haveAwards = params?.awards ?? false
-    battleLimit = params?.battleLimit ?? 0
-    customLayers = blk?.customLayers ?? {}
+    this.maxDefeatCount = params?.maxDefeatCount ?? 0
+    this.maxSequenceDefeatCount = params?.maxSequenceDefeatCount ?? 0
+    this.haveAwards = params?.awards ?? false
+    this.battleLimit = params?.battleLimit ?? 0
+    this.customLayers = blk?.customLayers ?? {}
 
-    eventEconomicNamesArray = params != null ? params % "tournamentName" : []
-    if (!eventEconomicNamesArray.len())
-      ::dagor.debug("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + id)
+    this.eventEconomicNamesArray = params != null ? params % "tournamentName" : []
+    if (!this.eventEconomicNamesArray.len())
+      log("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + this.id)
     else
     {
       let tournamentBlk = ::get_tournaments_blk()
-      clanTournament = clanTournament || get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/clanTournament", false)
+      this.clanTournament = this.clanTournament || get_blk_value_by_path(tournamentBlk, this.eventEconomicNamesArray[0] + "/clanTournament", false)
       //handling closed sales
-      canBuy = canBuy && !get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/saleClosed", false)
+      this.canBuy = this.canBuy && !get_blk_value_by_path(tournamentBlk, this.eventEconomicNamesArray[0] + "/saleClosed", false)
 
-      if (isInventoryItem && !isActiveTicket)
+      if (this.isInventoryItem && !this.isActiveTicket)
       {
         let tBlk = ::DataBlock()
-        ::get_tournament_info_blk(eventEconomicNamesArray[0], tBlk)
-        isActiveTicket = ::isInArray(tBlk?.activeTicketUID, uids)
+        ::get_tournament_info_blk(this.eventEconomicNamesArray[0], tBlk)
+        this.isActiveTicket = isInArray(tBlk?.activeTicketUID, this.uids)
       }
     }
   }
 
   function isCanBuy()
   {
-    return base.isCanBuy() && (!clanTournament || ::is_in_clan())
+    return base.isCanBuy() && (!this.clanTournament || ::is_in_clan())
   }
 
   function isActive(...)
   {
-    return isActiveTicket
+    return this.isActiveTicket
   }
 
   function getIcon(addItemName = true)
   {
-    return getLayersData(true, addItemName)
+    return this.getLayersData(true, addItemName)
   }
 
   function getBigIcon()
   {
-    return getLayersData(false)
+    return this.getLayersData(false)
   }
 
   function getIconTableForEvent(event, eventEconomicName = "")
   {
     return {
-      unitType = _getUnitType(event)
-      diffCode = _getDiffCode(event)
-      mode = _getTournamentMode(event)
-      type = _getTournamentType(event)
-      name = _getNameForLayer(event, eventEconomicName)
+      unitType = this._getUnitType(event)
+      diffCode = this._getDiffCode(event)
+      mode = this._getTournamentMode(event)
+      type = this._getTournamentType(event)
+      name = this._getNameForLayer(event, eventEconomicName)
     }
   }
 
   function getLayersData(small = true, addItemName = true)
   {
     local iconTable = null
-    foreach(eventId in eventEconomicNamesArray)
+    foreach(eventId in this.eventEconomicNamesArray)
     {
       let event = ::events.getEventByEconomicName(eventId)
-      let eventIconTable = getIconTableForEvent(event, eventId)
+      let eventIconTable = this.getIconTableForEvent(event, eventId)
       if (!iconTable)
         iconTable = eventIconTable
       else
@@ -107,27 +114,27 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
     }
 
     if (!iconTable)
-      iconTable = getIconTableForEvent(null)
+      iconTable = this.getIconTableForEvent(null)
 
-    let unitTypeLayer = ::getTblValue("unitType", customLayers)? "_" + customLayers.unitType : iconTable.unitType
+    let unitTypeLayer = getTblValue("unitType", this.customLayers)? "_" + this.customLayers.unitType : iconTable.unitType
     let insertLayersArrayCfg = []
-    insertLayersArrayCfg.append(_getUnitTypeLayer(unitTypeLayer, small))
-    insertLayersArrayCfg.append(_getDifficultyLayer(::getTblValue("diffCode", customLayers) || iconTable.diffCode, small))
-    insertLayersArrayCfg.append(_getTournamentModeLayer(::getTblValue("mode", customLayers) || iconTable.mode, small))
-    insertLayersArrayCfg.append(_getTournamentTypeLayer(::getTblValue("type", customLayers) || iconTable.type, small))
-    insertLayersArrayCfg.append(addItemName ? _getNameLayer(::getTblValue("name", iconTable), small) : null)
+    insertLayersArrayCfg.append(this._getUnitTypeLayer(unitTypeLayer, small))
+    insertLayersArrayCfg.append(this._getDifficultyLayer(getTblValue("diffCode", this.customLayers) || iconTable.diffCode, small))
+    insertLayersArrayCfg.append(this._getTournamentModeLayer(getTblValue("mode", this.customLayers) || iconTable.mode, small))
+    insertLayersArrayCfg.append(this._getTournamentTypeLayer(getTblValue("type", this.customLayers) || iconTable.type, small))
+    insertLayersArrayCfg.append(addItemName ? this._getNameLayer(getTblValue("name", iconTable), small) : null)
 
-    return ::LayersIcon.genInsertedDataFromLayer(_getBackground(small), insertLayersArrayCfg)
+    return ::LayersIcon.genInsertedDataFromLayer(this._getBackground(small), insertLayersArrayCfg)
   }
 
   function getBasePartOfLayerId(small)
   {
-    return iconStyle + (small? "_shop" : "")
+    return this.iconStyle + (small? "_shop" : "")
   }
 
   function _getBackground(small)
   {
-    return ::LayersIcon.findLayerCfg(getBasePartOfLayerId(small))
+    return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small))
   }
 
   function _getUnitType(event)
@@ -147,7 +154,7 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
 
   function _getUnitTypeLayer(unitsString, small)
   {
-    return ::LayersIcon.findLayerCfg(getBasePartOfLayerId(small) + unitsString)
+    return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + unitsString)
   }
 
   function _getDiffCode(event)
@@ -159,7 +166,7 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
   {
     if (diffCode == null)
       return null
-    return ::LayersIcon.findLayerCfg(getBasePartOfLayerId(small) + "_diff" + diffCode)
+    return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_diff" + diffCode)
   }
 
   function _getTournamentMode(event)
@@ -167,11 +174,11 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
     if (!event)
       return null
 
-    if (::getTblValue("clans_only", event, false))
+    if (getTblValue("clans_only", event, false))
       return "clan"
     if (::events.getMaxTeamSize(event) == 1)
       return "pvp"
-    if (::getTblValue("squads_only", event, false))
+    if (getTblValue("squads_only", event, false))
       return "squad"
 
     return "team"
@@ -179,7 +186,7 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
 
   function _getTournamentModeLayer(mode, small)
   {
-    return ::LayersIcon.findLayerCfg(getBasePartOfLayerId(small) + "_gm_" + mode)
+    return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_gm_" + mode)
   }
 
   function _getTournamentType(event)
@@ -195,16 +202,16 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
 
   function _getTournamentTypeLayer(lType, small)
   {
-    return ::LayersIcon.findLayerCfg(getBasePartOfLayerId(small) + "_gt_" + lType)
+    return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_gt_" + lType)
   }
 
-  function _getNameForLayer(event, eventEconomicName = "")
+  function _getNameForLayer(_event, eventEconomicName = "")
   {
-    local text = locId ? ::loc(locId + "/short", ::loc(locId, "")) : ""
+    local text = this.locId ? loc(this.locId + "/short", loc(this.locId, "")) : ""
     if (text == "")
       text = ::events.getNameByEconomicName(eventEconomicName)
     if (text == "")
-      text = ::loc("item/" + id, ::loc("item/" + defaultLocId, ""))
+      text = loc("item/" + this.id, loc("item/" + this.defaultLocId, ""))
     return text
   }
 
@@ -213,7 +220,7 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
     if (!small || !text)
       return null
 
-    let layerCfg = ::LayersIcon.findLayerCfg(textLayerStyle)
+    let layerCfg = ::LayersIcon.findLayerCfg(this.textLayerStyle)
     if (!layerCfg)
       return null
 
@@ -223,26 +230,26 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
 
   function getName(colored = true)
   {
-    local name = locId ? ::loc(locId + "/short", ::loc(locId, "")) : ""
-    if (name == "" && eventEconomicNamesArray.len())
+    local name = this.locId ? loc(this.locId + "/short", loc(this.locId, "")) : ""
+    if (name == "" && this.eventEconomicNamesArray.len())
     {
-      if (eventEconomicNamesArray.len() > 1)
-        name = ::loc("item/" + defaultLocId + "/multipleEvents")
+      if (this.eventEconomicNamesArray.len() > 1)
+        name = loc("item/" + this.defaultLocId + "/multipleEvents")
       else
       {
-        local eventName = ::events.getNameByEconomicName(eventEconomicNamesArray[0])
-        eventName = colored ? ::colorize("userlogColoredText", eventName) : eventName
-        name = ::loc("item/" + defaultLocId, { name = eventName })
+        local eventName = ::events.getNameByEconomicName(this.eventEconomicNamesArray[0])
+        eventName = colored ? colorize("userlogColoredText", eventName) : eventName
+        name = loc("item/" + this.defaultLocId, { name = eventName })
       }
     }
     if (name == "")
-      name = ::loc("item/" + id, "")
+      name = loc("item/" + this.id, "")
     return name
   }
 
   function getTypeName()
   {
-    return ::loc("item/ticket/reduced")
+    return loc("item/ticket/reduced")
   }
 
   function getTicketTournamentData(eventId)
@@ -261,7 +268,7 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
     {
       foreach (session in sessions % "data")
       {
-        let timeExpired = ::getTblValue("timeExpired", session, 0)
+        let timeExpired = getTblValue("timeExpired", session, 0)
         let timeDelta = timeExpired - curTime
         if (timeDelta <= 0)
           continue
@@ -272,10 +279,10 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
     }
 
     // Check for total defeats count.
-    let checkTotalDefCount = _checkTicketDefCount(data.defCount, maxDefeatCount, data.numUnfinishedSessions)
+    let checkTotalDefCount = this._checkTicketDefCount(data.defCount, this.maxDefeatCount, data.numUnfinishedSessions)
 
     // Check for sequence defeats count.
-    let checkSequenceDefCount = _checkTicketDefCount(data.sequenceDefeatCount, maxSequenceDefeatCount, data.numUnfinishedSessions)
+    let checkSequenceDefCount = this._checkTicketDefCount(data.sequenceDefeatCount, this.maxSequenceDefeatCount, data.numUnfinishedSessions)
 
     // Player can't join ticket's tournament if number of
     // unfinished sessions exceeds number of possible defeats.
@@ -286,63 +293,63 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
   function getDefeatCountText(tournamentData, valueColor = "activeTextColor")
   {
     local text = ""
-    if (maxDefeatCount)
-      text = ::UnlockConditions.addToText(text, ::loc("ticket/defeat_count"),
-        tournamentData.defCount + "/" + maxDefeatCount, valueColor)
+    if (this.maxDefeatCount)
+      text = addToText(text, loc("ticket/defeat_count"),
+        tournamentData.defCount + "/" + this.maxDefeatCount, valueColor)
     return text
   }
 
   function getSequenceDefeatCountText(tournamentData, valueColor = "activeTextColor")
   {
     local text = ""
-    if (maxSequenceDefeatCount)
-      text = ::UnlockConditions.addToText(text, ::loc("ticket/defeat_count_in_a_row"),
-        tournamentData.sequenceDefeatCount + "/" + maxSequenceDefeatCount, valueColor)
+    if (this.maxSequenceDefeatCount)
+      text = addToText(text, loc("ticket/defeat_count_in_a_row"),
+        tournamentData.sequenceDefeatCount + "/" + this.maxSequenceDefeatCount, valueColor)
     return text
   }
 
   function getBattleCountText(tournamentData, valueColor = "activeTextColor")
   {
     local text = ""
-    if (battleLimit)
-      text = ::UnlockConditions.addToText(text, ::loc("ticket/battle_count"),
-        tournamentData.battleCount + "/" + battleLimit, valueColor)
+    if (this.battleLimit)
+      text = addToText(text, loc("ticket/battle_count"),
+        tournamentData.battleCount + "/" + this.battleLimit, valueColor)
     return text
   }
 
   function getAvailableDefeatsText(eventId, valueColor = "activeTextColor")
   {
     let textParts = []
-    if (isActive())
+    if (this.isActive())
     {
-      let ticketTournamentData = getTicketTournamentData(eventId)
-      textParts.append(getDefeatCountText(ticketTournamentData, valueColor))
-      textParts.append(getSequenceDefeatCountText(ticketTournamentData, valueColor))
-      textParts.append(getBattleCountText(ticketTournamentData, valueColor))
+      let ticketTournamentData = this.getTicketTournamentData(eventId)
+      textParts.append(this.getDefeatCountText(ticketTournamentData, valueColor))
+      textParts.append(this.getSequenceDefeatCountText(ticketTournamentData, valueColor))
+      textParts.append(this.getBattleCountText(ticketTournamentData, valueColor))
     }
     else
     {
       local locParams = {}
-      if (maxDefeatCount)
+      if (this.maxDefeatCount)
       {
-        locParams = {value = ::colorize(valueColor, maxDefeatCount)}
-        textParts.append(::loc("ticket/max_defeat_count", locParams))
+        locParams = {value = colorize(valueColor, this.maxDefeatCount)}
+        textParts.append(loc("ticket/max_defeat_count", locParams))
       }
-      if (maxSequenceDefeatCount)
+      if (this.maxSequenceDefeatCount)
       {
-        locParams = {value = ::colorize(valueColor, maxSequenceDefeatCount)}
-        textParts.append(::loc("ticket/max_defeat_count_in_a_row", locParams))
+        locParams = {value = colorize(valueColor, this.maxSequenceDefeatCount)}
+        textParts.append(loc("ticket/max_defeat_count_in_a_row", locParams))
       }
-      if (battleLimit)
+      if (this.battleLimit)
       {
-        locParams = {value = ::colorize(valueColor, battleLimit)}
-        textParts.append(::loc("ticket/battle_limit", locParams))
+        locParams = {value = colorize(valueColor, this.battleLimit)}
+        textParts.append(loc("ticket/battle_limit", locParams))
       }
     }
 
     local text = ::g_string.implode(textParts, "\n")
     if (text.len() == 0)
-      text = ::loc("ticket/noRestrictions")
+      text = loc("ticket/noRestrictions")
 
     return text
   }
@@ -355,13 +362,13 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
     {
       let baseReward = getBaseVictoryReward(event)
       if (baseReward)
-        text += (text.len() ? "\n" : "") + ::loc("tournaments/reward/everyVictory",  {reward = baseReward})
+        text += (text.len() ? "\n" : "") + loc("tournaments/reward/everyVictory",  {reward = baseReward})
 
       if (haveRewards(event))
       {
-        text += (text.len() ? "\n\n" : "") + ::loc("tournaments/specialRewards") + ::loc("ui/colon")
+        text += (text.len() ? "\n\n" : "") + loc("tournaments/specialRewards") + loc("ui/colon")
         let specialRewards = getSortedRewardsByConditions(event)
-        foreach (conditionId, rewardsList in specialRewards)
+        foreach (_conditionId, rewardsList in specialRewards)
           foreach (reward in rewardsList)
             text += "\n" + getConditionText(reward) + " - " + getRewardDescText(reward)
       }
@@ -372,14 +379,14 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
   function getDescription()
   {
     let desc = []
-    foreach(eventId in eventEconomicNamesArray)
+    foreach(eventId in this.eventEconomicNamesArray)
     {
       if (desc.len())
         desc.append("\n")
 
-      if (eventEconomicNamesArray.len() > 1)
-        desc.append(::colorize("activeTextColor", ::events.getNameByEconomicName(eventId)))
-      desc.append(getAvailableDefeatsText(eventId))
+      if (this.eventEconomicNamesArray.len() > 1)
+        desc.append(colorize("activeTextColor", ::events.getNameByEconomicName(eventId)))
+      desc.append(this.getAvailableDefeatsText(eventId))
     }
 
     desc.append(base.getDescription())
@@ -389,15 +396,15 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
   function getLongDescription()
   {
     let desc = []
-    foreach(eventId in eventEconomicNamesArray)
+    foreach(eventId in this.eventEconomicNamesArray)
     {
       if (desc.len())
         desc.append("\n")
 
-      if (eventEconomicNamesArray.len() > 1)
-        desc.append(::colorize("activeTextColor", ::events.getNameByEconomicName(eventId)))
-      desc.append(getAvailableDefeatsText(eventId))
-      desc.append(getTournamentRewardsText(eventId))
+      if (this.eventEconomicNamesArray.len() > 1)
+        desc.append(colorize("activeTextColor", ::events.getNameByEconomicName(eventId)))
+      desc.append(this.getAvailableDefeatsText(eventId))
+      desc.append(this.getTournamentRewardsText(eventId))
     }
 
     desc.append(base.getDescription())
@@ -413,6 +420,6 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
 
   function isForEvent(checkEconomicName)
   {
-    return ::isInArray(checkEconomicName, eventEconomicNamesArray)
+    return isInArray(checkEconomicName, this.eventEconomicNamesArray)
   }
 }

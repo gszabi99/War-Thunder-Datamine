@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let time = require("%scripts/time.nut")
+let { ceil } = require("math")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let wwTransportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
@@ -11,49 +18,49 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
   customId = null
   name = ""
   hasVersusText = false
-  selectedSide = ::SIDE_NONE
+  selectedSide = SIDE_NONE
 
   static unitsInArmyRowsMax = 5
 
   constructor(v_formation)
   {
-    formation = v_formation
-    name = formation.name
-    setRedrawArmyStatusData()
+    this.formation = v_formation
+    this.name = this.formation.name
+    this.setRedrawArmyStatusData()
   }
 
   function getName()
   {
-    return name
+    return this.name
   }
 
   function setId(id)
   {
-    customId = id
+    this.customId = id
   }
 
   function getId()
   {
-    if (customId)
-      return customId
+    if (this.customId)
+      return this.customId
 
-    return "commander_block_" + formation.getArmyCountry() + "_" + formation.getArmySide() + "_" + formation.getArmyGroupIdx() + "_" + formation.name
+    return "commander_block_" + this.formation.getArmyCountry() + "_" + this.formation.getArmySide() + "_" + this.formation.getArmyGroupIdx() + "_" + this.formation.name
   }
 
   function getUnitTypeText()
   {
-    return ::g_ww_unit_type.getUnitTypeFontIcon(formation.getUnitType())
+    return ::g_ww_unit_type.getUnitTypeFontIcon(this.formation.getUnitType())
   }
 
   function getUnitTypeCustomText()
   {
-    let overrideIcon = "getOverrideIcon" in formation ? formation.getOverrideIcon() : null
-    return overrideIcon || getUnitTypeText()
+    let overrideIcon = "getOverrideIcon" in this.formation ? this.formation.getOverrideIcon() : null
+    return overrideIcon || this.getUnitTypeText()
   }
 
   function getDescription()
   {
-    return formation.getDescription()
+    return this.formation.getDescription()
   }
 
   function getSectionsView(sections, isMultipleColumns)
@@ -72,7 +79,7 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
         sectView.columns.append({unitString = units})
       else
       {
-        let unitsInRow = ::ceil(units.len() / 2.0).tointeger()
+        let unitsInRow = ceil(units.len() / 2.0).tointeger()
         sectView.columns.append({unitString = units.slice(0, unitsInRow), first = true})
         sectView.columns.append({unitString = units.slice(unitsInRow)})
       }
@@ -83,33 +90,33 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
 
   function unitsList()
   {
-    let wwUnits = formation.getUnits().reduce(function (memo, unit) {
+    let wwUnits = this.formation.getUnits().reduce(function (memo, unit) {
       if (unit.getActiveCount())
         memo.append(unit)
       return memo
     }, [])
-    let transportedArmiesData = wwTransportManager.getTransportedArmiesData(formation)
+    let transportedArmiesData = wwTransportManager.getTransportedArmiesData(this.formation)
     let rowsCount = wwUnits.len() + transportedArmiesData.armies.len()
       + transportedArmiesData.totalUnitsNum
-    let isMultipleColumns = rowsCount > unitsInArmyRowsMax
+    let isMultipleColumns = rowsCount > this.unitsInArmyRowsMax
     let sections = [{units = wwActionsWithUnitsList.getUnitsListViewParams({wwUnits = wwUnits})}]
     foreach (army in transportedArmiesData.armies)
       sections.append({
         units = wwActionsWithUnitsList.getUnitsListViewParams({wwUnits = army.getUnits()}),
-        title = "".concat(::loc("worldwar/transportedArmy"),
-          ::loc("ui/parentheses/space", {
+        title = "".concat(loc("worldwar/transportedArmy"),
+          loc("ui/parentheses/space", {
             text = army.getOverrideIcon() ?? ::g_ww_unit_type.getUnitTypeFontIcon(army.unitType)}),
-          ::loc("ui/colon"))
+          loc("ui/colon"))
       })
-    let view = getSectionsView(sections, isMultipleColumns)
-    return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList", view)
+    let view = this.getSectionsView(sections, isMultipleColumns)
+    return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList.tpl", view)
   }
 
   /** exclude infantry */
   function unitsCount(excludeInfantry = true, onlyArtillery = false)
   {
     local res = 0
-    foreach (unit in formation.getUnits(excludeInfantry))
+    foreach (unit in this.formation.getUnits(excludeInfantry))
       res += (!onlyArtillery || unit.isArtillery()) ? unit.getActiveCount() : 0
 
     return res
@@ -118,7 +125,7 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
   function inactiveUnitsCount(excludeInfantry = true, onlyArtillery = false)
   {
     local res = 0
-    foreach (unit in formation.getUnits(excludeInfantry))
+    foreach (unit in this.formation.getUnits(excludeInfantry))
       res += (!onlyArtillery || unit.isArtillery()) ? unit.inactiveCount : 0
 
     return res
@@ -126,125 +133,125 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
 
   function isDead()
   {
-    return "isDead" in formation ? formation.isDead() : false
+    return "isDead" in this.formation ? this.formation.isDead() : false
   }
 
   function isInfantry()
   {
-    return ::g_ww_unit_type.isInfantry(formation.getUnitType())
+    return ::g_ww_unit_type.isInfantry(this.formation.getUnitType())
   }
 
   function isArtillery()
   {
-    return ::g_ww_unit_type.isArtillery(formation.getUnitType())
+    return ::g_ww_unit_type.isArtillery(this.formation.getUnitType())
   }
 
   function hasArtilleryAbility()
   {
-    return formation.hasArtilleryAbility
+    return this.formation.hasArtilleryAbility
   }
 
   function getUnitsCountText()
   {
-    return unitsCount(true, isArtillery())
+    return this.unitsCount(true, this.isArtillery())
   }
 
   function getInactiveUnitsCountText()
   {
-    return inactiveUnitsCount(true, isArtillery())
+    return this.inactiveUnitsCount(true, this.isArtillery())
   }
 
   function hasManageAccess()
   {
-    return formation.hasManageAccess()
+    return this.formation.hasManageAccess()
   }
 
   function getArmyGroupIdx()
   {
-    return formation.getArmyGroupIdx()
+    return this.formation.getArmyGroupIdx()
   }
 
   function clanId()
   {
-    return formation.getClanId()
+    return this.formation.getClanId()
   }
 
   function clanTag()
   {
-    return formation.getClanTag()
+    return this.formation.getClanTag()
   }
 
   function getTextAfterIcon()
   {
-    return clanTag()
+    return this.clanTag()
   }
 
   function showArmyGroupText()
   {
-    return formation.showArmyGroupText()
+    return this.formation.showArmyGroupText()
   }
 
   function isBelongsToMyClan()
   {
-    return formation.isBelongsToMyClan()
+    return this.formation.isBelongsToMyClan()
   }
 
   function getTeamColor()
   {
     local side = ::ww_get_player_side()
-    if (side == ::SIDE_NONE)
-     side = selectedSide
+    if (side == SIDE_NONE)
+     side = this.selectedSide
 
-    return formation.isMySide(side) ? "blue" : "red"
+    return this.formation.isMySide(side) ? "blue" : "red"
   }
 
   function getReinforcementArrivalTime()
   {
-    return "getArrivalStatusText" in formation? formation.getArrivalStatusText() : null
+    return "getArrivalStatusText" in this.formation? this.formation.getArrivalStatusText() : null
   }
 
   function getMoral()
   {
-    return "getMoral" in formation ? formation.getMoral() : ""
+    return "getMoral" in this.formation ? this.formation.getMoral() : ""
   }
 
   function getSuppliesFinishTime()
   {
-    let finishTime = "getSuppliesFinishTime" in formation? formation.getSuppliesFinishTime() : 0
+    let finishTime = "getSuppliesFinishTime" in this.formation? this.formation.getSuppliesFinishTime() : 0
     if (finishTime > 0)
-      return time.hoursToString(time.secondsToHours(finishTime), false, true) + " " + ::loc("icon/timer")
+      return time.hoursToString(time.secondsToHours(finishTime), false, true) + " " + loc("icon/timer")
 
     return null
   }
 
   function getAirFuelLastTime()
   {
-    if (::g_ww_unit_type.isAir(formation.getUnitType()))
-      return getSuppliesFinishTime()
+    if (::g_ww_unit_type.isAir(this.formation.getUnitType()))
+      return this.getSuppliesFinishTime()
     return ""
   }
 
   function getAmmoRefillTime()
   {
-    let refillTimeSec = formation.getNextAmmoRefillTime()
+    let refillTimeSec = this.formation.getNextAmmoRefillTime()
     if (refillTimeSec > 0)
       return time.hoursToString(time.secondsToHours(refillTimeSec), false, true) + " " +
-        ::loc("weapon/torpedoIcon")
+        loc("weapon/torpedoIcon")
     return ""
   }
 
   function getGroundSurroundingTime()
   {
-    if (::g_ww_unit_type.canBeSurrounded(formation.getUnitType()))
-      return getSuppliesFinishTime()
+    if (::g_ww_unit_type.canBeSurrounded(this.formation.getUnitType()))
+      return this.getSuppliesFinishTime()
     return null
   }
 
   function getActionStatusTime()
   {
-    if ("secondsLeftToEntrench" in formation)
+    if ("secondsLeftToEntrench" in this.formation)
     {
-      let entrenchTime = formation.secondsLeftToEntrench()
+      let entrenchTime = this.formation.secondsLeftToEntrench()
       if (entrenchTime >= 0)
         return time.hoursToString(time.secondsToHours(entrenchTime), false, true)
     }
@@ -255,100 +262,100 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
   function getActionStatusIcon()
   {
     local statusText = ""
-    if (::g_ww_unit_type.isArtillery(formation.getUnitType()) && formation.hasStrike())
-      statusText += ::loc("worldWar/iconStrike")
-    if (formation.isInBattle())
-      statusText += ::loc("worldWar/iconBattle")
-    if (formation.isEntrenched())
-      statusText += ::loc("worldWar/iconEntrenched")
-    if (formation.isMove())
-      statusText = ::loc("worldWar/iconMove")
-    return statusText.len() ? statusText : ::loc("worldWar/iconIdle")
+    if (::g_ww_unit_type.isArtillery(this.formation.getUnitType()) && this.formation.hasStrike())
+      statusText += loc("worldWar/iconStrike")
+    if (this.formation.isInBattle())
+      statusText += loc("worldWar/iconBattle")
+    if (this.formation.isEntrenched())
+      statusText += loc("worldWar/iconEntrenched")
+    if (this.formation.isMove())
+      statusText = loc("worldWar/iconMove")
+    return statusText.len() ? statusText : loc("worldWar/iconIdle")
   }
 
   function getActionStatusIconTooltip()
   {
     local tooltipText = ""
-    if (::g_ww_unit_type.isArtillery(formation.getUnitType()) && formation.hasStrike())
-      tooltipText += "\n" + ::loc("worldWar/iconStrike") + " " + ::loc("worldwar/tooltip/army_deals_strike")
-    if (formation.isInBattle())
-      tooltipText += "\n" + ::loc("worldWar/iconBattle") + " " + ::loc("worldwar/tooltip/army_in_battle")
-    if (formation.isEntrenched())
-      tooltipText += "\n" + ::loc("worldWar/iconEntrenched") + " " + ::loc("worldwar/tooltip/army_is_entrenched")
-    if (formation.isMove())
-      tooltipText += "\n" + ::loc("worldWar/iconMove") + " " + ::loc("worldwar/tooltip/army_is_moving")
+    if (::g_ww_unit_type.isArtillery(this.formation.getUnitType()) && this.formation.hasStrike())
+      tooltipText += "\n" + loc("worldWar/iconStrike") + " " + loc("worldwar/tooltip/army_deals_strike")
+    if (this.formation.isInBattle())
+      tooltipText += "\n" + loc("worldWar/iconBattle") + " " + loc("worldwar/tooltip/army_in_battle")
+    if (this.formation.isEntrenched())
+      tooltipText += "\n" + loc("worldWar/iconEntrenched") + " " + loc("worldwar/tooltip/army_is_entrenched")
+    if (this.formation.isMove())
+      tooltipText += "\n" + loc("worldWar/iconMove") + " " + loc("worldwar/tooltip/army_is_moving")
     if (!tooltipText.len())
-      tooltipText += "\n" + ::loc("worldWar/iconIdle") + " " + ::loc("worldwar/tooltip/army_is_waiting")
+      tooltipText += "\n" + loc("worldWar/iconIdle") + " " + loc("worldwar/tooltip/army_is_waiting")
 
-    return ::loc("worldwar/tooltip/army_status") + ::loc("ui/colon") + tooltipText
+    return loc("worldwar/tooltip/army_status") + loc("ui/colon") + tooltipText
   }
 
   function getMoraleIconTooltip()
   {
-    return ::loc("worldwar/tooltip/army_morale") + ::loc("ui/colon") + getMoral()
+    return loc("worldwar/tooltip/army_morale") + loc("ui/colon") + this.getMoral()
   }
 
   function getAmmoTooltip()
   {
-    return ::loc("worldwar/tooltip/ammo_amount")
+    return loc("worldwar/tooltip/ammo_amount")
   }
 
   function getUnitsIconTooltip()
   {
-    return ::loc("worldwar/tooltip/vehicle_amount") + ::loc("ui/colon") + getUnitsCountText()
+    return loc("worldwar/tooltip/vehicle_amount") + loc("ui/colon") + this.getUnitsCountText()
   }
 
   function getArmyReturnTimeTooltip()
   {
-    return ::loc("worldwar/tooltip/army_return_time")
+    return loc("worldwar/tooltip/army_return_time")
   }
 
   function getAmmoRefillTimeTooltip()
   {
-    return ::loc("worldwar/tooltip/ammo_refill_time")
+    return loc("worldwar/tooltip/ammo_refill_time")
   }
 
   function getCountryIcon()
   {
-    return getCustomViewCountryData(formation.getArmyCountry()).icon
+    return getCustomViewCountryData(this.formation.getArmyCountry()).icon
   }
 
   function getClanId()
   {
-    return formation.getClanId()
+    return this.formation.getClanId()
   }
 
   function getClanTag()
   {
-    return formation.getClanTag()
+    return this.formation.getClanTag()
   }
 
   function isEntrenched()
   {
-    return ("isEntrenched" in formation) ? formation.isEntrenched() :false
+    return ("isEntrenched" in this.formation) ? this.formation.isEntrenched() :false
   }
 
   function getFormationID()
   {
-    return formation.getFormationID()
+    return this.formation.getFormationID()
   }
 
-  isFormation    = @() formation?.isFormation() ?? false
-  getTooltipId   = @() WW_MAP_TOOLTIP_TYPE_GROUP.getTooltipId(getClanId(), {})
+  isFormation    = @() this.formation?.isFormation() ?? false
+  getTooltipId   = @() WW_MAP_TOOLTIP_TYPE_GROUP.getTooltipId(this.getClanId(), {})
 
   function getArmyAlertText()
   {
-    if (isDead())
-      return ::loc("debriefing/ww_army_state_dead")
+    if (this.isDead())
+      return loc("debriefing/ww_army_state_dead")
 
-    let groundSurroundingTime = getGroundSurroundingTime()
+    let groundSurroundingTime = this.getGroundSurroundingTime()
     if (groundSurroundingTime)
-      return ::loc("worldwar/groundsurrended") + ::loc("ui/colon") + groundSurroundingTime
+      return loc("worldwar/groundsurrended") + loc("ui/colon") + groundSurroundingTime
 
-    let inactiveUnitsCountText = getInactiveUnitsCountText()
+    let inactiveUnitsCountText = this.getInactiveUnitsCountText()
     if (inactiveUnitsCountText)
-      return ::loc("worldwar/active_units", {
-        active = unitsCount(true, isArtillery()),
+      return loc("worldwar/active_units", {
+        active = this.unitsCount(true, this.isArtillery()),
         inactive = inactiveUnitsCountText
       })
 
@@ -357,39 +364,39 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
 
   function getArmyInfoText()
   {
-    if (!hasArtilleryAbility())
+    if (!this.hasArtilleryAbility())
       return null
 
-    if (formation.isMove())
-      return ::loc("worldwar/artillery/is_move")
+    if (this.formation.isMove())
+      return loc("worldwar/artillery/is_move")
 
-    if (!formation.hasAmmo())
-      return ::loc("worldwar/artillery/no_ammo")
+    if (!this.formation.hasAmmo())
+      return loc("worldwar/artillery/no_ammo")
 
-    if (formation.isStrikePreparing())
+    if (this.formation.isStrikePreparing())
     {
-      let timeToPrepareStike = formation.artilleryAmmo.getTimeToNextStrike()
-      return ::loc("worldwar/artillery/aiming") + ::loc("ui/colon") +
+      let timeToPrepareStike = this.formation.artilleryAmmo.getTimeToNextStrike()
+      return loc("worldwar/artillery/aiming") + loc("ui/colon") +
              time.hoursToString(time.secondsToHours(timeToPrepareStike), false, true)
     }
 
-    if (formation.isStrikeInProcess())
+    if (this.formation.isStrikeInProcess())
     {
-      let timeToFinishStike = formation.artilleryAmmo.getTimeToCompleteStrikes()
-      return ::loc("worldwar/artillery/firing") + ::loc("ui/colon") +
+      let timeToFinishStike = this.formation.artilleryAmmo.getTimeToCompleteStrikes()
+      return loc("worldwar/artillery/firing") + loc("ui/colon") +
              time.hoursToString(time.secondsToHours(timeToFinishStike), false, true)
     }
 
-    if (formation.isStrikeOnCooldown())
-      return ::loc("worldwar/artillery/preparation") + ::loc("ui/colon") +
-             time.hoursToString(time.secondsToHours(formation.secondsLeftToFireEnable()), false, true)
+    if (this.formation.isStrikeOnCooldown())
+      return loc("worldwar/artillery/preparation") + loc("ui/colon") +
+             time.hoursToString(time.secondsToHours(this.formation.secondsLeftToFireEnable()), false, true)
 
-    return ::loc("worldwar/artillery/can_fire")
+    return loc("worldwar/artillery/can_fire")
   }
 
   function isAlert() // warning disable: -named-like-return-bool
   {
-    if (isDead() || getGroundSurroundingTime())
+    if (this.isDead() || this.getGroundSurroundingTime())
       return "yes"
 
     return "no"
@@ -397,101 +404,101 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
 
   function getActionStatusTimeText()
   {
-    return getActionStatusTime() + " " + getActionStatusIcon()
+    return this.getActionStatusTime() + " " + this.getActionStatusIcon()
   }
 
   function getUnitsCountTextIcon()
   {
-    return isInfantry() ? "" : getUnitsCountText() + " " + getUnitTypeText()
+    return this.isInfantry() ? "" : this.getUnitsCountText() + " " + this.getUnitTypeText()
   }
 
   function getMoralText()
   {
-    return getMoral() + " " + ::loc("worldWar/iconMoral")
+    return this.getMoral() + " " + loc("worldWar/iconMoral")
   }
 
   function getAmmoText()
   {
-    return formation.getAmmoCount() + "/" + formation.getMaxAmmoCount() + " " +
-      ::loc("weapon/torpedoIcon")
+    return this.formation.getAmmoCount() + "/" + this.formation.getMaxAmmoCount() + " " +
+      loc("weapon/torpedoIcon")
   }
 
   function getShortInfoText()
   {
-    local text = getUnitsCountTextIcon()
-    if (!isArtillery())
-      text += " " + getMoralText()
-    return ::u.isEmpty(text) ? "" : ::loc("ui/parentheses", { text = text })
+    local text = this.getUnitsCountTextIcon()
+    if (!this.isArtillery())
+      text += " " + this.getMoralText()
+    return ::u.isEmpty(text) ? "" : loc("ui/parentheses", { text = text })
   }
 
   function setRedrawArmyStatusData()
   {
-    redrawData = {
-      army_status_time = getActionStatusTimeText
-      army_count = getUnitsCountTextIcon
-      army_morale = getMoralText
-      army_return_time = getAirFuelLastTime
-      army_ammo = getAmmoText
-      army_ammo_refill_time = getAmmoRefillTime
-      army_alert_text = getArmyAlertText
-      army_info_text = getArmyInfoText
+    this.redrawData = {
+      army_status_time = this.getActionStatusTimeText
+      army_count = this.getUnitsCountTextIcon
+      army_morale = this.getMoralText
+      army_return_time = this.getAirFuelLastTime
+      army_ammo = this.getAmmoText
+      army_ammo_refill_time = this.getAmmoRefillTime
+      army_alert_text = this.getArmyAlertText
+      army_info_text = this.getArmyInfoText
     }
   }
 
   function getRedrawArmyStatusData()
   {
-    return redrawData
+    return this.redrawData
   }
 
   function getMapObjectName()
   {
-    return formation.getMapObjectName()
+    return this.formation.getMapObjectName()
   }
 
   function getZoneName()
   {
-    let wwArmyPosition = formation.getPosition()
+    let wwArmyPosition = this.formation.getPosition()
     if (!wwArmyPosition)
       return ""
 
-    if(::g_ww_unit_type.isAir(formation.getUnitType()))
+    if(::g_ww_unit_type.isAir(this.formation.getUnitType()))
       return ""
 
-    return ::loc("ui/parentheses",
+    return loc("ui/parentheses",
       {text = ::ww_get_zone_name(::ww_get_zone_idx_world(wwArmyPosition))})
   }
 
   function getHasVersusText()
   {
-    return hasVersusText
+    return this.hasVersusText
   }
 
   function setHasVersusText(val)
   {
-    hasVersusText = val
+    this.hasVersusText = val
   }
 
   function setSelectedSide(side)
   {
-    selectedSide = side
+    this.selectedSide = side
   }
 
   function hasManagersStat()
   {
-    return formation?.hasManagersStat()
+    return this.formation?.hasManagersStat()
   }
 
   function getManagersInfoLines()
   {
     let lines = []
-    if(hasManagersStat())
-      foreach(inst in formation.armyManagers)
+    if(this.hasManagersStat())
+      foreach(inst in this.formation.armyManagers)
         lines.append({
-          managerInfo = "".concat(inst.name, ::loc("ui/hyphen"), inst.activity, "%")
+          managerInfo = "".concat(inst.name, loc("ui/hyphen"), inst.activity, "%")
         })
 
     return lines
   }
 
-  needSmallSize = @() hasArtilleryAbility() && !isArtillery()
+  needSmallSize = @() this.hasArtilleryAbility() && !this.isArtillery()
 }

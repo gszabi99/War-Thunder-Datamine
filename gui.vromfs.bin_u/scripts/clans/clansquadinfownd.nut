@@ -1,12 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.clanSquadInfoWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
   sceneBlkName   = "%gui/clans/clanSquadInfo.blk"
   needVoiceChat = false
-  memberTplName = "%gui/squads/squadMembers"
+  memberTplName = "%gui/squads/squadMembers.tpl"
   membersObj = null
   align = ALIGN.BOTTOM
 
@@ -18,7 +25,7 @@ let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
   static function open(alignObj, squad)
   {
-    if (!::checkObj(alignObj))
+    if (!checkObj(alignObj))
       return null
 
     let params = {
@@ -31,51 +38,51 @@ let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
   function initScreen()
   {
-    membersObj = scene.findObject("members")
-    let viewBlk = ::handyman.renderCached(memberTplName,
-      {members = array(squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE, null)})
-    guiScene.replaceContentFromText(membersObj, viewBlk, viewBlk.len(), this)
-    scene.findObject("squad_info_update").setUserData(this)
-    refreshList()
-    updatePosition()
+    this.membersObj = this.scene.findObject("members")
+    let viewBlk = ::handyman.renderCached(this.memberTplName,
+      {members = array(this.squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE, null)})
+    this.guiScene.replaceContentFromText(this.membersObj, viewBlk, viewBlk.len(), this)
+    this.scene.findObject("squad_info_update").setUserData(this)
+    this.refreshList()
+    this.updatePosition()
 
-    membersObj.setValue(0)
+    this.membersObj.setValue(0)
   }
 
   function refreshList()
   {
-    let leader = squad?.leader
+    let leader = this.squad?.leader
     local memberViewIndex = 0
-    if (leader == selectedMember)
-      selectedIndex = memberViewIndex
-    updateMemberView(memberViewIndex++, leader)
-    foreach(uid in squad?.members ?? [])
+    if (leader == this.selectedMember)
+      this.selectedIndex = memberViewIndex
+    this.updateMemberView(memberViewIndex++, leader)
+    foreach(uid in this.squad?.members ?? [])
     {
       if (uid == leader)
         continue
 
-      if (uid == selectedMember)
-        selectedIndex = memberViewIndex
-      updateMemberView(memberViewIndex++, uid)
+      if (uid == this.selectedMember)
+        this.selectedIndex = memberViewIndex
+      this.updateMemberView(memberViewIndex++, uid)
     }
 
-    while (memberViewIndex < (squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE))
-      updateMemberView(memberViewIndex++, null)
-    selectedIndex = clamp(selectedIndex, 0, (squad?.members ?? []).len() - 1)
-    membersObj.setValue(selectedIndex)
+    while (memberViewIndex < (this.squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE))
+      this.updateMemberView(memberViewIndex++, null)
+    this.selectedIndex = clamp(this.selectedIndex, 0, (this.squad?.members ?? []).len() - 1)
+    this.membersObj.setValue(this.selectedIndex)
   }
 
   function updateMemberView(mebmerObjIndex, memberUid)
   {
     let isVisible = memberUid != null
-    let memberObj = getSquadObj(mebmerObjIndex)
+    let memberObj = this.getSquadObj(mebmerObjIndex)
     memberObj.show(isVisible)
     memberObj.enable(isVisible)
-    if (!isVisible || !::checkObj(memberObj))
+    if (!isVisible || !checkObj(memberObj))
       return
 
     let memeberUidStr = memberUid.tostring()
-    let contact = getContact(memeberUidStr)
+    let contact = ::getContact(memeberUidStr)
     if (!contact)
       requestUsersInfo([memeberUidStr])
     memberObj["id"] = "member_" + memeberUidStr
@@ -85,7 +92,7 @@ let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
     memberObj.findObject("tooltip")["uid"] = memeberUidStr
     memberObj.findObject("not_member_data").show(contact? false : true)
     let statusObj = memberObj.findObject("statusImg")
-    if (::checkObj(statusObj))
+    if (checkObj(statusObj))
     {
       let presence = contact?.presence ?? ::g_contact_presence.UNKNOWN
       statusObj["background-image"] = presence.getIcon()
@@ -96,15 +103,15 @@ let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
   function getSquadObj(idx)
   {
-    if (membersObj.childrenCount() > idx) {
-      return membersObj.getChild(idx)
+    if (this.membersObj.childrenCount() > idx) {
+      return this.membersObj.getChild(idx)
     }
-    return membersObj.getChild(idx-1).getClone(membersObj, this)
+    return this.membersObj.getChild(idx-1).getClone(this.membersObj, this)
   }
 
   function updatePosition()
   {
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("squad_info"))
+    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("squad_info"))
   }
 
   function getMemberUidByObj(obj)
@@ -115,10 +122,10 @@ let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
   function onMemberClick(obj)
   {
-    local memberUid = getMemberUidByObj(obj)
-    obj =memberUid? obj : getSquadObj(selectedIndex)
-    memberUid = memberUid || selectedMember
-    if (!memberUid || !::checkObj(obj))
+    local memberUid = this.getMemberUidByObj(obj)
+    obj =memberUid? obj : this.getSquadObj(this.selectedIndex)
+    memberUid = memberUid || this.selectedMember
+    if (!memberUid || !checkObj(obj))
       return
 
     let position = obj.getPosRC()
@@ -132,38 +139,38 @@ let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
   function onItemSelect(obj)
   {
-    let countListItem = (squad?.members ?? []).len()
+    let countListItem = (this.squad?.members ?? []).len()
     if (countListItem <= 0)
       {
-        selectedMember = null
-        selectedIndex = -1
+        this.selectedMember = null
+        this.selectedIndex = -1
         return
       }
 
     let index = obj.getValue()
-    selectedMember = getMemberUidByObj(obj.getChild(index))
-    selectedIndex = selectedMember ? index : -1
+    this.selectedMember = this.getMemberUidByObj(obj.getChild(index))
+    this.selectedIndex = this.selectedMember ? index : -1
   }
 
-  function onEventClanSquadsListChanged(params)
+  function onEventClanSquadsListChanged(_params)
   {
-    let leader = squad.leader
+    let leader = this.squad.leader
     let newSquad = ::u.search(squadsListData.getList(), @(s) s?.leader == leader)
     if (!newSquad)
     {
-      goBack()
+      this.goBack()
       return
     }
-    squad = newSquad
-    doWhenActiveOnce("refreshList")
+    this.squad = newSquad
+    this.doWhenActiveOnce("refreshList")
   }
 
-  function onEventContactsUpdated(params)
+  function onEventContactsUpdated(_params)
   {
-    doWhenActiveOnce("refreshList")
+    this.doWhenActiveOnce("refreshList")
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, _dt)
   {
     squadsListData.requestList()
   }

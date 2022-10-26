@@ -1,6 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let time = require("%scripts/time.nut")
-::WwArtilleryAmmo <- class
-{
+let { ceil } = require("math")
+
+::WwArtilleryAmmo <- class {
   hasArtilleryStrike = false
   strikesDone = null
   ammoCount = 0
@@ -16,16 +23,16 @@ let time = require("%scripts/time.nut")
     if (!blk)
       return
 
-    ammoCount = blk.ammo
-    nextAmmoRefillMillisec = blk.nextAmmoRefillMillisec
-    updateStrike(armyName)
+    this.ammoCount = blk.ammo
+    this.nextAmmoRefillMillisec = blk.nextAmmoRefillMillisec
+    this.updateStrike(armyName)
   }
 
   function updateStrike(armyName)
   {
-    hasArtilleryStrike = false
-    nextStrikeTimeMillis = 0
-    strikesDone = null
+    this.hasArtilleryStrike = false
+    this.nextStrikeTimeMillis = 0
+    this.strikesDone = null
 
     let strikesBlk = ::DataBlock()
     ::ww_get_artillery_strikes(strikesBlk)
@@ -34,76 +41,76 @@ let time = require("%scripts/time.nut")
     if (!strikeBlk)
       return
 
-    hasArtilleryStrike = true
-    nextStrikeTimeMillis = ::getTblValue("nextStrikeTimeMillis", strikeBlk, 0)
-    strikesDone = ::getTblValue("strikesDone", strikeBlk, 0)
+    this.hasArtilleryStrike = true
+    this.nextStrikeTimeMillis = getTblValue("nextStrikeTimeMillis", strikeBlk, 0)
+    this.strikesDone = getTblValue("strikesDone", strikeBlk, 0)
   }
 
   function getAmmoCount()
   {
-    return ammoCount
+    return this.ammoCount
   }
 
   function getMaxAmmoCount()
   {
-    return maxAmmoCount
+    return this.maxAmmoCount
   }
 
   function getNextAmmoRefillTime()
   {
-    let millisec = nextAmmoRefillMillisec - ::ww_get_operation_time_millisec()
+    let millisec = this.nextAmmoRefillMillisec - ::ww_get_operation_time_millisec()
     return time.millisecondsToSeconds(millisec).tointeger()
   }
 
   function getMaxStrikesPerAttack()
   {
-    return min(maxStrikesPerAttack, maxAmmoCount)
+    return min(this.maxStrikesPerAttack, this.maxAmmoCount)
   }
 
   function getCooldownAfterMoveMillisec()
   {
-    return (cooldownAfterMoveSec * 1000 / ::ww_get_speedup_factor()).tointeger()
+    return (this.cooldownAfterMoveSec * 1000 / ::ww_get_speedup_factor()).tointeger()
   }
 
   function getStrikeIntervalMillisec()
   {
-    return (strikeIntervalSec * 1000 / ::ww_get_speedup_factor()).tointeger()
+    return (this.strikeIntervalSec * 1000 / ::ww_get_speedup_factor()).tointeger()
   }
 
   function getTimeToNextStrike()
   {
-    if (!hasStrike())
+    if (!this.hasStrike())
       return 0
 
-    let millisec = nextStrikeTimeMillis - ::ww_get_operation_time_millisec()
-    return max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
+    let millisec = this.nextStrikeTimeMillis - ::ww_get_operation_time_millisec()
+    return max(ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }
 
   function getTimeToCompleteStrikes()
   {
-    if (!hasStrike())
+    if (!this.hasStrike())
       return 0
 
-    local millisec = nextStrikeTimeMillis
-    millisec += getUnusedStrikesNumber() * getStrikeIntervalMillisec()
+    local millisec = this.nextStrikeTimeMillis
+    millisec += this.getUnusedStrikesNumber() * this.getStrikeIntervalMillisec()
     millisec -= ::ww_get_operation_time_millisec()
 
-    return max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
+    return max(ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }
 
   function getUnusedStrikesNumber()
   {
-    return hasStrike() ? getMaxStrikesPerAttack() - strikesDone - 1 : 0
+    return this.hasStrike() ? this.getMaxStrikesPerAttack() - this.strikesDone - 1 : 0
   }
 
   function hasStrike()
   {
-    return hasArtilleryStrike
+    return this.hasArtilleryStrike
   }
 
   function isStrikePreparing()
   {
-    return hasStrike() ? strikesDone == 0 : false
+    return this.hasStrike() ? this.strikesDone == 0 : false
   }
 
   function setArtilleryParams(params)
@@ -111,9 +118,9 @@ let time = require("%scripts/time.nut")
     if (!params)
       return
 
-    maxAmmoCount = ::getTblValue("maxAmmo", params, 0)
-    maxStrikesPerAttack = ::getTblValue("maxStrikesPerAttack", params, 0)
-    cooldownAfterMoveSec = ::getTblValue("cooldownAfterMoveSec", params, 0)
-    strikeIntervalSec = ::getTblValue("strikeIntervalSec", params, 0)
+    this.maxAmmoCount = getTblValue("maxAmmo", params, 0)
+    this.maxStrikesPerAttack = getTblValue("maxStrikesPerAttack", params, 0)
+    this.cooldownAfterMoveSec = getTblValue("cooldownAfterMoveSec", params, 0)
+    this.strikeIntervalSec = getTblValue("strikeIntervalSec", params, 0)
   }
 }

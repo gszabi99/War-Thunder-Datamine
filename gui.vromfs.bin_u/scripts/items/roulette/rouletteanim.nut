@@ -1,5 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let stdMath = require("%sqstd/math.nut")
+let { lerp, fabs } = require("%sqstd/math.nut")
 let cubicBezierSolver = require("%globalScripts/cubicBezierSolver.nut")
 
 let CHANCE_TO_STOP_ON_BORDER = 0.5
@@ -18,7 +24,7 @@ rouletteAnim.template <- {
   skipAnimTime = 0.5
 
   startAnim = @(obj, targetIdx) obj.setValue(::save_to_json(
-    { action = ANIM_ACTION.START, animId = id, targetIdx = targetIdx }))
+    { action = ANIM_ACTION.START, animId = this.id, targetIdx = targetIdx }))
   skipAnim  = @(obj) obj.setValue(::save_to_json(
     { action = ANIM_ACTION.SKIP }))
 
@@ -28,7 +34,7 @@ rouletteAnim.template <- {
     timeToStopSound = 0.5
     totalTime = 1.0
     isJustStarted = true
-    animFunc = @(time) 0
+    animFunc = @(_time) 0
   }
 
   calcAnimConfig = function(obj, params)
@@ -36,16 +42,16 @@ rouletteAnim.template <- {
     let targetIdx = params.targetIdx
     if (targetIdx < 0 || targetIdx >= obj.childrenCount())
       return null
-    let itemWidth = ::to_pixels("@itemWidth")
+    let itemWidth = to_pixels("@itemWidth")
     let targetWidth = obj.getChild(targetIdx).getSize()[0]
     let targetPos = (- obj.getChild(targetIdx).getPos()[0] - 0.5 * targetWidth
       + obj.getPos()[0] + 0.5 * obj.getParent().getSize()[0] / 2).tofloat()
-    return calcAnimConfigImpl(targetPos, targetWidth, itemWidth)
+    return this.calcAnimConfigImpl(targetPos, targetWidth, itemWidth)
   }
 
-  calcAnimConfigImpl = @(targetPos, targetWidth, itemWidth)
-    makeBhvAnimConfig().__update({
-      animFunc = @(time) targetPos
+  calcAnimConfigImpl = @(targetPos, _targetWidth, _itemWidth)
+    this.makeBhvAnimConfig().__update({
+      animFunc = @(_time) targetPos
     })
 
   calcSkipAnimConfig = function(curConfig)
@@ -58,11 +64,11 @@ rouletteAnim.template <- {
     if (fabs(pos2 - pos1) < 1)
       return null
 
-    let time = skipAnimTime
+    let time = this.skipAnimTime
     let a = (pos1 - pos2) / (2 * time * time)
     let b = - 2 * a * time
     let c = pos1
-    return makeBhvAnimConfig().__update({
+    return this.makeBhvAnimConfig().__update({
       isJustStarted = false
       timeToStopSound = 0.01
       totalTime = time
@@ -84,26 +90,25 @@ rouletteAnim.template <- {
   }
 }
 
-enums.addTypes(rouletteAnim,
-{
+enums.addTypes(rouletteAnim, {
   DEFAULT = {
     MIN_TIME = 5.75
     MAX_TIME = 6.75
     FINAL_ANIM_TIME = 0.5
 
-    function calcAnimConfigImpl(targetPos, targetWidth, itemWidth)
+    function calcAnimConfigImpl(targetPos, targetWidth, _itemWidth)
     {
-      let time1 = stdMath.lerp(0.0, 1.0, MIN_TIME, MAX_TIME, ::math.frnd())
-      let time2 = time1 + FINAL_ANIM_TIME
-      let pos1 = targetPos + getRandomEndDisplacement() * 0.5 * targetWidth
+      let time1 = lerp(0.0, 1.0, this.MIN_TIME, this.MAX_TIME, ::math.frnd())
+      let time2 = time1 + this.FINAL_ANIM_TIME
+      let pos1 = targetPos + this.getRandomEndDisplacement() * 0.5 * targetWidth
       let pos2 = targetPos
 
       let animFunc = (@(t) (t < time1) ? pos1 * cubicBezierSolver.solve(t / time1, 0.16, 0, 0.0, 1.0)
-        : (t < time2) ? pos1 + (pos2 - pos1) * cubicBezierSolver.solve((t - time1) / FINAL_ANIM_TIME, 0.55,0,0.32,1.42)
+        : (t < time2) ? pos1 + (pos2 - pos1) * cubicBezierSolver.solve((t - time1) / this.FINAL_ANIM_TIME, 0.55,0,0.32,1.42)
         : targetPos
       ).bindenv(this)
 
-      return makeBhvAnimConfig().__update({
+      return this.makeBhvAnimConfig().__update({
         timeToStopSound = time1
         totalTime = time2
         animFunc = animFunc
@@ -120,7 +125,7 @@ enums.addTypes(rouletteAnim,
     MIN_ITEMS_SLOW_SPEED = 3
     MAX_ITEMS_SLOW_SPEED = 7
 
-    getTimeAtSlowSpeed = @(itemsAmount) 2.0 * SLOW_SPEED * itemsAmount
+    getTimeAtSlowSpeed = @(itemsAmount) 2.0 * this.SLOW_SPEED * itemsAmount
 
     function calcAnimConfigImpl(targetPos, targetWidth, itemWidth)
     {
@@ -130,16 +135,16 @@ enums.addTypes(rouletteAnim,
       //from t3 to t4: s = a4 * t * t + b4 * t + c4   //fallback to current item center
 
       //initialize known constants
-      let v2 = - SLOW_SPEED.tofloat() * itemWidth
-      let t1 = TIME_TO_MAX_SPEED.tofloat()
-      let t2 = TIME_TO_SLOW_SPEED.tofloat()
+      let v2 = - this.SLOW_SPEED.tofloat() * itemWidth
+      let t1 = this.TIME_TO_MAX_SPEED.tofloat()
+      let t2 = this.TIME_TO_SLOW_SPEED.tofloat()
 
       //calc distances (except first one which depend on many params
       //all distances are negative
       let s4 = targetPos
-      let displacement = getRandomEndDisplacement()
+      let displacement = this.getRandomEndDisplacement()
       let s3 = s4 + displacement * 0.5 * targetWidth
-      let slowSpeedItems = getItemsAmountWithSlowSpeed()
+      let slowSpeedItems = this.getItemsAmountWithSlowSpeed()
       let s2 = s3 + itemWidth * slowSpeedItems
       if (s4 >= 0 || s2 >= 0)
       {
@@ -157,15 +162,15 @@ enums.addTypes(rouletteAnim,
       let a1 = v1 / (2 * t1)
 
       //calc 3rd part params
-      let slowTime = getTimeAtSlowSpeed(slowSpeedItems)
+      let slowTime = this.getTimeAtSlowSpeed(slowSpeedItems)
       let t3 = t2 + slowTime
       let a3 = (s2 - s3) / (slowTime * slowTime)
       let b3 = - 2 * a3 * t3
       let c3 = s2 - a3 * t2 * t2 - b3 * t2
 
       //calc 4th part params
-      let t4 = t3 + TIME_TO_FINALIZE
-      let a4 = (s3 - s4) / (TIME_TO_FINALIZE * TIME_TO_FINALIZE)
+      let t4 = t3 + this.TIME_TO_FINALIZE
+      let a4 = (s3 - s4) / (this.TIME_TO_FINALIZE * this.TIME_TO_FINALIZE)
       let b4 = - 2 * a4 * t4
       let c4 = s4 - a4 * t4 * t4 - b4 * t4
 
@@ -175,7 +180,7 @@ enums.addTypes(rouletteAnim,
         : (t < t4) ? a4 * t * t + b4 * t + c4
         : s4
 
-      return makeBhvAnimConfig().__update({
+      return this.makeBhvAnimConfig().__update({
         timeToStopSound = t3
         totalTime = t4
         animFunc = animFunc
@@ -184,32 +189,30 @@ enums.addTypes(rouletteAnim,
 
     //return fractional amount of items required to move with the SLOW_SPEED.
     getItemsAmountWithSlowSpeed = @()
-      MIN_ITEMS_SLOW_SPEED.tofloat() + ::math.frnd() * (MAX_ITEMS_SLOW_SPEED - MIN_ITEMS_SLOW_SPEED)
+      this.MIN_ITEMS_SLOW_SPEED.tofloat() + ::math.frnd() * (this.MAX_ITEMS_SLOW_SPEED - this.MIN_ITEMS_SLOW_SPEED)
   }
 },
 null, "id")
 
-rouletteAnim.calcAnimConfig <- function(obj, value, curConfig)
-{
+rouletteAnim.calcAnimConfig <- function(obj, value, curConfig) {
   let params = ::parse_json(value)
   if (params?.action == null)
     return null
   if (params.action == ANIM_ACTION.SKIP)
     return curConfig ? curConfig.anim.calcSkipAnimConfig(curConfig) : null
-  if (params.action == ANIM_ACTION.START)
-  {
-    let anim = this?[params.animId] ?? DEFAULT
+  if (params.action == ANIM_ACTION.START) {
+    let anim = this?[params.animId] ?? this.DEFAULT
     return anim.calcAnimConfig(obj, params)
   }
   return null
 }
 
-rouletteAnim.getTimeLeft <- function(obj) //return time to finalize animation
-{
+rouletteAnim.getTimeLeft <- function(obj) {
+  //return time to finalize animation
   let config = obj.getUserData()
   return config ? config.totalTime - config.time : 0
 }
 
-rouletteAnim.get <- @(id) this?[id.toupper()] ?? DEFAULT
+rouletteAnim.get <- @(id) this?[id.toupper()] ?? this.DEFAULT
 
 return rouletteAnim

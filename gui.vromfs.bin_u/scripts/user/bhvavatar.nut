@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let string = require("%sqstd/string.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -5,13 +10,13 @@ let u = require("%sqStdLibs/helpers/u.nut")
 const SHARPEN_SMALL_ICONS = 1.25
 const MAX_SMALL_ICON_SIZE_MUL = 8
 
-local intIconToString = @(id) ""
+local intIconToString = @(_id) ""
 local getIconPath = @(icon) icon
 local getConfig = @() null
 
 let class BhvAvatar
 {
-  eventMask    = ::EV_ON_CMD
+  eventMask    = EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
   isFullPID    = ::dagui_propid.add_name_id("isFull")
 
@@ -21,7 +26,7 @@ let class BhvAvatar
     if (obj?.value)
       this.setStringValue(obj, this.validateStrValue(obj.value))
     this.updateView(obj)
-    return ::RETCODE_NOTHING
+    return RETCODE_NOTHING
   }
 
   function validateStrValue(strValue)

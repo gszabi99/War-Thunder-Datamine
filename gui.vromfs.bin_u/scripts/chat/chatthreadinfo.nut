@@ -1,7 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
+let { get_time_msec } = require("dagor.time")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
@@ -27,38 +34,38 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   constructor(threadRoomId, dataBlk = null) //dataBlk from chat response
   {
-    roomId = threadRoomId
-    isValid = roomId.len() > 0
-    ::dagor.assertf(::g_chat_room_type.THREAD.checkRoomId(roomId), "Chat thread created with not thread id = " + roomId)
-    langs = []
+    this.roomId = threadRoomId
+    this.isValid = this.roomId.len() > 0
+    assert(::g_chat_room_type.THREAD.checkRoomId(this.roomId), "Chat thread created with not thread id = " + this.roomId)
+    this.langs = []
 
-    updateInfo(dataBlk)
+    this.updateInfo(dataBlk)
   }
 
   function markUpdated()
   {
-    lastUpdateTime = ::dagor.getCurTime()
+    this.lastUpdateTime = get_time_msec()
   }
 
   function invalidate()
   {
-    isValid = false
+    this.isValid = false
   }
 
   function isOutdated()
   {
-    return lastUpdateTime + ::g_chat.THREADS_INFO_TIMEOUT_MSEC < ::dagor.getCurTime()
+    return this.lastUpdateTime + ::g_chat.THREADS_INFO_TIMEOUT_MSEC < get_time_msec()
   }
 
   function checkRefreshThread()
   {
-    if (!isValid
+    if (!this.isValid
         || !::g_chat.checkChatConnected()
-        || lastUpdateTime + ::g_chat.THREAD_INFO_REFRESH_DELAY_MSEC > ::dagor.getCurTime()
+        || this.lastUpdateTime + ::g_chat.THREAD_INFO_REFRESH_DELAY_MSEC > get_time_msec()
        )
       return
 
-    ::gchat_raw_command("xtmeta " + roomId)
+    ::gchat_raw_command("xtmeta " + this.roomId)
   }
 
   function updateInfo(dataBlk)
@@ -66,16 +73,16 @@ const MAX_THREAD_LANG_VISIBLE = 3
     if (!dataBlk)
       return
 
-    title = ::g_chat.restoreReceivedThreadTitle(dataBlk.topic) || title
-    if (title == "")
-      title = roomId
-    numPosts = dataBlk?.numposts ?? numPosts
+    this.title = ::g_chat.restoreReceivedThreadTitle(dataBlk.topic) || this.title
+    if (this.title == "")
+      this.title = this.roomId
+    this.numPosts = dataBlk?.numposts ?? this.numPosts
 
-    updateInfoTags(::u.isString(dataBlk?.tags) ? split_by_chars(dataBlk.tags, ",") : [])
-    if (ownerNick.len() && ownerUid.len())
-      ::getContact(ownerUid, ownerNick, ownerClanTag)
+    this.updateInfoTags(::u.isString(dataBlk?.tags) ? split_by_chars(dataBlk.tags, ",") : [])
+    if (this.ownerNick.len() && this.ownerUid.len())
+      ::getContact(this.ownerUid, this.ownerNick, this.ownerClanTag)
 
-    markUpdated()
+    this.markUpdated()
   }
 
   function updateInfoTags(tagsList)
@@ -98,8 +105,8 @@ const MAX_THREAD_LANG_VISIBLE = 3
       if (!found)
         tagType.updateThreadWhenNoTag(this)
     }
-    customTags = tagsList
-    sortLangList()
+    this.customTags = tagsList
+    this.sortLangList()
   }
 
   function getFullTagsString()
@@ -114,81 +121,81 @@ const MAX_THREAD_LANG_VISIBLE = 3
       if (str.len())
         resArray.append(str)
     }
-    resArray.extend(customTags)
+    resArray.extend(this.customTags)
     return ::g_string.implode(resArray, ",")
   }
 
   function sortLangList()
   {
     //usually only one lang in thread, but moderators can set some threads to multilang
-    if (langs.len() < 2)
+    if (this.langs.len() < 2)
       return
 
-    let unsortedLangs = clone langs
-    langs.clear()
+    let unsortedLangs = clone this.langs
+    this.langs.clear()
     foreach(langInfo in ::g_language.getGameLocalizationInfo())
     {
       let idx = unsortedLangs.indexof(langInfo.chatId)
       if (idx != null)
-        langs.append(unsortedLangs.remove(idx))
+        this.langs.append(unsortedLangs.remove(idx))
     }
-    langs.extend(unsortedLangs) //unknown langs at the end
+    this.langs.extend(unsortedLangs) //unknown langs at the end
   }
 
   function isMyThread()
   {
-    return ownerUid == "" || ownerUid == ::my_user_id_str
+    return this.ownerUid == "" || this.ownerUid == ::my_user_id_str
   }
 
   function getTitle()
   {
-    return ::g_chat.filterMessageText(title, isMyThread())
+    return ::g_chat.filterMessageText(this.title, this.isMyThread())
   }
 
   function getOwnerText(isColored = true, defaultColor = "")
   {
-    if (!ownerNick.len())
-      return ownerUid
+    if (!this.ownerNick.len())
+      return this.ownerUid
 
-    local res = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(ownerNick), ownerClanTag)
+    local res = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(this.ownerNick), this.ownerClanTag)
     if (isColored)
-      res = ::colorize(::g_chat.getSenderColor(ownerNick, false, false, defaultColor), res)
+      res = colorize(::g_chat.getSenderColor(this.ownerNick, false, false, defaultColor), res)
     return res
   }
 
   function getRoomTooltipText()
   {
-    local res = getOwnerText(true, "userlogColoredText")
-    res += "\n" + ::loc("chat/thread/participants") + ::loc("ui/colon")
-           + ::colorize("activeTextColor", membersAmount)
-    res += "\n\n" + getTitle()
+    local res = this.getOwnerText(true, "userlogColoredText")
+    res += "\n" + loc("chat/thread/participants") + loc("ui/colon")
+           + colorize("activeTextColor", this.membersAmount)
+    res += "\n\n" + this.getTitle()
     return res
   }
 
   function isJoined()
   {
-    return ::g_chat.isRoomJoined(roomId)
+    return ::g_chat.isRoomJoined(this.roomId)
   }
 
   function join()
   {
-    ::g_chat.joinThread(roomId)
+    ::g_chat.joinThread(this.roomId)
   }
 
   function showOwnerMenu(position = null)
   {
-    let contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
-    ::g_chat.showPlayerRClickMenu(ownerNick, roomId, contact, position)
+    let contact = ::getContact(this.ownerUid, this.ownerNick, this.ownerClanTag)
+    ::g_chat.showPlayerRClickMenu(this.ownerNick, this.roomId, contact, position)
   }
 
   function getJoinText()
   {
-    return isJoined() ? ::loc("chat/showThread") : ::loc("chat/joinThread")
+    return this.isJoined() ? loc("chat/showThread") : loc("chat/joinThread")
   }
 
   function getMembersAmountText()
   {
-    return ::loc("chat/thread/participants") + ::loc("ui/colon") + membersAmount
+    return loc("chat/thread/participants") + loc("ui/colon") + this.membersAmount
   }
 
   function showThreadMenu(position = null)
@@ -196,18 +203,18 @@ const MAX_THREAD_LANG_VISIBLE = 3
     let thread = this
     let menu = [
       {
-        text = getJoinText()
+        text = this.getJoinText()
         action = (@(thread) function() {
           thread.join()
         })(thread)
       }
     ]
 
-    let contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
+    let contact = ::getContact(this.ownerUid, this.ownerNick, this.ownerClanTag)
     playerContextMenu.showMenu(contact, ::g_chat, {
       position = position
-      roomId = roomId
-      playerName = ownerNick
+      roomId = this.roomId
+      playerName = this.ownerNick
       extendButtons = menu
     })
   }
@@ -220,25 +227,25 @@ const MAX_THREAD_LANG_VISIBLE = 3
   function setObjValueById(objNest, id, value)
   {
     let obj = objNest.findObject(id)
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj.setValue(value)
   }
 
   function updateInfoObj(obj, updateActionBtn = false)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
-    obj.active = isJoined() ? "yes" : "no"
+    obj.active = this.isJoined() ? "yes" : "no"
 
     if (updateActionBtn)
-      setObjValueById(obj, "action_btn", getJoinText())
+      this.setObjValueById(obj, "action_btn", this.getJoinText())
 
-    setObjValueById(obj, "ownerName_" + roomId, getOwnerText())
-    setObjValueById(obj, "thread_title", getTitle())
-    setObjValueById(obj, "thread_members", getMembersAmountText())
+    this.setObjValueById(obj, "ownerName_" + this.roomId, this.getOwnerText())
+    this.setObjValueById(obj, "thread_title", this.getTitle())
+    this.setObjValueById(obj, "thread_members", this.getMembersAmountText())
     if (::g_chat.canChooseThreadsLang())
-      fillLangIconsRow(obj)
+      this.fillLangIconsRow(obj)
   }
 
   function needShowLang()
@@ -250,14 +257,14 @@ const MAX_THREAD_LANG_VISIBLE = 3
   {
     let res = []
     local langInfo = {}
-    if (langs.len() > MAX_THREAD_LANG_VISIBLE)
+    if (this.langs.len() > MAX_THREAD_LANG_VISIBLE)
     {
       langInfo = ::g_language.getEmptyLangInfo()
       langInfo.icon = ""
       res.append(langInfo)
     }
     else
-      foreach(langId in langs)
+      foreach(langId in this.langs)
       {
         langInfo = ::g_language.getLangInfoByChatId(langId)
         if (langInfo)
@@ -270,7 +277,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
   function fillLangIconsRow(obj)
   {
     let contentObject = obj.findObject("thread_lang")
-    let res = getLangsList()
+    let res = this.getLangsList()
     for(local i = 0; i < MAX_THREAD_LANG_VISIBLE; i++)
     {
       contentObject.getChild(i)["background-image"] = res[i].icon
@@ -279,10 +286,10 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   //It's like hidden, but must reveal when unhidden
   isConcealed = function() {
-    if (!isCrossNetworkMessageAllowed(ownerNick))
+    if (!isCrossNetworkMessageAllowed(this.ownerNick))
       return true
 
-    let contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
+    let contact = ::getContact(this.ownerUid, this.ownerNick, this.ownerClanTag)
     if (contact)
       return contact.isBlockedMe || contact.isInBlockGroup()
 

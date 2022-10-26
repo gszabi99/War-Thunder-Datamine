@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { isString, isArray, isTable, isFunction } = require("%sqStdLibs/helpers/u.nut")
@@ -15,6 +21,8 @@ let { getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
 let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers
 } = require("%scripts/unit/initUnitWeapons.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
+let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -33,7 +41,7 @@ local Unit = class
 
    expClass = unitClassType.UNKNOWN
    unitType = unitTypes.INVALID
-   esUnitType = ::ES_UNIT_TYPE_INVALID
+   esUnitType = ES_UNIT_TYPE_INVALID
    isPkgDev = false
 
    cost = 0
@@ -148,71 +156,71 @@ local Unit = class
 
   function initOnce()
   {
-    if (isInited)
+    if (this.isInited)
       return null
-    isInited = true
+    this.isInited = true
 
     let warpoints = ::get_warpoints_blk()
-    let uWpCost = getUnitWpCostBlk()
+    let uWpCost = this.getUnitWpCostBlk()
 
     let expClassStr = uWpCost?.unitClass
-    expClass = getUnitClassTypeByExpClass(expClassStr)
-    esUnitType = expClass.unitTypeCode
-    unitType = unitTypes.getByEsUnitType(esUnitType)
+    this.expClass = getUnitClassTypeByExpClass(expClassStr)
+    this.esUnitType = this.expClass.unitTypeCode
+    this.unitType = unitTypes.getByEsUnitType(this.esUnitType)
 
     foreach(p in unitIntParams)
       this[p] = uWpCost?[p] ?? 0
 
-    cost                      = uWpCost?.value || 0
-    freeRepairs               = uWpCost?.freeRepairs ?? warpoints?.freeRepairs ?? 0
-    expMul                    = uWpCost?.expMul ?? 1.0
-    shopCountry               = uWpCost?.country ?? ""
-    trainCost                 = uWpCost?.trainCost ?? warpoints?.trainCostByRank[$"rank{rank}"] ?? 0
-    gift                      = uWpCost?.gift
-    giftParam                 = uWpCost?.giftParam
-    event                     = uWpCost?.event
-    premPackAir               = uWpCost?.premPackAir ?? false
-    hasDepthCharge            = uWpCost?.hasDepthCharge ?? false
-    commonWeaponImage         = uWpCost?.commonWeaponImage ?? commonWeaponImage
-    customClassIco            = uWpCost?.customClassIco
-    customTooltipImage        = uWpCost?.customTooltipImage
-    isPkgDev                  = ::is_dev_version && (uWpCost?.pkgDev ?? false)
-    researchType              = uWpCost?.researchType
-    hideBrForVehicle          = tags.contains("hideBrForVehicle")
-    showShortestUnitInfo      = tags.contains("showShortestUnitInfo")
-    hasWeaponSlots            = uWpCost?.hasWeaponSlots ?? false
+    this.cost                      = uWpCost?.value || 0
+    this.freeRepairs               = uWpCost?.freeRepairs ?? warpoints?.freeRepairs ?? 0
+    this.expMul                    = uWpCost?.expMul ?? 1.0
+    this.shopCountry               = uWpCost?.country ?? ""
+    this.trainCost                 = uWpCost?.trainCost ?? warpoints?.trainCostByRank[$"rank{this.rank}"] ?? 0
+    this.gift                      = uWpCost?.gift
+    this.giftParam                 = uWpCost?.giftParam
+    this.event                     = uWpCost?.event
+    this.premPackAir               = uWpCost?.premPackAir ?? false
+    this.hasDepthCharge            = uWpCost?.hasDepthCharge ?? false
+    this.commonWeaponImage         = uWpCost?.commonWeaponImage ?? this.commonWeaponImage
+    this.customClassIco            = uWpCost?.customClassIco
+    this.customTooltipImage        = uWpCost?.customTooltipImage
+    this.isPkgDev                  = ::is_dev_version && (uWpCost?.pkgDev ?? false)
+    this.researchType              = uWpCost?.researchType
+    this.hideBrForVehicle          = this.tags.contains("hideBrForVehicle")
+    this.showShortestUnitInfo      = this.tags.contains("showShortestUnitInfo")
+    this.hasWeaponSlots            = uWpCost?.hasWeaponSlots ?? false
 
-    foreach (weapon in weapons)
+    foreach (weapon in this.weapons)
       weapon.type <- ::g_weaponry_types.WEAPON.type
 
     if (uWpCost?.weapons != null) {
-      if (hasWeaponSlots)
-        initUnitWeaponsContainers(weaponsContainers, uWpCost.weapons)
-      initUnitWeapons(this, weapons, uWpCost.weapons)
+      if (this.hasWeaponSlots)
+        initUnitWeaponsContainers(this.weaponsContainers, uWpCost.weapons)
+      initUnitWeapons(this, this.weapons, uWpCost.weapons)
       initWeaponryUpgrades(this, uWpCost)
     }
 
-    let errorsTextArray = initUnitModifications(modifications, uWpCost?.modifications, esUnitType)
+    let errorsTextArray = initUnitModifications(this.modifications, uWpCost?.modifications, this.esUnitType)
     if (uWpCost?.spare != null)
     {
-      spare = {
+      this.spare = {
         name = "spare"
         type = ::g_weaponry_types.SPARE.type
         cost = uWpCost?.spare.value || 0
-        image = ::get_weapon_image(esUnitType, ::get_modifications_blk()?.modifications.spare, uWpCost?.spare)
+        image = ::get_weapon_image(this.esUnitType, ::get_modifications_blk()?.modifications.spare, uWpCost?.spare)
       }
       if (uWpCost?.spare.costGold != null)
-        spare.costGold <- uWpCost.spare.costGold
+        this.spare.costGold <- uWpCost.spare.costGold
     }
 
     for(local i = 1; i <= MOD_TIERS_COUNT; i++)
-      needBuyToOpenNextInTier.append(uWpCost?[$"needBuyToOpenNextInTier{i}"] ?? 0)
+      this.needBuyToOpenNextInTier.append(uWpCost?[$"needBuyToOpenNextInTier{i}"] ?? 0)
 
-    customImage = uWpCost?.customImage ?? ::get_unit_preset_img(name)
-    if (!customImage && ::is_tencent_unit_image_reqired(this))
-      customImage = ::get_tomoe_unit_icon(name)
-    if (customImage && !::isInArray(customImage.slice(0, 1), ["#", "!"]))
-      customImage = ::get_unit_icon_by_unit(this, customImage)
+    this.customImage = uWpCost?.customImage ?? ::get_unit_preset_img(this.name)
+    if (!this.customImage && ::is_tencent_unit_image_reqired(this))
+      this.customImage = ::get_tomoe_unit_icon(this.name)
+    if (this.customImage && !isInArray(this.customImage.slice(0, 1), ["#", "!"]))
+      this.customImage = ::get_unit_icon_by_unit(this, this.customImage)
     shopSearchCore.cacheUnitSearchTokens(this)
 
     return errorsTextArray
@@ -228,113 +236,113 @@ local Unit = class
 
   function applyShopBlk(shopUnitBlk, prevShopUnitName, unitGroupName = null)
   {
-    isInShop = true
-    reqAir = prevShopUnitName
-    futureReqAir = shopUnitBlk?.futureReqAir
-    group = unitGroupName
+    this.isInShop = true
+    this.reqAir = prevShopUnitName
+    this.futureReqAir = shopUnitBlk?.futureReqAir
+    this.group = unitGroupName
     if ("fakeReqUnitType" in shopUnitBlk)
-      fakeReqUnits = shopUnitBlk % "fakeReqUnitType"
+      this.fakeReqUnits = shopUnitBlk % "fakeReqUnitType"
 
     let isVisibleUnbought = !shopUnitBlk?.showOnlyWhenBought
-      && hasPlatformFromBlkStr(shopUnitBlk, "showByPlatform", true)
-      && !hasPlatformFromBlkStr(shopUnitBlk, "hideByPlatform", false)
+      && this.hasPlatformFromBlkStr(shopUnitBlk, "showByPlatform", true)
+      && !this.hasPlatformFromBlkStr(shopUnitBlk, "hideByPlatform", false)
 
-    showOnlyWhenBought = !isVisibleUnbought
-    showOnlyWhenResearch = shopUnitBlk?.showOnlyWhenResearch ?? false
+    this.showOnlyWhenBought = !isVisibleUnbought
+    this.showOnlyWhenResearch = shopUnitBlk?.showOnlyWhenResearch ?? false
 
     if (isVisibleUnbought && isString(shopUnitBlk?.hideForLangs))
-      hideForLangs = split_by_chars(shopUnitBlk?.hideForLangs, "; ")
+      this.hideForLangs = split_by_chars(shopUnitBlk?.hideForLangs, "; ")
 
     foreach(key in ["reqFeature", "hideFeature", "showOnlyIfPlayerHasUnlock", "reqUnlock"])
       if ((shopUnitBlk?[key] ?? "") != "")
         this[key] = shopUnitBlk[key]
 
-    gift = shopUnitBlk?.gift //we already got it from wpCost. is we still need it here?
-    giftParam = shopUnitBlk?.giftParam
-    marketplaceItemdefId = shopUnitBlk?.marketplaceItemdefId
-    disableFlyout = shopUnitBlk?.disableFlyout ?? false
+    this.gift = shopUnitBlk?.gift //we already got it from wpCost. is we still need it here?
+    this.giftParam = shopUnitBlk?.giftParam
+    this.marketplaceItemdefId = shopUnitBlk?.marketplaceItemdefId
+    this.disableFlyout = shopUnitBlk?.disableFlyout ?? false
   }
 
-  isAir                 = @() esUnitType == ::ES_UNIT_TYPE_AIRCRAFT
-  isTank                = @() esUnitType == ::ES_UNIT_TYPE_TANK
-  isShip                = @() esUnitType == ::ES_UNIT_TYPE_SHIP
-  isBoat                = @() esUnitType == ::ES_UNIT_TYPE_BOAT
-  isShipOrBoat          = @() esUnitType == ::ES_UNIT_TYPE_SHIP || esUnitType == ::ES_UNIT_TYPE_BOAT
-  isSubmarine           = @() esUnitType == ::ES_UNIT_TYPE_SHIP && tags.indexof("submarine") != null
-  isHelicopter          = @() esUnitType == ::ES_UNIT_TYPE_HELICOPTER
+  isAir                 = @() this.esUnitType == ES_UNIT_TYPE_AIRCRAFT
+  isTank                = @() this.esUnitType == ES_UNIT_TYPE_TANK
+  isShip                = @() this.esUnitType == ES_UNIT_TYPE_SHIP
+  isBoat                = @() this.esUnitType == ES_UNIT_TYPE_BOAT
+  isShipOrBoat          = @() this.esUnitType == ES_UNIT_TYPE_SHIP || this.esUnitType == ES_UNIT_TYPE_BOAT
+  isSubmarine           = @() this.esUnitType == ES_UNIT_TYPE_SHIP && this.tags.indexof("submarine") != null
+  isHelicopter          = @() this.esUnitType == ES_UNIT_TYPE_HELICOPTER
   //
 
 
 
-  getUnitWpCostBlk      = @() ::get_wpcost_blk()?[name]
-  isBought              = @() ::shop_is_aircraft_purchased(name)
-  isUsable              = @() ::shop_is_player_has_unit(name)
-  isRented              = @() ::shop_is_unit_rented(name)
+  getUnitWpCostBlk      = @() ::get_wpcost_blk()?[this.name]
+  isBought              = @() ::shop_is_aircraft_purchased(this.name)
+  isUsable              = @() ::shop_is_player_has_unit(this.name)
+  isRented              = @() ::shop_is_unit_rented(this.name)
   isBroken              = @() ::isUnitBroken(this)
   isResearched          = @() ::isUnitResearched(this)
   isInResearch          = @() ::isUnitInResearch(this)
-  getRentTimeleft       = @() ::rented_units_get_expired_time_sec(name)
-  getRepairCost         = @() ::Cost(::wp_get_repair_cost(name))
-  getCrewTotalCount     = @() getUnitWpCostBlk()?.crewTotalCount || 1
-  getCrewUnitType       = @() unitType.crewUnitType
+  getRentTimeleft       = @() ::rented_units_get_expired_time_sec(this.name)
+  getRepairCost         = @() ::Cost(::wp_get_repair_cost(this.name))
+  getCrewTotalCount     = @() this.getUnitWpCostBlk()?.crewTotalCount || 1
+  getCrewUnitType       = @() this.unitType.crewUnitType
   getExp                = @() ::getUnitExp(this)
 
   _endRecentlyReleasedTime = null
   function getEndRecentlyReleasedTime() {
-    if (_endRecentlyReleasedTime != null)
-      return _endRecentlyReleasedTime
+    if (this._endRecentlyReleasedTime != null)
+      return this._endRecentlyReleasedTime
 
-    _endRecentlyReleasedTime = -1
-    let releaseDate = ::get_unittags_blk()?[name].releaseDate
+    this._endRecentlyReleasedTime = -1
+    let releaseDate = ::get_unittags_blk()?[this.name].releaseDate
     if (releaseDate == null)
-      return _endRecentlyReleasedTime
+      return this._endRecentlyReleasedTime
 
     let recentlyReleasedUnitsDays = GUI.get()?.markRecentlyReleasedUnitsDays ?? 0
     if (recentlyReleasedUnitsDays == 0)
-      return _endRecentlyReleasedTime
+      return this._endRecentlyReleasedTime
 
-    _endRecentlyReleasedTime = time.getTimestampFromStringUtc(releaseDate)
+    this._endRecentlyReleasedTime = time.getTimestampFromStringUtc(releaseDate)
       + time.daysToSeconds(recentlyReleasedUnitsDays)
-    return _endRecentlyReleasedTime
+    return this._endRecentlyReleasedTime
   }
 
   _isRecentlyReleased = null
   function isRecentlyReleased()
   {
-    if (_isRecentlyReleased != null)
-      return _isRecentlyReleased
+    if (this._isRecentlyReleased != null)
+      return this._isRecentlyReleased
 
-    _isRecentlyReleased = getEndRecentlyReleasedTime() > ::get_charserver_time_sec()
-    return _isRecentlyReleased
+    this._isRecentlyReleased = this.getEndRecentlyReleasedTime() > ::get_charserver_time_sec()
+    return this._isRecentlyReleased
   }
 
   _operatorCountry = null
   function getOperatorCountry()
   {
-    if (_operatorCountry)
-      return _operatorCountry
-    local res = ::get_unittags_blk()?[name].operatorCountry ?? ""
-    _operatorCountry = res != "" && ::get_country_icon(res) != "" ? res : shopCountry
-    return _operatorCountry
+    if (this._operatorCountry)
+      return this._operatorCountry
+    local res = ::get_unittags_blk()?[this.name].operatorCountry ?? ""
+    this._operatorCountry = res != "" && ::get_country_icon(res) != "" ? res : this.shopCountry
+    return this._operatorCountry
   }
 
   function getEconomicRank(ediff)
   {
-    return ::get_unit_blk_economic_rank_by_mode(getUnitWpCostBlk(), ediff)
+    return ::get_unit_blk_economic_rank_by_mode(this.getUnitWpCostBlk(), ediff)
   }
 
   function getBattleRating(ediff)
   {
     if (!::CAN_USE_EDIFF)
       ediff = ediff % EDIFF_SHIFT
-    let mrank = getEconomicRank(ediff)
+    let mrank = this.getEconomicRank(ediff)
     return ::calc_battle_rating_from_rank(mrank)
   }
 
   function getWpRewardMulList(difficulty = ::g_difficulty.ARCADE)
   {
     let warpoints = ::get_warpoints_blk()
-    let uWpCost = getUnitWpCostBlk()
+    let uWpCost = this.getUnitWpCostBlk()
     let mode = difficulty.getEgdName()
 
     let isSpecial = ::isUnitSpecial(this)
@@ -352,36 +360,38 @@ local Unit = class
 
   function _tostring()
   {
-    return "Unit( " + name + " )"
+    return "Unit( " + this.name + " )"
   }
 
   function canAssignToCrew(country)
   {
-    return ::getUnitCountry(this) == country && canUseByPlayer()
+    return ::getUnitCountry(this) == country && this.canUseByPlayer()
   }
 
   function canUseByPlayer()
   {
-    return isUsable() && isVisibleInShop() && unitType.isAvailable()
+    return this.isUsable() && this.isVisibleInShop() && this.unitType.isAvailable()
   }
 
   function isVisibleInShop()
   {
-    if (!isInShop || !unitType.isVisibleInShop())
+    if (!this.isInShop || !this.unitType.isVisibleInShop())
       return false
-    if (::is_debug_mode_enabled || isUsable())
+    if (::is_debug_mode_enabled || this.isUsable())
       return true
-    if (showOnlyWhenBought)
+    if (this.showOnlyWhenBought)
       return false
-    if (hideForLangs && hideForLangs.indexof(::g_language.getLanguageName()) != null)
+    if (this.hideForLangs && this.hideForLangs.indexof(::g_language.getLanguageName()) != null)
       return false
-    if (showOnlyIfPlayerHasUnlock && !::is_unlocked_scripted(-1, showOnlyIfPlayerHasUnlock))
+    if (this.showOnlyIfPlayerHasUnlock && !::is_unlocked_scripted(-1, this.showOnlyIfPlayerHasUnlock))
       return false
-    if (showOnlyWhenResearch && !isInResearch() && getExp() <= 0)
+    if (this.showOnlyWhenResearch && !this.isInResearch() && this.getExp() <= 0)
       return false
-    if (hideFeature != null && ::has_feature(hideFeature))
+    if (this.hideFeature != null && hasFeature(this.hideFeature))
       return false
     if (::isUnitGift(this) && !canSpendRealMoney())
+      return false
+    if(shopPromoteUnits.value?[this.name] != null && !promoteUnits.value?[this.name].isActive)
       return false
     return true
   }
@@ -392,47 +402,47 @@ local Unit = class
 
   function resetSkins()
   {
-    skins = []
-    skinsBlocks = {}
+    this.skins = []
+    this.skinsBlocks = {}
   }
 
   function getSkins()
   {
-    if (skins.len() == 0)
-      skins = ::get_skins_for_unit(name) //always returns at least one entry
-    return skins
+    if (this.skins.len() == 0)
+      this.skins = ::get_skins_for_unit(this.name) //always returns at least one entry
+    return this.skins
   }
 
   function getSkinBlockById(skinId)
   {
-    if (!skinsBlocks.len()) //Will be default skin at least.
-      foreach (skin in getSkins())
-        skinsBlocks[skin.name] <- skin
+    if (!this.skinsBlocks.len()) //Will be default skin at least.
+      foreach (skin in this.getSkins())
+        this.skinsBlocks[skin.name] <- skin
 
-    return skinsBlocks?[skinId]
+    return this.skinsBlocks?[skinId]
   }
 
   function getPreviewSkinId()
   {
-    if (!previewSkinId)
+    if (!this.previewSkinId)
     {
-      previewSkinId = ""
-      foreach (skin in getSkins())
-        if (::g_decorator.getDecorator(name + "/" + skin.name, ::g_decorator_type.SKINS)?.blk?.useByDefault)
-          previewSkinId = skin.name
+      this.previewSkinId = ""
+      foreach (skin in this.getSkins())
+        if (::g_decorator.getDecorator(this.name + "/" + skin.name, ::g_decorator_type.SKINS)?.blk?.useByDefault)
+          this.previewSkinId = skin.name
     }
-    return previewSkinId
+    return this.previewSkinId
   }
 
-  getSpawnScore = @(weaponName = null) ::shop_get_spawn_score(name, weaponName || getLastWeapon(name), [])
+  getSpawnScore = @(weaponName = null) ::shop_get_spawn_score(this.name, weaponName || getLastWeapon(this.name), [])
 
   function getMinimumSpawnScore()
   {
     local res = -1
-    foreach (weapon in getWeapons())
+    foreach (weapon in this.getWeapons())
       if (isWeaponVisible(this, weapon) && isWeaponEnabled(this, weapon))
       {
-        let spawnScore = getSpawnScore(weapon.name)
+        let spawnScore = this.getSpawnScore(weapon.name)
         if (res < 0 || res > spawnScore)
           res = spawnScore
       }
@@ -441,85 +451,85 @@ local Unit = class
 
   function invalidateModificators()
   {
-    if (modificatorsRequestTime > 0)
+    if (this.modificatorsRequestTime > 0)
     {
       ::remove_calculate_modification_effect_jobs()
-      modificatorsRequestTime = -1
+      this.modificatorsRequestTime = -1
     }
-    modificators = null
+    this.modificators = null
   }
 
   function canPreview()
   {
-    return isInShop
+    return this.isInShop
   }
 
   function doPreview()
   {
-    if (canPreview())
-      contentPreview.showUnitSkin(name)
+    if (this.canPreview())
+      contentPreview.showUnitSkin(this.name)
   }
 
-  isDepthChargeAvailable = @() hasDepthCharge || shop_is_modification_enabled(name, "ship_depth_charge")
+  isDepthChargeAvailable = @() this.hasDepthCharge || ::shop_is_modification_enabled(this.name, "ship_depth_charge")
 
   function getNVDSights(modName) {
-    if (!isTank())
+    if (!this.isTank())
       return []
 
-    initNVDSightsOnce()
-    return nvdSights?[modName] ?? []
+    this.initNVDSightsOnce()
+    return this.nvdSights?[modName] ?? []
   }
 
   function initNVDSightsOnce() {
-    if (nvdSights)
+    if (this.nvdSights)
       return
 
-    nvdSights = {}
-    eachBlock(::get_full_unit_blk(name)?.modifications, function(mode, modeName) {
-      nvdSights[modeName] <- []
-      eachBlock(mode?.effects.nightVision, @(_, name) nvdSights[modeName].append(name), this)
+    this.nvdSights = {}
+    eachBlock(::get_full_unit_blk(this.name)?.modifications, function(mode, modeName) {
+      this.nvdSights[modeName] <- []
+      eachBlock(mode?.effects.nightVision, @(_, name) this.nvdSights[modeName].append(name), this)
     }, this)
   }
 
   function getDefaultWeapon() {
-    if (defaultWeaponPreset)
-      return defaultWeaponPreset
+    if (this.defaultWeaponPreset)
+      return this.defaultWeaponPreset
 
-    let unitBlk = ::get_full_unit_blk(name)
+    let unitBlk = ::get_full_unit_blk(this.name)
     if (!unitBlk)
       return null
 
-    defaultWeaponPreset = getDefaultPresetId(unitBlk)
-    return defaultWeaponPreset
+    this.defaultWeaponPreset = getDefaultPresetId(unitBlk)
+    return this.defaultWeaponPreset
   }
 
   function getEntitlements()
   {
-    if (gift == null)
+    if (this.gift == null)
       return []
 
-    return ::OnlineShopModel.searchEntitlementsByUnit(name)
+    return ::OnlineShopModel.searchEntitlementsByUnit(this.name)
   }
 
   function getUnlockImage()
   {
-    if (isAir())
+    if (this.isAir())
       return "#ui/gameuiskin#blueprint_items_aircraft.png"
-    if (isTank())
+    if (this.isTank())
       return "#ui/gameuiskin#blueprint_items_tank.png"
-    if (isShipOrBoat())
+    if (this.isShipOrBoat())
       return "#ui/gameuiskin#blueprint_items_ship.png"
 
     return "#ui/gameuiskin#blueprint_items_aircraft.png"
   }
 
-  isSquadronVehicle       = @() researchType == "clanVehicle"
-  getOpenCost             = @() ::Cost(0, ::clan_get_unit_open_cost_gold(name))
+  isSquadronVehicle       = @() this.researchType == "clanVehicle"
+  getOpenCost             = @() ::Cost(0, ::clan_get_unit_open_cost_gold(this.name))
   getWeapons = function() {
-    if (!hasWeaponSlots || !::has_feature("WeaponryCustomPresets"))
-      return weapons
+    if (!this.hasWeaponSlots || !hasFeature("WeaponryCustomPresets"))
+      return this.weapons
 
-    return [].extend(weapons, getWeaponryCustomPresets(this))
+    return [].extend(this.weapons, getWeaponryCustomPresets(this))
   }
 }
 

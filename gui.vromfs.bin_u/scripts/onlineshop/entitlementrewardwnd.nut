@@ -1,5 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
 {
@@ -10,28 +17,28 @@ let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineS
   chestDefaultImg = "every_day_award_trophy_big"
 
   prepareParams = @() null
-  getTitle = @() getEntitlementName(entitlementConfig)
+  getTitle = @() getEntitlementName(this.entitlementConfig)
   isRouletteStarted = @() false
 
   viewParams = null
 
   function openChest() {
-    if (opened)
+    if (this.opened)
       return false
 
-    opened = true
-    updateWnd()
+    this.opened = true
+    this.updateWnd()
     return true
   }
 
   function checkConfigsArray() {
-    let unitNames = entitlementConfig?.aircraftGift ?? []
+    let unitNames = this.entitlementConfig?.aircraftGift ?? []
     if (unitNames.len())
-      unit = ::getAircraftByName(unitNames[0])
+      this.unit = ::getAircraftByName(unitNames[0])
 
-    let decalsNames = entitlementConfig?.decalGift ?? []
-    let attachablesNames = entitlementConfig?.attachableGift ?? []
-    let skinsNames = entitlementConfig?.skinGift ?? []
+    let decalsNames = this.entitlementConfig?.decalGift ?? []
+    let attachablesNames = this.entitlementConfig?.attachableGift ?? []
+    let skinsNames = this.entitlementConfig?.skinGift ?? []
     local resourceType = ""
     local resource = ""
     if (decalsNames.len())
@@ -51,34 +58,34 @@ let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineS
     }
 
     if (resource != "")
-      updateResourceData(resource, resourceType)
+      this.updateResourceData(resource, resourceType)
   }
 
   function getIconData() {
-    if (!opened)
+    if (!this.opened)
       return ""
 
     return "{0}{1}".subst(
-      ::LayersIcon.getIconData($"{chestDefaultImg}_opened"),
-      getEntitlementLayerIcons(entitlementConfig)
+      ::LayersIcon.getIconData($"{this.chestDefaultImg}_opened"),
+      getEntitlementLayerIcons(this.entitlementConfig)
     )
   }
 
   function updateRewardText() {
-    if (!opened)
+    if (!this.opened)
       return
 
-    let obj = scene.findObject("prize_desc_div")
-    if (!::checkObj(obj))
+    let obj = this.scene.findObject("prize_desc_div")
+    if (!checkObj(obj))
       return
 
-    let data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__merge({
-      header = ::loc("mainmenu/you_received")
+    let data = getEntitlementView(this.entitlementConfig, (this.viewParams ?? {}).__merge({
+      header = loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
     }))
 
-    guiScene.replaceContentFromText(obj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
   checkSkipAnim = @() false
@@ -92,7 +99,7 @@ return {
     let config = getEntitlementConfig(entitlementId)
     if (!config)
     {
-      ::dagor.logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
+      logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
       return
     }
 

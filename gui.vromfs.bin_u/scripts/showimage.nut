@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
@@ -27,51 +35,51 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
   function initScreen()
   {
-    if (!::checkObj(showObj))
-      return goBack()
+    if (!checkObj(this.showObj))
+      return this.goBack()
 
-    let image = showObj?["background-image"]
-    maxSize = [
-      ::g_dagui_utils.toPixels(guiScene, showObj?["max-width"]  ?? "@rw", showObj),
-      ::g_dagui_utils.toPixels(guiScene, showObj?["max-height"] ?? "@rh", showObj)
+    let image = this.showObj?["background-image"]
+    this.maxSize = [
+      ::g_dagui_utils.toPixels(this.guiScene, this.showObj?["max-width"]  ?? "@rw", this.showObj),
+      ::g_dagui_utils.toPixels(this.guiScene, this.showObj?["max-height"] ?? "@rh", this.showObj)
     ]
 
-    if (!image || image=="" || !maxSize[0] || !maxSize[1])
-      return goBack()
+    if (!image || image=="" || !this.maxSize[0] || !this.maxSize[1])
+      return this.goBack()
 
-    scene.findObject("image_update").setUserData(this)
+    this.scene.findObject("image_update").setUserData(this)
 
-    baseSize = showObj.getSize()
-    basePos = showObj.getPosRC()
-    let rootSize = guiScene.getRoot().getSize()
-    basePos = [basePos[0] + baseSize[0]/2, basePos[1] + baseSize[1]/2]
-    lastPos = [rootSize[0]/2, rootSize[1]/2]
+    this.baseSize = this.showObj.getSize()
+    this.basePos = this.showObj.getPosRC()
+    let rootSize = this.guiScene.getRoot().getSize()
+    this.basePos = [this.basePos[0] + this.baseSize[0]/2, this.basePos[1] + this.baseSize[1]/2]
+    this.lastPos = [rootSize[0]/2, rootSize[1]/2]
 
     local sizeKoef = 1.0
-    if (maxSize[0] > 0.9*rootSize[0])
-      sizeKoef = 0.9*rootSize[0] / maxSize[0]
-    if (maxSize[1] > 0.9*rootSize[1])
+    if (this.maxSize[0] > 0.9*rootSize[0])
+      sizeKoef = 0.9*rootSize[0] / this.maxSize[0]
+    if (this.maxSize[1] > 0.9*rootSize[1])
     {
-      let koef2 = 0.9*rootSize[1] / maxSize[1]
+      let koef2 = 0.9*rootSize[1] / this.maxSize[1]
       if (koef2 < sizeKoef)
         sizeKoef = koef2
     }
     if (sizeKoef < 1.0)
     {
-      maxSize[0] = (maxSize[0] * sizeKoef).tointeger()
-      maxSize[1] = (maxSize[1] * sizeKoef).tointeger()
+      this.maxSize[0] = (this.maxSize[0] * sizeKoef).tointeger()
+      this.maxSize[1] = (this.maxSize[1] * sizeKoef).tointeger()
     }
 
-    imgObj = scene.findObject("image")
-    imgObj["max-width"] = maxSize[0].tostring()
-    imgObj["max-height"] = maxSize[1].tostring()
-    imgObj["background-image"] = image
-    imgObj["background-svg-size"] = format("%d, %d", maxSize[0], maxSize[1])
-    imgObj["background-repeat"] = showObj?["background-repeat"] ?? "aspect-ratio"
+    this.imgObj = this.scene.findObject("image")
+    this.imgObj["max-width"] = this.maxSize[0].tostring()
+    this.imgObj["max-height"] = this.maxSize[1].tostring()
+    this.imgObj["background-image"] = image
+    this.imgObj["background-svg-size"] = format("%d, %d", this.maxSize[0], this.maxSize[1])
+    this.imgObj["background-repeat"] = this.showObj?["background-repeat"] ?? "aspect-ratio"
 
-    frameObj = scene.findObject("imgFrame")
-    shadeObj = scene.findObject("root-box")
-    onUpdate(null, 0.0)
+    this.frameObj = this.scene.findObject("imgFrame")
+    this.shadeObj = this.scene.findObject("root-box")
+    this.onUpdate(null, 0.0)
   }
 
   function countProp(baseVal, maxVal, t)
@@ -81,40 +89,40 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     return (baseVal+ div).tointeger().tostring()
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
-    if (frameObj && frameObj.isValid()
-        && ((!moveBack && timer < resizeTime) || (moveBack && timer > 0)))
+    if (this.frameObj && this.frameObj.isValid()
+        && ((!this.moveBack && this.timer < this.resizeTime) || (this.moveBack && this.timer > 0)))
     {
-      timer += moveBack? -dt : dt
-      local t = timer / resizeTime
+      this.timer += this.moveBack? -dt : dt
+      local t = this.timer / this.resizeTime
       if (t >= 1.0)
       {
         t = 1.0
-        timer = resizeTime
-        scene.findObject("btn_back").show(true)
+        this.timer = this.resizeTime
+        this.scene.findObject("btn_back").show(true)
       }
-      if (moveBack && t <= 0.0)
+      if (this.moveBack && t <= 0.0)
       {
         t = 0.0
-        timer = 0.0
-        goBack() //performDelayed inside
+        this.timer = 0.0
+        this.goBack() //performDelayed inside
       }
 
-      imgObj.width = countProp(baseSize[0], maxSize[0], t)
-      imgObj.height = countProp(baseSize[1], maxSize[1], t)
-      frameObj.left = countProp(basePos[0], lastPos[0], t) + "-50%w"
-      frameObj.top = countProp(basePos[1], lastPos[1], t) + "-50%h"
-      shadeObj["transparent"] = (100 * t).tointeger().tostring()
+      this.imgObj.width = this.countProp(this.baseSize[0], this.maxSize[0], t)
+      this.imgObj.height = this.countProp(this.baseSize[1], this.maxSize[1], t)
+      this.frameObj.left = this.countProp(this.basePos[0], this.lastPos[0], t) + "-50%w"
+      this.frameObj.top = this.countProp(this.basePos[1], this.lastPos[1], t) + "-50%h"
+      this.shadeObj["transparent"] = (100 * t).tointeger().tostring()
     }
   }
 
   function onBack()
   {
-    if (!moveBack)
+    if (!this.moveBack)
     {
-      moveBack = true
-      scene.findObject("btn_back").show(false)
+      this.moveBack = true
+      this.scene.findObject("btn_back").show(false)
     }
   }
 }
@@ -149,9 +157,9 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
   function initScreen()
   {
-    let rootObj = scene.findObject("root-box")
-    if (!::checkObj(rootObj))
-      return goBack()
+    let rootObj = this.scene.findObject("root-box")
+    if (!checkObj(rootObj))
+      return this.goBack()
 
     rootObj["transparent"] = "100"
 
@@ -159,33 +167,33 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     frameObj.pos = "50%pw-50%w, 45%ph-50%h"
 
     let imgObj = frameObj.findObject("image")
-    if (!::checkObj(imgObj))
-      return goBack()
+    if (!checkObj(imgObj))
+      return this.goBack()
 
-    if (!maxSize)
-      maxSize = [ ::g_dagui_utils.toPixels(guiScene, "@rw"), ::g_dagui_utils.toPixels(guiScene, "@rh") ]
-    else if (::u.isInteger(maxSize))
-      maxSize = [ maxSize, maxSize ]
+    if (!this.maxSize)
+      this.maxSize = [ ::g_dagui_utils.toPixels(this.guiScene, "@rw"), ::g_dagui_utils.toPixels(this.guiScene, "@rh") ]
+    else if (::u.isInteger(this.maxSize))
+      this.maxSize = [ this.maxSize, this.maxSize ]
 
     let height = ::screen_height() / 1.5
-    local size = [ ratio * height, height ]
+    local size = [ this.ratio * height, height ]
 
-    if (size[0] > maxSize[0] || size[1] > maxSize[1])
+    if (size[0] > this.maxSize[0] || size[1] > this.maxSize[1])
     {
-      let maxSizeRatio = maxSize[0] * 1.0 / maxSize[1]
-      if (maxSizeRatio > ratio)
-        size = [ ratio * maxSize[1], maxSize[1] ]
+      let maxSizeRatio = this.maxSize[0] * 1.0 / this.maxSize[1]
+      if (maxSizeRatio > this.ratio)
+        size = [ this.ratio * this.maxSize[1], this.maxSize[1] ]
       else
-        size = [ maxSize[0], maxSize[0] / ratio ]
+        size = [ this.maxSize[0], this.maxSize[0] / this.ratio ]
     }
 
-    let isSvg = image.contains(".svg")
+    let isSvg = this.image.contains(".svg")
 
-    imgObj["background-image"] = image
+    imgObj["background-image"] = this.image
     imgObj.width  = format("%d", size[0])
     imgObj.height = format("%d", size[1])
     if (isSvg) {
-      let isForAtlas = image.contains("gameuiskin#")
+      let isForAtlas = this.image.contains("gameuiskin#")
       let texSize = isForAtlas
         ? size.map(@(d) min(d, MAX_TEXTURE_SIZE_IN_ATLAS))
         : size
@@ -193,17 +201,17 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     }
     imgObj["background-repeat"] = "aspect-ratio"
 
-    scene.findObject("btn_back").show(true)
+    this.scene.findObject("btn_back").show(true)
   }
 
   function reinitScreen(params = {})
   {
-    setParams(params)
-    initScreen()
+    this.setParams(params)
+    this.initScreen()
   }
 
   function onBack()
   {
-    goBack()
+    this.goBack()
   }
 }

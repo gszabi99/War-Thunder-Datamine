@@ -309,7 +309,7 @@
           "object": "flight_target01",
           "target": "spawn_area"
         },
-        "unitMoveTo": {
+        "__unitMoveTo": {
           "object_marking": 0,
           "target": "flight_point",
           "target_marking": 0,
@@ -378,7 +378,7 @@
           "object": "flight_target02",
           "target": "spawn_area02"
         },
-        "unitMoveTo": {
+        "__unitMoveTo": {
           "object_marking": 0,
           "target": "flight_point02",
           "target_marking": 0,
@@ -399,6 +399,48 @@
         },
         "triggerEnable": {
           "target": "respawn_plane2"
+        }
+      },
+      "else_actions": {}
+    },
+    "spawn_plane3": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "flight_target03",
+            "type": "unit"
+          },
+          {
+            "target": "spawn_area03",
+            "type": "area"
+          }
+        ]
+      },
+      "actions": {
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "flight_target03",
+          "target": "spawn_area03"
+        },
+        "triggerEnable": {
+          "target": "respawn_plane3"
         }
       },
       "else_actions": {}
@@ -654,8 +696,16 @@
         }
       },
       "actions": {
-        "wait": {
-          "time": 10.0
+        "wait": [
+          {
+            "time": 15.0
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitPutToSleep": {
+          "target": "flight_target01"
         },
         "unitRespawn": {
           "delay": 1.0,
@@ -697,8 +747,16 @@
         }
       },
       "actions": {
-        "wait": {
-          "time": 10.0
+        "wait": [
+          {
+            "time": 15.0
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitPutToSleep": {
+          "target": "flight_target02"
         },
         "unitRespawn": {
           "delay": 1.0,
@@ -709,6 +767,57 @@
           ],
           "object": "flight_target02",
           "target": "spawn_area02"
+        }
+      },
+      "else_actions": {}
+    },
+    "respawn_plane3": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isInactive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "flight_target03"
+        }
+      },
+      "actions": {
+        "wait": [
+          {
+            "time": 15.0
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitPutToSleep": {
+          "target": "flight_target03"
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "flight_target03",
+          "target": "spawn_area03"
         }
       },
       "else_actions": {}
@@ -1270,7 +1379,7 @@
     "tanks_total": 0,
     "unit_var": 0,
     "target_tanks_squad": "",
-    "target_respawn_time": 20,
+    "target_respawn_time": 25,
     "atgm_timer": 0,
     "atgm_time": 3,
     "atgm_unit": "",

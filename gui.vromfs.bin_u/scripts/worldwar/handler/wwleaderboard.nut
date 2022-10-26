@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
 let time = require("%scripts/time.nut")
@@ -51,25 +59,25 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function initScreen()
   {
-    if (!lbModel)
+    if (!this.lbModel)
     {
-      lbModel = ::leaderboardModel
-      lbModel.reset()
+      this.lbModel = ::leaderboardModel
+      this.lbModel.reset()
     }
-    if (!lb_presets)
-      lb_presets = ::ww_leaderboards_list
+    if (!this.lb_presets)
+      this.lb_presets = ::ww_leaderboards_list
 
-    platformFilter = getSeparateLeaderboardPlatformName()
-    setRowsInPage()
-    ::add_big_query_record("ww_leaderboard.open", platformFilter)
+    this.platformFilter = getSeparateLeaderboardPlatformName()
+    this.setRowsInPage()
+    ::add_big_query_record("ww_leaderboard.open", this.platformFilter)
 
-    initTable()
-    fillMapsList()
-    initModes()
-    initTopItems()
-    updateButtons()
-    fetchRewardsData()
-    fetchRewardsTimeData()
+    this.initTable()
+    this.fillMapsList()
+    this.initModes()
+    this.initTopItems()
+    this.updateButtons()
+    this.fetchRewardsData()
+    this.fetchRewardsTimeData()
   }
 
   function fetchRewardsData()
@@ -77,16 +85,16 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     let requestBlk = ::DataBlock()
     requestBlk.configname = "ww_rewards"
     ::g_tasker.charRequestBlk("cmn_get_config_bin", requestBlk, null,
-      ::Callback(function(res) {
-        rewardsBlk = ::DataBlock()
+      Callback(function(res) {
+        this.rewardsBlk = ::DataBlock()
         let curCircuitRewardsBlk = res?.body?[::get_cur_circuit_name()]
         if (curCircuitRewardsBlk)
-          rewardsBlk.setFrom(curCircuitRewardsBlk)
-        updateButtons()
+          this.rewardsBlk.setFrom(curCircuitRewardsBlk)
+        this.updateButtons()
       }, this),
-      ::Callback(function(res) {
-        rewardsBlk = null
-        updateButtons()
+      Callback(function(_res) {
+        this.rewardsBlk = null
+        this.updateButtons()
       }, this))
   }
 
@@ -98,13 +106,13 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
       action = "GetTablesInfo"
     }
 
-    let callback = ::Callback(function(userstatTbl) {
-      rewardsTimeData = {}
+    let callback = Callback(function(userstatTbl) {
+      this.rewardsTimeData = {}
       foreach (key, val in (userstatTbl?.response ?? userstatTbl))
       {
         let rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
           val?.prevInterval?.end : val?.interval?.end
-        rewardsTimeData[key] <- rewardTimeStr ? time.getTimestampFromIso8601(rewardTimeStr) : 0
+        this.rewardsTimeData[key] <- rewardTimeStr ? time.getTimestampFromIso8601(rewardTimeStr) : 0
       }
     }, this)
 
@@ -113,178 +121,178 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function fillMapsList()
   {
-    wwMapsList = []
+    this.wwMapsList = []
     foreach (map in ::g_ww_global_status_type.MAPS.getList())
       if (map.isVisible())
-        wwMapsList.append(map)
+        this.wwMapsList.append(map)
   }
 
   function initModes()
   {
-    lbModeData = null
-    lbMode = null
-    lbModesList = []
+    this.lbModeData = null
+    this.lbMode = null
+    this.lbModesList = []
 
     let isAvailableWWSeparateLb = !getSeparateLeaderboardPlatformValue()
-     || ::has_feature("ConsoleSeparateWWLeaderboards")
+     || hasFeature("ConsoleSeparateWWLeaderboards")
 
     local data = ""
-    foreach(idx, modeData in wwLeaderboardData.modes)
+    foreach(_idx, modeData in wwLeaderboardData.modes)
     {
       if (!modeData?.isInLeaderboardModes ||
-        (modeData?.needFeature && !::has_feature(modeData.needFeature)))
+        (modeData?.needFeature && !hasFeature(modeData.needFeature)))
         continue
 
       if (!isAvailableWWSeparateLb && modeData?.needShowConsoleFilter == true)
         continue
 
-      lbModesList.append(modeData)
+      this.lbModesList.append(modeData)
       let optionText = ::g_string.stripTags(
-        ::loc($"worldwar/leaderboard/{modeData.mode}"))
+        loc($"worldwar/leaderboard/{modeData.mode}"))
       data += "option {text:t='{0}'}".subst(optionText)
     }
 
-    let curMod = beginningMode
-    let modeIdx = lbModesList.findindex(@(m) m.mode == curMod ) ?? 0
+    let curMod = this.beginningMode
+    let modeIdx = this.lbModesList.findindex(@(m) m.mode == curMod ) ?? 0
 
     let modesObj = this.showSceneBtn("modes_list", true)
-    guiScene.replaceContentFromText(modesObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(modeIdx)
   }
 
   function updateDaysComboBox(seasonDays)
   {
     let seasonDay = wwLeaderboardData.getSeasonDay(seasonDays)
-    lbDaysList = [null]
+    this.lbDaysList = [null]
     for (local i = 0; i < seasonDay; i++)
     {
       let dayNumber = seasonDay - i
-      if (::isInArray(wwLeaderboardData.getDayIdByNumber(dayNumber), seasonDays))
-        lbDaysList.append(dayNumber)
+      if (isInArray(wwLeaderboardData.getDayIdByNumber(dayNumber), seasonDays))
+        this.lbDaysList.append(dayNumber)
     }
 
     local data = ""
-    foreach(day in lbDaysList)
+    foreach(day in this.lbDaysList)
     {
       let optionText = ::g_string.stripTags(
-        day ? ::loc("enumerated_day", {number = day}) : ::loc("worldwar/allSeason"))
+        day ? loc("enumerated_day", {number = day}) : loc("worldwar/allSeason"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let daysObj = this.showSceneBtn("days_list", lbModeData.hasDaysData)
-    guiScene.replaceContentFromText(daysObj, data, data.len(), this)
+    let daysObj = this.showSceneBtn("days_list", this.lbModeData.hasDaysData)
+    this.guiScene.replaceContentFromText(daysObj, data, data.len(), this)
 
-    daysObj.setValue(needDayOpen && lbDaysList.len() > 1 ? 1 : 0)
+    daysObj.setValue(this.needDayOpen && this.lbDaysList.len() > 1 ? 1 : 0)
   }
 
   function updateMapsComboBox()
   {
-    lbMapsList = getWwMaps()
+    this.lbMapsList = this.getWwMaps()
 
     local data = ""
-    foreach(wwMap in lbMapsList)
+    foreach(wwMap in this.lbMapsList)
     {
       let optionText = ::g_string.stripTags(
-        wwMap ? wwMap.getNameTextByMapName(wwMap.getId()) : ::loc("worldwar/allMaps"))
+        wwMap ? wwMap.getNameTextByMapName(wwMap.getId()) : loc("worldwar/allMaps"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let mapsObj = this.showSceneBtn("maps_list", lbMapsList.len() > 1)
-    guiScene.replaceContentFromText(mapsObj, data, data.len(), this)
+    let mapsObj = this.showSceneBtn("maps_list", this.lbMapsList.len() > 1)
+    this.guiScene.replaceContentFromText(mapsObj, data, data.len(), this)
 
     local mapObjValue = 0
-    if (lbMap)
+    if (this.lbMap)
     {
-      let selectedMapId = lbMap.getId()
-      mapObjValue = lbMapsList.findindex(@(m) m && m.getId() == selectedMapId) ?? 0
+      let selectedMapId = this.lbMap.getId()
+      mapObjValue = this.lbMapsList.findindex(@(m) m && m.getId() == selectedMapId) ?? 0
     }
-    lbMap = null
+    this.lbMap = null
     mapsObj.setValue(mapObjValue)
   }
 
   function updateCountriesComboBox(filterMap = null)
   {
-    lbCountriesList = getWwCountries(filterMap)
+    this.lbCountriesList = this.getWwCountries(filterMap)
 
     local data = ""
-    foreach(country in lbCountriesList)
+    foreach(country in this.lbCountriesList)
     {
       let optionText = ::g_string.stripTags(
-        country ? ::loc(country) : ::loc("worldwar/allCountries"))
+        country ? loc(country) : loc("worldwar/allCountries"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let countriesObj = this.showSceneBtn("countries_list", lbCountriesList.len() > 1)
-    guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
+    let countriesObj = this.showSceneBtn("countries_list", this.lbCountriesList.len() > 1)
+    this.guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
 
     local countryObjValue = 0
-    if (lbCountry)
+    if (this.lbCountry)
     {
-      let selectedCountry = lbCountry
-      countryObjValue = lbCountriesList.findindex(@(c) c && c == selectedCountry) ?? 0
+      let selectedCountry = this.lbCountry
+      countryObjValue = this.lbCountriesList.findindex(@(c) c && c == selectedCountry) ?? 0
     }
-    lbCountry = null
+    this.lbCountry = null
     countriesObj.setValue(countryObjValue)
   }
 
   function fetchLbData(isForce = false)
   {
-    let newRequestData = getRequestData()
+    let newRequestData = this.getRequestData()
     if (!newRequestData)
       return
 
-    let isRequestDifferent = !::u.isEqual(requestData, newRequestData)
+    let isRequestDifferent = !::u.isEqual(this.requestData, newRequestData)
     if (!isRequestDifferent && !isForce)
       return
 
     if (isRequestDifferent)
-      pos = 0
+      this.pos = 0
 
-    lbField = curLbCategory.field
-    requestData = newRequestData
+    this.lbField = this.curLbCategory.field
+    this.requestData = newRequestData
 
     let requestParams = {
-      gameMode = requestData.modeName + requestData.modePostFix
-      table    = requestData.day && requestData.day > 0 ? "day" + requestData.day : "season"
-      category = lbField
-      platformFilter = requestData.platformFilter
+      gameMode = this.requestData.modeName + this.requestData.modePostFix
+      table    = this.requestData.day && this.requestData.day > 0 ? "day" + this.requestData.day : "season"
+      category = this.lbField
+      platformFilter = this.requestData.platformFilter
     }
 
     let cb = function(hasSelfRow = false)
     {
-      let callback = ::Callback(
+      let callback = Callback(
         function(lbPageData) {
           if (!hasSelfRow)
-            selfRowData = []
-          pageData = wwLeaderboardData.addClanInfoIfNeedAndConvert(requestData.modeName, lbPageData, isCountriesLeaderboard())
-          fillLeaderboard(pageData)
+            this.selfRowData = []
+          this.pageData = wwLeaderboardData.addClanInfoIfNeedAndConvert(this.requestData.modeName, lbPageData, this.isCountriesLeaderboard())
+          this.fillLeaderboard(this.pageData)
         }, this)
       wwLeaderboardData.requestWwLeaderboardData(
-        requestData.modeName,
+        this.requestData.modeName,
         requestParams.__update({
-          start    = pos
-          count    = rowsInPage
+          start    = this.pos
+          count    = this.rowsInPage
         }),
         @(lbPageData) callback(lbPageData))
     }
 
-    if (isUsersLeaderboard() || (forClans && ::is_in_clan()))
+    if (this.isUsersLeaderboard() || (this.forClans && ::is_in_clan()))
     {
-      let callback = ::Callback(
+      let callback = Callback(
         function(lbSelfData) {
-          selfRowData = wwLeaderboardData.addClanInfoIfNeedAndConvert(requestData.modeName, lbSelfData, isCountriesLeaderboard()).rows
+          this.selfRowData = wwLeaderboardData.addClanInfoIfNeedAndConvert(this.requestData.modeName, lbSelfData, this.isCountriesLeaderboard()).rows
           if(isRequestDifferent)
-            requestSelfPage(getSelfPos())
+            this.requestSelfPage(this.getSelfPos())
           cb(true)
         }, this)
       wwLeaderboardData.requestWwLeaderboardData(
-        requestData.modeName,
+        this.requestData.modeName,
         requestParams.__update({
           start = null
           count = 0
         }),
         @(lbSelfData) callback(lbSelfData),
-        { userId = isUsersLeaderboard() ? ::my_user_id_int64
+        { userId = this.isUsersLeaderboard() ? ::my_user_id_int64
           : ::clan_get_my_clan_id() })
     }
     else
@@ -294,87 +302,87 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
   function onModeSelect(obj)
   {
     let modeObjValue = obj.getValue()
-    if (modeObjValue < 0 || modeObjValue >= lbModesList.len())
+    if (modeObjValue < 0 || modeObjValue >= this.lbModesList.len())
       return
 
-    lbModeData = lbModesList[modeObjValue]
-    lbMode = lbModeData.mode
-    forClans = lbMode == "ww_clans"
-    ::add_big_query_record("ww_leaderboard.select_mode", lbMode);
+    this.lbModeData = this.lbModesList[modeObjValue]
+    this.lbMode = this.lbModeData.mode
+    this.forClans = this.lbMode == "ww_clans"
+    ::add_big_query_record("ww_leaderboard.select_mode", this.lbMode);
 
-    checkLbCategory()
+    this.checkLbCategory()
 
-    let callback = ::Callback(
+    let callback = Callback(
       function(modesData) {
-        updateModeDataByAvailableTables(modesData?.modes ?? [])
-        updateModeComboBoxes(modesData?.tables)
+        this.updateModeDataByAvailableTables(modesData?.modes ?? [])
+        this.updateModeComboBoxes(modesData?.tables)
       }, this)
 
     wwLeaderboardData.requestWwLeaderboardModes(
-      lbMode,
+      this.lbMode,
       @(modesData) callback(modesData))
   }
 
   function updateModeComboBoxes(seasonDays = null)
   {
-    if (isCountriesLeaderboard())
+    if (this.isCountriesLeaderboard())
     {
-      lbCountry = null
-      updateCountriesComboBox()
+      this.lbCountry = null
+      this.updateCountriesComboBox()
     }
-    updateMapsComboBox()
-    updateDaysComboBox(seasonDays)
+    this.updateMapsComboBox()
+    this.updateDaysComboBox(seasonDays)
   }
 
   function checkLbCategory()
   {
-    if (!curLbCategory || !lbModel.checkLbRowVisibility(curLbCategory, this))
-      curLbCategory = ::u.search(lb_presets, (@(row) lbModel.checkLbRowVisibility(row, this)).bindenv(this))
+    if (!this.curLbCategory || !this.lbModel.checkLbRowVisibility(this.curLbCategory, this))
+      this.curLbCategory = ::u.search(this.lb_presets, (@(row) this.lbModel.checkLbRowVisibility(row, this)).bindenv(this))
   }
 
   function onDaySelect(obj)
   {
     let dayObjValue = obj.getValue()
-    if (dayObjValue < 0 || dayObjValue >= lbDaysList.len())
+    if (dayObjValue < 0 || dayObjValue >= this.lbDaysList.len())
       return
 
-    lbDay = lbDaysList[dayObjValue]
-    ::add_big_query_record("ww_leaderboard.select_day", lbDay?.tostring() ?? "all")
+    this.lbDay = this.lbDaysList[dayObjValue]
+    ::add_big_query_record("ww_leaderboard.select_day", this.lbDay?.tostring() ?? "all")
 
-    fetchLbData()
+    this.fetchLbData()
   }
 
   function onMapSelect(obj)
   {
     let mapObjValue = obj.getValue()
-    if (mapObjValue < 0 || mapObjValue >= lbMapsList.len())
+    if (mapObjValue < 0 || mapObjValue >= this.lbMapsList.len())
       return
 
-    lbMap = lbMapsList[mapObjValue]
-    ::add_big_query_record("ww_leaderboard.select_map", lbMap?.getId() ?? "all")
+    this.lbMap = this.lbMapsList[mapObjValue]
+    ::add_big_query_record("ww_leaderboard.select_map", this.lbMap?.getId() ?? "all")
 
-    if (!isCountriesLeaderboard())
-      updateCountriesComboBox(lbMap)
+    if (!this.isCountriesLeaderboard())
+      this.updateCountriesComboBox(this.lbMap)
     else
-      fetchLbData()
+      this.fetchLbData()
   }
 
   function onCountrySelect(obj)
   {
     let countryObjValue = obj.getValue()
-    if (countryObjValue < 0 || countryObjValue >= lbCountriesList.len())
+    if (countryObjValue < 0 || countryObjValue >= this.lbCountriesList.len())
       return
 
-    lbCountry = lbCountriesList[countryObjValue]
-    ::add_big_query_record("ww_leaderboard.select_country", lbCountry ?? "all")
+    this.lbCountry = this.lbCountriesList[countryObjValue]
+    ::add_big_query_record("ww_leaderboard.select_country", this.lbCountry ?? "all")
 
-    if (!isCountriesLeaderboard())
-      fetchLbData()
+    if (!this.isCountriesLeaderboard())
+      this.fetchLbData()
   }
 
   function onUserDblClick()
   {
-    if (isCountriesLeaderboard())
+    if (this.isCountriesLeaderboard())
       return
 
     base.onUserDblClick()
@@ -382,25 +390,25 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function getRequestData()
   {
-    if (!lbModeData)
+    if (!this.lbModeData)
       return null
 
-    let mapId = lbMap && ::isInArray(lbMap, availableMapsList) ? "__" + lbMap.getId() : ""
-    let countryId = lbCountry && ::isInArray(lbCountry, availableCountriesList)
-      ? "__" + lbCountry : ""
+    let mapId = this.lbMap && isInArray(this.lbMap, this.availableMapsList) ? "__" + this.lbMap.getId() : ""
+    let countryId = this.lbCountry && isInArray(this.lbCountry, this.availableCountriesList)
+      ? "__" + this.lbCountry : ""
 
     return {
-      modeName = lbModeData.mode
+      modeName = this.lbModeData.mode
       modePostFix = mapId + countryId
-      day = lbModeData.hasDaysData ? lbDay : null
-      platformFilter = lbModeData?.needShowConsoleFilter ? platformFilter : ""
+      day = this.lbModeData.hasDaysData ? this.lbDay : null
+      platformFilter = this.lbModeData?.needShowConsoleFilter ? this.platformFilter : ""
     }
   }
 
   function getWwMaps()
   {
     let maps = [null]
-    foreach (map in availableMapsList)
+    foreach (map in this.availableMapsList)
       maps.append(map)
 
     return maps
@@ -412,16 +420,16 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     if (filterMap)
     {
       foreach (country in filterMap.getCountries())
-        if(::isInArray(country, availableCountriesList))
+        if(isInArray(country, this.availableCountriesList))
           countrries.append(country)
 
       return countrries
     }
 
     let countrriesData = {}
-    foreach (map in availableMapsList)
+    foreach (map in this.availableMapsList)
       foreach (country in map.getCountries())
-        if (!(country in countrriesData) && ::isInArray(country, availableCountriesList))
+        if (!(country in countrriesData) && isInArray(country, this.availableCountriesList))
           countrriesData[country] <- country
 
     foreach (country in countrriesData)
@@ -432,72 +440,72 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function isUsersLeaderboard()
   {
-    return wwLeaderboardData.isUsersLeaderboard(lbModeData)
+    return wwLeaderboardData.isUsersLeaderboard(this.lbModeData)
   }
 
   function isCountriesLeaderboard()
   {
-    return lbMode == "ww_countries"
+    return this.lbMode == "ww_countries"
   }
 
   function onRewards()
   {
-    let curRewardsBlk = getCurModeAwards()
+    let curRewardsBlk = this.getCurModeAwards()
     if (!curRewardsBlk)
-      return ::showInfoMsgBox(::loc("leaderboards/has_no_rewards"))
+      return ::showInfoMsgBox(loc("leaderboards/has_no_rewards"))
 
     wwRewards.open({
-      isClanRewards = forClans
+      isClanRewards = this.forClans
       rewardsBlk = curRewardsBlk
-      rewardsTime = getCurRewardsTime()
-      lbMode    = lbMode
-      lbDay     = lbDay
-      lbMap     = lbMap
-      lbCountry = lbCountry
+      rewardsTime = this.getCurRewardsTime()
+      lbMode    = this.lbMode
+      lbDay     = this.lbDay
+      lbMap     = this.lbMap
+      lbCountry = this.lbCountry
     })
   }
 
   function updateButtons() {
     base.updateButtons()
-    updateWwRewardsButton()
+    this.updateWwRewardsButton()
   }
 
   function updateWwRewardsButton()
   {
-    let curRewardsBlk = getCurModeAwards()
+    let curRewardsBlk = this.getCurModeAwards()
     let rewardsBtn = this.showSceneBtn("btn_ww_rewards", true)
     rewardsBtn.inactiveColor = curRewardsBlk ? "no" : "yes"
   }
 
   function getCurModeAwards()
   {
-    let rewardTableName = wwLeaderboardData.getModeByName(lbMode)?.rewardsTableName
-    if (!rewardTableName || !rewardsBlk || !requestData)
+    let rewardTableName = wwLeaderboardData.getModeByName(this.lbMode)?.rewardsTableName
+    if (!rewardTableName || !this.rewardsBlk || !this.requestData)
       return null
 
-    let day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
-    let awardTableName = requestData.modeName + requestData.modePostFix
+    let day = this.lbDay ? wwLeaderboardData.getDayIdByNumber(this.lbDay) : "season"
+    let awardTableName = this.requestData.modeName + this.requestData.modePostFix
 
-    return rewardsBlk?[rewardTableName]?[day]?.awards?[awardTableName]
+    return this.rewardsBlk?[rewardTableName]?[day]?.awards?[awardTableName]
   }
 
   function getCurRewardsTime()
   {
-    let day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
-    return rewardsTimeData?[day] ?? 0
+    let day = this.lbDay ? wwLeaderboardData.getDayIdByNumber(this.lbDay) : "season"
+    return this.rewardsTimeData?[day] ?? 0
   }
 
   function updateModeDataByAvailableTables(modes)
   {
-    availableMapsList = getAvailableMapsList(modes)
-    availableCountriesList = getAvailableCountriesList(modes)
+    this.availableMapsList = this.getAvailableMapsList(modes)
+    this.availableCountriesList = this.getAvailableCountriesList(modes)
   }
 
   function getAvailableMapsList(modes)
   {
-    let mode = lbMode
+    let mode = this.lbMode
     let maps = []
-    foreach (map in wwMapsList)
+    foreach (map in this.wwMapsList)
       if(::u.search(modes, @(m) m.split(mode)?[1] && m.split(map.name)?[1]) != null)
         maps.append(map)
 
@@ -508,11 +516,11 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
   {
     let countries = []
     foreach (mode in modes)
-      if(mode.split(lbMode)?[1] != null)
+      if(mode.split(this.lbMode)?[1] != null)
       {
         let cName = mode.split("__country")?[1]
         let country = cName == null ? cName : $"{"country"}{cName}"
-        if(country != null && !::isInArray(country, countries))
+        if(country != null && !isInArray(country, countries))
           countries.append(country)
       }
 
@@ -529,16 +537,16 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
         clanTag = clansInfo?[row?.clanId.tostring() ?? ""].tag ?? row?.clanTag ?? ""
       })
     }
-    (selfRowData ?? []).map(updateClanTag)
-    pageData?.rows.map(updateClanTag)
+    (this.selfRowData ?? []).map(updateClanTag)
+    this.pageData?.rows.map(updateClanTag)
   }
 
   function onEventUpdateClansInfoList(p) {
-    if (lbMode != "ww_users_manager")
+    if (this.lbMode != "ww_users_manager")
       return
 
     let clansInfoList = p?.clansInfoList ?? {}
-    updateClanTagRowsData(clansInfoList)
-    addClanTagToNameInLeaderbord(scene.findObject("lb_table_nest"), clansInfoList)
+    this.updateClanTagRowsData(clansInfoList)
+    addClanTagToNameInLeaderbord(this.scene.findObject("lb_table_nest"), clansInfoList)
   }
 }

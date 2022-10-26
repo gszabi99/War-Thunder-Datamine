@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -7,7 +15,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 ::gui_handlers.ShopSearchWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/shop/shopSearchWnd"
+  sceneTplName = "%gui/shop/shopSearchWnd.tpl"
 
   searchString = ""
   units = []
@@ -20,11 +28,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getSceneTplView()
   {
-    let unitsData = prepareUnitsData()
-    let countriesView = getCountriesView(unitsData)
+    let unitsData = this.prepareUnitsData()
+    let countriesView = this.getCountriesView(unitsData)
 
     return {
-      windowTitle = wndTitle ?? (::loc("shop/search/results") + ::loc("ui/colon") + searchString)
+      windowTitle = this.wndTitle ?? (loc("shop/search/results") + loc("ui/colon") + this.searchString)
       countriesCount = countriesView.len()
       countriesTotal = shopCountriesList.len()
       countries = countriesView
@@ -33,10 +41,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function initScreen()
   {
-    if (isUseUnitPlates)
+    if (this.isUseUnitPlates)
     {
-      let contentObj = scene.findObject("contentBlock")
-      foreach (u in units)
+      let contentObj = this.scene.findObject("contentBlock")
+      foreach (u in this.units)
         ::fill_unit_item_timers(contentObj.findObject(u.name), u)
     }
   }
@@ -44,10 +52,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   function prepareUnitsData()
   {
     let data = {}
-    let ediff = getEdiffFunc()
+    let ediff = this.getEdiffFunc()
     foreach (countryId in shopCountriesList)
     {
-      let countryUnits = units.filter(@(unit) ::getUnitCountry(unit) == countryId)
+      let countryUnits = this.units.filter(@(unit) ::getUnitCountry(unit) == countryId)
       if (!countryUnits.len())
         continue
 
@@ -68,8 +76,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   function getCountriesView(unitsData)
   {
     let view = []
-    let ediff = getEdiffFunc()
-    isUseUnitPlates = getIsUseUnitPlates(unitsData)
+    let ediff = this.getEdiffFunc()
+    this.isUseUnitPlates = this.getIsUseUnitPlates(unitsData)
 
     foreach (countryId in shopCountriesList)
     {
@@ -88,15 +96,15 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
           continue
 
         let armyView = {
-          armyName = ::colorize("fadedTextColor", unitType.getArmyLocName())
-          unitPlates = isUseUnitPlates ? [] : null
-          units      = isUseUnitPlates ? null : []
+          armyName = colorize("fadedTextColor", unitType.getArmyLocName())
+          unitPlates = this.isUseUnitPlates ? [] : null
+          units      = this.isUseUnitPlates ? null : []
           isTooltipByHold = ::show_console_buttons
         }
 
         foreach (u in unitsList)
         {
-          if (isUseUnitPlates)
+          if (this.isUseUnitPlates)
           {
             armyView.unitPlates.append({
               id = u.name
@@ -110,7 +118,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
               ico = ::getUnitClassIco(u)
               type = getUnitRole(u)
               tooltipId = ::g_tooltip.getIdUnit(u.name)
-              text = ::colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
+              text = colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
                 ::nbsp + ::getUnitName(u, true)
               isUsable = u.isUsable()
               canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)
@@ -130,24 +138,24 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getCurrentEdiff()
   {
-    return getEdiffFunc()
+    return this.getEdiffFunc()
   }
 
   function onUnitClick(obj)
   {
-    unitToShowOnClose = ::g_string.cutPrefix(obj.id, "btn_") ?? ""
-    goBack()
+    this.unitToShowOnClose = ::g_string.cutPrefix(obj.id, "btn_") ?? ""
+    this.goBack()
   }
 
   function afterModalDestroy() {
-    cbOwnerShowUnit(unitToShowOnClose)
+    this.cbOwnerShowUnit(this.unitToShowOnClose)
   }
 
   function getIsUseUnitPlates(unitsData)
   {
-    let visibleHeight = ::to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
+    let visibleHeight = to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
       "-@cIco -6@blockInterval -0.02@sf)")
-    let slotHeight  = ::to_pixels("@slot_height + 2@slot_interval")
+    let slotHeight  = to_pixels("@slot_height + 2@slot_interval")
     local maxColumnHeight = 0
     foreach (countryUnits in unitsData)
     {

@@ -1,4 +1,11 @@
-local { checkAndShowMultiplayerPrivilegeWarning,
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::gui_start_invites <- function gui_start_invites()
@@ -15,14 +22,14 @@ local { checkAndShowMultiplayerPrivilegeWarning,
 
   function initScreen()
   {
-    updateList()
-    initAutoClose()
+    this.updateList()
+    this.initAutoClose()
   }
 
   function updateList()
   {
-    let listObj = scene.findObject("invites_list")
-    let selInvite = getInviteByObj()
+    let listObj = this.scene.findObject("invites_list")
+    let selInvite = this.getInviteByObj()
     let list = ::u.filter(::g_invites.list,
       function (invite) { return invite.isVisible() })
 
@@ -33,8 +40,8 @@ local { checkAndShowMultiplayerPrivilegeWarning,
     })
 
     let view = { invites = list }
-    let data = ::handyman.renderCached("%gui/chat/inviteListRows", view)
-    guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/chat/inviteListRows.tpl", view)
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     if (list.len())
     {
@@ -42,13 +49,13 @@ local { checkAndShowMultiplayerPrivilegeWarning,
       ::move_mouse_on_child_by_value(listObj)
     }
 
-    scene.findObject("now_new_invites").show(list.len() == 0)
+    this.scene.findObject("now_new_invites").show(list.len() == 0)
   }
 
   function updateSingleInvite(invite)
   {
-    let inviteObj = scene.findObject("invite_" + invite.uid)
-    if (!::check_obj(inviteObj))
+    let inviteObj = this.scene.findObject("invite_" + invite.uid)
+    if (!checkObj(inviteObj))
       return
 
     inviteObj.findObject("text").setValue(invite.getInviteText())
@@ -62,7 +69,7 @@ local { checkAndShowMultiplayerPrivilegeWarning,
     if (uid)
       return ::g_invites.findInviteByUid(uid)
 
-    let listObj = scene.findObject("invites_list")
+    let listObj = this.scene.findObject("invites_list")
     let value = listObj.getValue() || 0
     if (0 <= value && value < listObj.childrenCount())
       return ::g_invites.findInviteByUid(listObj.getChild(value)?.inviteUid)
@@ -71,11 +78,11 @@ local { checkAndShowMultiplayerPrivilegeWarning,
 
   function onAccept(obj)
   {
-    let invite = getInviteByObj(obj)
+    let invite = this.getInviteByObj(obj)
     if (!invite)
       return
 
-    guiScene.performDelayed(this, (@(invite) function() {
+    this.guiScene.performDelayed(this, (@(invite) function() {
       if (invite.haveRestrictions())
       {
         if (invite.needCheckSystemRestriction) {
@@ -96,26 +103,26 @@ local { checkAndShowMultiplayerPrivilegeWarning,
       }
 
       invite.accept()
-      if (isAutoClose)
-        goBack()
+      if (this.isAutoClose)
+        this.goBack()
     })(invite))
   }
 
   function onReject(obj)
   {
-    let invite = getInviteByObj(obj)
+    let invite = this.getInviteByObj(obj)
     if (!invite)
       return
 
-    guiScene.performDelayed(this, (@(invite) function() {
+    this.guiScene.performDelayed(this, (@(invite) function() {
       invite.reject()
     })(invite))
   }
 
   function initAutoClose()
   {
-    isAutoClose = ::loadLocalByAccount("wnd/invites_auto_close", true)
-    scene.findObject("auto_close").setValue(isAutoClose)
+    this.isAutoClose = ::loadLocalByAccount("wnd/invites_auto_close", true)
+    this.scene.findObject("auto_close").setValue(this.isAutoClose)
   }
 
   function onAutoCloseChange(obj)
@@ -123,23 +130,23 @@ local { checkAndShowMultiplayerPrivilegeWarning,
     if (!obj)
       return
     let value = obj.getValue()
-    if (value == isAutoClose)
+    if (value == this.isAutoClose)
       return
 
-    isAutoClose = value
-    ::saveLocalByAccount("wnd/invites_auto_close", isAutoClose)
+    this.isAutoClose = value
+    ::saveLocalByAccount("wnd/invites_auto_close", this.isAutoClose)
   }
 
   function onInviterInfo(obj)
   {
-    let invite = getInviteByObj(obj)
+    let invite = this.getInviteByObj(obj)
     if (invite)
       invite.showInviterMenu()
   }
 
   function onInviterInfoAccessKey()
   {
-    let invite = getInviteByObj()
+    let invite = this.getInviteByObj()
     if (!invite)
       return
 
@@ -147,8 +154,8 @@ local { checkAndShowMultiplayerPrivilegeWarning,
       return
 
     local pos = null
-    let nameObj = scene.findObject("inviterName_" + invite.uid)
-    if (::checkObj(nameObj))
+    let nameObj = this.scene.findObject("inviterName_" + invite.uid)
+    if (checkObj(nameObj))
     {
       pos = nameObj.getPosRC()
       pos[0] += nameObj.getSize()[0]
@@ -156,28 +163,28 @@ local { checkAndShowMultiplayerPrivilegeWarning,
     invite.showInviterMenu(pos)
   }
 
-  function onEventInviteReceived(p)
+  function onEventInviteReceived(_p)
   {
-    updateList()
+    this.updateList()
   }
 
-  function onEventInviteRemoved(p)
+  function onEventInviteRemoved(_p)
   {
-    updateList()
+    this.updateList()
   }
 
-  function onEventXboxMultiplayerPrivilegeUpdated(p) {
-    updateList()
+  function onEventXboxMultiplayerPrivilegeUpdated(_p) {
+    this.updateList()
   }
 
   function onEventInviteUpdated(p)
   {
-    updateSingleInvite(p.invite)
+    this.updateSingleInvite(p.invite)
   }
 
-  function onEventChatOpenPrivateRoom(p)
+  function onEventChatOpenPrivateRoom(_p)
   {
-    goBack() //close invites menu when open private caht message in scene behind
+    this.goBack() //close invites menu when open private caht message in scene behind
   }
 
   function onDestroy()

@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 let SquadApplicationsList = class
 {
@@ -18,23 +25,23 @@ let SquadApplicationsList = class
 
   function addApplication(squadId, leaderId, isEventNeed = true)
   {
-    if (squadId in applicationsList)
+    if (squadId in this.applicationsList)
       return
-    let squad = createApplication(squadId,leaderId)
-    applicationsList[squadId] <- squad
-    updateApplication(applicationsList[squadId])
+    let squad = this.createApplication(squadId,leaderId)
+    this.applicationsList[squadId] <- squad
+    this.updateApplication(this.applicationsList[squadId])
     if (isEventNeed)
-      sendChangedEvent([leaderId])
+      this.sendChangedEvent([leaderId])
   }
 
   function deleteApplication(squadId, isEventNeed = true)
   {
-    if (!(squadId in applicationsList))
+    if (!(squadId in this.applicationsList))
       return
 
-    applicationsList.rawdelete(squadId)
+    this.applicationsList.rawdelete(squadId)
     if (isEventNeed)
-      sendChangedEvent([squadId])
+      this.sendChangedEvent([squadId])
   }
 
   function updateApplicationsList(applicationsArr)
@@ -42,32 +49,32 @@ let SquadApplicationsList = class
     local sid = null
     let leadersArr = []
     local isEventNeed = false
-    foreach (squad in applicationsList)
+    foreach (squad in this.applicationsList)
     {
       sid = squad.squadId
-      if (::isInArray(sid, applicationsArr))
+      if (isInArray(sid, applicationsArr))
         continue
 
       leadersArr.append(sid)
-      deleteApplication(sid,false)
+      this.deleteApplication(sid,false)
       isEventNeed = true
     }
     foreach (squadId in applicationsArr)
     {
-      if (!(squadId in applicationsList))
+      if (!(squadId in this.applicationsList))
       {
         leadersArr.append(squadId)
-        addApplication(squadId, squadId, false) // warning disable: -param-pos
+        this.addApplication(squadId, squadId, false) // warning disable: -param-pos
         isEventNeed = true
       }
     }
     if (isEventNeed)
-      sendChangedEvent(leadersArr)
+      this.sendChangedEvent(leadersArr)
   }
 
   function onDeniedApplication(squadId, needPopup = false)
   {
-    if (!(squadId in applicationsList))
+    if (!(squadId in this.applicationsList))
       return
 
     if (::g_squad_manager.isInSquad())
@@ -75,29 +82,29 @@ let SquadApplicationsList = class
 
     if (needPopup)
     {
-      let msg = ::colorize(popupTextColor,getDeniedPopupText(applicationsList[squadId]))
+      let msg = colorize(this.popupTextColor,this.getDeniedPopupText(this.applicationsList[squadId]))
       ::g_popups.add(null, msg)
     }
-    deleteApplication(squadId)
+    this.deleteApplication(squadId)
   }
 
   function onAcceptApplication()
   {
-    if (applicationsList.len() <= 0)
+    if (this.applicationsList.len() <= 0)
       return
 
     let leadersArr = []
-    foreach (squad in applicationsList)
+    foreach (squad in this.applicationsList)
     {
       leadersArr.append(squad.squadId)
     }
-    applicationsList.clear()
-    sendChangedEvent(leadersArr)
+    this.applicationsList.clear()
+    this.sendChangedEvent(leadersArr)
   }
 
   function hasApplication(leaderId)
   {
-    return (leaderId in applicationsList)
+    return (leaderId in this.applicationsList)
   }
 
 /*************************************************************************************************/
@@ -109,7 +116,7 @@ let SquadApplicationsList = class
     return {
       squadId = squadId
       leaderId = leaderId
-      leaderName = getLeaderName(leaderId)
+      leaderName = this.getLeaderName(leaderId)
     }
   }
 
@@ -119,9 +126,9 @@ let SquadApplicationsList = class
     {
       let leaderId = application.leaderId
 
-      let cb = ::Callback(function(r)
+      let cb = Callback(function(_r)
                             {
-                              application.leaderName <- getLeaderName(leaderId)
+                              application.leaderName <- this.getLeaderName(leaderId)
                             }, this)
       requestUsersInfo([leaderId.tostring()], cb, cb)
     }
@@ -138,7 +145,7 @@ let SquadApplicationsList = class
 
   function getDeniedPopupText(squad)
   {
-    return ::loc("multiplayer/squad/application/denied",
+    return loc("multiplayer/squad/application/denied",
              {
                name = squad?.leaderName || squad?.leaderId
              })
@@ -149,10 +156,10 @@ let SquadApplicationsList = class
     ::broadcastEvent("PlayerApplicationsChanged", {leadersArr = leadersArr})
   }
 
-  function onEventSquadStatusChanged(params)
+  function onEventSquadStatusChanged(_params)
   {
     if (::g_squad_manager.isInSquad())
-      onAcceptApplication()
+      this.onAcceptApplication()
   }
 }
 

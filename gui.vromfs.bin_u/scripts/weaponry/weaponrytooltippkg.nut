@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
@@ -12,7 +17,7 @@ let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimar
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
 let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
-let { getActionBarItems } = ::require_native("hudActionBar")
+let { getActionBarItems } = require_native("hudActionBar")
 let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
 
 
@@ -92,9 +97,9 @@ let function getTierDescTbl(unit, params) {
   let {tooltipLang, amountPerTier, name,
     blk, tType, ammo, isGun, addWeaponry, presetName, tierId } = params
   if (tooltipLang != null)
-    return { desc = ::loc(tooltipLang) }
+    return { desc = loc(tooltipLang) }
 
-  local header = ::loc($"weapons/{name}")
+  local header = loc($"weapons/{name}")
   let isBlock = amountPerTier > 1
   let weapArr = getUnitWeaponsByTier(unit, blk, tierId)
     ?? getUnitWeaponsByPreset(unit, blk, presetName)
@@ -105,11 +110,11 @@ let function getTierDescTbl(unit, params) {
     detail = INFO_DETAIL.EXTENDED
   })
 
-  if (::isInArray(tType, CONSUMABLE_TYPES))
+  if (isInArray(tType, CONSUMABLE_TYPES))
     header = isBlock ?
-      "".concat(header, format(::loc("weapons/counter"), amountPerTier)) : header
+      "".concat(header, format(loc("weapons/counter"), amountPerTier)) : header
   else if (ammo > 0)
-    header = "".concat(header, " (", ::loc("shop/ammo"), ::loc("ui/colon"),
+    header = "".concat(header, " (", loc("shop/ammo"), loc("ui/colon"),
       !isBlock ? ammo : !isGun ? amountPerTier : getGunAmmoPerTier(weapons) ?? "", ")")
 
   // Need to replace header with new one contains right weapons amount calculated per tier
@@ -145,11 +150,11 @@ let function getReqTextWorldWarArmy(unit, item)
   let isEnabledByMission = misRules.isUnitWeaponAllowed(unit, item)
   let isEnabledForUnit = isWeaponEnabled(unit, item)
   if (!isEnabledByMission)
-    text = "<color=@badTextColor>" + ::loc("worldwar/weaponry/inArmyIsDisabled") + "</color>"
+    text = "<color=@badTextColor>" + loc("worldwar/weaponry/inArmyIsDisabled") + "</color>"
   else if (isEnabledByMission && !isEnabledForUnit)
-    text = "<color=@badTextColor>" + ::loc("worldwar/weaponry/inArmyIsEnabled/weaponRequired") + "</color>"
+    text = "<color=@badTextColor>" + loc("worldwar/weaponry/inArmyIsEnabled/weaponRequired") + "</color>"
   else if (isEnabledByMission && isEnabledForUnit)
-    text = "<color=@goodTextColor>" + ::loc("worldwar/weaponry/inArmyIsEnabled") + "</color>"
+    text = "<color=@goodTextColor>" + loc("worldwar/weaponry/inArmyIsEnabled") + "</color>"
 
   return text
 }
@@ -182,10 +187,10 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   {
     let reqMods = ::getNextTierModsCount(unit, curTier - 1)
     if(reqMods > 0)
-      reqText = ::loc("weaponry/unlockModTierReq",
+      reqText = loc("weaponry/unlockModTierReq",
                       { tier = ::roman_numerals[curTier], amount = reqMods.tostring() })
     else
-      reqText = ::loc("weaponry/unlockTier/reqPrevTiers")
+      reqText = loc("weaponry/unlockTier/reqPrevTiers")
     reqText = "<color=@badTextColor>" + reqText + "</color>"
     res.reqText <- reqText
 
@@ -224,7 +229,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     {
       let upgradesCount = countWeaponsUpgrade(unit, item)
       if (upgradesCount?[1])
-        addDesc = "\n" + ::loc("weaponry/weaponsUpgradeInstalled",
+        addDesc = "\n" + loc("weaponry/weaponsUpgradeInstalled",
                                { current = upgradesCount[0], total = upgradesCount[1] })
       foreach(arr in upgradesList)
         foreach(upgrade in arr)
@@ -255,7 +260,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     addBulletsParamToDesc(res, unit, item)
   }
   else if (item.type==weaponsItem.spare)
-    desc = ::loc("spare/"+item.name + "/desc")
+    desc = loc("spare/"+item.name + "/desc")
 
   if (hasPlayerInfo && statusTbl.unlocked && currentPrice != "")
   {
@@ -263,17 +268,17 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     if (amountText != "")
     {
       let color = statusTbl.amount < statusTbl.amountWarningValue ? "badTextColor" : ""
-      res.amountText <- ::colorize(color, ::loc("options/count") + ::loc("ui/colon") + amountText)
+      res.amountText <- colorize(color, loc("options/count") + loc("ui/colon") + amountText)
 
       if (::is_in_flight() && item.type==weaponsItem.weapon)
       {
         let respLeft = ::g_mis_custom_state.getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
         if (respLeft >= 0)
-          res.amountText += ::loc("ui/colon") + ::loc("respawn/leftRespawns", { num = respLeft })
+          res.amountText += loc("ui/colon") + loc("respawn/leftRespawns", { num = respLeft })
       }
     }
     if (statusTbl.showMaxAmount && statusTbl.amount < statusTbl.amountWarningValue)
-      res.warningText <- ::loc("weapons/restock_advice")
+      res.warningText <- loc("weapons/restock_advice")
   }
   else if (params?.isInHudActionBar)
   {
@@ -307,7 +312,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     let rCost = ::wp_get_repair_cost_by_mode(unit.name, egdCode, false)
     let avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
     if (avgCost)
-      addDesc += "\n" + ::loc("shop/avg_repair_cost") + ::nbsp
+      addDesc += "\n" + loc("shop/avg_repair_cost") + ::nbsp
         + (avgCost > 0? "+" : "")
         + ::Cost(avgCost).toStringWithParams({isWpAlwaysShown = true, isColored = false})
   }
@@ -321,7 +326,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
         reqText += (reqText==""? "" : "\n") + reqMods
     }
     if (isBullets(item) && !isBulletsGroupActiveByMod(unit, item) && !::is_in_flight())
-      reqText += ((reqText=="")?"":"\n") + ::loc("msg/weaponSelectRequired")
+      reqText += ((reqText=="")?"":"\n") + loc("msg/weaponSelectRequired")
     reqText = reqText!=""? ("<color=@badTextColor>" + reqText + "</color>") : ""
 
     if (needShowWWSecondaryWeapons)
@@ -342,7 +347,7 @@ let function updateWeaponTooltip(obj, unit, item, handler, params={}, effect=nul
   let self = callee()
   let descTbl = getItemDescTbl(unit, item, params, effect,
     function(effect, ...) {
-      if (::checkObj(obj) && obj.isVisible())
+      if (checkObj(obj) && obj.isVisible())
         self(obj, unit, item, handler, params, effect)
     })
 
@@ -357,15 +362,15 @@ let function updateWeaponTooltip(obj, unit, item, handler, params={}, effect=nul
     {
       local expText = ""
       if (is_researching || is_paused)
-        expText = ::loc("currency/researchPoints/name") + ::loc("ui/colon") +
-          ::colorize("activeTextColor",
+        expText = loc("currency/researchPoints/name") + loc("ui/colon") +
+          colorize("activeTextColor",
             ::Cost().setRp(curExp).toStringWithParams({isRpAlwaysShown = true}) +
-            ::loc("ui/slash") + ::Cost().setRp(item.reqExp).tostring())
+            loc("ui/slash") + ::Cost().setRp(item.reqExp).tostring())
       else
-        expText = ::loc("shop/required_rp") + " " + "<color=@activeTextColor>" +
+        expText = loc("shop/required_rp") + " " + "<color=@activeTextColor>" +
           ::Cost().setRp(item.reqExp).tostring() + "</color>"
 
-      let diffExp = ::Cost().setRp(::getTblValue("diffExp", params, 0)).tostring()
+      let diffExp = ::Cost().setRp(getTblValue("diffExp", params, 0)).tostring()
       if (diffExp.len())
         expText += " (+" + diffExp + ")"
       descTbl.expText <- expText
@@ -374,7 +379,7 @@ let function updateWeaponTooltip(obj, unit, item, handler, params={}, effect=nul
   else if (params?.hasPlayerInfo ?? true)
     descTbl.showPrice <- ("currentPrice" in descTbl) || ("noDiscountPrice" in descTbl)
 
-  let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip"), descTbl)
+  let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"), descTbl)
   obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 }
 

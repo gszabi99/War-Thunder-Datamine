@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let regexp2 = require("regexp2")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
@@ -22,17 +30,17 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
   function initScreen()
   {
-    let title = urlMission ? ::loc("urlMissions/modify") : ::loc("urlMissions/add")
-    scene.findObject("title").setValue(title)
+    let title = this.urlMission ? loc("urlMissions/modify") : loc("urlMissions/add")
+    this.scene.findObject("title").setValue(title)
 
-    if (urlMission)
+    if (this.urlMission)
     {
-      scene.findObject("name_editbox").setValue(urlMission.name)
-      scene.findObject("url_editbox").setValue(urlMission.url)
+      this.scene.findObject("name_editbox").setValue(this.urlMission.name)
+      this.scene.findObject("url_editbox").setValue(this.urlMission.url)
     } else
-      scene.findObject("btn_apply").setValue(::loc("chat/create"))
+      this.scene.findObject("btn_apply").setValue(loc("chat/create"))
 
-    ::select_editbox(scene.findObject("name_editbox"))
+    ::select_editbox(this.scene.findObject("name_editbox"))
   }
 
   function onChangeName(obj)
@@ -40,56 +48,56 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     if (!obj)
       return
 
-    curName = obj.getValue() || ""
-    let validatedName = getValidatedCurName()
+    this.curName = obj.getValue() || ""
+    let validatedName = this.getValidatedCurName()
 
-    if (curName != validatedName)
+    if (this.curName != validatedName)
     {
       obj.setValue(validatedName)
       return
     }
 
-    curName = validatedName
-    checkValues()
+    this.curName = validatedName
+    this.checkValues()
   }
 
     function onChangeUrl(obj)
   {
     if (!obj)
       return
-    curUrl = obj.getValue() || ""
-    checkValues()
+    this.curUrl = obj.getValue() || ""
+    this.checkValues()
   }
 
   function checkValues()
   {
-    isValuesValid = !::is_chat_message_empty(curName)
-                    && !::is_chat_message_empty(curUrl)
+    this.isValuesValid = !::is_chat_message_empty(this.curName)
+                    && !::is_chat_message_empty(this.curUrl)
 
-    scene.findObject("btn_apply").enable(isValuesValid)
+    this.scene.findObject("btn_apply").enable(this.isValuesValid)
   }
 
   function onApply()
   {
-    if (!isValuesValid)
-      return ::showInfoMsgBox(::loc("msg/allFieldsMustBeFilled"))
+    if (!this.isValuesValid)
+      return ::showInfoMsgBox(loc("msg/allFieldsMustBeFilled"))
 
     local res = true
-    let name = clearBorderSymbols(curName, [" "])
-    let url = clearBorderSymbols(curUrl, [" "])
-    if (urlMission)
-      res = ::g_url_missions.modifyMission(urlMission, name, url)
+    let name = clearBorderSymbols(this.curName, [" "])
+    let url = clearBorderSymbols(this.curUrl, [" "])
+    if (this.urlMission)
+      res = ::g_url_missions.modifyMission(this.urlMission, name, url)
     else
       res = ::g_url_missions.createMission(name, url)
 
     if (res)
-      goBack()
+      this.goBack()
   }
 
   function getValidatedCurName()
   {
-    return validateNameRegexp.replace("", curName)
+    return this.validateNameRegexp.replace("", this.curName)
   }
 
-  onKbdWrapDown = @() setFocusToNextObj(scene, tabFocusArray, 1)
+  onKbdWrapDown = @() setFocusToNextObj(this.scene, this.tabFocusArray, 1)
 }

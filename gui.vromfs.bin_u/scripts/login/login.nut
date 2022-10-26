@@ -1,8 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
 #explicit-this
 #no-root-fallback
 
 let LoginProcess = require("loginProcess.nut")
 let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
+let { bitMaskToSstring } = require("%scripts/debugTools/dbgEnum.nut")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 global enum LOGIN_STATE //bit mask
 {
@@ -41,7 +45,7 @@ global enum LOGIN_STATE //bit mask
 
   function bigQueryOnLogin()
   {
-    local params = ::target_platform
+    local params = target_platform
     if (::getSystemConfigOption("launcher/bg_update", true))
       params += " bg_update"
     ::add_big_query_record("login", params)
@@ -135,7 +139,7 @@ global enum LOGIN_STATE //bit mask
   this.setState(LOGIN_STATE.NOT_LOGGED_IN)
 }
 
-::g_login.onEventScriptsReloaded <- function onEventScriptsReloaded(p)
+::g_login.onEventScriptsReloaded <- function onEventScriptsReloaded(_p)
 {
   if (!this.isLoggedIn() && this.isAuthorized())
     this.startLoginProcess(true)
@@ -145,12 +149,12 @@ global enum LOGIN_STATE //bit mask
 ::g_login.getStateDebugStr <- function getStateDebugStr(state = null)
 {
   state = state ?? this.curState
-  return state == 0 ? "0" : ::bit_mask_to_string("LOGIN_STATE", state)
+  return state == 0 ? "0" : bitMaskToSstring("LOGIN_STATE", state)
 }
 
 ::g_login.debugState <- function debugState(shouldShowNotSetBits = false)
 {
-  let debugLog = ::dlog // warning disable: -forbidden-function
+  let debugLog = dlog // warning disable: -forbidden-function
   if (shouldShowNotSetBits)
     return debugLog($"not set loginState = {this.getStateDebugStr(LOGIN_STATE.LOGGED_IN & ~this.curState)}")
   return debugLog($"loginState = {this.getStateDebugStr()}")

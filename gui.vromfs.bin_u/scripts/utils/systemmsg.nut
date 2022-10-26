@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /*
    systemMsg  allow to send messages via config to localize and color on receiver side.
    It has short keys to be compact in json format allowed to use in irc chat etc.
@@ -81,7 +87,7 @@ let function registerColors(colorsTable) //tag = color
 {
   foreach(tag, color in colorsTable)
   {
-    ::dagor.assertf(!(tag in colors), "SystemMsg: Duplicate color tag: " + tag + " = " + color)
+    assert(!(tag in colors), "SystemMsg: Duplicate color tag: " + tag + " = " + color)
     colors[tag] <- color
   }
 }
@@ -90,7 +96,7 @@ let function registerLocTags(locTagsTable) //tag = locId
 {
   foreach(tag, locId in locTagsTable)
   {
-    ::dagor.assertf(!(tag in locTags), "SystemMsg: Duplicate locId tag: " + tag + " = " + locId)
+    assert(!(tag in locTags), "SystemMsg: Duplicate locId tag: " + tag + " = " + locId)
     locTags[tag] <- locId
   }
 }
@@ -104,7 +110,7 @@ let systemMsg = { //functons here need to be able recursive call self
         if (::u.isString(value))
           return valueValidateFunction(value)
         else if (::u.isTable(value) || ::u.isArray(value))
-          return validateLangConfig(value, valueValidateFunction)
+          return this.validateLangConfig(value, valueValidateFunction)
         return value
       }.bindenv(this)
     )
@@ -113,7 +119,7 @@ let systemMsg = { //functons here need to be able recursive call self
   function configToJsonString(langConfig, textValidateFunction = null)
   {
     if (textValidateFunction)
-      langConfig = validateLangConfig(langConfig, textValidateFunction)
+      langConfig = this.validateLangConfig(langConfig, textValidateFunction)
 
     let jsonString = ::save_to_json(langConfig)
     return jsonString
@@ -122,15 +128,15 @@ let systemMsg = { //functons here need to be able recursive call self
   function convertAny(langConfig, paramValidateFunction = null, separator = "", defaultLocValue = null)
   {
     if (::u.isTable(langConfig))
-      return convertTable(langConfig, paramValidateFunction)
+      return this.convertTable(langConfig, paramValidateFunction)
     if (::u.isArray(langConfig))
     {
       let resArray = ::u.map(langConfig,
-        (@(cfg) convertAny(cfg, paramValidateFunction) || "").bindenv(this))
+        (@(cfg) this.convertAny(cfg, paramValidateFunction) || "").bindenv(this))
       return ::g_string.implode(resArray, separator)
     }
     if (::u.isString(langConfig))
-      return ::loc(getLocId(langConfig), defaultLocValue)
+      return loc(getLocId(langConfig), defaultLocValue)
     return null
   }
 
@@ -153,7 +159,7 @@ let systemMsg = { //functons here need to be able recursive call self
       let params = {}
       foreach(key, param in configTbl)
       {
-        let text = convertAny(param, paramValidateFunction, "", "")
+        let text = this.convertAny(param, paramValidateFunction, "", "")
         if (!::u.isEmpty(text))
         {
           params[key] <- text
@@ -167,18 +173,18 @@ let systemMsg = { //functons here need to be able recursive call self
           paramOut = param
         params[key] <- paramOut
       }
-      res = ::loc(getLocId(locId), params)
+      res = loc(getLocId(locId), params)
     }
 
     let colorName = getColorByTag(configTbl?[COLOR_ID])
-    res = ::colorize(colorName, res)
+    res = colorize(colorName, res)
     return res
   }
 
   function jsonStringToLang(jsonString, paramValidateFunction = null, separator = "")
   {
     let langConfig = ::parse_json(jsonString)
-    return convertAny(langConfig, paramValidateFunction, separator)
+    return this.convertAny(langConfig, paramValidateFunction, separator)
   }
 }
 
@@ -217,8 +223,8 @@ getroottable().dbgExample <- function(textObjId = "menu_chat_text")
   ])
 
   local res = systemMsg.jsonStringToLang(json)
-  local testObj = get_gui_scene()[textObjId]
-  if (::check_obj(testObj))
+  local testObj = ::get_gui_scene()[textObjId]
+  if (checkObj(testObj))
     testObj.setValue(res)
   return json
 }

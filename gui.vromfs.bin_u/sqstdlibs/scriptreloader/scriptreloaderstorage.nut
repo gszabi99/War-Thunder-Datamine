@@ -1,28 +1,26 @@
-::ScriptReloaderStorage <- class
-{
+#no-root-fallback
+#explicit-this
+
+let ScriptReloaderStorage = class {
   contextWeak = null
   paramsArray = null
   storedData = null
 
-  constructor(context, paramsList)
-  {
+  constructor(context, paramsList) {
     this.setContextParams(context, paramsList)
   }
 
-  function setContextParams(context, paramsList)
-  {
+  function setContextParams(context, paramsList) {
     this.contextWeak = context ? context.weakref() : null
     this.paramsArray = paramsList
   }
 
-  function switchToNewContext(context, paramsList)
-  {
+  function switchToNewContext(context, paramsList) {
     this.setContextParams(context, paramsList)
     this.loadDataFromStorage()
   }
 
-  function loadDataFromStorage()
-  {
+  function loadDataFromStorage() {
     if (!this.storedData || !this.paramsArray || !this.contextWeak)
       return
 
@@ -31,8 +29,7 @@
         this.contextWeak[param] = this.storedData[param]
   }
 
-  function saveDataToStorage()
-  {
+  function saveDataToStorage() {
     if (!this.contextWeak)
       return
 
@@ -43,4 +40,7 @@
       if (param in this.contextWeak)
         this.storedData[param] <- this.contextWeak[param]
   }
+}
+return {
+  ScriptReloaderStorage
 }

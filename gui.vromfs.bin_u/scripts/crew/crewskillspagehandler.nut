@@ -1,13 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let { getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
-{
+local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
-  sceneTplName = "%gui/crew/crewSkillRow"
+  sceneTplName = "%gui/crew/crewSkillRow.tpl"
   pageBonuses = null
   repeatButton = false
   needAskBuySkills = false
@@ -16,95 +22,95 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   crew = null
   curPage = null
-  curCrewUnitType = ::CUT_INVALID
+  curCrewUnitType = CUT_INVALID
   curPoints = 0
   onSkillRowChangeCb = null
   unit = null
 
   function initScreen()
   {
-    if (!curPage || !crew)
+    if (!this.curPage || !this.crew)
     {
-      scene = null //make handler invalid to unsubscribe from events.
+      this.scene = null //make handler invalid to unsubscribe from events.
       ::script_net_assert_once("failed load crewSkillsPage", format("Error: try to init CrewSkillsPageHandler without page data (%s) or crew (%s)",
-                                   ::toString(curPage), ::toString(crew)))
+                                   toString(this.curPage), toString(this.crew)))
       return
     }
 
-    pageBonuses = getItemsBonuses(curPage)
-    pageOnInit = true
-    updateSkills()
+    this.pageBonuses = this.getItemsBonuses(this.curPage)
+    this.pageOnInit = true
+    this.updateSkills()
 
-    pageOnInit = false
+    this.pageOnInit = false
   }
 
   function loadSceneTpl(row = null)
   {
     let rows = []
-    local obj = scene
+    local obj = this.scene
     if (row != null)
     {
-       obj = scene.findObject(getRowName(row))
-       let item = curPage.items?[row]
-       if (!::checkObj(obj) || !item)
+       obj = this.scene.findObject(this.getRowName(row))
+       let item = this.curPage.items?[row]
+       if (!checkObj(obj) || !item)
          return
 
-       rows.append(getSkillRowConfig(row))
+       rows.append(this.getSkillRowConfig(row))
     }
     else
-      foreach(idx, item in curPage.items)
-        if (item.isVisible(curCrewUnitType))
-          rows.append(getSkillRowConfig(idx))
+      foreach(idx, item in this.curPage.items)
+        if (item.isVisible(this.curCrewUnitType))
+          rows.append(this.getSkillRowConfig(idx))
 
     let view = { rows = rows, needAddRow = row == null }
-    if (unit != null)
+    if (this.unit != null)
     {
-      view.buySpecTooltipId1 <- ::g_crew_spec_type.EXPERT.getBtnBuyTooltipId(crew, unit)
-      view.buySpecTooltipId2 <- ::g_crew_spec_type.ACE.getBtnBuyTooltipId(crew, unit)
+      view.buySpecTooltipId1 <- ::g_crew_spec_type.EXPERT.getBtnBuyTooltipId(this.crew, this.unit)
+      view.buySpecTooltipId2 <- ::g_crew_spec_type.ACE.getBtnBuyTooltipId(this.crew, this.unit)
     }
 
-    let data = ::handyman.renderCached(sceneTplName, view)
-    guiScene.replaceContentFromText(obj, data, data.len(), this)
+    let data = ::handyman.renderCached(this.sceneTplName, view)
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
 
     if (row != null)
       return
 
-    let totalRows = scene.childrenCount()
-    if (totalRows > 0 && totalRows <= scene.getValue())
-      scene.setValue(0)
+    let totalRows = this.scene.childrenCount()
+    if (totalRows > 0 && totalRows <= this.scene.getValue())
+      this.scene.setValue(0)
   }
 
   function setHandlerVisible(value)
   {
-    isHandlerVisible = value
-    scene.show(value)
-    scene.enable(value)
+    this.isHandlerVisible = value
+    this.scene.show(value)
+    this.scene.enable(value)
   }
 
   function updateHandlerData(params)
   {
-    curPage = params.curPage
-    crew = params.crew
-    curCrewUnitType = params.curCrewUnitType
-    curPoints = params.curPoints
-    unit = params.unit
-    pageBonuses = getItemsBonuses(curPage)
-    if (!curPage)
+    this.curPage = params.curPage
+    this.crew = params.crew
+    this.curCrewUnitType = params.curCrewUnitType
+    this.curPoints = params.curPoints
+    this.unit = params.unit
+    this.pageBonuses = this.getItemsBonuses(this.curPage)
+    if (!this.curPage)
       return
 
-    updateSkills()
+    this.updateSkills()
   }
 
   function getItemsBonuses(page)
   {
     let bonuses = []
     local curGunnersMul = 1.0
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
+    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.unit)
     let curSpecMul = specType.getMulValue()
     if (page.id=="gunner")
     {
-      let airGunners = ::getTblValue("gunnersCount", unit, 0)
-      local curGunners = getSkillValue(crew.id, unit, "gunner", "members")
+      let airGunners = getTblValue("gunnersCount", this.unit, 0)
+      local curGunners = getSkillValue(this.crew.id, this.unit, "gunner", "members")
       foreach (item in page.items)
         if(item.name == "members" && "newValue" in item)
         {
@@ -118,7 +124,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach(item in page.items)
     {
-      let hasSpecMul = item.useSpecializations && item.isVisible(curCrewUnitType)
+      let hasSpecMul = item.useSpecializations && item.isVisible(this.curCrewUnitType)
       bonuses.append({
         add =  hasSpecMul ? curSpecMul * ::g_crew.getMaxSkillValue(item) : 0.0
         mul = (item.name == "members") ? 1.0 : curGunnersMul
@@ -137,168 +143,168 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurPoints()
   {
-    return curPoints
+    return this.curPoints
   }
 
   function updateIncButtons(items)
   {
     foreach(idx, item in items)
     {
-      if (!item.isVisible(curCrewUnitType))
+      if (!item.isVisible(this.curCrewUnitType))
         continue
-      let rowObj = scene.findObject(getRowName(idx))
-      if (!::checkObj(rowObj))
+      let rowObj = this.scene.findObject(this.getRowName(idx))
+      if (!checkObj(rowObj))
         continue
 
-      let newCost = ::g_crew.getNextSkillStepCost(item, item?.newValue ?? getSkillValue(crew.id, unit, curPage.id, item.name))
-      rowObj.findObject("buttonInc").inactiveColor = (newCost > 0 && newCost <= getCurPoints()) ? "no" : "yes"
-      rowObj.findObject("availableSkillProgress").setValue(::g_crew.skillValueToStep(item, getSkillMaxAvailable(item)))
+      let newCost = ::g_crew.getNextSkillStepCost(item, item?.newValue ?? getSkillValue(this.crew.id, this.unit, this.curPage.id, item.name))
+      rowObj.findObject("buttonInc").inactiveColor = (newCost > 0 && newCost <= this.getCurPoints()) ? "no" : "yes"
+      rowObj.findObject("availableSkillProgress").setValue(::g_crew.skillValueToStep(item, this.getSkillMaxAvailable(item)))
     }
   }
 
   function applySkillRowChange(row, item, newValue)
   {
-    onSkillRowChangeCb?(item, newValue)
-    guiScene.performDelayed(this, function() {
-      if (isValid())
-        updateSkills(row)
+    this.onSkillRowChangeCb?(item, newValue)
+    this.guiScene.performDelayed(this, function() {
+      if (this.isValid())
+        this.updateSkills(row)
     })
   }
 
   function onProgressButton(obj, inc, isRepeat = false, limit = false)
   {
-    if (!isRecrutedCurCrew())
+    if (!this.isRecrutedCurCrew())
       return
 
-    let row = ::g_crew.getButtonRow(obj, scene, scene)
-    if (curPage.items.len() > 0 && (!repeatButton || isRepeat))
+    let row = ::g_crew.getButtonRow(obj, this.scene, this.scene)
+    if (this.curPage.items.len() > 0 && (!this.repeatButton || isRepeat))
     {
-      let item = curPage.items[row]
-      let value = getSkillValue(crew.id, unit, curPage.id, item.name)
+      let item = this.curPage.items[row]
+      let value = getSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
       local newValue = item.newValue
       if (limit)
-        newValue += inc ? getSkillMaxAvailable(item) : item.value
+        newValue += inc ? this.getSkillMaxAvailable(item) : item.value
       else
         newValue = ::g_crew.getNextSkillStepValue(item, newValue, inc)
       newValue = clamp(newValue, value, ::g_crew.getMaxSkillValue(item))
       if (newValue == item.newValue)
         return
       let changeCost = ::g_crew.getSkillCost(item, newValue, item.newValue)
-      if (getCurPoints() - changeCost < 0)
+      if (this.getCurPoints() - changeCost < 0)
       {
         if (isRepeat)
-          needAskBuySkills = true
+          this.needAskBuySkills = true
         else
-          askBuySkills()
+          this.askBuySkills()
         return
       }
 
-      applySkillRowChange(row, item, newValue)
+      this.applySkillRowChange(row, item, newValue)
     }
-    repeatButton = isRepeat
+    this.repeatButton = isRepeat
   }
 
   function onButtonInc(obj)
   {
-    onProgressButton(obj, true)
+    this.onProgressButton(obj, true)
   }
 
   function onButtonDec(obj)
   {
-    onProgressButton(obj, false)
+    this.onProgressButton(obj, false)
   }
 
   function onButtonIncRepeat(obj)
   {
-    onProgressButton(obj, true, true)
+    this.onProgressButton(obj, true, true)
   }
 
   function onButtonDecRepeat(obj)
   {
-    onProgressButton(obj, false, true)
+    this.onProgressButton(obj, false, true)
   }
 
-  function onButtonMax(obj)
+  function onButtonMax(_obj)
   {
     // onProgressButton(obj, true, true)
   }
 
   function getSkillMaxAvailable(skillItem)
   {
-    return ::g_crew.getMaxAvailbleStepValue(skillItem, skillItem.newValue, getCurPoints())
+    return ::g_crew.getMaxAvailbleStepValue(skillItem, skillItem.newValue, this.getCurPoints())
   }
 
   function updateSkills(row = null, needUpdateIncButton = true)
   {
-    if(row == null || (curPage.items[row].name == "members" && curPage.id == "gunner"))
-      loadSceneTpl()
+    if(row == null || (this.curPage.items[row].name == "members" && this.curPage.id == "gunner"))
+      this.loadSceneTpl()
     else
-      loadSceneTpl(row)
+      this.loadSceneTpl(row)
 
     if (needUpdateIncButton)
-      updateIncButtons(curPage.items)
+      this.updateIncButtons(this.curPage.items)
   }
 
   function onSkillChanged(obj)
   {
-    if (pageOnInit || !obj || !isRecrutedCurCrew())
+    if (this.pageOnInit || !obj || !this.isRecrutedCurCrew())
       return
 
-    let row = ::g_crew.getButtonRow(obj, scene, scene)
-    if (curPage.items.len() == 0)
+    let row = ::g_crew.getButtonRow(obj, this.scene, this.scene)
+    if (this.curPage.items.len() == 0)
       return
 
-    let item = curPage.items[row]
+    let item = this.curPage.items[row]
     let newStep = obj.getValue()
     if (newStep == ::g_crew.skillValueToStep(item, item.newValue))
       return
 
     local newValue = ::g_crew.skillStepToValue(item, newStep)
-    let value = getSkillValue(crew.id, unit, curPage.id, item.name)
-    let maxValue = getSkillMaxAvailable(item)
+    let value = getSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
+    let maxValue = this.getSkillMaxAvailable(item)
     if (newValue < value)
       newValue = value
     if (newValue > maxValue)
     {
       newValue = maxValue
       if (item.newValue == maxValue)
-        askBuySkills()
+        this.askBuySkills()
     }
     if (newValue == item.newValue)
     {
-      guiScene.performDelayed(this, function() {
-        if (isValid())
-          updateSkills(row, false)
+      this.guiScene.performDelayed(this, function() {
+        if (this.isValid())
+          this.updateSkills(row, false)
       })
       return
     }
     let changeCost = ::g_crew.getSkillCost(item, newValue, item.newValue)
-    if (getCurPoints() - changeCost < 0)
+    if (this.getCurPoints() - changeCost < 0)
     {
-      askBuySkills()
+      this.askBuySkills()
       return
     }
 
-    applySkillRowChange(row, item, newValue)
+    this.applySkillRowChange(row, item, newValue)
   }
 
   function askBuySkills()
   {
-    needAskBuySkills = false
+    this.needAskBuySkills = false
 
     // Duplicate check.
-    if (::checkObj(guiScene["buySkillPoints"]))
+    if (checkObj(this.guiScene["buySkillPoints"]))
       return
 
-    let spendGold = ::has_feature("SpendGold")
-    local text = ::loc("shop/notEnoughSkillPoints")
+    let spendGold = hasFeature("SpendGold")
+    local text = loc("shop/notEnoughSkillPoints")
     let cancelButtonName = spendGold? "no" : "ok"
     let buttonsArray = [[cancelButtonName, function(){}]]
     local defaultButton = "ok"
     if (spendGold)
     {
       text += "\n" + loc("shop/purchaseMoreSkillPoints")
-      buttonsArray.insert(0,["yes", (@(crew) function() { ::g_crew.createCrewBuyPointsHandler(crew) })(crew)])
+      buttonsArray.insert(0,["yes", (@(crew) function() { ::g_crew.createCrewBuyPointsHandler(crew) })(this.crew)])
       defaultButton = "yes"
     }
     this.msgBox("buySkillPoints", text, buttonsArray, defaultButton)
@@ -306,17 +312,17 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSpecIncrease(nextSpecType)
   {
-    ::g_crew.upgradeUnitSpec(crew, unit, curCrewUnitType, nextSpecType)
+    ::g_crew.upgradeUnitSpec(this.crew, this.unit, this.curCrewUnitType, nextSpecType)
   }
 
   function onSpecIncrease1()
   {
-    onSpecIncrease(::g_crew_spec_type.EXPERT)
+    this.onSpecIncrease(::g_crew_spec_type.EXPERT)
   }
 
   function onSpecIncrease2()
   {
-    onSpecIncrease(::g_crew_spec_type.ACE)
+    this.onSpecIncrease(::g_crew_spec_type.ACE)
   }
 
   function onSkillRowTooltipOpen(obj)
@@ -325,23 +331,23 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     let skillName = obj?.skillName ?? ""
     let difficulty = ::get_current_shop_difficulty()
     let view = getSkillDescriptionView(
-      crew, difficulty, memberName, skillName, curCrewUnitType, unit)
-    let data = ::handyman.renderCached("%gui/crew/crewSkillParametersTooltip", view)
-    guiScene.replaceContentFromText(obj, data, data.len(), this)
+      this.crew, difficulty, memberName, skillName, this.curCrewUnitType, this.unit)
+    let data = ::handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
   function getSkillRowConfig(idx)
   {
-    let item = curPage.items?[idx]
+    let item = this.curPage.items?[idx]
     if (!item)
       return null
 
-    let value = getSkillValue(crew.id, unit, curPage.id, item.name)
+    let value = getSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
     if (!("newValue" in item))
       item.newValue <- value
 
     let newProgressValue = ::g_crew.skillValueToStep(item, item.newValue)
-    let bonusData = pageBonuses?[idx]
+    let bonusData = this.pageBonuses?[idx]
     local bonusText = ""
     local bonusOverlayTextColor = "good"
     local bonusTooltip = ""
@@ -356,28 +362,28 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
       bonusOverlayTextColor = (bonusLevel < 0) ? "bad" : "good"
 
       if (bonusData.add > 0)
-        bonusTooltip = ::loc("crew/qualifyBonus") + ::loc("ui/colon")
-                  + ::colorize("goodTextColor", "+" + stdMath.round_by_value(addLevel, 0.01))
+        bonusTooltip = loc("crew/qualifyBonus") + loc("ui/colon")
+                  + colorize("goodTextColor", "+" + stdMath.round_by_value(addLevel, 0.01))
 
       let lvlDiffByGunners = stdMath.round_by_value(bonusLevel - addLevel, 0.01)
       if (lvlDiffByGunners < 0)
-        bonusTooltip += ((bonusTooltip != "") ? "\n" : "") + ::loc("crew/notEnoughGunners") + ::loc("ui/colon")
+        bonusTooltip += ((bonusTooltip != "") ? "\n" : "") + loc("crew/notEnoughGunners") + loc("ui/colon")
           + "<color=@badTextColor>" + lvlDiffByGunners + "</color>"
     }
 
-    let level = ::g_crew.getCrewLevel(crew, unit, unit?.getCrewUnitType?() ?? ::CUT_INVALID)
-    let isRecrutedCrew = isRecrutedCurCrew()
+    let level = ::g_crew.getCrewLevel(this.crew, this.unit, this.unit?.getCrewUnitType?() ?? CUT_INVALID)
+    let isRecrutedCrew = this.isRecrutedCurCrew()
     return {
-      id = getRowName(idx)
+      id = this.getRowName(idx)
       rowIdx = idx
       even = idx % 2 == 0
       skillName = item.name
-      memberName = curPage.id
-      name = ::loc("crew/" + item.name)
+      memberName = this.curPage.id
+      name = loc("crew/" + item.name)
       progressMax = ::g_crew.getTotalSteps(item)
       maxSkillCrewLevel = ::g_crew.getSkillMaxCrewLevel(item)
       maxValue = ::g_crew.getMaxSkillValue(item)
-      havePageBonuses = pageBonuses != null
+      havePageBonuses = this.pageBonuses != null
       bonusText = bonusText
       bonusOverlayTextColor = bonusOverlayTextColor
       bonusTooltip = bonusTooltip
@@ -395,8 +401,8 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
       incCost = ::get_crew_sp_text(::g_crew.getNextSkillStepCost(item, item.newValue), false)
 
       btnSpec = [
-        getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, level, bonusData),
-        getRowSpecButtonConfig(::g_crew_spec_type.ACE, level, bonusData)
+        this.getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, level, bonusData),
+        this.getRowSpecButtonConfig(::g_crew_spec_type.ACE, level, bonusData)
       ]
     }
   }
@@ -406,7 +412,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     local icon = ""
     let curSpecCode = bonusData.specType.code
     if (bonusData && bonusData.haveSpec)
-      icon = specType.getIcon(curSpecCode, crewLvl, unit)
+      icon = specType.getIcon(curSpecCode, crewLvl, this.unit)
     return {
       id = specType.code
       icon = icon
@@ -416,8 +422,8 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  setCurPoints = @(newPoints) curPoints = newPoints
-  isRecrutedCurCrew = @() crew.id != -1
+  setCurPoints = @(newPoints) this.curPoints = newPoints
+  isRecrutedCurCrew = @() this.crew.id != -1
 }
 
 ::gui_handlers.CrewSkillsPageHandler <- CrewSkillsPageHandler

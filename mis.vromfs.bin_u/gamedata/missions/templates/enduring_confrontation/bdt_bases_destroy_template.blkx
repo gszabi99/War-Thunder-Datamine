@@ -346,7 +346,7 @@
               "value": "sobiraem imya zenitok"
             },
             {
-              "value": "getting target name"
+              "value": "getting target name by bomber IDX not by actual name"
             },
             {
               "value": "vypolnyaem proverku dostupno li imya"
@@ -427,7 +427,7 @@
             },
             {
               "digits": 2,
-              "value": "@bdt_t1_cur_spawn_random_idx",
+              "value": "@bdt_t1_cur_base_spawn_idx",
               "var": "bdt_spawn_t1_bombing_zone_target_name"
             },
             {
@@ -875,7 +875,10 @@
         "actions": {
           "comment": [
             {
-              "value": "proyavlyaem ob'ekt"
+              "value": "showing base model"
+            },
+            {
+              "value": "placing bomb_target unit for AI"
             },
             {
               "value": "proverili chto ob'ekt sushchestvuet"
@@ -890,23 +893,25 @@
               "value": "uvelichivaem peremennuyu kolichestva tekushchih zon na odnu"
             },
             {
-              "value": "daem zadanie"
-            },
-            {
               "value": "govorim chto cel' dostupna dlya bomberov"
-            },
-            {
-              "value": "naznachaem tajmer"
             },
             {
               "value": "zapuskaem spavny zenitok"
             }
           ],
           "unitWakeUp": {
-            "target": [
-              "@bdt_spawn_t1_bombing_zone_object_name",
-              "@bdt_spawn_t1_bombing_zone_target_name"
-            ]
+            "target": "@bdt_spawn_t1_bombing_zone_object_name"
+          },
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "@bdt_spawn_t1_bombing_zone_target_name",
+            "target": "@bdt_t1_cur_spawn_zone_name",
+            "isStealth": true
           },
           "missionSetBombingArea": {
             "army": 1,
@@ -949,14 +954,6 @@
             "operator": "add",
             "value": 1.0,
             "var": "bdt_t1_cur_bases_count"
-          },
-          "__triggerEnable": {
-            "target": "bdt_t1_give_objectvie"
-          },
-          "__varSetInt": {
-            "value": 0,
-            "var": "bdt_spawn_t1_timer",
-            "input_var": "bdt_respawn_time"
           },
           "triggerEnable": {
             "target": "bdt_t1_aaa_spawn_start"
@@ -1124,7 +1121,7 @@
               "value": "sobiraem imya zenitok"
             },
             {
-              "value": "getting target name"
+              "value": "getting target name by bomber IDX not by actual name"
             },
             {
               "value": "vypolnyaem proverku dostupno li imya"
@@ -1205,7 +1202,7 @@
             },
             {
               "digits": 2,
-              "value": "@bdt_t2_cur_spawn_random_idx",
+              "value": "@bdt_t2_cur_base_spawn_idx",
               "var": "bdt_spawn_t2_bombing_zone_target_name"
             },
             {
@@ -1646,18 +1643,12 @@
         },
         "conditions": {},
         "actions": {
-          "__varSetString": {
-            "value": "bdt_t2_bomb_object_",
-            "var": "bdt_spawn_t2_bombing_zone_object_name"
-          },
-          "__varAddString": {
-            "value": "@bdt_t2_cur_spawn_random_idx",
-            "digits": 2,
-            "var": "bdt_spawn_t2_bombing_zone_object_name"
-          },
           "comment": [
             {
-              "value": "proyavlyaem ob'ekt"
+              "value": "showing base model"
+            },
+            {
+              "value": "placing bomb_target unit for AI"
             },
             {
               "value": "proverili chto ob'ekt sushchestvuet"
@@ -1672,23 +1663,25 @@
               "value": "uvelichivaem peremennuyu kolichestva tekushchih zon na odnu"
             },
             {
-              "value": "daem zadanie"
-            },
-            {
               "value": "govorim chto cel' dostupna dlya bomberov"
-            },
-            {
-              "value": "naznachaem tajmer"
             },
             {
               "value": "spavnim zenitki"
             }
           ],
           "unitWakeUp": {
-            "target": [
-              "@bdt_spawn_t2_bombing_zone_object_name",
-              "@bdt_spawn_t2_bombing_zone_target_name"
-            ]
+            "target": "@bdt_spawn_t2_bombing_zone_object_name"
+          },
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "@bdt_spawn_t2_bombing_zone_target_name",
+            "target": "@bdt_t2_cur_spawn_zone_name",
+            "isStealth": true
           },
           "missionSetBombingArea": {
             "army": 2,
@@ -1731,14 +1724,6 @@
             "operator": "add",
             "value": 1.0,
             "var": "bdt_t2_cur_bases_count"
-          },
-          "__triggerEnable": {
-            "target": "bdt_t2_give_objectvie"
-          },
-          "__varSetInt": {
-            "value": 0,
-            "var": "bdt_spawn_t2_timer",
-            "input_var": "bdt_respawn_time"
           },
           "triggerEnable": {
             "target": "bdt_t2_aaa_spawn_start"
@@ -4826,7 +4811,670 @@
   "dialogs": {},
   "airfields": {},
   "effects": {},
-  "units": {},
+  "units": {
+    "structures": [
+      {
+        "name": "bdt_t1_bomb_zone_01_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            149790.0,
+            2589.22,
+            16492.7
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_bomb_zone_02_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            149914.0,
+            2589.22,
+            16492.7
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_bomb_zone_03_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            150060.0,
+            2589.22,
+            16492.7
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_bomb_zone_04_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            150213.0,
+            2589.22,
+            16492.7
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t1_bomb_zone_05_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            150372.0,
+            2589.22,
+            16492.7
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_bomb_zone_01_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            149790.0,
+            2589.22,
+            17308.1
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_bomb_zone_02_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            149910.0,
+            2589.22,
+            17308.1
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_bomb_zone_03_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            150073.0,
+            2589.22,
+            17308.1
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_bomb_zone_04_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            150216.0,
+            2589.22,
+            17308.1
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      },
+      {
+        "name": "bdt_t2_bomb_zone_05_bomb_target",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            150369.0,
+            2589.22,
+            17308.1
+          ]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "bdt_t1_targets_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            150313.0,
+            2589.22,
+            15102.1
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t1_bomb_zone_01_bomb_target",
+            "bdt_t1_bomb_zone_02_bomb_target",
+            "bdt_t1_bomb_zone_03_bomb_target",
+            "bdt_t1_bomb_zone_04_bomb_target",
+            "bdt_t1_bomb_zone_05_bomb_target"
+          ]
+        }
+      },
+      {
+        "name": "bdt_t2_targets_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            150904.0,
+            2589.22,
+            17308.1
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t2_bomb_zone_01_bomb_target",
+            "bdt_t2_bomb_zone_02_bomb_target",
+            "bdt_t2_bomb_zone_03_bomb_target",
+            "bdt_t2_bomb_zone_04_bomb_target",
+            "bdt_t2_bomb_zone_05_bomb_target"
+          ]
+        }
+      }
+    ]
+  },
   "areas": {},
   "objLayers": {
     "layer": [

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
@@ -15,39 +21,39 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   static function getUidByParams(params)
   {
-    return "SR_" + ::getTblValue("inviterName", params, "") + "/" + ::getTblValue("roomId", params, "")
+    return "SR_" + getTblValue("inviterName", params, "") + "/" + getTblValue("roomId", params, "")
   }
 
   function updateCustomParams(params, initial = false)
   {
-    roomId = ::getTblValue("roomId", params, roomId)
-    password = ::getTblValue("password", params, password)
+    this.roomId = getTblValue("roomId", params, this.roomId)
+    this.password = getTblValue("password", params, this.password)
 
-    if (::g_squad_manager.isMySquadLeader(inviterUid))
+    if (::g_squad_manager.isMySquadLeader(this.inviterUid))
     {
-      implAccept(true) //auto accept squad leader room invite
-      isAccepted = true //if fail to join, it will try again on ready
+      this.implAccept(true) //auto accept squad leader room invite
+      this.isAccepted = true //if fail to join, it will try again on ready
       return
     }
 
     if (initial)
     {
       ::add_event_listener("RoomJoined",
-        function (p) {
-          if (::SessionLobby.isInRoom() && ::SessionLobby.roomId == roomId)
+        function (_p) {
+          if (::SessionLobby.isInRoom() && ::SessionLobby.roomId == this.roomId)
           {
-            remove()
-            onSuccessfulAccept()
+            this.remove()
+            this.onSuccessfulAccept()
           }
         },
         this)
       ::add_event_listener("MRoomInfoUpdated",
         function (p) {
-          if (p.roomId != roomId)
+          if (p.roomId != this.roomId)
             return
-          setDelayed(false)
-          if (!isValid())
-            remove()
+          this.setDelayed(false)
+          if (!this.isValid())
+            this.remove()
           else
             ::g_invites.broadcastInviteUpdated(this)
         },
@@ -55,49 +61,49 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     }
 
     //do not set delayed when scipt reload to not receive invite popup on each script reload
-    setDelayed(!::g_script_reloader.isInReloading && !::g_mroom_info.get(roomId).getFullRoomData())
+    this.setDelayed(!::g_script_reloader.isInReloading && !::g_mroom_info.get(this.roomId).getFullRoomData())
   }
 
   function isValid()
   {
-    return !isAccepted
-        && !::g_mroom_info.get(roomId).isRoomDestroyed
+    return !this.isAccepted
+        && !::g_mroom_info.get(this.roomId).isRoomDestroyed
   }
 
   function remove()
   {
-    isAccepted = true
+    this.isAccepted = true
     base.remove()
   }
 
   function getText(locIdFormat, activeColor = null)
   {
     if (!activeColor)
-      activeColor = inviteActiveColor
+      activeColor = this.inviteActiveColor
 
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
     local modeId = "skirmish"
-    let params = { player = ::colorize(activeColor, getInviterName()) }
+    let params = { player = colorize(activeColor, this.getInviterName()) }
     if (event)
     {
       modeId = "event"
-      params.eventName <- ::colorize(activeColor, ::events.getEventNameText(event))
+      params.eventName <- colorize(activeColor, ::events.getEventNameText(event))
     }
     else
-      params.missionName <- room ? ::colorize(activeColor, ::SessionLobby.getMissionNameLoc(room)) : ""
+      params.missionName <- room ? colorize(activeColor, ::SessionLobby.getMissionNameLoc(room)) : ""
 
-    return ::loc(format(locIdFormat, modeId), params)
+    return loc(format(locIdFormat, modeId), params)
   }
 
   function getInviteText()
   {
-    return getText("invite/%s/message_no_nick", "userlogColoredText")
+    return this.getText("invite/%s/message_no_nick", "userlogColoredText")
   }
 
   function getPopupText()
   {
-    return getText("invite/%s/message")
+    return this.getText("invite/%s/message")
   }
 
   function getIcon()
@@ -108,28 +114,28 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function haveRestrictions()
   {
     return !::isInMenu()
-      || !isMissionAvailable()
-      || !isAvailableByCrossPlay()
+      || !this.isMissionAvailable()
+      || !this.isAvailableByCrossPlay()
       || !isMultiplayerPrivilegeAvailable.value
   }
 
   function isMissionAvailable()
   {
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
     return !::SessionLobby.isUrlMission(room) || ::ps4_is_ugc_enabled()
   }
 
   function getRestrictionText()
   {
-    if (haveRestrictions())
+    if (this.haveRestrictions())
     {
       if (!isMultiplayerPrivilegeAvailable.value)
-        return ::loc("xbox/noMultiplayer")
-      if (!isAvailableByCrossPlay())
-        return ::loc("xbox/crossPlayRequired")
-      if (!isMissionAvailable())
-        return ::loc("invite/session/ugc_restriction")
-      return ::loc("invite/session/cant_apply_in_flight")
+        return loc("xbox/noMultiplayer")
+      if (!this.isAvailableByCrossPlay())
+        return loc("xbox/crossPlayRequired")
+      if (!this.isMissionAvailable())
+        return loc("invite/session/ugc_restriction")
+      return loc("invite/session/cant_apply_in_flight")
     }
     return ""
   }
@@ -140,7 +146,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function reject()
   {
     base.reject()
-    onSuccessfulReject()
+    this.onSuccessfulReject()
   }
 
   function accept()
@@ -153,19 +159,19 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return
     }
 
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
     if (!::check_gamemode_pkg(::SessionLobby.getGameMode(room)))
       return
 
-    implAccept()
+    this.implAccept()
   }
 
   function implAccept(ignoreCheckSquad = false)
   {
-    if (!::check_gamemode_pkg(::GM_SKIRMISH))
+    if (!::check_gamemode_pkg(GM_SKIRMISH))
       return
 
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event != null && (!antiCheat.showMsgboxIfEacInactive(event)||
                           !showMsgboxIfSoundModsNotAllowed(event)))
@@ -173,21 +179,21 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
     let canJoin = ignoreCheckSquad
                     ||  ::g_squad_utils.canJoinFlightMsgBox(
-                          { isLeaderCanJoin = true }, ::Callback(_implAccept, this))
+                          { isLeaderCanJoin = true }, Callback(this._implAccept, this))
     if (canJoin)
-      _implAccept()
+      this._implAccept()
   }
 
   function _implAccept()
   {
-    if (isOutdated())
+    if (this.isOutdated())
       return ::g_invites.showExpiredInvitePopup()
 
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event)
-      ::gui_handlers.EventRoomsHandler.open(event, false, roomId)
+      ::gui_handlers.EventRoomsHandler.open(event, false, this.roomId)
     else
-      ::SessionLobby.joinRoom(roomId, inviterUid, password)
+      ::SessionLobby.joinRoom(this.roomId, this.inviterUid, this.password)
   }
 }

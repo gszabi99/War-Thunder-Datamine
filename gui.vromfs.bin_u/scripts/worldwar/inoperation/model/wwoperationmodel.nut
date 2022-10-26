@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
 ::WwOperationModel <- class
@@ -9,13 +15,13 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 
   constructor()
   {
-    armies = ::WwOperationArmies()
-    maxUniqueUnitsOnFlyout = ::g_world_war.getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
+    this.armies = ::WwOperationArmies()
+    this.maxUniqueUnitsOnFlyout = ::g_world_war.getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
   }
 
   function update()
   {
-    armies.statusUpdate()
+    this.armies.statusUpdate()
   }
 
   function getGroupAirArmiesLimit(airfieldTypeName)
@@ -28,8 +34,8 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 
   function getUnitsFlyoutRange()
   {
-    if (!unitClassFlyoutRange)
-      unitClassFlyoutRange = {
+    if (!this.unitClassFlyoutRange)
+      this.unitClassFlyoutRange = {
         [WW_UNIT_CLASS.COMBINED] = {
           [WW_UNIT_CLASS.FIGHTER] = ::Point2(
             ::g_world_war.getWWConfigurableValue("airfieldCreateCombinedArmyFightersMin", 0),
@@ -57,13 +63,13 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
         }
       }
 
-    return unitClassFlyoutRange
+    return this.unitClassFlyoutRange
   }
 
   function getQuantityToFlyOut(bit, mask, range = null)
   {
     if (!range)
-      range = getUnitsFlyoutRange()
+      range = this.getUnitsFlyoutRange()
 
     if (!(bit & mask) || !(mask in range))
       return ::Point2(0, 0)

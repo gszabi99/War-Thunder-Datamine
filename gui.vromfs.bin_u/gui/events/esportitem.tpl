@@ -70,7 +70,7 @@ eSItemDiv {
         text:t='<<battlesNum>>'
       }
     }
-    include "%gui/events/eSportSession"
+    include "%gui/events/eSportSession.tpl"
 
     tdid {
       id:t='leaderboard_obj'

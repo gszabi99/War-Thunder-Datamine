@@ -166,6 +166,15 @@ let filter = nameFilter(filterString, {
   function onEscape() {
     set_kb_focus(null)
   }
+
+  function onReturn() {
+    set_kb_focus(null)
+  }
+
+  function onClear() {
+    filterString.update("")
+    set_kb_focus(null)
+  }
 })
 
 let function doSelectEid(eid, mod) {
@@ -193,7 +202,7 @@ let function listRow(eid, idx) {
     if (isSelected) {
       color = colors.Active
     } else {
-      color = (sf & S_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
+      color = (sf & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
     }
 
     let riExtraName = obsolete_dbg_get_comp_val(eid, "ri_extra__name")
@@ -272,7 +281,7 @@ let function listRow(eid, idx) {
 
 let function listRowMoreLeft(num, idx) {
   return watchElemState(function(sf) {
-    let color = (sf & S_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
+    let color = (sf & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
     return {
       rendObj = ROBJ_SOLID
       size = [flex(), SIZE_TO_CONTENT]

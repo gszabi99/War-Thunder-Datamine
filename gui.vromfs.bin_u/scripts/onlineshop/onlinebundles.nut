@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -35,7 +40,7 @@ let function getBundlesList(blockName) {
 let function getCachedBundleId(blockName, entName) {
   let list = getBundlesList(blockName)
   let res = list?[entName] ?? ""
-  ::dagor.debug($"Bundles: get id from block '{blockName}' by bundle '{entName}' = {res}")
+  log($"Bundles: get id from block '{blockName}' by bundle '{entName}' = {res}")
   return res
 }
 
@@ -61,8 +66,8 @@ let function getCachedEntitlementId(blockName, bundleName) {
 }
 
 subscriptions.addListenersWithoutEnv({
-  ScriptsReloaded = @(p) clearCache()
-  SignOut = @(p) clearCache()
+  ScriptsReloaded = @(_p) clearCache()
+  SignOut = @(_p) clearCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 let getBundlesBlockName = @() isPlatformSony ? ps4RegionName()

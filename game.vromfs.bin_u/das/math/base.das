@@ -138,6 +138,12 @@ def scale_tm(tm : float3x4; scale : float) : float3x4
   return <- tm * scale_tm(scale)
 
 [generic]
+def pos_tm(pos : float3) : float3x4
+  var res = IDENT_TM
+  res[3] = pos
+  return res
+
+[generic]
 def cvt(val : float; from : float2; to : float2) : float
   return cvt(val, from.x, from.y, to.x, to.y)
 
@@ -150,3 +156,11 @@ def frac(x)
 def get_normal(dir : float3)
   let altDir = abs(dot(dir, float3(1, 0, 0))) > 0.5 ? float3(0, 0, 1) : float3(1, 0, 0)
   return cross(dir, altDir)
+
+[generic]
+def x0z(f)
+  return float3(f.x, 0., f.z)
+
+[generic]
+def xVz(f; v)
+  return float3(f.x, v, f.z)

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -12,20 +18,20 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
   function validateParams()
   {
     base.validateParams()
-    validatePresetsParams()
+    this.validatePresetsParams()
   }
 
   function validatePresetsParams()
   {
     let curPreset = slotbarPresets.getCurPreset()
-    unitsGroupsByCountry = curPreset.groupsList
-    countryPresets = curPreset.countryPresets
+    this.unitsGroupsByCountry = curPreset.groupsList
+    this.countryPresets = curPreset.countryPresets
   }
 
   function gatherVisibleCrewsConfig(onlyForCountryIdx = null)
   {
     let res = []
-    let country = getForcedCountry()
+    let country = this.getForcedCountry()
     foreach(idx, coutryCrews in ::g_crews_list.get())
     {
       if (onlyForCountryIdx != null && onlyForCountryIdx != idx)
@@ -33,7 +39,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
 
       let visibleCountries = getShopVisibleCountries()
       let listCountry = coutryCrews.country
-      if ((singleCountry != null && singleCountry != listCountry)
+      if ((this.singleCountry != null && this.singleCountry != listCountry)
         || visibleCountries.indexof(listCountry) == null)
         continue
 
@@ -49,20 +55,20 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
         continue
 
       let crewsList = coutryCrews.crews
-      let unitsList = countryPresets?[listCountry]
+      let unitsList = this.countryPresets?[listCountry]
       let realCrewsCount = crewsList.len()
-      let groupsList = unitsGroupsByCountry?[listCountry].groups
+      let groupsList = this.unitsGroupsByCountry?[listCountry].groups
       let isVisualDisabled = groupsList == null
-      let crewsCount = max(realCrewsCount, showNewSlot ? (groupsList?.len() ?? 0) : 0)
+      let crewsCount = max(realCrewsCount, this.showNewSlot ? (groupsList?.len() ?? 0) : 0)
       for(local i = 0; i < crewsCount; i++)
       {
-        let crew = crewsList?[i] ?? getDefaultCrew(listCountry, idx, i)
+        let crew = crewsList?[i] ?? this.getDefaultCrew(listCountry, idx, i)
         let unit = unitsList?.units[i]
         let status = unit == null ? bit_unit_status.empty
-          : isVisualDisabled || (unit != null && !(unit.name in availableUnits)) ? bit_unit_status.disabled
+          : isVisualDisabled || (unit != null && !(unit.name in this.availableUnits)) ? bit_unit_status.disabled
           : bit_unit_status.owned
 
-        addCrewData(countryData.crews, {
+        this.addCrewData(countryData.crews, {
           crew = crew,
           unit = unit,
           status = status,
@@ -77,35 +83,35 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
 
   function applySlotSelection(obj, selSlot)
   {
-    curSlotCountryId = selSlot.countryId
-    curSlotIdInCountry = selSlot.crewIdInCountry
+    this.curSlotCountryId = selSlot.countryId
+    this.curSlotIdInCountry = selSlot.crewIdInCountry
 
-    if (slotbarOninit)
+    if (this.slotbarOninit)
     {
-      if (afterSlotbarSelect)
-        afterSlotbarSelect()
+      if (this.afterSlotbarSelect)
+        this.afterSlotbarSelect()
       return
     }
 
-    let crewList = ::g_crews_list.get()?[curSlotCountryId]
+    let crewList = ::g_crews_list.get()?[this.curSlotCountryId]
     let country = crewList?.country ?? ""
-    let crew = crewList?.crews[curSlotIdInCountry]
-      ?? getDefaultCrew(country, curSlotCountryId, curSlotIdInCountry)
-    let groupsList = unitsGroupsByCountry?[country].groups
-    let unit = getCrewUnit(crew)
+    let crew = crewList?.crews[this.curSlotIdInCountry]
+      ?? this.getDefaultCrew(country, this.curSlotCountryId, this.curSlotIdInCountry)
+    let groupsList = this.unitsGroupsByCountry?[country].groups
+    let unit = this.getCrewUnit(crew)
     if (unit || groupsList == null)
-      setCrewUnit(unit)
-    else if (needActionsWithEmptyCrews)
-      onSlotChangeGroup()
+      this.setCrewUnit(unit)
+    else if (this.needActionsWithEmptyCrews)
+      this.onSlotChangeGroup()
 
-    if (hasActions)
+    if (this.hasActions)
     {
-      let slotItem = ::get_slot_obj(obj, curSlotCountryId, curSlotIdInCountry)
-      openUnitActionsList(slotItem)
+      let slotItem = ::get_slot_obj(obj, this.curSlotCountryId, this.curSlotIdInCountry)
+      this.openUnitActionsList(slotItem)
     }
 
-    if (afterSlotbarSelect)
-      afterSlotbarSelect()
+    if (this.afterSlotbarSelect)
+      this.afterSlotbarSelect()
   }
 
   getDefaultCrew = @(country, idCountry, idInCountry) {
@@ -117,19 +123,19 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
 
   function getCurSlotUnit()
   {
-    return countryPresets?[getCurCountry()].units[curSlotIdInCountry]
+    return this.countryPresets?[this.getCurCountry()].units[this.curSlotIdInCountry]
   }
 
   function getCrewUnit(crew)
   {
-    return countryPresets?[crew.country].units[crew.idInCountry]
+    return this.countryPresets?[crew.country].units[crew.idInCountry]
   }
 
   function getHangarFallbackUnitParams()
   {
     return {
-      country = getCurCountry()
-      slotbarUnits = (countryPresets?[getCurCountry()].units ?? [])
+      country = this.getCurCountry()
+      slotbarUnits = (this.countryPresets?[this.getCurCountry()].units ?? [])
         .filter(@(unit) unit != null)
     }
   }
@@ -143,42 +149,42 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
       ::select_crew(newCrew.idCountry, newCrew.idInCountry)
       setShowUnit(newUnit)
     }
-    validatePresetsParams()
-    fullUpdate()
+    this.validatePresetsParams()
+    this.fullUpdate()
   }
 
   function getCurCrew()
   {
-    return slotbarPresets.getSlotItem(curSlotCountryId, curSlotIdInCountry)
+    return slotbarPresets.getSlotItem(this.curSlotCountryId, this.curSlotIdInCountry)
   }
 
   getParamsForActionsList = @() { hasSlotbarByUnitsGroups = true }
   function onSlotChangeGroup()
   {
-    let crew = getCurCrew()
+    let crew = this.getCurCrew()
     if (!crew)
       return
 
     let slotbar = this
-    ignoreCheckSlotbar = true
-    checkedCrewAirChange(function() {
-        ignoreCheckSlotbar = false
+    this.ignoreCheckSlotbar = true
+    this.checkedCrewAirChange(function() {
+        this.ignoreCheckSlotbar = false
         selectGroupHandler.open(crew, slotbar)
       },
       function() {
-        ignoreCheckSlotbar = false
-        checkSlotbar()
+        this.ignoreCheckSlotbar = false
+        this.checkSlotbar()
       }
     )
   }
 
   getCrewDataParams = @(crewData) {
-    bottomLineText = ::loc(
+    bottomLineText = loc(
       slotbarPresets.getVehiclesGroupByUnit(
-        crewData.unit, unitsGroupsByCountry?[crewData?.crew.country ?? ""])?.name ?? "")
+        crewData.unit, this.unitsGroupsByCountry?[crewData?.crew.country ?? ""])?.name ?? "")
   }
 
-  getDefaultDblClickFunc = @() @(crew) null
+  getDefaultDblClickFunc = @() @(_crew) null
 }
 
 ::gui_handlers.slotbarWidgetByVehiclesGroups <- handlerClass
@@ -186,7 +192,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
 let function create(params)
 {
   let nest = params?.scene
-  if (!::check_obj(nest))
+  if (!checkObj(nest))
     return null
 
   if (params?.shouldAppendToObject ?? true) //we append to nav-bar by default

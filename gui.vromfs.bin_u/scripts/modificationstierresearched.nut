@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config)
@@ -9,7 +17,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
       config[param] = value[0]
   }
 
-  let unit = ::getAircraftByName(::getTblValue("unit", config))
+  let unit = ::getAircraftByName(getTblValue("unit", config))
   if (!unit)
     return
 
@@ -37,25 +45,25 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
 
   function initScreen()
   {
-    if (!expReward)
-      expReward = ::Cost()
+    if (!this.expReward)
+      this.expReward = ::Cost()
 
-    if (::u.isArray(unitInResearch))  //fix crash, but need to fix combine function to correct show multiple researched units
-      unitInResearch = unitInResearch[0] //but this is a really reare case, maybe no need to care about
+    if (::u.isArray(this.unitInResearch))  //fix crash, but need to fix combine function to correct show multiple researched units
+      this.unitInResearch = this.unitInResearch[0] //but this is a really reare case, maybe no need to care about
 
-    let isLastResearchedModule = ::shop_get_researchable_module_name(unit.name) == ""
+    let isLastResearchedModule = ::shop_get_researchable_module_name(this.unit.name) == ""
     local locTextId = "modifications/full_tier_researched"
     if (isLastResearchedModule)
       locTextId = "modifications/full_unit_researched"
 
-    let nameObj = scene.findObject("award_name")
-    if (::checkObj(nameObj))
-      nameObj.setValue(::loc(locTextId + "/header"))
+    let nameObj = this.scene.findObject("award_name")
+    if (checkObj(nameObj))
+      nameObj.setValue(loc(locTextId + "/header"))
 
-    let imgObj = scene.findObject("award_image")
-    if (::checkObj(imgObj))
+    let imgObj = this.scene.findObject("award_image")
+    if (checkObj(imgObj))
     {
-      local imageId = ::getUnitCountry(unit) + "_" + ::getUnitTypeTextByUnit(unit).tolower()
+      local imageId = ::getUnitCountry(this.unit) + "_" + ::getUnitTypeTextByUnit(this.unit).tolower()
       if (isLastResearchedModule)
         imageId += "_unit"
       else
@@ -63,84 +71,84 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
 
       local imagePath = ::get_country_flag_img(imageId)
       if (imagePath == "")
-        imagePath = "#ui/images/elite_" + (unit?.isTank()? "tank" : "vehicle") + "_revard.jpg?P1"
+        imagePath = "#ui/images/elite_" + (this.unit?.isTank()? "tank" : "vehicle") + "_revard.jpg?P1"
 
       imgObj["background-image"] = imagePath
     }
 
     local tierText = ""
-    if (::u.isArray(tier))
+    if (::u.isArray(this.tier))
     {
-      if (tier.len() == 1)
-        tierText = tier.top()
-      else if (tier.len() == 2)
-        tierText = ::get_roman_numeral(tier[0]) + ::loc("ui/comma") + ::get_roman_numeral(tier[1])
+      if (this.tier.len() == 1)
+        tierText = this.tier.top()
+      else if (this.tier.len() == 2)
+        tierText = ::get_roman_numeral(this.tier[0]) + loc("ui/comma") + ::get_roman_numeral(this.tier[1])
       else
       {
         local maxTier = 0
-        local minTier = tier.len()
-        foreach(t in tier)
+        local minTier = this.tier.len()
+        foreach(t in this.tier)
         {
           maxTier = max(maxTier, t)
           minTier = min(minTier, t)
         }
-        tierText = ::get_roman_numeral(minTier) + ::loc("ui/mdash") + ::get_roman_numeral(maxTier)
+        tierText = ::get_roman_numeral(minTier) + loc("ui/mdash") + ::get_roman_numeral(maxTier)
       }
     }
     else
-      tierText = ::get_roman_numeral(tier)
+      tierText = ::get_roman_numeral(this.tier)
 
-    local msgText = ::loc(locTextId, { tier = tierText, unitName = ::getUnitName(unit) })
-    if (!expReward.isZero())
+    local msgText = loc(locTextId, { tier = tierText, unitName = ::getUnitName(this.unit) })
+    if (!this.expReward.isZero())
     {
-      msgText += "\n" + ::loc("reward") + ::loc("ui/colon") + ::loc("userlog/open_all_in_tier/resName",
-                        { resUnitExpInvest = expReward.tostring(),
-                          resUnitName = ::getUnitName(unitInResearch)
+      msgText += "\n" + loc("reward") + loc("ui/colon") + loc("userlog/open_all_in_tier/resName",
+                        { resUnitExpInvest = this.expReward.tostring(),
+                          resUnitName = ::getUnitName(this.unitInResearch)
                         })
     }
 
-    let descObj = scene.findObject("award_desc")
-    if (::checkObj(descObj))
+    let descObj = this.scene.findObject("award_desc")
+    if (checkObj(descObj))
     {
       descObj["text-align"] = "center"
       descObj.setValue(msgText)
     }
 
-    this.showSceneBtn("btn_upload_facebook_wallPost", ::has_feature("FacebookWallPost") && isLastResearchedModule)
+    this.showSceneBtn("btn_upload_facebook_wallPost", hasFeature("FacebookWallPost") && isLastResearchedModule)
     if (isLastResearchedModule)
     {
-      postConfig = {
+      this.postConfig = {
         locId = "researched_unit"
         subType = ps4_activity_feed.RESEARCHED_UNIT
         backgroundPost = true
       }
 
-      postCustomConfig = {
+      this.postCustomConfig = {
         requireLocalization = ["unitName", "country"]
-        unitName = unit.name + "_shop"
-        rank = ::get_roman_numeral(unit?.rank ?? -1)
-        country = ::getUnitCountry(unit)
-        link = format(::loc("url/wiki_objects"), unit.name)
+        unitName = this.unit.name + "_shop"
+        rank = ::get_roman_numeral(this.unit?.rank ?? -1)
+        country = ::getUnitCountry(this.unit)
+        link = format(loc("url/wiki_objects"), this.unit.name)
       }
     }
   }
 
   function onFacebookLoginAndPostMessage(obj)
   {
-    activityFeedPostFunc(postConfig, postCustomConfig, bit_activity.FACEBOOK)
+    activityFeedPostFunc(this.postConfig, this.postCustomConfig, bit_activity.FACEBOOK)
     obj.enable(false)
   }
 
   function onOk()
   {
-    goBack()
+    this.goBack()
   }
 
   function afterModalDestroy()
   {
-    ::broadcastEvent("UpdateResearchingUnit", { unitName = unitInResearch })
+    ::broadcastEvent("UpdateResearchingUnit", { unitName = this.unitInResearch })
     ::checkNonApprovedResearches(true)
-    activityFeedPostFunc(postConfig, postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)
+    activityFeedPostFunc(this.postConfig, this.postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)
   }
 
   function onUseDecorator() {}

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let time = require("%scripts/time.nut")
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
@@ -30,18 +36,18 @@ enum UNIT_STATS {
 
   constructor(v_battleRes)
   {
-    battleRes = v_battleRes
+    this.battleRes = v_battleRes
 
-    loadBattleUnitTypesData()
-    teamBlock = getTeamBlock()
+    this.loadBattleUnitTypesData()
+    this.teamBlock = this.getTeamBlock()
   }
 
   function loadBattleUnitTypesData()
   {
-    battleUnitTypes   = []
-    inactiveUnitTypes = []
+    this.battleUnitTypes   = []
+    this.inactiveUnitTypes = []
 
-    foreach (team in battleRes.teams)
+    foreach (team in this.battleRes.teams)
     {
       foreach (wwUnit in team.unitsInitial)
       {
@@ -51,62 +57,62 @@ enum UNIT_STATS {
           ::script_net_assert_once("UNKNOWN wwUnitType", "wwUnitType is UNKNOWN in wwBattleResultsView")
           continue
         }
-        ::u.appendOnce(wwUnit.getWwUnitType().code, battleUnitTypes)
+        ::u.appendOnce(wwUnit.getWwUnitType().code, this.battleUnitTypes)
       }
       foreach (wwUnit in team.unitsRemain)
         if (wwUnit.inactiveCount > 0)
-          ::u.appendOnce(wwUnit.getWwUnitType().code, inactiveUnitTypes)
+          ::u.appendOnce(wwUnit.getWwUnitType().code, this.inactiveUnitTypes)
     }
 
-    battleUnitTypes.sort()
-    inactiveUnitTypes.sort()
+    this.battleUnitTypes.sort()
+    this.inactiveUnitTypes.sort()
   }
 
   function getLocName()
   {
-    return getMissionLocName({ locId = battleRes.locName })
+    return getMissionLocName({ locId = this.battleRes.locName })
   }
 
   function getBattleTitle()
   {
-    let localizedName = getLocName()
-    let missionTitle = (localizedName != "") ? localizedName : ::loc("worldwar/autoModeBattle")
-    let battleName = ::loc("worldWar/battleName", { number = battleRes.ordinalNumber })
+    let localizedName = this.getLocName()
+    let missionTitle = (localizedName != "") ? localizedName : loc("worldwar/autoModeBattle")
+    let battleName = loc("worldWar/battleName", { number = this.battleRes.ordinalNumber })
     return battleName + " " + missionTitle
   }
 
   function getBattleDescText()
   {
-    let operationName = getOperation()?.getNameText() ?? ""
-    let zoneName = battleRes.zoneName != "" ? (::loc("options/dyn_zone") + " " + battleRes.zoneName) : ""
-    let dateTime = time.buildDateStr(battleRes.time) + " " + time.buildTimeStr(battleRes.time)
-    return ::g_string.implode([ operationName, zoneName, dateTime ], ::loc("ui/semicolon"))
+    let operationName = this.getOperation()?.getNameText() ?? ""
+    let zoneName = this.battleRes.zoneName != "" ? (loc("options/dyn_zone") + " " + this.battleRes.zoneName) : ""
+    let dateTime = time.buildDateStr(this.battleRes.time) + " " + time.buildTimeStr(this.battleRes.time)
+    return ::g_string.implode([ operationName, zoneName, dateTime ], loc("ui/semicolon"))
   }
 
   function getBattleResultText()
   {
-    let isWinner = battleRes.isWinner()
+    let isWinner = this.battleRes.isWinner()
     let color = isWinner ? "wwTeamAllyColor" : "wwTeamEnemyColor"
-    let result = ::loc("worldwar/log/battle_finished" + (isWinner ? "_win" : "_lose"))
-    return ::colorize(color, result)
+    let result = loc("worldwar/log/battle_finished" + (isWinner ? "_win" : "_lose"))
+    return colorize(color, result)
   }
 
   function isBattleResultsIgnored()
   {
-    return battleRes.isBattleResultsIgnored
+    return this.battleRes.isBattleResultsIgnored
   }
 
   function getArmyStateText(wwArmy, armyState)
   {
-    local res = ::loc(::getTblValue(armyState, armyStateTexts, ""))
+    local res = loc(getTblValue(armyState, this.armyStateTexts, ""))
     if (armyState == "EASAB_DEAD" && wwArmy.deathReason != "")
-      res += ::loc("ui/parentheses/space", { text = ::loc("worldwar/log/army_died_" + wwArmy.deathReason) })
+      res += loc("ui/parentheses/space", { text = loc("worldwar/log/army_died_" + wwArmy.deathReason) })
     return res
   }
 
   function getTeamBySide(side)
   {
-    return ::u.search(battleRes.teams, (@(side) function (team) {
+    return ::u.search(this.battleRes.teams, (@(side) function (team) {
       return team.side == side
     })(side))
   }
@@ -170,10 +176,10 @@ enum UNIT_STATS {
         stats[UNIT_STATS.REMAIN]    += remainActive
       }
 
-      if (wwUnitType.esUnitCode == ::ES_UNIT_TYPE_INVALID) // fake unit
+      if (wwUnitType.esUnitCode == ES_UNIT_TYPE_INVALID) // fake unit
         continue
 
-      let isShowInactiveCount = ::isInArray(wwUnitTypeCode, unitTypesInactive)
+      let isShowInactiveCount = isInArray(wwUnitTypeCode, unitTypesInactive)
 
       let stats = array(UNIT_STATS.TOTAL, 0)
       stats[UNIT_STATS.INITIAL]   = initialActive
@@ -188,7 +194,7 @@ enum UNIT_STATS {
 
       res.units.append({
         unitString = wwUnitViewParams
-        row = getStatsRowView(stats, isShowInactiveCount)
+        row = this.getStatsRowView(stats, isShowInactiveCount)
       })
     }
 
@@ -198,11 +204,11 @@ enum UNIT_STATS {
         continue
 
       let wwUnitType = ::g_ww_unit_type.getUnitTypeByCode(wwUnitTypeCode)
-      let isShowInactiveCount = ::isInArray(wwUnitTypeCode, unitTypesInactive)
+      let isShowInactiveCount = isInArray(wwUnitTypeCode, unitTypesInactive)
 
       res.unitTypes.append({
         name = "#debriefing/ww_total_" + wwUnitType.name
-        row = getStatsRowView(stats, isShowInactiveCount)
+        row = this.getStatsRowView(stats, isShowInactiveCount)
       })
     }
 
@@ -227,8 +233,8 @@ enum UNIT_STATS {
 
       local tooltip = null
       if (isShowInactiveCount && values.len() == 2 && valuesSum > 0)
-          tooltip = ::loc("debriefing/destroyed") + ::loc("ui/colon") + values[0] +
-            "\n" + ::loc("debriefing/ww_inactive/Aircraft") + ::loc("ui/colon") + values[1]
+          tooltip = loc("debriefing/destroyed") + loc("ui/colon") + values[0] +
+            "\n" + loc("debriefing/ww_inactive/Aircraft") + loc("ui/colon") + values[1]
 
       row.append({
         col = val
@@ -240,11 +246,11 @@ enum UNIT_STATS {
 
   function getTeamBlock()
   {
-    let mapName = getOperation()?.getMapId() ?? ""
+    let mapName = this.getOperation()?.getMapId() ?? ""
     let teams = []
     foreach(sideIdx, side in ::g_world_war.getSidesOrder())
     {
-      let team = getTeamBySide(side)
+      let team = this.getTeamBySide(side)
       if (!team)
         continue
 
@@ -252,14 +258,14 @@ enum UNIT_STATS {
       foreach (army in team.armies)
         armies.append({
           armyView = army.getView()
-          armyStateText = getArmyStateText(army, ::getTblValue(army.name, team.armyStates))
+          armyStateText = this.getArmyStateText(army, getTblValue(army.name, team.armyStates))
         })
 
       teams.append({
         invert = sideIdx != 0
         countryIcon = getCustomViewCountryData(team.country, mapName).icon
         armies = armies
-        statistics = getTeamStats(team, battleUnitTypes, inactiveUnitTypes)
+        statistics = this.getTeamStats(team, this.battleUnitTypes, this.inactiveUnitTypes)
       })
     }
 
@@ -268,17 +274,17 @@ enum UNIT_STATS {
 
   function hasReplay()
   {
-    return !::u.isEmpty(battleRes.getSessionId()) &&
-           ::has_feature("WorldWarReplay")
+    return !::u.isEmpty(this.battleRes.getSessionId()) &&
+           hasFeature("WorldWarReplay")
   }
 
   function getReplayBtnTooltip()
   {
-    return ::loc("mainmenu/btnViewReplayTooltip", {sessionID = battleRes.getSessionId()})
+    return loc("mainmenu/btnViewReplayTooltip", {sessionID = this.battleRes.getSessionId()})
   }
 
   function getOperation()
   {
-    return getOperationById(battleRes.getOperationId() ?? ::ww_get_operation_id())
+    return getOperationById(this.battleRes.getOperationId() ?? ::ww_get_operation_id())
   }
 }

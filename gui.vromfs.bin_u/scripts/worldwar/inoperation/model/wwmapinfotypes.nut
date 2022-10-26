@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_ww_map_info_type <- {
@@ -8,7 +14,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_ww_map_info_type.template <- {
-  getMainBlockHandler = function(placeObj, side = ::SIDE_NONE) { return null }
+  getMainBlockHandler = function(_placeObj, _side = SIDE_NONE) { return null }
 }
 
 enums.addTypesByGlobalName("g_ww_map_info_type", {
@@ -40,7 +46,7 @@ enums.addTypesByGlobalName("g_ww_map_info_type", {
   }
 }, null, "name")
 
-g_ww_map_info_type.getTypeByIndex <- function getTypeByIndex(index)
+::g_ww_map_info_type.getTypeByIndex <- function getTypeByIndex(index)
 {
   return enums.getCachedType("index", index, ::g_ww_map_info_type.cache.byIndex, ::g_ww_map_info_type, ::g_ww_map_info_type.UNKNOWN)
 }

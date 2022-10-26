@@ -2120,60 +2120,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "dummy": true,
-        "trigger": "gunner0",
-        "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "optic1_gun",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "speedYaw": 25.0,
-        "speedPitch": 25.0,
-        "parkInDeadzone": false,
-        "aimForOperatedShell": true,
-        "turret": {
-          "head": "optic1_turret",
-          "gun": "optic1_gun",
-          "mainTurret": true
-        },
-        "limits": {
-          "yaw": [
-            -30.0,
-            30.0
-          ],
-          "pitch": [
-            -30.0,
-            30.0
-          ]
-        }
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA553.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 150,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA553.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon2_dm",
-        "bullets": 150,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "defa_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2182,2574 +2132,1262 @@
         "blk": "gameData/FlightModels/weaponPresets/a_4n_default.blk"
       },
       {
-        "name": "a_4n_default_mk81",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_default_mk81.blk",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
-            "amountPerTier": 3.0,
-            "iconType": "bombs_middle_group",
-            "tier": [
-              {
-                "idx": 3
-              },
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              },
-              {
-                "idx": 9
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4n_rockets_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_aim_9d.blk",
-        "reqModification": "us_aim_9d",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-            "amountPerTier": 1.0,
-            "iconType": "missile_type_b_air_to_air",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 8
-              }
-            ]
-          }
-        }
-      },
-      {
         "name": "a_4n_rockets_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_shafrir2.blk",
-        "reqModification": "fr_aam_shafrir_2",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-            "amountPerTier": 1.0,
-            "iconType": "missile_air_to_air",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 8
-              }
-            ]
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_shafrir2.blk"
       },
       {
         "name": "a_4n_rockets_shafrir2_4",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_shafrir2_4.blk",
-        "reqModification": "fr_aam_shafrir_2",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-            "amountPerTier": 1.0,
-            "iconType": "missile_air_to_air",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              }
-            ]
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_shafrir2_4.blk"
       },
       {
-        "name": "a_4n_mk4_mod0",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_mk4_mod0.blk",
-        "reqModification": "mk4_mod0_gunpod"
-      },
-      {
-        "name": "a_4n_mk4_mod0_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_mk4_mod0_aim_9d.blk",
-        "reqModification": [
-          "mk4_mod0_gunpod",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/cannonMK11_mod5.blk",
-              "iconType": "multibarrel_box",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_mk4_mod0_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_mk4_mod0_shafrir2.blk",
-        "reqModification": [
-          "mk4_mod0_gunpod",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/cannonMK11_mod5.blk",
-              "iconType": "multibarrel_box",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rockets_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_zuni.blk",
-        "reqModification": "f4c_zuni",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-            "amountPerTier": 4.0,
-            "iconType": "nar_ap_special",
-            "tier": [
-              {
-                "idx": 2
-              },
-              {
-                "idx": 3
-              },
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 6
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              },
-              {
-                "idx": 9
-              },
-              {
-                "idx": 10
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4n_rockets_zuni_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_zuni_aim_9d.blk",
-        "reqModification": [
-          "f4c_zuni",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-              "amountPerTier": 4.0,
-              "iconType": "nar_ap_special",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rockets_zuni_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_zuni_shafrir2.blk",
-        "reqModification": [
-          "f4c_zuni",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-              "amountPerTier": 4.0,
-              "iconType": "nar_ap_special",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rockets_zuni_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_zuni_mk82.blk",
-        "reqModification": [
-          "us_500lb_mk82",
-          "f4c_zuni"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_middle_group",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-              "amountPerTier": 4.0,
-              "iconType": "nar_ap_special",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rockets_zuni_m117",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_zuni_m117.blk",
-        "reqModification": [
-          "us_750lb_m117a1",
-          "f4c_zuni"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": {
-                "idx": 6
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-              "amountPerTier": 4.0,
-              "iconType": "nar_ap_special",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
+        "name": "a_4n_rockets_aim_9d",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_aim_9d.blk"
       },
       {
         "name": "a_4n_rockets_lau18",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_lau18.blk",
-        "reqModification": "us_2_75_in_ffar_lau_3a"
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_lau18.blk"
       },
       {
-        "name": "a_4n_rockets_lau18_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_lau18_aim_9d.blk",
-        "reqModification": [
-          "us_2_75_in_ffar_lau_3a",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 19.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
+        "name": "a_4n_rockets_zuni",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_zuni.blk"
       },
       {
-        "name": "a_4n_rockets_lau18_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_lau18_shafrir2.blk",
-        "reqModification": [
-          "us_2_75_in_ffar_lau_3a",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 19.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
+        "name": "a_4n_rocket_agm12b",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm12b.blk"
       },
       {
-        "name": "a_4n_rockets_lau18_mk81",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_lau18_mk81.blk",
-        "reqModification": "us_2_75_in_ffar_lau_3a",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_small_group",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 19.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rockets_lau18_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_lau18_mk82.blk",
-        "reqModification": [
-          "us_500lb_mk82",
-          "us_2_75_in_ffar_lau_3a"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_middle_group",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 19.0,
-              "iconType": "nar_ap_large",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rockets_lau18_m117",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rockets_lau18_m117.blk",
-        "reqModification": [
-          "us_750lb_m117a1",
-          "us_2_75_in_ffar_lau_3a"
-        ]
-      },
-      {
-        "name": "a_4n_zuni_mk81",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_zuni_mk81.blk",
-        "reqModification": "f4c_zuni",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_middle_group",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk",
-              "amountPerTier": 4.0,
-              "iconType": "nar_ap_special",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk81_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk81_aim_9d.blk",
-        "reqModification": "us_aim_9d",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_small_group",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk81_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk81_shafrir2.blk",
-        "reqModification": "fr_aam_shafrir_2",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_small_group",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
+        "name": "a_4n_default_mk81",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_default_mk81.blk"
       },
       {
         "name": "a_4n_bomb_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk82.blk",
-        "reqModification": "us_500lb_mk82",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-            "tier": [
-              {
-                "idx": 3,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_middle"
-              },
-              {
-                "idx": 4,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 5,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 7,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 8,
-                "amountPerTier": 3.0,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 9,
-                "amountPerTier": 1.0,
-                "iconType": "bombs_middle"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk82_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk82_aim_9d.blk",
-        "reqModification": [
-          "us_500lb_mk82",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_middle_group",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk82_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk82_shafrir2.blk",
-        "reqModification": [
-          "us_500lb_mk82",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_middle_group",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk82.blk"
       },
       {
         "name": "a_4n_bomb_m117",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_m117.blk",
-        "reqModification": "us_750lb_m117a1"
-      },
-      {
-        "name": "a_4n_bomb_m117_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_m117_aim_9d.blk",
-        "reqModification": [
-          "us_750lb_m117a1",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_m117_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_m117_shafrir2.blk",
-        "reqModification": [
-          "us_750lb_m117a1",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_m117.blk"
       },
       {
         "name": "a_4n_bomb_mk83",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk83.blk",
-        "reqModification": "us_1000lb_mk83",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-            "iconType": "bombs_special",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 6
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk83_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk83_aim_9d.blk",
-        "reqModification": [
-          "us_1000lb_mk83",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_3x_mk83_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_3x_mk83_shafrir2.blk",
-        "reqModification": [
-          "us_1000lb_mk83",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk83_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk83_shafrir2.blk",
-        "reqModification": [
-          "us_1000lb_mk83",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_5x_mk83_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_5x_mk83_aim_9d.blk",
-        "reqModification": [
-          "us_1000lb_mk83",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk83.blk"
       },
       {
         "name": "a_4n_bomb_mk84",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk84.blk",
-        "reqModification": "us_2000lb_mk84",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
-            "iconType": "bombs_heavy",
-            "tier": {
-              "idx": 6
-            }
-          }
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk84_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk84_aim_9d.blk",
-        "reqModification": [
-          "us_2000lb_mk84",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_heavy",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk84_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk84_shafrir2.blk",
-        "reqModification": [
-          "us_2000lb_mk84",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_heavy",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_guided_gbu8",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_guided_gbu8.blk",
-        "reqModification": "us_gbu_8_15",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
-            "iconType": "guided_bomb_yellow",
-            "tier": {
-              "idx": 6
-            }
-          }
-        }
-      },
-      {
-        "name": "a_4n_bomb_guided_gbu8_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_guided_gbu8_aim_9d.blk",
-        "reqModification": [
-          "us_gbu_8_15",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_yellow",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_guided_gbu8_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_guided_gbu8_shafrir2.blk",
-        "reqModification": [
-          "us_gbu_8_15",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_yellow",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62.blk",
-        "reqModification": "us_agm_62",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-            "amountPerTier": 1.0,
-            "iconType": "guided_bomb_red",
-            "tier": [
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4n_agm_62_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_aim_9d.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_shafrir2.blk",
-        "reqModification": [
-          "us_agm_62",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk82.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_500lb_mk82"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "tier": [
-                {
-                  "idx": 5,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk117",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk117.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_750lb_m117a1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": {
-                "idx": 6
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk83",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk83.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_1000lb_mk83"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk82_aim_9",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk82_aim_9.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_500lb_mk82",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "tier": [
-                {
-                  "idx": 5,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk82_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk82_shafrir2.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_500lb_mk82",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "tier": [
-                {
-                  "idx": 5,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                },
-                {
-                  "idx": 7,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk117_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk117_aim_9d.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_750lb_m117a1",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": {
-                "idx": 6
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk117_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk117_shafrir2.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_750lb_m117a1",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": {
-                "idx": 6
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk83_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk83_aim_9d.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_1000lb_mk83",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_agm_62_mk83_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62_mk83_shafrir2.blk",
-        "reqModification": [
-          "us_agm_62",
-          "us_1000lb_mk83",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
-              "amountPerTier": 1.0,
-              "iconType": "guided_bomb_red",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a.blk",
-        "reqModification": "us_agm_65a",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-            "amountPerTier": 1.0,
-            "iconType": "missile_air_to_uni_middle",
-            "tier": [
-              {
-                "idx": 5
-              },
-              {
-                "idx": 6
-              },
-              {
-                "idx": 7
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_aim_9d.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_shafrir2.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_3xagm_65a_shafrir2_4",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_3xagm_65a_shafrir2_4.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk82.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_500lb_mk82"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "tier": [
-                {
-                  "idx": 3,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_middle"
-                },
-                {
-                  "idx": 4,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                },
-                {
-                  "idx": 9,
-                  "amountPerTier": 1.0,
-                  "iconType": "bombs_middle"
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk117",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk117.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_750lb_m117a1"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk83",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk83.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_1000lb_mk83"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk82_aim_9",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk82_aim_9.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_500lb_mk82",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "tier": [
-                {
-                  "idx": 4,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk82_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk82_shafrir2.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_500lb_mk82",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "tier": [
-                {
-                  "idx": 4,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 3.0,
-                  "iconType": "bombs_middle_group"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk117_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk117_aim_9d.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_750lb_m117a1",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk117_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk117_shafrir2.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_750lb_m117a1",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk83_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk83_aim_9d.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_1000lb_mk83",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_rocket_agm_65a_mk83_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a_mk83_shafrir2.blk",
-        "reqModification": [
-          "us_agm_65a",
-          "us_1000lb_mk83",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65a.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_uni_middle",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 6
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk84.blk"
       },
       {
         "name": "a_4n_bomb_mk77",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk77.blk",
-        "reqModification": "us_mk_77",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk",
-            "iconType": "napalm_middle"
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk77.blk"
+      },
+      {
+        "name": "a_4n_agm_62",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62.blk"
+      },
+      {
+        "name": "a_4n_rocket_agm_65a",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a.blk"
+      },
+      {
+        "name": "a_4n_bomb_guided_gbu8",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_guided_gbu8.blk"
+      },
+      {
+        "name": "a_4n_mk4_mod0",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_mk4_mod0.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 4153.0,
+    "maxloadMassLeftConsoles": 2076.0,
+    "maxloadMassRightConsoles": 2076.0,
+    "maxDisbalance": 1000.0,
+    "HideNodes": {
+      "node": [
+        "pylon_001",
+        "pylon_001_upor",
+        "aero_5a_001",
+        "apu_shafrir2_001",
+        "adapter_shafrir2_001",
+        "pylon_002",
+        "pylon_002_upor",
+        "us_mk4_mod0_pod_001",
+        "aero_3b_001",
+        "aero_5a_002",
+        "apu_shafrir2_002",
+        "adapter_shafrir2_002",
+        "pylon_003",
+        "pylon_003_upor",
+        "us_mk4_mod0_pod_002",
+        "aero_5a_003",
+        "pylon_004",
+        "pylon_004_upor",
+        "us_mk4_mod0_pod_003",
+        "aero_5a_004",
+        "aero_3b_002",
+        "apu_shafrir2_003",
+        "adapter_shafrir2_003",
+        "pylon_005",
+        "pylon_005_upor",
+        "aero_5a_005",
+        "apu_shafrir2_004",
+        "adapter_shafrir2_004"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cannon3_dm",
+        "cannon4_dm",
+        "cannon5_dm",
+        "cover6_dm",
+        "cannon6_dm",
+        "cover7_dm",
+        "cannon7_dm",
+        "cover8_dm",
+        "cannon8_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": [
+          {
+            "name": "defa_common",
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -30.0,
+                    30.0
+                  ],
+                  "pitch": [
+                    -30.0,
+                    30.0
+                  ]
+                }
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA553.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon1_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA553.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "shell": "emtr_shellrejection2",
+                "dm": "cannon2_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              }
+            ]
+          },
+          {
+            "name": "defa_ltc_common",
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -30.0,
+                    30.0
+                  ],
+                  "pitch": [
+                    -30.0,
+                    30.0
+                  ]
+                }
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA553.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon1_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA553.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "shell": "emtr_shellrejection2",
+                "dm": "cannon2_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 30,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 30,
+                "external": true,
+                "separate": false
+              }
+            ]
           }
-        }
+        ]
       },
       {
-        "name": "a_4n_bomb_mk77_aim_9d",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk77_aim_9d.blk",
-        "reqModification": [
-          "us_mk_77",
-          "us_aim_9d"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_type_b_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "shafrir2_default",
+            "reqModification": "fr_aam_shafrir_2",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "apu_shafrir2_001",
+                "adapter_shafrir2_001"
               ]
             },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk",
-              "amountPerTier": 3.0,
-              "iconType": "napalm_middle",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "a_4n_bomb_mk77_shafrir2",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_mk77_shafrir2.blk",
-        "reqModification": [
-          "us_mk_77",
-          "fr_aam_shafrir_2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
               "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
-              "amountPerTier": 1.0,
-              "iconType": "missile_air_to_air",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
+              "emitter": "rocket_shafrir2_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim9d",
+            "reqModification": "us_aim_9d",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "aero_3b_001"
               ]
             },
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk",
-              "amountPerTier": 3.0,
-              "iconType": "napalm_middle",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                }
-              ]
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+              "emitter": "aim_9e_001",
+              "bullets": 1
             }
-          ]
-        }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "ffar_x1",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_b001",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "zuni_x1",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "zuni_lau_10a_b001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "agm12",
+            "reqModification": "fj_4b_agm_12b",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "aero_5a_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "agm_12b_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "mk81_x1",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "emitter": "250lb_mk_81_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "mk82_x1",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "mk77_x1",
+            "reqModification": "us_blu27_b",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "pylon_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+              "emitter": "500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "shafrir2",
+            "reqModification": "fr_aam_shafrir_2",
+            "ShowNodes": {
+              "node": [
+                "pylon_002",
+                "apu_shafrir2_002",
+                "adapter_shafrir2_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
+              "emitter": "rocket_shafrir2_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "ffar_left_x2",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse_left_wing_x2.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special_group",
+            "name": "zuni_left_x2",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32_x2_left_wing.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "agm12",
+            "reqModification": "fj_4b_agm_12b",
+            "ShowNodes": {
+              "node": [
+                "pylon_002",
+                "aero_5a_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "agm_12b_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "mk81_x6",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "mk82_x3",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_us_500lb_mk_82.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "mk117_x1",
+            "reqModification": "us_750lb_m117a1",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "1000lb_mk_83_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "mk83_x1",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "1000lb_mk_83_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "mk84",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "1000lb_mk_83_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "mk77_left_x2",
+            "reqModification": "us_blu27_b",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+              "emitter": "1000lb_mk_83_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "guided_bomb_red",
+            "name": "agm62",
+            "reqModification": "us_agm_62",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
+              "emitter": "walleye_1er_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mk11",
+            "reqModification": "mk4_mod0_gunpod",
+            "ShowNodes": {
+              "node": [
+                "pylon_002",
+                "us_mk4_mod0_pod_001"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover6_dm",
+                "cannon6_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon6_dm",
+              "shell": "emtr_shellrejection3",
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "external": true,
+              "bullets": 750,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large_group_x3",
+            "name": "ffar_central",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special_group_x3",
+            "name": "zuni_central",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ter_lau_10a_ffar_mighty_mouse.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "mk81_x6",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "mk82_x6",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "mk117_x1_central",
+            "reqModification": "us_750lb_m117a1",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "750lb_m117_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special_group_x3",
+            "name": "mk83_x1_central",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "mk84",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "2000lb_mk_84_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "mk77_x3_central",
+            "reqModification": "us_blu27_b",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+              "emitter": "750lb_m117_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "guided_bomb_yellow",
+            "name": "gbu_8",
+            "reqModification": "us_gbu_8",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
+              "emitter": "2000lb_gbu_8_hobos",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_middle_x3",
+            "name": "agm65a",
+            "reqModification": "us_agm_65a",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_88a_agm_65a_x_3.blk",
+              "emitter": "us_lau_88a_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mk11",
+            "reqModification": "mk4_mod0_gunpod",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "us_mk4_mod0_pod_002"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover7_dm",
+                "cannon7_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon7_dm",
+              "shell": "emtr_shellrejection5",
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "external": true,
+              "bullets": 750,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "shafrir2",
+            "reqModification": "fr_aam_shafrir_2",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "apu_shafrir2_003",
+                "adapter_shafrir2_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
+              "emitter": "rocket_shafrir2_003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "ffar_right_x2",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse_right_wing_x2.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special_group",
+            "name": "zuni_right_x2",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32_x2_right_wing.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "agm12",
+            "reqModification": "fj_4b_agm_12b",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "aero_5a_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "agm_12b_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "mk81_x6",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6.blk",
+              "emitter": "mer_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "mk82_x3",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_us_500lb_mk_82.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "mk117_x1",
+            "reqModification": "us_750lb_m117a1",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "750lb_m117_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "mk83_x1",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "1000lb_mk_83_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "mk84",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "1000lb_mk_83_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "mk77_right_x2",
+            "reqModification": "us_blu27_b",
+            "ShowNodes": {
+              "node": "pylon_004"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+              "emitter": "1000lb_mk_83_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "guided_bomb_red",
+            "name": "agm62",
+            "reqModification": "us_agm_62",
+            "ShowNodes": {
+              "node": "pylon_004"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk",
+              "emitter": "walleye_1er_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mk11",
+            "reqModification": "mk4_mod0_gunpod",
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "us_mk4_mod0_pod_003"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover8_dm",
+                "cannon8_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "cannon8_dm",
+              "shell": "emtr_shellrejection5",
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "external": true,
+              "bullets": 750,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "shafrir2_default",
+            "reqModification": "fr_aam_shafrir_2",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "apu_shafrir2_004",
+                "adapter_shafrir2_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk",
+              "emitter": "rocket_shafrir2_004",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim9d",
+            "reqModification": "us_aim_9d",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "aero_3b_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+              "emitter": "aim_9e_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "ffar_x1",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_b009",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "zuni_x1",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "zuni_lau_10a_b009",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "agm12",
+            "reqModification": "fj_4b_agm_12b",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "aero_5a_005"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "agm_12b_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "mk81_x1",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "emitter": "250lb_mk_81_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "mk82_x1",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "mk77_x1",
+            "reqModification": "us_blu27_b",
+            "ShowNodes": {
+              "node": [
+                "pylon_005",
+                "pylon_005_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+              "emitter": "500lb_mk_82_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
       }
     ]
   },
@@ -4936,8 +3574,13 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_agm_62": {
+    "fj_4b_agm_12b": {
       "tier": 1,
+      "modClass": "weapon"
+    },
+    "us_agm_62": {
+      "reqModification": "fj_4b_agm_12b",
+      "tier": 2,
       "modClass": "weapon"
     },
     "us_agm_65a": {
@@ -4945,12 +3588,12 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_gbu_8_15": {
+    "us_gbu_8": {
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "us_agm_65a"
     },
-    "us_mk_77": {
+    "us_blu27_b": {
       "tier": 1,
       "modClass": "weapon"
     },
@@ -4964,81 +3607,13 @@
       "invertEnableLogic": false,
       "group": "countermeasures",
       "tier": 2,
-      "prevModification": "us_mk_77",
+      "prevModification": "us_blu27_b",
       "effects": {
         "commonWeapons": {
-          "Weapon": [
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [
-                  -30.0,
-                  30.0
-                ],
-                "pitch": [
-                  -30.0,
-                  30.0
-                ]
-              }
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon1_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "shell": "emtr_shellrejection2",
-              "dm": "cannon2_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            }
-          ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "defa_ltc_common"
+          }
         }
       }
     },

@@ -1,13 +1,18 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let sony = require("sony")
-let { is_stereo_mode } = ::require_native("vr")
+let { is_stereo_mode } = require_native("vr")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 let defValue  = 1.0
 let values    = [1.0, 0.95, 0.9, 0.85]
 let items     = ["100%", "95%", "90%", "85%"]
-if (::is_platform_xbox)
+if (is_platform_xbox)
 {
   //::xbox_get_safe_area() returns max of it's size is 0.89
   // so remove all below of it to fit in.
@@ -45,14 +50,12 @@ local setValue = function(value)
   if (!::g_login.isAuthorized())
     return
 
-  value = ::isInArray(value, values) ? value : defValue
+  value = isInArray(value, values) ? value : defValue
   ::set_option_hud_screen_safe_area(value)
   ::set_gui_option_in_mode(::USEROPT_HUD_SCREEN_SAFE_AREA, value, ::OPTIONS_MODE_GAMEPLAY)
 }
 
 let getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getHudWidthLimit())
-
-::cross_call_api.getHudSafearea <- getSafearea
 
 return {
   getValue = getValue

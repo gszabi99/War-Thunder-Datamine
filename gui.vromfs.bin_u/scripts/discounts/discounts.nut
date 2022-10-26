@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { targetPlatform, isPlatformPC, isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 
@@ -11,7 +18,7 @@ let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch
-let topMenuOnlineShopId = ::Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? "")
+let topMenuOnlineShopId = Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? "")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -19,9 +26,9 @@ let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
-  ps4_scee = isPlatformPS4 && ::ps4_get_region() == ::SCE_REGION_SCEE
-  ps4_scea = isPlatformPS4 && ::ps4_get_region() == ::SCE_REGION_SCEA
-  ps4_scej = isPlatformPS4 && ::ps4_get_region() == ::SCE_REGION_SCEJ
+  ps4_scee = isPlatformPS4 && ::ps4_get_region() == SCE_REGION_SCEE
+  ps4_scea = isPlatformPS4 && ::ps4_get_region() == SCE_REGION_SCEA
+  ps4_scej = isPlatformPS4 && ::ps4_get_region() == SCE_REGION_SCEJ
 }
 local updateGiftUnitsDiscountTask = -1
 
@@ -35,32 +42,32 @@ local updateGiftUnitsDiscountTask = -1
 
   function updateOnlineShopDiscounts()
   {
-    consoleEntitlementUnits.clear()
+    this.consoleEntitlementUnits.clear()
 
     if (!needEntStoreDiscountIcon)
       return
 
     let isDiscountAvailable = haveDiscount()
-    discountsList[topMenuOnlineShopId.value] = isDiscountAvailable
+    this.discountsList[topMenuOnlineShopId.value] = isDiscountAvailable
 
     if (isDiscountAvailable)
-      foreach (label, item in getShopItemsTable()) {
+      foreach (_label, item in getShopItemsTable()) {
         if (item.haveDiscount()) {
           let entId = getEntitlementId(item.id)
           let config = getEntitlementConfig(entId)
           let unitsList = config?.aircraftGift ?? []
           foreach (unitName in unitsList)
-            consoleEntitlementUnits[unitName] <- item.getDiscountPercent()
+            this.consoleEntitlementUnits[unitName] <- item.getDiscountPercent()
         }
       }
 
-    updateDiscountData()
+    this.updateDiscountData()
   }
 
-  onEventXboxShopDataUpdated = @(p) updateOnlineShopDiscounts()
-  onEventPs4ShopDataUpdated = @(p) updateOnlineShopDiscounts()
-  onEventEpicShopDataUpdated = @(p) updateOnlineShopDiscounts()
-  onEventEpicShopItemUpdated = @(p) updateOnlineShopDiscounts()
+  onEventXboxShopDataUpdated = @(_p) this.updateOnlineShopDiscounts()
+  onEventPs4ShopDataUpdated = @(_p) this.updateOnlineShopDiscounts()
+  onEventEpicShopDataUpdated = @(_p) this.updateOnlineShopDiscounts()
+  onEventEpicShopItemUpdated = @(_p) this.updateOnlineShopDiscounts()
 
   function updateGiftUnitsDiscountFromGuiBlk(giftUnits) { // !!!FIX ME Remove this function when gift units discount will received from char
     if (updateGiftUnitsDiscountTask >= 0) {
@@ -90,7 +97,7 @@ local updateGiftUnitsDiscountTask = -1
 
       let startTime = getTimestampFromStringUtc(discountConfigBlk.beginDate)
       let endTime = getTimestampFromStringUtc(discountConfigBlk.endDate)
-      let currentTime = get_charserver_time_sec()
+      let currentTime = ::get_charserver_time_sec()
       if (currentTime >= endTime)
         continue
 
@@ -104,77 +111,77 @@ local updateGiftUnitsDiscountTask = -1
       minUpdateDiscountsTimeSec = min(minUpdateDiscountsTimeSec ?? updateTimeSec, updateTimeSec)
       foreach (unitName, discount in discountConfigBlk)
         if (unitName in giftUnits)
-          discountsList.entitlementUnits[unitName] <- discount
+          this.discountsList.entitlementUnits[unitName] <- discount
     }
 
     if (minUpdateDiscountsTimeSec != null)
       updateGiftUnitsDiscountTask = ::periodic_task_register(this,
-        @(dt) updateDiscountData(), minUpdateDiscountsTimeSec)
+        @(_dt) this.updateDiscountData(), minUpdateDiscountsTimeSec)
   }
 }
 
-g_discount.clearDiscountsList <- function clearDiscountsList()
+::g_discount.clearDiscountsList <- function clearDiscountsList()
 {
   foreach (button in buttonsList.value)
     if (button.needDiscountIcon)
-      discountsList[button.id] <- false
-  discountsList.changeExp <- false
-  discountsList.topmenu_research <- false
+      this.discountsList[button.id] <- false
+  this.discountsList.changeExp <- false
+  this.discountsList.topmenu_research <- false
 
-  discountsList.entitlements <- {}
+  this.discountsList.entitlements <- {}
 
-  discountsList.entitlementUnits <- {}
-  discountsList.airList <- {}
+  this.discountsList.entitlementUnits <- {}
+  this.discountsList.airList <- {}
 }
 
 ::g_discount.clearDiscountsList()
 
 //return 0 if when discount not visible
-g_discount.getUnitDiscount <- function getUnitDiscount(unit)
+::g_discount.getUnitDiscount <- function getUnitDiscount(unit)
 {
-  if (!canBeVisibleOnUnit(unit))
+  if (!this.canBeVisibleOnUnit(unit))
     return 0
-  return max(getUnitDiscountByName(unit.name),
-               getEntitlementUnitDiscount(unit.name))
+  return max(this.getUnitDiscountByName(unit.name),
+               this.getEntitlementUnitDiscount(unit.name))
 }
 
-g_discount.getGroupDiscount <- function getGroupDiscount(list)
+::g_discount.getGroupDiscount <- function getGroupDiscount(list)
 {
   local res = 0
   foreach(unit in list)
-    res = max(res, getUnitDiscount(unit))
+    res = max(res, this.getUnitDiscount(unit))
   return res
 }
 
-g_discount.pushDiscountsUpdateEvent <- function pushDiscountsUpdateEvent()
+::g_discount.pushDiscountsUpdateEvent <- function pushDiscountsUpdateEvent()
 {
   ::update_gamercards()
   ::broadcastEvent("DiscountsDataUpdated")
 }
 
-g_discount.onEventUnitBought <- function onEventUnitBought(p)
+::g_discount.onEventUnitBought <- function onEventUnitBought(p)
 {
-  let unitName = ::getTblValue("unitName", p)
+  let unitName = getTblValue("unitName", p)
   if (!unitName)
     return
 
-  if (getUnitDiscountByName(unitName) == 0 && getEntitlementUnitDiscount(unitName) == 0)
+  if (this.getUnitDiscountByName(unitName) == 0 && this.getEntitlementUnitDiscount(unitName) == 0)
     return
 
-  updateDiscountData()
+  this.updateDiscountData()
   //push event after current event completely finished
-  ::get_gui_scene().performDelayed(this, pushDiscountsUpdateEvent)
+  ::get_gui_scene().performDelayed(this, this.pushDiscountsUpdateEvent)
 }
 
-g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = false)
+::g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = false)
 {
-  clearDiscountsList()
+  this.clearDiscountsList()
 
   let pBlk = ::get_price_blk()
 
   let chPath = ["exp_to_gold_rate"]
   chPath.append(shopCountriesList)
-  discountsList.changeExp = getDiscountByPath(chPath, pBlk) > 0
+  this.discountsList.changeExp = ::getDiscountByPath(chPath, pBlk) > 0
 
   let giftUnits = {}
 
@@ -193,43 +200,43 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
       let path = ["aircrafts", air.name]
       let discount = ::getDiscountByPath(path, pBlk)
       if (discount > 0)
-        discountsList.airList[air.name] <- discount
+        this.discountsList.airList[air.name] <- discount
     }
 
-  eachBlock(::get_entitlements_price_blk(), @(b, n) checkEntitlement(n, b, giftUnits), this)
+  eachBlock(::get_entitlements_price_blk(), @(b, n) this.checkEntitlement(n, b, giftUnits), this)
 
-  updateGiftUnitsDiscountFromGuiBlk(giftUnits)  // !!!FIX ME Remove this function when gift units discount will received from char
+  this.updateGiftUnitsDiscountFromGuiBlk(giftUnits)  // !!!FIX ME Remove this function when gift units discount will received from char
 
   if (canUseIngameShop() && needEntStoreDiscountIcon)
-    discountsList[topMenuOnlineShopId.value] = haveDiscount()
+    this.discountsList[topMenuOnlineShopId.value] = haveDiscount()
 
-  discountsList.entitlementUnits.__update(consoleEntitlementUnits)
+  this.discountsList.entitlementUnits.__update(this.consoleEntitlementUnits)
 
   local isShopDiscountVisible = false
-  foreach(airName, discount in discountsList.airList)
-    if (discount > 0 && canBeVisibleOnUnit(::getAircraftByName(airName)))
+  foreach(airName, discount in this.discountsList.airList)
+    if (discount > 0 && this.canBeVisibleOnUnit(::getAircraftByName(airName)))
     {
       isShopDiscountVisible = true
       break
     }
   if (!isShopDiscountVisible)
-    foreach(airName, discount in discountsList.entitlementUnits)
-      if (discount > 0 && canBeVisibleOnUnit(::getAircraftByName(airName)))
+    foreach(airName, discount in this.discountsList.entitlementUnits)
+      if (discount > 0 && this.canBeVisibleOnUnit(::getAircraftByName(airName)))
       {
         isShopDiscountVisible = true
         break
       }
-  discountsList.topmenu_research = isShopDiscountVisible
+  this.discountsList.topmenu_research = isShopDiscountVisible
 
   if (!isSilentUpdate)
-    pushDiscountsUpdateEvent()
+    this.pushDiscountsUpdateEvent()
 }
 
-g_discount.checkEntitlement <- function checkEntitlement(entName, entlBlock, giftUnits)
+::g_discount.checkEntitlement <- function checkEntitlement(entName, entlBlock, giftUnits)
 {
   let discountItemList = ["premium", "warpoints", "eagles", "campaign", "bonuses"]
   local chapter = entlBlock?.chapter
-  if (!::isInArray(chapter, discountItemList))
+  if (!isInArray(chapter, discountItemList))
     return
 
   local discount = ::get_entitlement_gold_discount(entName)
@@ -241,7 +248,7 @@ g_discount.checkEntitlement <- function checkEntitlement(entName, entlBlock, gif
   if (discount == 0)
     return
 
-  discountsList.entitlements[entName] <- discount
+  this.discountsList.entitlements[entName] <- discount
 
   if (chapter == "campaign" || chapter == "bonuses")
   {
@@ -252,30 +259,30 @@ g_discount.checkEntitlement <- function checkEntitlement(entName, entlBlock, gif
   local chapterVal = true
   if (chapter == topMenuOnlineShopId.value)
     chapterVal = canUseIngameShop() || isPlatformPC
-  discountsList[chapter] <- chapterVal
+  this.discountsList[chapter] <- chapterVal
 
   if (entlBlock?.aircraftGift)
     foreach(unitName in entlBlock % "aircraftGift")
       if (unitName in giftUnits)
-        discountsList.entitlementUnits[unitName] <- discount
+        this.discountsList.entitlementUnits[unitName] <- discount
 }
 
-g_discount.generateDiscountInfo <- function generateDiscountInfo(discountsTable, headerLocId = "")
+::g_discount.generateDiscountInfo <- function generateDiscountInfo(discountsTable, headerLocId = "")
 {
   local maxDiscount = 0
-  let headerText = ::loc(headerLocId == ""? "discount/notification" : headerLocId) + "\n"
+  let headerText = loc(headerLocId == ""? "discount/notification" : headerLocId) + "\n"
   local discountText = ""
   foreach(locId, discount in discountsTable)
   {
     if (discount <= 0)
       continue
 
-    discountText += ::loc("discount/list_string", {itemName = ::loc(locId), discount = discount}) + "\n"
+    discountText += loc("discount/list_string", {itemName = loc(locId), discount = discount}) + "\n"
     maxDiscount = max(maxDiscount, discount)
   }
 
   if (discountsTable.len() > 20)
-    discountText = format(::loc("discount/buy/tooltip"), maxDiscount.tostring())
+    discountText = format(loc("discount/buy/tooltip"), maxDiscount.tostring())
 
   if (discountText == "")
     return {}
@@ -285,16 +292,16 @@ g_discount.generateDiscountInfo <- function generateDiscountInfo(discountsTable,
   return {maxDiscount = maxDiscount, discountTooltip = discountText}
 }
 
-g_discount.updateDiscountNotifications <- function updateDiscountNotifications(scene = null)
+::g_discount.updateDiscountNotifications <- function updateDiscountNotifications(scene = null)
 {
   foreach(name in ["topmenu_research", "changeExp"])
   {
-    let id = getDiscountIconId(name)
-    let obj = ::checkObj(scene)? scene.findObject(id) : ::get_cur_gui_scene()[id]
+    let id = this.getDiscountIconId(name)
+    let obj = checkObj(scene)? scene.findObject(id) : ::get_cur_gui_scene()[id]
     if (!(obj?.isValid() ?? false))
       continue
 
-    let discount = getDiscount(name)
+    let discount = this.getDiscount(name)
     let hasDiscount = name == "topmenu_research"
       ? discount && !(promoteUnits.value.findvalue(@(d) d.isActive) != null)
       : discount
@@ -303,12 +310,12 @@ g_discount.updateDiscountNotifications <- function updateDiscountNotifications(s
 
   let section = ::g_top_menu_right_side_sections.getSectionByName("shop")
   let sectionId = section.getTopMenuButtonDivId()
-  let shopObj = ::checkObj(scene)? scene.findObject(sectionId) : ::get_cur_gui_scene()[sectionId]
-  if (!::checkObj(shopObj))
+  let shopObj = checkObj(scene)? scene.findObject(sectionId) : ::get_cur_gui_scene()[sectionId]
+  if (!checkObj(shopObj))
     return
 
   let stObj = shopObj.findObject(section.getTopMenuDiscountId())
-  if (!::checkObj(stObj))
+  if (!checkObj(stObj))
     return
 
   local haveAnyDiscount = false
@@ -319,12 +326,12 @@ g_discount.updateDiscountNotifications <- function updateDiscountNotifications(s
       if (!button.needDiscountIcon)
         continue
 
-      let id = getDiscountIconId(button.id)
+      let id = this.getDiscountIconId(button.id)
       let dObj = shopObj.findObject(id)
-      if (!::checkObj(dObj))
+      if (!checkObj(dObj))
         continue
 
-      let discountStatus = getDiscount(button.id)
+      let discountStatus = this.getDiscount(button.id)
       haveAnyDiscount = haveAnyDiscount || discountStatus
       dObj.show(discountStatus)
     }
@@ -333,41 +340,41 @@ g_discount.updateDiscountNotifications <- function updateDiscountNotifications(s
   stObj.show(haveAnyDiscount)
 }
 
-g_discount.getDiscount <- function getDiscount(id, defVal = false)
+::g_discount.getDiscount <- function getDiscount(id, defVal = false)
 {
-  return discountsList?[id] ?? defVal
+  return this.discountsList?[id] ?? defVal
 }
 
-g_discount.getEntitlementDiscount <- function getEntitlementDiscount(id)
+::g_discount.getEntitlementDiscount <- function getEntitlementDiscount(id)
 {
-  return discountsList.entitlements?[id] || 0
+  return this.discountsList.entitlements?[id] || 0
 }
 
-g_discount.getEntitlementUnitDiscount <- function getEntitlementUnitDiscount(unitName)
+::g_discount.getEntitlementUnitDiscount <- function getEntitlementUnitDiscount(unitName)
 {
-  return discountsList.entitlementUnits?[unitName] || 0
+  return this.discountsList.entitlementUnits?[unitName] || 0
 }
 
-g_discount.getUnitDiscountByName <- function getUnitDiscountByName(unitName)
+::g_discount.getUnitDiscountByName <- function getUnitDiscountByName(unitName)
 {
-  return discountsList.airList?[unitName] || 0
+  return this.discountsList.airList?[unitName] || 0
 }
 
-g_discount.haveAnyUnitDiscount <- function haveAnyUnitDiscount()
+::g_discount.haveAnyUnitDiscount <- function haveAnyUnitDiscount()
 {
-  return discountsList.entitlementUnits.len() > 0 || discountsList.airList.len() > 0
+  return this.discountsList.entitlementUnits.len() > 0 || this.discountsList.airList.len() > 0
 }
 
-g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null)
+::g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null)
 {
-  if (!haveAnyUnitDiscount())
+  if (!this.haveAnyUnitDiscount())
     return {}
 
   let discountsList = {}
   foreach(unit in ::all_units)
     if (!countryId || unit.shopCountry == countryId)
     {
-      let discount = getUnitDiscount(unit)
+      let discount = this.getUnitDiscount(unit)
       if (discount > 0)
         discountsList[unit.name + "_shop"] <- discount
     }

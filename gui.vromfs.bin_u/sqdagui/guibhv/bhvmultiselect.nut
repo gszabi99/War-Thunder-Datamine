@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 ::gui_bhv.MultiSelect <- class extends ::gui_bhv.posNavigator
 {
   bhvId = "MultiSelect"
@@ -24,7 +27,7 @@
     this.selectItem(obj, value, null, false)
   }
 
-  function onSelectAction(obj)
+  function onSelectAction(_obj)
   {
   }
 
@@ -60,7 +63,7 @@
     return true
   }
 
-  function chooseItem(obj, selIdx, needSound = true)
+  function chooseItem(obj, selIdx, _needSound = true)
   {
     if (selIdx >= 0)
       this.chooseItems(obj, this.getValue(obj) ^ (1 << selIdx))
@@ -71,21 +74,21 @@
     let value = this.getHoveredChild(obj).hoveredIdx ?? -1
     if (is_down) {
       if (value < 0)
-        return ::RETCODE_NOTHING
-      ::set_script_gui_behaviour_events(this.bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
+        return RETCODE_NOTHING
+      ::set_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
       this.onActivatePushed(obj, value)
-      return ::RETCODE_HALT
+      return RETCODE_HALT
     }
 
     let pushedIdx = obj.getIntProp(this.activatePushedIdxPID, -1)
     if (pushedIdx < 0)
-      return ::RETCODE_HALT
+      return RETCODE_HALT
     let wasHoldStarted = this.onActivateUnpushed(obj)
     if ((!wasHoldStarted || this.needActionAfterHold(obj)) && pushedIdx == value)
       this.chooseItem(obj, value)
 
-    return ::RETCODE_HALT
+    return RETCODE_HALT
   }
 
-  isOnlyHover = @(obj) false
+  isOnlyHover = @(_obj) false
 }

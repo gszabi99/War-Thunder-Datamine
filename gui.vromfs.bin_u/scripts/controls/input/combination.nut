@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 
 /**
@@ -13,20 +19,20 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   constructor(v_elements = [])
   {
-    elements = v_elements
+    this.elements = v_elements
   }
 
   function getMarkup()
   {
-    let data = getMarkupData()
+    let data = this.getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
     let data = {
-      template = "%gui/combination"
-      view = { elements = u.map(elements, @(element) { element = element.getMarkup()}) }
+      template = "%gui/combination.tpl"
+      view = { elements = u.map(this.elements, @(element) { element = element.getMarkup()}) }
     }
 
     data.view.elements.top().last <- true
@@ -36,7 +42,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
   function getText()
   {
     let text = []
-    foreach (element in elements)
+    foreach (element in this.elements)
       text.append(element.getText())
 
     return ::g_string.implode(text, " + ")
@@ -44,16 +50,16 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   function getDeviceId()
   {
-    if (elements.len())
-      return elements[0].getDeviceId()
+    if (this.elements.len())
+      return this.elements[0].getDeviceId()
 
-    return ::NULL_INPUT_DEVICE_ID
+    return NULL_INPUT_DEVICE_ID
   }
 
   function hasImage()
   {
-    if (elements.len())
-      foreach (item in elements)
+    if (this.elements.len())
+      foreach (item in this.elements)
         if (item.hasImage())
           return true
 
@@ -64,8 +70,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
   {
     return {
       inputName = "combination"
-      text = getText()
-      elements = u.map(elements, @(element) element.getConfig())
+      text = this.getText()
+      elements = u.map(this.elements, @(element) element.getConfig())
     }
   }
 

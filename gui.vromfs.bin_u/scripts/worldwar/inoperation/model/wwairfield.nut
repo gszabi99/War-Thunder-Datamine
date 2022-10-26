@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
@@ -5,7 +11,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 {
   index  = -1
   size   = 0
-  side   = ::SIDE_NONE
+  side   = SIDE_NONE
   pos    = null
   airfieldType = null
   armies = null
@@ -17,44 +23,44 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 
   constructor(airfieldIndex)
   {
-    airfieldType = airfieldTypes.AT_RUNWAY
-    index  = airfieldIndex
-    pos    = ::Point2()
-    armies = []
-    formations = []
-    cooldownFormations = []
-    clanFormation = null
-    allyFormation = null
+    this.airfieldType = airfieldTypes.AT_RUNWAY
+    this.index  = airfieldIndex
+    this.pos    = ::Point2()
+    this.armies = []
+    this.formations = []
+    this.cooldownFormations = []
+    this.clanFormation = null
+    this.allyFormation = null
 
     if (airfieldIndex < 0)
       return
 
-    update()
+    this.update()
   }
 
   function isValid()
   {
-    return index >= 0
+    return this.index >= 0
   }
 
   function getIndex()
   {
-    return index
+    return this.index
   }
 
   function update()
   {
-    createArmyMorale = ::g_world_war.getWWConfigurableValue("airfieldCreateArmyMorale", 0)
+    this.createArmyMorale = ::g_world_war.getWWConfigurableValue("airfieldCreateArmyMorale", 0)
 
     let blk = ::DataBlock()
-    ::ww_get_airfield_info(index, blk)
+    ::ww_get_airfield_info(this.index, blk)
 
     if ("specs" in blk)
     {
-      side = blk.specs?.side ? ::ww_side_name_to_val(blk.specs.side) : side
-      size = blk.specs?.size || size
-      pos = blk.specs?.pos || pos
-      airfieldType = airfieldTypes?[blk.specs?.type] ?? airfieldType
+      this.side = blk.specs?.side ? ::ww_side_name_to_val(blk.specs.side) : this.side
+      this.size = blk.specs?.size || this.size
+      this.pos = blk.specs?.pos || this.pos
+      this.airfieldType = airfieldTypes?[blk.specs?.type] ?? this.airfieldType
     }
 
     if ("groups" in blk)
@@ -62,25 +68,25 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
       {
         let itemBlk = blk.groups.getBlock(i)
         let formation = ::WwAirfieldFormation(itemBlk, this)
-        formations.append(formation)
+        this.formations.append(formation)
 
         if (formation.isBelongsToMyClan())
         {
-          clanFormation = formation
-          clanFormation.setFormationID(WW_ARMY_RELATION_ID.CLAN)
-          clanFormation.setName("formation_" + WW_ARMY_RELATION_ID.CLAN)
+          this.clanFormation = formation
+          this.clanFormation.setFormationID(WW_ARMY_RELATION_ID.CLAN)
+          this.clanFormation.setName("formation_" + WW_ARMY_RELATION_ID.CLAN)
         }
         else
         {
-          if (!allyFormation)
+          if (!this.allyFormation)
           {
-            allyFormation = ::WwCustomFormation(itemBlk, this)
-            allyFormation.setFormationID(WW_ARMY_RELATION_ID.ALLY)
-            allyFormation.setName("formation_" + WW_ARMY_RELATION_ID.ALLY)
-            allyFormation.setUnitType(airfieldType.unitType.code)
-            allyFormation.setMapObjectName(airfieldType.objName)
+            this.allyFormation = ::WwCustomFormation(itemBlk, this)
+            this.allyFormation.setFormationID(WW_ARMY_RELATION_ID.ALLY)
+            this.allyFormation.setName("formation_" + WW_ARMY_RELATION_ID.ALLY)
+            this.allyFormation.setUnitType(this.airfieldType.unitType.code)
+            this.allyFormation.setMapObjectName(this.airfieldType.objName)
           }
-          allyFormation.addUnits(itemBlk)
+          this.allyFormation.addUnits(itemBlk)
         }
 
         let cooldownsBlk = itemBlk.getBlockByName("cooldownUnits")
@@ -90,52 +96,52 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
           cdFormation.owner = ::WwArmyOwner(itemBlk.getBlockByName("owner"))
           cdFormation.setFormationID(j)
           cdFormation.setName("cooldown_" + j)
-          cooldownFormations.append(cdFormation)
+          this.cooldownFormations.append(cdFormation)
         }
       }
 
     if ("armies" in blk)
-      armies = blk.armies % "item"
+      this.armies = blk.armies % "item"
   }
 
   function _tostring()
   {
-    local returnText = "AIRFIELD: index = " + index + ", side = " + side + ", size = " + size + ", pos = " + ::toString(pos) + ", airfieldType = " + airfieldType.name
-    if (formations.len())
-      returnText += ", groups len = " + formations.len()
-    if (armies.len())
-      returnText += ", armies len = " + armies.len()
+    local returnText = "AIRFIELD: index = " + this.index + ", side = " + this.side + ", size = " + this.size + ", pos = " + toString(this.pos) + ", airfieldType = " + this.airfieldType.name
+    if (this.formations.len())
+      returnText += ", groups len = " + this.formations.len()
+    if (this.armies.len())
+      returnText += ", armies len = " + this.armies.len()
     return returnText
   }
 
   function isArmyBelongsTo(army)
   {
-    return ::isInArray(army.name, armies)
+    return isInArray(army.name, this.armies)
   }
 
   function getSide()
   {
-    return side
+    return this.side
   }
 
   function getSize()
   {
-    return size
+    return this.size
   }
 
   function getPos()
   {
-    return pos
+    return this.pos
   }
 
   function getUnitsNumber(needToAddCooldown = true)
   {
     local count = 0
-    foreach (formation in formations)
+    foreach (formation in this.formations)
       count += formation.getUnitsNumber()
 
     if (needToAddCooldown)
-      foreach (formation in cooldownFormations)
+      foreach (formation in this.cooldownFormations)
         count += formation.getUnitsNumber()
 
     return count
@@ -144,7 +150,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
   function getUnitsInFlyNumber()
   {
     local unitsNumber = 0
-    foreach (armyName in armies)
+    foreach (armyName in this.armies)
     {
       let army = ::g_world_war.getArmyByName(armyName)
       if (army.isValid())
@@ -159,29 +165,29 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 
   function isMySide(checkSide)
   {
-    return getSide() == checkSide
+    return this.getSide() == checkSide
   }
 
   function getCooldownsWithManageAccess()
   {
-    return ::u.filter(cooldownFormations, function(formation) { return formation.hasManageAccess() })
+    return ::u.filter(this.cooldownFormations, function(formation) { return formation.hasManageAccess() })
   }
 
   function getCooldownArmiesByGroupIdx(groupIdx)
   {
-    return ::u.filter(cooldownFormations,
+    return ::u.filter(this.cooldownFormations,
       @(formation) formation.getArmyGroupIdx() == groupIdx)
   }
 
   function getCooldownArmiesNumberByGroupIdx(groupIdx)
   {
-    return getCooldownArmiesByGroupIdx(groupIdx).len()
+    return this.getCooldownArmiesByGroupIdx(groupIdx).len()
   }
 
   function hasEnoughUnitsToFly()
   {
-    foreach (formation in formations)
-      if (hasFormationEnoughUnitsToFly(formation))
+    foreach (formation in this.formations)
+      if (this.hasFormationEnoughUnitsToFly(formation))
         return true
 
     return false
@@ -238,9 +244,9 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
     return false
   }
 
-  getAvailableFormations = @() isValid()
-    ? ::u.filter(formations, @(formation) formation.hasManageAccess()) : []
+  getAvailableFormations = @() this.isValid()
+    ? ::u.filter(this.formations, @(formation) formation.hasManageAccess()) : []
 
   getFormationByGroupIdx = @(groupIdx)
-    ::u.search(formations, @(group) group.owner.armyGroupIdx == groupIdx)
+    ::u.search(this.formations, @(group) group.owner.armyGroupIdx == groupIdx)
 }

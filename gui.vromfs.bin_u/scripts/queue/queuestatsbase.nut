@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 //to allow to able temporary handle different stats versions at once
 //before new one completely applied to all circuits
 ::queue_stats_versions <- {}
@@ -52,16 +58,16 @@ const MULTICLUSTER_NAME = "multi"
   constructor(queue)
   {
     local queueEvent = ::queues.getQueueEvent(queue)
-    isClanStats = ::queues.isClanQueue(queue)
-    isMultiCluster = isClanStats || ::events.isMultiCluster(queueEvent)
-    isSymmetric = isClanStats
-    myRankInQueue = ::queues.getMyRankInQueue(queue)
+    this.isClanStats = ::queues.isClanQueue(queue)
+    this.isMultiCluster = this.isClanStats || ::events.isMultiCluster(queueEvent)
+    this.isSymmetric = this.isClanStats
+    this.myRankInQueue = ::queues.getMyRankInQueue(queue)
 
-    source = {}
-    init(queue)
+    this.source = {}
+    this.init(queue)
   }
 
-  function init(queue) {}
+  function init(_queue) {}
 
   /*************************************************************************************************/
   /*************************************PUBLIC FUNCTIONS *******************************************/
@@ -69,39 +75,39 @@ const MULTICLUSTER_NAME = "multi"
 
   function applyQueueInfo(queueInfo)
   {
-    source = queueInfo
-    resetCache()
+    this.source = queueInfo
+    this.resetCache()
     return false
   }
 
   function getMaxClusterName()
   {
-    recountQueueOnce()
-    return maxClusterName
+    this.recountQueueOnce()
+    return this.maxClusterName
   }
 
   function getTeamsQueueTable(cluster = null)
   {
-    recountQueueOnce()
-    if (isMultiCluster)
+    this.recountQueueOnce()
+    if (this.isMultiCluster)
       cluster = MULTICLUSTER_NAME
-    return ::getTblValue(cluster || maxClusterName, teamsQueueTable)
+    return getTblValue(cluster || this.maxClusterName, this.teamsQueueTable)
   }
 
   function getQueueTableByTeam(teamName, cluster = null)
   {
-    return ::getTblValue(teamName, getTeamsQueueTable(cluster))
+    return getTblValue(teamName, this.getTeamsQueueTable(cluster))
   }
 
   function getPlayersCountByTeam(teamName, cluster = null)
   {
-    return ::getTblValue("playersCount", getQueueTableByTeam(teamName, cluster), 0)
+    return getTblValue("playersCount", this.getQueueTableByTeam(teamName, cluster), 0)
   }
 
   function getPlayersCountOfAllRanks(cluster = null)
   {
     local res = 0
-    let teamQueueTable = getQueueTableByTeam("teamA", cluster)
+    let teamQueueTable = this.getQueueTableByTeam("teamA", cluster)
     for(local i = 1; i <= ::max_country_rank; i++)
       res += teamQueueTable?[i.tostring()] ?? 0
 
@@ -110,40 +116,40 @@ const MULTICLUSTER_NAME = "multi"
 
   function getPlayersCountOfMyRank(cluster = null)
   {
-    let rankStr = myRankInQueue.tostring()
-    if (isSymmetric)
-      return ::getTblValue(rankStr, getQueueTableByTeam("teamA", cluster), 0)
+    let rankStr = this.myRankInQueue.tostring()
+    if (this.isSymmetric)
+      return getTblValue(rankStr, this.getQueueTableByTeam("teamA", cluster), 0)
 
     local res = 0
-    foreach(teamName in teamNamesList)
-      res += ::getTblValue(rankStr, getQueueTableByTeam(teamName, cluster), 0)
+    foreach(teamName in this.teamNamesList)
+      res += getTblValue(rankStr, this.getQueueTableByTeam(teamName, cluster), 0)
     return res
   }
 
   function getCountriesQueueTable(cluster = null)
   {
-    recountQueueOnce()
-    if (isMultiCluster)
+    this.recountQueueOnce()
+    if (this.isMultiCluster)
       cluster = MULTICLUSTER_NAME
-    return ::getTblValue(cluster || maxClusterName, countriesQueueTable)
+    return getTblValue(cluster || this.maxClusterName, this.countriesQueueTable)
   }
 
   //for clans queues
   function getClansCount()
   {
-    return ::getTblValue("clansCount", getClansQueueTable(), 0)
+    return getTblValue("clansCount", this.getClansQueueTable(), 0)
   }
 
   function getMyClanQueueTable()
   {
-    recountQueueOnce()
-    return myClanQueueTable
+    this.recountQueueOnce()
+    return this.myClanQueueTable
   }
 
   function getClansQueueTable()
   {
-    recountQueueOnce()
-    return clansQueueTable
+    this.recountQueueOnce()
+    return this.clansQueueTable
   }
 
   /*************************************************************************************************/
@@ -152,31 +158,31 @@ const MULTICLUSTER_NAME = "multi"
 
   function resetCache()
   {
-    isStatsCounted = false
+    this.isStatsCounted = false
   }
 
   function recountQueueOnce()
   {
-    if (isStatsCounted)
+    if (this.isStatsCounted)
       return
 
-    isStatsCounted = true
-    if (isClanStats)
-      calcClanQueueTable()
+    this.isStatsCounted = true
+    if (this.isClanStats)
+      this.calcClanQueueTable()
     else
-      calcQueueTable()
+      this.calcQueueTable()
   }
 
   function calcQueueTable()
   {
-    maxClusterName = ""
-    teamsQueueTable = {}
-    countriesQueueTable = {}
+    this.maxClusterName = ""
+    this.teamsQueueTable = {}
+    this.countriesQueueTable = {}
   }
 
   function calcClanQueueTable()
   {
-    myClanQueueTable = null
-    clansQueueTable = {}
+    this.myClanQueueTable = null
+    this.clansQueueTable = {}
   }
 }

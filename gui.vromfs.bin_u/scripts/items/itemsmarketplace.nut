@@ -1,8 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 
-let isMarketplaceEnabled = @() ::has_feature("Marketplace")
-  && ::has_feature("AllowExternalLink") && inventoryClient.getMarketplaceBaseUrl() != null
+let isMarketplaceEnabled = @() hasFeature("Marketplace")
+  && hasFeature("AllowExternalLink") && inventoryClient.getMarketplaceBaseUrl() != null
 
 let function goToMarketplace()
 {

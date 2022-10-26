@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
@@ -7,37 +13,37 @@ let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
   types = []
 }
 
-g_skill_parameters_request_type._getParameters <- function _getParameters(crewId, unit)
+::g_skill_parameters_request_type._getParameters <- function _getParameters(crewId, unit)
 {
   if (unit == null)
     return null
 
-  let cacheUid = getCachePrefix() + "Current"
+  let cacheUid = this.getCachePrefix() + "Current"
   local res = ::g_crew_short_cache.getData(crewId, unit, cacheUid)
   if (res)
     return res
 
-  let values = getValues()
+  let values = this.getValues()
   res = calc_crew_parameters(crewId, values, unit.name)
   ::g_crew_short_cache.setData(crewId, unit, cacheUid,  res)
   return res
 }
 
-g_skill_parameters_request_type._getValues <- function _getValues()
+::g_skill_parameters_request_type._getValues <- function _getValues()
 {
   return {}
 }
 
-g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedParameters(crewId, unit)
+::g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedParameters(crewId, unit)
 {
   if (unit == null)
     return null
-  let cacheUid = getCachePrefix() + "Selected"
+  let cacheUid = this.getCachePrefix() + "Selected"
   local res = ::g_crew_short_cache.getData(crewId, unit, cacheUid)
   if (res)
     return res
 
-  let values = getValues()
+  let values = this.getValues()
   // Filling values request object with selected values if not set already.
   foreach (memberData in ::crew_skills)
   {
@@ -59,9 +65,9 @@ g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedP
   return res
 }
 
-g_skill_parameters_request_type._getCachePrefix <- function _getCachePrefix()
+::g_skill_parameters_request_type._getCachePrefix <- function _getCachePrefix()
 {
-  return "skillParamRqst" + typeName
+  return "skillParamRqst" + this.typeName
 }
 
 ::g_skill_parameters_request_type.template <- {
@@ -88,7 +94,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
       foreach (valueMemberName, memberBlk in calcBlk)
       {
         values[valueMemberName] <- {}
-        foreach (valueSkillName, skillBlk in memberBlk)
+        foreach (valueSkillName, _skillBlk in memberBlk)
         {
           // Gunner's count is maxed-out as a base value.
           // Everything else is zero'ed.
@@ -149,7 +155,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
       foreach (valueMemberName, memberBlk in calcBlk)
       {
         values[valueMemberName] <- {}
-        foreach (valueSkillName, skillBlk in memberBlk)
+        foreach (valueSkillName, _skillBlk in memberBlk)
         {
           let value = getMaxSkillValue(valueMemberName, valueSkillName)
           values[valueMemberName][valueSkillName] <- value

@@ -1,9 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
 
-let overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() ::Watched("")) //recalc slotbar only on mission change
-let overrideSlotbar = persist("overrideSlotbar", @() ::Watched(null)) //null or []
-let userSlotbarCountry = persist("userSlotbarCountry", @() ::Watched("")) //for return user country after reset override slotbar
+let overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() Watched("")) //recalc slotbar only on mission change
+let overrideSlotbar = persist("overrideSlotbar", @() Watched(null)) //null or []
+let userSlotbarCountry = persist("userSlotbarCountry", @() Watched("")) //for return user country after reset override slotbar
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 overrideSlotbar.subscribe(@(_) ::broadcastEvent("OverrideSlotbarChanged"))
 
@@ -101,7 +107,7 @@ let function updateOverrideSlotbar(missionName, event = null) {
     return
 
   if (!isSlotbarOverrided())
-    userSlotbarCountry(::get_profile_country_sq())
+    userSlotbarCountry(profileCountrySq.value)
   overrideSlotbar(newOverrideSlotbar)
 }
 
@@ -109,7 +115,7 @@ let function resetSlotbarOverrided() {
   overrrideSlotbarMissionName("")
   overrideSlotbar(null)
   if (userSlotbarCountry.value != "")
-    ::switch_profile_country(userSlotbarCountry.value)
+    switchProfileCountry(userSlotbarCountry.value)
   userSlotbarCountry("")
 }
 

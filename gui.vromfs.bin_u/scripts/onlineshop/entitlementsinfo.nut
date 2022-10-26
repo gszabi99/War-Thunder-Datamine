@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+
 let { getBundlesBlockName } = require("%scripts/onlineShop/onlineBundles.nut")
 let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -20,18 +27,18 @@ let function updateBundlesShopInfo() {
     requestMultipleItems(
       guidsList,
       function(res) {
-        ::dagor.debug($"[ENTITLEMENTS INFO] Received success result, {res.status}")
+        log($"[ENTITLEMENTS INFO] Received success result, {res.status}")
         let resList = {}
         foreach (id, guid in bundlesList)
           if (guid in res.items)
             resList[id] <- res.items[guid].__merge({guid})
           else
-            ::dagor.debug($"[ENTITLEMENTS INFO] Skip saving {id} - {guid}")
+            log($"[ENTITLEMENTS INFO] Skip saving {id} - {guid}")
         bundlesShopInfo(resList)
       },
       function() {
-        ::dagor.debug("[ENTITLEMENTS INFO] Received failure result")
-        ::debugTableData(guidsList)
+        log("[ENTITLEMENTS INFO] Received failure result")
+        debugTableData(guidsList)
       }
     )
   else
@@ -44,9 +51,9 @@ let function resetCache() {
 }
 
 addListenersWithoutEnv({
-  ScriptsReloaded = @(p) resetCache()
-  SignOut = @(p) resetCache()
-  LoginComplete = @(p) resetCache()
+  ScriptsReloaded = @(_p) resetCache()
+  SignOut = @(_p) resetCache()
+  LoginComplete = @(_p) resetCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

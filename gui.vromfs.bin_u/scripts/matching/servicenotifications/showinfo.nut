@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
@@ -17,7 +23,7 @@ let function showMessageBox(params)
     : @() null
 
   ::scene_msg_box("show_message_from_matching", null,
-    ::g_string.implode([::colorize("activeTextColor", title), message], "\n"),
+    ::g_string.implode([colorize("activeTextColor", title), message], "\n"),
     [["ok", @() closeFunction() ]], "ok", { cancel_fn = @() closeFunction() })
 
   return { result = "ok" }
@@ -41,5 +47,5 @@ let function showUrl(params)
 }
 
 
-web_rpc.register_handler("show_message_box", showMessageBox)
-web_rpc.register_handler("open_url", showUrl)
+::web_rpc.register_handler("show_message_box", showMessageBox)
+::web_rpc.register_handler("open_url", showUrl)

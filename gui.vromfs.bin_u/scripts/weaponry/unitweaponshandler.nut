@@ -1,6 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { updateModItem,
         createModItemLayout,
         updateItemBulletsSlider } = require("%scripts/weaponry/weaponryVisual.nut")
+        let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { ceil } = require("math")
+
 let { getLastWeapon,
         setLastWeapon,
         isWeaponEnabled,
@@ -29,71 +39,71 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
   function initScreen()
   {
-    bulletsManager = ::UnitBulletsManager(unit, { isForcedAvailable = isForcedAvailable })
-    updateShowItemParams()
-    setUnit(unit, true)
+    this.bulletsManager = ::UnitBulletsManager(this.unit, { isForcedAvailable = this.isForcedAvailable })
+    this.updateShowItemParams()
+    this.setUnit(this.unit, true)
   }
 
   function checkInitWidth()
   {
-    if (!needRecountWidth || !scene.isVisible() || scene.getSize()[0] <= 0)
+    if (!this.needRecountWidth || !this.scene.isVisible() || this.scene.getSize()[0] <= 0)
       return
 
-    let sizes = ::g_dagui_utils.countSizeInItems(scene, "@modCellWidth", "@modCellHeight", 0, 0)
-    modsInRow = sizes.itemsCountX
-    scene.width = modsInRow + "@modCellWidth"
-    needRecountWidth = false
+    let sizes = ::g_dagui_utils.countSizeInItems(this.scene, "@modCellWidth", "@modCellHeight", 0, 0)
+    this.modsInRow = sizes.itemsCountX
+    this.scene.width = this.modsInRow + "@modCellWidth"
+    this.needRecountWidth = false
   }
 
   function updateShowItemParams()
   {
-    showItemParams = {
-      canShowPrice = canShowPrice
+    this.showItemParams = {
+      canShowPrice = this.canShowPrice
       canShowStatusImage = false
-      selectBulletsByManager = (canChangeWeaponry && canChangeBulletsAmount) ? bulletsManager : null
-      needSliderButtons = canChangeBulletsAmount
+      selectBulletsByManager = (this.canChangeWeaponry && this.canChangeBulletsAmount) ? this.bulletsManager : null
+      needSliderButtons = this.canChangeBulletsAmount
       hasMenu = false
-      isForceHidePlayerInfo = isForcedAvailable
+      isForceHidePlayerInfo = this.isForcedAvailable
     }
   }
 
   function setUnit(newUnit, forceUpdate = false)
   {
-    if (!forceUpdate && unit == newUnit)
+    if (!forceUpdate && this.unit == newUnit)
       return
 
-    checkInitWidth()
-    unit = newUnit
-    bulletsManager.setUnit(unit)
+    this.checkInitWidth()
+    this.unit = newUnit
+    this.bulletsManager.setUnit(this.unit)
 
     local columnsConfig = null
-    let unitType = ::get_es_unit_type(unit)
-    if (::isInArray(unitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER]))
-      columnsConfig = getColumnsAircraft()
-    else if (unitType == ::ES_UNIT_TYPE_TANK || unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
-      columnsConfig = getColumnsTank()
+    let unitType = ::get_es_unit_type(this.unit)
+    if (isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]))
+      columnsConfig = this.getColumnsAircraft()
+    else if (unitType == ES_UNIT_TYPE_TANK || unitType == ES_UNIT_TYPE_SHIP || unitType == ES_UNIT_TYPE_BOAT)
+      columnsConfig = this.getColumnsTank()
 
     if (!columnsConfig)
     {
-      clearScene()
+      this.clearScene()
       return
     }
 
-    fillWeaponryByColumnsConfig(columnsConfig)
-    updateAllItems()
+    this.fillWeaponryByColumnsConfig(columnsConfig)
+    this.updateAllItems()
   }
 
   function setCanChangeWeaponry(newValue, forceUpdate)
   {
-    if (newValue == canChangeWeaponry && !forceUpdate)
+    if (newValue == this.canChangeWeaponry && !forceUpdate)
       return
 
-    canChangeWeaponry = newValue
-    updateShowItemParams()
-    if(!unit)
+    this.canChangeWeaponry = newValue
+    this.updateShowItemParams()
+    if(!this.unit)
       return
 
-    updateAllItems()
+    this.updateAllItems()
   }
 
   /*
@@ -129,12 +139,12 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
     {
       isLineEmpty = true
       local needHeader = false
-      local bgBlock = getBgBlockBaseTemplate(itemWidth * columns.len())
+      local bgBlock = this.getBgBlockBaseTemplate(itemWidth * columns.len())
 
       let cellsRow = array(columns.len(), null)
       foreach(idx, column in columns)
       {
-        let cell = ::getTblValue(line, column)
+        let cell = getTblValue(line, column)
         if ((!cell || !cell.header) && bgBlock.columnsList.len())
           bgBlock.columnsList[bgBlock.columnsList.len() - 1].width += itemWidth
 
@@ -149,7 +159,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
         needHeader = needHeader || cell.header != null
 
         if (cell.header)
-          bgBlock.columnsList.append(getColumnConfig(cell.header, bgBlock.columnsList.len() > 0, itemWidth))
+          bgBlock.columnsList.append(this.getColumnConfig(cell.header, bgBlock.columnsList.len() > 0, itemWidth))
       }
 
       if (isLineEmpty)
@@ -157,7 +167,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
       if (needHeader)
       {
-        lineOffset += headerOffset
+        lineOffset += this.headerOffset
         bgBlock.offsetY = lineOffset + line
         view.bgBlocks.append(bgBlock)
         lastBgBlock = bgBlock
@@ -173,14 +183,14 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
         top = bgBlock.rows.len()
       })
 
-      view.weaponryList += addItemsByCellsRow(cellsRow, lineOffset + line, itemWidth)
+      view.weaponryList += this.addItemsByCellsRow(cellsRow, lineOffset + line, itemWidth)
     }
 
-    scene.height = (lineOffset + line) + "@modCellHeight"
-    if (!needRecountWidth)
-      scene.width = (itemWidth * columns.len()) + "@modCellWidth"
-    let data = ::handyman.renderCached("%gui/weaponry/weaponry", view)
-    guiScene.replaceContentFromText(scene, data, data.len(), this)
+    this.scene.height = (lineOffset + line) + "@modCellHeight"
+    if (!this.needRecountWidth)
+      this.scene.width = (itemWidth * columns.len()) + "@modCellWidth"
+    let data = ::handyman.renderCached("%gui/weaponry/weaponry.tpl", view)
+    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 
   function getBgBlockBaseTemplate(width)
@@ -224,19 +234,19 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
       params.posX = itemWidth * idx
       local item = null
       if (cell.itemType == weaponsItem.weapon)
-        item = getCurWeapon()
+        item = this.getCurWeapon()
       else if (cell.itemType == weaponsItem.modification)
-        item = getCurBullet(cell.bulGroupIdx)
+        item = this.getCurBullet(cell.bulGroupIdx)
 
       if (item)
-        res += createModItemLayout(cell.id, unit, item, cell.itemType, params)
+        res += createModItemLayout(cell.id, this.unit, item, cell.itemType, params)
     }
     return res
   }
 
   function getBulletsItemId(groupIdx)
   {
-    return bulletsIdPrefix + groupIdx
+    return this.bulletsIdPrefix + groupIdx
   }
 
   function getCellConfig(id = "", header = null, itemType = weaponsItem.unknown, bulGroupIdx = 0)
@@ -259,20 +269,20 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
   function getColumnsAircraft()
   {
-    let res = getEmptyColumnsConfig()
-    if (isUnitHaveSecondaryWeapons(unit))
-      res.columns.append([getCellConfig(weaponItemId, ::g_weaponry_types.WEAPON.getHeader(unit), weaponsItem.weapon)])
+    let res = this.getEmptyColumnsConfig()
+    if (isUnitHaveSecondaryWeapons(this.unit))
+      res.columns.append([this.getCellConfig(this.weaponItemId, ::g_weaponry_types.WEAPON.getHeader(this.unit), weaponsItem.weapon)])
 
-    let groups = getBulletsGroups()
-    let offset = res.columns.len() < modsInRow ? res.columns.len() : 0
-    let totalColumns = min(offset + groups.len(), modsInRow)
+    let groups = this.getBulletsGroups()
+    let offset = res.columns.len() < this.modsInRow ? res.columns.len() : 0
+    let totalColumns = min(offset + groups.len(), this.modsInRow)
     for(local i = res.columns.len(); i < totalColumns; i++)
       res.columns.append([])
 
     foreach(gIdx, bulGroup in groups)
     {
       let col = offset + (gIdx % (totalColumns - offset))
-      res.columns[col].append(getCellConfig(getBulletsItemId(gIdx), bulGroup.getHeader(), weaponsItem.modification, gIdx))
+      res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), bulGroup.getHeader(), weaponsItem.modification, gIdx))
     }
 
     return res
@@ -280,23 +290,23 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
   function getColumnsTank()
   {
-    let groups = getBulletsGroups()
-    let gunsCount = bulletsManager.getGunTypesCount()
+    let groups = this.getBulletsGroups()
+    let gunsCount = this.bulletsManager.getGunTypesCount()
     if (!gunsCount)
       return null
 
-    let res = getEmptyColumnsConfig()
-    if (canChangeBulletsAmount)
+    let res = this.getEmptyColumnsConfig()
+    if (this.canChangeBulletsAmount)
       res.itemWidth = 1.5
     if (gunsCount == 1)
     {
-      let totalMods = bulletsManager.getActiveBulGroupsAmount()
+      let totalMods = this.bulletsManager.getActiveBulGroupsAmount()
       local totalColumns = 0
 
       if (totalMods > 0)
       {
-        let totalRows = ::ceil(totalMods.tofloat() / modsInRow * res.itemWidth).tointeger()
-        totalColumns = ::ceil(totalMods.tofloat() / totalRows).tointeger()
+        let totalRows = ceil(totalMods.tofloat() / this.modsInRow * res.itemWidth).tointeger()
+        totalColumns = ceil(totalMods.tofloat() / totalRows).tointeger()
       }
 
       for(local i = res.columns.len(); i < totalColumns; i++)
@@ -307,9 +317,9 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
           continue
         let col = gIdx % totalColumns
         let header = !gIdx ? bulGroup.getHeader() : null
-        res.columns[col].append(getCellConfig(getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
+        res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
       }
-      return addSecondaryWeaponToTankColumns(res)
+      return this.addSecondaryWeaponToTankColumns(res)
     }
 
     local totalColumns = gunsCount
@@ -321,10 +331,10 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
         continue
       let col = bulGroup.getGunIdx()
       let header = !res.columns[col].len() ? bulGroup.getHeader() : null
-      res.columns[col].append(getCellConfig(getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
+      res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
     }
 
-    let maxColumns = (modsInRow / res.itemWidth) || 1
+    let maxColumns = (this.modsInRow / res.itemWidth) || 1
     if (gunsCount == 3 && maxColumns == 2)
     {
       let newColumns = [[], []]
@@ -354,16 +364,16 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
         res.columns.remove(i)
       }
 
-    return addSecondaryWeaponToTankColumns(res)
+    return this.addSecondaryWeaponToTankColumns(res)
   }
 
   function addSecondaryWeaponToTankColumns(colData)
   {
-    if (!isUnitHaveSecondaryWeapons(unit))
+    if (!isUnitHaveSecondaryWeapons(this.unit))
       return colData
 
-    let weaponCell = getCellConfig(weaponItemId, ::g_weaponry_types.WEAPON.getHeader(unit), weaponsItem.weapon)
-    let maxColumns = (modsInRow / colData.itemWidth) || 1
+    let weaponCell = this.getCellConfig(this.weaponItemId, ::g_weaponry_types.WEAPON.getHeader(this.unit), weaponsItem.weapon)
+    let maxColumns = (this.modsInRow / colData.itemWidth) || 1
     if (colData.columns.len() < maxColumns)
       colData.columns.insert(0, [weaponCell])
     else
@@ -374,23 +384,23 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
   function clearScene()
   {
-    scene.height = "0"
-    guiScene.replaceContentFromText(scene, "", 0, this)
+    this.scene.height = "0"
+    this.guiScene.replaceContentFromText(this.scene, "", 0, this)
   }
 
   function getCurWeapon()
   {
     local defWeapon = null
-    let weaponName = getLastWeapon(unit.name)
-    foreach(weapon in unit.getWeapons())
+    let weaponName = getLastWeapon(this.unit.name)
+    foreach(weapon in this.unit.getWeapons())
     {
       let found = weapon.name == weaponName
       //no point to check all weapons visibility and counts when we need only one
       if (!found && defWeapon)
         continue
 
-      if (!isForcedAvailable &&
-          (!isWeaponVisible(unit, weapon) || !isWeaponEnabled(unit, weapon)))
+      if (!this.isForcedAvailable &&
+          (!isWeaponVisible(this.unit, weapon) || !isWeaponEnabled(this.unit, weapon)))
         continue
 
       if (found)
@@ -400,21 +410,21 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
         defWeapon = weapon
     }
     if (defWeapon) //validate selected weapon
-      setWeapon(defWeapon.name)
+      this.setWeapon(defWeapon.name)
     return defWeapon
   }
 
   function setWeapon(name) {
-    setLastWeapon(unit.name, name)
+    setLastWeapon(this.unit.name, name)
   }
 
   function hasWeaponsToChooseFrom()
   {
     local count = 0
     let hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
-    foreach(weapon in unit.getWeapons())
+    foreach(weapon in this.unit.getWeapons())
     {
-      if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlySelectable))
+      if (!this.isForcedAvailable && !isWeaponVisible(this.unit, weapon, hasOnlySelectable))
         continue
 
       count++
@@ -424,186 +434,186 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
     return false
   }
 
-  getBulletsGroups = @() bulletsManager.getBulletsGroups()
-  getBulletGroupByIndex = @(groupIdx) getBulletsGroups()?[groupIdx]
+  getBulletsGroups = @() this.bulletsManager.getBulletsGroups()
+  getBulletGroupByIndex = @(groupIdx) this.getBulletsGroups()?[groupIdx]
 
   function getCurBullet(groupIdx)
   {
-    let bulGroup = getBulletGroupByIndex(groupIdx)
+    let bulGroup = this.getBulletGroupByIndex(groupIdx)
     return bulGroup && bulGroup.getSelBullet()
   }
 
   function updateWeapon()
   {
-    if (!isUnitHaveSecondaryWeapons(unit))
+    if (!isUnitHaveSecondaryWeapons(this.unit))
       return
 
-    let itemObj = scene.findObject(weaponItemId)
-    if (!::checkObj(itemObj))
+    let itemObj = this.scene.findObject(this.weaponItemId)
+    if (!checkObj(itemObj))
       return
 
-    showItemParams.hasMenu <- canChangeWeaponry && hasWeaponsToChooseFrom()
-    let curWeapon = getCurWeapon()
+    this.showItemParams.hasMenu <- this.canChangeWeaponry && this.hasWeaponsToChooseFrom()
+    let curWeapon = this.getCurWeapon()
     itemObj.show(curWeapon)
     if (!curWeapon)
       return
 
-    updateModItem(unit, curWeapon, itemObj, false, this, showItemParams)
-    showItemParams.hasMenu = false
+    updateModItem(this.unit, curWeapon, itemObj, false, this, this.showItemParams)
+    this.showItemParams.hasMenu = false
   }
 
   function updateBullets()
   {
-    let groups = getBulletsGroups()
+    let groups = this.getBulletsGroups()
     foreach(gIdx, bulGroup in groups)
     {
-      let itemObj = scene.findObject(getBulletsItemId(gIdx))
-      if (!::checkObj(itemObj))
+      let itemObj = this.scene.findObject(this.getBulletsItemId(gIdx))
+      if (!checkObj(itemObj))
         continue
 
-      showItemParams.visualDisabled <- !bulGroup.active
-      showItemParams.hasMenu <- canChangeWeaponry && bulGroup.bullets.values.len() > 1
-      updateModItem(unit, bulGroup.getSelBullet(), itemObj, false, this, showItemParams)
+      this.showItemParams.visualDisabled <- !bulGroup.active
+      this.showItemParams.hasMenu <- this.canChangeWeaponry && bulGroup.bullets.values.len() > 1
+      updateModItem(this.unit, bulGroup.getSelBullet(), itemObj, false, this, this.showItemParams)
     }
-    showItemParams.visualDisabled <- false
-    showItemParams.hasMenu <- false
+    this.showItemParams.visualDisabled <- false
+    this.showItemParams.hasMenu <- false
   }
 
   function updateBulletCountSlider(bulGroup, groupIdx)
   {
-    let itemObj = scene.findObject(getBulletsItemId(groupIdx))
-    if (::checkObj(itemObj))
-      updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
+    let itemObj = this.scene.findObject(this.getBulletsItemId(groupIdx))
+    if (checkObj(itemObj))
+      updateItemBulletsSlider(itemObj, this.bulletsManager, bulGroup)
   }
 
   //included to updateBullets but much faster than full bullets update
   function updateAllBulletCountSliders()
   {
-    let groups = getBulletsGroups()
+    let groups = this.getBulletsGroups()
     foreach(gIdx, bulGroup in groups)
-      updateBulletCountSlider(bulGroup, gIdx)
+      this.updateBulletCountSlider(bulGroup, gIdx)
   }
 
   function updateAllItems()
   {
-    updateWeapon()
-    updateBullets()
+    this.updateWeapon()
+    this.updateBullets()
   }
 
-  function onEventUnitWeaponChanged(p)
+  function onEventUnitWeaponChanged(_p)
   {
-    updateAllItems()
+    this.updateAllItems()
   }
 
-  function onEventBulletsGroupsChanged(p)
+  function onEventBulletsGroupsChanged(_p)
   {
-    updateBullets()
+    this.updateBullets()
   }
 
-  function onEventBulletsCountChanged(p)
+  function onEventBulletsCountChanged(_p)
   {
-    updateAllBulletCountSliders()
+    this.updateAllBulletCountSliders()
   }
 
   function getSelectionItemParams()
   {
-    let res = clone showItemParams
+    let res = clone this.showItemParams
     delete res.selectBulletsByManager
     return res
   }
 
   function getBulletGroupByItemId(id)
   {
-    let idxStr = ::g_string.cutPrefix(id, bulletsIdPrefix, -1)
-    return getBulletGroupByIndex(::to_integer_safe(idxStr, -1))
+    let idxStr = ::g_string.cutPrefix(id, this.bulletsIdPrefix, -1)
+    return this.getBulletGroupByIndex(::to_integer_safe(idxStr, -1))
   }
 
   function openChangeWeaponryMenu(obj)
   {
-    if (!canChangeWeaponry || !::checkObj(obj))
+    if (!this.canChangeWeaponry || !checkObj(obj))
       return
 
     let id = obj.holderId
-    if (id == weaponItemId)
+    if (id == this.weaponItemId)
     {
-      if (hasWeaponsToChooseFrom())
-        ::gui_start_choose_unit_weapon(unit, null, {
-          itemParams = getSelectionItemParams()
+      if (this.hasWeaponsToChooseFrom())
+        ::gui_start_choose_unit_weapon(this.unit, null, {
+          itemParams = this.getSelectionItemParams()
           alignObj = obj
-          isForcedAvailable = isForcedAvailable
+          isForcedAvailable = this.isForcedAvailable
         })
       return
     }
 
-    let group = getBulletGroupByItemId(id)
+    let group = this.getBulletGroupByItemId(id)
     if (!group)
       return
 
     if (group.active)
     {
       if (group.bullets.values.len() > 1)
-        bulletsManager.openChooseBulletsWnd(group.groupIndex, getSelectionItemParams(), obj)
+        this.bulletsManager.openChooseBulletsWnd(group.groupIndex, this.getSelectionItemParams(), obj)
     } else
-      ::showInfoMsgBox(::loc("msg/secondaryWeaponrequired"))
+      ::showInfoMsgBox(loc("msg/secondaryWeaponrequired"))
   }
 
   function onModItemClick(obj)
   {
-    openChangeWeaponryMenu(obj)
+    this.openChangeWeaponryMenu(obj)
   }
 
   function onWeaponryActivate(obj)
   {
     let value = obj.getValue()
     if (0 <= value && value < obj.childrenCount())
-      openChangeWeaponryMenu(obj.getChild(value).findObject("centralBlock"))
+      this.openChangeWeaponryMenu(obj.getChild(value).findObject("centralBlock"))
   }
 
   function onModChangeBulletsSlider(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
     let groupIndex = ::to_integer_safe(obj?.groupIdx ?? "", -1)
-    let bulGroup= getBulletGroupByIndex(groupIndex)
+    let bulGroup= this.getBulletGroupByIndex(groupIndex)
     if (!bulGroup)
       return
 
-    if (!bulletsManager.changeBulletsCount(bulGroup, obj.getValue()))
-      updateBulletCountSlider(bulGroup, groupIndex) //move back current slider when value not changed
+    if (!this.bulletsManager.changeBulletsCount(bulGroup, obj.getValue()))
+      this.updateBulletCountSlider(bulGroup, groupIndex) //move back current slider when value not changed
   }
 
   function onChangeBullets(diff = 1) //gamepad shortcut - search selected
   {
-    if (!bulletsManager.canChangeBulletsCount())
+    if (!this.bulletsManager.canChangeBulletsCount())
       return
-    let listObj = scene.findObject("weaponry_list")
-    if (!::checkObj(listObj) || !listObj.isFocused())
+    let listObj = this.scene.findObject("weaponry_list")
+    if (!checkObj(listObj) || !listObj.isFocused())
       return
     let idx = listObj.getValue()
     if (idx < 0 || listObj.childrenCount() <= idx)
       return
 
     let itemObj = listObj.getChild(idx)
-    let id = ::g_string.cutPrefix(itemObj.id, bulletsIdPrefix, -1)
+    let id = ::g_string.cutPrefix(itemObj.id, this.bulletsIdPrefix, -1)
     let groupIdx = ::to_integer_safe(id, -1)
-    let group = getBulletGroupByIndex(groupIdx)
+    let group = this.getBulletGroupByIndex(groupIdx)
     if (!group)
       return
 
     let step = max(group.getGunMaxBullets() / 20, 1).tointeger()
-    bulletsManager.changeBulletsCount(group, group.bulletsCount + diff * step)
+    this.bulletsManager.changeBulletsCount(group, group.bulletsCount + diff * step)
   }
 
-  function onBulletsDecrease() { onChangeBullets(-1) }
-  function onBulletsIncrease() { onChangeBullets(1) }
+  function onBulletsDecrease() { this.onChangeBullets(-1) }
+  function onBulletsIncrease() { this.onChangeBullets(1) }
 
   function onModChangeBullets(obj, diff = 1) //real button, can be called not for selected mod, but have holderId
   {
-    let group = getBulletGroupByItemId(obj.holderId)
+    let group = this.getBulletGroupByItemId(obj.holderId)
     if (group)
-      bulletsManager.changeBulletsCount(group, group.bulletsCount + diff)
+      this.bulletsManager.changeBulletsCount(group, group.bulletsCount + diff)
   }
 
-  function onModDecreaseBullets(obj) { onModChangeBullets(obj, -1) }
-  function onModIncreaseBullets(obj) { onModChangeBullets(obj, 1) }
+  function onModDecreaseBullets(obj) { this.onModChangeBullets(obj, -1) }
+  function onModIncreaseBullets(obj) { this.onModChangeBullets(obj, 1) }
 }

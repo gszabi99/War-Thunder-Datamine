@@ -27,7 +27,7 @@ frame {
 
       selImgType:t='gamepadFocused'
 
-      include "%gui/unlocks/battleTasksItem"
+      include "%gui/unlocks/battleTasksItem.tpl"
     }
   }
 

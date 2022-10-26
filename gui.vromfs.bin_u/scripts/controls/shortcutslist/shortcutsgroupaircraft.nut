@@ -1,8 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let globalEnv = require("globalEnv")
+let { get_game_params } = require("gameparams")
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { MAX_CAMERA_SPEED, MIN_CAMERA_SPEED } = require("%scripts/controls/controlsConsts.nut")
 
 let isMouseAimSelected = @() (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
 let needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne || !isMouseAimSelected()
@@ -55,7 +62,7 @@ return [
   {
     id = "mouse_usage_no_aim"
     type = CONTROL_TYPE.SPINNER
-    showFunc = @() ::has_feature("SimulatorDifficulty") && isMouseAimSelected()
+    showFunc = @() hasFeature("SimulatorDifficulty") && isMouseAimSelected()
     optionType = ::USEROPT_MOUSE_USAGE_NO_AIM
     onChangeValue = "onAircraftHelpersChanged"
   }
@@ -97,14 +104,14 @@ return [
     axis_num = MouseAxis.MOUSE_SCROLL
     values = ["none", "throttle", "zoom", /*"elevator",*/ "camy", /* "weapon"*/]
     onChangeValue = "onMouseWheel"
-    showFunc = @() ::has_feature("EnableMouse")
+    showFunc = @() hasFeature("EnableMouse")
   }
   {
     id = "mouse_z_mult"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_MOUSE_Z_MULT)
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_MOUSE_Z_MULT, objValue / 100.0)
-    showFunc = @() ::has_feature("EnableMouse")
+    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_MOUSE_Z_MULT)
+    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_MOUSE_Z_MULT, objValue / 100.0)
+    showFunc = @() hasFeature("EnableMouse")
   }
   {
     id = "throttle"
@@ -188,7 +195,7 @@ return [
     id = "joyFX"
     type = CONTROL_TYPE.SWITCH_BOX
     optionType = ::USEROPT_JOYFX
-    showFunc = @() ::is_platform_pc
+    showFunc = @() is_platform_pc
   }
   {
     id = "multiplier_force_gain"
@@ -295,7 +302,7 @@ return [
   }
   {
     id = "ID_JETTISON_SECONDARY"
-    showFunc = @() ::has_feature("WeaponJettison")
+    showFunc = @() hasFeature("WeaponJettison")
     checkAssign = false
   }
   {
@@ -333,12 +340,12 @@ return [
   }
   {
     id = "ID_FUEL_TANKS"
-    showFunc = @() ::has_feature("Payload")
+    showFunc = @() hasFeature("Payload")
     checkAssign = false
   }
   {
     id = "ID_AIR_DROP"
-    showFunc = @() ::has_feature("Payload")
+    showFunc = @() hasFeature("Payload")
     checkAssign = false
   }
   {
@@ -444,7 +451,7 @@ return [
     id = "sensor_cue_z"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    showFunc = @() ::has_feature("RadarElevationControl")
+    showFunc = @() hasFeature("RadarElevationControl")
   }
   {
     id = "ID_SCHRAEGE_MUSIK"
@@ -528,8 +535,8 @@ return [
   {
     id = "gunner_joy_speed"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0*(::get_option_multiplier(::OPTION_CAMERA_SPEED) - min_camera_speed) / (max_camera_speed - min_camera_speed)
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_CAMERA_SPEED, min_camera_speed + (objValue / 100.0) * (max_camera_speed - min_camera_speed))
+    value = @(_joyParams) 100.0*(::get_option_multiplier(OPTION_CAMERA_SPEED) - MIN_CAMERA_SPEED) / (MAX_CAMERA_SPEED - MIN_CAMERA_SPEED)
+    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_CAMERA_SPEED, MIN_CAMERA_SPEED + (objValue / 100.0) * (MAX_CAMERA_SPEED - MIN_CAMERA_SPEED))
     showFunc = needFullGunnerSettings
   }
   {
@@ -779,14 +786,14 @@ return [
   {
     id = "aim_time_nonlinearity_air"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_AIM_TIME_NONLINEARITY_AIR)
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_AIM_TIME_NONLINEARITY_AIR, objValue / 100.0)
+    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_AIR)
+    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_AIR, objValue / 100.0)
   }
   {
     id = "aim_acceleration_delay_air"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_AIM_ACCELERATION_DELAY_AIR)
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_AIM_ACCELERATION_DELAY_AIR, objValue / 100.0)
+    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_AIR)
+    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_AIR, objValue / 100.0)
   }
 //-------------------------------------------------------
   {
@@ -801,75 +808,102 @@ return [
     filterHide = [globalEnv.EM_MOUSE_AIM]
     options = ["#options/mouse_joy_mode_simple", "#options/mouse_joy_mode_standard"]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(joyParams) ::get_option_int(::OPTION_MOUSE_JOYSTICK_MODE)
-    setValue = @(joyParams, objValue) ::set_option_int(::OPTION_MOUSE_JOYSTICK_MODE, objValue)
+    value = @(_joyParams) ::get_option_int(OPTION_MOUSE_JOYSTICK_MODE)
+    setValue = @(_joyParams, objValue) ::set_option_int(OPTION_MOUSE_JOYSTICK_MODE, objValue)
   }
   {
     id = "mouse_joystick_sensitivity"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(joyParams)
-      100.0*(::get_option_multiplier(::OPTION_MOUSE_JOYSTICK_SENSITIVITY) - ::minMouseJoystickSensitivity) /
-        (::maxMouseJoystickSensitivity - ::minMouseJoystickSensitivity)
-    setValue = @(joyParams, objValue)
-      ::set_option_multiplier(::OPTION_MOUSE_JOYSTICK_SENSITIVITY, ::minMouseJoystickSensitivity + (objValue / 100.0) *
-        (::maxMouseJoystickSensitivity - ::minMouseJoystickSensitivity))
+    value = function(_joyParams) {
+      let gp = get_game_params()
+      let minSens = gp?.minMouseJoystickSensitivity ?? 0.0
+      let maxSens = gp?.maxMouseJoystickSensitivity ?? 1.0
+      return 100.0 * (::get_option_multiplier(OPTION_MOUSE_JOYSTICK_SENSITIVITY) - minSens) / (maxSens - minSens)
+    }
+    setValue = function(_joyParams, objValue) {
+      let gp = get_game_params()
+      let minSens = gp?.minMouseJoystickSensitivity ?? 0.0
+      let maxSens = gp?.maxMouseJoystickSensitivity ?? 1.0
+      ::set_option_multiplier(OPTION_MOUSE_JOYSTICK_SENSITIVITY, minSens + (objValue / 100.0) * (maxSens - minSens))
+    }
   }
   {
     id = "mouse_joystick_deadzone"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(joyParams) 100.0*::get_option_multiplier(::OPTION_MOUSE_JOYSTICK_DEADZONE) / ::maxMouseJoystickDeadZone
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_MOUSE_JOYSTICK_DEADZONE,
-      (objValue / 100.0) * ::maxMouseJoystickDeadZone)
+    value = function(_joyParams) {
+      let dz = get_game_params()?.maxMouseJoystickDeadZone ?? 1.0
+      return 100.0*::get_option_multiplier(OPTION_MOUSE_JOYSTICK_DEADZONE) / dz
+    }
+    setValue = function(_joyParams, objValue) {
+      let dz = get_game_params()?.maxMouseJoystickDeadZone ?? 1.0
+      ::set_option_multiplier(OPTION_MOUSE_JOYSTICK_DEADZONE, (objValue / 100.0) * dz)
+    }
   }
   {
     id = "mouse_joystick_screensize"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(joyParams)
-      100.0*(::get_option_multiplier(::OPTION_MOUSE_JOYSTICK_SCREENSIZE) - ::minMouseJoystickScreenSize) /
-        (::maxMouseJoystickScreenSize - ::minMouseJoystickScreenSize)
-    setValue = @(joyParams, objValue)
-      ::set_option_multiplier(::OPTION_MOUSE_JOYSTICK_SCREENSIZE, ::minMouseJoystickScreenSize + (objValue / 100.0) *
-        (::maxMouseJoystickScreenSize - ::minMouseJoystickScreenSize))
+    value = function(_joyParams) {
+      let gp = get_game_params()
+      let minVal = gp?.minMouseJoystickScreenSize ?? 0.0
+      let maxVal = gp?.maxMouseJoystickScreenSize ?? 1.0
+      return 100.0*(::get_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENSIZE) - minVal) / (maxVal - minVal)
+    }
+    setValue = function(_joyParams, objValue) {
+      let gp = get_game_params()
+      let minVal = gp?.minMouseJoystickScreenSize ?? 0.0
+      let maxVal = gp?.maxMouseJoystickScreenSize ?? 1.0
+      ::set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENSIZE, minVal + (objValue / 100.0) * (maxVal - minVal))
+    }
   }
   {
     id = "mouse_joystick_screen_place"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(joyParams) 100.0*::get_option_multiplier(::OPTION_MOUSE_JOYSTICK_SCREENPLACE)
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_MOUSE_JOYSTICK_SCREENPLACE, objValue / 100.0)
+    value = @(_joyParams) 100.0*::get_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENPLACE)
+    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENPLACE, objValue / 100.0)
   }
   {
     id = "mouse_joystick_aileron"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
-    value = @(joyParams) 100.0*::get_option_multiplier(::OPTION_MOUSE_AILERON_AILERON_FACTOR) / ::maxMouseJoystickAileron
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_MOUSE_AILERON_AILERON_FACTOR,
-      (objValue / 100.0) * ::maxMouseJoystickAileron)
+    value = function(_joyParams) {
+      let maxVal = get_game_params()?.maxMouseJoystickAileron ?? 1.0
+      return 100.0*::get_option_multiplier(OPTION_MOUSE_AILERON_AILERON_FACTOR) / maxVal
+    }
+    setValue = function(_joyParams, objValue) {
+      let maxVal = get_game_params()?.maxMouseJoystickAileron ?? 1.0
+      ::set_option_multiplier(OPTION_MOUSE_AILERON_AILERON_FACTOR, (objValue / 100.0) * maxVal)
+    }
   }
   {
     id = "mouse_joystick_rudder"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
-    value = @(joyParams) 100.0*::get_option_multiplier(::OPTION_MOUSE_AILERON_RUDDER_FACTOR) / ::maxMouseJoystickRudder
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_MOUSE_AILERON_RUDDER_FACTOR,
-      (objValue / 100.0) * ::maxMouseJoystickRudder)
+    value = function(_joyParams) {
+      let maxVal = get_game_params()?.maxMouseJoystickRudder ?? 1.0
+      return 100.0*::get_option_multiplier(OPTION_MOUSE_AILERON_RUDDER_FACTOR) / maxVal
+    }
+    setValue = function(_joyParams, objValue) {
+      let maxVal = get_game_params()?.maxMouseJoystickRudder ?? 1.0
+      ::set_option_multiplier(OPTION_MOUSE_AILERON_RUDDER_FACTOR, (objValue / 100.0) * maxVal)
+    }
   }
   {
     id = "mouse_joystick_square"
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(joyParams) ::get_option_mouse_joystick_square()
-    setValue = @(joyParams, objValue) ::set_option_mouse_joystick_square(objValue)
+    value = @(_joyParams) ::get_option_mouse_joystick_square()
+    setValue = @(_joyParams, objValue) ::set_option_mouse_joystick_square(objValue)
   }
   {
     id = "ID_CENTER_MOUSE_JOYSTICK"

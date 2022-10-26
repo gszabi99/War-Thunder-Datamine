@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::WwOperationArmies <- class
 {
   armiesByNameCache = null
@@ -5,41 +11,41 @@
 
   constructor()
   {
-    armiesByNameCache = {}
-    armiesByStatusCache = {}
+    this.armiesByNameCache = {}
+    this.armiesByStatusCache = {}
   }
 
   function getArmiesByStatus(status)
   {
-    return ::getTblValue(status, armiesByStatusCache, {})
+    return getTblValue(status, this.armiesByStatusCache, {})
   }
 
   function updateArmyStatus(armyName)
   {
     let army = ::g_world_war.getArmyByName(armyName)
-    let cachedArmy = ::getTblValue(armyName, armiesByNameCache, null)
+    let cachedArmy = getTblValue(armyName, this.armiesByNameCache, null)
     let hasChanged = !cachedArmy || !cachedArmy.isStatusEqual(army)
 
     if (!hasChanged)
       return
 
     if (cachedArmy)
-      removeArmyFromCache(cachedArmy)
+      this.removeArmyFromCache(cachedArmy)
 
-    addArmyToCache(army, true)
+    this.addArmyToCache(army, true)
     ::ww_event("MapArmiesByStatusUpdated", { armies = [army] })
   }
 
   function statusUpdate()
   {
-    resetCache()
-    updateArmiesByStatus()
+    this.resetCache()
+    this.updateArmiesByStatus()
   }
 
   function updateArmiesByStatus()
   {
     let armyNames = ::ww_get_armies_names()
-    let armiesCountChanged = armyNames.len() != armiesByNameCache.len()
+    let armiesCountChanged = armyNames.len() != this.armiesByNameCache.len()
 
     let changedArmies = []
     let findedCachedArmies = {}
@@ -49,29 +55,29 @@
       if (!army.hasManageAccess())
         continue
 
-      let cachedArmy = ::getTblValue(armyName, armiesByNameCache)
+      let cachedArmy = getTblValue(armyName, this.armiesByNameCache)
       if (cachedArmy)
         findedCachedArmies[armyName] <- cachedArmy
 
       if (!cachedArmy || !cachedArmy.isStatusEqual(army))
         changedArmies.append(army)
 
-      addArmyToCache(army)
+      this.addArmyToCache(army)
     }
 
     let deletingCachedArmiesNames = ::u.filter(
-      armiesByNameCache,
+      this.armiesByNameCache,
       (@(findedCachedArmies) function(cachedArmy) {
         return cachedArmy.name in findedCachedArmies
       })(findedCachedArmies)
     )
 
-    foreach(armyName, cachedArmy in deletingCachedArmiesNames)
-      ::u.removeFrom(armiesByNameCache, cachedArmy)
+    foreach(_armyName, cachedArmy in deletingCachedArmiesNames)
+      ::u.removeFrom(this.armiesByNameCache, cachedArmy)
 
     if (changedArmies.len() > 0 || armiesCountChanged)
     {
-      foreach(status, cacheData in armiesByStatusCache)
+      foreach(_status, cacheData in this.armiesByStatusCache)
       {
         cacheData.common.sort(::WwArmy.sortArmiesByUnitType)
         cacheData.surrounded.sort(::WwArmy.sortArmiesByUnitType)
@@ -83,7 +89,7 @@
 
   function addArmyToCache(army, needSort = false)
   {
-    let cacheByStatus = ::getTblValue(army.getActionStatus(), armiesByStatusCache)
+    let cacheByStatus = getTblValue(army.getActionStatus(), this.armiesByStatusCache)
     if (!cacheByStatus)
       return
 
@@ -100,12 +106,12 @@
     else
       cacheList.append(army)
 
-    armiesByNameCache[army.name] <- army
+    this.armiesByNameCache[army.name] <- army
   }
 
   function removeArmyFromCache(cachedArmy)
   {
-    let cacheByStatus = ::getTblValue(cachedArmy.getActionStatus(), armiesByStatusCache, null)
+    let cacheByStatus = getTblValue(cachedArmy.getActionStatus(), this.armiesByStatusCache, null)
     if (cacheByStatus != null)
     {
       let cachedArr = cachedArmy.isSurrounded() ? cacheByStatus.surrounded : cacheByStatus.common
@@ -117,7 +123,7 @@
 
   function resetCache()
   {
-    armiesByStatusCache = {}
+    this.armiesByStatusCache = {}
     let statusesForCaching = [
         WW_ARMY_ACTION_STATUS.IDLE,
         WW_ARMY_ACTION_STATUS.IN_MOVE,
@@ -126,7 +132,7 @@
       ]
 
     foreach(status in statusesForCaching)
-      armiesByStatusCache[status] <- {
+      this.armiesByStatusCache[status] <- {
         common = []
         surrounded = []
       }

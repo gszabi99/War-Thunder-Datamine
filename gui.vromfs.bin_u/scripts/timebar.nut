@@ -1,6 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /**
  * Some utility functions for work with timBar gui object
  */
+
+let { fabs } = require("math")
 
 ::g_time_bar <- {
   _direction = {
@@ -20,7 +28,7 @@
   function setPeriod(timeBarObj, periodTime, isCyclic = false)
   {
     let speed = periodTime ? 360.0 / periodTime : 0
-    _setSpeed(timeBarObj, speed)
+    this._setSpeed(timeBarObj, speed)
 
     if (isCyclic)
     {
@@ -32,7 +40,7 @@
 
   function _setSpeed(timeBarObj, speed)
   {
-    speed = getDirection(timeBarObj).incSignMultiplier * fabs(speed)
+    speed = this.getDirection(timeBarObj).incSignMultiplier * fabs(speed)
     timeBarObj["inc-factor"] = speed.tostring()
   }
 
@@ -48,7 +56,7 @@
    */
   function setCurrentTime(timeBarObj, currentTime)
   {
-    let curVal = currentTime * _getSpeed(timeBarObj)
+    let curVal = currentTime * this._getSpeed(timeBarObj)
     timeBarObj["sector-angle-2"] = curVal.tostring()
   }
 
@@ -59,7 +67,7 @@
 
   function getDirection(timeBarObj)
   {
-    return _direction[getDirectionName(timeBarObj)]
+    return this._direction[this.getDirectionName(timeBarObj)]
   }
 
   function getDirectionName(timeBarObj)
@@ -76,7 +84,7 @@
    */
   function setDirectionForward(timeBarObj)
   {
-    _setDirection(timeBarObj, "forward")
+    this._setDirection(timeBarObj, "forward")
   }
 
   /**
@@ -85,7 +93,7 @@
    */
   function setDirectionBackward(timeBarObj)
   {
-    _setDirection(timeBarObj, "backward")
+    this._setDirection(timeBarObj, "backward")
   }
 
   /**
@@ -94,13 +102,13 @@
    */
   function toggleDirection(timeBarObj)
   {
-    _setDirection(timeBarObj, getDirectionName(timeBarObj) == "forward" ? "backward" : "forward")
+    this._setDirection(timeBarObj, this.getDirectionName(timeBarObj) == "forward" ? "backward" : "forward")
   }
 
   function _setDirection(timeBarObj, direction)
   {
-    let w = _getSpeed(timeBarObj)
+    let w = this._getSpeed(timeBarObj)
     timeBarObj.direction = direction
-    _setSpeed(timeBarObj, w)
+    this._setSpeed(timeBarObj, w)
   }
 }

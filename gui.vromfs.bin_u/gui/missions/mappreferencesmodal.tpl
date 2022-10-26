@@ -273,7 +273,7 @@ root {
             position:t='relative'
             css-hier-invalidate:t='yes'
 
-            include "%gui/missions/mapStateBox"
+            include "%gui/missions/mapStateBox.tpl"
           }
         }
 

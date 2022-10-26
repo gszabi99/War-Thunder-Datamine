@@ -74,7 +74,7 @@ objectiveBlock {
     width:t='pw'
     flow:t='vertical'
 
-    include "%gui/worldWar/operationString"
+    include "%gui/worldWar/operationString.tpl"
   }
 
   <<#isPrimary>>

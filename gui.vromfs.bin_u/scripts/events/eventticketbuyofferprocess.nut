@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -9,10 +15,10 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
   currentProcess = null
 }
 
-g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
+::g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
 {
-  ::dagor.assertf(currentProcess == null, "Attempt to use multiple event ticket but offer processes.");
-  currentProcess = EventTicketBuyOfferProcess(event)
+  assert(this.currentProcess == null, "Attempt to use multiple event ticket but offer processes.");
+  this.currentProcess = ::EventTicketBuyOfferProcess(event)
 }
 
 ::EventTicketBuyOfferProcess <- class
@@ -22,20 +28,20 @@ g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
 
   constructor (event)
   {
-    _event = event
-    _tickets = ::events.getEventTickets(event, true)
-    foreach (ticket in _tickets)
+    this._event = event
+    this._tickets = ::events.getEventTickets(event, true)
+    foreach (ticket in this._tickets)
       ::g_item_limits.enqueueItem(ticket.id)
     if (::g_item_limits.requestLimits(true))
-      ::add_event_listener("ItemLimitsUpdated", onEventItemLimitsUpdated, this)
+      ::add_event_listener("ItemLimitsUpdated", this.onEventItemLimitsUpdated, this)
     else
-      handleTickets()
+      this.handleTickets()
   }
 
-  function onEventItemLimitsUpdated(params)
+  function onEventItemLimitsUpdated(_params)
   {
     subscriptions.removeEventListenersByEnv("ItemLimitsUpdated", this)
-    handleTickets()
+    this.handleTickets()
   }
 
   function handleTickets()
@@ -44,18 +50,18 @@ g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
 
     // Array of tickets with valid limit data.
     let availableTickets = []
-    foreach (ticket in _tickets)
+    foreach (ticket in this._tickets)
       if (ticket.getLimitsCheckData().result)
         availableTickets.append(ticket)
 
-    let activeTicket = ::events.getEventActiveTicket(_event)
+    let activeTicket = ::events.getEventActiveTicket(this._event)
     if (availableTickets.len() == 0)
     {
-      let msgArr = [::loc("events/wait_for_sessions_to_finish/main")]
+      let msgArr = [loc("events/wait_for_sessions_to_finish/main")]
       if (activeTicket != null)
       {
-        let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(_event))
-        msgArr.append(::loc("events/wait_for_sessions_to_finish/optional", {
+        let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(this._event))
+        msgArr.append(loc("events/wait_for_sessions_to_finish/optional", {
           timeleft = time.secondsToString(tournamentData.timeToWait)
         }))
       }
@@ -64,7 +70,7 @@ g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
     else
     {
       let windowParams = {
-        event = _event
+        event = this._event
         tickets = availableTickets
         activeTicket = activeTicket
       }

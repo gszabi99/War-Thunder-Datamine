@@ -1,5 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRewardDescText,
   getConditionText } = require("%scripts/events/eventRewards.nut")
+  let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.TournamentRewardReceivedWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -28,19 +36,19 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
 
   function initScreen()
   {
-    let event = ::events.getEventByEconomicName(eventEconomicName)
-    let nextReward = getNextReward(rewardBlk, event)
+    let event = ::events.getEventByEconomicName(this.eventEconomicName)
+    let nextReward = getNextReward(this.rewardBlk, event)
 
     let rewardDescriptionData = {
-      tournamentName = ::colorize("userlogColoredText", ::events.getNameByEconomicName(eventEconomicName))
+      tournamentName = colorize("userlogColoredText", ::events.getNameByEconomicName(this.eventEconomicName))
     }
 
     let view = {
-      rewardDescription = ::loc("tournaments/reward/description", rewardDescriptionData)
-      conditionText     = getConditionText(rewardBlk)
-      conditionIcon     = getConditionIcon(getRewardCondition(rewardBlk))
-      rewardIcon        = getRewardIcon(rewardBlk)
-      rewardText        = getRewardDescText(rewardBlk)
+      rewardDescription = loc("tournaments/reward/description", rewardDescriptionData)
+      conditionText     = getConditionText(this.rewardBlk)
+      conditionIcon     = getConditionIcon(getRewardCondition(this.rewardBlk))
+      rewardIcon        = getRewardIcon(this.rewardBlk)
+      rewardText        = getRewardDescText(this.rewardBlk)
       nextReward        = null
     }
 
@@ -50,10 +58,10 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
         rewardIcon    = getRewardIcon(nextReward)
         rewardText    = getRewardDescText(nextReward)
       }
-    let blk = ::handyman.renderCached("%gui/tournamentRewardReceived", view)
-    guiScene.replaceContentFromText(scene.findObject("root-box"), blk, blk.len(), this)
+    let blk = ::handyman.renderCached("%gui/tournamentRewardReceived.tpl", view)
+    this.guiScene.replaceContentFromText(this.scene.findObject("root-box"), blk, blk.len(), this)
 
-    ::show_facebook_screenshot_button(scene)
+    ::show_facebook_screenshot_button(this.scene)
   }
 
   function afterModalDestroy()
@@ -61,8 +69,8 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
     ::check_delayed_unlock_wnd()
   }
 
-  function onOk(obj)
+  function onOk(_obj)
   {
-    goBack()
+    this.goBack()
   }
 }

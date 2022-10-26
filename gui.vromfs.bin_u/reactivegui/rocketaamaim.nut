@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {GimbalSize, GimbalX, GimbalY, GimbalVisible, GuidanceLockState,
   TrackerSize, TrackerX, TrackerY, TrackerVisible, GuidanceLockSnr,
   AamSightShadowOpacity, AamSightOpacity, AamSightLineWidthFactor, AamSightShadowLineWidthFactor} = require("rocketAamAimState.nut")

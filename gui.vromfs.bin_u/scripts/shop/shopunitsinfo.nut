@@ -1,16 +1,21 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 
-local shopPromoteUnits = {}
+let shopPromoteUnits = persist("shopPromoteUnits", @() Watched({}))
 local countDefaultUnitsByCountry = null
 
 let function fillPromoteUnitsList(blk, unit) {
   if(blk?.beginPurchaseDate != null && blk?.endPurchaseDate != null){
-    shopPromoteUnits[unit.name] <- {
+    shopPromoteUnits.mutate(@(v) v[unit.name] <- {
       unit = unit
       timeStart = getTimestampFromStringUtc(blk.beginPurchaseDate)
       timeEnd = getTimestampFromStringUtc(blk.endPurchaseDate)
-    }
+    })
   }
 }
 
@@ -108,7 +113,7 @@ let function isCountryHaveUnitType(country, unitType) {
 }
 
 addListenersWithoutEnv({
-  InitConfigs = @(p) invalidateCache()
+  InitConfigs = @(_p) invalidateCache()
 })
 
 return {

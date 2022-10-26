@@ -1,5 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 enum presenceCheckOrder {
   IN_GAME_WW
@@ -20,12 +27,12 @@ enum presenceCheckOrder {
   isInBattle = false
   isMatch = @() false
   getParams = function() {
-    let params = { presenceId = typeName }
-    updateParams(params)
+    let params = { presenceId = this.typeName }
+    this.updateParams(params)
     return params
   }
   updateParams = @(params) params
-  getLocText = @(presenceParams) ::loc(locId)
+  getLocText = @(_presenceParams) loc(this.locId)
   canInviteToWWBattle = true
 }
 
@@ -40,15 +47,15 @@ enums.addTypesByGlobalName("g_presence_type", {
     checkOrder = presenceCheckOrder.IN_QUEUE
     locId = "status/in_queue"
     queueTypeMask = QUEUE_TYPE_BIT.EVENT | QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE
-    isMatch = @() ::queues.isAnyQueuesActive(queueTypeMask)
+    isMatch = @() ::queues.isAnyQueuesActive(this.queueTypeMask)
     updateParams = function(params) {
-      let queue = ::queues.getActiveQueueWithType(queueTypeMask)
+      let queue = ::queues.getActiveQueueWithType(this.queueTypeMask)
       params.eventName <- ::events.getEventEconomicName(::queues.getQueueEvent(queue))
       params.country <- ::queues.getQueueCountry(queue)
     }
-    getLocText = @(presenceParams) ::loc(locId, {
+    getLocText = @(presenceParams) loc(this.locId, {
       gameMode = ::events.getNameByEconomicName(presenceParams?.eventName ?? "")
-      country = ::loc(presenceParams?.country ?? "")
+      country = loc(presenceParams?.country ?? "")
     })
   }
 
@@ -62,14 +69,14 @@ enums.addTypesByGlobalName("g_presence_type", {
     updateParams = function(params) {
       params.gameMod <- ::get_game_mode()
       params.eventName <- ::events.getEventEconomicName(::SessionLobby.getRoomEvent())
-      params.country <- ::get_profile_country_sq()
+      params.country <- profileCountrySq.value
     }
     getLocText = function (presenceParams) {
       let eventName = presenceParams?.eventName ?? ""
-      return ::loc(locId,
+      return loc(this.locId,
         { gameMode = eventName == "" ? ::get_game_mode_loc_name(presenceParams?.gameMod)
           : ::events.getNameByEconomicName(presenceParams?.eventName)
-          country = ::loc(presenceParams?.country ?? "")
+          country = loc(presenceParams?.country ?? "")
         })
     }
   }
@@ -78,9 +85,9 @@ enums.addTypesByGlobalName("g_presence_type", {
     checkOrder = presenceCheckOrder.IN_QUEUE
     locId = "status/in_queue_ww"
     queueTypeMask = QUEUE_TYPE_BIT.WW_BATTLE
-    isMatch = @() ::is_worldwar_enabled() && ::queues.isAnyQueuesActive(queueTypeMask)
+    isMatch = @() ::is_worldwar_enabled() && ::queues.isAnyQueuesActive(this.queueTypeMask)
     updateParams = function(params) {
-      let queue = ::queues.getActiveQueueWithType(queueTypeMask)
+      let queue = ::queues.getActiveQueueWithType(this.queueTypeMask)
       let operationId = ::queues.getQueueOperationId(queue)
       let battleId = queue instanceof ::queue_classes.WwBattle ? queue.getQueueWwBattleId() : ""
       let operation = ::g_ww_global_status_actions.getOperationById(operationId)
@@ -93,11 +100,11 @@ enums.addTypesByGlobalName("g_presence_type", {
     }
     getLocText = function(presenceParams) {
       let map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)
-      return ::loc(locId,
+      return loc(this.locId,
         { operationName = map
             ? ::WwOperation.getNameTextByIdAndMapName(presenceParams?.operationId, map.getNameText())
             : ""
-          country = ::loc(presenceParams?.country ?? "")
+          country = loc(presenceParams?.country ?? "")
         })
     }
   }
@@ -116,15 +123,15 @@ enums.addTypesByGlobalName("g_presence_type", {
       params.operationId <- operationId
       params.battleId <- ::SessionLobby.getWwBattleId()
       params.mapId <- operation.getMapId()
-      params.country <- operation.getMyClanCountry() || ::get_profile_country_sq()
+      params.country <- operation.getMyClanCountry() || profileCountrySq.value
     }
     getLocText = function(presenceParams) {
       let map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)
-      return ::loc(locId,
+      return loc(this.locId,
         { operationName = map
             ? ::WwOperation.getNameTextByIdAndMapName(presenceParams?.operationId ?? "", map.getNameText())
             : ""
-          country = ::loc(presenceParams?.country ?? "")
+          country = loc(presenceParams?.country ?? "")
         })
     }
   }
@@ -145,10 +152,10 @@ enums.addTypesByGlobalName("g_presence_type", {
         return ""
 
       let map = ::g_ww_global_status_actions.getMapByName(operation.getMapId())
-      let text = ::loc(locId,
+      let text = loc(this.locId,
         { operationName = map
             ? ::WwOperation.getNameTextByIdAndMapName(operationId, map.getNameText()) : ""
-          country = ::loc(presenceParams?.country ?? "")
+          country = loc(presenceParams?.country ?? "")
         })
       return text
     }
@@ -157,15 +164,13 @@ enums.addTypesByGlobalName("g_presence_type", {
 
 ::g_presence_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
-g_presence_type.getCurrent <- function getCurrent()
-{
-  foreach(presenceType in types)
+::g_presence_type.getCurrent <- function getCurrent() {
+  foreach(presenceType in this.types)
     if (presenceType.isMatch())
       return presenceType
-  return IDLE
+  return this.IDLE
 }
 
-g_presence_type.getByPresenceParams <- function getByPresenceParams(presenceParams)
-{
-  return this?[presenceParams?.presenceId] ?? IDLE
+::g_presence_type.getByPresenceParams <- function getByPresenceParams(presenceParams) {
+  return this?[presenceParams?.presenceId] ?? this.IDLE
 }

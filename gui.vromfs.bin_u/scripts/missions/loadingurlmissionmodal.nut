@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 ::gui_handlers.LoadingUrlMissionModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -21,43 +29,43 @@ let { format } = require("string")
 
   function initScreen()
   {
-    if (!curMission?.urlMission)
-      return goBack()
+    if (!this.curMission?.urlMission)
+      return this.goBack()
 
-    urlMission = curMission.urlMission
-    createButton(buttonCancelId, "#msgbox/btn_cancel" ,"onCancel")
-    createButton(buttonOkId, "#msgbox/btn_ok" ,"goBack")
+    this.urlMission = this.curMission.urlMission
+    this.createButton(this.buttonCancelId, "#msgbox/btn_cancel" ,"onCancel")
+    this.createButton(this.buttonOkId, "#msgbox/btn_ok" ,"goBack")
 
-    scene.findObject("msgWaitAnimation").show(true)
-    scene.findObject("msg_box_timer").setUserData(this)
+    this.scene.findObject("msgWaitAnimation").show(true)
+    this.scene.findObject("msg_box_timer").setUserData(this)
 
-    resetTimer()
-    loadUrlMission()
-    onUpdate(null, 0.0)
+    this.resetTimer()
+    this.loadUrlMission()
+    this.onUpdate(null, 0.0)
   }
 
   function createButton(btnId, text, callbackName)
   {
     let data = format("Button_text { id:t='%s'; btnName:t='AB'; text:t='%s'; on_click:t='%s' }", btnId, text, callbackName)
-    let holderObj = scene.findObject("buttons_holder")
+    let holderObj = this.scene.findObject("buttons_holder")
     if (!holderObj)
       return
 
-    guiScene.appendWithBlk(holderObj, data, this)
+    this.guiScene.appendWithBlk(holderObj, data, this)
     this.showSceneBtn(btnId, false)
   }
 
   function loadUrlMission()
   {
-    let requestCallback = ::Callback(function(success, blk) {
-                                          onLoadingEnded(success, blk)
+    let requestCallback = Callback(function(success, blk) {
+                                          this.onLoadingEnded(success, blk)
                                         }, this)
 
-    let progressCallback = ::Callback(function(dltotal, dlnow) {
-                                          onProgress(dltotal, dlnow)
+    let progressCallback = Callback(function(dltotal, dlnow) {
+                                          this.onProgress(dltotal, dlnow)
                                         }, this)
 
-    requestId = ::download_blk(urlMission.url, 0, (@(requestCallback) function(success, blk) {
+    this.requestId = ::download_blk(this.urlMission.url, 0, (@(requestCallback) function(success, blk) {
                                                                  requestCallback(success, blk)
                                                                })(requestCallback),
                                                                (@(progressCallback) function(dltotal, dlnow) {
@@ -67,75 +75,75 @@ let { format } = require("string")
 
   function resetTimer()
   {
-    timer = timeToShowCancel
-    this.showSceneBtn(buttonCancelId, false)
+    this.timer = this.timeToShowCancel
+    this.showSceneBtn(this.buttonCancelId, false)
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
-    if (progressChanged)
+    if (this.progressChanged)
     {
-      progressChanged = false
-      if (loadingProgress >= 0)
+      this.progressChanged = false
+      if (this.loadingProgress >= 0)
       {
-        updateText(::loc("wait/missionDownload", {name = urlMission.name, progress = loadingProgress.tostring()}))
+        this.updateText(loc("wait/missionDownload", {name = this.urlMission.name, progress = this.loadingProgress.tostring()}))
       }
     }
 
-    if (timer < 0)
+    if (this.timer < 0)
       return
 
-    timer -= dt
-    if (timer < 0)
-      this.showSceneBtn(buttonCancelId, true)
+    this.timer -= dt
+    if (this.timer < 0)
+      this.showSceneBtn(this.buttonCancelId, true)
   }
 
   function onLoadingEnded(success, blk)
   {
-    timer = -1
-    requestSuccess = success
-    progressChanged = false
-    if (isCancel)
-      return goBack()
+    this.timer = -1
+    this.requestSuccess = success
+    this.progressChanged = false
+    if (this.isCancel)
+      return this.goBack()
 
-    local errorText = ::loc("wait/ugm_download_failed")
+    local errorText = loc("wait/ugm_download_failed")
     if (success)
     {
       ::upgrade_url_mission(blk)
       errorText = ::validate_custom_mission(blk)
-      requestSuccess = ::u.isEmpty(errorText)
-      success = requestSuccess
+      this.requestSuccess = ::u.isEmpty(errorText)
+      success = this.requestSuccess
       if (!success)
-        errorText = ::loc("wait/ugm_not_valid", {errorText = errorText})
+        errorText = loc("wait/ugm_not_valid", {errorText = errorText})
     }
 
-    ::g_url_missions.setLoadingCompeteState(urlMission, !success, blk)
+    ::g_url_missions.setLoadingCompeteState(this.urlMission, !success, blk)
 
     if (success)
-      return goBack()
+      return this.goBack()
 
-    updateText(errorText)
-    scene.findObject("msgWaitAnimation").show(false)
-    this.showSceneBtn(buttonCancelId, false)
-    this.showSceneBtn(buttonOkId, true)
+    this.updateText(errorText)
+    this.scene.findObject("msgWaitAnimation").show(false)
+    this.showSceneBtn(this.buttonCancelId, false)
+    this.showSceneBtn(this.buttonOkId, true)
   }
 
   function updateText(text)
   {
-    scene.findObject("msgText").setValue(text)
+    this.scene.findObject("msgText").setValue(text)
   }
 
   function onProgress(dltotal, dlnow)
   {
-    loadingProgress = dltotal ? (100.0 * dlnow / dltotal).tointeger() : 0
-    progressChanged = true
+    this.loadingProgress = dltotal ? (100.0 * dlnow / dltotal).tointeger() : 0
+    this.progressChanged = true
   }
 
   function onCancel()
   {
-    isCancel = true
-    ::abort_download(requestId)
-    this.showSceneBtn(buttonCancelId, false)
+    this.isCancel = true
+    ::abort_download(this.requestId)
+    this.showSceneBtn(this.buttonCancelId, false)
   }
 
   function onEventSignOut()
@@ -145,7 +153,7 @@ let { format } = require("string")
 
   function afterModalDestroy()
   {
-    if (callback != null)
-      callback(requestSuccess, curMission)
+    if (this.callback != null)
+      this.callback(this.requestSuccess, this.curMission)
   }
 }

@@ -29,7 +29,7 @@ tdiv {
     id:t='deploy_hint_nest'
     margin-top:t='1@blockInterval'
     display:t='hide'
-    include "%gui/worldWar/wwControlHelp"
+    include "%gui/worldWar/wwControlHelp.tpl"
   }
 
   textareaNoTab {

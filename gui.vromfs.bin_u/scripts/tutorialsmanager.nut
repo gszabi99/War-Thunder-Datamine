@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { WEAPON_TAG,
         isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
 let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
@@ -16,29 +22,29 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
 
   function processActions()
   {
-    if (!actions.len() || !canAct())
+    if (!this.actions.len() || !this.canAct())
       return
 
-    while(actions.len())
-      if (actions.remove(0)())
+    while(this.actions.len())
+      if (this.actions.remove(0)())
         break
   }
 
-  function onEventModalWndDestroy(params)
+  function onEventModalWndDestroy(_params)
   {
-    processActions()
+    this.processActions()
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
-    actions.clear()
+    this.actions.clear()
   }
 
   function onEventCrewTakeUnit(params)
   {
-    let unit = ::getTblValue("unit", params)
-    actions.append((@(unit) function() { return checkTutorialOnSetUnit(unit) })(unit).bindenv(this))
-    processActions()
+    let unit = getTblValue("unit", params)
+    this.actions.append((@(unit) function() { return this.checkTutorialOnSetUnit(unit) })(unit).bindenv(this))
+    this.processActions()
   }
 
   function checkTutorialOnSetUnit(unit)

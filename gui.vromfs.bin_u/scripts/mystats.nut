@@ -1,8 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { get_time_msec } = require("dagor.time")
 
 /*
 my_stats API
@@ -44,13 +52,13 @@ local summaryNameArray = [
 
   function getStats()
   {
-    updateMyPublicStatsData()
-    return _my_stats
+    this.updateMyPublicStatsData()
+    return this._my_stats
   }
 
   function getTitles(showHidden = false)
   {
-    let titles = ::getTblValue("titles", _my_stats, [])
+    let titles = getTblValue("titles", this._my_stats, [])
     if (showHidden)
       return titles
 
@@ -68,20 +76,20 @@ local summaryNameArray = [
   {
     if (!::g_login.isLoggedIn())
       return
-    let time = ::dagor.getCurTime()
-    if (_is_in_update && time - _last_update < 45000)
+    let time = get_time_msec()
+    if (this._is_in_update && time - this._last_update < 45000)
       return
-    if (!_resetStats && _my_stats && time - _last_update < updateDelay) //once per 15min
+    if (!this._resetStats && this._my_stats && time - this._last_update < this.updateDelay) //once per 15min
       return
 
-    _is_in_update = true
-    _last_update = time
+    this._is_in_update = true
+    this._last_update = time
     ::add_bg_task_cb(::req_player_public_statinfo(::my_user_id_str),
                      function () {
-                       _is_in_update = false
-                       _resetStats = false
-                       _needRecountNewbie = true
-                       _update_my_stats()
+                       this._is_in_update = false
+                       this._resetStats = false
+                       this._needRecountNewbie = true
+                       this._update_my_stats()
                      }.bindenv(this))
   }
 
@@ -96,7 +104,7 @@ local summaryNameArray = [
     if (!blk)
       return
 
-    _my_stats = getPlayerStatsFromBlk(blk)
+    this._my_stats = getPlayerStatsFromBlk(blk)
 
     seenTitles.onListChanged()
     ::broadcastEvent("MyStatsUpdated")
@@ -104,32 +112,32 @@ local summaryNameArray = [
 
   function isStatsLoaded()
   {
-    return _my_stats != null
+    return this._my_stats != null
   }
 
   function clearStats()
   {
-    _my_stats = null
+    this._my_stats = null
   }
 
   function markStatsReset()
   {
-    _resetStats = true
+    this._resetStats = true
   }
 
-  function onEventUnitBought(p)
+  function onEventUnitBought(_p)
   {
     //need update bought units list
-    markStatsReset()
+    this.markStatsReset()
   }
 
-  function onEventAllModificationsPurchased(p)
+  function onEventAllModificationsPurchased(_p)
   {
-    markStatsReset()
+    this.markStatsReset()
   }
 
   //newbie stats
-  function onEventInitConfigs(p)
+  function onEventInitConfigs(_p)
   {
     let settingsBlk = ::get_game_settings_blk()
     let blk = settingsBlk?.newPlayersBattles
@@ -148,7 +156,7 @@ local summaryNameArray = [
       {
         if (!ev.event)
           continue
-        _unitTypeByNewbieEventId[ev.event] <- unitType.esUnitType
+        this._unitTypeByNewbieEventId[ev.event] <- unitType.esUnitType
 
         let kills = ev?.kills || 1
         data.battles.append({
@@ -163,31 +171,31 @@ local summaryNameArray = [
       if (additionalUnitTypesBlk)
         data.additionalUnitTypes = additionalUnitTypesBlk % "type"
       if (data.minKills)
-        _newPlayersBattles[unitType.esUnitType] <- data
+        this._newPlayersBattles[unitType.esUnitType] <- data
     }
   }
 
   function onEventScriptsReloaded(p)
   {
-    onEventInitConfigs(p)
+    this.onEventInitConfigs(p)
   }
 
   function checkRecountNewbie()
   {
-    let statsLoaded = isStatsLoaded()  //when change newbie recount, dont forget about check stats loaded for newbie tutor
-    if (!_needRecountNewbie || !statsLoaded)
+    let statsLoaded = this.isStatsLoaded()  //when change newbie recount, dont forget about check stats loaded for newbie tutor
+    if (!this._needRecountNewbie || !statsLoaded)
     {
-      if (!statsLoaded || newbie)
-        updateMyPublicStatsData()
+      if (!statsLoaded || this.newbie)
+        this.updateMyPublicStatsData()
       return
     }
-    _needRecountNewbie = false
+    this._needRecountNewbie = false
 
     let newbieEndByArmyId = ::g_login.isProfileReceived()
       ? ::load_local_account_settings("myStats/newbieEndedByArmyId", {})
       : null
 
-    newbieByUnitType.clear()
+    this.newbieByUnitType.clear()
     foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailable() || !unitType.isPresentOnMatching)
@@ -195,38 +203,38 @@ local summaryNameArray = [
 
       let isNewbieEnded = newbieEndByArmyId?[unitType.armyId] ?? false
       if (isNewbieEnded) {
-        newbieByUnitType[unitType.esUnitType] <- false
+        this.newbieByUnitType[unitType.esUnitType] <- false
         continue
       }
 
-      let killsReq = _newPlayersBattles?[unitType.esUnitType]?.minKills ?? 0
+      let killsReq = this._newPlayersBattles?[unitType.esUnitType]?.minKills ?? 0
       if (killsReq <= 0)
         continue
-      local kills = getKillsOnUnitType(unitType.esUnitType)
-      let additionalUnitTypes = _newPlayersBattles?[unitType.esUnitType].additionalUnitTypes ?? []
+      local kills = this.getKillsOnUnitType(unitType.esUnitType)
+      let additionalUnitTypes = this._newPlayersBattles?[unitType.esUnitType].additionalUnitTypes ?? []
       foreach (addEsUnitType in additionalUnitTypes)
-        kills += getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
-      newbieByUnitType[unitType.esUnitType] <- kills < killsReq
+        kills += this.getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
+      this.newbieByUnitType[unitType.esUnitType] <- kills < killsReq
 
       if (newbieEndByArmyId)
-        newbieEndByArmyId[unitType.armyId] <- !newbieByUnitType[unitType.esUnitType]
+        newbieEndByArmyId[unitType.armyId] <- !this.newbieByUnitType[unitType.esUnitType]
     }
 
     if (newbieEndByArmyId)
       ::save_local_account_settings("myStats/newbieEndedByArmyId", newbieEndByArmyId)
 
-    newbie = __isNewbie()
+    this.newbie = this.__isNewbie()
 
-    newbieNextEvent.clear()
-    foreach(unitType, config in _newPlayersBattles)
+    this.newbieNextEvent.clear()
+    foreach(unitType, config in this._newPlayersBattles)
     {
       local event = null
-      local kills = getKillsOnUnitType(unitType)
-      local timePlayed = getTimePlayedOnUnitType(unitType)
+      local kills = this.getKillsOnUnitType(unitType)
+      local timePlayed = this.getTimePlayedOnUnitType(unitType)
       let additionalUnitTypes = config?.additionalUnitTypes ?? []
       foreach (addEsUnitType in additionalUnitTypes) {
-        kills += getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
-        timePlayed += getTimePlayedOnUnitType(::getUnitTypeByText(addEsUnitType))
+        kills += this.getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
+        timePlayed += this.getTimePlayedOnUnitType(::getUnitTypeByText(addEsUnitType))
       }
       foreach(evData in config.battles)
       {
@@ -234,23 +242,23 @@ local summaryNameArray = [
           continue
         if (timePlayed >= evData.timePlayed)
           continue
-        if (evData.unitRank && checkUnitInSlot(evData.unitRank, unitType))
+        if (evData.unitRank && this.checkUnitInSlot(evData.unitRank, unitType))
           continue
         event = ::events.getEvent(evData.event)
         if (event)
           break
       }
       if (event)
-        newbieNextEvent[unitType] <- event
+        this.newbieNextEvent[unitType] <- event
     }
   }
 
   function checkUnitInSlot(requiredUnitRank, unitType)
   {
-    if (_maxUnitsUsedRank == null)
-      _maxUnitsUsedRank = calculateMaxUnitsUsedRanks()
+    if (this._maxUnitsUsedRank == null)
+      this._maxUnitsUsedRank = this.calculateMaxUnitsUsedRanks()
 
-    if (requiredUnitRank <= ::getTblValue(unitType.tostring(), _maxUnitsUsedRank, 0))
+    if (requiredUnitRank <= getTblValue(unitType.tostring(), this._maxUnitsUsedRank, 0))
       return true
 
     return false
@@ -264,36 +272,36 @@ local summaryNameArray = [
    */
   function __isNewbie()
   {
-    foreach (esUnitType, isNewbie in newbieByUnitType)
+    foreach (_esUnitType, isNewbie in this.newbieByUnitType)
       if (!isNewbie)
         return false
     return true
   }
 
-  function onEventEventsDataUpdated(params)
+  function onEventEventsDataUpdated(_params)
   {
-    _needRecountNewbie = true
+    this._needRecountNewbie = true
   }
 
   function onEventCrewTakeUnit(params)
   {
     let unitType = ::get_es_unit_type(params.unit)
     let unitRank = params.unit?.rank ?? -1
-    let lastMaxRank = ::getTblValue(unitType.tostring(), _maxUnitsUsedRank, 0)
+    let lastMaxRank = getTblValue(unitType.tostring(), this._maxUnitsUsedRank, 0)
     if (lastMaxRank >= unitRank)
       return
 
-    if (_maxUnitsUsedRank == null)
-      _maxUnitsUsedRank = calculateMaxUnitsUsedRanks()
+    if (this._maxUnitsUsedRank == null)
+      this._maxUnitsUsedRank = this.calculateMaxUnitsUsedRanks()
 
-    _maxUnitsUsedRank[unitType.tostring()] = unitRank
-    ::saveLocalByAccount("tutor/newbieBattles/unitsRank", _maxUnitsUsedRank)
-    _needRecountNewbie = true
+    this._maxUnitsUsedRank[unitType.tostring()] = unitRank
+    ::saveLocalByAccount("tutor/newbieBattles/unitsRank", this._maxUnitsUsedRank)
+    this._needRecountNewbie = true
   }
 
   function getUserstat(paramName) {
     local res = 0
-    foreach (diffName, block in _my_stats?.userstat ?? {})
+    foreach (_diffName, block in this._my_stats?.userstat ?? {})
       foreach (unitData in block?.total ?? [])
         res += (unitData?[paramName] ?? 0)
 
@@ -302,13 +310,13 @@ local summaryNameArray = [
 
   function getPvpPlayed()
   {
-    return getUserstat("sessions")
+    return this.getUserstat("sessions")
   }
 
   function getTotalTimePlayedSec()
   {
     local sec = 0
-    foreach (modeBlock in _my_stats?.summary ?? {})
+    foreach (modeBlock in this._my_stats?.summary ?? {})
       foreach (diffBlock in modeBlock)
         foreach (unitTypeBlock in diffBlock)
           sec += (unitTypeBlock?.timePlayed ?? 0)
@@ -335,35 +343,35 @@ local summaryNameArray = [
   function getSummary(summaryName, filter = {})
   {
     local res = 0
-    let pvpSummary = ::getTblValue(summaryName, ::getTblValue("summary", _my_stats))
+    let pvpSummary = getTblValue(summaryName, getTblValue("summary", this._my_stats))
     if (!pvpSummary)
       return res
 
     let roles = ::u.map(getUnitClassTypesByEsUnitType(filter?.unitType),
        @(t) t.expClassName)
 
-    foreach(idx, diffData in pvpSummary)
+    foreach(_idx, diffData in pvpSummary)
       foreach(unitRole, data in diffData)
       {
-        if (!::isInArray(unitRole, roles))
+        if (!isInArray(unitRole, roles))
           continue
 
-        foreach(param in ::getTblValue("addArray", filter, []))
-          res += ::getTblValue(param, data, 0)
-        foreach(param in ::getTblValue("subtractArray", filter, []))
-          res -= ::getTblValue(param, data, 0)
+        foreach(param in getTblValue("addArray", filter, []))
+          res += getTblValue(param, data, 0)
+        foreach(param in getTblValue("subtractArray", filter, []))
+          res -= getTblValue(param, data, 0)
       }
     return res
   }
 
   function getPvpRespawns()
   {
-    return getSummary("pvp_played", {addArray = ["respawns"]})
+    return this.getSummary("pvp_played", {addArray = ["respawns"]})
   }
 
   function getKillsOnUnitType(unitType)
   {
-    return getSummary("pvp_played", {
+    return this.getSummary("pvp_played", {
                                       addArray = ["air_kills", "ground_kills", "naval_kills"],
                                       subtractArray = ["air_kills_ai", "ground_kills_ai", "naval_kills_ai"]
                                       unitType = unitType
@@ -372,7 +380,7 @@ local summaryNameArray = [
 
   function getTimePlayedOnUnitType(unitType)
   {
-    return getSummary("pvp_played", {
+    return this.getSummary("pvp_played", {
                                       addArray = ["timePlayed"]
                                       unitType = unitType
                                     })
@@ -380,24 +388,24 @@ local summaryNameArray = [
 
   function getClassFlags(unitType)
   {
-    if (unitType == ::ES_UNIT_TYPE_AIRCRAFT)
-      return ::CLASS_FLAGS_AIRCRAFT
-    if (unitType == ::ES_UNIT_TYPE_TANK)
-      return ::CLASS_FLAGS_TANK
-    if (unitType == ::ES_UNIT_TYPE_SHIP)
-      return ::CLASS_FLAGS_SHIP
-    if (unitType == ::ES_UNIT_TYPE_HELICOPTER)
-      return ::CLASS_FLAGS_HELICOPTER
-    if (unitType == ::ES_UNIT_TYPE_BOAT)
-      return ::CLASS_FLAGS_BOAT
-    return (1 << ::EUCT_TOTAL) - 1
+    if (unitType == ES_UNIT_TYPE_AIRCRAFT)
+      return CLASS_FLAGS_AIRCRAFT
+    if (unitType == ES_UNIT_TYPE_TANK)
+      return CLASS_FLAGS_TANK
+    if (unitType == ES_UNIT_TYPE_SHIP)
+      return CLASS_FLAGS_SHIP
+    if (unitType == ES_UNIT_TYPE_HELICOPTER)
+      return CLASS_FLAGS_HELICOPTER
+    if (unitType == ES_UNIT_TYPE_BOAT)
+      return CLASS_FLAGS_BOAT
+    return (1 << EUCT_TOTAL) - 1
   }
 
   function getSummaryFromProfile(func, unitType = null, diff = null, mode = 1 /*domination*/)
   {
     local res = 0.0
-    let classFlags = getClassFlags(unitType)
-    for(local i = 0; i < ::EUCT_TOTAL; i++)
+    let classFlags = this.getClassFlags(unitType)
+    for(local i = 0; i < EUCT_TOTAL; i++)
       if (classFlags & (1 << i))
       {
         if (diff != null)
@@ -411,43 +419,43 @@ local summaryNameArray = [
 
   function getTimePlayed(unitType = null, diff = null)
   {
-    return getSummaryFromProfile(stat_get_value_time_played, unitType, diff)
+    return this.getSummaryFromProfile(::stat_get_value_time_played, unitType, diff)
   }
 
   function isMeNewbie() //used in code
   {
-    checkRecountNewbie()
-    return newbie
+    this.checkRecountNewbie()
+    return this.newbie
   }
 
   function isMeNewbieOnUnitType(esUnitType)
   {
-    checkRecountNewbie()
-    return newbieByUnitType?[esUnitType] ?? false
+    this.checkRecountNewbie()
+    return this.newbieByUnitType?[esUnitType] ?? false
   }
 
   function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true) //return null when no newbie event
   {
-    checkRecountNewbie()
+    this.checkRecountNewbie()
     if (!country)
-      country = ::get_profile_country_sq()
+      country = profileCountrySq.value
 
     if (unitType == null)
     {
-      unitType = getFirstChosenUnitType(::ES_UNIT_TYPE_AIRCRAFT)
+      unitType = getFirstChosenUnitType(ES_UNIT_TYPE_AIRCRAFT)
       if (checkSlotbar)
       {
-        let types = getSlotbarUnitTypes(country)
-        if (types.len() && !::isInArray(unitType, types))
+        let types = ::getSlotbarUnitTypes(country)
+        if (types.len() && !isInArray(unitType, types))
           unitType = types[0]
       }
     }
-    return ::getTblValue(unitType, newbieNextEvent)
+    return getTblValue(unitType, this.newbieNextEvent)
   }
 
   function isNewbieEventId(eventName)
   {
-    foreach(config in _newPlayersBattles)
+    foreach(config in this._newPlayersBattles)
       foreach(evData in config.battles)
         if (eventName == evData.event)
           return true
@@ -456,7 +464,7 @@ local summaryNameArray = [
 
   function getUnitTypeByNewbieEventId(eventId)
   {
-    return ::getTblValue(eventId, _unitTypeByNewbieEventId, ::ES_UNIT_TYPE_INVALID)
+    return getTblValue(eventId, this._unitTypeByNewbieEventId, ES_UNIT_TYPE_INVALID)
   }
 
   function calculateMaxUnitsUsedRanks()
@@ -478,14 +486,14 @@ local summaryNameArray = [
     saveBlk.setFrom(loadedBlk)
     let countryCrewsList = ::g_crews_list.get()
     foreach(countryCrews in countryCrewsList)
-      foreach (crew in ::getTblValue("crews", countryCrews, []))
+      foreach (crew in getTblValue("crews", countryCrews, []))
       {
         let unit = ::g_crew.getCrewUnit(crew)
         if (unit == null)
           continue
 
         let curUnitType = ::get_es_unit_type(unit)
-        saveBlk[curUnitType.tostring()] = max(::getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
+        saveBlk[curUnitType.tostring()] = max(getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
       }
 
     if (!::u.isEqual(saveBlk, loadedBlk))
@@ -497,7 +505,7 @@ local summaryNameArray = [
   function getMissionsComplete(summaryArray = summaryNameArray)
   {
     local res = 0
-    let myStats = getStats()
+    let myStats = this.getStats()
     foreach (summaryName in summaryArray)
     {
       let summary = myStats?.summary?[summaryName] ?? {}
@@ -509,18 +517,18 @@ local summaryNameArray = [
 
   function resetStatsParams()
   {
-    clearStats()
-    _is_in_update = false
-    _resetStats = false
-    newbie = false
-    newbieNextEvent.clear()
-    _needRecountNewbie = true
-    _maxUnitsUsedRank = null
+    this.clearStats()
+    this._is_in_update = false
+    this._resetStats = false
+    this.newbie = false
+    this.newbieNextEvent.clear()
+    this._needRecountNewbie = true
+    this._maxUnitsUsedRank = null
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
-    resetStatsParams()
+    this.resetStatsParams()
   }
 }
 

@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let regexp2 = require("regexp2")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -12,7 +19,7 @@ let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
 
 let function openEditPresetName(name, okFunc) {
   ::gui_modal_editbox_wnd({
-    title = ::loc("mainmenu/newPresetName")
+    title = loc("mainmenu/newPresetName")
     maxLen = 40
     value = name
     checkButtonFunc = @(value) value != null && clearBorderSymbols(value).len() > 0
@@ -24,7 +31,7 @@ let function openEditPresetName(name, okFunc) {
 ::gui_handlers.EditWeaponryPresetsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType              = handlerType.MODAL
-  sceneTplName         = "%gui/weaponry/editWeaponryPresetModal"
+  sceneTplName         = "%gui/weaponry/editWeaponryPresetModal.tpl"
   unit                 = null
   preset               = null
   originalPreset       = null
@@ -33,19 +40,20 @@ let function openEditPresetName(name, okFunc) {
   favoriteArr          = null
   unitBlk              = null
 
-  getSceneTplView = @() { presets = getPresetMarkup() }
+  getSceneTplView = @() { presets = this.getPresetMarkup() }
 
   function initScreen() {
-    unitBlk = ::get_full_unit_blk(unit.name)
-    checkWeightRestrictions()
-    presetNest = scene.findObject("presetNest")
-    ::move_mouse_on_obj(presetNest.findObject("presetHeader_"))
+    this.scene.findObject("edit_wnd").width = "{0}@tierIconSize + 1@modPresetTextMaxWidth + 2@blockInterval".subst(this.originalPreset.weaponsSlotCount)
+    this.unitBlk = ::get_full_unit_blk(this.unit.name)
+    this.checkWeightRestrictions()
+    this.presetNest = this.scene.findObject("presetNest")
+    ::move_mouse_on_obj(this.presetNest.findObject("presetHeader_"))
   }
 
   function getPresetMarkup() {
-    let weaponryItem = getWeaponItemViewParams("preset", unit, preset.weaponPreset).__update({
+    let weaponryItem = getWeaponItemViewParams("preset", this.unit, this.preset.weaponPreset).__update({
       presetTextWidth = "1@modPresetTextMaxWidth"
-      tiersView = preset.tiersView.map(@(t) {
+      tiersView = this.preset.tiersView.map(@(t) {
         tierId        = t.tierId
         img           = t?.img ?? ""
         tierTooltipId = !::show_console_buttons ? t?.tierTooltipId : null
@@ -62,7 +70,7 @@ let function openEditPresetName(name, okFunc) {
     let res = []
     let weapons = {}
     foreach(wBlk in weaponsBlk)
-      foreach(key, val in (addWeaponsFromBlk({}, [wBlk], unit)?.weaponsByTypes ?? {}))
+      foreach(key, val in (addWeaponsFromBlk({}, [wBlk], this.unit)?.weaponsByTypes ?? {}))
         weapons[key] <- (weapons?[key] ?? []).extend(val)
     foreach (triggerType, triggers in weapons)
       foreach (weapon in triggers)
@@ -72,8 +80,8 @@ let function openEditPresetName(name, okFunc) {
   }
 
   getPopupItemName = @(ammo, nameText) ammo > 0
-    ? "".concat(nameText, ::loc("ui/parentheses/space",
-      {text = $"{::loc("shop/ammo")}{::loc("ui/colon")}{ammo}"}))
+    ? "".concat(nameText, loc("ui/parentheses/space",
+      {text = $"{loc("shop/ammo")}{loc("ui/colon")}{ammo}"}))
     : nameText
 
   function getWeaponsPopupParams(weapons, tierId) {
@@ -82,18 +90,18 @@ let function openEditPresetName(name, okFunc) {
       let tierWeaponConfig = weapon.__merge({
         iconType = weapon.tiers?[tierId].iconType ?? weapon.iconType
       })
-      let nameText = ::loc($"weapons/{weapon.id}")
+      let nameText = loc($"weapons/{weapon.id}")
       let dubIdx = res.findindex(@(v) v.presetId == weapon.presetId)
       if (dubIdx) {
-        res[dubIdx].name = "".concat(res[dubIdx].name, ::loc("ui/comma"),
-          getPopupItemName(weapon.ammo, nameText))
+        res[dubIdx].name = "".concat(res[dubIdx].name, loc("ui/comma"),
+          this.getPopupItemName(weapon.ammo, nameText))
         continue
       }
 
       res.append({
         id = weapon.tiers?[tierId].presetId ?? weapon.id
         presetId = weapon.presetId // To find duplicates
-        name = getPopupItemName(weapon.ammo, nameText)
+        name = this.getPopupItemName(weapon.ammo, nameText)
         img = getTierIcon(tierWeaponConfig, weapon.ammo)
       })
     }
@@ -103,9 +111,9 @@ let function openEditPresetName(name, okFunc) {
   function getWeaponsPopupView(parentObj, tierId, weaponsBlk) {
     let buttons = []
     let tierIdInt = tierId.tointeger()
-    let weapons = getPopupWeaponsList(weaponsBlk)
-    let params = getWeaponsPopupParams(weapons, tierIdInt)
-    let curTier = preset.tiers?[tierIdInt]
+    let weapons = this.getPopupWeaponsList(weaponsBlk)
+    let params = this.getWeaponsPopupParams(weapons, tierIdInt)
+    let curTier = this.preset.tiers?[tierIdInt]
     let curPresetId = curTier?.presetId ?? ""
     local maxWidth = 0
     foreach (p in params)
@@ -137,12 +145,12 @@ let function openEditPresetName(name, okFunc) {
     return {
       buttonsList = buttons
       parentObj = parentObj
-      onClickCb  = ::Callback(@(obj) onWeaponChoose(obj), this)
+      onClickCb  = Callback(@(obj) this.onWeaponChoose(obj), this)
     }
   }
 
   function getCurrenTierObj() {
-    let presetObj = presetNest.findObject("tiersNest_")
+    let presetObj = this.presetNest.findObject("tiersNest_")
     let value = ::get_obj_valid_index(presetObj)
     if (value < 0)
       return null
@@ -155,89 +163,89 @@ let function openEditPresetName(name, okFunc) {
   }
 
   function editPreset() {
-    let tierObj = getCurrenTierObj()
-    if (!isTierObj(tierObj))
+    let tierObj = this.getCurrenTierObj()
+    if (!this.isTierObj(tierObj))
       return
     // Preset tier
-    let weaponsBlk = availableWeapons.filter(@(w) w?.tier == tierObj.tierId.tointeger())
+    let weaponsBlk = this.availableWeapons.filter(@(w) w?.tier == tierObj.tierId.tointeger())
     if (weaponsBlk.len() == 0)
       return
 
-    let view = getWeaponsPopupView(tierObj, tierObj.tierId, weaponsBlk)
+    let view = this.getWeaponsPopupView(tierObj, tierObj.tierId, weaponsBlk)
     if (view)
       openPopupList(view)
   }
 
   function onPresetRename() {
-    let headerObj = presetNest.findObject("header_name_txt")
-    let curPreset = preset
+    let headerObj = this.presetNest.findObject("header_name_txt")
+    let curPreset = this.preset
     let okFunc = function(newName) {
       curPreset.customNameText = newName
       if (headerObj?.isValid() ?? false)
         headerObj.setValue(newName)
     }
-    openEditPresetName(preset.customNameText, okFunc)
+    openEditPresetName(this.preset.customNameText, okFunc)
   }
 
   function onWeaponChoose(obj) {
     let presetId = obj.id
     let tierId = obj.holderId.tointeger()
-    let cb = ::Callback(function() {
-      if (!isValid())
+    let cb = Callback(function() {
+      if (!this.isValid())
         return
-      preset = getCustomWeaponryPresetView(unit, preset, favoriteArr, availableWeapons)
-      updatePreset()
-      checkWeightRestrictions()
-      ::move_mouse_on_obj(presetNest.findObject($"tier_{tierId}"))
+      this.preset = getCustomWeaponryPresetView(this.unit, this.preset, this.favoriteArr, this.availableWeapons)
+      this.updatePreset()
+      this.checkWeightRestrictions()
+      ::move_mouse_on_obj(this.presetNest.findObject($"tier_{tierId}"))
     }, this)
-    editSlotInPreset(preset, tierId, presetId, availableWeapons, cb)
+    editSlotInPreset(this.preset, tierId, presetId, this.availableWeapons, this.unit, this.favoriteArr, cb)
   }
 
   function updateButtons() {
     if (!::show_console_buttons)
       return
 
-    let tierObj = getCurrenTierObj()
-    let isWeaponsAvailable = isTierObj(tierObj)
-      && availableWeapons.filter(@(w) w?.tier == tierObj.tierId.tointeger()).len() > 0
-    this.showSceneBtn("editTier", presetNest.findObject("tiersNest_").isHovered()
+    let tierObj = this.getCurrenTierObj()
+    let isWeaponsAvailable = this.isTierObj(tierObj)
+      && this.availableWeapons.filter(@(w) w?.tier == tierObj.tierId.tointeger()).len() > 0
+    this.showSceneBtn("editTier", this.presetNest.findObject("tiersNest_").isHovered()
       && isWeaponsAvailable)
   }
 
   isTierObj = @(obj) obj != null && ("tierId" in obj)
 
-  onTierClick = @() editPreset()
-  onModItemDblClick = @() editPreset()
-  onEditCurrentTier = @() editPreset()
-  onPresetMenuOpen = @() editPreset()
+  onTierClick = @() this.editPreset()
+  onModItemDblClick = @() this.editPreset()
+  onEditCurrentTier = @() this.editPreset()
+  onPresetMenuOpen = @() this.editPreset()
 
-  onPresetUnhover = @() updateButtons()
-  onCellSelect = @() updateButtons()
+  onPresetUnhover = @() this.updateButtons()
+  onCellSelect = @() this.updateButtons()
   onModActionBtn = @() null
   onAltModAction = @() null
   onPresetSelect = @() null
 
   function onPresetSave() {
-    let restrictionsText = getPresetWeightRestrictionText(preset, unitBlk)
+    let restrictionsText = getPresetWeightRestrictionText(this.preset, this.unitBlk)
     if (restrictionsText != "") {
-      ::showInfoMsgBox($"{::loc("msg/can_not_save_preset")}\n{restrictionsText}", "can_not_save_disbalanced_preset")
+      ::showInfoMsgBox($"{loc("msg/can_not_save_preset")}\n{restrictionsText}", "can_not_save_disbalanced_preset")
       return
     }
 
-    addCustomPreset(unit, preset)
+    addCustomPreset(this.unit, this.preset)
     base.goBack()
   }
 
   function updatePreset() {
-    let data = ::handyman.renderCached("%gui/weaponry/weaponryPreset", {presets = getPresetMarkup()})
-    guiScene.replaceContentFromText(presetNest, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/weaponry/weaponryPreset.tpl", {presets = this.getPresetMarkup()})
+    this.guiScene.replaceContentFromText(this.presetNest, data, data.len(), this)
   }
 
   function goBack() {
-    if (!isPresetChanged(originalPreset, preset))
+    if (!isPresetChanged(this.originalPreset, this.preset))
       return base.goBack()
 
-    this.msgBox("question_save_preset", ::loc("msgbox/genericRequestDisard", { item = preset.customNameText }),
+    this.msgBox("question_save_preset", loc("msgbox/genericRequestDisard", { item = this.preset.customNameText }),
       [
         ["yes", base.goBack],
         ["cancel", function () {}]
@@ -245,9 +253,9 @@ let function openEditPresetName(name, okFunc) {
   }
 
   function checkWeightRestrictions() {
-    let restrictionsText = getPresetWeightRestrictionText(preset, unitBlk)
-    scene.findObject("weightDisbalance").setValue(restrictionsText)
-    scene.findObject("savePreset").inactiveColor = restrictionsText != "" ? "yes" : "no"
+    let restrictionsText = getPresetWeightRestrictionText(this.preset, this.unitBlk)
+    this.scene.findObject("weightDisbalance").setValue(restrictionsText)
+    this.scene.findObject("savePreset").inactiveColor = restrictionsText != "" ? "yes" : "no"
   }
 }
 

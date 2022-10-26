@@ -1,20 +1,26 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
 ::WwAirfieldFormation <- class extends ::WwFormation
 {
   constructor(blk, airfield)
   {
-    units = []
-    update(blk, airfield)
+    this.units = []
+    this.update(blk, airfield)
   }
 
   function update(blk, airfield)
   {
-    mapObjectName = airfield.airfieldType.objName
-    unitType = airfield.airfieldType.unitType.code
-    owner = ::WwArmyOwner(blk.getBlockByName("owner"))
-    units = wwActionsWithUnitsList.loadUnitsFromBlk(blk.getBlockByName("units"))
-    morale = airfield.createArmyMorale
+    this.mapObjectName = airfield.airfieldType.objName
+    this.unitType = airfield.airfieldType.unitType.code
+    this.owner = ::WwArmyOwner(blk.getBlockByName("owner"))
+    this.units = wwActionsWithUnitsList.loadUnitsFromBlk(blk.getBlockByName("units"))
+    this.morale = airfield.createArmyMorale
   }
 
   function clear()
@@ -24,11 +30,11 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function isValid()
   {
-    return owner && owner.isValid();
+    return this.owner && this.owner.isValid();
   }
 
   function getGroupUnitType()
   {
-    return unitType
+    return this.unitType
   }
 }

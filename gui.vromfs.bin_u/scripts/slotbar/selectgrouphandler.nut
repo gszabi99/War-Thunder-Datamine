@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
 let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
@@ -6,12 +12,12 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
 {
   function getSortedGroupsArray()
   {
-    let selectedGroup = getSelectedGroup()
-    local groupsArray = config.unitsGroupsByCountry?[country].groups.values() ?? []
+    let selectedGroup = this.getSelectedGroup()
+    local groupsArray = this.config.unitsGroupsByCountry?[this.country].groups.values() ?? []
 
     let curPreset = slotbarPresets.getCurPreset()
-    let curCountryPreset = curPreset.countryPresets?[country]
-    let countryGroupsList = curPreset.groupsList?[country]
+    let curCountryPreset = curPreset.countryPresets?[this.country]
+    let countryGroupsList = curPreset.groupsList?[this.country]
     let groupIdByUnitName = countryGroupsList?.groupIdByUnitName
 
     groupsArray = groupsArray.map(function(group) {
@@ -26,17 +32,17 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
 
   function initAvailableUnitsArray()
   {
-    unitsList = getSortedGroupsArray()
-    unitsList.append(SEL_UNIT_BUTTON.SHOW_MORE)
+    this.unitsList = this.getSortedGroupsArray()
+    this.unitsList.append(SEL_UNIT_BUTTON.SHOW_MORE)
     return false //for needEmptyCrewButton parameter
   }
 
   function trainSlotAircraft(unit)
   {
     slotbarPresets.setGroup({
-      crew = crew
+      crew = this.crew
       group = unit
-      onFinishCb = ::Callback(onTakeProcessFinish, this)
+      onFinishCb = Callback(this.onTakeProcessFinish, this)
     })
   }
 
@@ -47,27 +53,27 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
     if (!isVisible || objSlot.childrenCount())
       return
 
-    let countryGroupsList = slotbarPresets.getCurPreset().groupsList?[country]
-    let unit = getSlotUnit(group)
-    let isEnabled = ::is_unit_enabled_for_slotbar(unit, config)
+    let countryGroupsList = slotbarPresets.getCurPreset().groupsList?[this.country]
+    let unit = this.getSlotUnit(group)
+    let isEnabled = ::is_unit_enabled_for_slotbar(unit, this.config)
     let unitItemParams = {
       status = !isEnabled ? "disabled" : "mounted"
       fullBlock = false
       nameLoc = ::getUnitName(unit.name)
-      bottomLineText = ::loc(
+      bottomLineText = loc(
         slotbarPresets.getVehiclesGroupByUnit(unit, countryGroupsList)?.name ?? "")
     }
 
     let markup = getGroupUnitMarkUp(unit.name, unit, group, unitItemParams)
-    guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
+    this.guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
   }
 
   hasChangeVehicle = @(group) group?.id !=
-    config.unitsGroupsByCountry?[country].groupIdByUnitName?[getCrewUnit()?.name ?? ""]
+    this.config.unitsGroupsByCountry?[this.country].groupIdByUnitName?[this.getCrewUnit()?.name ?? ""]
 
   getSlotUnit = @(slot) slot?.currentUnit ?? slot?.defaultUnit ?? slot
   getFilterOptionsList = @() [ ::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE ]
-  updateUnitsGroupText = @(unit = null) null
+  updateUnitsGroupText = @(_unit = null) null
   fillLegendData = @() null
   hasGroupText = @() false
 }

@@ -1,3 +1,5 @@
+//warning disable: -file:egyptian-braces
+
 // Note:
 // This enums is shared between squirrel and C++ code
 // any change requires version.nut update.
@@ -83,24 +85,24 @@ global enum AirParamsMain
   SPEED =             8,
   MACH =              9,
   ALTITUDE =          10,
-  CANNON_1 =          11,
-  CANNON_2 =          12,
-  CANNON_3 =          13,
-  MACHINE_GUN =       14,
-  CANNON_ADDITIONAL = 15,
-  ROCKET =            16,
-  AGM =               17,
-  AAM =               18,
-  GUIDED_BOMBS =      19,
-  BOMBS =             20,
-  TORPEDO =           21,
-  FLARES =            22,
-  CHAFFS =            23,
-  IRCM =              24,
-  RATE_OF_FIRE =      25,
-  MACHINE_GUNS_1 =    26,
-  MACHINE_GUNS_2 =    27,
-  MACHINE_GUNS_3 =    28
+  ROCKET =            11,
+  BOMBS =             12,
+  TORPEDO =           13,
+  AGM =               14,
+  AAM =               15,
+  GUIDED_BOMBS =      16,
+  FLARES =            17,
+  CHAFFS =            18,
+  MACHINE_GUNS_1 =    19,
+  MACHINE_GUNS_2 =    20,
+  MACHINE_GUNS_3 =    21,
+  CANNON_1 =          22,
+  CANNON_2 =          23,
+  CANNON_3 =          24,
+  MACHINE_GUN =       25,
+  CANNON_ADDITIONAL = 26,
+  IRCM =              27,
+  RATE_OF_FIRE =      28
 };
 
 global enum AirParamsSecondary

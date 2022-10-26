@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -22,101 +28,101 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
     if (!blk)
       return
 
-    name = blk.getBlockName() || ::getTblValue("name", blk, "")
-    unit = ::getAircraftByName(name)
+    this.name = blk.getBlockName() || getTblValue("name", blk, "")
+    this.unit = ::getAircraftByName(this.name)
 
-    wwUnitType = ::g_ww_unit_type.getUnitTypeByWwUnit(this)
-    expClass = wwUnitType.expClass || (unit? unit.expClass.name : "")
-    stengthGroupExpClass = ::getTblValue(expClass, ::strength_unit_expclass_group, expClass)
+    this.wwUnitType = ::g_ww_unit_type.getUnitTypeByWwUnit(this)
+    this.expClass = this.wwUnitType.expClass || (this.unit? this.unit.expClass.name : "")
+    this.stengthGroupExpClass = getTblValue(this.expClass, ::strength_unit_expclass_group, this.expClass)
 
-    inactiveCount = ::getTblValue("inactiveCount", blk, 0)
-    count = ::getTblValue("count", blk, -1)
-    weaponPreset = ::getTblValue("weaponPreset", blk, "")
-    weaponCount = ::getTblValue("weaponCount", blk, 0)
+    this.inactiveCount = getTblValue("inactiveCount", blk, 0)
+    this.count = getTblValue("count", blk, -1)
+    this.weaponPreset = getTblValue("weaponPreset", blk, "")
+    this.weaponCount = getTblValue("weaponCount", blk, 0)
   }
 
   function isValid()
   {
-    return name.len() >  0 &&
-           count      >= 0
+    return this.name.len() >  0 &&
+           this.count      >= 0
   }
 
   function getId()
   {
-    return name
+    return this.name
   }
 
   function getCount()
   {
-    return count
+    return this.count
   }
 
   function setCount(val)
   {
-    count = val
+    this.count = val
   }
 
   function setForceControlledByAI(val)
   {
-    isForceControlledByAI = val
+    this.isForceControlledByAI = val
   }
 
   function getActiveCount()
   {
-    return count - inactiveCount
+    return this.count - this.inactiveCount
   }
 
   function getName()
   {
-    return wwUnitType.getUnitName(name)
+    return this.wwUnitType.getUnitName(this.name)
   }
 
   function getFullName()
   {
-    return format("%d %s", count, getName())
+    return format("%d %s", this.count, this.getName())
   }
 
   function getWwUnitType()
   {
-    return wwUnitType
+    return this.wwUnitType
   }
 
-  getShortStringView = ::kwarg(function getShortStringViewImpl(
+  getShortStringView = kwarg(function getShortStringViewImpl(
     addIcon = true, addPreset = true, hideZeroCount = true, needShopInfo = false, hasIndent = false)
   {
-    let presetData = getWeaponTypeIcoByWeapon(name, addPreset ? weaponPreset : "")
-    let presetText = !addPreset || weaponPreset == "" ? "" :
-      getWeaponInfoText(unit,
-        { isPrimary = false, weaponPreset = weaponPreset, detail = INFO_DETAIL.SHORT, needTextWhenNoWeapons = false })
+    let presetData = getWeaponTypeIcoByWeapon(this.name, addPreset ? this.weaponPreset : "")
+    let presetText = !addPreset || this.weaponPreset == "" ? "" :
+      getWeaponInfoText(this.unit,
+        { isPrimary = false, weaponPreset = this.weaponPreset, detail = INFO_DETAIL.SHORT, needTextWhenNoWeapons = false })
 
-    local nameText = getName()
-    if (needShopInfo && unit && !isControlledByAI() && !unit.canUseByPlayer())
+    local nameText = this.getName()
+    if (needShopInfo && this.unit && !this.isControlledByAI() && !this.unit.canUseByPlayer())
     {
-      let nameColor = ::isUnitSpecial(unit) ? "@hotkeyColor" : "@weaponWarning"
-      nameText = ::colorize(nameColor, nameText)
+      let nameColor = ::isUnitSpecial(this.unit) ? "@hotkeyColor" : "@weaponWarning"
+      nameText = colorize(nameColor, nameText)
     }
 
-    let activeCount = getActiveCount()
-    let totalCount = getCount()
+    let activeCount = this.getActiveCount()
+    let totalCount = this.getCount()
     let res = {
-      id = name
-      isShow = count > 0 || !hideZeroCount
-      unitType = getUnitTypeText()
-      wwUnitType = wwUnitType
+      id = this.name
+      isShow = this.count > 0 || !hideZeroCount
+      unitType = this.getUnitTypeText()
+      wwUnitType = this.wwUnitType
       name = nameText
       activeCount = activeCount ? activeCount.tostring() : null
       count = totalCount ? totalCount.tostring() : null
-      isControlledByAI = isControlledByAI()
-      weapon = presetText.len() > 0 ? ::colorize("@activeTextColor", presetText) : ""
+      isControlledByAI = this.isControlledByAI()
+      weapon = presetText.len() > 0 ? colorize("@activeTextColor", presetText) : ""
       hasBomb = presetData.bomb.len() > 0
       hasRocket = presetData.rocket.len() > 0
       hasTorpedo = presetData.torpedo.len() > 0
       hasAdditionalGuns = presetData.additionalGuns.len() > 0
-      hasPresetWeapon = (presetText.len() > 0) && (weaponCount > 0)
-      presetCount = addPreset && weaponCount < count ? weaponCount : null
+      hasPresetWeapon = (presetText.len() > 0) && (this.weaponCount > 0)
+      presetCount = addPreset && this.weaponCount < this.count ? this.weaponCount : null
       hasIndent = hasIndent
-      country = unit?.shopCountry ?? ""
-      tooltipId = ::g_tooltip.getIdUnit(name, {
+      country = this.unit?.shopCountry ?? ""
+      tooltipId = ::g_tooltip.getIdUnit(this.name, {
         showLocalState = needShopInfo
         needShopInfo = needShopInfo
       })
@@ -124,53 +130,53 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
 
     if (addIcon)
     {
-      res.icon <- getWwUnitClassIco()
-      res.shopItemType <- getUnitRole()
+      res.icon <- this.getWwUnitClassIco()
+      res.shopItemType <- this.getUnitRole()
     }
     return res
   })
 
   function isInfantry()
   {
-    return ::g_ww_unit_type.isInfantry(wwUnitType.code)
+    return ::g_ww_unit_type.isInfantry(this.wwUnitType.code)
   }
 
   function isArtillery()
   {
-    return ::g_ww_unit_type.isArtillery(wwUnitType.code)
+    return ::g_ww_unit_type.isArtillery(this.wwUnitType.code)
   }
 
   function isAir()
   {
-    return ::g_ww_unit_type.isAir(wwUnitType.code)
+    return ::g_ww_unit_type.isAir(this.wwUnitType.code)
   }
 
   function isControlledByAI()
   {
-    return isForceControlledByAI || !wwUnitType.canBeControlledByPlayer
+    return this.isForceControlledByAI || !this.wwUnitType.canBeControlledByPlayer
   }
 
   function getUnitTypeText()
   {
-    return getRoleText(expClass)
+    return getRoleText(this.expClass)
   }
 
   function getUnitStrengthGroupTypeText()
   {
-    return getRoleText(stengthGroupExpClass)
+    return getRoleText(this.stengthGroupExpClass)
   }
 
   function getWwUnitClassIco()
   {
-    return wwUnitType.getUnitClassIcon(unit)
+    return this.wwUnitType.getUnitClassIcon(this.unit)
   }
 
   function getUnitRole()
   {
-    local unitRole = wwUnitType.getUnitRole(unit)
+    local unitRole = this.wwUnitType.getUnitRole(this.unit)
     if (unitRole == "")
     {
-      ::dagor.debug("WWar: Army Class: Not found role for unit " + name + ". Set unknown")
+      log("WWar: Army Class: Not found role for unit " + this.name + ". Set unknown")
       unitRole = "unknown"
     }
 

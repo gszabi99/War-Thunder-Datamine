@@ -1,14 +1,45 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { checkTutorialsList, reqTutorial, tutorialRewardData, clearTutorialRewardData
 } = require("%scripts/tutorials/tutorialsData.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
 let { getMoneyFromDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
+let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
+let { register_command } = require("console")
+
+register_command(
+  function () {
+    let dataBlk = ::get_pve_awards_blk()?[::get_game_mode_name(GM_TRAINING)]
+    let misName = "tutorial_destroyer_basics_arcade"
+    let rewardsConfig = [{
+      rewardMoney = getMoneyFromDebriefingResult()
+      hasRewardImage = false
+      isBaseReward = true
+      needVerticalAlign = true
+    }]
+    return ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
+      {
+        rewardMarkup = getMissionRewardsMarkup(dataBlk ?? ::DataBlock(), misName, rewardsConfig)
+        misName = misName
+        afterRewardText = dataBlk?[misName].rewardWndInfoText ?? ""
+        decorator = null
+      })
+  },
+  "ui.debug_tutorial_reward"
+)
 
 local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/showUnlock.blk"
 
+  sceneBlkName = "%gui/tutorials/tutorialReward.blk"
   misName = ""
   rewardMarkup = ""
   afterRewardText = ""
@@ -17,79 +48,93 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   decoratorSlot = null
 
   function initScreen() {
-    scene.findObject("award_name").setValue(::loc("mainmenu/btnTutorial"))
+    this.scene.findObject("award_name").setValue(loc("mainmenu/btnTutorial"))
 
-    let descObj = scene.findObject("award_desc")
+    let descObj = this.scene.findObject("award_desc")
     descObj["text-align"] = "center"
 
-    let msgText = ::colorize("activeTextColor", ::loc("MISSION_SUCCESS") + "\n" + ::loc("missions/" + misName, ""))
+    let msgText = colorize("activeTextColor", loc("MISSION_SUCCESS") + "\n" + loc("missions/" + this.misName, ""))
     descObj.setValue(msgText)
 
-    if (rewardMarkup != "") {
-      let rewardsObj = scene.findObject("reward_markup")
-      guiScene.replaceContentFromText(rewardsObj, rewardMarkup, rewardMarkup.len(), this)
+    if (this.rewardMarkup != "") {
+      let rewardsObj = this.scene.findObject("reward_markup")
+      this.guiScene.replaceContentFromText(rewardsObj, this.rewardMarkup, this.rewardMarkup.len(), this)
       rewardsObj.show(true)
     }
 
-    updateDecoratorButton()
-    if (decorator != null) { //Not show new unlock window
-      let decoratorId = decorator.id
+    this.updateDecoratorButton()
+    if (this.decorator != null) { //Not show new unlock window
+      let decoratorId = this.decorator.id
       ::getUserLogsList({
-        show = [::EULT_NEW_UNLOCK]
+        show = [EULT_NEW_UNLOCK]
         disableVisible = true
         checkFunc = @(userlog) decoratorId == (userlog?.body.unlockId ?? "")
       })
     }
 
     foreach(t in checkTutorialsList)
-      if (t.tutorial == misName)
+      if (t.tutorial == this.misName)
       {
         let image = ::get_country_flag_img("tutorial_" + t.id + "_win")
         if (image == "")
           continue
 
-        scene.findObject("award_image")["background-image"] = image
+        this.scene.findObject("award_image")["background-image"] = image
         break
       }
 
     if (!::is_any_award_received_by_mode_type("char_versus_battles_end_count_and_rank_test"))
-      afterRewardText = ::loc("award/tutorial_fighter_next_award/desc")
+      this.afterRewardText = loc("award/tutorial_fighter_next_award/desc")
 
-    let nObj = scene.findObject("next_award")
-    if (::checkObj(nObj))
-      nObj.setValue(afterRewardText)
+    let nObj = this.scene.findObject("next_award")
+    if (checkObj(nObj))
+      nObj.setValue(this.afterRewardText)
+
+    this.guiScene.applyPendingChanges(false)
+
+    let window_height = this.scene.findObject("reward_frame").getSize()[1]
+    let safe_height = safeAreaMenu.getSafearea()[1] * ::screen_height()
+
+    if(window_height > safe_height) {
+      let award_image = this.scene.findObject("award_image")
+      let image_height = award_image.getSize()[1]
+      let image_new_height = image_height - (window_height - safe_height)
+      let k = image_new_height / image_height
+      let image_reduce_height = (image_height - image_new_height) / 2
+      award_image["height"] = "{0}pw".subst(k*0.75)
+      award_image["background-position"] = "0, {0}, 0, {1}".subst(image_reduce_height, image_reduce_height)
+      award_image["background-repeat"] = "part"
+    }
   }
 
   function onOk() {
-    goBack()
+    this.goBack()
   }
 
-  onUseDecorator = @() useDecorator(decorator, decoratorUnit, decoratorSlot)
+  onUseDecorator = @() useDecorator(this.decorator, this.decoratorUnit, this.decoratorSlot)
 
   function updateDecoratorButton() {
-    local canUseDecorator = decorator != null && canStartPreviewScene(false)
+    local canUseDecorator = this.decorator != null && canStartPreviewScene(false)
     let obj = this.showSceneBtn("btn_use_decorator", canUseDecorator)
     if (!canUseDecorator)
       return
 
-    let resourceType = decorator.decoratorType.resourceType
-    let decorData = getDecoratorDataToUse(decorator.id, resourceType)
+    let resourceType = this.decorator.decoratorType.resourceType
+    let decorData = getDecoratorDataToUse(this.decorator.id, resourceType)
     canUseDecorator = decorData.decorator != null
     obj?.show(canUseDecorator)
     if (!canUseDecorator)
       return
 
-    decoratorUnit = decorData.decoratorUnit
-    decoratorSlot = decorData.decoratorSlot
+    this.decoratorUnit = decorData.decoratorUnit
+    this.decoratorSlot = decorData.decoratorSlot
     if (obj?.isValid ?? false)
-      obj.setValue(::loc($"decorator/use/{resourceType}"))
+      obj.setValue(loc($"decorator/use/{resourceType}"))
   }
 
-  function onEventHangarModelLoaded(params = {}) {
-    updateDecoratorButton()
+  function onEventHangarModelLoaded(_params = {}) {
+    this.updateDecoratorButton()
   }
-
-  function onUnitActivate() {}
 }
 
 ::gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
@@ -99,7 +144,7 @@ let function tryOpenTutorialRewardHandler() {
     return false
 
   let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(::GM_TRAINING)  //req to check progress
+  ::set_mp_mode(GM_TRAINING)  //req to check progress
   let progress = ::get_mission_progress(tutorialRewardData.value.fullMissionName)
   ::set_mp_mode(mainGameMode)
 
@@ -119,7 +164,7 @@ let function tryOpenTutorialRewardHandler() {
     if ((tutorialRewardData.value.progress>=3 && progress>=0 && progress<3) || hasDecoratorUnlocked)
     {
       let rBlk = ::get_pve_awards_blk()
-      let dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
+      let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
       let miscText = dataBlk?[misName].rewardWndInfoText ?? ""
       let firstCompletRewardData = tutorialRewardData.value.firstCompletRewardData
       let hasSlotReward = firstCompletRewardData.slotReward != ""
@@ -145,13 +190,13 @@ let function tryOpenTutorialRewardHandler() {
         misName = misName
         decorator = decorator
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? ::DataBlock(), misName, rewardsConfig)
-        afterRewardText = ::loc(miscText)
+        afterRewardText = loc(miscText)
       })
     }
 
     if (::u.search(reqTutorial, @(val) val == misName) != null)
     {
-      newCountries = checkUnlockedCountries()
+      newCountries = ::checkUnlockedCountries()
       foreach(c in newCountries)
         checkRankUpWindow(c, -1, ::get_player_rank_by_country(c))
     }

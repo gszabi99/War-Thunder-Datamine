@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let { gameType, useDeathmatchHUD, timeLeft, timeLimitWarn, customHUD } = require("%rGui/missionState.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")

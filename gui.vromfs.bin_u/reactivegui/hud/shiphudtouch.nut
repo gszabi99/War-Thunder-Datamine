@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { safeAreaSizeHud, rh } = require("%rGui/style/screenState.nut")
 let { dmgIndicatorStates } = require("%rGui/hudState.nut")

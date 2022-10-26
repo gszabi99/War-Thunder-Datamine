@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::g_clan_tag_decorator <- {
 
 
@@ -6,10 +12,10 @@
     let decoratorsList = []
 
     if ("clanType" in args)
-      decoratorsList.extend(getDecoratorsForClanType(args.clanType))
+      decoratorsList.extend(this.getDecoratorsForClanType(args.clanType))
 
     if ("rewardsList" in args)
-      decoratorsList.extend(getDecoratorsForClanDuelRewards(args.rewardsList))
+      decoratorsList.extend(this.getDecoratorsForClanDuelRewards(args.rewardsList))
 
     return decoratorsList
   }
@@ -20,7 +26,7 @@
     let blk = ::get_warpoints_blk()
     let block = blk?[::clan_get_decorators_block_name(clanType.code)]
 
-    return getDecoratorsInternal(block)
+    return this.getDecoratorsInternal(block)
   }
 
 
@@ -36,7 +42,7 @@
 
     let decoratorLists = []
     foreach (reward in rewardsList)
-      decoratorLists.append(getDecoratorsInternal(blk?[reward], true))
+      decoratorLists.append(this.getDecoratorsInternal(blk?[reward], true))
     decoratorLists.sort(@(a, b) b.len() <=> a.len())
 
     foreach (list in decoratorLists)
@@ -63,7 +69,7 @@
 
     if (decoratorsBlk != null)
       foreach (decoratorString in decoratorsBlk % "decor")
-        decorators.append(ClanTagDecorator(decoratorString, free))
+        decorators.append(::ClanTagDecorator(decoratorString, free))
 
     return decorators
   }
@@ -80,16 +86,16 @@
   constructor(decoratorString, freeChange)
   {
     let halfLength = (0.5 * decoratorString.len()).tointeger()
-    id = decoratorString
-    start = decoratorString.slice(0, halfLength)
-    end = decoratorString.slice(halfLength)
-    free = freeChange
+    this.id = decoratorString
+    this.start = decoratorString.slice(0, halfLength)
+    this.end = decoratorString.slice(halfLength)
+    this.free = freeChange
   }
 
   function checkTagText(tagText)
   {
-    if (tagText.indexof(start) != 0 || tagText.len() < end.len())
+    if (tagText.indexof(this.start) != 0 || tagText.len() < this.end.len())
       return false
-    return tagText.slice(-end.len()) == end
+    return tagText.slice(-this.end.len()) == this.end
   }
 }

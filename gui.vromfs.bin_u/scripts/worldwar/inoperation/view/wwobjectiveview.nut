@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::WwObjectiveView <- class
 {
   id = ""
@@ -13,61 +19,61 @@
 
   constructor(v_staticBlk, v_dynamicBlk, v_side, v_isLastObjective = false)
   {
-    staticBlk = v_staticBlk
-    dynamicBlk = v_dynamicBlk
-    side = ::ww_side_val_to_name(v_side)
-    oType = ::g_ww_objective_type.getTypeByTypeName(staticBlk.type)
-    id = staticBlk.getBlockName()
-    isLastObjective = v_isLastObjective
+    this.staticBlk = v_staticBlk
+    this.dynamicBlk = v_dynamicBlk
+    this.side = ::ww_side_val_to_name(v_side)
+    this.oType = ::g_ww_objective_type.getTypeByTypeName(this.staticBlk.type)
+    this.id = this.staticBlk.getBlockName()
+    this.isLastObjective = v_isLastObjective
 
-    let statusType = oType.getObjectiveStatus(dynamicBlk?.winner, side)
-    status = statusType.name
-    statusImg = statusType.wwMissionObjImg
-    zonesList = oType.getUpdatableZonesParams(staticBlk, dynamicBlk, side)
+    let statusType = this.oType.getObjectiveStatus(this.dynamicBlk?.winner, this.side)
+    this.status = statusType.name
+    this.statusImg = statusType.wwMissionObjImg
+    this.zonesList = this.oType.getUpdatableZonesParams(this.staticBlk, this.dynamicBlk, this.side)
   }
 
   function getNameId()
   {
-    return oType.getNameId(staticBlk, side)
+    return this.oType.getNameId(this.staticBlk, this.side)
   }
 
   function getName()
   {
-    return oType.getName(staticBlk, dynamicBlk, side)
+    return this.oType.getName(this.staticBlk, this.dynamicBlk, this.side)
   }
 
   function getDesc()
   {
-    return oType.getDesc(staticBlk, dynamicBlk, side)
+    return this.oType.getDesc(this.staticBlk, this.dynamicBlk, this.side)
   }
 
   function getParamsArray()
   {
-    return oType.getParamsArray(staticBlk, side)
+    return this.oType.getParamsArray(this.staticBlk, this.side)
   }
 
   function getUpdatableData()
   {
-    return oType.getUpdatableParamsArray(staticBlk, dynamicBlk, side)
+    return this.oType.getUpdatableParamsArray(this.staticBlk, this.dynamicBlk, this.side)
   }
 
   function getUpdatableDataDescriptionText()
   {
-    return oType.getUpdatableParamsDescriptionText(staticBlk, dynamicBlk, side)
+    return this.oType.getUpdatableParamsDescriptionText(this.staticBlk, this.dynamicBlk, this.side)
   }
 
   function getUpdatableDataDescriptionTooltip()
   {
-    return oType.getUpdatableParamsDescriptionTooltip(staticBlk, dynamicBlk, side)
+    return this.oType.getUpdatableParamsDescriptionTooltip(this.staticBlk, this.dynamicBlk, this.side)
   }
 
   function getUpdatableZonesData()
   {
-    return zonesList
+    return this.zonesList
   }
 
   function hasObjectiveZones()
   {
-    return zonesList.len()
+    return this.zonesList.len()
   }
 }

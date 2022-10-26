@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let platformModule = require("%scripts/clientState/platform.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -16,95 +22,95 @@ let { needProceedSquadInvitesAccept,
 
   static function getUidByParams(params)
   {
-    return "SQ_" + ::getTblValue("squadId", params, "")
+    return "SQ_" + getTblValue("squadId", params, "")
   }
 
   function updateCustomParams(params, initial = false)
   {
-    squadId = ::getTblValue("squadId", params, squadId)
-    leaderId = ::getTblValue("leaderId", params, leaderId)
+    this.squadId = getTblValue("squadId", params, this.squadId)
+    this.leaderId = getTblValue("leaderId", params, this.leaderId)
 
-    updateInviterContact()
+    this.updateInviterContact()
 
-    if (inviterName.len() != 0)
+    if (this.inviterName.len() != 0)
     {
       //Don't show invites from xbox players, as notification comes from system overlay
-      ::dagor.debug("InviteSquad: invitername != 0 " + platformModule.isPlayerFromXboxOne(inviterName))
-      if (platformModule.isPlayerFromXboxOne(inviterName))
-        setDelayed(true)
+      log("InviteSquad: invitername != 0 " + platformModule.isPlayerFromXboxOne(this.inviterName))
+      if (platformModule.isPlayerFromXboxOne(this.inviterName))
+        this.setDelayed(true)
     }
     else
     {
-      setDelayed(true)
-      let cb = ::Callback(function(r)
+      this.setDelayed(true)
+      let cb = Callback(function(_r)
                             {
-                              updateInviterContact()
-                              ::dagor.debug("InviteSquad: Callback: invitername == 0 " + platformModule.isPlayerFromXboxOne(inviterName))
-                              if (platformModule.isPlayerFromXboxOne(inviterName))
+                              this.updateInviterContact()
+                              log("InviteSquad: Callback: invitername == 0 " + platformModule.isPlayerFromXboxOne(this.inviterName))
+                              if (platformModule.isPlayerFromXboxOne(this.inviterName))
                               {
-                                setDelayed(true)
-                                checkAutoAcceptXboxInvite()
+                                this.setDelayed(true)
+                                this.checkAutoAcceptXboxInvite()
                               }
                               else
-                                setDelayed(false)
+                                this.setDelayed(false)
                             }, this)
-      requestUsersInfo([leaderId], cb, cb)
+      requestUsersInfo([this.leaderId], cb, cb)
     }
-    isAccepted = false
+    this.isAccepted = false
 
     if (initial)
       ::add_event_listener("SquadStatusChanged",
-        function (p) {
+        function (_p) {
           if (::g_squad_manager.isInSquad()
-              && ::g_squad_manager.getLeaderUid() == squadId.tostring())
-            onSuccessfulAccept()
+              && ::g_squad_manager.getLeaderUid() == this.squadId.tostring())
+            this.onSuccessfulAccept()
         }, this)
 
-    checkAutoAcceptXboxInvite()
+    this.checkAutoAcceptXboxInvite()
   }
 
   function updateInviterContact()
   {
-    leaderContact = ::getContact(leaderId)
-    updateInviterName()
+    this.leaderContact = ::getContact(this.leaderId)
+    this.updateInviterName()
   }
 
   function updateInviterName()
   {
-    if (leaderContact)
-      inviterName = leaderContact.name
+    if (this.leaderContact)
+      this.inviterName = this.leaderContact.name
   }
 
   function checkAutoAcceptXboxInvite()
   {
-    if (!::is_platform_xbox
-        || !leaderContact
-        || (haveRestrictions() && !::isInMenu())
+    if (!is_platform_xbox
+        || !this.leaderContact
+        || (this.haveRestrictions() && !::isInMenu())
         || !needProceedSquadInvitesAccept()
       )
       return
 
-    if (leaderContact.xboxId != "")
-      autoacceptXboxInvite(leaderContact.xboxId)
+    if (this.leaderContact.xboxId != "")
+      this.autoacceptXboxInvite(this.leaderContact.xboxId)
     else
-      leaderContact.getXboxId(::Callback(@() autoacceptXboxInvite(leaderContact.xboxId), this))
+      this.leaderContact.getXboxId(Callback(@() this.autoacceptXboxInvite(this.leaderContact.xboxId), this))
   }
 
   function autoacceptXboxInvite(leaderXboxId = "") {
     if (!isPlayerFromXboxSquadList(leaderXboxId))
-      return autorejectInvite()
+      return this.autorejectInvite()
 
-    checkAutoAcceptInvite()
+    this.checkAutoAcceptInvite()
   }
 
   function autoacceptInviteImpl() {
-    if (!_implAccept())
-      autorejectInvite()
+    if (!this._implAccept())
+      this.autorejectInvite()
   }
 
   function autorejectInvite() {
-    if (!::g_squad_utils.canSquad() || !leaderContact.canInvite())
-      reject()
+    if (!::g_squad_utils.canSquad() || !this.leaderContact.canInvite())
+      this.reject()
   }
 
   function checkAutoAcceptInvite() {
@@ -122,43 +128,43 @@ let { needProceedSquadInvitesAccept,
 
   function isValid()
   {
-    return !isAccepted
+    return !this.isAccepted
   }
 
   function getInviteText()
   {
-    return ::loc("multiplayer/squad/invite/desc",
+    return loc("multiplayer/squad/invite/desc",
                  {
-                   name = getInviterName() || platformModule.getPlayerName(inviterName)
+                   name = this.getInviterName() || platformModule.getPlayerName(this.inviterName)
                  })
   }
 
   function getPopupText()
   {
-    return ::loc("multiplayer/squad/invite/desc",
+    return loc("multiplayer/squad/invite/desc",
                  {
-                   name = getInviterName() || platformModule.getPlayerName(inviterName)
+                   name = this.getInviterName() || platformModule.getPlayerName(this.inviterName)
                  })
   }
 
   function getRestrictionText()
   {
     if (!isMultiplayerPrivilegeAvailable.value)
-      return ::loc("xbox/noMultiplayer")
-    if (!isAvailableByCrossPlay())
-      return ::loc("xbox/crossPlayRequired")
-    if (!isAvailableByChatRestriction())
-      return ::loc("xbox/actionNotAvailableLiveCommunications")
-    if (haveRestrictions())
-      return ::loc("squad/cant_join_in_flight")
+      return loc("xbox/noMultiplayer")
+    if (!this.isAvailableByCrossPlay())
+      return loc("xbox/crossPlayRequired")
+    if (!this.isAvailableByChatRestriction())
+      return loc("xbox/actionNotAvailableLiveCommunications")
+    if (this.haveRestrictions())
+      return loc("squad/cant_join_in_flight")
     return ""
   }
 
   function haveRestrictions()
   {
     return !::g_squad_manager.canManageSquad()
-    || !isAvailableByCrossPlay()
-    || !isAvailableByChatRestriction()
+    || !this.isAvailableByCrossPlay()
+    || !this.isAvailableByChatRestriction()
     || !isMultiplayerPrivilegeAvailable.value
   }
 
@@ -171,8 +177,8 @@ let { needProceedSquadInvitesAccept,
 
   function onSuccessfulAccept()
   {
-    isAccepted = true
-    remove()
+    this.isAccepted = true
+    this.remove()
   }
 
   function accept()
@@ -182,7 +188,7 @@ let { needProceedSquadInvitesAccept,
       return
     }
 
-    let acceptCallback = ::Callback(_implAccept, this)
+    let acceptCallback = Callback(this._implAccept, this)
     let callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight")}
     let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_invite" },
@@ -197,19 +203,19 @@ let { needProceedSquadInvitesAccept,
 
   function reject()
   {
-    if (isOutdated())
-      return remove()
+    if (this.isOutdated())
+      return this.remove()
 
-    isRejected = true
-    ::g_squad_manager.rejectSquadInvite(squadId)
-    remove()
-    ::g_invites.removeInviteToSquad(squadId)
-    onSuccessfulReject()
+    this.isRejected = true
+    ::g_squad_manager.rejectSquadInvite(this.squadId)
+    this.remove()
+    ::g_invites.removeInviteToSquad(this.squadId)
+    this.onSuccessfulReject()
   }
 
   function _implAccept()
   {
-    if (isOutdated())
+    if (this.isOutdated())
     {
       ::g_invites.showExpiredInvitePopup()
       return false
@@ -217,7 +223,7 @@ let { needProceedSquadInvitesAccept,
     if (!::g_squad_manager.canJoinSquad())
       return false
 
-    ::g_squad_manager.acceptSquadInvite(squadId)
+    ::g_squad_manager.acceptSquadInvite(this.squadId)
     return true
   }
 }

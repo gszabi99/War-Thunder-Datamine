@@ -1996,6 +1996,14 @@
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_rocket.blk"
       },
       {
+        "name": "tiger_uht_apkws_m151",
+        "blk": "gameData/flightModels/weaponPresets/tiger_uht_apkws_m151.blk"
+      },
+      {
+        "name": "tiger_uht_apkws_m282",
+        "blk": "gameData/flightModels/weaponPresets/tiger_uht_apkws_m282.blk"
+      },
+      {
         "name": "tiger_uht_4x_hot3",
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_4x_hot3.blk"
       },
@@ -2182,6 +2190,38 @@
             }
           },
           {
+            "iconType": "nar_he_small",
+            "name": "apkws_m151",
+            "reqModification": "us_apkws",
+            "ShowNodes": {
+              "node": "pylon_l_gun"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
+              "emitter": "fz225_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "apkws_m282",
+            "reqModification": "us_apkws",
+            "ShowNodes": {
+              "node": "pylon_l_gun"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
+              "emitter": "fz225_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "atgm_type2_x2",
             "name": "hot3_x2",
             "ShowNodes": {
@@ -2352,6 +2392,38 @@
               "blk": "gameData/Weapons/containers/fz225_ffar_x19.blk",
               "emitter": "fz225_002",
               "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_he_small",
+            "name": "apkws_m151",
+            "reqModification": "us_apkws",
+            "ShowNodes": {
+              "node": "pylon_r_gun"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
+              "emitter": "fz225_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "apkws_m282",
+            "reqModification": "us_apkws",
+            "ShowNodes": {
+              "node": "pylon_r_gun"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
+              "emitter": "fz225_002",
+              "external": true,
+              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -2607,8 +2679,13 @@
       "modClass": "weapon",
       "tier": 3
     },
+    "us_apkws": {
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 2
+    },
     "stinger_aam": {
-      "prevModification": "tiger_atgw3",
+      "prevModification": "us_apkws",
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 4

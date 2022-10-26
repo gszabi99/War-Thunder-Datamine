@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 local blockNameByDirection = {
   [AxisDirection.X] = {
     rangeMin = "rightKey"
@@ -19,33 +25,33 @@ local blockNameByDirection = {
 
   constructor(v_elements = [])
   {
-    elements = v_elements
-    isCompositAxis = false
+    this.elements = v_elements
+    this.isCompositAxis = false
   }
 
   function getMarkup()
   {
-    let data = getMarkupData()
+    let data = this.getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
     let view = {}
-    local needArrows = !isCompositAxis
-    foreach (element in elements)
+    local needArrows = !this.isCompositAxis
+    foreach (element in this.elements)
     {
       needArrows = needArrows
-        || element.input.getDeviceId() != ::STD_KEYBOARD_DEVICE_ID
+        || element.input.getDeviceId() != STD_KEYBOARD_DEVICE_ID
         || !(element.input instanceof ::Input.Button)
-      view[blockNameByDirection[isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
+      view[blockNameByDirection[this.isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
         <- element.input.getMarkup()
     }
     let arrows = [{direction = AxisDirection.X}]
-    if (needArrows && isCompositAxis)
+    if (needArrows && this.isCompositAxis)
       arrows.append({direction = AxisDirection.Y})
     return {
-      template = "%gui/controls/input/keyboardAxis"
+      template = "%gui/controls/input/keyboardAxis.tpl"
       view = view.__merge({
         needArrows = needArrows
         arrows = arrows})
@@ -54,31 +60,31 @@ local blockNameByDirection = {
 
   function getText()
   {
-    return ::g_string.implode(elements.map(@(e) e.getText()), " - ")
+    return ::g_string.implode(this.elements.map(@(e) e.getText()), " - ")
   }
 
   function getDeviceId()
   {
-    if (elements.len())
-      return elements[0].getDeviceId()
+    if (this.elements.len())
+      return this.elements[0].getDeviceId()
 
-    return ::NULL_INPUT_DEVICE_ID
+    return NULL_INPUT_DEVICE_ID
   }
 
   function getConfig()
   {
     let elemConf = {}
-    local needArrows = !isCompositAxis
-    foreach (element in elements)
+    local needArrows = !this.isCompositAxis
+    foreach (element in this.elements)
     {
       needArrows = needArrows
-        || element.input.getDeviceId() != ::STD_KEYBOARD_DEVICE_ID
+        || element.input.getDeviceId() != STD_KEYBOARD_DEVICE_ID
         || !(element.input instanceof ::Input.Button)
-      elemConf[blockNameByDirection[isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
+      elemConf[blockNameByDirection[this.isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
         <- element.input.getConfig()
     }
     let arrows = [{direction = AxisDirection.X}]
-    if (needArrows && isCompositAxis)
+    if (needArrows && this.isCompositAxis)
       arrows.append({direction = AxisDirection.Y})
 
     return {

@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { ceil } = require("math")
+
 ::g_ww_map_armies_status_tab_type <- {
   types = []
   cache = {
@@ -23,26 +31,26 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
 
   getArmiesCountText = function() {
-    let armies = ::g_operations.getArmiesByStatus(status)
+    let armies = ::g_operations.getArmiesByStatus(this.status)
 
     local countText = armies.common.len()
     if (armies.surrounded.len() > 0)
-      countText += "+" + ::colorize("armySurroundedColor", armies.surrounded.len())
+      countText += "+" + colorize("armySurroundedColor", armies.surrounded.len())
 
-    return ::loc("ui/parentheses/space", { text = countText })
+    return loc("ui/parentheses/space", { text = countText })
   }
 
   getTitleViewData = function() {
     return {
-      id = status
-      tabIconText = ::loc(iconText)
-      tabText = ::loc(text)
-      armiesCountText = getArmiesCountText()
+      id = this.status
+      tabIconText = loc(this.iconText)
+      tabText = loc(this.text)
+      armiesCountText = this.getArmiesCountText()
     }
   }
 
   getContentViewData = function(itemsPerPage, currentPage) {
-    let armies = ::g_operations.getArmiesByStatus(status)
+    let armies = ::g_operations.getArmiesByStatus(this.status)
 
     local firstItemIndex = currentPage*itemsPerPage
     let viewsArray = []
@@ -53,15 +61,15 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     for(local i = firstItemIndex; i < armies.common.len() && viewsArray.len() < itemsPerPage; i++)
       viewsArray.append(armies.common[i].getView())
 
-    let viewData = getEmptyContentViewData()
+    let viewData = this.getEmptyContentViewData()
     viewData.army = viewsArray
 
     return viewData
   }
 
   getTotalPageCount = function(itemsPerPage) {
-    let armies = ::g_operations.getArmiesByStatus(status)
-    return ::ceil((armies.surrounded.len() + armies.common.len())/itemsPerPage.tofloat())
+    let armies = ::g_operations.getArmiesByStatus(this.status)
+    return ceil((armies.surrounded.len() + armies.common.len())/itemsPerPage.tofloat())
   }
 }
 
@@ -96,13 +104,12 @@ enums.addTypesByGlobalName("g_ww_map_armies_status_tab_type", {
 }, null, "name")
 
 
-g_ww_map_armies_status_tab_type.getTypeByStatus <- function getTypeByStatus(status)
-{
+::g_ww_map_armies_status_tab_type.getTypeByStatus <- function getTypeByStatus(status) {
   return enums.getCachedType(
     "status",
     status,
-    cache.byStatus,
+    this.cache.byStatus,
     this,
-    UNKNOWN
+    this.UNKNOWN
   )
 }

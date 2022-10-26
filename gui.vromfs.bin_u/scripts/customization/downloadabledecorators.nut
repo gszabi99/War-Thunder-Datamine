@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let guidParser = require("%scripts/guidParser.nut")
 
 let downloadableSkins = {} // { unitName = { skinIds = [], suggestedSkinIds = {} } }
@@ -13,15 +18,15 @@ let function updateDownloadableSkins(unitName) {
 
   local shouldCache = true
 
-  if (::has_feature("MarketplaceSkinsInCustomization") && ::has_feature("Marketplace")
-    && ::has_feature("EnableLiveSkins"))
+  if (hasFeature("MarketplaceSkinsInCustomization") && hasFeature("Marketplace")
+    && hasFeature("EnableLiveSkins"))
   {
     let marketSkinsBlk = ::DataBlock()
     marketSkinsBlk.load("config/skins_market.blk")
     let blkList = marketSkinsBlk % unitName
     let skinBlks = blkList.filter(@(blk) (type(blk?.marketplaceItemdefId) == "integer")
-      && (blk?.reqFeature == null || ::has_feature(blk.reqFeature))
-      && (blk?.hideFeature == null || !::has_feature(blk.hideFeature)))
+      && (blk?.reqFeature == null || hasFeature(blk.reqFeature))
+      && (blk?.hideFeature == null || !hasFeature(blk.hideFeature)))
 
     foreach (blk in skinBlks)
     {

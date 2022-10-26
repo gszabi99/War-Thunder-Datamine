@@ -162,7 +162,7 @@ tdiv {
     }
 
     <<^isAutoBattle>>
-    include "%gui/worldWar/wwControlHelp"
+    include "%gui/worldWar/wwControlHelp.tpl"
     <</isAutoBattle>>
   }
 }

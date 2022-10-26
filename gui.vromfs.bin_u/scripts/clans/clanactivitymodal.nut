@@ -1,10 +1,17 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { round } = require("math")
 let { format } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_start_clan_activity_wnd <- function gui_start_clan_activity_wnd(uid = null, clanData = null)
-{
+::gui_start_clan_activity_wnd <- function gui_start_clan_activity_wnd(uid = null, clanData = null) {
   if (!uid || !clanData)
     return
 
@@ -29,24 +36,24 @@ let platformModule = require("%scripts/clientState/platform.nut")
 
   function initScreen()
   {
-    let maxActivityPerDay = clanData.rewardPeriodDays > 0
-      ? ::round(1.0 * clanData.maxActivityPerPeriod / clanData.rewardPeriodDays)
+    let maxActivityPerDay = this.clanData.rewardPeriodDays > 0
+      ? round(1.0 * this.clanData.maxActivityPerPeriod / this.clanData.rewardPeriodDays)
       : 0
-    let isShowPeriodActivity = ::has_feature("ClanVehicles")
-    hasClanExperience  = isShowPeriodActivity && ::clan_get_my_clan_id() == clanData.id
-    let history = isShowPeriodActivity ? memberData.expActivity : memberData.activityHistory
-    let headerTextObj = scene.findObject("clan_activity_header_text")
-    headerTextObj.setValue(format("%s - %s", ::loc("clan/activity"),
-      platformModule.getPlayerName(memberData.nick)))
+    let isShowPeriodActivity = hasFeature("ClanVehicles")
+    this.hasClanExperience  = isShowPeriodActivity && ::clan_get_my_clan_id() == this.clanData.id
+    let history = isShowPeriodActivity ? this.memberData.expActivity : this.memberData.activityHistory
+    let headerTextObj = this.scene.findObject("clan_activity_header_text")
+    headerTextObj.setValue(format("%s - %s", loc("clan/activity"),
+      platformModule.getPlayerName(this.memberData.nick)))
 
-    let maxActivityToday = [(isShowPeriodActivity ? memberData.curPeriodActivity : memberData.curActivity).tostring()]
+    let maxActivityToday = [(isShowPeriodActivity ? this.memberData.curPeriodActivity : this.memberData.curActivity).tostring()]
     if (maxActivityPerDay > 0)
-      maxActivityToday.append((isShowPeriodActivity ? clanData.maxActivityPerPeriod : maxActivityPerDay).tostring())
-    scene.findObject("clan_activity_today_value").setValue(::g_string.implode(maxActivityToday, " / "))
-    scene.findObject("clan_activity_total_value").setValue(format("%d",
-      isShowPeriodActivity ? memberData.totalPeriodActivity : memberData.totalActivity))
+      maxActivityToday.append((isShowPeriodActivity ? this.clanData.maxActivityPerPeriod : maxActivityPerDay).tostring())
+    this.scene.findObject("clan_activity_today_value").setValue(::g_string.implode(maxActivityToday, " / "))
+    this.scene.findObject("clan_activity_total_value").setValue(format("%d",
+      isShowPeriodActivity ? this.memberData.totalPeriodActivity : this.memberData.totalActivity))
 
-    fillActivityHistory(history)
+    this.fillActivityHistory(history)
   }
 
   function fillActivityHistory(history)
@@ -61,27 +68,27 @@ let platformModule = require("%scripts/clientState/platform.nut")
       return right.day - left.day
     })
 
-    let tableHeaderObj = scene.findObject("clan_member_activity_history_table_header");
+    let tableHeaderObj = this.scene.findObject("clan_member_activity_history_table_header");
     local rowIdx = 1
     local rowBlock = ""
     let rowHeader = [
       {
         id       = "clan_activity_history_col_day",
-        text     = ::loc("clan/activity/day"),
+        text     = loc("clan/activity/day"),
         active   = false
       },
       {
         id       = "clan_activity_history_col_value",
-        text     = ::loc("clan/activity"),
+        text     = loc("clan/activity"),
         active   = false
       }
     ];
 
-    if (hasClanExperience)
+    if (this.hasClanExperience)
       rowHeader.append(
         {
           id       = "clan_activity_exp_col_value",
-          text     = ::loc("reward"),
+          text     = loc("reward"),
           active   = false
         }
       )
@@ -89,9 +96,9 @@ let platformModule = require("%scripts/clientState/platform.nut")
     rowBlock += ::buildTableRowNoPad("row_header", rowHeader, null,
         "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ")
 
-    guiScene.replaceContentFromText(tableHeaderObj, rowBlock, rowBlock.len(), this)
+    this.guiScene.replaceContentFromText(tableHeaderObj, rowBlock, rowBlock.len(), this)
 
-    let tableObj = scene.findObject("clan_member_activity_history_table");
+    let tableObj = this.scene.findObject("clan_member_activity_history_table");
 
     rowBlock = ""
     /*body*/
@@ -102,7 +109,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
         { text = (::u.isInteger(entry.data) ? entry.data : entry.data?.activity ?? 0).tostring() }
       ]
 
-      if (hasClanExperience)
+      if (this.hasClanExperience)
       {
         let exp = entry.data?.exp ?? 0
         local expText = exp.tostring()
@@ -110,17 +117,17 @@ let platformModule = require("%scripts/clientState/platform.nut")
         let hasBoost = boost > 0
         if (hasBoost && exp > 0)
         {
-          let baseExp = entry.data?.expRewardBase ?? ::round(exp/(1 + boost))
-          expText = ::colorize("activeTextColor",baseExp.tostring()
-            + ::colorize("goodTextColor", " + " + (exp - baseExp).tostring()))
+          let baseExp = entry.data?.expRewardBase ?? round(exp/(1 + boost))
+          expText = colorize("activeTextColor",baseExp.tostring()
+            + colorize("goodTextColor", " + " + (exp - baseExp).tostring()))
         }
 
         rowParams.append({ text = expText
           textType = hasBoost ? "textAreaCentered" : "activeText"
           textRawParam = "width:t='pw'; text-align:t='center'"
           tooltip = hasBoost
-            ? ::loc("clan/activity_reward/wasBoost",
-              { bonus = ::colorize("activeTextColor",
+            ? loc("clan/activity_reward/wasBoost",
+              { bonus = colorize("activeTextColor",
                 "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(boost))})
             : ""
         })
@@ -128,6 +135,6 @@ let platformModule = require("%scripts/clientState/platform.nut")
       rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowParams, null, "")
       rowIdx++
     }
-    guiScene.replaceContentFromText(tableObj, rowBlock, rowBlock.len(), this)
+    this.guiScene.replaceContentFromText(tableObj, rowBlock, rowBlock.len(), this)
   }
 }

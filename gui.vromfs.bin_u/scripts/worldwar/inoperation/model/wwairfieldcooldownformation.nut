@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
@@ -7,34 +13,34 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   constructor(blk, airfield)
   {
-    units = []
-    update(blk, airfield)
+    this.units = []
+    this.update(blk, airfield)
   }
 
   function update(blk, airfield)
   {
-    units = wwActionsWithUnitsList.loadUnitsFromBlk(blk.getBlockByName("units"))
-    morale = airfield.createArmyMorale
+    this.units = wwActionsWithUnitsList.loadUnitsFromBlk(blk.getBlockByName("units"))
+    this.morale = airfield.createArmyMorale
     if ("cooldownFinishedMillis" in blk)
-      cooldownFinishedMillis = blk.cooldownFinishedMillis
+      this.cooldownFinishedMillis = blk.cooldownFinishedMillis
   }
 
   function clear()
   {
     base.clear()
-    cooldownFinishedMillis = 0
+    this.cooldownFinishedMillis = 0
   }
 
   function getCooldownTime()
   {
-    return max(0, (cooldownFinishedMillis - ::ww_get_operation_time_millisec()))
+    return max(0, (this.cooldownFinishedMillis - ::ww_get_operation_time_millisec()))
   }
 
   function getCooldownText()
   {
-    let cooldownTime = getCooldownTime()
+    let cooldownTime = this.getCooldownTime()
     if (cooldownTime == 0)
-      return ::loc("worldwar/state/ready")
+      return loc("worldwar/state/ready")
 
     return time.secondsToString(time.millisecondsToSeconds(cooldownTime), false)
   }

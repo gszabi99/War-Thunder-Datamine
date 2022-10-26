@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getPollIdByFullUrl, invalidateTokensCache } = require("%scripts/web/webpoll.nut")
 let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
@@ -20,7 +25,7 @@ let function openLinkWithSource(params = [], source = "promo_open_link") {
   openUrl(processedLink, forceBrowser, false, source)
 }
 
-addPromoAction("url", function(handler, params, obj) {
+addPromoAction("url", function(_handler, params, _obj) {
   let pollId = getPollIdByFullUrl(params?[0] ?? "")
   if (pollId != null)
     invalidateTokensCache(pollId.tointeger())
@@ -29,7 +34,7 @@ addPromoAction("url", function(handler, params, obj) {
 
 addPromoButtonConfig({
   promoButtonId = "web_poll"
-  collapsedIcon = ::loc("icon/web_poll")
+  collapsedIcon = loc("icon/web_poll")
 })
 
 return {

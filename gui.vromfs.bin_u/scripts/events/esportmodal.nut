@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
@@ -17,8 +24,8 @@ let FILTER_CHAPTERS = ["tour", "unit"]
 local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType         = handlerType.BASE
   sceneBlkName    = "%gui/events/eSportModal.blk"
-  sceneTplName    = "%gui/events/eSportContent"
-  eventTplName    = "%gui/events/eSportItem"
+  sceneTplName    = "%gui/events/eSportContent.tpl"
+  eventTplName    = "%gui/events/eSportItem.tpl"
   handlerLocId    = "mainmenu/btnTournament"
 
   currSeason      = null
@@ -35,82 +42,82 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   tourStatesList  = {}
   ratingByTournaments = null
 
-  getSceneTplContainerObj = @() scene.findObject("eSport_container")
+  getSceneTplContainerObj = @() this.scene.findObject("eSport_container")
 
   function getSceneTplView() {
-    initIncomingParams()
-    if (!currSeason)
+    this.initIncomingParams()
+    if (!this.currSeason)
       return {}
 
     return {
-      seasonHeader = "\n".join([::g_string.utf8ToUpper(::loc("mainmenu/btnTournament")),
-        $"{::loc("tournaments/season")} {currSeason.competitiveSeason}"])
+      seasonHeader = "\n".join([::g_string.utf8ToUpper(loc("mainmenu/btnTournament")),
+        $"{loc("tournaments/season")} {this.currSeason.competitiveSeason}"])
       seasonDate = "".concat(
-        buildDateTimeStr(getTimestampFromStringUtc(currSeason.beginDate), false, false),
-        ::loc("ui/mdash"),
-        buildDateTimeStr(getTimestampFromStringUtc(currSeason.endDate), false, false))
-      items = getTourListViewData(tournamentList, filter)
+        buildDateTimeStr(getTimestampFromStringUtc(this.currSeason.beginDate), false, false),
+        loc("ui/mdash"),
+        buildDateTimeStr(getTimestampFromStringUtc(this.currSeason.endDate), false, false))
+      items = getTourListViewData(this.tournamentList, this.filter)
     }
   }
 
   function initScreen() {
-    if (!currSeason)
+    if (!this.currSeason)
       return
 
-    scene.findObject("update_timer").setUserData(this)
+    this.scene.findObject("update_timer").setUserData(this)
     setBreadcrumbGoBackParams(this)
-    eventListObj = scene.findObject("events_list")
-    updateRatingByTournaments()
-    selectActiveTournament()
-    filterObj = scene.findObject("filter_nest")
+    this.eventListObj = this.scene.findObject("events_list")
+    this.updateRatingByTournaments()
+    this.selectActiveTournament()
+    this.filterObj = this.scene.findObject("filter_nest")
 
     openPopupFilter({
-      scene = scene.findObject("filter_nest")
-      onChangeFn = onFilterCbChange.bindenv(this)
-      filterTypes = getFiltersView()
+      scene = this.scene.findObject("filter_nest")
+      onChangeFn = this.onFilterCbChange.bindenv(this)
+      filterTypes = this.getFiltersView()
       popupAlign = "top-center"
       visualStyle = "tournament"
     })
   }
 
   function initIncomingParams() {
-    currSeason = getCurrentSeason()
-    if (!currSeason)
+    this.currSeason = getCurrentSeason()
+    if (!this.currSeason)
       return
 
-    tournamentList = currSeason.tournamentList
+    this.tournamentList = this.currSeason.tournamentList
     if (::g_login.isProfileReceived()) {
       let myFilters = ::load_local_account_settings(MY_FILTERS, ::DataBlock())
-      filter.__update({
+      this.filter.__update({
         tourStates = myFilters?.tourStates ? myFilters.tourStates % "array" : []
         unitStates = myFilters?.unitStates ? myFilters.unitStates % "array" : []
       })
     }
-    fillUnitTypesList()
-    fillTournamentTypesList()
+    this.fillUnitTypesList()
+    this.fillTournamentTypesList()
   }
 
   function updateRatingByTournaments() {
-    ratingByTournaments = {}
-    foreach(tour in tournamentList) {
+    this.ratingByTournaments = {}
+    foreach(tour in this.tournamentList) {
       let curTourParams = getTourParams(tour)
       let id = tour.id
       fetchLbData(getEventByDay(tour.id, curTourParams.dayNum, false), function(lbData) {
-        ratingByTournaments[id] <- stdMath.round(lbData.rows.findvalue(
+        this.ratingByTournaments[id] <- stdMath.round(lbData.rows.findvalue(
           @(row) row._id == ::my_user_id_str)?.rating ?? 0)
       }, this)
     }
   }
 
   function selectActiveTournament() {
-    if (!eventListObj?.isValid())
+    if (!this.eventListObj?.isValid())
       return
 
-    let idx = tournamentList.findindex(@(tour) getTourDay(tour) >= 0)
+    let idx = this.tournamentList.findindex(@(tour) getTourDay(tour) >= 0)
     if (idx == null)
       return
 
-    let tObj = eventListObj.getChild(idx)
+    let tObj = this.eventListObj.getChild(idx)
     if (!(tObj?.isValid() ?? false))
       return
     tObj.scrollToView(true)
@@ -120,10 +127,10 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     let { isSesActive, isTraining, dayNum } = tourParams
     let { battleDay, isFinished, battlesNum, curSesTime,
       isMyTournament } = getTourCommonViewParams(tour, tourParams)
-    let rating = ratingByTournaments?[tour.id] ?? 0
-    let prevState = clone tourStatesList?[tour.id]
+    let rating = this.ratingByTournaments?[tour.id] ?? 0
+    let prevState = clone this.tourStatesList?[tour.id]
     let timeTxtObj = tObj.findObject("time_txt")
-    tourStatesList[tour.id] <- tourParams
+    this.tourStatesList[tour.id] <- tourParams
     let ratingObj = ::showBtn("rating_nest", rating > 0, tObj)
     if (rating > 0)
       ratingObj.findObject("rating_txt")?.setValue(rating.tostring())
@@ -162,11 +169,11 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateAllEventsByFilters() {
-    if (!tournamentList || !eventListObj?.isValid())
+    if (!this.tournamentList || !this.eventListObj?.isValid())
       return
 
-    for (local i = 0; i < eventListObj.childrenCount(); i++) {
-      let tObj = eventListObj.getChild(i)
+    for (local i = 0; i < this.eventListObj.childrenCount(); i++) {
+      let tObj = this.eventListObj.getChild(i)
       if (!tObj?.isValid())
         continue
 
@@ -174,21 +181,21 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       if (!tour)
         continue
 
-      let isVisible = checkByFilter(tour, filter)
+      let isVisible = checkByFilter(tour, this.filter)
       tObj.show(isVisible)
       if (isVisible)
-        updateTourView(tObj, tour, getTourParams(tour))
+        this.updateTourView(tObj, tour, getTourParams(tour))
     }
   }
 
-  isUnitTypeInEvents = @(typeName) tournamentList.findindex(@(p) p.armyId == typeName) != null
+  isUnitTypeInEvents = @(typeName) this.tournamentList.findindex(@(p) p.armyId == typeName) != null
   isTournamentTypeInEvents = @(typeName)
-    tournamentList.findindex(@(p) p.competitive_type == typeName) != null
+    this.tournamentList.findindex(@(p) p.competitive_type == typeName) != null
 
   function getFiltersView() {
     let res = []
-    foreach (i, tName in FILTER_CHAPTERS) {
-      let selectedArr = filter[$"{tName}States"]
+    foreach (_i, tName in FILTER_CHAPTERS) {
+      let selectedArr = this.filter[$"{tName}States"]
       let referenceArr = this[$"{tName}Types"]
 
       let view = {checkbox = []}
@@ -210,7 +217,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function fillUnitTypesList() {
-    unitTypes = {}
+    this.unitTypes = {}
 
     foreach(unitType in unitTypesList.types) {
       if (!unitType.isAvailable())
@@ -218,36 +225,36 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
       let armyId = unitType.armyId
       let typeIdx = unitType.esUnitType
-      unitTypes[armyId] <- {
+      this.unitTypes[armyId] <- {
         id        = $"unit_{typeIdx}"
         sortId    = typeIdx
         image     = unitType.testFlightIcon
-        isDisable = !isUnitTypeInEvents(armyId)
+        isDisable = !this.isUnitTypeInEvents(armyId)
         text      = unitType.getArmyLocName()
       }
     }
-    unitTypes.mix <- {
+    this.unitTypes.mix <- {
         id        = "unit_mix"
-        sortId    = unitTypes.len()
+        sortId    = this.unitTypes.len()
         image     = "#ui/gameuiskin#all_unit_types.svg"
-        isDisable = !isUnitTypeInEvents("mix")
-        text      = ::loc("mainmenu/mix_battles")
+        isDisable = !this.isUnitTypeInEvents("mix")
+        text      = loc("mainmenu/mix_battles")
       }
   }
 
   function fillTournamentTypesList() {
-    tourTypes = {}
+    this.tourTypes = {}
     foreach (idx, tType in TOURNAMENT_TYPES)
-      tourTypes[tType] <- {
+      this.tourTypes[tType] <- {
         id        = $"tour_{tType}"
         sortId    = idx
-        isDisable = tType != "my" ? !isTournamentTypeInEvents(tType) : !hasAnyTickets()
-        text  = ::loc($"tournaments/{tType}")
+        isDisable = tType != "my" ? !this.isTournamentTypeInEvents(tType) : !hasAnyTickets()
+        text  = loc($"tournaments/{tType}")
       }
   }
 
   function onFilterCbChange(objId, tName, value) {
-    let selectedArr = filter[$"{tName}States"]
+    let selectedArr = this.filter[$"{tName}States"]
     let referenceArr = this[$"{tName}Types"]
     let isReset = objId == RESET_ID
 
@@ -261,8 +268,8 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
         removeItemFromList(idx, selectedArr)
     }
 
-    updateAllEventsByFilters()
-    ::save_local_account_settings(MY_FILTERS, ::build_blk_from_container(filter))
+    this.updateAllEventsByFilters()
+    ::save_local_account_settings(MY_FILTERS, ::build_blk_from_container(this.filter))
   }
 
   function onEvent(obj) {
@@ -283,7 +290,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
         getMatchingEventId(tournament.id, 0, false), tournament.sharedEconomicName)
   }
 
-  onTimer = @(obj, dt) (scene.getModalCounter() != 0) ? null : updateAllEventsByFilters()
+  onTimer = @(_obj, _dt) (this.scene.getModalCounter() != 0) ? null : this.updateAllEventsByFilters()
 }
 
 ::gui_handlers.ESportList <- ESportList

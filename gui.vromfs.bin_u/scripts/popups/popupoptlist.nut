@@ -1,8 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 const SELECTOR_OBJ = "selector_obj"
 const ACTION_BTN = "action_btn"
 
 let deafaulEmptyOpt = {
-  text = ::loc("options/aaaNone")
+  text = loc("options/aaaNone")
   tooltip = null
   isUnstable = false
   image = null
@@ -14,10 +22,12 @@ local popupOptList = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
-  sceneTplName         = "%gui/popup/popupOptList"
+  sceneTplName         = "%gui/popup/popupOptList.tpl"
 
   stateList            = null
+  tmpStates            = null
   resetId              = null
+  isForcedSelect       = false
 
   //init params
   actionText           = null
@@ -25,68 +35,89 @@ local popupOptList = class extends ::gui_handlers.BaseGuiHandlerWT {
   onActionFn           = null
 
   function getSceneTplView() {
-    stateList = {}
+    this.stateList = {}
     local rows = []
-    foreach (idx, inst in optionsList) {
+    foreach (idx, inst in this.optionsList) {
       let { optType, title, exceptions = [], isEmptyDefault = false } = inst
       let objId = $"cb_{idx}"
       let option = ::get_option(optType)
       let items = (isEmptyDefault ? [deafaulEmptyOpt].extend(option.items) : option.items)
         .filter(@(v) !exceptions.contains(v.text))
-      let val = inst.name
-        ? option.values.findindex(@(v) v == inst.name)
+      let valBySelector = inst.name
+        ? items.findindex(@(v) v.name == inst.name)
         : isEmptyDefault ? 0 : option.value
       rows.append({
         title
         optType
         isEmptyDefault
-        options = ::create_option_combobox(objId, items, val, null, false)
+        options = ::create_option_combobox(objId, items, valBySelector, null, false)
       })
-      stateList[objId] <- {
+      inst.items <- items
+      this.stateList[objId] <- {
         optType
-        val
+        name = inst.name
+        val = option.values.findindex(@(v) v == inst.name)// Actual option value. Need to return only.
       }
     }
     return {
-      actionText = actionText
+      actionText = this.actionText
       rows
     }
   }
 
-  getActionBtn = @() scene.findObject(ACTION_BTN)
+  function updateSelectorView() {
+    this.isForcedSelect = true
+    foreach (idx, inst in this.stateList) {
+      let selectorItems = this.optionsList.findvalue(@(o) o.name == inst.name)?.items
+      let valBySelector = !selectorItems ? 0 : selectorItems.findindex(@(i) i.name == inst.name)
+      this.scene.findObject(idx)?.setValue(valBySelector)
+    }
+    this.isForcedSelect = false
+  }
+
+  getActionBtn = @() this.scene.findObject(ACTION_BTN)
 
   function onUnderPopupClick() {
-    ::showBtn(SELECTOR_OBJ, false, scene)
+    ::showBtn(SELECTOR_OBJ, false, this.scene)
   }
 
   function onAction() {
-    ::showBtn(SELECTOR_OBJ, true, scene)
+    this.tmpStates = ::u.copy(this.stateList)
+    this.updateSelectorView()
+    ::showBtn(SELECTOR_OBJ, true, this.scene)
   }
 
   function onCancel() {
-    ::showBtn(SELECTOR_OBJ, false, scene)
+    ::showBtn(SELECTOR_OBJ, false, this.scene)
   }
 
   function onSelect(obj) {
+    if (this.isForcedSelect)
+      return
+
     let optObj = obj.getChild(obj.getValue())
     let val = ::get_option(obj.optType.tointeger()).values.findindex(@(t) t == optObj?.optName)
-    let stateId = stateList.findindex(@(c) c.val == val)
-    if (obj.isEmptyDefault && stateId && stateId != obj.id) {
-      scene.findObject(stateId).setValue(0)
-      stateList.rawdelete(stateId)
+    // Need to reset duplicates for non-empty items only
+    if (obj.isEmptyDefault && val != null) {
+      let stateId = this.tmpStates.findindex(@(c) c.val == val)
+      if (stateId && stateId != obj.id)
+        this.scene.findObject(stateId).setValue(0)
     }
 
-    stateList[obj.id] <- {
+    this.tmpStates[obj.id] <- {
       optType = obj.optType.tointeger()
+      name = optObj?.optName
       val = val
     }
   }
 
   function onApply() {
+    this.stateList = ::u.copy(this.tmpStates)
+    this.tmpStates = null
     local res = {}
-    for (local i= 0; i < optionsList.len(); i++) {
-      let state = stateList?[$"cb_{i}"]
-      if (!state || !state.val)
+    for (local i= 0; i < this.optionsList.len(); i++) {
+      let state = this.stateList?[$"cb_{i}"]
+      if (!state || state.val == null)
         continue
 
       let optType = state.optType
@@ -95,9 +126,9 @@ local popupOptList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
       res[optType].append(::get_option(optType).values[state.val])
     }
-    ::showBtn(SELECTOR_OBJ, false, scene)
-    if (onActionFn)
-      onActionFn(res)
+    ::showBtn(SELECTOR_OBJ, false, this.scene)
+    if (this.onActionFn)
+      this.onActionFn(res)
   }
 }
 

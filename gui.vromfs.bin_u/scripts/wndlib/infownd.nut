@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
 /*
@@ -49,7 +56,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
 
   static function openChecked(config)
   {
-    if (!::gui_handlers.InfoWnd.canShowAgain(::getTblValue("checkId", config)))
+    if (!::gui_handlers.InfoWnd.canShowAgain(getTblValue("checkId", config)))
       return false
 
     ::handlersManager.loadHandler(::gui_handlers.InfoWnd, config)
@@ -73,75 +80,75 @@ const INFO_WND_SAVE_PATH = "infoWnd"
 
   function initScreen()
   {
-    scene.findObject("header").setValue(header)
-    scene.findObject("message").setValue(message)
-    if (!checkId)
+    this.scene.findObject("header").setValue(this.header)
+    this.scene.findObject("message").setValue(this.message)
+    if (!this.checkId)
       this.showSceneBtn("do_not_show_me_again", false)
-    createButtons()
-    buttonsContext = null //remove permanent link to context
+    this.createButtons()
+    this.buttonsContext = null //remove permanent link to context
 
-    if (!canCloseByEsc)
-      scene.findObject("close_btn").have_shortcut = "BNotEsc"
+    if (!this.canCloseByEsc)
+      this.scene.findObject("close_btn").have_shortcut = "BNotEsc"
   }
 
   function createButtons()
   {
-    buttonsCbs = {}
+    this.buttonsCbs = {}
     local markup = ""
     let infoHandler = this
     local hasBigButton = false
-    if (buttons)
-      foreach(idx, btn in buttons)
+    if (this.buttons)
+      foreach(idx, btn in this.buttons)
       {
         local cb = null
         if ("onClick" in btn)
-          cb = ::Callback(btn.onClick, buttonsContext)
+          cb = Callback(btn.onClick, this.buttonsContext)
 
         let cbName = "onClickBtn" + idx
-        buttonsCbs[cbName] <- (@(cb, infoHandler) function() {
+        this.buttonsCbs[cbName] <- (@(cb, infoHandler) function() {
           if (cb)
             cb()
           if (infoHandler && infoHandler.isValid())
             infoHandler.onButtonClick()
         })(cb, infoHandler)
         btn.funcName <- cbName
-        markup += ::handyman.renderCached("%gui/commonParts/button", btn)
+        markup += ::handyman.renderCached("%gui/commonParts/button.tpl", btn)
 
-        hasBigButton = hasBigButton || ::getTblValue("isToBattle", btn, false)
+        hasBigButton = hasBigButton || getTblValue("isToBattle", btn, false)
       }
-    guiScene.replaceContentFromText(scene.findObject("buttons_place"), markup, markup.len(), buttonsCbs)
+    this.guiScene.replaceContentFromText(this.scene.findObject("buttons_place"), markup, markup.len(), this.buttonsCbs)
 
     //update navBar
     if (!markup.len())
     {
-      scene.findObject("info_wnd_frame")["class"] = "wnd"
+      this.scene.findObject("info_wnd_frame")["class"] = "wnd"
       this.showSceneBtn("nav-help", false)
     }
     else if (hasBigButton)
-      scene.findObject("info_wnd_frame").largeNavBarHeight = "yes"
+      this.scene.findObject("info_wnd_frame").largeNavBarHeight = "yes"
   }
 
   function onButtonClick()
   {
-    isCanceled = false
-    goBack()
+    this.isCanceled = false
+    this.goBack()
   }
 
   function onDoNotShowMeAgain(obj)
   {
     if (obj)
-      setCanShowAgain(checkId, !obj.getValue())
+      this.setCanShowAgain(this.checkId, !obj.getValue())
   }
 
   function afterModalDestroy()
   {
-    if (isCanceled && onCancel)
-      onCancel()
+    if (this.isCanceled && this.onCancel)
+      this.onCancel()
   }
 }
 
 subscriptions.addListenersWithoutEnv({
-  AccountReset = function(p) {
+  AccountReset = function(_p) {
     ::gui_handlers.InfoWnd.clearAllSaves()
   }
 }, ::g_listener_priority.CONFIG_VALIDATION)

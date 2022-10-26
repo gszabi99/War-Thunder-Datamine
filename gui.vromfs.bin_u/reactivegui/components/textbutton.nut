@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let textButton = require("textButtonBase.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 let textButtonTextCtor = require("textButtonTextCtor.nut")
@@ -5,9 +7,9 @@ let textButtonTextCtor = require("textButtonTextCtor.nut")
 let commonButtonStyle = {
   halign = ALIGN_CENTER
   font = fontsState.get("normal")
-  borderWidth = ::dp(1)
-  size = [SIZE_TO_CONTENT, ::dp(2) + ::fpx(36)]
-  minWidth = ::scrn_tgt(0.16)
+  borderWidth = dp(1)
+  size = [SIZE_TO_CONTENT, dp(2) + fpx(36)]
+  minWidth = scrn_tgt(0.16)
   borderRadius = 0
   textCtor = textButtonTextCtor
   textMargin = 0

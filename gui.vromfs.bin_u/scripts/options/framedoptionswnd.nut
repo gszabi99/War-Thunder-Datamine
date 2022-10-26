@@ -1,5 +1,12 @@
-::gui_handlers.FramedOptionsWnd <- class extends ::gui_handlers.GenericOptions
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.FramedOptionsWnd <- class extends ::gui_handlers.GenericOptions {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/framedOptionsWnd.blk"
   sceneNavBlkName = null
@@ -11,43 +18,43 @@
 
   function initScreen()
   {
-    let tableObj = scene.findObject("optionslist")
-    tableObj.width = menuWidth
-    if (options)
+    let tableObj = this.scene.findObject("optionslist")
+    tableObj.width = this.menuWidth
+    if (this.options)
     {
-      tableObj.height = options.len() + "@baseTrHeight"
-      if (options.len() <= 1)
+      tableObj.height = this.options.len() + "@baseTrHeight"
+      if (this.options.len() <= 1)
         tableObj.invisibleSelection = "yes"
     }
 
     base.initScreen()
 
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
-    initOpenAnimParams()
+    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
+    this.initOpenAnimParams()
   }
 
   function goBack()
   {
-    applyOptions(true)
+    this.applyOptions(true)
   }
 
   function applyReturn()
   {
-    if (!applyFunc)
-      restoreMainOptions()
+    if (!this.applyFunc)
+      this.restoreMainOptions()
     base.applyReturn()
   }
 
   function initOpenAnimParams()
   {
-    let animObj = scene.findObject("anim_block")
+    let animObj = this.scene.findObject("anim_block")
     if (!animObj)
       return
     let size = animObj.getSize()
     if (!size[0] || !size[1])
       return
 
-    let isVertical = align == ALIGN.TOP || align == ALIGN.BOTTOM
+    let isVertical = this.align == ALIGN.TOP || this.align == ALIGN.BOTTOM
     let scaleId = isVertical ? "height" : "width"
     let scaleAxis = isVertical ? 1 : 0
 

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_event_display_type <- {
   types = []
@@ -8,7 +14,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     name = ""
     showInEventsWindow = false
     showInGamercardDrawer = false
-    canBeSelectedInGcDrawer = @() showInGamercardDrawer && !showInEventsWindow
+    canBeSelectedInGcDrawer = @() this.showInGamercardDrawer && !this.showInEventsWindow
   }
 }
 
@@ -52,7 +58,7 @@ enums.addTypesByGlobalName("g_event_display_type", {
   }
 })
 
-g_event_display_type.getTypeByName <- function getTypeByName(name)
+::g_event_display_type.getTypeByName <- function getTypeByName(name)
 {
   return enums.getCachedType("name", name, ::g_event_display_type.cache.byName,
     ::g_event_display_type, ::g_event_display_type.REGULAR)

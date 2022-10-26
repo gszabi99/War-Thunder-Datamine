@@ -34,7 +34,7 @@ table {
       enable:t='no'
     <</isDisabled>>
 
-    include "%gui/onlineShopRow"
+    include "%gui/onlineShopRow.tpl"
   }
   <</rows>>
 }

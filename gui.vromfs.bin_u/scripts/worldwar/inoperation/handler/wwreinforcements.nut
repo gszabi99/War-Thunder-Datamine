@@ -1,9 +1,16 @@
-::gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
-  sceneTplName = "%gui/worldWar/worldWarMapReinforcementsList"
+  sceneTplName = "%gui/worldWar/worldWarMapReinforcementsList.tpl"
   sceneBlkName = null
-  reinforcementBlockTplName = "%gui/worldWar/worldWarMapArmyItem"
+  reinforcementBlockTplName = "%gui/worldWar/worldWarMapArmyItem.tpl"
 
   armiesBlocks = null
   readyArmiesNames = null
@@ -18,45 +25,45 @@
   {
     return {
       consoleButtonsIconName = ::show_console_buttons ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
-      controlHelpText = ::show_console_buttons ? null : ::loc("key/RMB")
-      controlHelpDesc = ::loc("worldwar/state/reinforcement_control")
+      controlHelpText = ::show_console_buttons ? null : loc("key/RMB")
+      controlHelpDesc = loc("worldwar/state/reinforcement_control")
     }
   }
 
   function getSceneTplContainerObj()
   {
-    return scene
+    return this.scene
   }
 
   function initScreen()
   {
-    readyArmiesNames = []
-    armiesBlocks = []
-    updateScene()
+    this.readyArmiesNames = []
+    this.armiesBlocks = []
+    this.updateScene()
   }
 
   function isValid()
   {
-    return ::checkObj(scene) && ::checkObj(scene.findObject("reinforcements_list"))
+    return checkObj(this.scene) && checkObj(this.scene.findObject("reinforcements_list"))
   }
 
   function updateScene()
   {
-    fillReinforcementsList()
-    fillTimer()
+    this.fillReinforcementsList()
+    this.fillTimer()
   }
 
-  function onEventWWLoadOperation(params)
+  function onEventWWLoadOperation(_params)
   {
-    updateScene()
-    readyArmiesNames.clear()
+    this.updateScene()
+    this.readyArmiesNames.clear()
   }
 
   function updateReinforcementsList()
   {
     let playerSide = ::ww_get_player_side()
 
-    armiesBlocks.clear()
+    this.armiesBlocks.clear()
 
     let existedArmies = []
     let newArmies = []
@@ -69,13 +76,13 @@
     {
       let reinforcement = reinforcementsInfo.reinforcements.getBlock(i)
       let wwReinforcementArmy = ::WwReinforcementArmy(reinforcement)
-      if (!::has_feature("worldWarMaster") &&
+      if (!hasFeature("worldWarMaster") &&
           (!wwReinforcementArmy.isMySide(playerSide) ||
            !wwReinforcementArmy.hasManageAccess())
           )
         continue
 
-      if (::isInArray(wwReinforcementArmy.getView().getId(), readyArmiesNames))
+      if (isInArray(wwReinforcementArmy.getView().getId(), this.readyArmiesNames))
         existedArmies.append(wwReinforcementArmy)
       else
         newArmies.append(wwReinforcementArmy)
@@ -84,8 +91,8 @@
     existedArmies.sort(::WwReinforcementArmy.sortReadyReinforcements)
     newArmies.sort(::WwReinforcementArmy.sortNewReinforcements)
 
-    armiesBlocks.extend(existedArmies)
-    armiesBlocks.extend(newArmies)
+    this.armiesBlocks.extend(existedArmies)
+    this.armiesBlocks.extend(newArmies)
   }
 
   function showDeployHint(isVisible = false)
@@ -95,34 +102,34 @@
 
   function onChangeArmyValue(obj)
   {
-    updateSelectedArmy(false, false)
-    if (currentReinforcementName != obj.armyName)
-      guiScene.playSound("ww_reinforcement_select")
+    this.updateSelectedArmy(false, false)
+    if (this.currentReinforcementName != obj.armyName)
+      this.guiScene.playSound("ww_reinforcement_select")
 
-    currentReinforcementName = obj.armyName
-    showDeployHint(obj?.canDeploy == "yes")
-    ::ww_event("SelectedReinforcement", { name = currentReinforcementName })
+    this.currentReinforcementName = obj.armyName
+    this.showDeployHint(obj?.canDeploy == "yes")
+    ::ww_event("SelectedReinforcement", { name = this.currentReinforcementName })
   }
 
   function onEventWWMapRequestReinforcement(params)
   {
-    if (!currentReinforcementName)
+    if (!this.currentReinforcementName)
       return
 
     let taskId = ::g_world_war.sendReinforcementRequest(
-      params.cellIdx, currentReinforcementName)
-    ::g_tasker.addTask(taskId, null, ::Callback(afterSendReinforcement, this),
-      ::Callback(onSendReinforcementError, this))
+      params.cellIdx, this.currentReinforcementName)
+    ::g_tasker.addTask(taskId, null, Callback(this.afterSendReinforcement, this),
+      Callback(this.onSendReinforcementError, this))
   }
 
   function afterSendReinforcement()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let mapObj = guiScene["worldwar_map"]
-    ::ww_gui_bhv.worldWarMapControls.selectArmy.call(::ww_gui_bhv.worldWarMapControls, mapObj, currentReinforcementName)
-    updateSelectedArmy(false, true)
+    let mapObj = this.guiScene["worldwar_map"]
+    ::ww_gui_bhv.worldWarMapControls.selectArmy.call(::ww_gui_bhv.worldWarMapControls, mapObj, this.currentReinforcementName)
+    this.updateSelectedArmy(false, true)
 
     let selectedArmies = ::ww_get_selected_armies_names()
     if (!selectedArmies.len())
@@ -133,62 +140,62 @@
       ::g_world_war.playArmyActionSound("deploySound", wwArmy)
   }
 
-  function onSendReinforcementError(err)
+  function onSendReinforcementError(_err)
   {
     ::g_world_war.popupCharErrorMsg("reinforcement_deploy_error")
-    ::ww_event("ShowRearZones", {name = currentReinforcementName})
+    ::ww_event("ShowRearZones", {name = this.currentReinforcementName})
   }
 
   function fillReinforcementsList()
   {
-    updateReinforcementsList()
+    this.updateReinforcementsList()
 
-    this.showSceneBtn("no_reinforcements_text", armiesBlocks.len() == 0)
+    this.showSceneBtn("no_reinforcements_text", this.armiesBlocks.len() == 0)
 
     let readyArmies = []
     let otherArmies = []
-    foreach (army in armiesBlocks)
+    foreach (army in this.armiesBlocks)
       if (army.isReady())
         readyArmies.append(army.getView())
       else
         otherArmies.append(army.getView())
 
-    fillArmiesList(readyArmies, "ready_reinforcements_list", true)
-    fillArmiesList(otherArmies, "reinforcements_list", false)
+    this.fillArmiesList(readyArmies, "ready_reinforcements_list", true)
+    this.fillArmiesList(otherArmies, "reinforcements_list", false)
     this.showSceneBtn("no_ready_reinforcements_text", readyArmies.len() == 0)
     this.showSceneBtn("ready_label", readyArmies.len() > 0)
-    this.showSceneBtn("ready_reinforcements_block", armiesBlocks.len() > 0)
+    this.showSceneBtn("ready_reinforcements_block", this.armiesBlocks.len() > 0)
     this.showSceneBtn("coming_reinforcements_block", otherArmies.len() > 0)
 
-    updateSelectedArmy(true, false)
+    this.updateSelectedArmy(true, false)
   }
 
   function fillReinforcementsSpeed(newSpeedup)
   {
-    if (reinforcementSpeedup == newSpeedup)
+    if (this.reinforcementSpeedup == newSpeedup)
       return
 
-    let textObj = scene.findObject("arrival_speed_text")
-    if (!::check_obj(textObj))
+    let textObj = this.scene.findObject("arrival_speed_text")
+    if (!checkObj(textObj))
       return
 
     local speedText = ""
     if (newSpeedup > 0)
     {
-      speedText = ::colorize("goodTextColor", ::loc("keysPlus") + newSpeedup)
-      speedText = ::loc("worldwar/state/reinforcement_arrival_speed", {speedup = speedText})
+      speedText = colorize("goodTextColor", loc("keysPlus") + newSpeedup)
+      speedText = loc("worldwar/state/reinforcement_arrival_speed", {speedup = speedText})
     }
     else
-      speedText = ::loc("worldwar/state/reinforcement_arrival_basic_speed")
+      speedText = loc("worldwar/state/reinforcement_arrival_basic_speed")
 
     textObj.setValue(speedText)
-    reinforcementSpeedup = newSpeedup
+    this.reinforcementSpeedup = newSpeedup
   }
 
   function fillArmiesList(viewsArray, id, isReady)
   {
-    let placeObj = scene.findObject(id)
-    if (!::checkObj(placeObj))
+    let placeObj = this.scene.findObject(id)
+    if (!checkObj(placeObj))
       return
 
     let view = {
@@ -200,101 +207,101 @@
       isArmyReady = isReady
     }
 
-    let data = ::handyman.renderCached(reinforcementBlockTplName, view)
-    guiScene.replaceContentFromText(placeObj, data, data.len(), this)
+    let data = ::handyman.renderCached(this.reinforcementBlockTplName, view)
+    this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }
 
-  function onEventWWMapClearSelection(params)
+  function onEventWWMapClearSelection(_params)
   {
-    updateSelectedArmy(false, false)
+    this.updateSelectedArmy(false, false)
   }
 
-  function onEventWWMapClearSelectionBySelectedObject(params)
+  function onEventWWMapClearSelectionBySelectedObject(_params)
   {
-    updateSelectedArmy(false, false)
+    this.updateSelectedArmy(false, false)
   }
 
   function onEventWWReinforcementSpeedupUpdated(params)
   {
-    fillReinforcementsSpeed(params?.speedup ?? 0)
+    this.fillReinforcementsSpeed(params?.speedup ?? 0)
   }
 
   function updateSelectedArmy(select, destroy)
   {
-    if (::u.isEmpty(currentReinforcementName))
+    if (::u.isEmpty(this.currentReinforcementName))
       return
 
-    local selectedArmy = ::u.search(armiesBlocks, (@(currentReinforcementName) function(reinf) {
+    local selectedArmy = ::u.search(this.armiesBlocks, (@(currentReinforcementName) function(reinf) {
         return reinf.name == currentReinforcementName
-      })(currentReinforcementName))
+      })(this.currentReinforcementName))
 
     if (!selectedArmy)
     {
       //search in existed, because army can already be an army, not a reinforcement
-      let army = ::g_world_war.getArmyByName(currentReinforcementName)
+      let army = ::g_world_war.getArmyByName(this.currentReinforcementName)
       if (!army.isValid())
         return
 
       selectedArmy = army
     }
 
-    let obj = scene.findObject(selectedArmy.getView().getId())
-    if (::checkObj(obj))
+    let obj = this.scene.findObject(selectedArmy.getView().getId())
+    if (checkObj(obj))
     {
       obj.setValue(select)
       if (destroy)
       {
         let placeObj = obj.getParent()
-        guiScene.destroyElement(obj)
+        this.guiScene.destroyElement(obj)
         this.showSceneBtn("no_reinforcements_text", placeObj.childrenCount() == 0)
       }
     }
 
-    showDeployHint(select)
+    this.showDeployHint(select)
     if (!select)
-      currentReinforcementName = null
+      this.currentReinforcementName = null
   }
 
   function fillTimer()
   {
-    let placeObj = scene.findObject("reinforcements_list")
-    if (!::check_obj(placeObj))
+    let placeObj = this.scene.findObject("reinforcements_list")
+    if (!checkObj(placeObj))
       return
 
-    timerHandler = ::Timer(
+    this.timerHandler = ::Timer(
       placeObj,
-      updateDelay,
+      this.updateDelay,
       (@(placeObj) function() {
         local haveNewReinforcementsReady = false
-        foreach (reinforcementHandler in armiesBlocks)
+        foreach (reinforcementHandler in this.armiesBlocks)
         {
           let id = reinforcementHandler.getView().getId()
-          if (reinforcementHandler.isReady() && !::isInArray(id, readyArmiesNames))
+          if (reinforcementHandler.isReady() && !isInArray(id, this.readyArmiesNames))
           {
-            readyArmiesNames.append(id)
+            this.readyArmiesNames.append(id)
             haveNewReinforcementsReady = true
           }
 
           let reinfObj = placeObj.findObject(id)
-          if (!::check_obj(reinfObj))
+          if (!checkObj(reinfObj))
             continue
 
           let timeTextObj = reinfObj.findObject("arrival_time_text")
           timeTextObj.setValue(reinforcementHandler.getArrivalStatusText())
         }
         if (haveNewReinforcementsReady)
-          updateScene()
+          this.updateScene()
       })(placeObj),
       this, true)
   }
 
   function selectFirstArmyBySide(side)
   {
-    let reinforcementsObj = scene.findObject("ready_reinforcements_list")
+    let reinforcementsObj = this.scene.findObject("ready_reinforcements_list")
     if (reinforcementsObj.childrenCount())
       reinforcementsObj.getChild(0).setValue(true)
 
-    foreach (army in armiesBlocks)
+    foreach (army in this.armiesBlocks)
       if (army.isReady() && ::ww_side_val_to_name(army.getArmySide()) == side)
       {
         let armyView = army.getView()
@@ -302,7 +309,7 @@
           continue
 
         let reinforcementObj = reinforcementsObj.findObject(armyView.getId())
-        if (!::check_obj(reinforcementObj))
+        if (!checkObj(reinforcementObj))
           continue
 
         reinforcementObj.setValue(true)

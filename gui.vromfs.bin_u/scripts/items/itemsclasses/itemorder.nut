@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 
@@ -8,7 +14,7 @@ let time = require("%scripts/time.nut")
   static defaultLocId = "order"
   static defaultIconStyle = "default_order_debug"
   static typeIcon = "#ui/gameuiskin#item_type_orders.svg"
-  helperCost = Cost()
+  helperCost = ::Cost()
   static colorScheme = {
     typeDescriptionColor = "commonTextColor"
     parameterValueColor = "activeTextColor"
@@ -45,25 +51,25 @@ let time = require("%scripts/time.nut")
   constructor(blk, invBlk = null, slotData = null)
   {
     base.constructor(blk, invBlk, slotData)
-    isActivateBeforeExpired = blk?.isActivateBeforeExpired ?? true
-    initMissionOrderParams(blk?.missionOrderParams)
+    this.isActivateBeforeExpired = blk?.isActivateBeforeExpired ?? true
+    this.initMissionOrderParams(blk?.missionOrderParams)
   }
 
-  /* override */ function getName(colored = true)
+  /* override */ function getName(_colored = true)
   {
-    local name = getStatusOrderName()
+    local name = this.getStatusOrderName()
     if (name.len() == 0)
-      name = ::loc("item/" + defaultLocId)
+      name = loc("item/" + this.defaultLocId)
     else
-      name = format("%s \"%s\"", ::loc("item/order"), name)
-    if (locId != null)
-      name = ::loc(locId, name)
+      name = format("%s \"%s\"", loc("item/order"), name)
+    if (this.locId != null)
+      name = loc(this.locId, name)
     return name
   }
 
   function getStatusOrderName()
   {
-    return ::loc("item/" + id, "")
+    return loc("item/" + this.id, "")
   }
 
   function getMainActionData(isShort = false, params = {})
@@ -71,16 +77,16 @@ let time = require("%scripts/time.nut")
     let res = base.getMainActionData(isShort, params)
     if (res)
       return res
-    if (!isInventoryItem || !amount)
+    if (!this.isInventoryItem || !this.amount)
       return null
 
     let currentEvent = ::SessionLobby.getRoomEvent()
     let diffCode = ::events.getEventDiffCode(currentEvent)
     let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
-    let checkDifficulty = !::isInArray(diff, disabledDifficulties)
-    if (!isActive() && ::g_orders.orderCanBeActivated() && checkDifficulty)
+    let checkDifficulty = !isInArray(diff, this.disabledDifficulties)
+    if (!this.isActive() && ::g_orders.orderCanBeActivated() && checkDifficulty)
       return {
-        btnName = ::loc("item/activate")
+        btnName = loc("item/activate")
       }
 
     return null
@@ -91,16 +97,16 @@ let time = require("%scripts/time.nut")
   function doMainAction(cb, handler, params = null)
   {
     let baseResult = base.doMainAction(cb, handler, params)
-    if (baseResult || !isInventoryItem)
+    if (baseResult || !this.isInventoryItem)
       return true
-    if (isActive() || !::g_orders.orderCanBeActivated())
+    if (this.isActive() || !::g_orders.orderCanBeActivated())
       return false
     ::g_orders.activateOrder(this, cb)
   }
 
   function getAmount()
   {
-    return amount - ::g_orders.getTimesUsedOrderItem(this)
+    return this.amount - ::g_orders.getTimesUsedOrderItem(this)
   }
 
   function isActive(...)
@@ -108,43 +114,43 @@ let time = require("%scripts/time.nut")
     return ::g_orders.isOrderItemActive(this)
   }
 
-  function getIcon(addItemName = true)
+  function getIcon(_addItemName = true)
   {
-    return ::LayersIcon.getIconData(iconStyle, defaultIcon, 1.0, defaultIconStyle)
+    return ::LayersIcon.getIconData(this.iconStyle, this.defaultIcon, 1.0, this.defaultIconStyle)
   }
 
   function initMissionOrderParams(blk)
   {
     // Common parameters.
-    onlyIssuerTeam = ::getTblValue("onlyIssuerTeam", blk, false)
-    timeTotal = ::getTblValue("timeTotal", blk, 0)
-    cooldown = ::getTblValue("cooldown", blk, 0)
-    cooldownOtherTeam = ::getTblValue("cooldownOtherTeam", blk, 0)
-    delayFromStart = ::getTblValue("delayFromStart", blk, 0)
-    awardOnCancel = ::getTblValue("awardOnCancel", blk, false)
-    awardWpByDifficulty = parseP3byDifficulty(blk?.awardWp)
-    awardXpByDifficulty = parseP3byDifficulty(blk?.awardXp)
-    awardGoldByDifficulty = parseP3byDifficulty(blk?.awardGold)
-    disabledDifficulties = []
+    this.onlyIssuerTeam = getTblValue("onlyIssuerTeam", blk, false)
+    this.timeTotal = getTblValue("timeTotal", blk, 0)
+    this.cooldown = getTblValue("cooldown", blk, 0)
+    this.cooldownOtherTeam = getTblValue("cooldownOtherTeam", blk, 0)
+    this.delayFromStart = getTblValue("delayFromStart", blk, 0)
+    this.awardOnCancel = getTblValue("awardOnCancel", blk, false)
+    this.awardWpByDifficulty = this.parseP3byDifficulty(blk?.awardWp)
+    this.awardXpByDifficulty = this.parseP3byDifficulty(blk?.awardXp)
+    this.awardGoldByDifficulty = this.parseP3byDifficulty(blk?.awardGold)
+    this.disabledDifficulties = []
     if (blk != null)
     {
       foreach (diffName in blk % "disabledDifficulty")
       {
         let difficulty = ::g_difficulty.getDifficultyByName(diffName)
         if (difficulty != ::g_difficulty.UNKNOWN)
-          disabledDifficulties.append(difficulty)
+          this.disabledDifficulties.append(difficulty)
       }
     }
-    awardMode = ::g_order_award_mode.getAwardModeByOrderParams(blk)
+    this.awardMode = ::g_order_award_mode.getAwardModeByOrderParams(blk)
 
     // Order type specific stuff.
-    initMissionOrderMode(blk?.mode)
+    this.initMissionOrderMode(blk?.mode)
   }
 
   function initMissionOrderMode(blk)
   {
-    orderType = ::g_order_type.getOrderTypeByName(blk?.type)
-    typeParams = ::buildTableFromBlk(blk)
+    this.orderType = ::g_order_type.getOrderTypeByName(blk?.type)
+    this.typeParams = ::buildTableFromBlk(blk)
   }
 
   /**
@@ -153,18 +159,18 @@ let time = require("%scripts/time.nut")
    */
   function checkMission(missionName)
   {
-    let missionRestriction = ::getTblValue("missionRestriction", typeParams, null)
+    let missionRestriction = getTblValue("missionRestriction", this.typeParams, null)
     if (missionRestriction == null)
       return true // No restrictions at all.
     if (::u.isTable(missionRestriction))
-      return checkMissionRestriction(missionRestriction, missionName)
+      return this.checkMissionRestriction(missionRestriction, missionName)
     if (!::u.isArray(missionRestriction))
     {
-      ::dagor.assertf(format("Invalid mission restriction config in item: %s", id))
+      assert(format("Invalid mission restriction config in item: %s", this.id))
       return true
     }
     foreach (restrictionElement in missionRestriction)
-      if (!checkMissionRestriction(restrictionElement, missionName))
+      if (!this.checkMissionRestriction(restrictionElement, missionName))
         return false
     return true
   }
@@ -174,7 +180,7 @@ let time = require("%scripts/time.nut")
     switch (restrictionElement?.type)
     {
       case "missionPostfix":
-        let missionPostfix = ::getTblValue("postfix", restrictionElement, null)
+        let missionPostfix = getTblValue("postfix", restrictionElement, null)
         if (missionPostfix == null)
           return true
         let stringIndex = missionName.len() - missionPostfix.len()
@@ -192,9 +198,9 @@ let time = require("%scripts/time.nut")
     if (!::g_orders.checkCurrentMission(this))
     {
       let warningText = ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
-      textParts.append($"{::colorize("redMenuButtonColor", warningText)}\n")
+      textParts.append($"{colorize("redMenuButtonColor", warningText)}\n")
     }
-    textParts.append(getLongDescription())
+    textParts.append(this.getLongDescription())
     return "\n".join(textParts)
   }
 
@@ -203,60 +209,60 @@ let time = require("%scripts/time.nut")
   {
     let textParts = []
 
-    let orderTypeDescription = orderType.getTypeDescription(colorScheme)
+    let orderTypeDescription = this.orderType.getTypeDescription(this.colorScheme)
     if (orderTypeDescription.len() > 0)
       textParts.append(orderTypeDescription)
 
-    let typeParamsDescription = orderType.getParametersDescription(typeParams, colorScheme)
+    let typeParamsDescription = this.orderType.getParametersDescription(this.typeParams, this.colorScheme)
     if (typeParamsDescription.len() > 0)
       textParts.append(typeParamsDescription)
 
-    if (timeTotal > 0)
-      textParts.append("".concat(::loc("items/order/timeTotal"), ::loc("ui/colon"),
-        ::colorize("activeTextColor", time.secondsToString(timeTotal, true, true))))
+    if (this.timeTotal > 0)
+      textParts.append("".concat(loc("items/order/timeTotal"), loc("ui/colon"),
+        colorize("activeTextColor", time.secondsToString(this.timeTotal, true, true))))
 
-    let expireText = getCurExpireTimeText()
+    let expireText = this.getCurExpireTimeText()
     if (expireText != "")
       textParts.append(expireText)
 
     if (textParts.len())
       textParts.append("")
 
-    let awardModeLocParams = { awardUnit = orderType.getAwardUnitText() }
-    textParts.append(::loc($"items/order/awardMode/{awardMode.name}/header", awardModeLocParams))
+    let awardModeLocParams = { awardUnit = this.orderType.getAwardUnitText() }
+    textParts.append(loc($"items/order/awardMode/{this.awardMode.name}/header", awardModeLocParams))
     foreach (difficulty in ::g_difficulty.types)
     {
-      if (::isInArray(difficulty, disabledDifficulties)
+      if (isInArray(difficulty, this.disabledDifficulties)
         || difficulty == ::g_difficulty.UNKNOWN)
         continue
-      let awardText = awardMode.getAwardTextByDifficulty(difficulty, this)
+      let awardText = this.awardMode.getAwardTextByDifficulty(difficulty, this)
       if (awardText.len() > 0)
-        textParts.append("".concat(::loc($"options/{difficulty.name}"), ::loc("ui/colon"), awardText))
+        textParts.append("".concat(loc($"options/{difficulty.name}"), loc("ui/colon"), awardText))
     }
-    let awardModeDescriptionFooter = ::loc("items/order/awardMode/"
-      + awardMode.name + "/footer", "", awardModeLocParams)
+    let awardModeDescriptionFooter = loc("items/order/awardMode/"
+      + this.awardMode.name + "/footer", "", awardModeLocParams)
     if (awardModeDescriptionFooter.len() > 0)
       textParts.append(awardModeDescriptionFooter)
 
     textParts.append("")
 
-    if (delayFromStart > 0)
-      textParts.append("".concat(::loc("items/order/delayFromStart"), ::loc("ui/colon"),
-        ::colorize("activeTextColor", time.secondsToString(delayFromStart, true, true))))
-    textParts.append(::colorize("grayOptionColor",
-      ::loc($"items/order/onlyIssuerTeam/{onlyIssuerTeam.tostring()}")))
-    textParts.append(::colorize("grayOptionColor",
-      ::loc($"items/order/awardOnCancel/{awardOnCancel.tostring()}")))
+    if (this.delayFromStart > 0)
+      textParts.append("".concat(loc("items/order/delayFromStart"), loc("ui/colon"),
+        colorize("activeTextColor", time.secondsToString(this.delayFromStart, true, true))))
+    textParts.append(colorize("grayOptionColor",
+      loc($"items/order/onlyIssuerTeam/{this.onlyIssuerTeam.tostring()}")))
+    textParts.append(colorize("grayOptionColor",
+      loc($"items/order/awardOnCancel/{this.awardOnCancel.tostring()}")))
 
     // e.g "Arcade Battles, Simulator Battles, Events"
     // Part "Events" is hardcoded.
-    let disabledItems = u.map(disabledDifficulties, function (diff) {
-      return ::loc("options/" + diff.name)
+    let disabledItems = ::u.map(this.disabledDifficulties, function (diff) {
+      return loc("options/" + diff.name)
     })
-    disabledItems.append(::loc("mainmenu/events"))
-    textParts.append(::colorize("grayOptionColor",
-      "".concat(::loc("items/order/disabledDifficulties"),
-        ::loc("ui/colon"),  ::loc("ui/comma").join(disabledItems))))
+    disabledItems.append(loc("mainmenu/events"))
+    textParts.append(colorize("grayOptionColor",
+      "".concat(loc("items/order/disabledDifficulties"),
+        loc("ui/colon"),  loc("ui/comma").join(disabledItems))))
 
     return "\n".join(textParts)
   }
@@ -268,14 +274,14 @@ let time = require("%scripts/time.nut")
   function parseP3byDifficulty(point)
   {
     return {
-      [::g_difficulty.ARCADE] = ::getTblValue("x", point, 0),
-      [::g_difficulty.REALISTIC] = ::getTblValue("y", point, 0),
-      [::g_difficulty.SIMULATOR] = ::getTblValue("z", point, 0)
+      [::g_difficulty.ARCADE] = getTblValue("x", point, 0),
+      [::g_difficulty.REALISTIC] = getTblValue("y", point, 0),
+      [::g_difficulty.SIMULATOR] = getTblValue("z", point, 0)
     }
   }
 
   function getParameterDescription(paramName, paramValue)
   {
-    return ::loc("items/order/" + paramName) + ": " + ::colorize("activeTextColor", paramValue)
+    return loc("items/order/" + paramName) + ": " + colorize("activeTextColor", paramValue)
   }
 }

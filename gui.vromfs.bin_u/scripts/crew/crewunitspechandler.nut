@@ -1,8 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
   crew = null
@@ -13,34 +19,34 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
 
   function setHandlerVisible(value)
   {
-    isHandlerVisible = value
-    scene.show(value)
-    scene.enable(value)
+    this.isHandlerVisible = value
+    this.scene.show(value)
+    this.scene.enable(value)
   }
 
   function setHandlerData(newCrew, newCrewLevel, newUnits, newCrewUnitType)
   {
-    crew = newCrew
-    crewLevel = newCrewLevel
-    units = newUnits
-    curCrewUnitType = newCrewUnitType
+    this.crew = newCrew
+    this.crewLevel = newCrewLevel
+    this.units = newUnits
+    this.curCrewUnitType = newCrewUnitType
 
-    loadSceneTpl()
-    updateDiscounts()
+    this.loadSceneTpl()
+    this.updateDiscounts()
 
-    let totalRows = scene.childrenCount()
-    if (totalRows > 0 && totalRows <= scene.getValue())
-      scene.setValue(0)
+    let totalRows = this.scene.childrenCount()
+    if (totalRows > 0 && totalRows <= this.scene.getValue())
+      this.scene.setValue(0)
   }
 
   function loadSceneTpl()
   {
     let rows = []
-    foreach(i, unit in units)
-      rows.append(getSpecRowConfig(i))
+    foreach(i, _unit in this.units)
+      rows.append(this.getSpecRowConfig(i))
 
-    local data = ::handyman.renderCached("%gui/crew/crewAirRow", { rows = rows })
-    guiScene.replaceContentFromText(scene, data, data.len(), this)
+    local data = ::handyman.renderCached("%gui/crew/crewAirRow.tpl", { rows = rows })
+    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 
   function getRowName(rowIndex)
@@ -53,11 +59,11 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
     // Here 'scene' is table object with id "specs_table".
     if (!checkObj(obj) || obj?.id != "buttonRowApply")
     {
-      if (!::checkObj(scene))
+      if (!checkObj(this.scene))
         return
-      let idx = scene.getValue()
-      let rowObj = scene.getChild(idx)
-      if (!::checkObj(rowObj))
+      let idx = this.scene.getValue()
+      let rowObj = this.scene.getChild(idx)
+      if (!checkObj(rowObj))
         return
       obj = rowObj.findObject("buttonRowApply")
     }
@@ -65,79 +71,79 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
     if (!checkObj(obj) || !obj.isEnabled())
       return
 
-    let rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
-    let rowUnit = ::getTblValue(rowIndex, units)
+    let rowIndex = ::g_crew.getButtonRow(obj, this.scene, this.scene)
+    let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit == null)
       return
 
-    if (isRecrutedCurCrew()
+    if (this.isRecrutedCurCrew()
       && rowUnit.isUsable()
-      && ::g_crew_spec_type.getTypeByCrewAndUnit(crew, rowUnit) == ::g_crew_spec_type.UNKNOWN) {
-        trainCrewUnitWithoutSwitchCurrUnit(crew, rowUnit)
+      && ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, rowUnit) == ::g_crew_spec_type.UNKNOWN) {
+        trainCrewUnitWithoutSwitchCurrUnit(this.crew, rowUnit)
         return
     }
 
-    ::g_crew.upgradeUnitSpec(crew, rowUnit)
+    ::g_crew.upgradeUnitSpec(this.crew, rowUnit)
   }
 
   function onButtonRowApply(obj)
   {
-    applyRowButton(obj)
+    this.applyRowButton(obj)
   }
 
   function increaseSpec(nextSpecType, obj = null)
   {
-    let rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
-    let rowUnit = ::getTblValue(rowIndex, units)
+    let rowIndex = ::g_crew.getButtonRow(obj, this.scene, this.scene)
+    let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit)
-      ::g_crew.upgradeUnitSpec(crew, rowUnit, null, nextSpecType)
+      ::g_crew.upgradeUnitSpec(this.crew, rowUnit, null, nextSpecType)
   }
 
   function onSpecIncrease1(obj)
   {
-    increaseSpec(::g_crew_spec_type.EXPERT, obj)
+    this.increaseSpec(::g_crew_spec_type.EXPERT, obj)
   }
 
   function onSpecIncrease2(obj)
   {
-    increaseSpec(::g_crew_spec_type.ACE, obj)
+    this.increaseSpec(::g_crew_spec_type.ACE, obj)
   }
 
   function getSpecRowConfig(idx)
   {
-    let unit = units?[idx]
+    let unit = this.units?[idx]
     if (!unit)
       return null
 
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
+    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, unit)
     let hasNextType = specType.hasNextType()
     let nextType = specType.getNextType()
     let reqLevel = hasNextType ? nextType.getReqCrewLevel(unit) : 0
-    let isRecrutedCrew = isRecrutedCurCrew()
+    let isRecrutedCrew = this.isRecrutedCurCrew()
     let needToTrainUnit = specType == ::g_crew_spec_type.UNKNOWN
     let isUsableUnit = unit.isUsable()
     let canCrewTrainUnit = isRecrutedCrew && needToTrainUnit
       && isUsableUnit
-    let enableForBuy = !needToTrainUnit && reqLevel <= crewLevel
-    let isProgressBarVisible = specType.needShowExpUpgrade(crew, unit)
+    let enableForBuy = !needToTrainUnit && reqLevel <= this.crewLevel
+    let isProgressBarVisible = specType.needShowExpUpgrade(this.crew, unit)
     local progressBarValue = 0
     if (isProgressBarVisible)
-      progressBarValue = 1000 * specType.getExpLeftByCrewAndUnit(crew, unit)
+      progressBarValue = 1000 * specType.getExpLeftByCrewAndUnit(this.crew, unit)
         / specType.getTotalExpByUnit(unit)
 
     return {
-      id = getRowName(idx)
+      id = this.getRowName(idx)
       even = idx % 2 == 0
       holderId = idx
       unitName = ::getUnitName(unit.name)
       hasProgressBar = true
-      rowTooltipId   = ::g_tooltip.getIdCrewSpecialization(crew.id, unit.name, -1)
-      buySpecTooltipId1 = ::g_crew_spec_type.EXPERT.getBtnBuyTooltipId(crew, unit)
-      buySpecTooltipId2 = ::g_crew_spec_type.ACE.getBtnBuyTooltipId(crew, unit)
-      buySpecTooltipId = ::g_tooltip.getIdBuyCrewSpec(crew.id, unit.name, -1)
+      rowTooltipId   = ::g_tooltip.getIdCrewSpecialization(this.crew.id, unit.name, -1)
+      buySpecTooltipId1 = ::g_crew_spec_type.EXPERT.getBtnBuyTooltipId(this.crew, unit)
+      buySpecTooltipId2 = ::g_crew_spec_type.ACE.getBtnBuyTooltipId(this.crew, unit)
+      buySpecTooltipId = ::g_tooltip.getIdBuyCrewSpec(this.crew.id, unit.name, -1)
       curValue = specType.getName()
-      costText = hasNextType ? specType.getUpgradeCostByCrewAndByUnit(crew, unit).tostring()
-        : canCrewTrainUnit ? ::g_crew.getCrewTrainCost(crew, unit).getTextAccordingToBalance()
+      costText = hasNextType ? specType.getUpgradeCostByCrewAndByUnit(this.crew, unit).tostring()
+        : canCrewTrainUnit ? ::g_crew.getCrewTrainCost(this.crew, unit).getTextAccordingToBalance()
         : ""
       enableForBuy = enableForBuy || canCrewTrainUnit
       buttonRowDisplay = (hasNextType || canCrewTrainUnit
@@ -145,16 +151,16 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
       buttonRowText = hasNextType
         ? enableForBuy
           ? specType.getButtonLabel()
-          : ::loc("crew/qualifyRequirement", { reqLevel = reqLevel })
-        : canCrewTrainUnit ? ::loc("mainmenu/btnTrainCrew")
-        : isRecrutedCrew && !isUsableUnit ? ::loc("weaponry/unit_not_bought")
+          : loc("crew/qualifyRequirement", { reqLevel = reqLevel })
+        : canCrewTrainUnit ? loc("mainmenu/btnTrainCrew")
+        : isRecrutedCrew && !isUsableUnit ? loc("weaponry/unit_not_bought")
         : ""
       progressBarDisplay = isProgressBarVisible ? "show" : "hide"
       progressBarValue = progressBarValue
 
       btnSpec = [
-        getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, crewLevel, unit, specType), // warning disable: -param-pos
-        getRowSpecButtonConfig(::g_crew_spec_type.ACE, crewLevel, unit, specType) // warning disable: -param-pos
+        this.getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, this.crewLevel, unit, specType), // warning disable: -param-pos
+        this.getRowSpecButtonConfig(::g_crew_spec_type.ACE, this.crewLevel, unit, specType) // warning disable: -param-pos
       ]
     }
   }
@@ -172,13 +178,13 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
 
   function updateDiscounts()
   {
-    foreach(idx, unit in units)
+    foreach(idx, unit in this.units)
     {
-      let rowObj = scene.findObject(getRowName(idx))
-      if (!::checkObj(rowObj))
+      let rowObj = this.scene.findObject(this.getRowName(idx))
+      if (!checkObj(rowObj))
         return
 
-      let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
+      let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, unit)
       let discObj = rowObj.findObject("buy-discount")
       if (specType.hasNextType())
         ::showAirDiscount(discObj, unit.name, "specialization", specType.getNextType().specName)
@@ -187,5 +193,5 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
     }
   }
 
-  isRecrutedCurCrew = @() crew.id != -1
+  isRecrutedCurCrew = @() this.crew.id != -1
 }

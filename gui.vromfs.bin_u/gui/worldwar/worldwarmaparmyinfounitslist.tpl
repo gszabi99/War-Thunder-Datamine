@@ -30,7 +30,7 @@ tdiv{
         flow:t='vertical'
         css-hier-invalidate:t='yes'
 
-        include "%gui/worldWar/worldWarArmyInfoUnitString"
+        include "%gui/worldWar/worldWarArmyInfoUnitString.tpl"
       }
     <</columns>>
 

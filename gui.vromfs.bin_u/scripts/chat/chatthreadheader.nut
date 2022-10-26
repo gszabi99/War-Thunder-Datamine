@@ -1,17 +1,24 @@
-::gui_handlers.ChatThreadHeader <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.ChatThreadHeader <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/chat/chatThreadsListRows"
+  sceneTplName = "%gui/chat/chatThreadsListRows.tpl"
 
   roomId = ""
   threadInfo = null
 
   function getSceneTplView()
   {
-    threadInfo = ::g_chat.addThreadInfoById(roomId)
+    this.threadInfo = ::g_chat.addThreadInfoById(this.roomId)
     return {
-      threads = [threadInfo]
+      threads = [this.threadInfo]
       onlyInfo = true
       noSelect = true
       addTimer = true
@@ -20,58 +27,58 @@
 
   function initScreen()
   {
-    let timerObj = scene.findObject("room_" + roomId)
-    if (::checkObj(timerObj))
+    let timerObj = this.scene.findObject("room_" + this.roomId)
+    if (checkObj(timerObj))
       timerObj.setUserData(this)
   }
 
   function updateInfo()
   {
-    threadInfo.updateInfoObj(scene)
+    this.threadInfo.updateInfoObj(this.scene)
   }
 
   function onSceneShow()
   {
-    popDelayedActions()
+    this.popDelayedActions()
   }
 
   function onUserInfo()
   {
-    threadInfo.showOwnerMenu(null)
+    this.threadInfo.showOwnerMenu(null)
   }
 
   function onEditThread()
   {
-    ::g_chat.openModifyThreadWnd(threadInfo)
+    ::g_chat.openModifyThreadWnd(this.threadInfo)
   }
 
   function onEventChatThreadInfoChanged(p)
   {
-    if (::getTblValue("roomId", p) == roomId)
-      doWhenActiveOnce("updateInfo")
+    if (getTblValue("roomId", p) == this.roomId)
+      this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventChatFilterChanged(p)
+  function onEventChatFilterChanged(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventContactsGroupUpdate(p)
+  function onEventContactsGroupUpdate(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventSquadStatusChanged(p)
+  function onEventSquadStatusChanged(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventContactsBlockStatusUpdated(p) {
-    doWhenActiveOnce("updateInfo")
+  function onEventContactsBlockStatusUpdated(_p) {
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onThreadTimer(obj, dt)
+  function onThreadTimer(_obj, _dt)
   {
-    threadInfo.checkRefreshThread()
+    this.threadInfo.checkRefreshThread()
   }
 }

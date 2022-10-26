@@ -1,5 +1,12 @@
-::BaseGuiHandler <- class
-{
+#explicit-this
+#no-root-fallback
+
+let {handlerType} = require("handlerType.nut")
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("baseGuiHandlerManager.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+
+::BaseGuiHandler <- class {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/emptyScene.blk"
   sceneNavBlkName = null
@@ -26,7 +33,7 @@
 
     //must be before setParams
     if (this.wndType == handlerType.BASE)
-      this.backSceneFunc = ::handlersManager.getLastBaseHandlerStartFunc()
+      this.backSceneFunc = handlersManager.getLastBaseHandlerStartFunc()
 
     this.setParams(params)
   }
@@ -46,7 +53,7 @@
 
   function initCustomHandlerScene()
   {
-    if (!::check_obj(this.scene))
+    if (!check_obj(this.scene))
       return false
 
     this.guiScene = this.scene.getScene()
@@ -73,7 +80,7 @@
     if (!view)
       return false
 
-    let data = ::handyman.renderCached(this.sceneTplName, view)
+    let data = handyman.renderCached(this.sceneTplName, view)
 
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     return true
@@ -87,7 +94,7 @@
 
   function isValid()
   {
-    return ::check_obj(this.scene)
+    return check_obj(this.scene)
   }
 
   function isInCurrentScene()
@@ -101,7 +108,7 @@
     if(!markup && !this.sceneNavBlkName)
       return
     let obj = this.scene.findObject("nav-help")
-    if (!::check_obj(obj))
+    if (!check_obj(obj))
       return
 
     if (markup)
@@ -114,7 +121,7 @@
 
   function isSceneActive()
   {
-    return ::check_obj(this.scene) && this.scene.isEnabled()
+    return check_obj(this.scene) && this.scene.isEnabled()
   }
 
   function isSceneActiveNoModals()
@@ -127,9 +134,9 @@
   {
     return null
   }
-  function onNewContentLoaded(handler) {}
+  function onNewContentLoaded(_handler) {}
 
-  function onEventNewSceneLoaded(p)
+  function onEventNewSceneLoaded(_p)
   {
     if (this.wndType != handlerType.ROOT)
       return
@@ -141,14 +148,14 @@
 
   function getCurActiveContentHandler()
   {
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = handlersManager.getActiveBaseHandler()
     return (handler && handler.rootHandlerClass == this.getclass()) ? handler : null
   }
   //************** end of only for wndType == handlerType.ROOT *****************//
 
   function getObj(name)
   {
-    if (!::check_obj(this.scene))
+    if (!check_obj(this.scene))
       return null
     return this.scene.findObject(name)
   }
@@ -182,14 +189,14 @@
       return
 
     if (needFade)
-      ::handlersManager.animatedSwitchScene(startFunc)
+      handlersManager.animatedSwitchScene(startFunc)
     else
       startFunc()
   }
 
   function fullReloadScene()
   {
-    this.guiScene.performDelayed(this, @() ::handlersManager.startSceneFullReload())
+    this.guiScene.performDelayed(this, @() handlersManager.startSceneFullReload())
   }
 
   function afterModalDestroy() {}
@@ -206,8 +213,8 @@
     {
       this.guiScene.performDelayed(this, function()
       {
-        ::handlersManager.destroyHandler(this)
-        ::handlersManager.clearInvalidHandlers()
+        handlersManager.destroyHandler(this)
+        handlersManager.clearInvalidHandlers()
 
         this.onModalWndDestroy()
       })
@@ -217,7 +224,7 @@
     if (this.wndType == handlerType.BASE && this.backSceneFunc != null)
     {
       if (this.needAnimatedSwitchScene)
-        ::handlersManager.animatedSwitchScene(this.backSceneFunc)
+        handlersManager.animatedSwitchScene(this.backSceneFunc)
       else
         this.backSceneFunc()
     }
@@ -233,7 +240,7 @@
     if (show)
       this.popDelayedActions()
     foreach(handler in this.subHandlers)
-      if (::handlersManager.isHandlerValid(handler))
+      if (handlersManager.isHandlerValid(handler))
         handler.onSceneActivate(show)
   }
 
@@ -269,7 +276,7 @@
       if (typeof(func) == "function")
         func()
       else
-        ::dagor.assertf(false, "doWhenActive recieved " + func + ", instead of function")
+        assert(false, "doWhenActive recieved " + func + ", instead of function")
     }
     else
       this.delayedActions.append(func)
@@ -277,7 +284,7 @@
 
   function doWhenActiveOnce(funcName)
   {
-    ::dagor.assertf(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
+    assert(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
 
     let prevIdx = this.delayedActions.indexof(funcName)
     if (prevIdx != null)
@@ -286,7 +293,7 @@
     this.popDelayedActions()
   }
 
-  function onEventModalWndDestroy(params)
+  function onEventModalWndDestroy(_params)
   {
     if (this.isSceneActive())
       this.popDelayedActions()
@@ -307,20 +314,25 @@
   /**
    * Restores handler to state described in specified state data.
    */
-  function restoreHandler(stateData)
+  function restoreHandler(_stateData)
   {
   }
 
   function registerSubHandler(handler)
   {
-    if (!::handlersManager.isHandlerValid(handler))
+    if (!handlersManager.isHandlerValid(handler))
       return
 
     //clear outdated subHandlers
     for(local i = this.subHandlers.len() - 1; i >= 0; i--)
-      if (!::handlersManager.isHandlerValid(this.subHandlers[i]))
+      if (!handlersManager.isHandlerValid(this.subHandlers[i]))
         this.subHandlers.remove(i)
 
     this.subHandlers.append(handler.weakref())
   }
+
+  _tostring = @() $"BaseGuiHandler(sceneBlkName = {this.sceneBlkName})"
+}
+return {
+  BaseGuiHandler = ::BaseGuiHandler
 }

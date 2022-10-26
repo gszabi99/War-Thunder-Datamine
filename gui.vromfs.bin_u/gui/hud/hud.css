@@ -38,17 +38,9 @@
 @const sizeTacticalMap:          0.3*@shHud;
 @const sizeDamageIndicatorFull:  0.3*@shHud;
 @const sizeDamageIndicator:      0.62@sizeDamageIndicatorFull;
-@const menuTouchShortcutWidth:   0.1*@shHud;
-@const menuTouchShortcutHeight:  0.057*@shHud;
-@const sizeTouchShortcut:        0.1*@shHud;
-@const touchShortcutBigSize:     0.14*@shHud;
-@const touchElemetMargin:        0.02*@shHud;
 @const multiplayerScoreHeight:   36@dp;
 @const missionProgressHeight:    @hudMisObjIconsSize + 1@blockInterval;
 @const multiplayerScoreHeightWithOffset: 0.08@scrn_tgt;
-
-@const tranTouchShortcutColor:   #80808080;
-@const pushedTouchShortcutColor: #efe7a4;
 
 @const topCenterMessagesTopPos          0.06@shHud;
 @const topCenterMainMessagesMinHeight   0.15@shHud;
@@ -57,33 +49,6 @@
 @const missionResultNestHeight: 0.0666@sf;
 
 @const tankGunsAmmoBlockHeight: 0.025@shHud;
-
-hud_touch_shortcut {
-  behavior:touchArea;
-}
-
-hud_touch_shortcut[shortcut_id]  {
-  behavior:button;
-  background-color:@tranTouchShortcutColor;
-  on_click:"::gcb.onShortcutOff";
-  on_pushed:"::gcb.onShortcutOn";
-}
-
-hud_touch_shortcut:pushed {
-  background-color:@pushedTouchShortcutColor;
-}
-
-hud_touch_shortcut[type=normal] {
-  size:@sizeTouchShortcut, @sizeTouchShortcut;
-}
-
-hud_touch_shortcut[type=big] {
-  size:@touchShortcutBigSize, @touchShortcutBigSize;
-}
-
-hud_touch_shortcut[type=menu] {
-  size:@menuTouchShortcutWidth, @menuTouchShortcutHeight;
-}
 
 
 

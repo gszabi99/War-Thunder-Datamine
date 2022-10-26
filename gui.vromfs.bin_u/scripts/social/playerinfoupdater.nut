@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+
 let playerInfoUpdater = {
   [PERSISTENT_DATA_PARAMS] = ["lastSendedData"]
 
@@ -6,13 +14,13 @@ let playerInfoUpdater = {
   xboxUserInfoStats = {
     Vehicles = function(myStats) {
       local total = 0
-      foreach (country, data in myStats?.countryStats ?? {})
+      foreach (_country, data in myStats?.countryStats ?? {})
         total += data?.unitsCount ?? 0
       return total
     },
     Medals = function(myStats) {
       local total = 0
-      foreach (country, data in myStats?.countryStats ?? {})
+      foreach (_country, data in myStats?.countryStats ?? {})
         total += data?.medalsCount ?? 0
       return total
     },
@@ -21,64 +29,64 @@ let playerInfoUpdater = {
 
   function sendValue(id, value)
   {
-    if (lastSendedData?[id] == value)
+    if (this.lastSendedData?[id] == value)
       return
 
-    lastSendedData[id] <- value
+    this.lastSendedData[id] <- value
     ::xbox_set_user_stat(id, value)
   }
 
   function updateStatistics()
   {
-    if (!::is_platform_xbox)
+    if (!is_platform_xbox)
       return
 
     let myStats = ::my_stats.getStats()
 
-    foreach (name, func in xboxUserInfoStats)
+    foreach (name, func in this.xboxUserInfoStats)
     {
       let value = func(myStats)
-      sendValue(name, value)
+      this.sendValue(name, value)
     }
   }
 
   function updatePresence(presence)
   {
-    if (!::is_platform_xbox || !presence)
+    if (!is_platform_xbox || !presence)
       return
 
     if (presence == ::g_contact_presence.UNKNOWN
-      || (lastSendedData?.presence ?? ::g_contact_presence.UNKNOWN) == presence)
+      || (this.lastSendedData?.presence ?? ::g_contact_presence.UNKNOWN) == presence)
       return
 
-    lastSendedData.presence <- presence
+    this.lastSendedData.presence <- presence
     ::xbox_set_presence(presence.presenceName)
   }
 
-  function onEventMyStatsUpdated(p)
+  function onEventMyStatsUpdated(_p)
   {
-    updateStatistics()
+    this.updateStatistics()
   }
 
-  function onEventLoginComplete(p)
+  function onEventLoginComplete(_p)
   {
-    updatePresence(::g_contact_presence.ONLINE)
+    this.updatePresence(::g_contact_presence.ONLINE)
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
-    updatePresence(::g_contact_presence.OFFLINE)
+    this.updatePresence(::g_contact_presence.OFFLINE)
   }
 
   function onEventMyPresenceChanged(presence)
   {
     if (presence?.status?.in_game)
-      return updatePresence(::g_contact_presence.IN_GAME)
+      return this.updatePresence(::g_contact_presence.IN_GAME)
 
     if (presence?.status?.in_queue)
-      return updatePresence(::g_contact_presence.IN_QUEUE)
+      return this.updatePresence(::g_contact_presence.IN_QUEUE)
 
-    return updatePresence(::g_contact_presence.ONLINE)
+    return this.updatePresence(::g_contact_presence.ONLINE)
   }
 }
 

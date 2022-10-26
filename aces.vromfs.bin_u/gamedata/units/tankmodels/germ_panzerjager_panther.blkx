@@ -1,5 +1,5 @@
 {
-  "model": "panzerjager_panther",
+  "model": "panzerjager_panther_g1",
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
@@ -48,63 +48,93 @@
     "formatVersion": 2,
     "armorClass": "RHA_tank",
     "hp": 10000.0,
-    "hull": {
-      "turret_front_dm": {
-        "armorThickness": 80.0
-      },
-      "turret_01_front_dm": {
-        "armorThickness": 120.0
-      },
-      "turret_back_dm": {
-        "armorThickness": 40.0
-      },
+    "hull_solid": {
       "superstructure_front_dm": {
-        "armorThickness": 80.0
-      },
-      "body_front_dm": {
-        "armorThickness": 60.0
-      },
-      "body_side_dm": {
         "armorThickness": 40.0
-      },
-      "turret_side_dm": {
-        "armorThickness": 50.0
-      },
-      "superstructure_back_dm": {
-        "armorThickness": 40.0
-      },
-      "superstructure_top_dm": {
-        "armorThickness": 25.0
-      },
-      "body_bottom_dm": {
-        "armorThickness": 20.0
-      },
-      "superstructure_bottom_dm": {
-        "armorThickness": 16.0
       },
       "body_back_dm": {
         "armorThickness": 40.0
       },
+      "body_front_dm": {
+        "armorThickness": 50.0
+      },
+      "superstructure_side_dm": {
+        "armorThickness": 50.0
+      },
+      "body_side_dm": {
+        "armorThickness": 80.0
+      },
+      "body_bottom_dm": {
+        "armorThickness": 16.0
+      },
+      "superstructure_bottom_dm": {
+        "armorThickness": 16.0
+      },
+      "turret_front_dm": {
+        "armorThickness": 16.0
+      },
       "body_top_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 25.0
+      },
+      "superstructure_back_dm": {
+        "armorThickness": 40.0
+      },
+      "turret_02_front_dm": {
+        "armorThickness": 80.0,
+        "armorClass": "CHA_tank",
+        "variableThickness": true
+      },
+      "superstructure_top_dm": {
+        "armorThickness": 80.0,
+        "armorClass": "CHA_tank",
+        "variableThickness": true
+      },
+      "gun_mask_dm": {
+        "armorThickness": 120.0,
+        "armorClass": "CHA_tank",
+        "variableThickness": true
+      },
+      "turret_02_side_dm": {
+        "armorThickness": 100.0,
+        "armorClass": "CHA_tank",
+        "variableThickness": true
+      }
+    },
+    "hull": {
+      "turret_back_dm": {
+        "armorThickness": 5.0
+      },
+      "turret_side_dm": {
+        "armorThickness": 40.0,
+        "armorClass": "CHA_tank"
+      },
+      "turret_bottom_dm": {
+        "armorThickness": 25.0
       },
       "turret_top_dm": {
         "armorThickness": 25.0
       },
+      "turret_02_top_dm": {
+        "armorThickness": 16.0
+      },
       "turret_01_side_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "turret_01_back_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
+      },
+      "turret_01_top_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_01_bottom_dm": {
+        "armorThickness": 40.0
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_03_front_dm": {
+        "armorThickness": 20.0
       }
-    },
-    "body_shields": {
-      "armorClass": "tank_structural_steel",
-      "hp": 1000.0,
-      "armorThickness": 4.0,
-      "stopChanceOnDeadPart": 0.0,
-      "createSecondaryShatters": false,
-      "ex_decor_r_13_dm": {}
     },
     "ex_armor": {
       "hp": 400.0,
@@ -144,7 +174,10 @@
     },
     "mask": {
       "armorClass": "CHA_tank",
-      "hp": 1000.0,
+      "hp": 10000.0,
+      "turret_03_top_dm": {
+        "armorThickness": 25.0
+      },
       "gun_mask_01_dm": {
         "armorThickness": 250.0
       },
@@ -168,18 +201,6 @@
       "optic_body_02_dm": {
         "armorThickness": 3.0,
         "hp": 20.0
-      },
-      "optic_body_03_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_body_04_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_body_05_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
       }
     },
     "tank_structural_steel_elements": {
@@ -190,10 +211,14 @@
       "createSecondaryShatters": false,
       "ex_decor_l_02_dm": {},
       "ex_decor_r_02_dm": {},
+      "ex_decor_l_07_dm": {},
+      "ex_decor_r_07_dm": {},
       "ex_decor_l_11_dm": {},
       "ex_decor_04_dm": {},
       "ex_decor_10_dm": {},
-      "ex_decor_11_dm": {}
+      "ex_decor_11_dm": {},
+      "turret_02_bottom_dm": {},
+      "turret_01_front_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -215,6 +240,8 @@
       "wheel_l_06_dm": {},
       "wheel_l_07_dm": {},
       "wheel_l_08_dm": {},
+      "wheel_l_top_01_dm": {},
+      "wheel_r_top_01_dm": {},
       "wheel_r_drive_dm": {},
       "wheel_l_drive_dm": {},
       "wheel_l_back_dm": {},
@@ -533,6 +560,9 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -1400,7 +1430,9 @@
     "ex_armor_body_r_08_dm": true,
     "ex_armor_body_l_07_dm": true,
     "ex_armor_body_l_08_dm": true,
-    "ex_decor_l_11_dm": true
+    "ex_decor_l_11_dm": true,
+    "ex_decor_r_07_dm": true,
+    "ex_decor_l_07_dm": true
   },
   "MetaParts": {
     "closed_fightning_compartment": {
@@ -1631,7 +1663,7 @@
         "fireConeAngle": 1.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
-        "bullets": 60,
+        "bullets": 49,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -1768,22 +1800,19 @@
     },
     "collisionProps": {
       "cls_body_01": "convex_hull",
-      "cls_body_02": "convex_hull",
-      "cls_body_03": "convex_hull",
-      "cls_body_04": "convex_hull",
-      "cls_body_05": "convex_hull"
+      "cls_body_02": "convex_hull"
     },
     "engine": {
-      "horsePowers": 700.0,
-      "maxRPM": 3000.0,
+      "horsePowers": 600.0,
+      "maxRPM": 2500.0,
       "minRPM": 600.0
     },
     "mechanics": {
       "maxBrakeForce": 170000.0,
       "driveGearRadius": 0.4,
       "mainGearRatio": 13.4,
-      "sideGearRatio": 1.063,
-      "neutralGearRatio": 16.0,
+      "sideGearRatio": 0.8895,
+      "neutralGearRatio": 9.21,
       "gearRatios": {
         "ratio": [
           -9.07,
@@ -1875,95 +1904,152 @@
         "fireEvent": "ammo_fire",
         "explosionEvent": "ammo_explosion",
         "wreckedPartId": 0,
-        "ammo_body_01_dm": {
-          "count": 2
-        },
-        "ammo_body_02_dm": {
-          "count": 2
-        },
-        "ammo_body_03_dm": {
-          "count": 2
-        },
-        "ammo_body_04_dm": {
-          "count": 2
-        },
-        "ammo_body_05_dm": {
-          "count": 2
-        },
-        "ammo_body_06_dm": {
-          "count": 2
-        },
         "ammo_body_07_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_08_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_09_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_10_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_11_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_12_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_13_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_14_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_15_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_16_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_17_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_18_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_19_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_20_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_21_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_22_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_23_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_24_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_25_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_26_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_27_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_28_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_29_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_30_dm": {
-          "count": 2
+          "count": 1
+        },
+        "ammo_body_31_dm": {
+          "count": 1
+        },
+        "ammo_body_32_dm": {
+          "count": 1
+        },
+        "ammo_body_33_dm": {
+          "count": 1
+        },
+        "ammo_body_34_dm": {
+          "count": 1
+        },
+        "ammo_body_35_dm": {
+          "count": 1
+        },
+        "ammo_body_36_dm": {
+          "count": 1
+        },
+        "ammo_body_37_dm": {
+          "count": 1
+        },
+        "ammo_body_38_dm": {
+          "count": 1
+        },
+        "ammo_body_39_dm": {
+          "count": 1
+        },
+        "ammo_body_01_dm": {
+          "count": 1
+        },
+        "ammo_body_02_dm": {
+          "count": 1
+        },
+        "ammo_body_03_dm": {
+          "count": 1
+        },
+        "ammo_body_04_dm": {
+          "count": 1
+        },
+        "ammo_body_05_dm": {
+          "count": 1
+        },
+        "ammo_body_06_dm": {
+          "count": 1
+        },
+        "ammo_body_40_dm": {
+          "count": 1
+        },
+        "ammo_body_41_dm": {
+          "count": 1
+        },
+        "ammo_body_42_dm": {
+          "count": 1
+        },
+        "ammo_body_43_dm": {
+          "count": 1
+        },
+        "ammo_body_44_dm": {
+          "count": 1
+        },
+        "ammo_body_45_dm": {
+          "count": 1
+        },
+        "ammo_body_46_dm": {
+          "count": 1
+        },
+        "ammo_body_47_dm": {
+          "count": 1
+        },
+        "ammo_body_48_dm": {
+          "count": 1
+        },
+        "ammo_body_49_dm": {
+          "count": 1
         }
       }
     }
@@ -2671,9 +2757,9 @@
       -7.8
     ],
     "headPosOnShooting": [
-      -0.45,
-      3.6,
-      -0.45
+      0.3,
+      3.2,
+      0.5
     ],
     "bone_turret": "",
     "detectionHeight": 2.71
@@ -2807,7 +2893,7 @@
               "fireConeAngle": 1.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
-              "bullets": 60,
+              "bullets": 49,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,

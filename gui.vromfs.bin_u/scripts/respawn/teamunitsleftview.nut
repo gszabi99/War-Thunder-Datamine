@@ -1,8 +1,15 @@
-::gui_handlers.teamUnitsLeftView <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.teamUnitsLeftView <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/promo/promoBlocks"
+  sceneTplName = "%gui/promo/promoBlocks.tpl"
 
   blockId = "leftUnits"
 
@@ -16,27 +23,27 @@
 
   function initScreen()
   {
-    scene.setUserData(this) //to not unload handler even when scene not loaded
-    scene.findObject(blockId).setUserData(this)
+    this.scene.setUserData(this) //to not unload handler even when scene not loaded
+    this.scene.findObject(this.blockId).setUserData(this)
 
-    updateInfo()
+    this.updateInfo()
   }
 
   function getSceneTplView()
   {
-    if (isSceneLoaded)
+    if (this.isSceneLoaded)
       return null
 
     let view = {
       promoButtons = [{
-        id = blockId
+        id = this.blockId
         type = "autoSize"
         show = true
         inputTransparent = true
         needTextShade = true
         showTextShade = true
         hideHeaderBg = true
-        collapsed = isCollapsed ? "yes" : "no"
+        collapsed = this.isCollapsed ? "yes" : "no"
         timerFunc = "onUpdate"
         needCollapsedTextAnimSwitch = true
         hasSafeAreaPadding = "no"
@@ -45,7 +52,7 @@
       }]
     }
 
-    isSceneLoaded = true
+    this.isSceneLoaded = true
     return view
   }
 
@@ -56,17 +63,17 @@
 
   function getFullUnitsText()
   {
-    let data = missionRules.getFullUnitLimitsData()
-    let textsList = ::u.map(data.unitLimits, getRespTextByUnitLimit)
-    textsList.insert(0, ::colorize("activeTextColor", ::loc(missionRules.customUnitRespawnsAllyListHeaderLocId)))
+    let data = this.missionRules.getFullUnitLimitsData()
+    let textsList = ::u.map(data.unitLimits, this.getRespTextByUnitLimit)
+    textsList.insert(0, colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsAllyListHeaderLocId)))
 
-    if (missionRules.isEnemyLimitedUnitsVisible())
+    if (this.missionRules.isEnemyLimitedUnitsVisible())
     {
-      let enemyData = missionRules.getFullEnemyUnitLimitsData()
+      let enemyData = this.missionRules.getFullEnemyUnitLimitsData()
       if (enemyData.len())
       {
-        let enemyTextsList = ::u.map(enemyData.unitLimits, getRespTextByUnitLimit)
-        textsList.append("\n" + ::colorize("activeTextColor", ::loc(missionRules.customUnitRespawnsEnemyListHeaderLocId)))
+        let enemyTextsList = ::u.map(enemyData.unitLimits, this.getRespTextByUnitLimit)
+        textsList.append("\n" + colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsEnemyListHeaderLocId)))
         textsList.extend(enemyTextsList)
       }
     }
@@ -76,78 +83,78 @@
 
   function updateInfo(isJustSwitched = false)
   {
-    if (!isSceneLoaded)
+    if (!this.isSceneLoaded)
       return
 
-    if (isCollapsed)
-      updateCollapsedInfoText(isJustSwitched)
+    if (this.isCollapsed)
+      this.updateCollapsedInfoText(isJustSwitched)
     else
-      scene.findObject(blockId + "_text").setValue(getFullUnitsText())
+      this.scene.findObject(this.blockId + "_text").setValue(this.getFullUnitsText())
   }
 
   function updateCollapsedInfoByUnitLimit(unitLimit, needAnim = true)
   {
-    collapsedInfoUnitLimit = unitLimit
-    let text = getRespTextByUnitLimit(unitLimit)
+    this.collapsedInfoUnitLimit = unitLimit
+    let text = this.getRespTextByUnitLimit(unitLimit)
     if (needAnim)
     {
-      ::g_promo_view_utils.animSwitchCollapsedText(scene, blockId, text)
+      ::g_promo_view_utils.animSwitchCollapsedText(this.scene, this.blockId, text)
       return
     }
 
-    let obj = ::g_promo_view_utils.getVisibleCollapsedTextObj(scene, blockId)
-    if (::checkObj(obj))
+    let obj = ::g_promo_view_utils.getVisibleCollapsedTextObj(this.scene, this.blockId)
+    if (checkObj(obj))
       obj.setValue(text)
   }
 
   function setNewCollapsedInfo(needAnim = true)
   {
-    let data = missionRules.getFullUnitLimitsData()
+    let data = this.missionRules.getFullUnitLimitsData()
     local prevIdx = -1
-    if (collapsedInfoUnitLimit)
-      prevIdx = data.unitLimits.findindex(collapsedInfoUnitLimit.isSame.bindenv(collapsedInfoUnitLimit)) ?? -1
+    if (this.collapsedInfoUnitLimit)
+      prevIdx = data.unitLimits.findindex(this.collapsedInfoUnitLimit.isSame.bindenv(this.collapsedInfoUnitLimit)) ?? -1
 
-    updateCollapsedInfoByUnitLimit(::u.chooseRandomNoRepeat(data.unitLimits, prevIdx), needAnim)
-    collapsedInfoTimer = collapsedInfoRefreshDelay
+    this.updateCollapsedInfoByUnitLimit(::u.chooseRandomNoRepeat(data.unitLimits, prevIdx), needAnim)
+    this.collapsedInfoTimer = this.collapsedInfoRefreshDelay
   }
 
   function updateCollapsedInfoText(isJustSwitched = false)
   {
-    if (isJustSwitched || !collapsedInfoUnitLimit)
-      return setNewCollapsedInfo(!isJustSwitched)
+    if (isJustSwitched || !this.collapsedInfoUnitLimit)
+      return this.setNewCollapsedInfo(!isJustSwitched)
 
-    let data = missionRules.getFullUnitLimitsData()
-    let newUnitLimit = ::u.search(data.unitLimits, collapsedInfoUnitLimit.isSame.bindenv(collapsedInfoUnitLimit))
+    let data = this.missionRules.getFullUnitLimitsData()
+    let newUnitLimit = ::u.search(data.unitLimits, this.collapsedInfoUnitLimit.isSame.bindenv(this.collapsedInfoUnitLimit))
     if (newUnitLimit)
-      updateCollapsedInfoByUnitLimit(newUnitLimit, false)
+      this.updateCollapsedInfoByUnitLimit(newUnitLimit, false)
     else
-      setNewCollapsedInfo()
+      this.setNewCollapsedInfo()
   }
 
-  function onToggleItem(obj)
+  function onToggleItem(_obj)
   {
-    isCollapsed = !isCollapsed
-    scene.findObject(blockId).collapsed = isCollapsed ? "yes" : "no"
-    updateInfo(true)
+    this.isCollapsed = !this.isCollapsed
+    this.scene.findObject(this.blockId).collapsed = this.isCollapsed ? "yes" : "no"
+    this.updateInfo(true)
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
-    if (!isCollapsed)
+    if (!this.isCollapsed)
       return
 
-    collapsedInfoTimer -= dt
-    if (collapsedInfoTimer < 0)
-      setNewCollapsedInfo()
+    this.collapsedInfoTimer -= dt
+    if (this.collapsedInfoTimer < 0)
+      this.setNewCollapsedInfo()
   }
 
-  function onEventMissionCustomStateChanged(p)
+  function onEventMissionCustomStateChanged(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventMyCustomStateChanged(p)
+  function onEventMyCustomStateChanged(_p)
   {
-    doWhenActiveOnce("updateInfo")
+    this.doWhenActiveOnce("updateInfo")
   }
 }

@@ -1,3 +1,4 @@
+from "%globalScripts/ui_globals.nut" import *
 // Put to global namespace for compatibility
 from "daRg" import flex
 from "ecs" import clear_vm_entity_systems

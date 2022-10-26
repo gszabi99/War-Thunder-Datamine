@@ -1,4 +1,10 @@
-let { is_stereo_mode } = ::require_native("vr")
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { is_stereo_mode } = require_native("vr")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { sin, cos, pow, atan2, abs, sqrt } = require("math")
 
@@ -23,7 +29,7 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
 
   function getAxisStuck(watchAxis = [])
   {
-    let axisData = getAxisData(watchAxis, null)
+    let axisData = this.getAxisData(watchAxis, null)
     let res = {}
     foreach (idxPair, axisPair in watchAxis)
     {
@@ -35,7 +41,7 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
         if (axisName in res)
           continue
 
-        res[axisName] <- ::getTblValue(idx, axisData[idxPair], 0)
+        res[axisName] <- getTblValue(idx, axisData[idxPair], 0)
       }
     }
     return res
@@ -91,7 +97,7 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
       return result
 
     local maxDeviationSq=0, rawX=0, rawY=0
-    foreach(idx, data in axisData)
+    foreach(_idx, data in axisData)
     {
       let deviationSq = pow(data[0], 2) + pow(data[1], 2)
       if (deviationSq > maxDeviationSq)
@@ -107,16 +113,16 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
 
     let signX = rawX >= 0 ? 1 : -1
     let signY = rawY >= 0 ? 1 : -1
-    let denominator = maxAbsoluteAxisValue - deadzone //to normalize
+    let denominator = this.maxAbsoluteAxisValue - deadzone //to normalize
     let rawSide = sqrt(pow(rawX, 2) + pow(rawY, 2))
 
     result.x = rawX
     result.y = rawY
     result.angle = atan2(rawY, rawX)
-    result.normX = (min(abs(rawX), maxAbsoluteAxisValue) - deadzone).tofloat() / denominator * signX
-    result.normY = (min(abs(rawY), maxAbsoluteAxisValue) - deadzone).tofloat() / denominator * signY
+    result.normX = (min(abs(rawX), this.maxAbsoluteAxisValue) - deadzone).tofloat() / denominator * signX
+    result.normY = (min(abs(rawY), this.maxAbsoluteAxisValue) - deadzone).tofloat() / denominator * signY
     result.rawLength = rawSide
-    result.normLength = (min(rawSide, maxAbsoluteAxisValue) - deadzone).tofloat() / denominator
+    result.normLength = (min(rawSide, this.maxAbsoluteAxisValue) - deadzone).tofloat() / denominator
 
     return result
   }
@@ -140,13 +146,13 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
 
   function _collectInvertedAxis()
   {
-    invertedByDefault = {}
+    this.invertedByDefault = {}
     foreach (controlsList in [::aircraft_controls_wizard_config, ::tank_controls_wizard_config])
       foreach (item in controlsList)
       {
         if (type(item) == "table" && ("id" in item) && ("type" in item))
           if (item.type == CONTROL_TYPE.AXIS && ("showInverted" in item) && item.showInverted())
-            invertedByDefault[item.id] <- true
+            this.invertedByDefault[item.id] <- true
       }
   }
 }

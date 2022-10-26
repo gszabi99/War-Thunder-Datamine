@@ -1,12 +1,18 @@
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { getHudUnitType } = require("hudState")
+let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 
 let getMfmHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
-let getMfmSectionTitle = @(section) section?.getTitle() ?? ::loc(section?.title ?? "")
+let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
 
 local isDebugMode = false
 
 ::debug_multifunc_menu <- @(enable) isDebugMode = enable
-
 
 let function isEnabledByUnit(config, c, unitId)
 {
@@ -32,19 +38,18 @@ let function handleWheelMenuApply(idx)
 {
   if (idx < 0)
     getMfmHandler()?.gotoPrevMenuOrQuit()
-  else if (menu?[idx].sectionId)
-    getMfmHandler()?.gotoSection(menu[idx].sectionId)
-  else if (menu?[idx].shortcutId)
-    getMfmHandler()?.toggleShortcut(menu[idx].shortcutId)
-  else if (menu?[idx].action != null)
-    menu?[idx].action()
+  else if (this.menu?[idx].sectionId)
+    getMfmHandler()?.gotoSection(this.menu[idx].sectionId)
+  else if (this.menu?[idx].shortcutId)
+    getMfmHandler()?.toggleShortcut(this.menu[idx].shortcutId)
+  else if (this.menu?[idx].action != null)
+    this.menu?[idx].action()
 }
 
 
-let function makeMfmSection(cfg, id, unit)
+let function makeMfmSection(cfg, id, unitId, hudUnitType)
 {
-  let allowedShortcutIds = ::g_controls_utils.getControlsList({ unitType = unit.unitType }).map(@(s) s.id)
-  let unitId = unit?.name
+  let allowedShortcutIds = ::g_controls_utils.getControlsList({ unitType = unitTypeByHudUnitType?[hudUnitType] }).map(@(s) s.id)
   let sectionConfig = cfg[id]
 
   let menu = []
@@ -65,21 +70,21 @@ let function makeMfmSection(cfg, id, unit)
     if (isShortcut)
     {
       shortcutId = c.shortcut.findvalue(@(id) allowedShortcutIds.indexof(id) != null)
-      label = ::loc("hotkeys/{0}".subst(shortcutId ?? c.shortcut?[0] ?? ""))
+      label = loc("hotkeys/{0}".subst(shortcutId ?? c.shortcut?[0] ?? ""))
       isEnabled = shortcutId != null && isEnabledByUnit(cfg, c, unitId)
     }
     else if (isSection)
     {
       sectionId = c.section
       let title = getMfmSectionTitle(cfg[sectionId])
-      label = "".concat(title, ::loc("ui/ellipsis"))
+      label = "".concat(title, loc("ui/ellipsis"))
       isEnabled = isEnabledByUnit(cfg, c, unitId)
     }
     else if (isAction)
     {
       action = c.action
       label = c.label
-      isEnabled = label != ""
+      isEnabled = isEnabledByUnit(cfg, c, unitId) && label != ""
     }
 
     local color = isEnabled ? "hudGreenTextColor" : ""
@@ -95,7 +100,7 @@ let function makeMfmSection(cfg, id, unit)
     let isEmpty = label == ""
 
     local shortcutText = ""
-    if (!isEmpty && ::is_platform_pc)
+    if (!isEmpty && is_platform_pc)
       shortcutText = ::get_shortcut_text({
         shortcuts = ::get_shortcuts([ $"ID_VOICE_MESSAGE_{idx+1}" ])
         shortcutId = 0
@@ -108,7 +113,7 @@ let function makeMfmSection(cfg, id, unit)
       sectionId
       shortcutId
       action
-      name = ::colorize(color, label)
+      name = colorize(color, label)
       shortcutText = shortcutText != "" ? shortcutText : null
       wheelmenuEnabled = isEnabled
     })
@@ -120,18 +125,14 @@ let function makeMfmSection(cfg, id, unit)
 
 local function openMfm(cfg, curSectionId = null, isForward = true)
 {
-  let unit = getPlayerCurUnit()
-  let unitType = unit?.unitType
-  if (!unitType)
-    return false
-
-  curSectionId = curSectionId ?? $"root_{unitType.tag}"
+  let hudUnitType = getHudUnitType()
+  curSectionId = curSectionId ?? $"root_{hudUnitType}"
   if (cfg?[curSectionId] == null)
     return false
 
   let joyParams = ::joystick_get_cur_settings()
   let params = {
-    menu = makeMfmSection(cfg, curSectionId, unit)
+    menu = makeMfmSection(cfg, curSectionId, ::get_player_unit_name(), hudUnitType)
     callbackFunc = handleWheelMenuApply
     curSectionId = curSectionId
     mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage
@@ -151,8 +152,6 @@ local function openMfm(cfg, curSectionId = null, isForward = true)
 
   return true
 }
-
-
 
 return {
   getMfmHandler

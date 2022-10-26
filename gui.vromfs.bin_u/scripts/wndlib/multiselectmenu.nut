@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /*
   config = {
     onChangeValueCb = function(selValuesArray)   //callback on each value change
@@ -21,6 +27,8 @@
   }
 */
 let stdMath = require("%sqstd/math.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_start_multi_select_menu <- function gui_start_multi_select_menu(config)
 {
@@ -30,7 +38,7 @@ let stdMath = require("%sqstd/math.nut")
 ::gui_handlers.MultiSelectMenu <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "%gui/multiSelectMenu"
+  sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false
 
   list = null
@@ -49,67 +57,67 @@ let stdMath = require("%sqstd/math.nut")
 
   function getSceneTplView()
   {
-    initListValues()
+    this.initListValues()
 
     return {
-      list = list || []
-      value = currentBitMask
-      sndSwitchOn = sndSwitchOn
-      sndSwitchOff = sndSwitchOff
+      list = this.list || []
+      value = this.currentBitMask
+      sndSwitchOn = this.sndSwitchOn
+      sndSwitchOff = this.sndSwitchOff
     }
   }
 
   function initScreen()
   {
-    if (!list)
-      return goBack()
+    if (!this.list)
+      return this.goBack()
 
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
-    guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child(scene.findObject("multi_select"), 0)
+    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
+    this.guiScene.applyPendingChanges(false)
+    ::move_mouse_on_child(this.scene.findObject("multi_select"), 0)
   }
 
   function initListValues()
   {
-    if (!list)
+    if (!this.list)
       return
 
     local mask = 0
-    foreach(idx, option in list)
+    foreach(idx, option in this.list)
     {
-      option.show <- ::getTblValue("show", option, true)
-      mask = stdMath.change_bit(mask, idx, ::getTblValue("selected", option))
+      option.show <- getTblValue("show", option, true)
+      mask = stdMath.change_bit(mask, idx, getTblValue("selected", option))
     }
 
-    initialBitMask = mask
-    currentBitMask = mask
+    this.initialBitMask = mask
+    this.currentBitMask = mask
   }
 
   function getCurValuesArray()
   {
-    let selOptions = ::get_array_by_bit_value(currentBitMask, list)
-    return ::u.map(selOptions, function(o) { return ::getTblValue("value", o) })
+    let selOptions = ::get_array_by_bit_value(this.currentBitMask, this.list)
+    return ::u.map(selOptions, function(o) { return getTblValue("value", o) })
   }
 
   function onChangeValue(obj)
   {
-    currentBitMask = obj.getValue()
-    if (onChangeValuesBitMaskCb)
-      onChangeValuesBitMaskCb(currentBitMask)
-    if (onChangeValueCb)
-      onChangeValueCb(getCurValuesArray())
+    this.currentBitMask = obj.getValue()
+    if (this.onChangeValuesBitMaskCb)
+      this.onChangeValuesBitMaskCb(this.currentBitMask)
+    if (this.onChangeValueCb)
+      this.onChangeValueCb(this.getCurValuesArray())
   }
 
   function close()
   {
-    goBack()
+    this.goBack()
 
-    if (currentBitMask == initialBitMask)
+    if (this.currentBitMask == this.initialBitMask)
       return
 
-    if (onFinalApplyBitMaskCb)
-      onFinalApplyBitMaskCb(currentBitMask)
-    if (onFinalApplyCb)
-      onFinalApplyCb(getCurValuesArray())
+    if (this.onFinalApplyBitMaskCb)
+      this.onFinalApplyBitMaskCb(this.currentBitMask)
+    if (this.onFinalApplyCb)
+      this.onFinalApplyCb(this.getCurValuesArray())
   }
 }

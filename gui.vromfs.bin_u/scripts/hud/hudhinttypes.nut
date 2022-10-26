@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_hud_hint_types <- {
   types = []
@@ -9,7 +15,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   isReplaceableByPriority = false
 
   isReplaceable = @(newHint, newEventData, oldHint, oldEventData)
-    !isReplaceableByPriority || newHint.getPriority(newEventData) >= oldHint.getPriority(oldEventData)
+    !this.isReplaceableByPriority || newHint.getPriority(newEventData) >= oldHint.getPriority(oldEventData)
   isSameReplaceGroup = function (hint1, hint2) { return hint1 == hint2 }
 }
 

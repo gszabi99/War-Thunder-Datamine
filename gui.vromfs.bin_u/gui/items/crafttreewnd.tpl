@@ -26,7 +26,7 @@ root {
       <<#itemsSize>>itemsSize:t='<<itemsSize>>'<</itemsSize>>
       tdiv {
         id:t='craft_header'
-        include "%gui/items/craftTreeHeader"
+        include "%gui/items/craftTreeHeader.tpl"
       }
 
       craftBranchBody {
@@ -45,7 +45,7 @@ root {
         on_hold_start:t='::gcb.delayedTooltipListHoldStart'
         on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
 
-        include "%gui/items/craftTreeBody"
+        include "%gui/items/craftTreeBody.tpl"
       }
     }
   }

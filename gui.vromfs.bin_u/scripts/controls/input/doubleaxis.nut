@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 ::Input.DoubleAxis <- class extends ::Input.InputBase
@@ -9,18 +15,18 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
   function getMarkup()
   {
-    let data = getMarkupData()
+    let data = this.getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
     let data = {
-      template = "%gui/shortcutAxis"
+      template = "%gui/shortcutAxis.tpl"
       view = {}
     }
 
-    let image = getImage()
+    let image = this.getImage()
     if (image)
       data.view.buttonImage <- image
 
@@ -34,29 +40,29 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
   function getDeviceId()
   {
-    return deviceId
+    return this.deviceId
   }
 
   function getImage()
   {
-    if (deviceId == ::JOYSTICK_DEVICE_0_ID)
-      return gamepadIcons.getGamepadAxisTexture(axisIds)
-    else if (deviceId == ::STD_MOUSE_DEVICE_ID)
-      return gamepadIcons.getMouseAxisTexture(axisIds)
+    if (this.deviceId == JOYSTICK_DEVICE_0_ID)
+      return gamepadIcons.getGamepadAxisTexture(this.axisIds)
+    else if (this.deviceId == STD_MOUSE_DEVICE_ID)
+      return gamepadIcons.getMouseAxisTexture(this.axisIds)
 
     return null
   }
 
   function hasImage()
   {
-    return (getImage() ?? "") != ""
+    return (this.getImage() ?? "") != ""
   }
 
   function getConfig()
   {
     return {
       inputName = "doubleAxis"
-      buttonImage = getImage()
+      buttonImage = this.getImage()
     }
   }
 }

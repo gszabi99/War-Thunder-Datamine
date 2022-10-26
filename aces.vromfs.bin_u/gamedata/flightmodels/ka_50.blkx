@@ -1999,7 +1999,7 @@
       },
       {
         "index": 1,
-        "tier": 4,
+        "tier": 9,
         "order": 1,
         "WeaponPreset": [
           {
@@ -2046,10 +2046,10 @@
                 "su_vyihr_apu6_tpk_upper_arm_001",
                 "su_vyihr_cap_001",
                 "su_vyihr_cap_002",
+                "su_vyihr_cap_003",
+                "su_vyihr_cap_004",
                 "su_vyihr_cap_005",
-                "su_vyihr_cap_006",
-                "su_vyihr_cap_007",
-                "su_vyihr_cap_008"
+                "su_vyihr_cap_006"
               ]
             },
             "RocketCap": [
@@ -2062,20 +2062,20 @@
                 "part": "su_vyihr_cap_002"
               },
               {
+                "name": "cap_3",
+                "part": "su_vyihr_cap_003"
+              },
+              {
+                "name": "cap_4",
+                "part": "su_vyihr_cap_004"
+              },
+              {
                 "name": "cap_5",
                 "part": "su_vyihr_cap_005"
               },
               {
                 "name": "cap_6",
-                "part": "su_vyihr_cap_006"
-              },
-              {
-                "name": "cap_7",
-                "part": "su_vyihr_cap_007"
-              },
-              {
-                "name": "cap_8",
-                "part": "su_vyihr_cap_008"
+                "part": "su_vyihr_cap_005"
               }
             ],
             "Weapon": [
@@ -2105,6 +2105,40 @@
                 "external": true,
                 "separate": true,
                 "capName": "cap_2",
+                "maxPitchRotationAngle": [
+                  0.0,
+                  10.0
+                ],
+                "pitchRotationParamName": "p_launcher1",
+                "mass": 12.0,
+                "dragCx": 0.001
+              },
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
+                "emitter": "su_vyhr_rocket_003",
+                "parentNode": "su_vyihr_apu6_tpk_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "capName": "cap_3",
+                "maxPitchRotationAngle": [
+                  0.0,
+                  10.0
+                ],
+                "pitchRotationParamName": "p_launcher1",
+                "mass": 12.0,
+                "dragCx": 0.001
+              },
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
+                "emitter": "su_vyhr_rocket_004",
+                "parentNode": "su_vyihr_apu6_tpk_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "capName": "cap_4",
                 "maxPitchRotationAngle": [
                   0.0,
                   10.0
@@ -2146,40 +2180,6 @@
                 "pitchRotationParamName": "p_launcher1",
                 "mass": 12.0,
                 "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_007",
-                "parentNode": "su_vyihr_apu6_tpk_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_7",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher1",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_008",
-                "parentNode": "su_vyihr_apu6_tpk_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_8",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher1",
-                "mass": 12.0,
-                "dragCx": 0.001
               }
             ],
             "WeaponContainers": {
@@ -2188,10 +2188,16 @@
                 "su_vyihr_apu6_tpk_lower_001",
                 "su_vyihr_cap_001",
                 "su_vyihr_cap_002",
+                "su_vyihr_cap_003",
+                "su_vyihr_cap_004",
                 "su_vyihr_cap_005",
                 "su_vyihr_cap_006",
-                "su_vyihr_cap_007",
-                "su_vyihr_cap_008"
+                "su_vyhr_rocket_001",
+                "su_vyhr_rocket_002",
+                "su_vyhr_rocket_003",
+                "su_vyhr_rocket_004",
+                "su_vyhr_rocket_005",
+                "su_vyhr_rocket_006"
               ]
             }
           },
@@ -2240,7 +2246,7 @@
       },
       {
         "index": 2,
-        "tier": 5,
+        "tier": 8,
         "order": 3,
         "WeaponPreset": [
           {
@@ -2324,7 +2330,7 @@
       },
       {
         "index": 3,
-        "tier": 7,
+        "tier": 4,
         "order": 4,
         "WeaponPreset": [
           {
@@ -2408,7 +2414,7 @@
       },
       {
         "index": 4,
-        "tier": 8,
+        "tier": 3,
         "order": 2,
         "WeaponPreset": [
           {
@@ -2438,8 +2444,8 @@
                 "su_vyihr_apu6_tpk_002",
                 "su_vyihr_apu6_tpk_lower_arm_002",
                 "su_vyihr_apu6_tpk_upper_arm_002",
-                "su_vyihr_cap_003",
-                "su_vyihr_cap_004",
+                "su_vyihr_cap_007",
+                "su_vyihr_cap_008",
                 "su_vyihr_cap_009",
                 "su_vyihr_cap_010",
                 "su_vyihr_cap_011",
@@ -2448,12 +2454,12 @@
             },
             "RocketCap": [
               {
-                "name": "cap_3",
-                "part": "su_vyihr_cap_003"
+                "name": "cap_7",
+                "part": "su_vyihr_cap_007"
               },
               {
-                "name": "cap_4",
-                "part": "su_vyihr_cap_004"
+                "name": "cap_8",
+                "part": "su_vyihr_cap_008"
               },
               {
                 "name": "cap_9",
@@ -2476,12 +2482,12 @@
               {
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_004",
+                "emitter": "su_vyhr_rocket_007",
                 "parentNode": "su_vyihr_apu6_tpk_002",
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "capName": "cap_4",
+                "capName": "cap_7",
                 "maxPitchRotationAngle": [
                   0.0,
                   10.0
@@ -2493,12 +2499,12 @@
               {
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_003",
+                "emitter": "su_vyhr_rocket_008",
                 "parentNode": "su_vyihr_apu6_tpk_002",
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "capName": "cap_3",
+                "capName": "cap_8",
                 "maxPitchRotationAngle": [
                   0.0,
                   10.0
@@ -2580,12 +2586,18 @@
               "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
               "node": [
                 "su_vyihr_apu6_tpk_lower_002",
-                "su_vyihr_cap_003",
-                "su_vyihr_cap_004",
+                "su_vyihr_cap_007",
+                "su_vyihr_cap_008",
                 "su_vyihr_cap_009",
                 "su_vyihr_cap_010",
                 "su_vyihr_cap_011",
-                "su_vyihr_cap_012"
+                "su_vyihr_cap_012",
+                "su_vyhr_rocket_007",
+                "su_vyhr_rocket_008",
+                "su_vyhr_rocket_009",
+                "su_vyhr_rocket_010",
+                "su_vyhr_rocket_011",
+                "su_vyhr_rocket_012"
               ]
             }
           },

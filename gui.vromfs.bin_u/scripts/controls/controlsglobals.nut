@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 // Functions in this file called from C++ code
 
 ::is_last_load_controls_succeeded <- false
@@ -13,8 +18,8 @@
   }
   else
   {
-    ::dagor.debug($"ControlsGlobals: Prevent setting incorrect preset: {blkOrPresetPath}")
-    ::showInfoMsgBox($"{::loc("msgbox/errorLoadingPreset")}: {blkOrPresetPath}")
+    log($"ControlsGlobals: Prevent setting incorrect preset: {blkOrPresetPath}")
+    ::showInfoMsgBox($"{loc("msgbox/errorLoadingPreset")}: {blkOrPresetPath}")
     ::is_last_load_controls_succeeded = false
   }
 }

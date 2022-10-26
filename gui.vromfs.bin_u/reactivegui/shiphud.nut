@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let activeOrder = require("activeOrder.nut")
 let shipStateModule = require("shipStateModule.nut")
 let hudLogs = require("hudLogs.nut")
@@ -16,7 +18,7 @@ let shipHud = @(){
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
-  gap = ::scrn_tgt(0.005)
+  gap = scrn_tgt(0.005)
   children = [
     voiceChat
     activeOrder

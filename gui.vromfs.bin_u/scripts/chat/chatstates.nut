@@ -1,10 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local xboxChatEnabledCache = null
 let function getXboxChatEnableStatus(needOverlayMessage = false) {
-  if (!::is_platform_xbox || !::g_login.isLoggedIn())
+  if (!is_platform_xbox || !::g_login.isLoggedIn())
     return XBOX_COMMUNICATIONS_ALLOWED
 
   if (xboxChatEnabledCache == null || (needOverlayMessage && xboxChatEnabledCache == XBOX_COMMUNICATIONS_BLOCKED))
@@ -30,11 +35,8 @@ let function isCrossNetworkMessageAllowed(playerName) {
     return true
 
   let crossnetStatus = crossplayModule.getCrossNetworkChatStatus()
-
   if (crossnetStatus == XBOX_COMMUNICATIONS_ONLY_FRIENDS
-    && (::isPlayerNickInContacts(playerName, ::EPL_FRIENDLIST)
-      || ::isPlayerNickInContacts(playerName, ::EPLX_PS4_FRIENDS))
-  )
+    && (::isPlayerInFriendsGroup(null, false, playerName)))
     return true
 
   return crossnetStatus == XBOX_COMMUNICATIONS_ALLOWED
@@ -72,11 +74,11 @@ let function invalidateCache() {
 }
 
 let function canUseVoice() {
-  return ::has_feature("Voice") && ::gchat_is_voice_enabled()
+  return hasFeature("Voice") && ::gchat_is_voice_enabled()
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(p) invalidateCache()
+  SignOut = @(_p) invalidateCache()
 })
 
 return {

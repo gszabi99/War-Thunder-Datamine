@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getRoleText, getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -15,26 +21,26 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   constructor(v_name, v_respawnsLeft, params = {})
   {
-    name = v_name
-    respawnsLeft = v_respawnsLeft
-    distributed = params?.distributed ?? ::RESPAWNS_UNLIMITED
-    presetInfo = params?.presetInfo
-    nameLocId = params?.nameLocId
+    this.name = v_name
+    this.respawnsLeft = v_respawnsLeft
+    this.distributed = params?.distributed ?? ::RESPAWNS_UNLIMITED
+    this.presetInfo = params?.presetInfo
+    this.nameLocId = params?.nameLocId
   }
 
   function isSame(unitLimit)
   {
-    return name == unitLimit.name && getclass() == unitLimit.getclass()
+    return this.name == unitLimit.name && this.getclass() == unitLimit.getclass()
   }
 
   function getRespawnsLeftText()
   {
-    return respawnsLeft == ::RESPAWNS_UNLIMITED ? ::loc("options/resp_unlimited") : respawnsLeft
+    return this.respawnsLeft == ::RESPAWNS_UNLIMITED ? loc("options/resp_unlimited") : this.respawnsLeft
   }
 
   function getText()
   {
-    return name
+    return this.name
   }
 }
 
@@ -42,23 +48,23 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let unitName = nameLocId != null ? ::loc(nameLocId) : ::getUnitName(name)
-    local res = unitName + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
+    let unitName = this.nameLocId != null ? loc(this.nameLocId) : ::getUnitName(this.name)
+    local res = unitName + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
     let weaponPresetIconsText = ::get_weapon_icons_text(
-      name, ::getTblValue("weaponPresetId", presetInfo)
+      this.name, getTblValue("weaponPresetId", this.presetInfo)
     )
 
     if (!::u.isEmpty(weaponPresetIconsText))
-      res += ::loc("ui/parentheses/space", {
-        text = weaponPresetIconsText + ::getTblValue("teamUnitPresetAmount", presetInfo, 0)
+      res += loc("ui/parentheses/space", {
+        text = weaponPresetIconsText + getTblValue("teamUnitPresetAmount", this.presetInfo, 0)
       })
 
-    if (distributed != null && distributed != ::RESPAWNS_UNLIMITED)
+    if (this.distributed != null && this.distributed != ::RESPAWNS_UNLIMITED)
     {
-      local text = distributed > 0 ? ::colorize("userlogColoredText", distributed) : distributed
+      local text = this.distributed > 0 ? colorize("userlogColoredText", this.distributed) : this.distributed
       if (!::u.isEmpty(weaponPresetIconsText))
-        text += ::loc("ui/parentheses/space", {
-          text = weaponPresetIconsText + ::getTblValue("userUnitPresetAmount", presetInfo, 0)
+        text += loc("ui/parentheses/space", {
+          text = weaponPresetIconsText + getTblValue("userUnitPresetAmount", this.presetInfo, 0)
         })
       res += " + " + text
     }
@@ -71,8 +77,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let fontIcon = ::colorize("activeTextColor", getUnitRoleIcon(name))
-    return fontIcon + getRoleText(name) + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
+    let fontIcon = colorize("activeTextColor", getUnitRoleIcon(this.name))
+    return fontIcon + getRoleText(this.name) + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
   }
 }
 
@@ -80,9 +86,9 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let expClassType = getUnitClassTypeByExpClass(name)
-    let fontIcon = ::colorize("activeTextColor", expClassType.getFontIcon())
-    return fontIcon + expClassType.getName() + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
+    let expClassType = getUnitClassTypeByExpClass(this.name)
+    let fontIcon = colorize("activeTextColor", expClassType.getFontIcon())
+    return fontIcon + expClassType.getName() + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
   }
 }
 
@@ -90,17 +96,17 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let expClassType = getUnitClassTypeByExpClass(name)
-    let fontIcon = ::colorize("activeTextColor", expClassType.getFontIcon())
+    let expClassType = getUnitClassTypeByExpClass(this.name)
+    let fontIcon = colorize("activeTextColor", expClassType.getFontIcon())
     local amountText = ""
-    if (distributed == ::RESPAWNS_UNLIMITED || respawnsLeft == ::RESPAWNS_UNLIMITED)
-      amountText = ::colorize("activeTextColor", getRespawnsLeftText())
+    if (this.distributed == ::RESPAWNS_UNLIMITED || this.respawnsLeft == ::RESPAWNS_UNLIMITED)
+      amountText = colorize("activeTextColor", this.getRespawnsLeftText())
     else
     {
-      let color = (distributed < respawnsLeft) ? "userlogColoredText" : "activeTextColor"
-      amountText = ::colorize(color, distributed) + "/" + getRespawnsLeftText()
+      let color = (this.distributed < this.respawnsLeft) ? "userlogColoredText" : "activeTextColor"
+      amountText = colorize(color, this.distributed) + "/" + this.getRespawnsLeftText()
     }
-    return ::loc("multiplayer/active_at_once", { nameOrIcon = fontIcon }) + ::loc("ui/colon") + amountText
+    return loc("multiplayer/active_at_once", { nameOrIcon = fontIcon }) + loc("ui/colon") + amountText
   }
 }
 
@@ -108,8 +114,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   function getText()
   {
-    let unitType = unitTypes[name]
-    let fontIcon = ::colorize("activeTextColor", unitType.fontIcon)
-    return fontIcon + unitType.getArmyLocName() + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
+    let unitType = unitTypes[this.name]
+    let fontIcon = colorize("activeTextColor", unitType.fontIcon)
+    return fontIcon + unitType.getArmyLocName() + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
   }
 }

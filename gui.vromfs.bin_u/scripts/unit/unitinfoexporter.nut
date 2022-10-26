@@ -1,27 +1,23 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let {UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX} = require("%scripts/unit/unitInfoType.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 
-::exportUnitInfo <- function exportUnitInfo(params)
-{
-    UnitInfoExporter(params["langs"], params["path"])
-    return "ok"
-}
-
 const COUNTRY_GROUP = "country"
-global const ARMY_GROUP = "army"
 const RANK_GROUP = "rank"
 const COMMON_PARAMS_GROUP = "common"
 const BASE_GROUP = "base"
 const EXTENDED_GROUP = "extended"
 
-
-web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
-
-::UnitInfoExporter <- class
-{
+let class UnitInfoExporter {
   static EXPORT_TIME_OUT = 20000
   static activeUnitInfoExporters = []
   lastActiveTime = -1
@@ -32,7 +28,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
   langBeforeExport = ""
   curLang = ""
 
-  debugLog = ::dlog // warning disable: -forbidden-function
+  debugLog = dlog // warning disable: -forbidden-function
   isToStringForDebug = true
 
   fullBlk = null
@@ -40,51 +36,51 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
   constructor(genLangsList = ["English", "Russian"], genPath = "export") //null - export all langs
   {
-    if (!isReadyStartExporter())
+    if (!this.isReadyStartExporter())
       return
 
-    activeUnitInfoExporters.append(this)
-    updateActive()
+    this.activeUnitInfoExporters.append(this)
+    this.updateActive()
 
     ::subscribe_handler(this)
 
-    langBeforeExport = ::get_current_language()
+    this.langBeforeExport = ::get_current_language()
     if (::u.isArray(genLangsList))
-      langsList = clone genLangsList
+      this.langsList = clone genLangsList
     else if (::u.isString(genLangsList))
-      langsList = [genLangsList]
+      this.langsList = [genLangsList]
     else
-      langsList = ::u.map(::g_language.getGameLocalizationInfo(), function(lang) { return lang.id })
+      this.langsList = ::u.map(::g_language.getGameLocalizationInfo(), function(lang) { return lang.id })
 
-    path = genPath
+    this.path = genPath
 
-    exportCalculationParameters()
-    ::get_main_gui_scene().performDelayed(this, nextLangExport)
+    this.exportCalculationParameters()
+    ::get_main_gui_scene().performDelayed(this, this.nextLangExport)
   }
 
   function _tostring()
   {
-    return format("Exporter(%s, '%s')", ::toString(langsList), path)
+    return format("Exporter(%s, '%s')", toString(this.langsList), this.path)
   }
 
   function isReadyStartExporter()
   {
-    if (!activeUnitInfoExporters.len())
+    if (!this.activeUnitInfoExporters.len())
       return true
 
-    if (activeUnitInfoExporters[0].isStuck())
+    if (this.activeUnitInfoExporters[0].isStuck())
     {
-      activeUnitInfoExporters[0].remove()
+      this.activeUnitInfoExporters[0].remove()
       return true
     }
 
-    debugLog("Exporter: Error: Previous exporter not finish process")
+    this.debugLog("Exporter: Error: Previous exporter not finish process")
     return false
   }
 
   function isValid()
   {
-    foreach(idx, exporter in activeUnitInfoExporters)
+    foreach(_idx, exporter in this.activeUnitInfoExporters)
       if (exporter == this)
         return true
     return false
@@ -92,21 +88,21 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
   function isStuck()
   {
-    return ::dagor.getCurTime() - lastActiveTime < EXPORT_TIME_OUT
+    return get_time_msec() - this.lastActiveTime < this.EXPORT_TIME_OUT
   }
 
   function updateActive()
   {
-    lastActiveTime = ::dagor.getCurTime()
+    this.lastActiveTime = get_time_msec()
   }
 
   function remove()
   {
-    foreach(idx, exporter in activeUnitInfoExporters)
+    foreach(idx, exporter in this.activeUnitInfoExporters)
       if (exporter == this)
-        activeUnitInfoExporters.remove(idx)
+        this.activeUnitInfoExporters.remove(idx)
 
-    ::g_language.setGameLocalization(langBeforeExport, false, false)
+    ::g_language.setGameLocalization(this.langBeforeExport, false, false)
   }
 
   /******************************************************************************/
@@ -114,7 +110,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
   /******************************************************************************/
 
   function exportCalculationParameters() {
-    debugLog("Exporter: start fetching calculation parameters")
+    this.debugLog("Exporter: start fetching calculation parameters")
     let shopUnitsNames = ::all_units
       .filter(@(unit) unit.isInShop)
       .map(@(unit) unit.name)
@@ -128,54 +124,54 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
   function nextLangExport()
   {
-    if (!langsList.len())
+    if (!this.langsList.len())
     {
-      remove()
-      debugLog("Exporter: DONE.")
+      this.remove()
+      this.debugLog("Exporter: DONE.")
       return
     }
 
-    curLang = langsList.pop()
-    ::g_language.setGameLocalization(curLang, false, false)
+    this.curLang = this.langsList.pop()
+    ::g_language.setGameLocalization(this.curLang, false, false)
 
-    debugLog($"Exporter: gen all units info to {getLangFullPath()}")
-    ::get_main_gui_scene().performDelayed(this, startExport) //delay to show exporter logs
+    this.debugLog($"Exporter: gen all units info to {this.getLangFullPath()}")
+    ::get_main_gui_scene().performDelayed(this, this.startExport) //delay to show exporter logs
   }
 
   function getCalculationParemetersFullPath() {
-    let relPath = ::u.isEmpty(path) ? "" : $"{path}/"
+    let relPath = ::u.isEmpty(this.path) ? "" : $"{this.path}/"
     return format("%scalculationParameters.blk", relPath)
   }
 
   function getLangFullPath()
   {
-    let relPath = ::u.isEmpty(path) ? "" : $"{path}/"
-    return format("%sunitInfo%s.blk", relPath, curLang)
+    let relPath = ::u.isEmpty(this.path) ? "" : $"{this.path}/"
+    return format("%sunitInfo%s.blk", relPath, this.curLang)
   }
 
   function startExport()
   {
-    debugLog($"Exporter: start export for lang {curLang}")
-    fullBlk = ::DataBlock()
-    exportUnitType(fullBlk)
-    exportCountry(fullBlk)
-    exportRank(fullBlk)
-    exportCommonParams(fullBlk)
+    this.debugLog($"Exporter: start export for lang {this.curLang}")
+    this.fullBlk = ::DataBlock()
+    this.exportUnitType(this.fullBlk)
+    this.exportCountry(this.fullBlk)
+    this.exportRank(this.fullBlk)
+    this.exportCommonParams(this.fullBlk)
 
-    fullBlk[BASE_GROUP] = ::DataBlock()
-    fullBlk[EXTENDED_GROUP] = ::DataBlock()
+    this.fullBlk[BASE_GROUP] = ::DataBlock()
+    this.fullBlk[EXTENDED_GROUP] = ::DataBlock()
 
-    unitsList = ::all_units.values()
+    this.unitsList = ::all_units.values()
 
-    updateActive()
+    this.updateActive()
 
-    processUnits()
+    this.processUnits()
   }
 
   function finishExport(fBlk)
   {
-    fBlk.saveToTextFile(getLangFullPath())
-    ::get_main_gui_scene().performDelayed(this, nextLangExport) //delay to show exporter logs
+    fBlk.saveToTextFile(this.getLangFullPath())
+    ::get_main_gui_scene().performDelayed(this, this.nextLangExport) //delay to show exporter logs
   }
 
   function exportUnitType(fBlk)
@@ -192,13 +188,13 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     fBlk[COUNTRY_GROUP] = ::DataBlock()
 
     foreach(country in shopCountriesList)
-      fBlk[COUNTRY_GROUP][country] = ::loc(country)
+      fBlk[COUNTRY_GROUP][country] = loc(country)
   }
 
   function exportRank(fBlk)
   {
     fBlk[RANK_GROUP] = ::DataBlock()
-    fBlk[RANK_GROUP].header = ::loc("shop/age")
+    fBlk[RANK_GROUP].header = loc("shop/age")
     fBlk[RANK_GROUP].texts = ::DataBlock()
 
     for(local rank = 1; rank <= ::max_country_rank; rank++)
@@ -213,20 +209,20 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
       fBlk[COMMON_PARAMS_GROUP][infoType.id] = infoType.exportCommonToDataBlock()
   }
 
-  function onEventUnitModsRecount(params)
+  function onEventUnitModsRecount(_params)
   {
-    processUnits()
+    this.processUnits()
   }
 
   function processUnits()
   {
-    while (unitsList.len())
+    while (this.unitsList.len())
     {
-        if(!exportCurUnit(fullBlk, unitsList[unitsList.len() - 1]))
+        if(!this.exportCurUnit(this.fullBlk, this.unitsList[this.unitsList.len() - 1]))
           return
-        unitsList.pop()
+        this.unitsList.pop()
     }
-    finishExport(fullBlk)
+    this.finishExport(this.fullBlk)
   }
 
   function exportCurUnit(fBlk, curUnit)
@@ -234,11 +230,11 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     if (!curUnit.isInShop)
       return true
 
-    debugLog($"Exporter: process unit {curUnit.name}; {unitsList.len()} left")
+    this.debugLog($"Exporter: process unit {curUnit.name}; {this.unitsList.len()} left")
     if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars)
     {
-      debugLog($"Exporter: wait for calculating parameters for unit {curUnit.name}")
-      return check_unit_mods_update(curUnit, null, true, true)
+      this.debugLog($"Exporter: wait for calculating parameters for unit {curUnit.name}")
+      return ::check_unit_mods_update(curUnit, null, true, true)
     }
 
     let groupId = curUnit.showOnlyWhenBought? EXTENDED_GROUP : BASE_GROUP
@@ -272,3 +268,11 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
     return true
   }
 }
+
+let function exportUnitInfo(params)
+{
+  UnitInfoExporter(params["langs"], params["path"])
+  return "ok"
+}
+
+::web_rpc.register_handler("exportUnitInfo", exportUnitInfo)

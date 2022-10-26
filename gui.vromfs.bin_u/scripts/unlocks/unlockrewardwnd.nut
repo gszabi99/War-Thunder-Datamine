@@ -1,5 +1,13 @@
-::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.trophyRewardWnd {
   wndType = handlerType.MODAL
 
   unlockConfig = null
@@ -10,62 +18,62 @@
   itemContainerLayer = "trophy_reward_place"
 
   prepareParams = @() null
-  getTitle = @() ::get_unlock_type_text(unlockData.type, unlockData.id)
+  getTitle = @() getUnlockTypeText(this.unlockData.type, this.unlockData.id)
   isRouletteStarted = @() false
 
   viewParams = null
 
   function openChest() {
-    if (opened)
+    if (this.opened)
       return false
 
-    opened = true
-    updateWnd()
+    this.opened = true
+    this.updateWnd()
     return true
   }
 
   function checkConfigsArray() {
-    let unlockType = ::g_unlock_view.getUnlockType(unlockData)
-    if (unlockType == ::UNLOCKABLE_AIRCRAFT)
-      unit = ::getAircraftByName(unlockData.id)
-    else if (unlockType == ::UNLOCKABLE_DECAL
-      || unlockType == ::UNLOCKABLE_SKIN
-      || unlockType == ::UNLOCKABLE_ATTACHABLE)
+    let unlockType = ::g_unlock_view.getUnlockType(this.unlockData)
+    if (unlockType == UNLOCKABLE_AIRCRAFT)
+      this.unit = ::getAircraftByName(this.unlockData.id)
+    else if (unlockType == UNLOCKABLE_DECAL
+      || unlockType == UNLOCKABLE_SKIN
+      || unlockType == UNLOCKABLE_ATTACHABLE)
       {
-        updateResourceData(unlockData.id, unlockType)
+        this.updateResourceData(this.unlockData.id, unlockType)
       }
   }
 
   function getIconData() {
-    if (!opened)
+    if (!this.opened)
       return ""
 
-    let imgConfig = ::g_unlock_view.getUnlockImageConfig(unlockData)
+    let imgConfig = ::g_unlock_view.getUnlockImageConfig(this.unlockData)
 
     return "{0}{1}".subst(
-      ::LayersIcon.getIconData($"{chestDefaultImg}_opened"),
+      ::LayersIcon.getIconData($"{this.chestDefaultImg}_opened"),
       ::LayersIcon.genDataFromLayer(
-        ::LayersIcon.findLayerCfg(itemContainerLayer),
+        ::LayersIcon.findLayerCfg(this.itemContainerLayer),
         ::LayersIcon.getIconData(imgConfig.style, imgConfig.image, imgConfig.ratio, null, imgConfig.params)
       )
     )
   }
 
   function updateRewardText() {
-    if (!opened)
+    if (!this.opened)
       return
 
-    let obj = scene.findObject("prize_desc_div")
-    if (!::checkObj(obj))
+    let obj = this.scene.findObject("prize_desc_div")
+    if (!checkObj(obj))
       return
 
-    let data = ::g_unlock_view.getViewItem(unlockData, (viewParams ?? {}).__merge({
-      header = ::loc("mainmenu/you_received")
+    let data = ::g_unlock_view.getViewItem(this.unlockData, (this.viewParams ?? {}).__merge({
+      header = loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
     }))
 
-    guiScene.replaceContentFromText(obj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
   checkSkipAnim = @() false
@@ -79,7 +87,7 @@ return {
     let config = ::g_unlocks.getUnlockById(unlockId)
     if (!config)
     {
-      ::dagor.logerr($"Unlock Reward: Could not find unlock config {unlockId}")
+      logerr($"Unlock Reward: Could not find unlock config {unlockId}")
       return
     }
 

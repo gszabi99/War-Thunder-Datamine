@@ -66,7 +66,7 @@ weaponry_item {
       pattern {}
     }
 
-    include "%gui/weaponry/weaponIcon"
+    include "%gui/weaponry/weaponIcon.tpl"
     itemWinkBlock { buttonWink { _transp-timer:t='0' } }
     hoverHighlight {}
 

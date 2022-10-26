@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let time = require("%scripts/time.nut")
 
 
@@ -22,123 +28,123 @@ let time = require("%scripts/time.nut")
   basicInfoTable = null
   textInfoTable = null
 
-  constructor(log)
+  constructor(logObj)
   {
-    logBlk = log.blk
-    logId = log.id
-    logType = ::g_ww_log_type.getLogTypeByName(logBlk.type)
+    this.logBlk = logObj.blk
+    this.logId = logObj.id
+    this.logType = ::g_ww_log_type.getLogTypeByName(this.logBlk.type)
 
-    logColor = getEventColor()
-    zoneName = getZoneName()
+    this.logColor = this.getEventColor()
+    this.zoneName = this.getZoneName()
 
-    logTypeKey = logBlk.type
-    logEndKey  = ""
-    detailedInfoText = ""
+    this.logTypeKey = this.logBlk.type
+    this.logEndKey  = ""
+    this.detailedInfoText = ""
 
-    if (logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
-        logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED)
+    if (this.logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
+        this.logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED)
     {
-      logTypeKey += getEndToKey()
+      this.logTypeKey += this.getEndToKey()
     }
-    else if (logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
+    else if (this.logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
     {
-      logEndKey = logBlk.type + getEndToKey()
-      let statBlk = ::g_ww_logs.objectivesStaticBlk.getBlockByName(logBlk.id)
+      this.logEndKey = this.logBlk.type + this.getEndToKey()
+      let statBlk = ::g_ww_logs.objectivesStaticBlk.getBlockByName(this.logBlk.id)
       if (statBlk)
       {
-        detailedInfoText = getObjectiveName(statBlk)
-        logTypeKey += getObjectiveType(statBlk)
+        this.detailedInfoText = this.getObjectiveName(statBlk)
+        this.logTypeKey += this.getObjectiveType(statBlk)
       }
     }
-    else if (logBlk.type == WW_LOG_TYPES.ARMY_DIED)
-      detailedInfoText = ::loc("ui/parentheses",
-        {text = ::loc("worldwar/log/army_died_" + logBlk.reason)})
+    else if (this.logBlk.type == WW_LOG_TYPES.ARMY_DIED)
+      this.detailedInfoText = loc("ui/parentheses",
+        {text = loc("worldwar/log/army_died_" + this.logBlk.reason)})
 
     local wwArmyId = ""
-    if ("army" in logBlk)
+    if ("army" in this.logBlk)
     {
-      wwArmyId = ::g_ww_logs.getLogArmyId(logId, logBlk.army)
+      wwArmyId = ::g_ww_logs.getLogArmyId(this.logId, this.logBlk.army)
       let wwArmy = ::g_ww_logs.logsArmies[wwArmyId]
       wwArmy.getView().setId(wwArmyId)
-      armyData = getArmyViewBasicData()
-      armyData.army.append(wwArmy.getView())
+      this.armyData = this.getArmyViewBasicData()
+      this.armyData.army.append(wwArmy.getView())
     }
 
-    if ("battle" in logBlk)
+    if ("battle" in this.logBlk)
     {
-      let wwBattle = ::g_ww_logs.logsBattles[logBlk.battle.id].battle
-      detailedInfoText = wwBattle.getLocName()
-      battleData = {
+      let wwBattle = ::g_ww_logs.logsBattles[this.logBlk.battle.id].battle
+      this.detailedInfoText = wwBattle.getLocName()
+      this.battleData = {
         battleView = {
           addClickCb = true
           battle = wwBattle.getView()
         }
-        armySide1View = getArmyViewBasicData()
-        armySide2View = getArmyViewBasicData()
+        armySide1View = this.getArmyViewBasicData()
+        armySide2View = this.getArmyViewBasicData()
       }
 
-      for (local i = 0; i < logBlk.battle.teams.blockCount(); i++)
-        foreach (army in logBlk.battle.teams.getBlock(i).armyNames % "item")
+      for (local i = 0; i < this.logBlk.battle.teams.blockCount(); i++)
+        foreach (army in this.logBlk.battle.teams.getBlock(i).armyNames % "item")
         {
-          let wwBattleArmyId = ::g_ww_logs.getLogArmyId(logBlk.thisLogId, army)
+          let wwBattleArmyId = ::g_ww_logs.getLogArmyId(this.logBlk.thisLogId, army)
           if (wwBattleArmyId == wwArmyId)
             continue
 
           let wwArmy = ::g_ww_logs.logsArmies[wwBattleArmyId]
           wwArmy.getView().setId(wwBattleArmyId)
           if (i == 0)
-            battleData.armySide1View.army.append(wwArmy.getView())
+            this.battleData.armySide1View.army.append(wwArmy.getView())
           else
-            battleData.armySide2View.army.append(wwArmy.getView())
+            this.battleData.armySide2View.army.append(wwArmy.getView())
         }
     }
 
-    if ("damagedArmies" in logBlk)
+    if ("damagedArmies" in this.logBlk)
     {
-      dmgArmiesData = []
-      foreach (army in logBlk.damagedArmies)
+      this.dmgArmiesData = []
+      foreach (army in this.logBlk.damagedArmies)
       {
-        let wwBattleArmyId = ::g_ww_logs.getLogArmyId(logId, army.getBlockName())
+        let wwBattleArmyId = ::g_ww_logs.getLogArmyId(this.logId, army.getBlockName())
         let wwArmy = ::g_ww_logs.logsArmies[wwBattleArmyId]
         wwArmy.getView().setId(wwBattleArmyId)
-        dmgArmiesData.append({
+        this.dmgArmiesData.append({
           armyName = wwBattleArmyId
           casualties = wwArmy.getCasualtiesCount(army)
           killed = army.killed
         })
       }
-      if (dmgArmiesData.len())
-        logEndKey = "has_casualties"
+      if (this.dmgArmiesData.len())
+        this.logEndKey = "has_casualties"
     }
 
-    basicInfoTable = {
+    this.basicInfoTable = {
       date_text = {
-        text = getDate()
+        text = this.getDate()
       }
 
       log_icon = {
-        logCategoryName = logType.categoryName,
-        ["background-image"] = getIconImage()
+        logCategoryName = this.logType.categoryName,
+        ["background-image"] = this.getIconImage()
       }
 
       log_time = {
-        text = getTime(),
-        tooltip = getDateAndTime()
+        text = this.getTime(),
+        tooltip = this.getDateAndTime()
       }
 
       log_zone = {
-        text = getZoneName(),
-        isYourZone = isYourZone() ? "yes" : "no"
+        text = this.getZoneName(),
+        isYourZone = this.isYourZone() ? "yes" : "no"
       }
     }
 
-    local str = ::loc("worldwar/log/" + logTypeKey) + " "
-    if (logEndKey && logEndKey.len())
-      str += ::loc("worldwar/log/" + logEndKey) + " "
+    local str = loc("worldwar/log/" + this.logTypeKey) + " "
+    if (this.logEndKey && this.logEndKey.len())
+      str += loc("worldwar/log/" + this.logEndKey) + " "
 
-    textInfoTable = {
-      text = ::colorize(logColor, str),
-      tooltip = detailedInfoText
+    this.textInfoTable = {
+      text = colorize(this.logColor, str),
+      tooltip = this.detailedInfoText
     }
   }
 
@@ -158,24 +164,24 @@ let time = require("%scripts/time.nut")
 
   function getId()
   {
-    return logId
+    return this.logId
   }
 
   function isFirst()
   {
-    return isFirstRow
+    return this.isFirstRow
   }
 
   function getEventColor()
   {
-    if ("army" in logBlk)
+    if ("army" in this.logBlk)
     {
-      let wwArmy = ::g_ww_logs.logsArmies[::g_ww_logs.getLogArmyId(logBlk.thisLogId, logBlk.army)]
+      let wwArmy = ::g_ww_logs.logsArmies[::g_ww_logs.getLogArmyId(this.logBlk.thisLogId, this.logBlk.army)]
       if (!wwArmy)
         return WW_LOG_COLORS.NEUTRAL_EVENT
 
       let isMySideArmy = wwArmy.isMySide(::ww_get_player_side())
-      switch (logBlk.type)
+      switch (this.logBlk.type)
       {
         case WW_LOG_TYPES.ZONE_CAPTURED:
           return isMySideArmy ? WW_LOG_COLORS.GOOD_EVENT : WW_LOG_COLORS.BAD_EVENT
@@ -187,20 +193,20 @@ let time = require("%scripts/time.nut")
       return WW_LOG_COLORS.NEUTRAL_EVENT
     }
 
-    if (logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
-        logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED ||
-        logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
-      return ::g_ww_logs.isPlayerWinner(logBlk) ? WW_LOG_COLORS.GOOD_EVENT : WW_LOG_COLORS.BAD_EVENT
+    if (this.logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
+        this.logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED ||
+        this.logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
+      return ::g_ww_logs.isPlayerWinner(this.logBlk) ? WW_LOG_COLORS.GOOD_EVENT : WW_LOG_COLORS.BAD_EVENT
 
     return WW_LOG_COLORS.NEUTRAL_EVENT
   }
 
   function getEndToKey()
   {
-    if (logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
-        logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED ||
-        logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
-      return ::g_ww_logs.isPlayerWinner(logBlk) ? "_win" : "_lose"
+    if (this.logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
+        this.logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED ||
+        this.logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
+      return ::g_ww_logs.isPlayerWinner(this.logBlk) ? "_win" : "_lose"
     return ""
   }
 
@@ -208,17 +214,17 @@ let time = require("%scripts/time.nut")
   {
     let mySideName = ::ww_side_val_to_name(::ww_get_player_side())
     let objectiveType = ::g_ww_objective_type.getTypeByTypeName(statBlk.type)
-    return "\"" + objectiveType.getName(statBlk, DataBlock(), mySideName) + "\""
+    return "\"" + objectiveType.getName(statBlk, ::DataBlock(), mySideName) + "\""
   }
 
   function getZoneName()
   {
-    return logBlk?.zoneInfo.zoneName ?? ""
+    return this.logBlk?.zoneInfo.zoneName ?? ""
   }
 
   function isYourZone()
   {
-    let zoneOwner = logBlk?.zoneInfo.ownedSide
+    let zoneOwner = this.logBlk?.zoneInfo.ownedSide
     if (!zoneOwner)
       return false
 
@@ -232,94 +238,94 @@ let time = require("%scripts/time.nut")
 
   function getZoneText()
   {
-    return zoneName
+    return this.zoneName
   }
 
   function getDate()
   {
-    return time.buildDateStr(logBlk.time)
+    return time.buildDateStr(this.logBlk.time)
   }
 
   function getTime()
   {
-    return time.buildTimeStr(logBlk.time, false, false)
+    return time.buildTimeStr(this.logBlk.time, false, false)
   }
 
   function getDateAndTime()
   {
-    return time.buildDateTimeStr(logBlk.time)
+    return time.buildDateTimeStr(this.logBlk.time)
   }
 
   function getLogColor()
   {
-    return logColor
+    return this.logColor
   }
 
   function getBasicInfoTable()
   {
-    return basicInfoTable
+    return this.basicInfoTable
   }
 
   function getTextInfoTable()
   {
-    return textInfoTable
+    return this.textInfoTable
   }
 
   function getArmyData()
   {
-    return armyData
+    return this.armyData
   }
 
   function getBattleData()
   {
-    return battleData
+    return this.battleData
   }
 
   function getDmgArmiesData()
   {
-    return dmgArmiesData
+    return this.dmgArmiesData
   }
 
   function isMySide()
   {
-    if ("side" in logBlk)
-      return logBlk.side == ::ww_side_val_to_name(::ww_get_player_side())
+    if ("side" in this.logBlk)
+      return this.logBlk.side == ::ww_side_val_to_name(::ww_get_player_side())
 
     return false
   }
 
   function getIconImage()
   {
-    return "#ui/gameuiskin#" + logType.iconImage
+    return "#ui/gameuiskin#" + this.logType.iconImage
   }
 
   function getIconColor()
   {
-    return logType.iconColor
+    return this.logType.iconColor
   }
 
   function showDate()
   {
-    return getDate() != prevLogDate
+    return this.getDate() != this.prevLogDate
   }
 
   function getSide1ArmyBlockWidth()
   {
-    return battleData.armySide1View.army.len()
+    return this.battleData.armySide1View.army.len()
   }
 
   function getSide2ArmyBlockWidth()
   {
-    return battleData.armySide2View.army.len()
+    return this.battleData.armySide2View.army.len()
   }
 
   function setPrevLogDateValue(val)
   {
-    prevLogDate = val
+    this.prevLogDate = val
   }
 
   function setIsFirstRowValue(val)
   {
-    isFirstRow = val
+    this.isFirstRow = val
   }
 }

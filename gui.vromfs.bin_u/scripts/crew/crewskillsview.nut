@@ -1,9 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
 let { getSkillListParameterRowsView } = require("%scripts/crew/crewSkillParameters.nut")
 
 let function getSkillCategoryName(skillCategory) {
-  return ::loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)
+  return loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)
 }
 
 let function getCategoryParameterRows(skillCategory, crewUnitType, crew, unit) {
@@ -14,7 +19,7 @@ let function getCategoryParameterRows(skillCategory, crewUnitType, crew, unit) {
 let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, unit) {
   let headerLocId = "crewSkillCategoryTooltip/" + skillCategory.categoryName
   let view = {
-    tooltipText = ::loc(headerLocId, getSkillCategoryName(skillCategory) + ":")
+    tooltipText = loc(headerLocId, getSkillCategoryName(skillCategory) + ":")
     skillRows = []
     hasSkillRows = true
     parameterRows = getCategoryParameterRows(skillCategory, crewUnitType, crewData, unit)
@@ -30,8 +35,8 @@ let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewDat
     if (!skillItem)
       continue
 
-    let memberName = ::loc("crew/" + categorySkill.memberName)
-    let skillName = ::loc("crew/" + categorySkill.skillName)
+    let memberName = loc("crew/" + categorySkill.memberName)
+    let skillName = loc("crew/" + categorySkill.skillName)
     let skillValue = getSkillValue(crewData.id, unit, categorySkill.memberName, categorySkill.skillName)
     let availValue = ::g_crew.getMaxAvailbleStepValue(skillItem, skillValue, crewSkillPoints)
     view.skillRows.append({
@@ -49,7 +54,7 @@ let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewDat
   if (view.parameterRows.len())
     view.headerItems <- view.parameterRows[0].valueItems
 
-  return ::handyman.renderCached("%gui/crew/crewSkillParametersTooltip", view)
+  return ::handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
 }
 
 return {

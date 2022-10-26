@@ -1,10 +1,16 @@
-::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc)
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc) {
   ::gui_start_modal_wnd(::gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc})
 }
 
-::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsInput.blk"
 
@@ -17,18 +23,18 @@
   function initScreen()
   {
     ::set_bind_mode(true);
-    guiScene.sleepKeyRepeat(true);
-    isListenButton = true;
-    scene.select();
+    this.guiScene.sleepKeyRepeat(true);
+    this.isListenButton = true;
+    this.scene.select();
   }
 
   function onButtonEntered(obj)
   {
-    if (!isListenButton)
+    if (!this.isListenButton)
       return;
 
-    dev = [];
-    btn = [];
+    this.dev = [];
+    this.btn = [];
     for (local i = 0; i < 4; i++)
     {
       if (obj["device" + i]!="" && obj["button" + i]!="")
@@ -37,20 +43,20 @@
         let btnId = obj["button" + i].tointeger();
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
-        ::dagor.debug("onButtonEntered "+i+" "+devId+" "+btnId);
-        dev.append(devId);
-        btn.append(btnId);
+        log("onButtonEntered "+i+" "+devId+" "+btnId);
+        this.dev.append(devId);
+        this.btn.append(btnId);
       }
     }
-    goBack();
+    this.goBack();
   }
 
-  function onCancelButtonInput(obj)
+  function onCancelButtonInput(_obj)
   {
-    goBack();
+    this.goBack();
   }
 
   function onButtonAdded(obj)
@@ -68,7 +74,7 @@
         btnId = btnId.tointeger()
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
         if (numButtons != 0)
@@ -79,26 +85,26 @@
       }
     }
     curBtnText = ::hackTextAssignmentForR2buttonOnPS4(curBtnText)
-    scene.findObject("txt_current_button").setValue(curBtnText + ((numButtons < 3)? " + ?" : ""));
+    this.scene.findObject("txt_current_button").setValue(curBtnText + ((numButtons < 3)? " + ?" : ""));
   }
 
   function afterModalDestroy()
   {
-    if (dev.len() > 0 && dev.len() == btn.len())
-      if (::handlersManager.isHandlerValid(owner) && onButtonEnteredFunc)
-        onButtonEnteredFunc.call(owner, dev, btn);
+    if (this.dev.len() > 0 && this.dev.len() == this.btn.len())
+      if (::handlersManager.isHandlerValid(this.owner) && this.onButtonEnteredFunc)
+        this.onButtonEnteredFunc.call(this.owner, this.dev, this.btn);
   }
 
-  function onEventAfterJoinEventRoom(event)
+  function onEventAfterJoinEventRoom(_event)
   {
-    goBack()
+    this.goBack()
   }
 
   function goBack()
   {
-    guiScene.sleepKeyRepeat(false);
+    this.guiScene.sleepKeyRepeat(false);
     ::set_bind_mode(false);
-    isListenButton = false;
+    this.isListenButton = false;
     base.goBack();
   }
 }

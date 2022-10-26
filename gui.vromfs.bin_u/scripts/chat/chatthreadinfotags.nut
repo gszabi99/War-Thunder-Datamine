@@ -1,20 +1,26 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_chat_thread_tag <- {
   types = []
 }
 
-g_chat_thread_tag._setThreadInfoPropertyForBoolTag <- function _setThreadInfoPropertyForBoolTag(threadInfo, valueString)
+::g_chat_thread_tag._setThreadInfoPropertyForBoolTag <- function _setThreadInfoPropertyForBoolTag(threadInfo, _valueString)
 {
-  threadInfo[threadInfoParamName] = true
+  threadInfo[this.threadInfoParamName] = true
 }
-g_chat_thread_tag._updateThreadWhenNoTagForBoolTag <- function _updateThreadWhenNoTagForBoolTag(threadInfo)
+::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag <- function _updateThreadWhenNoTagForBoolTag(threadInfo)
 {
-  threadInfo[threadInfoParamName] = false
+  threadInfo[this.threadInfoParamName] = false
 }
-g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBoolTag(threadInfo)
+::g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBoolTag(threadInfo)
 {
-  if (threadInfo[threadInfoParamName])
-    return prefix
+  if (threadInfo[this.threadInfoParamName])
+    return this.prefix
   return ""
 }
 
@@ -26,28 +32,28 @@ g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBo
 
   checkTag = function(tag)
   {
-    return ::g_string.startsWith(tag, prefix)
+    return ::g_string.startsWith(tag, this.prefix)
   }
   setThreadInfoProperty = function(threadInfo, valueString)
   {
-    if (threadInfoParamName)
-      threadInfo[threadInfoParamName] = valueString
+    if (this.threadInfoParamName)
+      threadInfo[this.threadInfoParamName] = valueString
   }
   updateThreadByTag = function(threadInfo, tag)
   {
-    if (!isRegular || !checkTag(tag))
+    if (!this.isRegular || !this.checkTag(tag))
       return false
-    setThreadInfoProperty(threadInfo, ::g_string.slice(tag, prefix.len()))
+    this.setThreadInfoProperty(threadInfo, ::g_string.slice(tag, this.prefix.len()))
     return true
   }
-  updateThreadWhenNoTag = function(threadInfo) {}
-  updateThreadBeforeTagsUpdate = function(threadInfo) {}
+  updateThreadWhenNoTag = function(_threadInfo) {}
+  updateThreadBeforeTagsUpdate = function(_threadInfo) {}
 
   getTagString = function(threadInfo)
   {
-    if (isReadOnly || !threadInfoParamName)
+    if (this.isReadOnly || !this.threadInfoParamName)
       return ""
-    return prefix + threadInfo[threadInfoParamName]
+    return this.prefix + threadInfo[this.threadInfoParamName]
   }
 }
 
@@ -66,7 +72,7 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     threadInfoParamName = "ownerNick"
     setThreadInfoProperty = function(threadInfo, valueString)
     {
-      threadInfo[threadInfoParamName] = ::gchat_unescape_target(valueString)
+      threadInfo[this.threadInfoParamName] = ::gchat_unescape_target(valueString)
     }
   }
 
@@ -82,11 +88,11 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
 
     setThreadInfoProperty = function(threadInfo, valueString)
     {
-      threadInfo[threadInfoParamName] = ::to_integer_safe(valueString)
+      threadInfo[this.threadInfoParamName] = ::to_integer_safe(valueString)
     }
     updateThreadWhenNoTag = function(threadInfo)
     {
-      setThreadInfoProperty(threadInfo, 0)
+      this.setThreadInfoProperty(threadInfo, 0)
     }
   }
 
@@ -113,11 +119,11 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
 
     setThreadInfoProperty = function(threadInfo, valueString)
     {
-      threadInfo[threadInfoParamName] = ::to_integer_safe(valueString)
+      threadInfo[this.threadInfoParamName] = ::to_integer_safe(valueString)
     }
     updateThreadWhenNoTag = function(threadInfo)
     {
-      setThreadInfoProperty(threadInfo, -1)
+      this.setThreadInfoProperty(threadInfo, -1)
     }
   }
 
@@ -127,16 +133,16 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
 
     updateThreadBeforeTagsUpdate = function(threadInfo)
     {
-      threadInfo[threadInfoParamName].clear()
+      threadInfo[this.threadInfoParamName].clear()
     }
     setThreadInfoProperty = function(threadInfo, valueString)
     {
-      threadInfo[threadInfoParamName].insert(0, valueString) //tags checked in inverted order
+      threadInfo[this.threadInfoParamName].insert(0, valueString) //tags checked in inverted order
     }
     getTagString = function(threadInfo)
     {
       threadInfo.sortLangList()
-      let tags = ::u.map(threadInfo[threadInfoParamName], (@(prefix) function(val) { return prefix + val })(prefix))
+      let tags = ::u.map(threadInfo[this.threadInfoParamName], (@(prefix) function(val) { return prefix + val })(this.prefix))
       return ::g_string.implode(tags, ",")
     }
   }
@@ -149,12 +155,12 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     {
       let categories = ::g_chat_categories.list
       let category = (valueString in categories) ? valueString : ::g_chat_categories.defaultCategoryName
-      threadInfo[threadInfoParamName] = category
+      threadInfo[this.threadInfoParamName] = category
     }
 
     updateThreadWhenNoTag = function(threadInfo)
     {
-      threadInfo[threadInfoParamName] = ::g_chat_categories.defaultCategoryName
+      threadInfo[this.threadInfoParamName] = ::g_chat_categories.defaultCategoryName
     }
   }
 })

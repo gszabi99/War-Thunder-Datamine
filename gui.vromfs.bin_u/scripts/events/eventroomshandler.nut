@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let stdMath = require("%sqstd/math.nut")
@@ -79,7 +87,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (!event)
       return
 
-    if (::events.getEventDiffCode(event) == ::DIFFICULTY_HARDCORE &&
+    if (::events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return
 
@@ -93,40 +101,40 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function initScreen()
   {
-    collapsedChapterNamesArray = []
-    chaptersTree = []
-    viewRoomList = {}
+    this.collapsedChapterNamesArray = []
+    this.chaptersTree = []
+    this.viewRoomList = {}
 
-    if (hasBackToEventsButton)
-      initFrameOverEventsWnd()
+    if (this.hasBackToEventsButton)
+      this.initFrameOverEventsWnd()
 
-    updateMouseMode()
-    roomsListObj = scene.findObject("items_list")
-    roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(event) })
-    eventDescription = ::create_event_description(scene)
-    showOnlyAvailableRooms = ::load_local_account_settings("events/showOnlyAvailableRooms", true)
+    this.updateMouseMode()
+    this.roomsListObj = this.scene.findObject("items_list")
+    this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(this.event) })
+    this.eventDescription = ::create_event_description(this.scene)
+    this.showOnlyAvailableRooms = ::load_local_account_settings("events/showOnlyAvailableRooms", true)
     let obj = this.showSceneBtn("only_available_rooms", true)
-    obj.setValue(showOnlyAvailableRooms)
-    refreshList()
-    fillRoomsList()
-    updateWindow()
-    updateClusters()
+    obj.setValue(this.showOnlyAvailableRooms)
+    this.refreshList()
+    this.fillRoomsList()
+    this.updateWindow()
+    this.updateClusters()
 
-    scene.findObject("wnd_title").setValue(::events.getEventNameText(event))
-    scene.findObject("event_update").setUserData(this)
+    this.scene.findObject("wnd_title").setValue(::events.getEventNameText(this.event))
+    this.scene.findObject("event_update").setUserData(this)
 
-    if (selectedIdx != -1)
+    if (this.selectedIdx != -1)
     {
-      guiScene.applyPendingChanges(false)
-      ::move_mouse_on_child_by_value(roomsListObj)
+      this.guiScene.applyPendingChanges(false)
+      ::move_mouse_on_child_by_value(this.roomsListObj)
     }
     else
-      initTime = ::dagor.getCurTime()
+      this.initTime = get_time_msec()
   }
 
   function initFrameOverEventsWnd()
   {
-    let frameObj = scene.findObject("wnd_frame")
+    let frameObj = this.scene.findObject("wnd_frame")
     frameObj.width = "1@slotbarWidthFull - 6@framePadding"
     frameObj.height = "1@maxWindowHeightWithSlotbar - 1@frameFooterHeight - 1@frameTopPadding"
     frameObj.top = "1@battleBtnBottomOffset - 1@frameFooterHeight - h"
@@ -134,66 +142,66 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let roomsListBtn = this.showSceneBtn("btn_rooms_list", true)
     roomsListBtn.btnName = "B"
     roomsListBtn.isOpened = "yes"
-    guiScene.applyPendingChanges(false)
+    this.guiScene.applyPendingChanges(false)
 
     let pos = roomsListBtn.getPosRC()
     roomsListBtn.noMargin = "yes"
-    pos[0] -= guiScene.calcString("3@framePadding", null)
-    pos[1] += guiScene.calcString("1@frameFooterHeight", null)
+    pos[0] -= this.guiScene.calcString("3@framePadding", null)
+    pos[1] += this.guiScene.calcString("1@frameFooterHeight", null)
     roomsListBtn.style = format("position:root; pos:%d,%d;", pos[0], pos[1])
   }
 
   function getCurRoom()
   {
-    return roomsListData.getRoom(curRoomId)
+    return this.roomsListData.getRoom(this.curRoomId)
   }
 
   function onItemSelect()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
 
-    onItemSelectAction()
+    this.onItemSelectAction()
   }
 
   function onItemSelectAction()
   {
-    let selItemIdx = roomsListObj.getValue()
-    if (selItemIdx < 0 || selItemIdx >= roomsListObj.childrenCount())
+    let selItemIdx = this.roomsListObj.getValue()
+    if (selItemIdx < 0 || selItemIdx >= this.roomsListObj.childrenCount())
       return
-    let selItemObj = roomsListObj.getChild(selItemIdx)
-    if (!::check_obj(selItemObj) || !selItemObj?.id)
-      return
-
-    let selChapterId = getChapterNameByObjId(selItemObj.id)
-    let selRoomId = getRoomIdByObjId(selItemObj.id)
-
-    if (!isSelectedRoomDataChanged && selChapterId == curChapterId && selRoomId == curRoomId)
+    let selItemObj = this.roomsListObj.getChild(selItemIdx)
+    if (!checkObj(selItemObj) || !selItemObj?.id)
       return
 
-    isSelectedRoomDataChanged = false
-    curChapterId = selChapterId
-    curRoomId = selRoomId
-    selectedIdx = selItemIdx
+    let selChapterId = this.getChapterNameByObjId(selItemObj.id)
+    let selRoomId = this.getRoomIdByObjId(selItemObj.id)
 
-    updateWindow()
+    if (!this.isSelectedRoomDataChanged && selChapterId == this.curChapterId && selRoomId == this.curRoomId)
+      return
+
+    this.isSelectedRoomDataChanged = false
+    this.curChapterId = selChapterId
+    this.curRoomId = selRoomId
+    this.selectedIdx = selItemIdx
+
+    this.updateWindow()
   }
 
   function updateWindow()
   {
-    createSlotbar({ eventId = event.name, room = getCurRoom() })
-    updateDescription()
-    updateButtons()
+    this.createSlotbar({ eventId = this.event.name, room = this.getCurRoom() })
+    this.updateDescription()
+    this.updateButtons()
   }
 
   function onJoinEvent()
   {
-    joinEvent()
+    this.joinEvent()
   }
 
   function joinEvent(isFromDebriefing = false)
   {
-    if (curRoomId == "")
+    if (this.curRoomId == "")
       return
 
     if (!suggestAndAllowPsnPremiumFeatures())
@@ -206,14 +214,14 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"
-      economicName = ::events.getEventEconomicName(event)
-      difficulty = event?.difficulty ?? ""
+      economicName = ::events.getEventEconomicName(this.event)
+      difficulty = this.event?.difficulty ?? ""
       canIntoToBattle = true
       missionsComplete = ::my_stats.getMissionsComplete()
     }
 
-    ::EventJoinProcess(event, getCurRoom(),
-      @(event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+    ::EventJoinProcess(this.event, this.getCurRoom(),
+      @(_event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
       function() {
         configForStatistic.canIntoToBattle <- false
         ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
@@ -222,71 +230,71 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function refreshList()
   {
-    roomsListData.requestList(getCurFilter())
+    this.roomsListData.requestList(this.getCurFilter())
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, _dt)
   {
-    doWhenActiveOnce("refreshList")
+    this.doWhenActiveOnce("refreshList")
   }
 
-  function onEventSearchedRoomsChanged(p)
+  function onEventSearchedRoomsChanged(_p)
   {
-    isSelectedRoomDataChanged = true
-    fillRoomsList()
+    this.isSelectedRoomDataChanged = true
+    this.fillRoomsList()
   }
 
   function onOpenClusterSelect(obj)
   {
     ::queues.checkAndStart(
-      ::Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
+      Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
   }
 
-  function onEventClusterChange(params)
+  function onEventClusterChange(_params)
   {
-    updateClusters()
-    fillRoomsList()
+    this.updateClusters()
+    this.fillRoomsList()
   }
 
   function updateClusters()
   {
-    clustersModule.updateClusters(scene.findObject("cluster_select_button"))
+    clustersModule.updateClusters(this.scene.findObject("cluster_select_button"))
   }
 
-  function onEventSquadStatusChanged(params)
+  function onEventSquadStatusChanged(_params)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
-  function onEventSquadSetReady(params)
+  function onEventSquadSetReady(_params)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
-  function onEventSquadDataUpdated(params)
+  function onEventSquadDataUpdated(_params)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
   function updateDescription()
   {
-    eventDescription.selectEvent(event, getCurRoom())
+    this.eventDescription.selectEvent(this.event, this.getCurRoom())
   }
 
   function updateButtons()
   {
-    let hasRoom = curRoomId.len() != 0
+    let hasRoom = this.curRoomId.len() != 0
 
-    let isCurItemInFocus = selectedIdx >= 0 && (isMouseMode || hoveredIdx == selectedIdx)
-    this.showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredIdx >= 0)
+    let isCurItemInFocus = this.selectedIdx >= 0 && (this.isMouseMode || this.hoveredIdx == this.selectedIdx)
+    this.showSceneBtn("btn_select_console", !isCurItemInFocus && this.hoveredIdx >= 0)
 
-    let reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
+    let reasonData = ::events.getCantJoinReasonData(this.event, isCurItemInFocus ? this.getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
-      reasonData.reasonText = ::loc("multiplayer/no_room_selected")
+      reasonData.reasonText = loc("multiplayer/no_room_selected")
 
-    let roomMGM = ::SessionLobby.getMGameMode(getCurRoom())
+    let roomMGM = ::SessionLobby.getMGameMode(this.getCurRoom())
     let isReady = ::g_squad_manager.isMeReady()
     let isSquadMember = ::g_squad_manager.isSquadMember()
 
@@ -296,29 +304,29 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let availTeams = ::events.getAvailableTeams(roomMGM)
     local startText = ""
     if (isSquadMember)
-      startText = ::loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
+      startText = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
     else if (roomMGM && !::events.isEventSymmetricTeams(roomMGM) && availTeams.len() == 1)
-      startText = ::loc("events/join_event_by_team",
+      startText = loc("events/join_event_by_team",
         { team = ::g_team.getTeamByCode(availTeams[0]).getShortName() })
     else
-      startText = ::loc("events/join_event")
+      startText = loc("events/join_event")
 
-    let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
+    let battlePriceText = ::events.getEventBattleCostText(this.event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0 && reasonData.activeJoinButton)
       startText += format(" (%s)", battlePriceText)
 
-    setColoredDoubleTextToButton(scene, "btn_join_event", startText)
+    setColoredDoubleTextToButton(this.scene, "btn_join_event", startText)
     let reasonTextObj = this.showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
     reasonTextObj.setValue(reasonData.reasonText)
 
-    this.showSceneBtn("btn_create_room", ::events.canCreateCustomRoom(event))
+    this.showSceneBtn("btn_create_room", ::events.canCreateCustomRoom(this.event))
 
-    let isHeader = isCurItemInFocus && curChapterId != "" && curRoomId == ""
+    let isHeader = isCurItemInFocus && this.curChapterId != "" && this.curRoomId == ""
     let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isHeader)
     if (isHeader)
     {
-      let isCollapsedChapter = ::isInArray(curChapterId, collapsedChapterNamesArray)
-      startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
+      let isCollapsedChapter = isInArray(this.curChapterId, this.collapsedChapterNamesArray)
+      startText = loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
   }
@@ -330,24 +338,24 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function checkRoomsOrder()
   {
-    fillRoomsList(true)
+    this.fillRoomsList(true)
   }
 
   function fillRoomsList(isUpdateOnlyWhenFlagsChanged = false)
   {
-    let roomsList = roomsListData.getList()
-    let isFlagsUpdated = updateRoomsFlags(roomsList)
+    let roomsList = this.roomsListData.getList()
+    let isFlagsUpdated = this.updateRoomsFlags(roomsList)
     if (isUpdateOnlyWhenFlagsChanged && !isFlagsUpdated)
       return
 
-    generateChapters(roomsList)
-    updateListInfo(roomsList.len())
+    this.generateChapters(roomsList)
+    this.updateListInfo(roomsList.len())
 
-    if (initTime != -1 && selectedIdx != -1)
+    if (this.initTime != -1 && this.selectedIdx != -1)
     {
-      if (::dagor.getCurTime() - initTime < NOTICEABLE_RESPONCE_DELAY_TIME_MS)
-        ::move_mouse_on_child_by_value(roomsListObj)
-      initTime = -1
+      if (get_time_msec() - this.initTime < NOTICEABLE_RESPONCE_DELAY_TIME_MS)
+        ::move_mouse_on_child_by_value(this.roomsListObj)
+      this.initTime = -1
     }
   }
 
@@ -359,8 +367,8 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       return res
     res = res | eRoomFlags.HAS_COUNTRY
 
-    if ((!isMultiSlot && ::events.isCurUnitMatchesRoomRules(event, room))
-        || (isMultiSlot && ::events.checkPlayersCraftsRoomRules(event, room)))
+    if ((!isMultiSlot && ::events.isCurUnitMatchesRoomRules(this.event, room))
+        || (isMultiSlot && ::events.checkPlayersCraftsRoomRules(this.event, room)))
     {
       res = res | eRoomFlags.HAS_UNIT_MATCH_RULES
       if (::events.checkRequiredUnits(mGameMode, room))
@@ -375,7 +383,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       res = res | eRoomFlags.IS_ALLOWED_BY_BALANCE
 
     if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadLeader()) {
-      let membersTeams = ::events.getMembersTeamsData(event, room, teams)
+      let membersTeams = ::events.getMembersTeamsData(this.event, room, teams)
       if (!(membersTeams?.haveRestrictions ?? false))
         res = res | eRoomFlags.AVAILABLE_FOR_SQUAD
     }
@@ -388,14 +396,14 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function updateRoomsFlags(roomsList)
   {
     local hasChanges = false
-    let isMultiSlot = ::events.isEventMultiSlotEnabled(event)
-    let needCheckAvailable = ::events.checkPlayersCrafts(event)
-    let teamSize = ::events.getMaxTeamSize(event)
+    let isMultiSlot = ::events.isEventMultiSlotEnabled(this.event)
+    let needCheckAvailable = ::events.checkPlayersCrafts(this.event)
+    let teamSize = ::events.getMaxTeamSize(this.event)
     foreach(room in roomsList)
     {
-      let wasFlags = ::getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
+      let wasFlags = getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
       local flags = eRoomFlags.NONE
-      let mGameMode = ::events.getMGameMode(event, room)
+      let mGameMode = ::events.getMGameMode(this.event, room)
 
       let countTbl = ::SessionLobby.getMembersCountByTeams(room)
       if (countTbl.total < 2 * teamSize)
@@ -419,7 +427,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
         }
 
       if (needCheckAvailable)
-        flags = flags | getMGameModeFlags(mGameMode, room, isMultiSlot)
+        flags = flags | this.getMGameModeFlags(mGameMode, room, isMultiSlot)
 
       if ((flags & eRoomFlags.CAN_JOIN_MASK) == eRoomFlags.CAN_JOIN_MASK)
         flags = flags | eRoomFlags.CAN_JOIN
@@ -442,7 +450,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function getRoomNameView(room)
   {
     let roomFlags = room[EROOM_FLAGS_KEY_NAME]
-    let isLocked = isLockedByMask(roomFlags)
+    let isLocked = this.isLockedByMask(roomFlags)
 
     local text = ::SessionLobby.getMissionNameLoc(room)
     let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
@@ -452,12 +460,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
       let rankText = ::events.getBrTextByRules(reqUnits)
-      let ruleTexts = ::u.map(reqUnits, getRuleText)
-      let rulesText = ::colorize(color, ::g_string.implode(ruleTexts, ::loc("ui/comma")))
+      let ruleTexts = ::u.map(reqUnits, this.getRuleText)
+      let rulesText = colorize(color, ::g_string.implode(ruleTexts, loc("ui/comma")))
 
-      text = ::colorize(color, rankText) + " " + text
+      text = colorize(color, rankText) + " " + text
       if (rulesText.len())
-        text += ::loc("ui/comma") + rulesText
+        text += loc("ui/comma") + rulesText
     }
 
     return {
@@ -475,40 +483,40 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateListInfo(visibleRoomsAmount)
   {
-    let needWaitIcon = !visibleRoomsAmount && roomsListData.isInUpdate
-    scene.findObject("items_list_wait_icon").show(needWaitIcon)
+    let needWaitIcon = !visibleRoomsAmount && this.roomsListData.isInUpdate
+    this.scene.findObject("items_list_wait_icon").show(needWaitIcon)
 
     local infoText = ""
     if (!visibleRoomsAmount && !needWaitIcon)
-      infoText = ::loc(roomsListData.getList().len() ? "multiplayer/no_rooms_by_clusters" : "multiplayer/no_rooms")
+      infoText = loc(this.roomsListData.getList().len() ? "multiplayer/no_rooms_by_clusters" : "multiplayer/no_rooms")
 
-    scene.findObject("items_list_msg").setValue(infoText)
-    roomsListObj.enable(visibleRoomsAmount && !needWaitIcon)
+    this.scene.findObject("items_list_msg").setValue(infoText)
+    this.roomsListObj.enable(visibleRoomsAmount && !needWaitIcon)
   }
 
   function getCurrentEdiff()
   {
-    let ediff = ::events.getEDiffByEvent(event)
+    let ediff = ::events.getEDiffByEvent(this.event)
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
-  function onEventCountryChanged(p)
+  function onEventCountryChanged(_p)
   {
-    updateButtons()
-    checkRoomsOrder()
+    this.updateButtons()
+    this.checkRoomsOrder()
   }
 
   function updateChaptersTree(roomsList)
   {
-    chaptersTree.clear()
-    foreach (idx, room in roomsList)
+    this.chaptersTree.clear()
+    foreach (_idx, room in roomsList)
     {
       let chapterGameMode = ::SessionLobby.getMGameMode(room, true)
       let isCustomMode = ::events.isCustomGameMode(chapterGameMode)
       let isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
       let itemView = {
         itemText = isSeparateCustomRoomsList
-          ? ::colorize("activeTextColor", ::loc("events/playersRooms"))
+          ? colorize("activeTextColor", loc("events/playersRooms"))
           : null
       }
       local name = ""
@@ -518,14 +526,14 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
           : "|".concat(name, "_".join(countries.map(@(c) cutPrefix(c, "country_", c))))
         if (!isCustomMode || !isSeparateCustomRoomsList)
           itemView[$"{::g_team.getTeamByCode(side).name}Countries"] <- {
-            country = getFlagsArrayByCountriesArray(countries)
+            country = this.getFlagsArrayByCountriesArray(countries)
         }
       }
 
-      let foundChapter = chaptersTree.findvalue(@(chapter) chapter.name == name)
+      let foundChapter = this.chaptersTree.findvalue(@(chapter) chapter.name == name)
       if (foundChapter == null)
       {
-        chaptersTree.append({
+        this.chaptersTree.append({
           name
           [EROOM_FLAGS_KEY_NAME] = room[EROOM_FLAGS_KEY_NAME]
           itemView
@@ -539,28 +547,28 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       }
     }
 
-    chaptersTree.sort(@(a, b) b[EROOM_FLAGS_KEY_NAME] <=> a[EROOM_FLAGS_KEY_NAME])
-    foreach (idx, chapter in chaptersTree)
+    this.chaptersTree.sort(@(a, b) b[EROOM_FLAGS_KEY_NAME] <=> a[EROOM_FLAGS_KEY_NAME])
+    foreach (_idx, chapter in this.chaptersTree)
       chapter.rooms.sort(@(a, b) b[EROOM_FLAGS_KEY_NAME] <=> a[EROOM_FLAGS_KEY_NAME])
 
-    return chaptersTree
+    return this.chaptersTree
   }
 
   function generateChapters(roomsList)
   {
-    updateChaptersTree(roomsList)
+    this.updateChaptersTree(roomsList)
 
-    selectedIdx = 1 //select first room by default
+    this.selectedIdx = 1 //select first room by default
     let view = { items = [] }
 
-    foreach (idx, chapter in chaptersTree)
+    foreach (_idx, chapter in this.chaptersTree)
     {
       let haveRooms = chapter.rooms.len() > 0
-      if (!haveRooms || (showOnlyAvailableRooms && isLockedByMask(chapter[EROOM_FLAGS_KEY_NAME])))
+      if (!haveRooms || (this.showOnlyAvailableRooms && this.isLockedByMask(chapter[EROOM_FLAGS_KEY_NAME])))
         continue
 
-      if (chapter.name == curChapterId)
-        selectedIdx = view.items.len()
+      if (chapter.name == this.curChapterId)
+        this.selectedIdx = view.items.len()
 
       let listRow = {
         id = chapter.name
@@ -569,23 +577,23 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       }.__update(chapter.itemView)
       view.items.append(listRow)
 
-      foreach (roomIdx, room in chapter.rooms)
+      foreach (_roomIdx, room in chapter.rooms)
       {
-        if (showOnlyAvailableRooms && isLockedByMask(room[EROOM_FLAGS_KEY_NAME]))
+        if (this.showOnlyAvailableRooms && this.isLockedByMask(room[EROOM_FLAGS_KEY_NAME]))
           continue
 
         let roomId = room.roomId
-        if (roomId == curRoomId || roomId == roomIdToSelect)
+        if (roomId == this.curRoomId || roomId == this.roomIdToSelect)
         {
-          selectedIdx = view.items.len()
-          if (roomId == roomIdToSelect)
-            curRoomId = roomIdToSelect
+          this.selectedIdx = view.items.len()
+          if (roomId == this.roomIdToSelect)
+            this.curRoomId = this.roomIdToSelect
         }
 
-        let nameView = getRoomNameView(room)
+        let nameView = this.getRoomNameView(room)
 
         view.items.append({
-          id = chapter.name + ROOM_ID_SPLIT + roomId
+          id = chapter.name + this.ROOM_ID_SPLIT + roomId
           isBattle = ::SessionLobby.isSessionStartedInRoom(room)
           itemText = nameView.text
           isLocked = nameView.isLocked
@@ -594,31 +602,31 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       }
     }
 
-    if (::u.isEqual(viewRoomList, view))
-      return updateWindow()
+    if (::u.isEqual(this.viewRoomList, view))
+      return this.updateWindow()
 
-    viewRoomList = view
-    let data = ::handyman.renderCached("%gui/events/eventRoomsList", view)
-    guiScene.replaceContentFromText(roomsListObj, data, data.len(), this)
-    let roomsCount = roomsListObj.childrenCount()
+    this.viewRoomList = view
+    let data = ::handyman.renderCached("%gui/events/eventRoomsList.tpl", view)
+    this.guiScene.replaceContentFromText(this.roomsListObj, data, data.len(), this)
+    let roomsCount = this.roomsListObj.childrenCount()
     for (local i = 0; i < roomsCount; i++)
-      roomsListObj.getChild(i).setIntProp(listIdxPID, i)
+      this.roomsListObj.getChild(i).setIntProp(this.listIdxPID, i)
 
     if (roomsCount > 0)
     {
-      roomsListObj.setValue(selectedIdx)
-      if (roomIdToSelect == curRoomId)
-        roomIdToSelect = null
+      this.roomsListObj.setValue(this.selectedIdx)
+      if (this.roomIdToSelect == this.curRoomId)
+        this.roomIdToSelect = null
     }
     else
     {
-      selectedIdx = -1
-      curRoomId = ""
-      curChapterId = ""
-      updateWindow()
+      this.selectedIdx = -1
+      this.curRoomId = ""
+      this.curChapterId = ""
+      this.updateWindow()
     }
 
-    updateCollapseChaptersStatuses()
+    this.updateCollapseChaptersStatuses()
   }
 
   function getFlagsArrayByCountriesArray(countriesArray)
@@ -634,8 +642,8 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function onCollapsedChapter()
   {
-    collapse(curChapterId)
-    updateButtons()
+    this.collapse(this.curChapterId)
+    this.updateButtons()
   }
 
   function onCollapse(obj)
@@ -647,30 +655,30 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (id.len() <= 4 || id.slice(0, 4) != "btn_")
       return
 
-    let listItemCount = roomsListObj.childrenCount()
+    let listItemCount = this.roomsListObj.childrenCount()
     for (local i = 0; i < listItemCount; i++)
     {
-      let listItemId = roomsListObj.getChild(i).id
+      let listItemId = this.roomsListObj.getChild(i).id
       if (listItemId == id.slice(4))
       {
-        collapse(listItemId)
+        this.collapse(listItemId)
         break
       }
     }
-    updateButtons()
+    this.updateButtons()
   }
 
   function updateCollapseChaptersStatuses()
   {
-    if (!::check_obj(roomsListObj))
+    if (!checkObj(this.roomsListObj))
       return
 
-    for (local i = 0; i < roomsListObj.childrenCount(); i++)
+    for (local i = 0; i < this.roomsListObj.childrenCount(); i++)
     {
-      let obj = roomsListObj.getChild(i)
-      let chapterName = getChapterNameByObjId(obj.id)
+      let obj = this.roomsListObj.getChild(i)
+      let chapterName = this.getChapterNameByObjId(obj.id)
 
-      let isCollapsedChapter = ::isInArray(chapterName, collapsedChapterNamesArray)
+      let isCollapsedChapter = isInArray(chapterName, this.collapsedChapterNamesArray)
       if (!isCollapsedChapter)
         continue
 
@@ -686,57 +694,57 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateCollapseChapterStatus(chapterObj)
   {
-    let index = ::find_in_array(collapsedChapterNamesArray, chapterObj.id)
+    let index = ::find_in_array(this.collapsedChapterNamesArray, chapterObj.id)
     let isCollapse = index < 0
     if (isCollapse)
-      collapsedChapterNamesArray.append(chapterObj.id)
+      this.collapsedChapterNamesArray.append(chapterObj.id)
     else
-      collapsedChapterNamesArray.remove(index)
+      this.collapsedChapterNamesArray.remove(index)
 
     chapterObj.collapsed = isCollapse ? "yes" : "no"
   }
 
   function collapse(itemName = null)
   {
-    if (!::check_obj(roomsListObj))
+    if (!checkObj(this.roomsListObj))
       return
 
-    let chapterId = itemName && getChapterNameByObjId(itemName)
+    let chapterId = itemName && this.getChapterNameByObjId(itemName)
     local newValue = -1
 
-    guiScene.setUpdatesEnabled(false, false)
-    for (local i = 0; i < roomsListObj.childrenCount(); i++)
+    this.guiScene.setUpdatesEnabled(false, false)
+    for (local i = 0; i < this.roomsListObj.childrenCount(); i++)
     {
-      let obj = roomsListObj.getChild(i)
+      let obj = this.roomsListObj.getChild(i)
       if (obj.id == itemName) //is chapter block, can collapse
       {
-        updateCollapseChapterStatus(obj)
+        this.updateCollapseChapterStatus(obj)
         newValue = i
         continue
       }
 
-      let iChapter = getChapterNameByObjId(obj.id)
+      let iChapter = this.getChapterNameByObjId(obj.id)
       if (iChapter != chapterId)
         continue
 
-      let show = !::isInArray(iChapter, collapsedChapterNamesArray)
+      let show = !isInArray(iChapter, this.collapsedChapterNamesArray)
       obj.enable(show)
       obj.show(show)
     }
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
 
     if (newValue >= 0)
-      roomsListObj.setValue(newValue)
+      this.roomsListObj.setValue(newValue)
   }
 
   function getChapterNameByObjId(id)
   {
-    return CHAPTER_REGEXP.replace("", id)
+    return this.CHAPTER_REGEXP.replace("", id)
   }
 
   function getRoomIdByObjId(id)
   {
-    let result = ROOM_REGEXP.replace("", id)
+    let result = this.ROOM_REGEXP.replace("", id)
     if (result == id)
       return ""
     return result
@@ -748,36 +756,36 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   }
 
   _isDelayedCrewchangedStarted = false
-  function onEventCrewChanged(p)
+  function onEventCrewChanged(_p)
   {
-    if (_isDelayedCrewchangedStarted) //!!FIX ME: need to solve multiple CrewChanged events after change preset
+    if (this._isDelayedCrewchangedStarted) //!!FIX ME: need to solve multiple CrewChanged events after change preset
       return
-    _isDelayedCrewchangedStarted = true
-    guiScene.performDelayed(this, function()
+    this._isDelayedCrewchangedStarted = true
+    this.guiScene.performDelayed(this, function()
     {
-      if (!isValid())
+      if (!this.isValid())
         return
-      _isDelayedCrewchangedStarted = false
-      updateButtons()
-      checkRoomsOrder()
+      this._isDelayedCrewchangedStarted = false
+      this.updateButtons()
+      this.checkRoomsOrder()
     })
   }
 
-  function onEventAfterJoinEventRoom(ev)
+  function onEventAfterJoinEventRoom(_ev)
   {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.EventsHandler)
   }
 
-  function onEventEventsDataUpdated(p)
+  function onEventEventsDataUpdated(_p)
   {
     //is event still exist
-    if (::events.getEventByEconomicName(::events.getEventEconomicName(event)))
+    if (::events.getEventByEconomicName(::events.getEventEconomicName(this.event)))
       return
 
-    guiScene.performDelayed(this, function()
+    this.guiScene.performDelayed(this, function()
     {
-      if (isValid())
-        goBack()
+      if (this.isValid())
+        this.goBack()
     })
   }
 
@@ -785,36 +793,36 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   {
     return {
       openData = {
-        event = event
-        hasBackToEventsButton = hasBackToEventsButton
+        event = this.event
+        hasBackToEventsButton = this.hasBackToEventsButton
       }
     }
   }
 
   function onCreateRoom()
   {
-    if (!antiCheat.showMsgboxIfEacInactive(event)||
-        !showMsgboxIfSoundModsNotAllowed(event))
+    if (!antiCheat.showMsgboxIfEacInactive(this.event)||
+        !showMsgboxIfSoundModsNotAllowed(this.event))
       return
 
-    let diffCode = ::events.getEventDiffCode(event)
-    let unitTypeMask = ::events.getEventUnitTypesMask(event)
+    let diffCode = ::events.getEventDiffCode(this.event)
+    let unitTypeMask = ::events.getEventUnitTypesMask(this.event)
     let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
     if(checkDiffTutorial(diffCode, checkTutorUnitType))
       return
 
-    ::events.openCreateRoomWnd(event)
+    ::events.openCreateRoomWnd(this.event)
   }
 
   function onItemDblClick() {
     if (::show_console_buttons)
       return
 
-    if (curRoomId == "") {
-      collapse(curChapterId)
-      updateButtons()
+    if (this.curRoomId == "") {
+      this.collapse(this.curChapterId)
+      this.updateButtons()
     } else
-      joinEvent()
+      this.joinEvent()
   }
 
   function onItemHover(obj)
@@ -822,27 +830,27 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
-    let idx = obj.getIntProp(listIdxPID, -1)
-    if (isHover == (hoveredIdx == idx))
+    let idx = obj.getIntProp(this.listIdxPID, -1)
+    if (isHover == (this.hoveredIdx == idx))
       return
-    hoveredIdx = isHover ? idx : -1
-    updateMouseMode()
-    updateButtons()
+    this.hoveredIdx = isHover ? idx : -1
+    this.updateMouseMode()
+    this.updateButtons()
   }
 
-  function onHoveredItemSelect(obj)
+  function onHoveredItemSelect(_obj)
   {
-    if (hoveredIdx != -1 && ::check_obj(roomsListObj))
-      roomsListObj.setValue(hoveredIdx)
+    if (this.hoveredIdx != -1 && checkObj(this.roomsListObj))
+      this.roomsListObj.setValue(this.hoveredIdx)
   }
 
   function updateMouseMode()
   {
-    isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+    this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
-  function goBackShortcut() { goBack() }
-  function onRoomsList()    { goBack() }
+  function goBackShortcut() { this.goBack() }
+  function onRoomsList()    { this.goBack() }
 
   function onLeaveEvent() {}
   function onDownloadPack() {}
@@ -850,11 +858,11 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function onShowOnlyAvailableRooms(obj) {
     let newValue = obj.getValue()
-    if (newValue == showOnlyAvailableRooms)
+    if (newValue == this.showOnlyAvailableRooms)
       return
 
-    showOnlyAvailableRooms = newValue
+    this.showOnlyAvailableRooms = newValue
     ::save_local_account_settings("events/showOnlyAvailableRooms", newValue)
-    fillRoomsList()
+    this.fillRoomsList()
   }
 }

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -16,7 +23,7 @@ let function canBuyForEagles(cost, unit)
 
   if (cost.gold > 0)
   {
-    if (!::has_feature("SpendGold"))
+    if (!hasFeature("SpendGold"))
       return false
 
     if (!::can_spend_gold_on_unit_with_popup(unit))
@@ -68,49 +75,49 @@ local class WeaponsPurchaseProcess
 
   constructor(v_unit, additionalParams)
   {
-    processStartTime = ::dagor.getCurTime()
+    this.processStartTime = get_time_msec()
 
-    unit = v_unit
-    isAllPresetPurchase = additionalParams?.isAllPresetPurchase ?? false
-    silent = additionalParams?.silent ?? false
-    open = additionalParams?.open ?? false
-    afterSuccessfullPurchaseCb = additionalParams?.afterSuccessfullPurchaseCb
-    onCompleteCb = additionalParams?.onFinishCb
+    this.unit = v_unit
+    this.isAllPresetPurchase = additionalParams?.isAllPresetPurchase ?? false
+    this.silent = additionalParams?.silent ?? false
+    this.open = additionalParams?.open ?? false
+    this.afterSuccessfullPurchaseCb = additionalParams?.afterSuccessfullPurchaseCb
+    this.onCompleteCb = additionalParams?.onFinishCb
 
-    modItem = ::getTblValue("modItem", additionalParams)
-    if (!::u.isEmpty(modItem))
+    this.modItem = getTblValue("modItem", additionalParams)
+    if (!::u.isEmpty(this.modItem))
     {
-      modName = modItem.name
-      modType = modItem.type
+      this.modName = this.modItem.name
+      this.modType = this.modItem.type
     }
 
-    checkMultiPurchase()
+    this.checkMultiPurchase()
   }
 
   function checkMultiPurchase()
   {
     local canBuyAmount = 1
-    if (!::u.isEmpty(modItem) && modType != weaponsItem.primaryWeapon)
+    if (!::u.isEmpty(this.modItem) && this.modType != weaponsItem.primaryWeapon)
     {
-      let statusTbl = getItemStatusTbl(unit, modItem)
+      let statusTbl = getItemStatusTbl(this.unit, this.modItem)
       if (!statusTbl.canBuyMore)
       {
         if (statusTbl.showPrice)
-          ::g_popups.add("", ::loc("weaponry/enoughAmount"), null, null, null, "enough_amount")
-        return complete()
+          ::g_popups.add("", loc("weaponry/enoughAmount"), null, null, null, "enough_amount")
+        return this.complete()
       }
 
       canBuyAmount = statusTbl.maxAmount - statusTbl.amount
     }
 
-    if (canBuyAmount == 1 || (::has_feature("BuyAllPresets") && isAllPresetPurchase))
-      return execute(canBuyAmount)
+    if (canBuyAmount == 1 || (hasFeature("BuyAllPresets") && this.isAllPresetPurchase))
+      return this.execute(canBuyAmount)
 
     let params = {
-      item = modItem
-      unit = unit
-      buyFunc = ::Callback(function(amount) { execute(amount, false) }, this)
-      onExitFunc = ::Callback(function() { complete() }, this)
+      item = this.modItem
+      unit = this.unit
+      buyFunc = Callback(function(amount) { this.execute(amount, false) }, this)
+      onExitFunc = Callback(function() { this.complete() }, this)
     }
 
     ::gui_start_modal_wnd(::gui_handlers.MultiplePurchase, params)
@@ -118,47 +125,47 @@ local class WeaponsPurchaseProcess
 
   function complete()
   {
-    if (isCompleted)
+    if (this.isCompleted)
       return
 
-    isCompleted = true
-    onCompleteCb?()
+    this.isCompleted = true
+    this.onCompleteCb?()
   }
 
   function execute(amount = 1, completeOnCancel = true)
   {
-    fillModItemSpecificParams(amount)
+    this.fillModItemSpecificParams(amount)
 
-    if (!canBuyItem(cost, unit, null, silent))
+    if (!canBuyItem(this.cost, this.unit, null, this.silent))
     {
       if (completeOnCancel)
-        complete()
+        this.complete()
       return
     }
 
-    let repairCost = checkRepair? unit.getRepairCost() : ::Cost()
-    let price = cost + repairCost
-    msgLocParams.cost <- price.getTextAccordingToBalance()
+    let repairCost = this.checkRepair? this.unit.getRepairCost() : ::Cost()
+    let price = this.cost + repairCost
+    this.msgLocParams.cost <- price.getTextAccordingToBalance()
 
     let performAction = (@(repairCost, mainFunc, amount, completeOnCancel) function() {
       if (repairCost.isZero())
         mainFunc(amount)
       else
-        repair(::Callback((@(amount) function() { mainFunc(amount)})(amount), this),
-               ::Callback((@(amount, completeOnCancel) function() { execute(amount, completeOnCancel)})(amount, completeOnCancel), this))
-    })(repairCost, mainFunc, amount, completeOnCancel)
+        this.repair(Callback((@(amount) function() { mainFunc(amount)})(amount), this),
+               Callback((@(amount, completeOnCancel) function() { this.execute(amount, completeOnCancel)})(amount, completeOnCancel), this))
+    })(repairCost, this.mainFunc, amount, completeOnCancel)
 
-    if (silent)
+    if (this.silent)
       return performAction()
 
     let cancelAction = (@(completeOnCancel) function() {
       if (completeOnCancel)
-        complete()
+        this.complete()
     })(completeOnCancel)
 
     let text = ::warningIfGold(
-        ::loc(repairCost.isZero() ? msgLocId : repairMsgLocId,
-        msgLocParams
+        loc(repairCost.isZero() ? this.msgLocId : this.repairMsgLocId,
+        this.msgLocParams
       ), price)
     let defButton = "yes"
     let buttons = [
@@ -171,182 +178,182 @@ local class WeaponsPurchaseProcess
 
   function repair(afterSuccessFunc = null, afterBalanceRefillFunc = null)
   {
-    let repairCost = unit.getRepairCost()
-    if (!canBuyItem(repairCost, unit, afterBalanceRefillFunc, silent))
-      complete()
+    let repairCost = this.unit.getRepairCost()
+    if (!canBuyItem(repairCost, this.unit, afterBalanceRefillFunc, this.silent))
+      this.complete()
     else
-      unitActions.repair(unit, afterSuccessFunc)
+      unitActions.repair(this.unit, afterSuccessFunc)
   }
 
   function fillModItemSpecificParams(amount = 1)
   {
-    cost = getPrice()
+    this.cost = this.getPrice()
 
-    if (::u.isEmpty(modItem))
-      return fillAllModsParams()
+    if (::u.isEmpty(this.modItem))
+      return this.fillAllModsParams()
 
-    cost.multiply(amount)
+    this.cost.multiply(amount)
 
-    if (modItem.type == weaponsItem.spare)
-      return fillSpareParams(amount)
+    if (this.modItem.type == weaponsItem.spare)
+      return this.fillSpareParams(amount)
 
-    if (modItem.type == weaponsItem.weapon)
-      return fillWeaponParams(amount)
+    if (this.modItem.type == weaponsItem.weapon)
+      return this.fillWeaponParams(amount)
 
-    return fillModificationParams(amount)
+    return this.fillModificationParams(amount)
   }
 
   function getPrice()
   {
-    if (::u.isEmpty(modItem))
-      return getAllModificationsPrice()
+    if (::u.isEmpty(this.modItem))
+      return this.getAllModificationsPrice()
 
-    if (::g_weaponry_types.getUpgradeTypeByItem(modItem).canBuy(unit, modItem))
-      return getItemCost(unit, modItem)
+    if (::g_weaponry_types.getUpgradeTypeByItem(this.modItem).canBuy(this.unit, this.modItem))
+      return getItemCost(this.unit, this.modItem)
 
-    return getItemUnlockCost(unit, modItem)
+    return getItemUnlockCost(this.unit, this.modItem)
   }
 
   function getAllModificationsPrice()
   {
-    let modsCost = getAllModsCost(unit, open)
-    return ::Cost(modsCost.wp, open? modsCost.gold : 0)
+    let modsCost = getAllModsCost(this.unit, this.open)
+    return ::Cost(modsCost.wp, this.open? modsCost.gold : 0)
   }
 
   //-------------- <BUY ALL MODS> --------------------------------------
 
   function fillAllModsParams()
   {
-    mainFunc = ::Callback(function(amount) { sendPurchaseAllModsRequest(amount) }, this)
-    msgLocId = "shop/needMoneyQuestion_all_weapons"
-    repairMsgLocId = "msgBox/repair_and_mods_purchase"
-    msgLocParams = {
-      unitName = ::colorize("userlogColoredText", ::getUnitName(unit))
-      cost = cost
+    this.mainFunc = Callback(function(amount) { this.sendPurchaseAllModsRequest(amount) }, this)
+    this.msgLocId = "shop/needMoneyQuestion_all_weapons"
+    this.repairMsgLocId = "msgBox/repair_and_mods_purchase"
+    this.msgLocParams = {
+      unitName = colorize("userlogColoredText", ::getUnitName(this.unit))
+      cost = this.cost
     }
   }
 
-  function sendPurchaseAllModsRequest(amount = 1)
+  function sendPurchaseAllModsRequest(_amount = 1)
   {
     let blk = ::DataBlock()
-    blk["unit"] = unit.name
-    blk["forceOpen"] = open
-    blk["cost"] = cost.wp
-    blk["costGold"] = cost.gold
+    blk["unit"] = this.unit.name
+    blk["forceOpen"] = this.open
+    blk["cost"] = this.cost.wp
+    blk["costGold"] = this.cost.gold
 
     let taskId = ::char_send_blk("cln_buy_all_modification", blk)
-    let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
+    let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::broadcastEvent("ModificationPurchased", {unit = unit})
       ::updateAirAfterSwitchMod(unit, "")
 
       afterSuccessfullPurchaseCb?()
-    })(unit, afterSuccessfullPurchaseCb)
+    })(this.unit, this.afterSuccessfullPurchaseCb)
 
     ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
-    complete()
+    this.complete()
   }
 
   //-------------- <BUY SPARE> --------------------------------------
 
   function fillSpareParams(amount = 1)
   {
-    mainFunc = ::Callback(function(amount) { sendPurchaseSpareRequest(amount) }, this)
-    checkRepair = false
-    msgLocId = "onlineShop/needMoneyQuestion"
-    msgLocParams = {
-      purchase = getItemTextWithAmount(amount)
-      cost = cost
+    this.mainFunc = Callback(function(amount) { this.sendPurchaseSpareRequest(amount) }, this)
+    this.checkRepair = false
+    this.msgLocId = "onlineShop/needMoneyQuestion"
+    this.msgLocParams = {
+      purchase = this.getItemTextWithAmount(amount)
+      cost = this.cost
     }
   }
 
   function sendPurchaseSpareRequest(amount = 1)
   {
     let blk = ::DataBlock()
-    blk["aircraft"] =  unit.name
+    blk["aircraft"] =  this.unit.name
     blk["count"] = amount
-    blk["cost"] = cost.wp
-    blk["costGold"] = cost.gold
+    blk["cost"] = this.cost.wp
+    blk["costGold"] = this.cost.gold
 
     let taskId = ::char_send_blk("cln_buy_spare_aircrafts", blk)
-    let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
+    let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::broadcastEvent("SparePurchased", {unit = unit})
       afterSuccessfullPurchaseCb?()
-    })(unit, afterSuccessfullPurchaseCb)
+    })(this.unit, this.afterSuccessfullPurchaseCb)
 
     ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
-    complete()
+    this.complete()
   }
 
   //-------------- <BUY WEAPON> --------------------------------------
 
   function fillWeaponParams(amount = 1)
   {
-    mainFunc = ::Callback(function(amount) { sendPurchaseWeaponRequest(amount) }, this)
-    checkRepair = false
-    msgLocId = "onlineShop/needMoneyQuestion"
-    repairMsgLocId = "msgBox/repair_and_single_mod_purchase"
-    msgLocParams = {
-      purchase = getItemTextWithAmount(amount)
-      unitName = ::colorize("userlogColoredText", ::getUnitName(unit))
-      cost = cost
+    this.mainFunc = Callback(function(amount) { this.sendPurchaseWeaponRequest(amount) }, this)
+    this.checkRepair = false
+    this.msgLocId = "onlineShop/needMoneyQuestion"
+    this.repairMsgLocId = "msgBox/repair_and_single_mod_purchase"
+    this.msgLocParams = {
+      purchase = this.getItemTextWithAmount(amount)
+      unitName = colorize("userlogColoredText", ::getUnitName(this.unit))
+      cost = this.cost
     }
   }
 
   function sendPurchaseWeaponRequest(amount = 1)
   {
     let blk = ::DataBlock()
-    blk["aircraft"] = unit.name
-    blk["weapon"] = modName
+    blk["aircraft"] = this.unit.name
+    blk["weapon"] = this.modName
     blk["count"] = amount
-    blk["cost"] = cost.wp
-    blk["costGold"] = cost.gold
+    blk["cost"] = this.cost.wp
+    blk["costGold"] = this.cost.gold
 
     let taskId = ::char_send_blk("cln_buy_weapon", blk)
-    let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
+    let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::updateAirAfterSwitchMod(unit)
       ::broadcastEvent("WeaponPurchased", {unit = unit, weaponName = modName})
       afterSuccessfullPurchaseCb?()
-    })(unit, modName, afterSuccessfullPurchaseCb)
+    })(this.unit, this.modName, this.afterSuccessfullPurchaseCb)
 
     ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
-    complete()
+    this.complete()
   }
 
   //-------------- <BUY SINGLE MOD> --------------------------------------
 
   function fillModificationParams(amount = 1)
   {
-    mainFunc = ::Callback(function(amount)
-      { sendPurchaseModificationRequest(amount) }, this)
-    msgLocId = open? "shop/needMoneyQuestion_purchaseModificationForGold"
+    this.mainFunc = Callback(function(amount)
+      { this.sendPurchaseModificationRequest(amount) }, this)
+    this.msgLocId = this.open? "shop/needMoneyQuestion_purchaseModificationForGold"
       : "onlineShop/needMoneyQuestion"
-    repairMsgLocId = "msgBox/repair_and_single_mod_purchase"
-    msgLocParams = {
-      purchase = getItemTextWithAmount(amount)
-      unitName = ::colorize("userlogColoredText", ::getUnitName(unit))
-      cost = cost
+    this.repairMsgLocId = "msgBox/repair_and_single_mod_purchase"
+    this.msgLocParams = {
+      purchase = this.getItemTextWithAmount(amount)
+      unitName = colorize("userlogColoredText", ::getUnitName(this.unit))
+      cost = this.cost
     }
   }
 
   function sendPurchaseModificationRequest(amount = 1)
   {
     let blk = ::DataBlock()
-    blk["aircraft"] = unit.name
-    blk["modification"] = modName
-    blk["open"] = open
+    blk["aircraft"] = this.unit.name
+    blk["modification"] = this.modName
+    blk["open"] = this.open
     blk["count"] = amount
-    blk["cost"] = cost.wp
-    blk["costGold"] = cost.gold
+    blk["cost"] = this.cost.wp
+    blk["costGold"] = this.cost.gold
 
-    let hadUnitModResearch = ::shop_get_researchable_module_name(unit.name)
+    let hadUnitModResearch = ::shop_get_researchable_module_name(this.unit.name)
     let taskId = ::char_send_blk("cln_buy_modification", blk)
-    let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
+    let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, modName, hadUnitModResearch, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::updateAirAfterSwitchMod(unit, modName)
@@ -358,19 +365,19 @@ local class WeaponsPurchaseProcess
       ::broadcastEvent("ModificationPurchased", {unit = unit, modName = modName})
 
       afterSuccessfullPurchaseCb?()
-    })(unit, modName, hadUnitModResearch, afterSuccessfullPurchaseCb)
+    })(this.unit, this.modName, hadUnitModResearch, this.afterSuccessfullPurchaseCb)
 
     ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
-    complete()
+    this.complete()
   }
 
   function getItemTextWithAmount(amount)
   {
-    local text = getModItemName(unit, modItem, false)
+    local text = getModItemName(this.unit, this.modItem, false)
     if (amount > 1)
-      text += " " + ::colorize("activeTextColor", format(::loc("weapons/counter/right/short"), amount))
+      text += " " + colorize("activeTextColor", format(loc("weapons/counter/right/short"), amount))
 
-    return ::colorize("userlogColoredText", text)
+    return colorize("userlogColoredText", text)
   }
 }
 
@@ -383,8 +390,8 @@ local function weaponsPurchase(unit, additionalParams = {})
     return
 
   if (activePurchaseProcess?.isCompleted == false)
-    if (::dagor.getCurTime() - activePurchaseProcess.processStartTime < PROCESS_TIME_OUT)
-      return ::dagor.assertf(false, "Error: trying to use 2 modification purchase processes at once")
+    if (get_time_msec() - activePurchaseProcess.processStartTime < PROCESS_TIME_OUT)
+      return assert(false, "Error: trying to use 2 modification purchase processes at once")
     else
       activePurchaseProcess.complete()
 

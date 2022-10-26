@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { get_gui_option } = require("guiOptions")
 
 enum CREWS_READY_STATUS
 {
@@ -28,11 +36,11 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   constructor(sourceMGameMode, onUnitAvailabilityChangedCb = null)
   {
-    mGameMode = sourceMGameMode
-    isAllowCountriesSetsOnly = mGameMode?.allowCountriesSetsOnly ?? false
-    onUnitAvailabilityChanged = onUnitAvailabilityChangedCb
-    curCountries = {}
-    initMissionsOnce()
+    this.mGameMode = sourceMGameMode
+    this.isAllowCountriesSetsOnly = this.mGameMode?.allowCountriesSetsOnly ?? false
+    this.onUnitAvailabilityChanged = onUnitAvailabilityChangedCb
+    this.curCountries = {}
+    this.initMissionsOnce()
   }
 
   /*************************************************************************************************/
@@ -46,7 +54,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       [::USEROPT_RANK],
     ]
 
-    if (isAllowCountriesSetsOnly)
+    if (this.isAllowCountriesSetsOnly)
       options.append([::USEROPT_COUNTRIES_SET])
     else
       options.append([::USEROPT_BIT_COUNTRIES_TEAM_A],
@@ -58,60 +66,60 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   _optionsConfig = null
   function getOptionsConfig()
   {
-    if (_optionsConfig)
-      return _optionsConfig
+    if (this._optionsConfig)
+      return this._optionsConfig
 
-    _optionsConfig = {
+    this._optionsConfig = {
       isEventRoom = true
-      brRanges = mGameMode?.matchmaking.mmRanges
+      brRanges = this.mGameMode?.matchmaking.mmRanges
       countries = {}
       countriesSetList = []
-      onChangeCb = ::Callback(onOptionChange, this)
+      onChangeCb = Callback(this.onOptionChange, this)
     }
-    if (isAllowCountriesSetsOnly)
-      _optionsConfig.countriesSetList = ::events.getAllCountriesSets(mGameMode)
+    if (this.isAllowCountriesSetsOnly)
+      this._optionsConfig.countriesSetList = ::events.getAllCountriesSets(this.mGameMode)
     else
       foreach(team in ::g_team.getTeams())
-        _optionsConfig.countries[team.name] <- mGameMode?[team.name].countries
+        this._optionsConfig.countries[team.name] <- this.mGameMode?[team.name].countries
 
-    return _optionsConfig
+    return this._optionsConfig
   }
 
   function isAllMissionsSelected()
   {
-    return !chosenMissionsList.len() || chosenMissionsList.len() == fullMissionsList.len()
+    return !this.chosenMissionsList.len() || this.chosenMissionsList.len() == this.fullMissionsList.len()
   }
 
   function createRoom()
   {
-    let reasonData = getCantCreateReasonData({ isFullText = true })
+    let reasonData = this.getCantCreateReasonData({ isFullText = true })
     if (!reasonData.checkStatus)
       return reasonData.actionFunc(reasonData)
 
-    ::SessionLobby.createEventRoom(mGameMode, getRoomCreateParams())
+    ::SessionLobby.createEventRoom(this.mGameMode, this.getRoomCreateParams())
   }
 
   function isUnitAllowed(unit)
   {
-    if (!::events.isUnitAllowedForEvent(mGameMode, unit))
+    if (!::events.isUnitAllowedForEvent(this.mGameMode, unit))
       return false
 
-    let brRange = getCurBrRange()
+    let brRange = this.getCurBrRange()
     if (brRange)
     {
-      let ediff = ::events.getEDiffByEvent(mGameMode)
+      let ediff = ::events.getEDiffByEvent(this.mGameMode)
       let unitMRank = unit.getEconomicRank(ediff)
-      if (unitMRank < ::getTblValue(0, brRange, 0) || ::getTblValue(1, brRange, ::max_country_rank) < unitMRank)
+      if (unitMRank < getTblValue(0, brRange, 0) || getTblValue(1, brRange, ::max_country_rank) < unitMRank)
         return false
     }
 
-    return isCountryAvailable(unit.shopCountry)
+    return this.isCountryAvailable(unit.shopCountry)
   }
 
   function isCountryAvailable(country)
   {
     foreach(team in ::g_team.getTeams())
-      if (::isInArray(country, getCurCountries(team)))
+      if (isInArray(country, this.getCurCountries(team)))
         return true
     return false
   }
@@ -119,14 +127,14 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   function getCurCrewsReadyStatus()
   {
     local res = 0
-    let country = ::get_profile_country_sq()
-    let ediff = ::events.getEDiffByEvent(mGameMode)
+    let country = profileCountrySq.value
+    let ediff = ::events.getEDiffByEvent(this.mGameMode)
     foreach (team in ::g_team.getTeams())
     {
-      if (!::isInArray(country, getCurCountries(team)))
+      if (!isInArray(country, this.getCurCountries(team)))
        continue
 
-      let teamData = ::events.getTeamData(mGameMode, team.code)
+      let teamData = ::events.getTeamData(this.mGameMode, team.code)
       let requiredCrafts = ::events.getRequiredCrafts(teamData)
       let crews = ::get_crews_list_by_country(country)
       foreach(crew in crews)
@@ -137,7 +145,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
         if (!unit)
           continue
 
-        if (!isUnitAllowed(unit))
+        if (!this.isUnitAllowed(unit))
           continue
         res = res | CREWS_READY_STATUS.HAS_ALLOWED
 
@@ -156,21 +164,21 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   {
     params = params ? clone params : {}
     params.isCreationCheck <- true
-    let res = ::events.getCantJoinReasonData(mGameMode, null, params)
+    let res = ::events.getCantJoinReasonData(this.mGameMode, null, params)
     if (res.reasonText.len())
       return res
 
-    if (!isCountryAvailable(::get_profile_country_sq()))
+    if (!this.isCountryAvailable(profileCountrySq.value))
     {
-      res.reasonText = ::loc("events/no_selected_country")
+      res.reasonText = loc("events/no_selected_country")
     }
     else
     {
-      let crewsStatus = getCurCrewsReadyStatus()
+      let crewsStatus = this.getCurCrewsReadyStatus()
       if (!(crewsStatus & CREWS_READY_STATUS.HAS_ALLOWED))
-        res.reasonText = ::loc("events/no_allowed_crafts")
+        res.reasonText = loc("events/no_allowed_crafts")
       else if (!(crewsStatus & CREWS_READY_STATUS.HAS_REQUIRED_AND_ALLOWED))
-        res.reasonText = ::loc("events/no_required_crafts")
+        res.reasonText = loc("events/no_required_crafts")
     }
 
     if (res.reasonText.len())
@@ -192,107 +200,107 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function initMissionsOnce()
   {
-    chosenMissionsList = []
-    fullMissionsList = []
+    this.chosenMissionsList = []
+    this.fullMissionsList = []
 
-    let missionsTbl = mGameMode?.mission_decl.missions_list
+    let missionsTbl = this.mGameMode?.mission_decl.missions_list
     if (!missionsTbl)
       return
 
     let missionsNames = ::u.keys(missionsTbl)
-    fullMissionsList = misListType.getMissionsListByNames(missionsNames)
-    fullMissionsList = misListType.sortMissionsByName(fullMissionsList)
-    loadChosenMissions()
+    this.fullMissionsList = this.misListType.getMissionsListByNames(missionsNames)
+    this.fullMissionsList = this.misListType.sortMissionsByName(this.fullMissionsList)
+    this.loadChosenMissions()
   }
 
   function getMissionsSaveId()
   {
-    return CHOSEN_EVENT_MISSIONS_SAVE_ID + ::events.getEventEconomicName(mGameMode)
+    return CHOSEN_EVENT_MISSIONS_SAVE_ID + ::events.getEventEconomicName(this.mGameMode)
   }
 
   function loadChosenMissions()
   {
-    chosenMissionsList.clear()
-    let blk = ::load_local_account_settings(getMissionsSaveId())
+    this.chosenMissionsList.clear()
+    let blk = ::load_local_account_settings(this.getMissionsSaveId())
     if (!::u.isDataBlock(blk))
       return
 
     let chosenNames = blk % CHOSEN_EVENT_MISSIONS_SAVE_KEY
-    foreach(mission in fullMissionsList)
-      if (::isInArray(mission.id, chosenNames))
-        chosenMissionsList.append(mission)
+    foreach(mission in this.fullMissionsList)
+      if (isInArray(mission.id, chosenNames))
+        this.chosenMissionsList.append(mission)
   }
 
   function saveChosenMissions()
   {
-    let names = ::u.map(chosenMissionsList, @(m) m.id)
-    ::save_local_account_settings(getMissionsSaveId(), ::array_to_blk(names, CHOSEN_EVENT_MISSIONS_SAVE_KEY))
+    let names = ::u.map(this.chosenMissionsList, @(m) m.id)
+    ::save_local_account_settings(this.getMissionsSaveId(), ::array_to_blk(names, CHOSEN_EVENT_MISSIONS_SAVE_KEY))
   }
 
   function setChosenMissions(missions)
   {
-    chosenMissionsList = missions
-    saveChosenMissions()
+    this.chosenMissionsList = missions
+    this.saveChosenMissions()
   }
 
   function getCurBrRange()
   {
-    if (!getOptionsConfig().brRanges)
+    if (!this.getOptionsConfig().brRanges)
       return null
-    if (!curBrRange)
-      setCurBrRange(::get_option(::USEROPT_RANK, getOptionsConfig()).value)
-    return curBrRange
+    if (!this.curBrRange)
+      this.setCurBrRange(::get_option(::USEROPT_RANK, this.getOptionsConfig()).value)
+    return this.curBrRange
   }
 
   function setCurBrRange(rangeIdx)
   {
-    let brRanges = getOptionsConfig().brRanges
+    let brRanges = this.getOptionsConfig().brRanges
     if (rangeIdx in brRanges)
-      curBrRange = brRanges[rangeIdx]
+      this.curBrRange = brRanges[rangeIdx]
   }
 
   function getCurCountries(team)
   {
-    if (team.id in curCountries)
-      return curCountries[team.id]
+    if (team.id in this.curCountries)
+      return this.curCountries[team.id]
     if (team.teamCountriesOption < 0)
       return []
-    if (isAllowCountriesSetsOnly)
-      setCurCountriesArray(team, ::get_gui_option(::USEROPT_COUNTRIES_SET))
+    if (this.isAllowCountriesSetsOnly)
+      this.setCurCountriesArray(team, get_gui_option(::USEROPT_COUNTRIES_SET))
     else {
-      local curMask = ::get_gui_option(team.teamCountriesOption)
+      local curMask = get_gui_option(team.teamCountriesOption)
       if (curMask == null)
         curMask = -1
-      setCurCountries(team,  curMask)
+      this.setCurCountries(team,  curMask)
     }
-    return curCountries[team.id]
+    return this.curCountries[team.id]
   }
 
   function setCurCountries(team, countriesMask)
   {
-    curCountries[team.id] <- ::get_array_by_bit_value(countriesMask, shopCountriesList)
+    this.curCountries[team.id] <- ::get_array_by_bit_value(countriesMask, shopCountriesList)
   }
 
   function setCurCountriesArray(team, countriesSetIdx)
   {
-    let countriesSet = getOptionsConfig().countriesSetList?[countriesSetIdx].countries
-    curCountries[team.id] <- countriesSet?[team.code-1] ?? (clone shopCountriesList)
+    let countriesSet = this.getOptionsConfig().countriesSetList?[countriesSetIdx].countries
+    this.curCountries[team.id] <- countriesSet?[team.code-1] ?? (clone shopCountriesList)
   }
 
   function onOptionChange(optionId, optionValue, controlValue)
   {
     if (optionId == ::USEROPT_RANK)
-      setCurBrRange(controlValue)
+      this.setCurBrRange(controlValue)
     else if (optionId == ::USEROPT_BIT_COUNTRIES_TEAM_A || optionId == ::USEROPT_BIT_COUNTRIES_TEAM_B)
-      setCurCountries(::g_team.getTeamByCountriesOption(optionId), optionValue)
+      this.setCurCountries(::g_team.getTeamByCountriesOption(optionId), optionValue)
     else if (optionId == ::USEROPT_COUNTRIES_SET)
       foreach(team in [::g_team.A, ::g_team.B])
-        setCurCountriesArray(team, optionValue)
+        this.setCurCountriesArray(team, optionValue)
     else
       return
 
-    if (onUnitAvailabilityChanged)
-      ::get_cur_gui_scene().performDelayed(this, function() { onUnitAvailabilityChanged() })
+    if (this.onUnitAvailabilityChanged)
+      ::get_cur_gui_scene().performDelayed(this, function() { this.onUnitAvailabilityChanged() })
   }
 
   function getRoomCreateParams()
@@ -303,17 +311,17 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
     foreach(team in ::g_team.getTeams())
       res[team.name] <- {
-         countries = getCurCountries(team)
+         countries = this.getCurCountries(team)
       }
 
-    if (getCurBrRange())
-      res.mranks <- getCurBrRange()
+    if (this.getCurBrRange())
+      res.mranks <- this.getCurBrRange()
 
     let clusterOpt = ::get_option(::USEROPT_CLUSTER)
-    res.cluster <- ::getTblValue(clusterOpt.value, clusterOpt.values, "")
+    res.cluster <- getTblValue(clusterOpt.value, clusterOpt.values, "")
 
-    if (!isAllMissionsSelected())
-      res.missions <- ::u.map(chosenMissionsList, @(m) m.id)
+    if (!this.isAllMissionsSelected())
+      res.missions <- ::u.map(this.chosenMissionsList, @(m) m.id)
 
     return res
   }

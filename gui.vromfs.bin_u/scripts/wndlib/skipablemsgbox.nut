@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.SkipableMsgBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -19,35 +27,35 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 
   function initScreen()
   {
-    updateSkipCheckBox()
+    this.updateSkipCheckBox()
 
-    let msgTextObj = scene.findObject("msgText")
-    if (::check_obj(msgTextObj))
-      msgTextObj.setValue(message)
+    let msgTextObj = this.scene.findObject("msgText")
+    if (checkObj(msgTextObj))
+      msgTextObj.setValue(this.message)
 
-    let listTextObj = scene.findObject("listText")
-    if (::check_obj(listTextObj))
-      listTextObj.setValue(list)
+    let listTextObj = this.scene.findObject("listText")
+    if (checkObj(listTextObj))
+      listTextObj.setValue(this.list)
 
-    let btnSelectObj = scene.findObject("btn_select")
-    if (::check_obj(btnSelectObj))
-      btnSelectObj.show(ableToStartAndSkip)
+    let btnSelectObj = this.scene.findObject("btn_select")
+    if (checkObj(btnSelectObj))
+      btnSelectObj.show(this.ableToStartAndSkip)
 
-    let btnCancelObj = scene.findObject("btn_cancel")
-    if(::check_obj(btnCancelObj))
-      btnCancelObj.setValue(::loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
+    let btnCancelObj = this.scene.findObject("btn_cancel")
+    if(checkObj(btnCancelObj))
+      btnCancelObj.setValue(loc(this.ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
 
-    if (startBtnText != "")
-      setDoubleTextToButton(scene, "btn_select", startBtnText)
+    if (this.startBtnText != "")
+      setDoubleTextToButton(this.scene, "btn_select", this.startBtnText)
   }
 
   function updateSkipCheckBox()
   {
-    let skipObj = scene.findObject("skip_this")
-    if (::check_obj(skipObj))
+    let skipObj = this.scene.findObject("skip_this")
+    if (checkObj(skipObj))
     {
-      skipObj.show(ableToStartAndSkip && skipFunc)
-      skipObj.enable(ableToStartAndSkip && skipFunc)
+      skipObj.show(this.ableToStartAndSkip && this.skipFunc)
+      skipObj.enable(this.ableToStartAndSkip && this.skipFunc)
     }
   }
 
@@ -56,24 +64,24 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
     if (!obj)
       return
 
-    if (skipFunc)
-      skipFunc(obj.getValue())
+    if (this.skipFunc)
+      this.skipFunc(obj.getValue())
   }
 
   function onStart()
   {
-    isCanceled = false
-    if (parentHandler && onStartPressed)
-      isStarted = true
+    this.isCanceled = false
+    if (this.parentHandler && this.onStartPressed)
+      this.isStarted = true
 
-    goBack()
+    this.goBack()
   }
 
   function afterModalDestroy()
   {
-    if (isCanceled)
-      ::call_for_handler(parentHandler, cancelFunc)
-    if (isStarted)
-      ::call_for_handler(parentHandler, onStartPressed)
+    if (this.isCanceled)
+      ::call_for_handler(this.parentHandler, this.cancelFunc)
+    if (this.isStarted)
+      ::call_for_handler(this.parentHandler, this.onStartPressed)
   }
 }

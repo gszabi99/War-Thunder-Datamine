@@ -1,4 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { abs } = require("math")
+
 let { findChild } = require("%sqDagui/daguiUtil.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
@@ -10,12 +19,12 @@ let getBranchId = @(idx) "".concat(branchIdPrefix, idx)
 let posFormatString = "{0}, {1}"
 
 let sizeAndPosViewConfig = {
-  verticalArrow = ::kwarg(
-    function verticalArrow(itemSizes, bodyIdx, arrowSizeX, arrowSizeY, arrowPosX, arrowPosY) {
+  verticalArrow = kwarg(
+    function verticalArrow(itemSizes, bodyIdx, _arrowSizeX, arrowSizeY, arrowPosX, arrowPosY) {
       let { arrowWidth, itemBlockHeight, itemBlockInterval, blockInterval,
         headerBlockInterval, itemHeight, itemsOffsetByBodies, paramsPosColumnsByBodies,
         itemInterval } = itemSizes
-      let h = (::abs(arrowSizeY) - 1)*(itemBlockHeight)
+      let h = (abs(arrowSizeY) - 1)*(itemBlockHeight)
         + itemBlockInterval - 2*blockInterval
       let isInUpArrow = arrowSizeY < 0
       let posY = isInUpArrow ? arrowPosY + arrowSizeY : arrowPosY
@@ -34,12 +43,12 @@ let sizeAndPosViewConfig = {
         }]
       }
   })
-  horizontalArrow = ::kwarg(
-    function horizontalArrow(itemSizes, bodyIdx, arrowSizeX, arrowSizeY, arrowPosX, arrowPosY) {
+  horizontalArrow = kwarg(
+    function horizontalArrow(itemSizes, bodyIdx, arrowSizeX, _arrowSizeY, arrowPosX, arrowPosY) {
       let { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
         headerBlockInterval, itemsOffsetByBodies, itemHeight } = itemSizes
       let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
-      let cloumnsWidth = ::abs(columnConfig[arrowPosX -1].columnPos
+      let cloumnsWidth = abs(columnConfig[arrowPosX -1].columnPos
         - columnConfig[arrowPosX + arrowSizeX - 1].columnPos)
       let w = cloumnsWidth - itemHeight - 2*blockInterval
       let h = arrowWidth
@@ -59,7 +68,7 @@ let sizeAndPosViewConfig = {
         }]
       }
   })
-  combineArrow = ::kwarg(
+  combineArrow = kwarg(
     function combineArrow(itemSizes, bodyIdx, arrowSizeX, arrowSizeY, arrowPosX, arrowPosY, isInMultipleArrow, isOutMultipleArrow) {
       let { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
         headerBlockInterval, itemsOffsetByBodies, itemHeight, itemBlockInterval } = itemSizes
@@ -70,10 +79,10 @@ let sizeAndPosViewConfig = {
       let offsetOut = isOutMultipleArrow ? 0.2 : 0
       let arrowOffsetOut = isInLeftArrow ? -offsetOut : offsetOut
       let posX = isInLeftArrow ? arrowPosX + arrowSizeX : arrowPosX
-      let cloumnsWidth = ::abs(columnConfig[arrowPosX -1].columnPos
+      let cloumnsWidth = abs(columnConfig[arrowPosX -1].columnPos
         - columnConfig[arrowPosX + arrowSizeX - 1].columnPos)
 
-      let beginLineHeight = 0.5*((::abs(arrowSizeY) - 1) * itemBlockHeight
+      let beginLineHeight = 0.5*((abs(arrowSizeY) - 1) * itemBlockHeight
         + itemBlockInterval - 2*blockInterval)
       let absoluteArrowPosX = itemInterval
         + columnConfig[arrowPosX + arrowSizeX - 1].columnPos
@@ -126,7 +135,7 @@ let sizeAndPosViewConfig = {
         }]
       }
   })
-  conectionInRow = ::kwarg(function conectionInRow(itemSizes, bodyIdx, itemPosX, itemPosY) {
+  conectionInRow = kwarg(function conectionInRow(itemSizes, bodyIdx, itemPosX, itemPosY) {
     let { itemInterval, itemBlockHeight, headerBlockInterval,
       itemsOffsetByBodies, itemHeight } = itemSizes
     let { columnPos } = itemSizes.paramsPosColumnsByBodies[bodyIdx][itemPosX]
@@ -137,7 +146,7 @@ let sizeAndPosViewConfig = {
           + itemPosY*(itemBlockHeight) + 0.5*itemHeight  + headerBlockInterval))
     }
   })
-  itemPos = ::kwarg(function itemPos(itemSizes, bodyIdx, itemPosX, itemPosY) {
+  itemPos = kwarg(function itemPos(itemSizes, bodyIdx, itemPosX, itemPosY) {
     let { itemInterval, itemBlockHeight, headerBlockInterval,
       itemsOffsetByBodies } = itemSizes
     let { columnPos } = itemSizes.paramsPosColumnsByBodies[bodyIdx][itemPosX]
@@ -145,8 +154,8 @@ let sizeAndPosViewConfig = {
       itemInterval + columnPos,
       itemsOffsetByBodies[bodyIdx] + itemPosY * itemBlockHeight + headerBlockInterval)
   })
-  textBlock = ::kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX, endPosY,
-      sizeX, sizeY, texts, reqItemExistsForDisplaying) {
+  textBlock = kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX, _endPosY,
+      _sizeX, sizeY, texts, _reqItemExistsForDisplaying) {
     let { itemInterval, itemBlockHeight, itemBlockInterval,
       headerBlockInterval, itemsOffsetByBodies, textInTextBlockSize, maxBodyWidth } = itemSizes
     let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
@@ -158,7 +167,7 @@ let sizeAndPosViewConfig = {
         itemInterval + columnConfig[posX].columnPos,
         itemsOffsetByBodies[bodyIdx] + posY * itemBlockHeight + headerBlockInterval
       )
-      textInBlock = "\n".join(texts.map(@(text) ::loc(text)))
+      textInBlock = "\n".join(texts.map(@(text) loc(text)))
       textSize = textInTextBlockSize
     }
   })
@@ -195,7 +204,7 @@ let function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
       btnName = altActionName
       onItemAction = "onAltItemAction"
     } : null
-    iconInsteadAmount = hasReachedMaxAmount ? ::loc(item?.getLocIdsList().maxAmountIcon ?? "") : null
+    iconInsteadAmount = hasReachedMaxAmount ? loc(item?.getLocIdsList().maxAmountIcon ?? "") : null
     conectionInRowText = itemBlock?.conectionInRowText
     isDisguised = !hasItemInInventory && isDisguised
     isHidden = item?.isHiddenItem()
@@ -206,7 +215,7 @@ let function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
   }
 }
 
-let getArrowView = ::kwarg(function getArrowView(arrow, itemSizes, isInMultipleArrow, isOutMultipleArrow) {
+let getArrowView = kwarg(function getArrowView(arrow, itemSizes, isInMultipleArrow, isOutMultipleArrow) {
   let arrowType = arrow.sizeX != 0 && arrow.sizeY != 0 ? "combineArrow"
     : arrow.sizeX == 0 ? "verticalArrow"
     : "horizontalArrow"
@@ -234,7 +243,7 @@ let viewItemsParams = {
   count = -1
 }
 
-let getItemBlockView = ::kwarg(
+let getItemBlockView = kwarg(
   function getItemBlockView(itemBlock, itemConfig, itemSizes, allowableResources) {
     local item = itemConfig.item
     if (item == null)
@@ -303,7 +312,7 @@ let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources,
     foreach (items in row) {
       if (items == null)
         continue
-      foreach (idx, itemBlock in items)
+      foreach (_idx, itemBlock in items)
       {
         let itemConfig = getConfigByItemBlock(itemBlock, itemsList, workshopSet)
         if (itemConfig.isHidden)
@@ -389,7 +398,7 @@ let sizePrefixNames = {
 let function getMaxBodyWidthConfig(craftTreeWidthStringByBodies, prefix) {
   return craftTreeWidthStringByBodies
     .map(@(v, idx) {
-      maxBodyWidth = ::to_pixels(v.subst(prefix)),
+      maxBodyWidth = to_pixels(v.subst(prefix)),
       maxBodyIdx = idx
     }).sort(@(a,b) b.maxBodyWidth <=> a.maxBodyWidth)?[0]
     ?? { maxBodyWidth = null, maxBodyIdx = -1 }
@@ -414,7 +423,7 @@ let function getHeaderView (headerItems, localItemsList, baseEff)
     items.append(item.getViewData(viewItemsParams.__merge({
       hasBoostEfficiency = true
       count = hasMaxAmountIcon
-        ? ::loc(item.getLocIdsList().maxAmountIcon)
+        ? loc(item.getLocIdsList().maxAmountIcon)
         : null
       hasIncrasedAmountTextSize = hasMaxAmountIcon
     })))
@@ -424,10 +433,10 @@ let function getHeaderView (headerItems, localItemsList, baseEff)
 
   return {
     items = items
-    totalEfficiency = ::colorize(totalEff == 100
+    totalEfficiency = colorize(totalEff == 100
       ? "activeTextColor" : totalEff < 100
-      ? "badTextColor" : "goodTextColor",  totalEff + ::loc("measureUnits/percent"))
-    itemsEfficiency = ::loc("ui/parentheses/space", { text = ::g_string.implode (itemsEff, "+")})
+      ? "badTextColor" : "goodTextColor",  totalEff + loc("measureUnits/percent"))
+    itemsEfficiency = loc("ui/parentheses/space", { text = ::g_string.implode (itemsEff, "+")})
   }
 }
 
@@ -449,7 +458,7 @@ let function getBodyItemsTitles(titlesConfig, itemSizes) {
   foreach (body in titlesConfig)
     if (body.title != "" && itemSizes.visibleItemsCountYByBodies[body.bodyIdx] > 0)
       titlesView.append({
-        bodyTitleText = ::loc(body.title)
+        bodyTitleText = loc(body.title)
         titlePos = posFormatString.subst(0, itemSizes.bodiesOffset[body.bodyIdx])
         titleSize = posFormatString.subst("pw", itemSizes.titleHeight)
       })
@@ -502,7 +511,7 @@ let function getButtonView(bodyConfig, itemSizes) {
   let buttonView = buttonConfig.__merge(button).__merge(buttonViewParams)
   let posY = button?.position == "top"
     ? itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
-      - ::to_pixels("1@buttonHeight")
+      - to_pixels("1@buttonHeight")
     : itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
       + itemSizes.visibleItemsCountYByBodies[bodyConfig.bodyIdx] * itemSizes.itemBlockHeight
       + itemSizes.headerBlockInterval
@@ -529,7 +538,7 @@ let function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
 local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType          = handlerType.MODAL
-  sceneTplName     = "%gui/items/craftTreeWnd"
+  sceneTplName     = "%gui/items/craftTreeWnd.tpl"
   branches         = null
   workshopSet      = null
   craftTree        = null
@@ -541,39 +550,39 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSceneTplView()
   {
-    craftTree = workshopSet.getCraftTree()
-    if (craftTree == null)
+    this.craftTree = this.workshopSet.getCraftTree()
+    if (this.craftTree == null)
       return null
 
-    branches = craftTree.branches
-    itemsList = workshopSet.getItemsListForCraftTree(craftTree)
-    itemSizes = getItemSizes()
+    this.branches = this.craftTree.branches
+    this.itemsList = this.workshopSet.getItemsListForCraftTree(this.craftTree)
+    this.itemSizes = this.getItemSizes()
     return {
-      frameHeaderText = ::loc(craftTree.headerlocId)
-      itemsSize = itemSizes.name
-      headersView = getHeadersView()
-    }.__update(getBodyView())
+      frameHeaderText = loc(this.craftTree.headerlocId)
+      itemsSize = this.itemSizes.name
+      headersView = this.getHeadersView()
+    }.__update(this.getBodyView())
   }
 
   function initScreen()
   {
-    scene.findObject("update_timer").setUserData(this)
-    itemsListObj = scene.findObject("craft_body")
+    this.scene.findObject("update_timer").setUserData(this)
+    this.itemsListObj = this.scene.findObject("craft_body")
 
-    if (tutorialItem)
+    if (this.tutorialItem)
     {
-      accentAssembleBtn()
+      this.accentAssembleBtn()
       return
     }
 
-    setFocusItem(showItemOnInit)
-    ::move_mouse_on_child_by_value(itemsListObj)
+    this.setFocusItem(this.showItemOnInit)
+    ::move_mouse_on_child_by_value(this.itemsListObj)
   }
 
   function getItemSizes() {
-    let bodiesConfig = craftTree.bodiesConfig
-    let resourceWidth = ::to_pixels("1@craftTreeResourceWidth")
-    let maxAllowedCrafTreeWidth = ::to_pixels("1@maxWindowWidth - 2@frameHeaderPad + 1@scrollBarSize")
+    let bodiesConfig = this.craftTree.bodiesConfig
+    let resourceWidth = to_pixels("1@craftTreeResourceWidth")
+    let maxAllowedCrafTreeWidth = to_pixels("1@maxWindowWidth - 2@frameHeaderPad + 1@scrollBarSize")
     let craftTreeWidthStringByBodies = bodiesConfig.map(@(bodyConfig)
       "".concat(
         "{itemsCountX}(1@{itemPrefix}temHeight + 1@{intervalPrefix}raftTreeItemInterval) + ".subst(bodyConfig),
@@ -586,20 +595,20 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     let sizes = sizePrefixNames.findvalue(@(prefix)
       getMaxBodyWidthConfig(craftTreeWidthStringByBodies, prefix).maxBodyWidth <= maxAllowedCrafTreeWidth
     ) ?? sizePrefixNames.small
-    let itemInterval = ::to_pixels("1@{0}raftTreeItemInterval)".subst(sizes.intervalPrefix))
+    let itemInterval = to_pixels("1@{0}raftTreeItemInterval)".subst(sizes.intervalPrefix))
     local curBodiesOffset = 0
     let itemsOffsetByBodies = []
     let bodiesOffset = []
     let visibleItemsCountYByBodies = []
-    let isShowHeaderPlace = craftTree.isShowHeaderPlace
-    let titleHeight = ::to_pixels("1@buttonHeight")
-    let itemHeight = ::to_pixels("1@{0}temHeight".subst(sizes.itemPrefix))
-    let itemBlockInterval = ::to_pixels("1@{0}raftTreeBlockInterval".subst(sizes.intervalPrefix))
+    let isShowHeaderPlace = this.craftTree.isShowHeaderPlace
+    let titleHeight = to_pixels("1@buttonHeight")
+    let itemHeight = to_pixels("1@{0}temHeight".subst(sizes.itemPrefix))
+    let itemBlockInterval = to_pixels("1@{0}raftTreeBlockInterval".subst(sizes.intervalPrefix))
     let itemBlockHeight = itemHeight + itemBlockInterval
-    let headerBlockInterval = ::to_pixels("1@headerAndCraftTreeBlockInterval")
-    let buttonHeight = ::to_pixels("1@buttonHeight") + 2*::to_pixels("1@buttonMargin")
-    let titleMargin = ::to_pixels("1@dp")
-    foreach (idx, rows in craftTree.treeRowsByBodies) {
+    let headerBlockInterval = to_pixels("1@headerAndCraftTreeBlockInterval")
+    let buttonHeight = to_pixels("1@buttonHeight") + 2*to_pixels("1@buttonMargin")
+    let titleMargin = to_pixels("1@dp")
+    foreach (idx, rows in this.craftTree.treeRowsByBodies) {
       local visibleItemsCountY = null
       let lastFilled = {}
       for (local i = rows.len() - 1; i >= 0; i--) {
@@ -607,12 +616,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           let findVisibleItemInColumn = {}
           foreach (itemBlock in (row ?? [])) {
             let { id = "", shouldRemoveBlankRows = false, posXY = ::Point2(0, 0) } = itemBlock
-            let item = itemsList?[id]
+            let item = this.itemsList?[id]
             let hasItemInInventory = item != null
               && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
             let hasVisibleItem = !item?.isHiddenItem()
-              && (hasItemInInventory || !workshopSet.isRequireItemsForDisplaying(itemBlock, itemsList))
-              && !workshopSet.isRequireExistItemsForDisplaying(itemBlock, itemsList)
+              && (hasItemInInventory || !this.workshopSet.isRequireItemsForDisplaying(itemBlock, this.itemsList))
+              && !this.workshopSet.isRequireExistItemsForDisplaying(itemBlock, this.itemsList)
             if (!hasVisibleItem) {
               if (shouldRemoveBlankRows)
                 findVisibleItemInColumn[posXY.x] <- findVisibleItemInColumn?[posXY.x] ?? false
@@ -643,13 +652,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           if (block.endPosY >= posY - 1)
             continue
 
-          let isHidden = workshopSet.isRequireExistItemsForDisplaying(block, itemsList)
+          let isHidden = this.workshopSet.isRequireExistItemsForDisplaying(block, this.itemsList)
           if (isHidden)
             lastFilled[posX] -= block.sizeY
         }
 
       let textBlocks = bodiesConfig[idx].textBlocks
-        .filter((@(b) !workshopSet.isRequireExistItemsForDisplaying(b, itemsList)).bindenv(this))
+        .filter((@(b) !this.workshopSet.isRequireExistItemsForDisplaying(b, this.itemsList)).bindenv(this))
         .sort(@(a, b) a.endPosY <=> b.endPosY)
       visibleItemsCountY = max(visibleItemsCountY ?? lastFilled.reduce(@(res, value) max(res, value), 0),
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
@@ -711,15 +720,15 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
     return sizes.__update({
       itemHeight
-      itemHeightFull = ::to_pixels("1@itemHeight")
+      itemHeightFull = to_pixels("1@itemHeight")
       titleMargin
       itemInterval
       itemBlockInterval
       resourceWidth
-      scrollBarSize = ::to_pixels("1@scrollBarSize")
-      arrowWidth = ::to_pixels("1@modArrowWidth")
+      scrollBarSize = to_pixels("1@scrollBarSize")
+      arrowWidth = to_pixels("1@modArrowWidth")
       headerBlockInterval
-      blockInterval = ::to_pixels("1@blockInterval")
+      blockInterval = to_pixels("1@blockInterval")
       itemBlockHeight
       titleHeight
       itemsOffsetByBodies
@@ -732,29 +741,29 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getHeadersView()
   {
-    if (!craftTree.isShowHeaderPlace)
+    if (!this.craftTree.isShowHeaderPlace)
       return null
 
-    let lastBranchIdx = branches.len() - 1
-    let baseEff = craftTree.baseEfficiency
-    let headerItemsTitle = craftTree?.headerItemsTitle ? ::loc(craftTree.headerItemsTitle) : null
-    let bodyTitle = craftTree.bodiesConfig[0].title
-    let bodyItemsTitle = bodyTitle != "" ? ::loc(bodyTitle) : null
-    let headersView = branches.map((function(branch, idx) {
+    let lastBranchIdx = this.branches.len() - 1
+    let baseEff = this.craftTree.baseEfficiency
+    let headerItemsTitle = this.craftTree?.headerItemsTitle ? loc(this.craftTree.headerItemsTitle) : null
+    let bodyTitle = this.craftTree.bodiesConfig[0].title
+    let bodyItemsTitle = bodyTitle != "" ? loc(bodyTitle) : null
+    let headersView = this.branches.map((function(branch, idx) {
       let posX = branch.minPosX -1
-      let paramsPosColumns = itemSizes.paramsPosColumnsByBodies[branch.bodyIdx]
+      let paramsPosColumns = this.itemSizes.paramsPosColumnsByBodies[branch.bodyIdx]
       let { columnPos } = paramsPosColumns[posX]
-      let nextBranchPos = paramsPosColumns?[posX + branch.itemsCountX].columnPos ?? itemSizes.maxBodyWidth
+      let nextBranchPos = paramsPosColumns?[posX + branch.itemsCountX].columnPos ?? this.itemSizes.maxBodyWidth
       return {
-        branchHeader = branch?.locId != null ? ::loc(branch.locId) : null
+        branchHeader = branch?.locId != null ? loc(branch.locId) : null
         headerItemsTitle = idx == lastBranchIdx ? headerItemsTitle : ""
         bodyItemsTitle = idx == lastBranchIdx ? bodyItemsTitle : ""
         positionsTitleX = 0
         branchId = getBranchId(idx)
-        branchHeaderItems = getHeaderView(branch.headerItems, itemsList, baseEff)
+        branchHeaderItems = getHeaderView(branch.headerItems, this.itemsList, baseEff)
         branchWidth = nextBranchPos - columnPos
         separators = idx != 0
-        hasHeaderItems = craftTree.hasHeaderItems
+        hasHeaderItems = this.craftTree.hasHeaderItems
       }
     }).bindenv(this))
 
@@ -771,34 +780,34 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     let { resourceWidth, itemBlockHeight, visibleItemsCountYByBodies,
       headerBlockInterval, itemsOffsetByBodies, itemBlockInterval, titleMargin,
-      bodiesOffset, titleHeight, maxBodyWidth, itemHeightFull, paramsPosColumnsByBodies } = itemSizes
+      bodiesOffset, titleHeight, maxBodyWidth, itemHeightFull, paramsPosColumnsByBodies } = this.itemSizes
     let itemBlocksArr = []
     let shopArrows = []
     let conectionsInRow = []
     let textBlocks = []
     let buttons = []
-    let bodiesConfig = craftTree.bodiesConfig
-    foreach (idx, rows in craftTree.treeRowsByBodies) {
-      let connectingElements = getRowsElementsView(rows, itemSizes, itemsList,
-        bodiesConfig[idx].allowableResources, bodiesConfig[idx].textBlocks, workshopSet)
+    let bodiesConfig = this.craftTree.bodiesConfig
+    foreach (idx, rows in this.craftTree.treeRowsByBodies) {
+      let connectingElements = getRowsElementsView(rows, this.itemSizes, this.itemsList,
+        bodiesConfig[idx].allowableResources, bodiesConfig[idx].textBlocks, this.workshopSet)
       shopArrows.extend(connectingElements.shopArrows)
       conectionsInRow.extend(connectingElements.conectionsInRow)
       itemBlocksArr.extend(connectingElements.itemBlocksArr)
-      textBlocks.extend(getTextBlocksView(bodiesConfig[idx].textBlocks, itemSizes, workshopSet, itemsList))
-      let buttonView = getButtonView(bodiesConfig[idx], itemSizes)
+      textBlocks.extend(getTextBlocksView(bodiesConfig[idx].textBlocks, this.itemSizes, this.workshopSet, this.itemsList))
+      let buttonView = getButtonView(bodiesConfig[idx], this.itemSizes)
       if (buttonView != null)
         buttons.append(buttonView)
     }
 
     let separators = []
-    let isShowHeaderPlace = craftTree.isShowHeaderPlace
-    let bodyTitles = isShowHeaderPlace ? [] : getBodyItemsTitles(bodiesConfig, itemSizes)
-    foreach (idx, branch in branches) {
+    let isShowHeaderPlace = this.craftTree.isShowHeaderPlace
+    let bodyTitles = isShowHeaderPlace ? [] : getBodyItemsTitles(bodiesConfig, this.itemSizes)
+    foreach (_idx, branch in this.branches) {
       let bodyConfig = bodiesConfig[branch.bodyIdx]
       let itemsCountY = visibleItemsCountYByBodies[branch.bodyIdx]
       if (itemsCountY == 0)
         continue
-      separators.append(getBranchSeparator(branch, itemSizes,
+      separators.append(getBranchSeparator(branch, this.itemSizes,
         itemsCountY * itemBlockHeight + headerBlockInterval))
       if (!isShowHeaderPlace && branch?.locId != null) {
         let posX = branch.minPosX -1
@@ -806,7 +815,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         let { columnPos } = paramsPosColumns[posX]
         let nextBranchPos = paramsPosColumns?[posX + branch.itemsCountX].columnPos ?? maxBodyWidth
         bodyTitles.append({
-          bodyTitleText = ::loc(branch.locId)
+          bodyTitleText = loc(branch.locId)
           titlePos = posFormatString.subst(columnPos,
             (bodiesConfig[branch.bodyIdx].bodyTitlesCount > 1 ? titleMargin : 0)
               + bodiesOffset[branch.bodyIdx] + (bodyConfig.title != "" ? titleHeight : 0))
@@ -818,7 +827,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
     let fullBodyHeightWithoutResult = itemsOffsetByBodies.top()
       + headerBlockInterval + visibleItemsCountYByBodies.top() * itemBlockHeight
-    let craftResult = craftTree?.craftResult
+    let craftResult = this.craftTree?.craftResult
     let hasCraftResult = craftResult != null
     if (hasCraftResult)
     {
@@ -830,9 +839,9 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       })
       itemBlocksArr.append(getItemBlockView({
         itemBlock = itemBlock,
-        itemConfig = getConfigByItemBlock(itemBlock, itemsList, workshopSet),
-        itemSizes = itemSizes,
-        allowableResources = craftTree.allowableResourcesForCraftResult
+        itemConfig = getConfigByItemBlock(itemBlock, this.itemsList, this.workshopSet),
+        itemSizes = this.itemSizes,
+        allowableResources = this.craftTree.allowableResourcesForCraftResult
       }))
 
       separators.append({
@@ -842,7 +851,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     }
     return {
       bodyTitles
-      bodyBackground = getBodyBackground(bodiesConfig, itemSizes, fullBodyHeightWithoutResult)
+      bodyBackground = getBodyBackground(bodiesConfig, this.itemSizes, fullBodyHeightWithoutResult)
       bodyHeight = fullBodyHeightWithoutResult
         + (hasCraftResult
           ? (headerBlockInterval + itemHeightFull + itemBlockInterval)
@@ -860,23 +869,23 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function findItemObj(itemId)
   {
-    return scene.findObject("shop_item_" + itemId)
+    return this.scene.findObject("shop_item_" + itemId)
   }
 
   function onItemAction(buttonObj)
   {
     let id = buttonObj?.holderId ?? "-1"
-    let item = itemsList?[id.tointeger()]
-    let itemObj = findItemObj(id)
-    doMainAction(item, itemObj)
+    let item = this.itemsList?[id.tointeger()]
+    let itemObj = this.findItemObj(id)
+    this.doMainAction(item, itemObj)
   }
 
   function onAltItemAction(buttonObj)
   {
     let id = buttonObj?.holderId ?? "-1"
-    let item = itemsList?[id.tointeger()]
-    let itemObj = findItemObj(id)
-    doAltAction(item, itemObj)
+    let item = this.itemsList?[id.tointeger()]
+    let itemObj = this.findItemObj(id)
+    this.doAltAction(item, itemObj)
   }
 
   function onItemHover(obj) {
@@ -884,13 +893,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     let id = obj?.holderId ?? "-1"
-    let item = itemsList?[id.tointeger()]
-    setFocusItem(item)
+    let item = this.itemsList?[id.tointeger()]
+    this.setFocusItem(item)
   }
 
   function onMainAction()
   {
-    let curItemParam = getCurItemParam()
+    let curItemParam = this.getCurItemParam()
     let button = curItemParam.button
     if (button?.onClick != null) {
       this[button.onClick]()
@@ -902,11 +911,11 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     if (item == null)
       return
 
-    local itemBlock = craftTree?.craftResult.id == item.id
-      ? craftTree.craftResult
+    local itemBlock = this.craftTree?.craftResult.id == item.id
+      ? this.craftTree.craftResult
       : null
     if (itemBlock == null)
-      foreach(branche in branches)
+      foreach(branche in this.branches)
       {
         itemBlock = branche.branchItems?[item.id]
         if (itemBlock != null)
@@ -914,48 +923,48 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       }
 
     if (item.isCrafting() || item.hasCraftResult()
-        || (!workshopSet.needReqItems(itemBlock, itemsList)
-          && !workshopSet.isRequireItemsForCrafting(itemBlock, itemsList)))
-      doMainAction(item, itemObj)
+        || (!this.workshopSet.needReqItems(itemBlock, this.itemsList)
+          && !this.workshopSet.isRequireItemsForCrafting(itemBlock, this.itemsList)))
+      this.doMainAction(item, itemObj)
     else if (item.getAltActionName() != "")
-      doAltAction(item, itemObj)
+      this.doAltAction(item, itemObj)
   }
 
   function accentAssembleBtn()
   {
-    let item = tutorialItem
-    let {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
+    let item = this.tutorialItem
+    let {childObj, childIdx} = findChild(this.itemsListObj, @(c) c?.itemId == item.id.tostring())
     if (childObj == null)
       return
 
-    itemsListObj.setValue(childIdx)
+    this.itemsListObj.setValue(childIdx)
     let actionBtnObj = childObj.findObject("actionBtn")
     actionBtnObj.scrollToView()
 
     let steps = [{
       obj = [actionBtnObj]
-      text = ::loc("workshop/tutorial/pressButton", {
+      text = loc("workshop/tutorial/pressButton", {
         button_name = item.getAssembleText()
       })
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::GAMEPAD_ENTER_SHORTCUT
-      cb = @() doMainAction(item, childObj, true)
+      cb = @() this.doMainAction(item, childObj, true)
     }]
     ::gui_modal_tutor(steps, this, true)
   }
 
   function accentCraftTime()
   {
-    let item = tutorialItem
-    let {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
-    itemsListObj.setValue(childIdx)
+    let item = this.tutorialItem
+    let {childObj, childIdx} = findChild(this.itemsListObj, @(c) c?.itemId == item.id.tostring())
+    this.itemsListObj.setValue(childIdx)
 
     let timeObj = childObj.findObject("timePlace")
     timeObj.scrollToView()
 
     let steps = [{
       obj = [timeObj]
-      text = ::loc("workshop/tutorial/wait")
+      text = loc("workshop/tutorial/wait")
       actionType = tutorAction.ANY_CLICK
       shortcut = ::GAMEPAD_ENTER_SHORTCUT
       waitTime = item.getCraftTimeLeft()
@@ -971,12 +980,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   doMainAction = @(item, obj, showTutorial = false)
-    item?.doMainAction(null, this, getActionParams(item, obj, showTutorial))
-  doAltAction = @(item, obj) item?.doAltAction(getActionParams(item, obj))
+    item?.doMainAction(null, this, this.getActionParams(item, obj, showTutorial))
+  doAltAction = @(item, obj) item?.doAltAction(this.getActionParams(item, obj))
 
   function getCurItemParam()
   {
-    let value = ::get_obj_valid_index(itemsListObj)
+    let value = ::get_obj_valid_index(this.itemsListObj)
     if (value < 0)
       return {
         obj = null
@@ -984,94 +993,94 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         button = null
       }
 
-    let itemObj = itemsListObj.getChild(value)
+    let itemObj = this.itemsListObj.getChild(value)
     return {
       obj = itemObj
-      item = itemsList?[(itemObj?.itemId ?? "-1").tointeger()]
+      item = this.itemsList?[(itemObj?.itemId ?? "-1").tointeger()]
       button = bodyButtonsConfig?[itemObj?.id ?? ""]
     }
   }
 
-  function onTimer(obj, dt)
+  function onTimer(_obj, _dt)
   {
-    foreach(item in itemsList)
+    foreach(item in this.itemsList)
     {
       if (!item.hasTimer())
         continue
 
-      let itemObj = findItemObj(item.id)
-      if (!::check_obj(itemObj))
+      let itemObj = this.findItemObj(item.id)
+      if (!checkObj(itemObj))
         continue
       local timeTxtObj = itemObj.findObject("expire_time")
-      if (::check_obj(timeTxtObj))
+      if (checkObj(timeTxtObj))
         timeTxtObj.setValue(item.getTimeLeftText())
       timeTxtObj = itemObj.findObject("craft_time")
-      if (::check_obj(timeTxtObj))
+      if (checkObj(timeTxtObj))
         timeTxtObj.setValue(item.getCraftTimeTextShort())
     }
   }
 
   function updateCraftTree()
   {
-    let curItemParam = getCurItemParam()
+    let curItemParam = this.getCurItemParam()
 
-    craftTree = workshopSet.getCraftTree() ?? craftTree
-    branches = craftTree.branches
-    itemsList = workshopSet.getItemsListForCraftTree(craftTree)
-    getItemSizes()
-    scene.findObject("wnd_title").setValue(::loc(craftTree.headerlocId))
+    this.craftTree = this.workshopSet.getCraftTree() ?? this.craftTree
+    this.branches = this.craftTree.branches
+    this.itemsList = this.workshopSet.getItemsListForCraftTree(this.craftTree)
+    this.getItemSizes()
+    this.scene.findObject("wnd_title").setValue(loc(this.craftTree.headerlocId))
 
     local view = {
-      itemsSize = itemSizes.name
-      headersView = getHeadersView()
+      itemsSize = this.itemSizes.name
+      headersView = this.getHeadersView()
     }
-    local data = ::handyman.renderCached("%gui/items/craftTreeHeader", view)
-    guiScene.replaceContentFromText(scene.findObject("craft_header"), data, data.len(), this)
+    local data = ::handyman.renderCached("%gui/items/craftTreeHeader.tpl", view)
+    this.guiScene.replaceContentFromText(this.scene.findObject("craft_header"), data, data.len(), this)
 
-    view = getBodyView()
-    itemsListObj.size = posFormatString.subst(view.bodyWidth, view.bodyHeight)
-    data = ::handyman.renderCached("%gui/items/craftTreeBody", view)
-    guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
-    if (tutorialItem?.isCrafting() && tutorialItem.getCraftTimeLeft() > 0)
+    view = this.getBodyView()
+    this.itemsListObj.size = posFormatString.subst(view.bodyWidth, view.bodyHeight)
+    data = ::handyman.renderCached("%gui/items/craftTreeBody.tpl", view)
+    this.guiScene.replaceContentFromText(this.itemsListObj, data, data.len(), this)
+    if (this.tutorialItem?.isCrafting() && this.tutorialItem.getCraftTimeLeft() > 0)
     {
-      accentCraftTime()
-      tutorialItem = null
+      this.accentCraftTime()
+      this.tutorialItem = null
       return
     }
-    setFocusItem(curItemParam.item)
-    ::move_mouse_on_child_by_value(itemsListObj)
+    this.setFocusItem(curItemParam.item)
+    ::move_mouse_on_child_by_value(this.itemsListObj)
   }
 
   function setFocusItem(curItem = null)
   {
     let curItemId = curItem?.id.tostring() ?? ""
     local enabledValue = null
-    for(local i = 0; i < itemsListObj.childrenCount(); i++)
+    for(local i = 0; i < this.itemsListObj.childrenCount(); i++)
     {
-      let childObj = itemsListObj.getChild(i)
+      let childObj = this.itemsListObj.getChild(i)
       if (enabledValue == null && childObj.isEnabled())
         enabledValue = i
       if (childObj?.itemId != curItemId)
         continue
 
-      itemsListObj.setValue(i)
+      this.itemsListObj.setValue(i)
       return
     }
-    let curIdx = ::get_obj_valid_index(itemsListObj)
-    if (curIdx >= 0 && itemsListObj.getChild(curIdx).isEnabled())
-      itemsListObj.setValue(curIdx)
+    let curIdx = ::get_obj_valid_index(this.itemsListObj)
+    if (curIdx >= 0 && this.itemsListObj.getChild(curIdx).isEnabled())
+      this.itemsListObj.setValue(curIdx)
     else if (enabledValue != null)
-      itemsListObj.setValue(enabledValue)
+      this.itemsListObj.setValue(enabledValue)
   }
 
-  function onEventInventoryUpdate(p)
+  function onEventInventoryUpdate(_p)
   {
-    doWhenActiveOnce("updateCraftTree")
+    this.doWhenActiveOnce("updateCraftTree")
   }
 
-  function onEventProfileUpdated(p)
+  function onEventProfileUpdated(_p)
   {
-    doWhenActiveOnce("updateCraftTree")
+    this.doWhenActiveOnce("updateCraftTree")
   }
 
   function onToMarketplaceButton() {
@@ -1079,7 +1088,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onExchangeRecipe(obj) {
-    let gen = itemsList?[obj?.generatorId.tointeger()]
+    let gen = this.itemsList?[obj?.generatorId.tointeger()]
     if (!gen)
       return
 

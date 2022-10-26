@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 enum wwClanSquadInviteColors {
   BUSY = "fadedTextColor"
   ENABLED = "activeTextColor"
@@ -17,7 +23,7 @@ enum wwClanSquadInviteColors {
       showOnSelect = "hover"
       btnName = "X"
       btnKey = "X"
-      tooltip = @() ::loc("squad/info")
+      tooltip = @() loc("squad/info")
       img = "#ui/gameuiskin#btn_help.svg"
       funcName = "onSquadInfo"
       isHidden = false
@@ -30,7 +36,7 @@ enum wwClanSquadInviteColors {
       showOnSelect = "hover"
       btnName = "A"
       btnKey = "A"
-      text = @() ::loc("worldwar/inviteSquad")
+      text = @() loc("worldwar/inviteSquad")
       isHidden = true
       isDisabled = true
     }
@@ -45,26 +51,26 @@ enum wwClanSquadInviteColors {
   function updateSquadButtons(obj, squad)
   {
     base.updateSquadButtons(obj, squad)
-    ::showBtn("btn_ww_battle_invite", canWwBattleInvite(squad), obj)
+    ::showBtn("btn_ww_battle_invite", this.canWwBattleInvite(squad), obj)
   }
 
   function updateSquadDummyButtons()
   {
-    if (!selectedSquad)
+    if (!this.selectedSquad)
       return
-    ::showBtn("btn_ww_battle_invite", canWwBattleInvite(selectedSquad), dummyButtonsListObj)
+    ::showBtn("btn_ww_battle_invite", this.canWwBattleInvite(this.selectedSquad), this.dummyButtonsListObj)
   }
 
   function canWwBattleInvite(squad)
   {
     let presenceParams = squad?.data?.presence ?? {}
     let presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
-    return presenceType.canInviteToWWBattle && !isGameParamsMatch(presenceParams) && isSquadOnline(squad)
+    return presenceType.canInviteToWWBattle && !this.isGameParamsMatch(presenceParams) && this.isSquadOnline(squad)
   }
 
   function onSquadLeaderInvite(obj)
   {
-    let actionSquad = getSquadByObj(obj)
+    let actionSquad = this.getSquadByObj(obj)
     if (!actionSquad)
       return
 
@@ -73,8 +79,8 @@ enum wwClanSquadInviteColors {
       squadronId = ::clan_get_my_clan_id(),
       action = "join_ww_battle"
       battle = {
-        operationId = operationId
-        battleId = battleId
+        operationId = this.operationId
+        battleId = this.battleId
       }
     })
   }
@@ -85,22 +91,22 @@ enum wwClanSquadInviteColors {
     let presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
     let presenceText = presenceType.getLocText(presenceParams)
 
-    return colorizePresence(presenceText, presenceParams, presenceType)
+    return this.colorizePresence(presenceText, presenceParams, presenceType)
   }
 
   function getBattleParams()
   {
-    return {operationId = operationId, battleId = battleId, country = country}
+    return {operationId = this.operationId, battleId = this.battleId, country = this.country}
   }
 
   function colorizePresence(text, presenceParams, presenceType)
   {
-    if (isGameParamsMatch(presenceParams))
-      return ::colorize(wwClanSquadInviteColors.MATCH_GAME, text)
+    if (this.isGameParamsMatch(presenceParams))
+      return colorize(wwClanSquadInviteColors.MATCH_GAME, text)
 
     let color = presenceType.canInviteToWWBattle
       ? wwClanSquadInviteColors.ENABLED : wwClanSquadInviteColors.BUSY
-    return ::colorize(color, text)
+    return colorize(color, text)
   }
 
   function isGameParamsMatch(presenceParams)

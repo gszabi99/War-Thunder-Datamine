@@ -1793,9 +1793,6 @@
     "EmbeddedBrowserOnlineShop": {
       "condition": ""
     },
-    "Chat": {
-      "condition": ""
-    },
     "ChatThreadLang": {
       "condition": [
         "role_GAIJIN",
@@ -2598,6 +2595,7 @@
     },
     "ESport": {
       "condition": [
+        "wt_events_snailcup",
         "role_GAIJIN",
         "role_DEVELOPER"
       ]
@@ -2942,9 +2940,7 @@
     "DmViewerExternalArmorHiding": {
       "condition": ""
     },
-    "DamagedSkinPreview": {
-      "condition": ""
-    },
+    "DamagedSkinPreview": {},
     "CustomizationLayoutPresets": {
       "condition": ""
     },
@@ -3045,11 +3041,11 @@
     "BattlePass": {
       "condition": ""
     },
-    "BattlePassSeason7Purchased": {
-      "condition": "BattlePass;battlepass_season7_purchased"
+    "BattlePassSeason9Purchased": {
+      "condition": "BattlePass;battlepass_season9_purchased"
     },
-    "BattlePassSeason7AllowSkipAllStages": {
-      "condition": "BattlePass;battlepass_season7_purchased;battlepass_season7_allow_skip_all_stages"
+    "BattlePassSeason9AllowSkipAllStages": {
+      "condition": "BattlePass;battlepass_season9_purchased;battlepass_season9_allow_skip_all_stages"
     },
     "BattlePassSeason8Purchased": {
       "condition": "BattlePass;battlepass_season8_purchased"
@@ -3134,19 +3130,17 @@
         "role_TESTER"
       ]
     },
-    "BattleChatModeAll": {
-      "condition": ""
-    },
-    "BattleChatModeTeam": {
-      "condition": ""
-    },
-    "BattleChatModeSquad": {
-      "condition": ""
-    },
     "WeaponryCustomPresets": {
       "condition": ""
     },
     "BattleAutoStart": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
+    },
+    "uavMiniMap": {
       "condition": [
         "role_GAIJIN",
         "role_DEVELOPER",

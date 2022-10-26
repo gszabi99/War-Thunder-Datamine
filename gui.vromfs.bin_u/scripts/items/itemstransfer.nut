@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local sendingList = {}
@@ -8,7 +13,7 @@ let function updateSendingList()
 
   local isChanged = newList.len() != sendingList.len()
   if (!isChanged)
-    foreach(key, data in newList)
+    foreach(key, _data in newList)
       if (!(key in sendingList))
       {
         isChanged = true
@@ -20,9 +25,9 @@ let function updateSendingList()
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(p) sendingList.clear()
-  ProfileUpdated = @(p) updateSendingList()
-  ScriptsReloaded = @(p) ::g_login.isProfileReceived() && updateSendingList()
+  SignOut = @(_p) sendingList.clear()
+  ProfileUpdated = @(_p) updateSendingList()
+  ScriptsReloaded = @(_p) ::g_login.isProfileReceived() && updateSendingList()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

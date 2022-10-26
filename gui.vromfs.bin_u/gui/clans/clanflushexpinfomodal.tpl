@@ -92,7 +92,7 @@ root {
 
     <<#navBar>>
     navBar {
-      include "%gui/commonParts/navBar"
+      include "%gui/commonParts/navBar.tpl"
     }
     <</navBar>>
   }

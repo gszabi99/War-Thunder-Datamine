@@ -1,5 +1,12 @@
-let function isRewardBest (medal, clanData)
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let function isRewardBest(medal, clanData) {
   if((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
     foreach(reward in clanData.clanBestRewards)
       if(::u.isEqual(reward, medal.bestRewardsConfig))
@@ -23,7 +30,7 @@ let function isRewardVisible (medal, clanData)
 ::gui_handlers.clanRewardsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType            = handlerType.MODAL
-  sceneTplName       = "%gui/rewards/clanRewardsModal"
+  sceneTplName       = "%gui/rewards/clanRewardsModal.tpl"
   rewards            = null
   clanId             = null
   canEditBestRewards = false
@@ -33,15 +40,15 @@ let function isRewardVisible (medal, clanData)
 
   function getSceneTplView()
   {
-    maxClanBestRewards = ::get_warpoints_blk()?.maxClanBestRewards ?? maxClanBestRewards
-    let blocksCount = rewards.len() > 3 ? 2 : 1
+    this.maxClanBestRewards = ::get_warpoints_blk()?.maxClanBestRewards ?? this.maxClanBestRewards
+    let blocksCount = this.rewards.len() > 3 ? 2 : 1
     let myClanRights = ::g_clans.getMyClanRights()
-    canEditBestRewards = clanId == ::clan_get_my_clan_id() && ::isInArray("CHANGE_INFO", myClanRights)
+    this.canEditBestRewards = this.clanId == ::clan_get_my_clan_id() && isInArray("CHANGE_INFO", myClanRights)
     return {
       width = blocksCount + "@unlockBlockWidth + " + (blocksCount - 1) + "@framePadding"
-      isEditable = canEditBestRewards
+      isEditable = this.canEditBestRewards
 
-      rewards = rewards.map(@(reward, idx) {
+      rewards = this.rewards.map(@(reward, idx) {
         rewardImage = ::LayersIcon.getIconData(reward.iconStyle, null, null, null,
           reward.iconParams, reward.iconConfig)
         rewardId = "reward_"+idx
@@ -54,68 +61,68 @@ let function isRewardVisible (medal, clanData)
 
   function initScreen()
   {
-    fillBestRewardsIds()
-    ::move_mouse_on_child(scene.findObject("rewards_list"), 0)
+    this.fillBestRewardsIds()
+    ::move_mouse_on_child(this.scene.findObject("rewards_list"), 0)
   }
 
   function fillBestRewardsIds()
   {
-    bestIds = []
-    if(canEditBestRewards)
-     foreach(idx, reward in rewards)
+    this.bestIds = []
+    if(this.canEditBestRewards)
+     foreach(idx, reward in this.rewards)
        if(isRewardBest(reward, ::my_clan_info))
-         bestIds.append(idx)
-    checkupIds = clone bestIds
+         this.bestIds.append(idx)
+    this.checkupIds = clone this.bestIds
   }
 
   function updateBestRewardsIds(id, isChecked)
   {
     let rIdx = ::g_string.cutPrefix(id, "reward_").tointeger()
-    let bridx = bestIds.findindex(@(i) i == rIdx)
+    let bridx = this.bestIds.findindex(@(i) i == rIdx)
     if(bridx == null && isChecked)
-      bestIds.append(rIdx)
+      this.bestIds.append(rIdx)
     if(bridx != null && !isChecked)
-      bestIds.remove(bridx)
+      this.bestIds.remove(bridx)
   }
 
   function getBestRewardsConfig()
   {
     let bestRewards = []
-    foreach(id in bestIds)
-      bestRewards.append(rewards[id].bestRewardsConfig)
+    foreach(id in this.bestIds)
+      bestRewards.append(this.rewards[id].bestRewardsConfig)
 
     return bestRewards
   }
 
   function onBestRewardSelect(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let isChecked = obj.getValue()
-    if(bestIds.len() == maxClanBestRewards && isChecked)
+    if(this.bestIds.len() == this.maxClanBestRewards && isChecked)
     {
       obj.setValue(false)
-      obj.tooltip = ::loc("clan/clan_awards/hint/favoritesLimit")
-      ::g_popups.add(null, ::loc("clan/clan_awards/hint/favoritesLimit"))
+      obj.tooltip = loc("clan/clan_awards/hint/favoritesLimit")
+      ::g_popups.add(null, loc("clan/clan_awards/hint/favoritesLimit"))
       return
     }
-    obj.tooltip = ::loc(isChecked
+    obj.tooltip = loc(isChecked
       ? "mainmenu/UnlockAchievementsRemoveFromFavorite/hint"
       : "mainmenu/UnlockAchievementsToFavorite/hint")
-    updateBestRewardsIds(obj.id, isChecked)
+    this.updateBestRewardsIds(obj.id, isChecked)
   }
 
   function goBack()
   {
     base.goBack()
-    if (! canEditBestRewards || ::u.isEqual(bestIds, checkupIds))
+    if (! this.canEditBestRewards || ::u.isEqual(this.bestIds, this.checkupIds))
       return
 
     let taskId = ::char_send_custom_action("cln_set_clan_best_rewards",
-      ::EATT_SIMPLE_OK,
+      EATT_SIMPLE_OK,
       ::DataBlock(),
-      ::json_to_string({clanId = clanId, bestRewards = getBestRewardsConfig()}, false),
+      ::json_to_string({clanId = this.clanId, bestRewards = this.getBestRewardsConfig()}, false),
       -1)
     ::g_tasker.addTask(taskId, {showProgressBox = false})
     ::sync_handler_simulate_signal("clan_info_reload")
@@ -129,7 +136,7 @@ let function isRewardVisible (medal, clanData)
       return
 
     let checkBoxObj = obj.getChild(idx).findObject("reward_"+idx)
-    if (!::check_obj(checkBoxObj))
+    if (!checkObj(checkBoxObj))
       return
 
     checkBoxObj.setValue(!checkBoxObj.getValue())

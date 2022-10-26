@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let devoiceList = {}
 
 let localDevoice = {
@@ -10,11 +16,11 @@ let localDevoice = {
 
   setMuted   = function(name, devoiceMask) { devoiceList[name] <- (devoiceList?[name] ?? 0) | devoiceMask }
   unsetMuted = function(name, devoiceMask) { devoiceList[name] <- (devoiceList?[name] ?? 0) & ~devoiceMask }
-  switchMuted = @(name, devoiceMask) (isMuted(name, devoiceMask) ? unsetMuted : setMuted)(name, devoiceMask)
+  switchMuted = @(name, devoiceMask) (this.isMuted(name, devoiceMask) ? this.unsetMuted : this.setMuted)(name, devoiceMask)
 }
 
 ::add_event_listener("LoadingStateChange",
-  function(p)
+  function(_p)
   {
     if (::is_in_flight())
       devoiceList.clear()

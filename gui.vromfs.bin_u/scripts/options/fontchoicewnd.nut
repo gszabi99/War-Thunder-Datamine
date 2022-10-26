@@ -1,11 +1,17 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let FONT_CHOICE_SAVE_ID = "tutor/fontChange"
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 local wasOpened = false
 
-::gui_handlers.FontChoiceWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.FontChoiceWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/options/fontChoiceWnd"
+  sceneTplName = "%gui/options/fontChoiceWnd.tpl"
 
   option = null
 
@@ -27,9 +33,9 @@ local wasOpened = false
 
   function getSceneTplView()
   {
-    option = ::get_option(::USEROPT_FONTS_CSS)
+    this.option = ::get_option(::USEROPT_FONTS_CSS)
     return {
-      options = ::create_option_combobox(option.id, option.items, option.value, null, false)
+      options = ::create_option_combobox(this.option.id, this.option.items, this.option.value, null, false)
     }
   }
 
@@ -44,16 +50,16 @@ local wasOpened = false
   function onFontsChange(obj)
   {
     let newValue = obj.getValue()
-    if (newValue == option.value)
+    if (newValue == this.option.value)
       return
 
-    ::set_option(::USEROPT_FONTS_CSS, newValue, option)
-    guiScene.performDelayed(this, @() ::handlersManager.getActiveBaseHandler().fullReloadScene())
+    ::set_option(::USEROPT_FONTS_CSS, newValue, this.option)
+    this.guiScene.performDelayed(this, @() ::handlersManager.getActiveBaseHandler().fullReloadScene())
   }
 
   function goBack()
   {
-    markSeen(true)
+    this.markSeen(true)
     base.goBack()
   }
 }

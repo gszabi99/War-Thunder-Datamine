@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let time = require("%scripts/time.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 
 ::gui_handlers.modifyThreadWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -19,63 +27,63 @@ let time = require("%scripts/time.nut")
 
   function initScreen()
   {
-    if (!threadInfo)
+    if (!this.threadInfo)
       return
 
-    let ownerText = ::colorize("userlogColoredText", threadInfo.getOwnerText(false))
-    let createdByText = ::loc("chat/threadCreatedBy", { player = ownerText })
-    scene.findObject("created_by_text").setValue(createdByText)
+    let ownerText = colorize("userlogColoredText", this.threadInfo.getOwnerText(false))
+    let createdByText = loc("chat/threadCreatedBy", { player = ownerText })
+    this.scene.findObject("created_by_text").setValue(createdByText)
 
-    scene.findObject("thread_title_header").setValue(::loc("chat/threadTitle/limits",
+    this.scene.findObject("thread_title_header").setValue(loc("chat/threadTitle/limits",
                                               {
                                                 min = ::g_chat.threadTitleLenMin
                                                 max = ::g_chat.threadTitleLenMax
                                               }))
 
-    let titleEditbox = scene.findObject("thread_title_editbox")
-    titleEditbox.setValue(threadInfo.title)
+    let titleEditbox = this.scene.findObject("thread_title_editbox")
+    titleEditbox.setValue(this.threadInfo.title)
     ::move_mouse_on_child(titleEditbox)
 
-    let hiddenCheckObj = scene.findObject("is_hidden_checkbox")
-    hiddenCheckObj.setValue(threadInfo.isHidden)
-    onChangeHidden(hiddenCheckObj)
-    let pinnedCheckObj = scene.findObject("is_pinned_checkbox")
-    pinnedCheckObj.setValue(threadInfo.isPinned)
-    onChangePinned(pinnedCheckObj)
+    let hiddenCheckObj = this.scene.findObject("is_hidden_checkbox")
+    hiddenCheckObj.setValue(this.threadInfo.isHidden)
+    this.onChangeHidden(hiddenCheckObj)
+    let pinnedCheckObj = this.scene.findObject("is_pinned_checkbox")
+    pinnedCheckObj.setValue(this.threadInfo.isPinned)
+    this.onChangePinned(pinnedCheckObj)
 
-    local timeHeader = ::loc("chat/threadTime")
-    if (threadInfo.timeStamp > 0)
+    local timeHeader = loc("chat/threadTime")
+    if (this.threadInfo.timeStamp > 0)
     {
-      threadTime = threadInfo.timeStamp
-      timeHeader += ::loc("ui/colon") + time.buildDateTimeStr(threadInfo.timeStamp)
+      this.threadTime = this.threadInfo.timeStamp
+      timeHeader += loc("ui/colon") + time.buildDateTimeStr(this.threadInfo.timeStamp)
     }
-    scene.findObject("thread_time_header").setValue(timeHeader)
+    this.scene.findObject("thread_time_header").setValue(timeHeader)
 
-    initLangs()
-    initCategories()
+    this.initLangs()
+    this.initCategories()
   }
 
   function initLangs()
   {
-    curLangs = threadInfo.langs
+    this.curLangs = this.threadInfo.langs
 
     let show = ::g_chat.canChooseThreadsLang()
     this.showSceneBtn("language_block", show)
     if (show)
-      updateLangButton()
+      this.updateLangButton()
   }
 
   function updateLangButton()
   {
     let view = { countries = [] }
-    foreach(chatId in curLangs)
+    foreach(chatId in this.curLangs)
     {
       let langInfo = ::g_language.getLangInfoByChatId(chatId)
       if (langInfo)
         view.countries.append({ countryIcon = langInfo.icon })
     }
-    let data = ::handyman.renderCached("%gui/countriesList", view)
-    guiScene.replaceContentFromText(scene.findObject("language_btn"), data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/countriesList.tpl", view)
+    this.guiScene.replaceContentFromText(this.scene.findObject("language_btn"), data, data.len(), this)
   }
 
   function initCategories()
@@ -84,64 +92,64 @@ let time = require("%scripts/time.nut")
     this.showSceneBtn("thread_category_header", show)
     let cListObj = this.showSceneBtn("categories_list", show)
     if (show)
-      ::g_chat_categories.fillCategoriesListObj(cListObj, threadInfo.category, this)
+      ::g_chat_categories.fillCategoriesListObj(cListObj, this.threadInfo.category, this)
   }
 
   function getSelThreadCategoryName()
   {
-    let cListObj = scene.findObject("categories_list")
-    return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, threadInfo.category)
+    let cListObj = this.scene.findObject("categories_list")
+    return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, this.threadInfo.category)
   }
 
   function onChangeTitle(obj)
   {
     if (!obj)
       return
-    curTitle = obj.getValue() || ""
-    checkValues()
+    this.curTitle = obj.getValue() || ""
+    this.checkValues()
   }
 
   function checkValues()
   {
-    isValuesValid = ::g_chat.checkThreadTitleLen(curTitle)
+    this.isValuesValid = ::g_chat.checkThreadTitleLen(this.curTitle)
 
-    scene.findObject("btn_apply").enable(isValuesValid)
+    this.scene.findObject("btn_apply").enable(this.isValuesValid)
   }
 
   function onApply()
   {
-    if (!isValuesValid || !::checkObj(scene))
+    if (!this.isValuesValid || !checkObj(this.scene))
       return
 
     let modifyTable = {
-      title = curTitle
-      isHidden = scene.findObject("is_hidden_checkbox").getValue()
-      isPinned = scene.findObject("is_pinned_checkbox").getValue()
-      category = getSelThreadCategoryName()
+      title = this.curTitle
+      isHidden = this.scene.findObject("is_hidden_checkbox").getValue()
+      isPinned = this.scene.findObject("is_pinned_checkbox").getValue()
+      category = this.getSelThreadCategoryName()
     }
-    if (curTime > 0)
-      modifyTable.timeStamp <- curTime
-    if (curLangs)
-      modifyTable.langs <- curLangs
+    if (this.curTime > 0)
+      modifyTable.timeStamp <- this.curTime
+    if (this.curLangs)
+      modifyTable.langs <- this.curLangs
 
-    let res = ::g_chat.modifyThread(threadInfo, modifyTable)
+    let res = ::g_chat.modifyThread(this.threadInfo, modifyTable)
     if (res)
-      goBack()
+      this.goBack()
   }
 
   function onChangeHidden(obj)
   {
     if (!obj)
       return
-    scene.findObject("is_pinned_checkbox").enable(!obj.getValue())
-    scene.findObject("timestamp_editbox").enable(!obj.getValue())
+    this.scene.findObject("is_pinned_checkbox").enable(!obj.getValue())
+    this.scene.findObject("timestamp_editbox").enable(!obj.getValue())
   }
 
   function onChangePinned(obj)
   {
     if (!obj)
       return
-    scene.findObject("is_hidden_checkbox").enable(!obj.getValue())
+    this.scene.findObject("is_hidden_checkbox").enable(!obj.getValue())
   }
 
   function updateSelTimeText(timestamp)
@@ -149,21 +157,21 @@ let time = require("%scripts/time.nut")
     local text = ""
     if (timestamp >= 0)
       text = " -> " + time.buildDateTimeStr(timestamp)
-    scene.findObject("new_time_text").setValue(text)
+    this.scene.findObject("new_time_text").setValue(text)
   }
 
   function onChangeTimeStamp(obj)
   {
     let timeStr = obj.getValue() || ""
-    curTime = timeStr != "" ? time.getTimestampFromStringLocal(timeStr, threadTime) : -1
+    this.curTime = timeStr != "" ? time.getTimestampFromStringLocal(timeStr, this.threadTime) : -1
 
-    updateSelTimeText(curTime)
+    this.updateSelTimeText(this.curTime)
   }
 
   function goCancelTimeStamp(obj)
   {
     if (obj.getValue() == "")
-      goBack()
+      this.goBack()
     else
       obj.setValue("")
   }
@@ -171,7 +179,7 @@ let time = require("%scripts/time.nut")
   function setChatTime(timestamp)
   {
     let timeText = time.buildTabularDateTimeStr(timestamp, true)
-    let timeObj = scene.findObject("timestamp_editbox")
+    let timeObj = this.scene.findObject("timestamp_editbox")
     timeObj.setValue(timeText)
     ::select_editbox(timeObj)
   }
@@ -182,10 +190,10 @@ let time = require("%scripts/time.nut")
     let menu = []
     foreach(hours in hoursList)
       menu.append({
-        text = ::loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
+        text = loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
         action = (@(hours) function() {
           let timeInt = ::get_charserver_time_sec() + time.hoursToSeconds(hours)
-          setChatTime(timeInt)
+          this.setChatTime(timeInt)
         })(hours)
       })
     ::gui_right_click_menu(menu, this)
@@ -201,8 +209,8 @@ let time = require("%scripts/time.nut")
     let menu = []
     for(local i = 0; i < maxPos; i++)
       menu.append({
-        text = ::loc("chat/moveThreadToPosition", { place = i + 1 })
-        action = (@(i) function() { moveChatToPlace(i) })(i)
+        text = loc("chat/moveThreadToPosition", { place = i + 1 })
+        action = (@(i) function() { this.moveChatToPlace(i) })(i)
       })
     ::gui_right_click_menu(menu, this)
   }
@@ -214,27 +222,27 @@ let time = require("%scripts/time.nut")
       return
 
     place = clamp(place, 0, list.len() - 1)
-    let curPlace = ::find_in_array(list, threadInfo)
+    let curPlace = ::find_in_array(list, this.threadInfo)
     if (curPlace >= 0 && curPlace < place)
       place++
 
     local timeInt = -1
     if (place == curPlace)
-      timeInt = threadInfo.timeStamp
+      timeInt = this.threadInfo.timeStamp
     else if (place == 0)
-      timeInt = list[0].timeStamp + moveDiffForBorderPlacesSec
+      timeInt = list[0].timeStamp + this.moveDiffForBorderPlacesSec
     else if (place >= list.len())
-      timeInt = list[list.len() - 1].timeStamp - moveDiffForBorderPlacesSec
+      timeInt = list[list.len() - 1].timeStamp - this.moveDiffForBorderPlacesSec
     else
       timeInt = list[place].timeStamp / 2 + list[place - 1].timeStamp / 2
 
     if (timeInt > 0)
-      setChatTime(timeInt)
+      this.setChatTime(timeInt)
   }
 
   function onLangBtn(obj)
   {
-    if (!curLangs)
+    if (!this.curLangs)
       return
 
     let optionsList = []
@@ -245,20 +253,20 @@ let time = require("%scripts/time.nut")
           text = lang.title
           icon = lang.icon
           value = lang.chatId
-          selected = ::isInArray(lang.chatId, curLangs)
+          selected = isInArray(lang.chatId, this.curLangs)
         })
 
     ::gui_start_multi_select_menu({
       list = optionsList
       align = "right"
       alignObj = obj
-      onFinalApplyCb = ::Callback(function(langs)
+      onFinalApplyCb = Callback(function(langs)
                        {
                          if (langs.len())
-                           curLangs = langs
+                           this.curLangs = langs
                          else
-                           curLangs = threadInfo.langs
-                         updateLangButton()
+                           this.curLangs = this.threadInfo.langs
+                         this.updateLangButton()
                        }, this)
     })
   }

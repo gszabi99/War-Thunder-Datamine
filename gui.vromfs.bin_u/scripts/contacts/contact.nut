@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { isPlayerFromXboxOne,
         isPlayerFromPS4,
         getPlayerName,
@@ -31,7 +37,7 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   presence = ::g_contact_presence.UNKNOWN
   forceOffline = false
-  isForceOfflineChecked = !::is_platform_xbox
+  isForceOfflineChecked = !is_platform_xbox
 
   voiceStatus = null
 
@@ -62,10 +68,10 @@ subscribe("playerProfileDialogClosed", function(r) {
         && ::clanUserTable?[newName])
       contactData.clanTag <- ::clanUserTable[newName]
 
-    update(contactData)
+    this.update(contactData)
 
-    ::add_event_listener("XboxSystemUIReturn", function(p) {
-      interactionStatus = null
+    ::add_event_listener("XboxSystemUIReturn", function(_p) {
+      this.interactionStatus = null
     }, this)
   }
 
@@ -77,108 +83,108 @@ subscribe("playerProfileDialogClosed", function(r) {
       if (key in this)
         this[key] = val
 
-    uidInt64 = uid != "" ? uid.tointeger() : null
+    this.uidInt64 = this.uid != "" ? this.uid.tointeger() : null
 
-    refreshClanTagsTable()
-    if (name.len())
-      contactsByName[name] <- this
+    this.refreshClanTagsTable()
+    if (this.name.len())
+      contactsByName[this.name] <- this
 
-    if (afterSuccessUpdateFunc)
+    if (this.afterSuccessUpdateFunc)
     {
-      afterSuccessUpdateFunc()
-      afterSuccessUpdateFunc = null
+      this.afterSuccessUpdateFunc()
+      this.afterSuccessUpdateFunc = null
     }
   }
 
   function resetMatchingParams()
   {
-    presence = ::g_contact_presence.UNKNOWN
+    this.presence = ::g_contact_presence.UNKNOWN
 
-    online = null
-    unknown = true
-    gameStatus = null
-    gameConfig = null
-    inGameEx = null
+    this.online = null
+    this.unknown = true
+    this.gameStatus = null
+    this.gameConfig = null
+    this.inGameEx = null
   }
 
   function setClanTag(v_clanTag)
   {
-    clanTag = v_clanTag
-    refreshClanTagsTable()
+    this.clanTag = v_clanTag
+    this.refreshClanTagsTable()
   }
 
   function refreshClanTagsTable()
   {
     //clanTagsTable used in lists where not know userId, so not exist contact.
     //but require to correct work with contacts too
-    if (name.len())
-      clanUserTable[name] <- clanTag
+    if (this.name.len())
+      ::clanUserTable[this.name] <- this.clanTag
   }
 
   function getPresenceText()
   {
     local locParams = {}
-    if (presence == ::g_contact_presence.IN_QUEUE
-        || presence == ::g_contact_presence.IN_GAME)
+    if (this.presence == ::g_contact_presence.IN_QUEUE
+        || this.presence == ::g_contact_presence.IN_GAME)
     {
-      let event = ::events.getEvent(::getTblValue("eventId", gameConfig))
+      let event = ::events.getEvent(getTblValue("eventId", this.gameConfig))
       locParams = {
         gameMode = event ? ::events.getEventNameText(event) : ""
-        country = ::loc(::getTblValue("country", gameConfig, ""))
+        country = loc(getTblValue("country", this.gameConfig, ""))
       }
     }
-    return presence.getText(locParams)
+    return this.presence.getText(locParams)
   }
 
   function canOpenXBoxFriendsWindow(groupName)
   {
-    return isPlayerFromXboxOne(name) && groupName != ::EPL_BLOCKLIST
+    return isPlayerFromXboxOne(this.name) && groupName != EPL_BLOCKLIST
   }
 
   function openXBoxFriendsEdit()
   {
-    updateXboxIdAndDo(@() ::xbox_show_add_remove_friend(xboxId))
+    this.updateXboxIdAndDo(@() ::xbox_show_add_remove_friend(this.xboxId))
   }
 
   function openXboxProfile() {
-    updateXboxIdAndDo(@() ::xbox_show_profile_card(xboxId))
+    this.updateXboxIdAndDo(@() ::xbox_show_profile_card(this.xboxId))
   }
 
   function getXboxId(afterSuccessCb = null)
   {
-    if (xboxId != "")
-      return xboxId
+    if (this.xboxId != "")
+      return this.xboxId
 
-    reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, afterSuccessCb)
+    reqPlayerExternalIDsByUserId(this.uid, {showProgressBox = true}, afterSuccessCb)
     return null
   }
 
   function updateXboxIdAndDo(cb = null) {
     cb = cb ?? @() null
 
-    if (xboxId != "")
+    if (this.xboxId != "")
       return cb()
 
-    reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, cb)
+    reqPlayerExternalIDsByUserId(this.uid, {showProgressBox = true}, cb)
   }
 
   function canOpenPSNActionWindow() {
-    return psnSocial?.open_player_profile != null && isPlayerFromPS4(name)
+    return psnSocial?.open_player_profile != null && isPlayerFromPS4(this.name)
   }
 
   function openPSNContactEdit(groupName) {
-    if (groupName == ::EPL_BLOCKLIST)
-      openPSNBlockUser()
+    if (groupName == EPL_BLOCKLIST)
+      this.openPSNBlockUser()
     else
-      openPSNReqFriend()
+      this.openPSNReqFriend()
   }
 
   function openPSNRequest(action) {
-    if (!canOpenPSNActionWindow())
+    if (!this.canOpenPSNActionWindow())
       return
 
-    updatePSNIdAndDo(@() psnSocial?.open_player_profile(
-      psnId.tointeger(),
+    this.updatePSNIdAndDo(@() psnSocial?.open_player_profile(
+      this.psnId.tointeger(),
       action,
       "PlayerProfileDialogClosed",
       {}
@@ -189,14 +195,14 @@ subscribe("playerProfileDialogClosed", function(r) {
     cb = cb ?? @() null
 
     let finCb = function() {
-      verifyPsnId()
+      this.verifyPsnId()
       cb()
     }
 
-    if (psnId != "")
+    if (this.psnId != "")
       return finCb()
 
-    reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, finCb)
+    reqPlayerExternalIDsByUserId(this.uid, {showProgressBox = true}, finCb)
   }
 
   function verifyPsnId() {
@@ -205,103 +211,107 @@ subscribe("playerProfileDialogClosed", function(r) {
     // his name
 
     //No need to do anything
-    if (psnId == "")
+    if (this.psnId == "")
       return
 
-    if (::to_integer_safe(psnId, -1, false) == -1)
-      psnId = "-1"
+    if (::to_integer_safe(this.psnId, -1, false) == -1)
+      this.psnId = "-1"
   }
 
-  openPSNReqFriend = @() openPSNRequest(psnSocial.PlayerAction.REQUEST_FRIENDSHIP)
-  openPSNBlockUser = @() openPSNRequest(psnSocial.PlayerAction.BLOCK_PLAYER)
-  openPSNProfile   = @() openPSNRequest(psnSocial.PlayerAction.DISPLAY)
+  openPSNReqFriend = @() this.openPSNRequest(psnSocial.PlayerAction.REQUEST_FRIENDSHIP)
+  openPSNBlockUser = @() this.openPSNRequest(psnSocial.PlayerAction.BLOCK_PLAYER)
+  openPSNProfile   = @() this.openPSNRequest(psnSocial.PlayerAction.DISPLAY)
 
   function sendPsnFriendRequest(groupName) {
-    if (canOpenPSNActionWindow())
-      openPSNContactEdit(groupName)
+    if (this.canOpenPSNActionWindow())
+      this.openPSNContactEdit(groupName)
   }
 
   function needCheckXboxId()
   {
-    return isPlayerFromXboxOne(name) && xboxId == ""
+    return isPlayerFromXboxOne(this.name) && this.xboxId == ""
   }
 
-  getName = @() getPlayerName(name)
+  getName = @() getPlayerName(this.name)
 
   function needCheckForceOffline()
   {
-    if (isForceOfflineChecked
-        || !isInFriendGroup()
-        || presence == ::g_contact_presence.UNKNOWN)
+    if (this.isForceOfflineChecked
+        || !this.isInFriendGroup()
+        || this.presence == ::g_contact_presence.UNKNOWN)
       return false
 
-    return isPlayerFromXboxOne(name)
+    return isPlayerFromXboxOne(this.name)
   }
 
   isSameContact = @(v_uid) isInteger(v_uid)
-    ? v_uid == uidInt64
-    : v_uid == uid
+    ? v_uid == this.uidInt64
+    : v_uid == this.uid
 
   function isMe()
   {
-    return uidInt64 == ::my_user_id_int64
-      || uid == ::my_user_id_str
-      || name == ::my_user_name
+    return this.uidInt64 == ::my_user_id_int64
+      || this.uid == ::my_user_id_str
+      || this.name == ::my_user_name
   }
 
   function getInteractionStatus(needShowSystemMessage = false)
   {
-    if (!::is_platform_xbox || isMe())
+    if (!is_platform_xbox || this.isMe())
       return XBOX_COMMUNICATIONS_ALLOWED
 
-    if (xboxId == "")
+    if (this.xboxId == "")
     {
       let status = getXboxChatEnableStatus(needShowSystemMessage)
-      if (status == XBOX_COMMUNICATIONS_ONLY_FRIENDS && !isInFriendGroup())
+      if (status == XBOX_COMMUNICATIONS_ONLY_FRIENDS && !this.isInFriendGroup())
         return XBOX_COMMUNICATIONS_BLOCKED
 
       return isChatEnabled()? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
     }
 
-    if (!needShowSystemMessage && interactionStatus != null)
-      return interactionStatus
+    if (!needShowSystemMessage && this.interactionStatus != null)
+      return this.interactionStatus
 
-    interactionStatus = ::can_use_text_chat_with_target(xboxId, needShowSystemMessage)
-    return interactionStatus
+    this.interactionStatus = ::can_use_text_chat_with_target(this.xboxId, needShowSystemMessage)
+    return this.interactionStatus
   }
 
   function canChat(needShowSystemMessage = false)
   {
     if (!needShowSystemMessage
-      && ((isMultiplayerPrivilegeAvailable.value && !isCrossNetworkMessageAllowed(name))
-          || isBlockedMe)
+      && ((isMultiplayerPrivilegeAvailable.value && !isCrossNetworkMessageAllowed(this.name))
+          || this.isBlockedMe)
       )
       return false
 
-    let intSt = getInteractionStatus(needShowSystemMessage)
+    if (isCrossNetworkMessageAllowed(this.name))
+      return true
+
+    let intSt = this.getInteractionStatus(needShowSystemMessage)
     return intSt == XBOX_COMMUNICATIONS_ALLOWED
+      || (intSt == XBOX_COMMUNICATIONS_ONLY_FRIENDS && this.isInFriendGroup())
   }
 
   function canInvite(needShowSystemMessage = false)
   {
     if (!needShowSystemMessage
       && (!isMultiplayerPrivilegeAvailable.value
-          || !isCrossNetworkMessageAllowed(name))
+          || !isCrossNetworkMessageAllowed(this.name))
       )
       return false
 
-    let intSt = getInteractionStatus(needShowSystemMessage)
+    let intSt = this.getInteractionStatus(needShowSystemMessage)
     return intSt == XBOX_COMMUNICATIONS_ALLOWED || intSt == XBOX_COMMUNICATIONS_MUTED
   }
 
   function isMuted()
   {
-    return getInteractionStatus() == XBOX_COMMUNICATIONS_MUTED
+    return this.getInteractionStatus() == XBOX_COMMUNICATIONS_MUTED
   }
 
   function isXboxChatMuted()
   {
-    return uidInt64 != null && ::xbox_is_chat_player_muted(uidInt64)
+    return this.uidInt64 != null && ::xbox_is_chat_player_muted(this.uidInt64)
   }
 
   //For now it is for PSN only. For all will be later
@@ -309,17 +319,17 @@ subscribe("playerProfileDialogClosed", function(r) {
     if (!isPlatformSony)
       return
 
-    let ircName = ::g_string.replace(name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
-    ::gchat_voice_mute_peer_by_name(isInBlockGroup() || isBlockedMe, ircName)
+    let ircName = ::g_string.replace(this.name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
+    ::gchat_voice_mute_peer_by_name(this.isInBlockGroup() || this.isBlockedMe, ircName)
   }
 
   function isInGroup(groupName)
   {
-    let userId = uid
+    let userId = this.uid
     return (::contacts?[groupName] ?? []).findvalue(@(p) p.uid == userId ) != null
   }
 
-  isInFriendGroup = @() isInGroup(::EPL_FRIENDLIST)
-  isInPSNFriends = @() isInGroup(::EPLX_PS4_FRIENDS)
-  isInBlockGroup = @() isInGroup(::EPL_BLOCKLIST)
+  isInFriendGroup = @() this.isInGroup(EPL_FRIENDLIST)
+  isInPSNFriends = @() this.isInGroup(::EPLX_PS4_FRIENDS)
+  isInBlockGroup = @() this.isInGroup(EPL_BLOCKLIST)
 }

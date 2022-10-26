@@ -17,7 +17,7 @@ frame {
   tdiv {
     size:t='pw, fh - 1@navBarBattleButtonHeight'
 
-    include "%gui/worldWar/battleResults"
+    include "%gui/worldWar/battleResults.tpl"
   }
 
   navBar{

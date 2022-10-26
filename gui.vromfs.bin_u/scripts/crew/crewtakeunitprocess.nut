@@ -1,7 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { get_time_msec } = require("dagor.time")
 let chard = require("chard")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
+let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -52,40 +60,40 @@ enum CTU_PROGRESS {
   stepsList = {
     [CTU_PROGRESS.CHECK_QUEUE] = function()
     {
-      if (crew || unit)
-        ::queues.checkAndStart(nextStepCb, removeCb, "isCanModifyCrew")
+      if (this.crew || this.unit)
+        ::queues.checkAndStart(this.nextStepCb, this.removeCb, "isCanModifyCrew")
       else
-        nextStep() //we no need to check queue when only hire crew.
+        this.nextStep() //we no need to check queue when only hire crew.
     },
 
     [CTU_PROGRESS.CHECK_AVAILABILITY] = function()
     {
-      if (crew)
+      if (this.crew)
       {
-        prevUnit = ::g_crew.getCrewUnit(crew)
-        if (prevUnit == unit)
-          return remove()
+        this.prevUnit = ::g_crew.getCrewUnit(this.crew)
+        if (this.prevUnit == this.unit)
+          return this.remove()
       }
-      if (unit && !unit.isUsable())
-        return remove() //rent expired
+      if (this.unit && !this.unit.isUsable())
+        return this.remove() //rent expired
 
       //we cant make slotbar invalid by add crew to new hired crew
-      let isInvalidCrewsAllowed = crew == null || ::SessionLobby.isInvalidCrewsAllowed()
-      let isCurUnitAllowed = unit && ::SessionLobby.isUnitAllowed(unit) && !::isUnitBroken(unit)
-      let needCheckAllowed = !isInvalidCrewsAllowed  && (!unit || !isCurUnitAllowed)
+      let isInvalidCrewsAllowed = this.crew == null || ::SessionLobby.isInvalidCrewsAllowed()
+      let isCurUnitAllowed = this.unit && ::SessionLobby.isUnitAllowed(this.unit) && !::isUnitBroken(this.unit)
+      let needCheckAllowed = !isInvalidCrewsAllowed  && (!this.unit || !isCurUnitAllowed)
       let needCheckRequired = !isInvalidCrewsAllowed && ::SessionLobby.hasUnitRequirements()
-        && (!isCurUnitAllowed || !::SessionLobby.isUnitRequired(unit))
+        && (!isCurUnitAllowed || !::SessionLobby.isUnitRequired(this.unit))
 
-      if (needCheckAllowed || needCheckRequired || (prevUnit && !unit))
+      if (needCheckAllowed || needCheckRequired || (this.prevUnit && !this.unit))
       {
-        local hasUnit = !!unit
+        local hasUnit = !!this.unit
         local hasAllowedUnit = !needCheckAllowed
         local hasRequiredUnit = !needCheckRequired
-        let crews = ::g_crews_list.get()?[crew.idCountry]?.crews
+        let crews = ::g_crews_list.get()?[this.crew.idCountry]?.crews
         if (crews)
           foreach(c in crews)
           {
-            if (crew.id == c.id)
+            if (this.crew.id == c.id)
               continue
             let cUnit =::g_crew.getCrewUnit(c)
             if (!cUnit)
@@ -98,122 +106,122 @@ enum CTU_PROGRESS {
               break
           }
 
-        if (!hasUnit && hasDefaultUnitsInCountry(crew.country))
-          return remove()
+        if (!hasUnit && hasDefaultUnitsInCountry(this.crew.country))
+          return this.remove()
         if (!hasAllowedUnit)
         {
           local msg = ""
-          if (unit)
-            msg = ::loc("msg/cantUseUnitInCurrentBattle",
-              { unitName = ::colorize("userlogColoredText", ::getUnitName(unit)) })
+          if (this.unit)
+            msg = loc("msg/cantUseUnitInCurrentBattle",
+              { unitName = colorize("userlogColoredText", ::getUnitName(this.unit)) })
           else
-            msg = ::loc("msg/needAtLeastOneAvailableUnit")
+            msg = loc("msg/needAtLeastOneAvailableUnit")
           ::showInfoMsgBox(msg)
-          return remove()
+          return this.remove()
         }
         if (!hasRequiredUnit)
         {
-          ::showInfoMsgBox(::loc("msg/needAtLeastOneRequiredUnit"))
-          return remove()
+          ::showInfoMsgBox(loc("msg/needAtLeastOneRequiredUnit"))
+          return this.remove()
         }
       }
 
-      nextStep()
+      this.nextStep()
     },
 
     [CTU_PROGRESS.FULL_COST_MESSAGE] = function()
     {
-      if (cost.isZero())
-        return nextStep()
+      if (this.cost.isZero())
+        return this.nextStep()
 
       local locId = "shop/needMoneyQuestion_retraining"
-      if (!crew)
-        locId = unit ? "shop/needMoneyQuestion_hireAndTrainCrew"
+      if (!this.crew)
+        locId = this.unit ? "shop/needMoneyQuestion_hireAndTrainCrew"
                      : "shop/needMoneyQuestion_purchaseCrew"
-      let msgText = ::warningIfGold(format(::loc(locId), cost.getTextAccordingToBalance()), cost)
+      let msgText = ::warningIfGold(format(loc(locId), this.cost.getTextAccordingToBalance()), this.cost)
       ::scene_msg_box("need_money", null, msgText,
-        [ ["ok", nextStepCb],
-          ["cancel", removeCb ]
+        [ ["ok", this.nextStepCb],
+          ["cancel", this.removeCb ]
         ], "ok")
     },
 
     [CTU_PROGRESS.CHECK_MONEY] = function()
     {
-      if (::check_balance_msgBox(cost,
-            ::Callback(function()
+      if (::check_balance_msgBox(this.cost,
+            Callback(function()
               {
-                if (::check_balance_msgBox(cost, nextStepCb, true))
-                  nextStep()
+                if (::check_balance_msgBox(this.cost, this.nextStepCb, true))
+                  this.nextStep()
                 else
-                  remove()
+                  this.remove()
               }, this))
          )
-        nextStep()
+        this.nextStep()
     },
 
     [CTU_PROGRESS.HIRE_CREW] = function()
     {
-      if (crew)
-        return nextStep()
-      let purchaseCb = ::Callback(function()
+      if (this.crew)
+        return this.nextStep()
+      let purchaseCb = Callback(function()
         {
-          let crews = ::get_crews_list_by_country(country)
+          let crews = ::get_crews_list_by_country(this.country)
           if (!crews.len())
-            return remove()
+            return this.remove()
 
-          crew = crews.top()
-          nextStep()
+          this.crew = crews.top()
+          this.nextStep()
         }, this)
-      ::g_crew.purchaseNewSlot(country, purchaseCb, removeCb)
+      ::g_crew.purchaseNewSlot(this.country, purchaseCb, this.removeCb)
     },
 
     [CTU_PROGRESS.TAKE_UNIT] = function()
     {
-      if (unit == prevUnit)
-        return nextStep()
-      if (unit && !unit.isUsable())
-        return remove()
+      if (this.unit == this.prevUnit)
+        return this.nextStep()
+      if (this.unit && !this.unit.isUsable())
+        return this.remove()
 
-      let taskId = chard.trainCrewAircraft(crew.id, unit ? unit.name : "", false)
+      let taskId = chard.trainCrewAircraft(this.crew.id, this.unit ? this.unit.name : "", false)
       let taskOptions = {
         showProgressBox = true
-        progressBoxDelayedButtons = PROCESS_TIME_OUT
+        progressBoxDelayedButtons = this.PROCESS_TIME_OUT
       }
-      if (!::g_tasker.addTask(taskId, taskOptions, nextStepCb, removeCb))
-        remove()
+      if (!::g_tasker.addTask(taskId, taskOptions, this.nextStepCb, this.removeCb))
+        this.remove()
     },
 
     [CTU_PROGRESS.COMPLETE] = function()
     {
-      onComplete()
+      this.onComplete()
     }
   }
 
   constructor(crewOrCountry, unitToTake = null, callback = null)
   {
     if (!unitToTake && !crewOrCountry)
-      return remove()
+      return this.remove()
 
-    unit = unitToTake
+    this.unit = unitToTake
     if (!crewOrCountry)
-      country = ::getUnitCountry(unit)
+      this.country = ::getUnitCountry(this.unit)
     else if (::u.isString(crewOrCountry))
-      country = crewOrCountry
+      this.country = crewOrCountry
     else
-      crew = crewOrCountry
+      this.crew = crewOrCountry
 
-    if (!isReadyToStart())
-      return remove()
+    if (!this.isReadyToStart())
+      return this.remove()
 
-    onFinish = callback
-    activeProcesses.append(this)
+    this.onFinish = callback
+    this.activeProcesses.append(this)
 
-    nextStepCb = ::Callback(nextStep, this)
-    removeCb = ::Callback(remove, this)
-    cost = getProcessCost(crew, unit, country)
+    this.nextStepCb = Callback(this.nextStep, this)
+    this.removeCb = Callback(this.remove, this)
+    this.cost = this.getProcessCost(this.crew, this.unit, this.country)
 
     ::g_crews_list.suspendSlotbarUpdates()
-    nextStep()
+    this.nextStep()
 
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
@@ -235,126 +243,126 @@ enum CTU_PROGRESS {
 
   static function hasActiveProcess()
   {
-    return activeProcesses.len() > 0 && !activeProcesses[0].isStuck()
+    return this.activeProcesses.len() > 0 && !this.activeProcesses[0].isStuck()
   }
 
   static function safeInterrupt()
   {
-    if (!hasActiveProcess())
+    if (!this.hasActiveProcess())
       return true
 
-    if (!activeProcesses[0].canBeInterrupted())
+    if (!this.activeProcesses[0].canBeInterrupted())
       return false
 
-    activeProcesses[0].remove()
+    this.activeProcesses[0].remove()
     return true
   }
 
   function isValid()
   {
-    return ::getTblValue(0, activeProcesses) == this
+    return getTblValue(0, this.activeProcesses) == this
   }
 
   function isEqual(process)
   {
-    return crew == process.crew
-           && unit == process.unit
-           && country == process.country
+    return this.crew == process.crew
+           && this.unit == process.unit
+           && this.country == process.country
   }
 
   function canBeInterrupted()
   {
-    return curProgress != CTU_PROGRESS.HIRE_CREW && curProgress != CTU_PROGRESS.TAKE_UNIT
+    return this.curProgress != CTU_PROGRESS.HIRE_CREW && this.curProgress != CTU_PROGRESS.TAKE_UNIT
   }
 
   function isReadyToStart()
   {
-    if (!activeProcesses.len())
+    if (!this.activeProcesses.len())
       return true
 
-    if (activeProcesses[0].isStuck())
+    if (this.activeProcesses[0].isStuck())
     {
-      activeProcesses[0].remove()
+      this.activeProcesses[0].remove()
       return true
     }
 
-    if (isEqual(activeProcesses[0]))
+    if (this.isEqual(this.activeProcesses[0]))
       return false
 
     let msg = format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
-                         ::getEnumValName("CTU_PROGRESS", activeProcesses[0].curProgress))
+      getEnumValName("CTU_PROGRESS", this.activeProcesses[0].curProgress))
     ::script_net_assert_once("can't start take crew", msg)
     return false
   }
 
   function isStuck()
   {
-    return ::dagor.getCurTime() - lastUpdateTime > PROCESS_TIME_OUT
+    return get_time_msec() - this.lastUpdateTime > this.PROCESS_TIME_OUT
   }
 
   function refreshTimer()
   {
-    lastUpdateTime = ::dagor.getCurTime()
+    this.lastUpdateTime = get_time_msec()
   }
 
   function remove(...)
   {
-    foreach(idx, process in activeProcesses)
+    foreach(idx, process in this.activeProcesses)
       if (process == this)
       {
-        activeProcesses.remove(idx)
+        this.activeProcesses.remove(idx)
         break
       }
-    if (onFinish)
-      onFinish(isSuccess)
+    if (this.onFinish)
+      this.onFinish(this.isSuccess)
     ::g_crews_list.flushSlotbarUpdate()
   }
 
   function nextStep()
   {
-    curProgress++
-    refreshTimer()
+    this.curProgress++
+    this.refreshTimer()
 
-    let curStepFunc = ::getTblValue(curProgress, stepsList)
+    let curStepFunc = getTblValue(this.curProgress, this.stepsList)
     if (!curStepFunc)
     {
-      ::script_net_assert_once("missing take unit step", "Missing take unit step = " + curProgress)
-      return remove()
+      ::script_net_assert_once("missing take unit step", "Missing take unit step = " + this.curProgress)
+      return this.remove()
     }
 
     curStepFunc.call(this)
   }
 
-  function onEventQueueChangeState(p)
+  function onEventQueueChangeState(_p)
   {
-    if (curProgress > CTU_PROGRESS.CHECK_QUEUE
-        && (crew || unit)
+    if (this.curProgress > CTU_PROGRESS.CHECK_QUEUE
+        && (this.crew || this.unit)
         && !::queues.isCanModifyCrew())
-      remove()
+      this.remove()
   }
 
-  function onEventLoadingStateChange(p)
+  function onEventLoadingStateChange(_p)
   {
     if (::is_in_flight())
-      remove()
+      this.remove()
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
-    remove()
+    this.remove()
   }
 
   function onComplete()
   {
-    isSuccess = true
-    if (unit)
+    this.isSuccess = true
+    if (this.unit)
     {
-      ::updateAirAfterSwitchMod(unit)
-      ::select_crew(crew.idCountry, crew.idInCountry, true)
-      setShowUnit(unit)
+      ::updateAirAfterSwitchMod(this.unit)
+      ::select_crew(this.crew.idCountry, this.crew.idInCountry, true)
+      setShowUnit(this.unit)
     }
     ::g_crews_list.flushSlotbarUpdate()
-    ::broadcastEvent("CrewTakeUnit", { unit = unit, prevUnit = prevUnit })
-    remove()
+    ::broadcastEvent("CrewTakeUnit", { unit = this.unit, prevUnit = this.prevUnit })
+    this.remove()
   }
 }

@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { isXBoxPlayerName,
         canInteractCrossConsole,
         isPlatformSony,
@@ -12,13 +20,17 @@ let psnSocial = require("sony.social")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
-let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
+let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk,
+  airStatsListConfig } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { APP_ID } = require("app")
+let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { ceil, floor } = require("math")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
 {
-  if (!::has_feature("UserCards"))
+  if (!hasFeature("UserCards"))
     return
   ::gui_start_modal_wnd(::gui_handlers.UserCardHandler, {info = playerInfo})
 }
@@ -43,7 +55,7 @@ let { APP_ID } = require("app")
   profileInited = false
 
   airStatsList = null
-  statsType = ::ETTI_VALUE_INHISORY
+  statsType = ETTI_VALUE_INHISORY
   statsMode = ""
   countryStats = null
   unitStats = null
@@ -57,7 +69,7 @@ let { APP_ID } = require("app")
   searchPlayerByNick = false
   infoReady = false
 
-  curMode = ::DIFFICULTY_ARCADE
+  curMode = DIFFICULTY_ARCADE
   lbMode  = ""
   lbModesList = null
 
@@ -68,87 +80,87 @@ let { APP_ID } = require("app")
 
   function initScreen()
   {
-    if (!scene || !info || !(("uid" in info) || ("id" in info) || ("name" in info)))
-      return goBack()
+    if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
+      return this.goBack()
 
-    player = {}
+    this.player = {}
     foreach(pName in ["name", "uid", "id"])
-      if (pName in info && info[pName] != "")
-        player[pName] <- info[pName]
-    if (!("name" in player))
-      player.name <- ""
+      if (pName in this.info && this.info[pName] != "")
+        this.player[pName] <- this.info[pName]
+    if (!("name" in this.player))
+      this.player.name <- ""
 
-    scene.findObject("profile-name").setValue(player.name)
-    scene.findObject("profile-container").show(false)
+    this.scene.findObject("profile-name").setValue(this.player.name)
+    this.scene.findObject("profile-container").show(false)
 
-    initStatsParams()
-    initTabs()
+    this.initStatsParams()
+    this.initTabs()
 
-    taskId = -1
+    this.taskId = -1
 
     local isMyPage = false
-    if ("uid" in player)
+    if ("uid" in this.player)
     {
-      taskId = ::req_player_public_statinfo(player.uid)
-      if (::my_user_id_str == player.uid)
+      this.taskId = ::req_player_public_statinfo(this.player.uid)
+      if (::my_user_id_str == this.player.uid)
         isMyPage = true
       else
-        externalIDsService.reqPlayerExternalIDsByUserId(player.uid)
+        externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
     }
-    else if ("id" in player)
+    else if ("id" in this.player)
     {
-      taskId = ::req_player_public_statinfo_by_player_id(player.id)
-      let selfPlayerId = ::getTblValue("uid", ::get_local_mplayer())
-      if (selfPlayerId != null && selfPlayerId == player.id)
+      this.taskId = ::req_player_public_statinfo_by_player_id(this.player.id)
+      let selfPlayerId = getTblValue("uid", ::get_local_mplayer())
+      if (selfPlayerId != null && selfPlayerId == this.player.id)
         isMyPage = true
       else
-        externalIDsService.reqPlayerExternalIDsByPlayerId(player.id)
+        externalIDsService.reqPlayerExternalIDsByPlayerId(this.player.id)
     }
     else
     {
-      searchPlayerByNick = true
-      taskId = ::find_nicks_by_prefix(player.name, 1, false)
+      this.searchPlayerByNick = true
+      this.taskId = ::find_nicks_by_prefix(this.player.name, 1, false)
     }
 
     if (isMyPage)
-      updateExternalIdsData(externalIDsService.getSelfExternalIds(), isMyPage)
+      this.updateExternalIdsData(externalIDsService.getSelfExternalIds(), isMyPage)
 
-    if (taskId < 0)
-      return notFoundPlayerMsg()
+    if (this.taskId < 0)
+      return this.notFoundPlayerMsg()
 
-    ::set_char_cb(this, slotOpCb)
-    afterSlotOp = tryFillUserStats
-    afterSlotOpError = function(result) { /* notFoundPlayerMsg() */ goBack() }
+    ::set_char_cb(this, this.slotOpCb)
+    this.afterSlotOp = this.tryFillUserStats
+    this.afterSlotOpError = function(_result) { /* notFoundPlayerMsg() */ this.goBack() }
 
-    fillGamercard()
-    initLeaderboardModes()
-    updateButtons()
+    this.fillGamercard()
+    this.initLeaderboardModes()
+    this.updateButtons()
   }
 
   function initTabs()
   {
     let view = { tabs = [] }
-    foreach(idx, sheet in sheetsList)
+    foreach(idx, sheet in this.sheetsList)
     {
       view.tabs.append({
         id = sheet
-        tabImage = format(tabImageNameTemplate, sheet.tolower())
-        tabName = tabLocalePrefix + sheet
-        navImagesText = ::get_navigation_images_text(idx, sheetsList.len())
+        tabImage = format(this.tabImageNameTemplate, sheet.tolower())
+        tabName = this.tabLocalePrefix + sheet
+        navImagesText = ::get_navigation_images_text(idx, this.sheetsList.len())
       })
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    let sheetsListObj = scene.findObject("profile_sheet_list")
-    guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let sheetsListObj = this.scene.findObject("profile_sheet_list")
+    this.guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     sheetsListObj.setValue(0)
     sheetsListObj.show(false)
   }
 
   function initStatsParams()
   {
-    curMode = ::get_current_wnd_difficulty()
-    statsType = ::loadLocalByAccount("leaderboards_type", ::ETTI_VALUE_INHISORY)
+    this.curMode = ::get_current_wnd_difficulty()
+    this.statsType = ::loadLocalByAccount("leaderboards_type", ETTI_VALUE_INHISORY)
   }
 
   function goBack()
@@ -158,37 +170,37 @@ let { APP_ID } = require("app")
 
   function notFoundPlayerMsg()
   {
-    this.msgBox("incorrect_user", ::loc("chat/error/item-not-found", { nick = ("name" in player)? player.name : "" }),
+    this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = ("name" in this.player)? this.player.name : "" }),
         [
-          ["ok", function() { goBack() } ]
+          ["ok", function() { this.goBack() } ]
         ], "ok")
   }
 
   function onSearchResult()
   {
-    searchPlayerByNick = false
+    this.searchPlayerByNick = false
 
     local searchRes = ::DataBlock()
     searchRes = ::get_nicks_find_result_blk()
     foreach(uid, nick in searchRes)
-      if (nick == player.name)
+      if (nick == this.player.name)
       {
-        player.uid <- uid
-        taskId = ::req_player_public_statinfo(player.uid)
-        if (taskId < 0)
-          return notFoundPlayerMsg()
-        ::set_char_cb(this, slotOpCb)
+        this.player.uid <- uid
+        this.taskId = ::req_player_public_statinfo(this.player.uid)
+        if (this.taskId < 0)
+          return this.notFoundPlayerMsg()
+        ::set_char_cb(this, this.slotOpCb)
         return
       }
-    return notFoundPlayerMsg()
+    return this.notFoundPlayerMsg()
   }
 
   function tryFillUserStats()
   {
-    if (searchPlayerByNick)
-      return onSearchResult()
+    if (this.searchPlayerByNick)
+      return this.onSearchResult()
 
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return;
 
     let blk = ::DataBlock()
@@ -196,22 +208,22 @@ let { APP_ID } = require("app")
 
     if (!blk?.nick || blk.nick == "") //!!FIX ME: Check incorrect user by no uid in answer.
     {
-      this.msgBox("user_not_played", ::loc("msg/player_not_played_our_game"),
+      this.msgBox("user_not_played", loc("msg/player_not_played_our_game"),
         [
-          ["ok", function() { goBack() } ]
+          ["ok", function() { this.goBack() } ]
         ], "ok")
       return
     }
 
-    player = getPlayerStatsFromBlk(blk)
-    if ("uid" in player)
-      externalIDsService.reqPlayerExternalIDsByUserId(player.uid)
+    this.player = getPlayerStatsFromBlk(blk)
+    if ("uid" in this.player)
+      externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
 
-    infoReady = true
-    scene.findObject("profile-container").show(true)
-    scene.findObject("profile_sheet_list").show(true)
-    onSheetChange(null)
-    fillLeaderboard()
+    this.infoReady = true
+    this.scene.findObject("profile-container").show(true)
+    this.scene.findObject("profile_sheet_list").show(true)
+    this.onSheetChange(null)
+    this.fillLeaderboard()
   }
 
   function showSheetDiv(name)
@@ -219,47 +231,47 @@ let { APP_ID } = require("app")
     foreach(div in ["profile", "stats"])
     {
       let show = div == name
-      let divObj = scene.findObject(div + "-container")
-      if (::checkObj(divObj))
+      let divObj = this.scene.findObject(div + "-container")
+      if (checkObj(divObj))
       {
         divObj.show(show)
         if (show)
-          updateDifficultySwitch(divObj)
+          this.updateDifficultySwitch(divObj)
       }
     }
   }
 
-  function onSheetChange(obj)
+  function onSheetChange(_obj)
   {
-    if (!infoReady)
+    if (!this.infoReady)
       return
 
-    if (getCurSheet() == "Statistics")
+    if (this.getCurSheet() == "Statistics")
     {
-      showSheetDiv("stats")
-      fillStatistics()
+      this.showSheetDiv("stats")
+      this.fillStatistics()
     }
     else
     {
-      showSheetDiv("profile")
-      fillProfile()
+      this.showSheetDiv("profile")
+      this.fillProfile()
     }
-    updateButtons()
+    this.updateButtons()
   }
 
   function fillProfile()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    fillTitleName(player.title, false)
+    this.fillTitleName(this.player.title, false)
 
-    fillClanInfo(player)
-    fillModeListBox(scene.findObject("profile-container"), curMode)
-    ::fill_gamer_card(player, "profile-", scene)
-    fillAwardsBlock(player)
-    fillShortCountryStats(player)
-    scene.findObject("profile_loading").show(false)
+    this.fillClanInfo(this.player)
+    this.fillModeListBox(this.scene.findObject("profile-container"), this.curMode)
+    ::fill_gamer_card(this.player, "profile-", this.scene)
+    this.fillAwardsBlock(this.player)
+    this.fillShortCountryStats(this.player)
+    this.scene.findObject("profile_loading").show(false)
   }
 
   function fillTitleName(name, setEmpty = true)
@@ -271,25 +283,25 @@ let { APP_ID } = require("app")
 
       name = "empty_title"
     }
-    fillAdditionalName(::get_unlock_name_text(::UNLOCKABLE_TITLE, name), "title")
-    scene.findObject("profile-currentUser-title")["inactive"] = isOwnStats ? "no" : "yes"
+    this.fillAdditionalName(getUnlockNameText(UNLOCKABLE_TITLE, name), "title")
+    this.scene.findObject("profile-currentUser-title")["inactive"] = this.isOwnStats ? "no" : "yes"
   }
 
   function onProfileStatsModeChange(obj)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
     let value = obj.getValue()
 
-    curMode = value
-    ::set_current_wnd_difficulty(curMode)
-    updateCurrentStatsMode(curMode)
-    fillProfileSummary(scene.findObject("stats_table"), player.summary, curMode)
+    this.curMode = value
+    ::set_current_wnd_difficulty(this.curMode)
+    this.updateCurrentStatsMode(this.curMode)
+    fillProfileSummary(this.scene.findObject("stats_table"), this.player.summary, this.curMode)
   }
 
-  function onEventContactsGroupUpdate(p)
+  function onEventContactsGroupUpdate(_p)
   {
-    updateButtons()
+    this.updateButtons()
   }
 
   function onEventUpdateExternalsIDs(params)
@@ -297,55 +309,55 @@ let { APP_ID } = require("app")
     if (!(params?.externalIds))
       return
 
-    if (player?.uid != params?.request?.uid && player?.id != params?.request?.playerId)
+    if (this.player?.uid != params?.request?.uid && this.player?.id != params?.request?.playerId)
       return
 
-    let isMe = ::my_user_id_str == player?.uid
-    updateExternalIdsData(params.externalIds, isMe)
+    let isMe = ::my_user_id_str == this.player?.uid
+    this.updateExternalIdsData(params.externalIds, isMe)
   }
 
   function updateExternalIdsData(externalIdsData, isMe)
   {
-    curPlayerExternalIds = externalIdsData
+    this.curPlayerExternalIds = externalIdsData
 
-    fillAdditionalName(curPlayerExternalIds?.steamName ?? "", "steamName")
-    fillAdditionalName(curPlayerExternalIds?.facebookName ?? "", "facebookName")
+    this.fillAdditionalName(this.curPlayerExternalIds?.steamName ?? "", "steamName")
+    this.fillAdditionalName(this.curPlayerExternalIds?.facebookName ?? "", "facebookName")
 
-    this.showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (curPlayerExternalIds?.xboxId ?? "") != "")
-    this.showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (curPlayerExternalIds?.psnId ?? "") != "")
+    this.showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (this.curPlayerExternalIds?.xboxId ?? "") != "")
+    this.showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (this.curPlayerExternalIds?.psnId ?? "") != "")
   }
 
   function fillAdditionalName(name, link)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let nameObj = scene.findObject("profile-currentUser-" + link)
-    if (!::check_obj(nameObj))
+    let nameObj = this.scene.findObject("profile-currentUser-" + link)
+    if (!checkObj(nameObj))
       return
 
-    nameObj.setValue(name == "" ? "" : $"{link == "title" ? "" : ::loc("profile/" + link)}{name}")
+    nameObj.setValue(name == "" ? "" : $"{link == "title" ? "" : loc("profile/" + link)}{name}")
   }
 
   function fillClanInfo(playerData)
   {
-    if (!::has_feature("Clans"))
+    if (!hasFeature("Clans"))
       return
 
-    let clanTagObj = scene.findObject("profile-clanTag");
+    let clanTagObj = this.scene.findObject("profile-clanTag");
     if (clanTagObj)
     {
       let clanType = ::g_clan_type.getTypeByCode(playerData.clanType)
       let text = ::checkClanTagForDirtyWords(playerData.clanTag);
-      clanTagObj.setValue(::colorize(clanType.color, text));
+      clanTagObj.setValue(colorize(clanType.color, text));
       clanTagObj.tooltip = ::ps4CheckAndReplaceContentDisabledText(playerData.clanName);
     }
   }
 
   function fillShortCountryStats(profile)
   {
-    let countryStatsNest = scene.findObject("country_stats_nest")
-    if (!::checkObj(countryStatsNest))
+    let countryStatsNest = this.scene.findObject("country_stats_nest")
+    if (!checkObj(countryStatsNest))
       return
 
     let columns = shopCountriesList.map(@(c) {
@@ -354,65 +366,65 @@ let { APP_ID } = require("app")
       eliteUnitsCount = profile.countryStats[c].eliteUnitsCount
     })
 
-    let blk = ::handyman.renderCached(("%gui/profile/country_stats_table"), {
+    let blk = ::handyman.renderCached(("%gui/profile/country_stats_table.tpl"), {
       columns = columns,
-      tableName = ::loc("lobby/vehicles")
+      tableName = loc("lobby/vehicles")
     })
-    guiScene.replaceContentFromText(countryStatsNest, blk, blk.len(), this)
+    this.guiScene.replaceContentFromText(countryStatsNest, blk, blk.len(), this)
   }
 
   function updateCurrentStatsMode(value)
   {
-    statsMode = ::g_difficulty.getDifficultyByDiffCode(value).egdLowercaseName
+    this.statsMode = ::g_difficulty.getDifficultyByDiffCode(value).egdLowercaseName
   }
 
   function updateDifficultySwitch(parentObj)
   {
-    if (!::checkObj(parentObj))
+    if (!checkObj(parentObj))
       return
 
     let switchObj = parentObj.findObject("modes_list")
-    if (!::checkObj(switchObj))
+    if (!checkObj(switchObj))
       return
 
     let childrenCount = switchObj.childrenCount()
     if (childrenCount <= 0)
       return
 
-    switchObj.setValue(clamp(curMode, 0, childrenCount - 1))
+    switchObj.setValue(clamp(this.curMode, 0, childrenCount - 1))
   }
 
   function onStatsModeChange(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let value = obj.getValue()
-    if (curMode == value)
+    if (this.curMode == value)
       return
 
-    curMode = value
-    ::set_current_wnd_difficulty(curMode)
-    updateCurrentStatsMode(value)
-    fillAirStats()
+    this.curMode = value
+    ::set_current_wnd_difficulty(this.curMode)
+    this.updateCurrentStatsMode(value)
+    this.fillAirStats()
   }
 
   function fillAwardsBlock(pl)
   {
-    if (::has_feature("ProfileMedals"))
-      fillMedalsBlock(pl)
+    if (hasFeature("ProfileMedals"))
+      this.fillMedalsBlock(pl)
     else // Tencent
-      fillTitlesBlock(pl)
+      this.fillTitlesBlock(pl)
   }
 
   function fillMedalsBlock(pl)
   {
-    local curCountryId = ::get_profile_country_sq()
+    local curCountryId = profileCountrySq.value
     local maxMedals = 0
-    if (!isOwnStats)
+    if (!this.isOwnStats)
     {
       maxMedals = pl.countryStats[curCountryId].medalsCount
-      foreach(idx, countryId in shopCountriesList)
+      foreach(_idx, countryId in shopCountriesList)
       {
         let medalsCount = pl.countryStats[countryId].medalsCount
         if (maxMedals < medalsCount)
@@ -440,42 +452,42 @@ let { APP_ID } = require("app")
         curValue = idx
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-    let countriesObj = scene.findObject("medals_country_tabs")
-    guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    let countriesObj = this.scene.findObject("medals_country_tabs")
+    this.guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
     countriesObj.setValue(curValue)
   }
 
   function onMedalsCountrySelect(obj)
   {
-    let nestObj = scene.findObject("medals_nest")
-    if (!::check_obj(obj) || !::check_obj(nestObj))
+    let nestObj = this.scene.findObject("medals_nest")
+    if (!checkObj(obj) || !checkObj(nestObj))
       return
 
     let countryId = shopCountriesList?[obj.getValue()]
     if (!countryId)
       return
 
-    let medalsList = getCountryMedals(countryId, player)
+    let medalsList = getCountryMedals(countryId, this.player)
     this.showSceneBtn("medals_empty", !medalsList.len())
 
     let view = {
-      ribbons = getRibbonsView(medalsList.filter(@(id) hasMedalRibbonImg(id)))
-      medals = getMedalsView(medalsList.filter(@(id) !hasMedalRibbonImg(id)))
+      ribbons = this.getRibbonsView(medalsList.filter(@(id) hasMedalRibbonImg(id)))
+      medals = this.getMedalsView(medalsList.filter(@(id) !hasMedalRibbonImg(id)))
     }
 
-    let markup = ::handyman.renderCached("%gui/profile/profileRibbons", view)
-    guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
+    let markup = ::handyman.renderCached("%gui/profile/profileRibbons.tpl", view)
+    this.guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
   }
 
   function getRibbonsView(medalsList)
   {
     return medalsList.len() > 0 ? {
-      flowAlign = medalsList.len() > ribbonsRowLength ? "center" : "left"
+      flowAlign = medalsList.len() > this.ribbonsRowLength ? "center" : "left"
       items = medalsList.map((@(id) {
         tag = "imgUsercardRibbon"
         image = getMedalRibbonImg(id)
-      }.__merge(getBaseConfigMedal(id))).bindenv(this))
+      }.__merge(this.getBaseConfigMedal(id))).bindenv(this))
     } : null
   }
 
@@ -485,7 +497,7 @@ let { APP_ID } = require("app")
       items = medalsList.map((@(id) {
         tag = "imgUsercardMedal"
         image = ::get_image_for_unlockable_medal(id)
-      }.__merge(getBaseConfigMedal(id))).bindenv(this))
+      }.__merge(this.getBaseConfigMedal(id))).bindenv(this))
     } : null
   }
 
@@ -494,7 +506,7 @@ let { APP_ID } = require("app")
     return {
       id = id
       unlocked = true
-      tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = isOwnStats, needTitle = false })
+      tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = this.isOwnStats, needTitle = false })
     }
   }
 
@@ -510,12 +522,12 @@ let { APP_ID } = require("app")
       if (!titleUnlock || titleUnlock?.hidden)
         continue
 
-      let locText = ::loc("title/" + id)
+      let locText = loc("title/" + id)
       titles.append({
         name = id
         text = locText
         lowerText = ::g_string.utf8ToLower(locText)
-        tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = isOwnStats, needTitle = false })
+        tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = this.isOwnStats, needTitle = false })
       })
     }
     titles.sort(@(a, b) a.lowerText <=> b.lowerText)
@@ -527,7 +539,7 @@ let { APP_ID } = require("app")
 
     local markup = ""
     let cols = 2
-    let rows = ::ceil(titlesTotal * 1.0 / cols)
+    let rows = ceil(titlesTotal * 1.0 / cols)
     for (local r = 0; r < rows; r++)
     {
       let rowData = []
@@ -536,70 +548,70 @@ let { APP_ID } = require("app")
       markup += ::buildTableRow("", rowData)
     }
 
-    guiScene.replaceContentFromText(scene.findObject("titles_table"), markup, markup.len(), this)
+    this.guiScene.replaceContentFromText(this.scene.findObject("titles_table"), markup, markup.len(), this)
   }
 
   function getPlayerStats()
   {
-    return player
+    return this.player
   }
 
   function onStatsTypeChange(obj)
   {
     if (!obj) return
-    statsType = obj.getValue()? ::ETTI_VALUE_INHISORY : ::ETTI_VALUE_TOTAL
-    ::saveLocalByAccount("leaderboards_type", statsType)
-    fillLeaderboard()
+    this.statsType = obj.getValue()? ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL
+    ::saveLocalByAccount("leaderboards_type", this.statsType)
+    this.fillLeaderboard()
   }
 
   function onLbModeSelect(obj)
   {
-    if (!::checkObj(obj) || lbModesList == null)
+    if (!checkObj(obj) || this.lbModesList == null)
       return
 
-    let newLbMode = lbModesList?[obj.getValue()]
-    if (newLbMode == null || lbMode == newLbMode)
+    let newLbMode = this.lbModesList?[obj.getValue()]
+    if (newLbMode == null || this.lbMode == newLbMode)
       return
 
-    lbMode = newLbMode
-    guiScene.performDelayed(this, function()
+    this.lbMode = newLbMode
+    this.guiScene.performDelayed(this, function()
     {
-      if (isValid())
-        fillLeaderboard()
+      if (this.isValid())
+        this.fillLeaderboard()
     })
   }
 
   function fillStatistics()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    showSheetDiv("stats")
-    fillAirStats()
+    this.showSheetDiv("stats")
+    this.fillAirStats()
   }
 
   function fillAirStats()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    if (!airStatsInited)
-      return initAirStats()
+    if (!this.airStatsInited)
+      return this.initAirStats()
 
-    fillAirStatsScene(player.userstat)
+    this.fillAirStatsScene(this.player.userstat)
   }
 
   function initAirStats()
   {
-    countryStats = []
+    this.countryStats = []
     foreach(country in shopCountriesList)
-      countryStats.append(country)
-    initAirStatsScene(player.userstat)
+      this.countryStats.append(country)
+    this.initAirStatsScene(this.player.userstat)
   }
 
-  function initAirStatsScene(airStats)
+  function initAirStatsScene(_airStats)
   {
-    let sObj = scene.findObject("stats-container")
+    let sObj = this.scene.findObject("stats-container")
 
     sObj.findObject("stats_loading").show(false)
 
@@ -612,37 +624,37 @@ let { APP_ID } = require("app")
       if (!diff.isAvailable())
         continue
       view.items.append({ text = diff.getLocName() })
-      if (!selDiff || statsMode == diff.egdLowercaseName)
+      if (!selDiff || this.statsMode == diff.egdLowercaseName)
       {
         selDiff = diff
         selIdx = view.items.len() - 1
       }
     }
-    statsMode = selDiff.egdLowercaseName
+    this.statsMode = selDiff.egdLowercaseName
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-    guiScene.replaceContentFromText(modesObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(selIdx)
 
-    fillUnitListCheckBoxes()
-    fillCountriesCheckBoxes()
+    this.fillUnitListCheckBoxes()
+    this.fillCountriesCheckBoxes()
 
-    let nestObj = scene.findObject("filter_nest")
+    let nestObj = this.scene.findObject("filter_nest")
     openPopupFilter({
       scene = nestObj
-      onChangeFn = onFilterCbChange.bindenv(this)
-      filterTypes = getFiltersView()
+      onChangeFn = this.onFilterCbChange.bindenv(this)
+      filterTypes = this.getFiltersView()
       popupAlign = "bottom-right"
     })
 
-    airStatsInited = true
-    fillAirStats()
+    this.airStatsInited = true
+    this.fillAirStats()
   }
 
   function fillUnitListCheckBoxes()
   {
-    availableUTypes = {}
-    unitStats = []
+    this.availableUTypes = {}
+    this.unitStats = []
 
     foreach(unitType in unitTypes.types)
     {
@@ -650,7 +662,7 @@ let { APP_ID } = require("app")
         continue
 
       let typeIdx = unitType.esUnitType
-      availableUTypes[unitType.armyId] <- {
+      this.availableUTypes[unitType.armyId] <- {
         id    = $"unit_{typeIdx}"
         idx   = typeIdx
         image = unitType.testFlightIcon
@@ -661,17 +673,17 @@ let { APP_ID } = require("app")
 
   function fillCountriesCheckBoxes()
   {
-    availableCountries = {}
+    this.availableCountries = {}
     foreach (idx, inst in shopCountriesList)
-      availableCountries[inst] <- {
+      this.availableCountries[inst] <- {
         id    = inst
         idx   = idx
         image = ::get_country_icon(inst)
-        text  = ::loc(inst)
+        text  = loc(inst)
       }
 
-    if (!countryStats)
-      countryStats = [::get_profile_country_sq()]
+    if (!this.countryStats)
+      this.countryStats = [profileCountrySq.value]
   }
 
   function getFiltersView()
@@ -681,7 +693,7 @@ let { APP_ID } = require("app")
     {
       let isUnitType = tName == "unit"
       let selectedArr = this[$"{tName}Stats"]
-      let referenceArr = isUnitType ? availableUTypes : availableCountries
+      let referenceArr = isUnitType ? this.availableUTypes : this.availableCountries
       let view = {checkbox = []}
       foreach(idx, inst in referenceArr)
         view.checkbox.append({
@@ -689,7 +701,7 @@ let { APP_ID } = require("app")
           idx = inst.idx
           image = inst.image
           text = inst.text
-          value = !isUnitType && ::isInArray(idx, selectedArr)
+          value = !isUnitType && isInArray(idx, selectedArr)
         })
 
       view.checkbox.sort(@(a,b) a.idx <=> b.idx)
@@ -703,7 +715,7 @@ let { APP_ID } = require("app")
   {
     let selectedArr = this[$"{tName}Stats"]
     let isUnitType = tName == "unit"
-    let referenceArr = isUnitType ? availableUTypes : availableCountries
+    let referenceArr = isUnitType ? this.availableUTypes : this.availableCountries
     let isReset = objId == RESET_ID
 
     foreach (idx, inst in referenceArr)
@@ -714,33 +726,33 @@ let { APP_ID } = require("app")
       if (value)
         ::u.appendOnce(idx, selectedArr)
       else
-        removeItemFromList(idx, selectedArr)
+        this.removeItemFromList(idx, selectedArr)
     }
 
-    fillAirStats()
+    this.fillAirStats()
   }
 
   function fillAirStatsScene(airStats)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    airStatsList = []
+    this.airStatsList = []
     // Show all items if filters list is empty
-    let filterUnits = unitStats.len() > 0 ? unitStats
+    let filterUnits = this.unitStats.len() > 0 ? this.unitStats
       : unitTypes.types.map(@(t) t.isAvailable() ? t.armyId : null).filter(@(t) t)
-    let filterCountry = countryStats.len() > 0 ? countryStats : shopCountriesList
+    let filterCountry = this.countryStats.len() > 0 ? this.countryStats : shopCountriesList
 
     local checkList = []
     let typeName = "total"
-    let modeName = statsMode
+    let modeName = this.statsMode
     if ((modeName in airStats) && (typeName in airStats[modeName]))
       checkList = airStats[modeName][typeName]
     foreach(item in checkList)
     {
       let air = ::getAircraftByName(item.name)
       let unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
-      if (!::isInArray(unitTypeShopId, filterUnits))
+      if (!isInArray(unitTypeShopId, filterUnits))
           continue
       if (!("country" in item))
       {
@@ -749,43 +761,43 @@ let { APP_ID } = require("app")
       }
       if ( ! ("locName" in item))
         item.locName <- air ? ::getUnitName(air, true) : ""
-      if (::isInArray(item.country, filterCountry))
-        airStatsList.append(item)
+      if (isInArray(item.country, filterCountry))
+        this.airStatsList.append(item)
     }
 
-    if (statsSortBy=="")
-      statsSortBy = "victories"
+    if (this.statsSortBy=="")
+      this.statsSortBy = "victories"
 
-    let sortBy = statsSortBy
-    let sortReverse = statsSortReverse == (sortBy != "locName")
-    airStatsList.sort(function(a,b) {
+    let sortBy = this.statsSortBy
+    let sortReverse = this.statsSortReverse == (sortBy != "locName")
+    this.airStatsList.sort(function(a,b) {
       let res = b[sortBy] <=> a[sortBy]
       if (res != 0)
         return sortReverse ? -res : res
       return a.locName <=> b.locName || a.name <=> b.name
     })
 
-    curStatsPage = 0
-    updateStatPage()
+    this.curStatsPage = 0
+    this.updateStatPage()
   }
 
   function initStatsPerPage()
   {
-    if (statsPerPage > 0)
+    if (this.statsPerPage > 0)
       return
 
-    let listObj = scene.findObject("airs_stats_table")
+    let listObj = this.scene.findObject("airs_stats_table")
     let size = listObj.getSize()
-    let rowsHeigt = size[1] -guiScene.calcString("@leaderboardHeaderHeight", null)
-    statsPerPage =   max(1, (rowsHeigt / guiScene.calcString("@leaderboardTrHeight",  null)).tointeger())
+    let rowsHeigt = size[1] -this.guiScene.calcString("@leaderboardHeaderHeight", null)
+    this.statsPerPage =   max(1, (rowsHeigt / this.guiScene.calcString("@leaderboardTrHeight",  null)).tointeger())
   }
 
   function updateStatPage()
   {
-    if (!airStatsList)
+    if (!this.airStatsList)
       return
 
-    initStatsPerPage()
+    this.initStatsPerPage()
 
     local data = ""
     let posWidth = "0.05@scrn_tgt"
@@ -793,62 +805,62 @@ let { APP_ID } = require("app")
     let nameWidth = "0.2@scrn_tgt"
     let headerRow = [
       { width=posWidth }
-      { id="rank", width=rcWidth, text="#sm_rank", tdalign="split", cellType="splitRight", callback = "onStatsCategory", active = statsSortBy=="rank" }
+      { id="rank", width=rcWidth, text="#sm_rank", tdalign="split", cellType="splitRight", callback = "onStatsCategory", active = this.statsSortBy=="rank" }
       { id="rank", width=rcWidth, cellType="splitLeft", callback = "onStatsCategory" }
       { id="locName", width=rcWidth, cellType="splitRight", callback = "onStatsCategory" }
-      { id="locName", width=nameWidth, text="#options/unit", tdalign="left", cellType="splitLeft", callback = "onStatsCategory", active = statsSortBy=="locName" }
+      { id="locName", width=nameWidth, text="#options/unit", tdalign="left", cellType="splitLeft", callback = "onStatsCategory", active = this.statsSortBy=="locName" }
     ]
-    foreach(item in ::air_stats_list)
+    foreach(item in airStatsListConfig)
     {
       if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))
         continue
 
-      if (isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
+      if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
         headerRow.append({
           id = item.id
           image = "#ui/gameuiskin#" + (("icon" in item)? item.icon : "lb_"+item.id) + ".svg"
           tooltip = ("text" in item)? "#" + item.text : "#multiplayer/"+item.id
           callback = "onStatsCategory"
-          active = statsSortBy==item.id
+          active = this.statsSortBy==item.id
           needText = false
         })
     }
-    data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+    data += ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
     let tooltips = {}
-    let fromIdx = curStatsPage*statsPerPage
-    local toIdx = (curStatsPage+1)*statsPerPage-1
-    if (toIdx >= airStatsList.len()) toIdx = airStatsList.len()-1
+    let fromIdx = this.curStatsPage*this.statsPerPage
+    local toIdx = (this.curStatsPage+1)*this.statsPerPage-1
+    if (toIdx >= this.airStatsList.len()) toIdx = this.airStatsList.len()-1
 
     for(local idx = fromIdx; idx <= toIdx; idx++)
     {
-      let airData = airStatsList[idx]
+      let airData = this.airStatsList[idx]
       let unitTooltipId = UNIT.getTooltipId(airData.name)
 
       let rowName = "row_"+idx
       let rowData = [
         { text = (idx+1).tostring(), width=posWidth }
-        { id="rank", width=rcWidth, text = airData.rank.tostring(), tdalign="right", cellType="splitRight", active = statsSortBy=="rank" }
+        { id="rank", width=rcWidth, text = airData.rank.tostring(), tdalign="right", cellType="splitRight", active = this.statsSortBy=="rank" }
         { id="country", width=rcWidth, image=::get_country_icon(airData.country), cellType="splitLeft", needText = false }
         {
           id="unit",
           width=rcWidth,
-          image=getUnitClassIco(airData.name),
+          image=::getUnitClassIco(airData.name),
           tooltipId = unitTooltipId,
           cellType="splitRight",
           needText = false
         }
-        { id="name", text = ::getUnitName(airData.name, true), tdalign="left", active = statsSortBy=="name", cellType="splitLeft", tooltipId = unitTooltipId }
+        { id="name", text = ::getUnitName(airData.name, true), tdalign="left", active = this.statsSortBy=="name", cellType="splitLeft", tooltipId = unitTooltipId }
       ]
-      foreach(item in ::air_stats_list)
+      foreach(item in airStatsListConfig)
       {
         if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))
           continue
 
-        if (isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
+        if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
         {
           let cell = ::getLbItemCell(item.id, airData[item.id], item.type)
-          cell.active <- statsSortBy == item.id
+          cell.active <- this.statsSortBy == item.id
           if ("tooltip" in cell)
           {
             if (!(rowName in tooltips))
@@ -858,11 +870,11 @@ let { APP_ID } = require("app")
           rowData.append(cell)
         }
       }
-      data += buildTableRow(rowName, rowData, idx%2==0)
+      data += ::buildTableRow(rowName, rowData, idx%2==0)
     }
 
-    let tblObj = scene.findObject("airs_stats_table")
-    guiScene.replaceContentFromText(tblObj, data, data.len(), this)
+    let tblObj = this.scene.findObject("airs_stats_table")
+    this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
     foreach(rowName, row in tooltips)
     {
       let rowObj = tblObj.findObject(rowName)
@@ -870,15 +882,15 @@ let { APP_ID } = require("app")
         foreach(name, value in row)
           rowObj.findObject(name).tooltip = value
     }
-    let nestObj = scene.findObject("paginator_place")
-    ::generatePaginator(nestObj, this, curStatsPage, ::floor((airStatsList.len() - 1)/statsPerPage))
-    updateButtons()
+    let nestObj = this.scene.findObject("paginator_place")
+    ::generatePaginator(nestObj, this, this.curStatsPage, floor((this.airStatsList.len() - 1)/this.statsPerPage))
+    this.updateButtons()
   }
 
   function goToPage(obj)
   {
-    curStatsPage = obj.to_page.tointeger()
-    updateStatPage()
+    this.curStatsPage = obj.to_page.tointeger()
+    this.updateStatPage()
   }
 
   function checkLbRowVisibility(row)
@@ -888,18 +900,18 @@ let { APP_ID } = require("app")
 
   function fillLeaderboard()
   {
-    let stats = getPlayerStats()
+    let stats = this.getPlayerStats()
     if (!stats || !("leaderboard" in stats) || !stats.leaderboard.len())
       return
 
-    let typeProfileObj = scene.findObject("stats_type_profile")
-    if (::checkObj(typeProfileObj))
+    let typeProfileObj = this.scene.findObject("stats_type_profile")
+    if (checkObj(typeProfileObj))
     {
       typeProfileObj.show(true)
-      typeProfileObj.setValue(statsType == ::ETTI_VALUE_INHISORY)
+      typeProfileObj.setValue(this.statsType == ETTI_VALUE_INHISORY)
     }
 
-    let tblObj = scene.findObject("profile_leaderboard")
+    let tblObj = this.scene.findObject("profile_leaderboard")
     local rowIdx = 0
     local data = ""
     let tooltips = {}
@@ -907,7 +919,7 @@ let { APP_ID } = require("app")
     //add header row
     let headerRow = [""]
     foreach(lbCategory in ::leaderboards_list)
-      if (checkLbRowVisibility(lbCategory))
+      if (this.checkLbRowVisibility(lbCategory))
         headerRow.append({
           id = lbCategory.id
           image = lbCategory.headerImage
@@ -916,7 +928,7 @@ let { APP_ID } = require("app")
           needText = false
         })
 
-    data = buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+    data = ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
     let rows = [
       {
@@ -929,15 +941,15 @@ let { APP_ID } = require("app")
       }
     ]
 
-    let valueFieldName = (statsType == ::ETTI_VALUE_TOTAL)
+    let valueFieldName = (this.statsType == ETTI_VALUE_TOTAL)
                            ? LEADERBOARD_VALUE_TOTAL
                            : LEADERBOARD_VALUE_INHISTORY
-    let lb = ::getTblValue(valueFieldName, ::getTblValue(lbMode, stats.leaderboard), {})
+    let lb = getTblValue(valueFieldName, getTblValue(this.lbMode, stats.leaderboard), {})
     let standartRow = {}
 
     foreach (idx, fieldTbl in lb)
     {
-      standartRow[idx] <- ::getTblValue(valueFieldName, fieldTbl, -1)
+      standartRow[idx] <- getTblValue(valueFieldName, fieldTbl, -1)
     }
 
     foreach (row in rows)
@@ -947,7 +959,7 @@ let { APP_ID } = require("app")
       local res = {}
 
       foreach(lbCategory in ::leaderboards_list)
-        if (checkLbRowVisibility(lbCategory))
+        if (this.checkLbRowVisibility(lbCategory))
         {
           if (lbCategory.field in lb)
           {
@@ -978,21 +990,21 @@ let { APP_ID } = require("app")
         }
 
       rowIdx++
-      data += buildTableRow(rowName, rowData, rowIdx % 2 == 0, "")
+      data += ::buildTableRow(rowName, rowData, rowIdx % 2 == 0, "")
     }
-    guiScene.replaceContentFromText(tblObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
 
     foreach(rowName, row in tooltips)
       foreach(name, value in row)
         tblObj.findObject(rowName).findObject(name).tooltip = value
   }
 
-  function onChangePilotIcon(obj) {}
+  function onChangePilotIcon(_obj) {}
   function openChooseTitleWnd() {}
 
   function getCurSheet()
   {
-    let obj = scene.findObject("profile_sheet_list")
+    let obj = this.scene.findObject("profile_sheet_list")
     let sheetIdx = obj.getValue()
     if ((sheetIdx < 0) || (sheetIdx >= obj.childrenCount()))
       return ""
@@ -1002,106 +1014,106 @@ let { APP_ID } = require("app")
 
   function initLeaderboardModes()
   {
-    lbMode      = ""
-    lbModesList = []
+    this.lbMode      = ""
+    this.lbModesList = []
 
     local data  = ""
 
-    foreach(idx, mode in ::leaderboard_modes)
+    foreach(_idx, mode in ::leaderboard_modes)
     {
-      let diffCode = ::getTblValue("diffCode", mode)
-      if (!::g_difficulty.isDiffCodeAvailable(diffCode, ::GM_DOMINATION))
+      let diffCode = getTblValue("diffCode", mode)
+      if (!::g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
         continue
-      let reqFeature = ::getTblValue("reqFeature", mode)
+      let reqFeature = getTblValue("reqFeature", mode)
       if (!hasAllFeatures(reqFeature))
         continue
 
-      lbModesList.append(mode.mode)
+      this.lbModesList.append(mode.mode)
       data += format("option {text:t='%s'}", mode.text)
     }
 
     let modesObj = this.showSceneBtn("leaderboard_modes_list", true)
-    guiScene.replaceContentFromText(modesObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(0)
   }
 
   function updateButtons()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let hasFeatureFriends = ::has_feature("Friends")
+    let hasFeatureFriends = hasFeature("Friends")
 
-    let contact = ::getContact(player?.uid, player.name)
+    let contact = ::getContact(this.player?.uid, this.player.name)
     let isMe = contact?.isMe() ?? false
     let canBan = isMe? false : (::myself_can_devoice() || ::myself_can_ban())
     let isFriend = contact?.isInFriendGroup() ?? false
     let isBlock = contact?.isInBlockGroup() ?? false
 
-    let isPS4Player = isPlayerFromPS4(player.name)
-    let isXBoxOnePlayer = isXBoxPlayerName(player.name)
+    let isPS4Player = isPlayerFromPS4(this.player.name)
+    let isXBoxOnePlayer = isXBoxPlayerName(this.player.name)
     let canBlock = !isPlatformXboxOne || !isXBoxOnePlayer
-    let canInteractCC = canInteractCrossConsole(player.name)
+    let canInteractCC = canInteractCrossConsole(this.player.name)
 
-    let sheet = getCurSheet()
-    let showStatBar = infoReady && sheet=="Statistics"
-    let showProfBar = infoReady && !showStatBar
+    let sheet = this.getCurSheet()
+    let showStatBar = this.infoReady && sheet=="Statistics"
+    let showProfBar = this.infoReady && !showStatBar
 
-    ::showBtnTable(scene, {
-      paginator_place = showStatBar && (airStatsList != null) && (airStatsList.len() > statsPerPage)
+    ::showBtnTable(this.scene, {
+      paginator_place = showStatBar && (this.airStatsList != null) && (this.airStatsList.len() > this.statsPerPage)
       btn_friendAdd = showProfBar && hasFeatureFriends && canInteractCC && !isMe && !isFriend && !isBlock
       btn_friendRemove = showProfBar && hasFeatureFriends && isFriend && (contact?.isInFriendlist() ?? false)
       btn_blacklistAdd = showProfBar && hasFeatureFriends && !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
       btn_blacklistRemove = showProfBar && hasFeatureFriends && isBlock && canBlock && !isPS4Player
       btn_moderatorBan = showProfBar && ::is_myself_anyof_moderators() && canBan
       btn_complain = showProfBar && !isMe
-      btn_achievements_url = showProfBar && ::has_feature("AchievementsUrl")
-        && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
+      btn_achievements_url = showProfBar && hasFeature("AchievementsUrl")
+        && hasFeature("AllowExternalLink") && !::is_vendor_tencent()
     })
   }
 
   function onBlacklistBan()
   {
-    let clanTag = ::getTblValue("clanTag", player, "")
-    let playerName = ::getTblValue("name", player, "")
-    let userId = ::getTblValue("uid", player, "")
+    let clanTag = getTblValue("clanTag", this.player, "")
+    let playerName = getTblValue("name", this.player, "")
+    let userId = getTblValue("uid", this.player, "")
 
     ::gui_modal_ban({ name = playerName, uid = userId, clanTag = clanTag })
   }
 
   function onFriendAdd()
   {
-    ::editContactMsgBox(player, ::EPL_FRIENDLIST, true)
+    ::editContactMsgBox(this.player, EPL_FRIENDLIST, true)
   }
 
   function onFriendRemove()
   {
-    ::editContactMsgBox(player, ::EPL_FRIENDLIST, false)
+    ::editContactMsgBox(this.player, EPL_FRIENDLIST, false)
   }
 
   function onBlacklistAdd()
   {
-    ::editContactMsgBox(player, ::EPL_BLOCKLIST, true)
+    ::editContactMsgBox(this.player, EPL_BLOCKLIST, true)
   }
 
   function onBlacklistRemove()
   {
-    ::editContactMsgBox(player, ::EPL_BLOCKLIST, false)
+    ::editContactMsgBox(this.player, EPL_BLOCKLIST, false)
   }
 
   function onComplain()
   {
-    if (infoReady && ("uid" in player))
-      ::gui_modal_complain(player)
+    if (this.infoReady && ("uid" in this.player))
+      ::gui_modal_complain(this.player)
   }
 
   function onOpenXboxProfile()
   {
-    ::xbox_show_profile_card(curPlayerExternalIds?.xboxId ?? "")
+    ::xbox_show_profile_card(this.curPlayerExternalIds?.xboxId ?? "")
   }
 
   function onOpenPSNProfile() {
-    let psnId = curPlayerExternalIds?.psnId ?? ""
+    let psnId = this.curPlayerExternalIds?.psnId ?? ""
     if (psnId == "")
       return
 
@@ -1124,20 +1136,20 @@ let { APP_ID } = require("app")
   {
     if (!obj) return
     let value = obj.id
-    if (statsSortBy==value)
-      statsSortReverse = !statsSortReverse
+    if (this.statsSortBy==value)
+      this.statsSortReverse = !this.statsSortReverse
     else
     {
-      statsSortBy = value
-      statsSortReverse = false
+      this.statsSortBy = value
+      this.statsSortReverse = false
     }
-    guiScene.performDelayed(this, function() { fillAirStats() })
+    this.guiScene.performDelayed(this, function() { this.fillAirStats() })
   }
 
   function onOpenAchievementsUrl()
   {
-    openUrl(::loc("url/achievements",
-        { appId = APP_ID, name = player.name}),
+    openUrl(loc("url/achievements",
+        { appId = APP_ID, name = this.player.name}),
       false, false, "profile_page")
   }
 }

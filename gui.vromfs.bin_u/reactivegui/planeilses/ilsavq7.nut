@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {Speed, Altitude, ClimbSpeed, Tangage, Roll} = require("%rGui/planeState/planeFlyState.nut");
 let {compassWrap, generateCompassMark} = require("ilsCompasses.nut")
 let {flyDirection, angleTxt, yawIndicator, cancelBombing,

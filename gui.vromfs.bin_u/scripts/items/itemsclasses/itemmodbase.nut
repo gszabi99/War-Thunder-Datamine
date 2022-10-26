@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 
@@ -14,26 +20,26 @@ local ModificationBase = class extends ::BaseItem
   {
     base.constructor(blk, invBlk, slotData)
 
-    let conditionsBlk = getConditionsBlk(blk)
+    let conditionsBlk = this.getConditionsBlk(blk)
     if (u.isDataBlock(conditionsBlk))
-      initConditions(conditionsBlk)
+      this.initConditions(conditionsBlk)
   }
 
-  getConditionsBlk = @(configBlk) null
+  getConditionsBlk = @(_configBlk) null
 
   function initConditions(conditionsBlk)
   {
     if ("mod" in conditionsBlk)
-      modsList = conditionsBlk % "mod"
+      this.modsList = conditionsBlk % "mod"
     if ("unitType" in conditionsBlk)
-      unitTypes = conditionsBlk % "unitType"
+      this.unitTypes = conditionsBlk % "unitType"
     if ("country" in conditionsBlk)
-      countries = conditionsBlk % "country"
+      this.countries = conditionsBlk % "country"
 
     let minRank = conditionsBlk?.minRank
     let maxRank = conditionsBlk?.maxRank
-    if (shouldAlwaysShowRank || minRank || maxRank)
-      rankRange = ::Point2(minRank || 1, maxRank || ::max_country_rank)
+    if (this.shouldAlwaysShowRank || minRank || maxRank)
+      this.rankRange = ::Point2(minRank || 1, maxRank || ::max_country_rank)
   }
 
   getDescriptionIntroArray = @() null
@@ -43,47 +49,47 @@ local ModificationBase = class extends ::BaseItem
   {
     let textParts = [base.getDescription()]
 
-    let intro = getDescriptionIntroArray()
+    let intro = this.getDescriptionIntroArray()
     if (intro)
       textParts.extend(intro)
 
-    let expireText = getCurExpireTimeText()
+    let expireText = this.getCurExpireTimeText()
     if (expireText != "")
       textParts.append(expireText)
 
-    if (modsList)
+    if (this.modsList)
     {
-      let locMods = u.map(modsList,
+      let locMods = u.map(this.modsList,
         function(mod)
         {
-          local res = ::loc("modification/" + mod + "/short", "")
+          local res = loc("modification/" + mod + "/short", "")
           if (!res.len())
-            res = ::loc("modification/" + mod)
+            res = loc("modification/" + mod)
           return res
         })
-      textParts.append(::loc("multiAward/type/modification") + ::loc("ui/colon")
-          + ::colorize("activeTextColor", ::g_string.implode(locMods, ", ")))
+      textParts.append(loc("multiAward/type/modification") + loc("ui/colon")
+          + colorize("activeTextColor", ::g_string.implode(locMods, ", ")))
     }
 
-    if (countries)
+    if (this.countries)
     {
-      let locCountries = u.map(countries, @(country) ::loc("unlockTag/" + country))
-      textParts.append(::loc("trophy/unlockables_names/country") + ::loc("ui/colon")
-          + ::colorize("activeTextColor", ::g_string.implode(locCountries, ", ")))
+      let locCountries = u.map(this.countries, @(country) loc("unlockTag/" + country))
+      textParts.append(loc("trophy/unlockables_names/country") + loc("ui/colon")
+          + colorize("activeTextColor", ::g_string.implode(locCountries, ", ")))
     }
-    if (unitTypes)
+    if (this.unitTypes)
     {
-      let processedUnitTypes = processUnitTypeArray(unitTypes)
-      let locUnitTypes = u.map(processedUnitTypes, @(unitType) ::loc($"mainmenu/type_{unitType}"))
-      textParts.append(::loc("mainmenu/btnUnits") + ::loc("ui/colon")
-          + ::colorize("activeTextColor", ::g_string.implode(locUnitTypes, ", ")))
+      let processedUnitTypes = processUnitTypeArray(this.unitTypes)
+      let locUnitTypes = u.map(processedUnitTypes, @(unitType) loc($"mainmenu/type_{unitType}"))
+      textParts.append(loc("mainmenu/btnUnits") + loc("ui/colon")
+          + colorize("activeTextColor", ::g_string.implode(locUnitTypes, ", ")))
     }
 
-    let rankText = getRankText()
+    let rankText = this.getRankText()
     if (rankText.len())
-      textParts.append(::loc("sm_rank") + ::loc("ui/colon") + ::colorize("activeTextColor", rankText))
+      textParts.append(loc("sm_rank") + loc("ui/colon") + colorize("activeTextColor", rankText))
 
-    let outro = getDescriptionOutroArray()
+    let outro = this.getDescriptionOutroArray()
     if (outro)
       textParts.extend(outro)
 
@@ -92,17 +98,17 @@ local ModificationBase = class extends ::BaseItem
 
   function getRankText()
   {
-    if (rankRange)
-      return ::get_roman_numeral(rankRange.x) +
-        ((rankRange.x != rankRange.y) ? "-" + ::get_roman_numeral(rankRange.y) : "")
+    if (this.rankRange)
+      return ::get_roman_numeral(this.rankRange.x) +
+        ((this.rankRange.x != this.rankRange.y) ? "-" + ::get_roman_numeral(this.rankRange.y) : "")
     return ""
   }
 
-  function getIcon(addItemName = true)
+  function getIcon(_addItemName = true)
   {
-    local res = ::LayersIcon.genDataFromLayer(getIconBgLayer())
-    res += ::LayersIcon.genDataFromLayer(getIconMainLayer())
-    res += ::LayersIcon.genDataFromLayer(getIconRankLayer())
+    local res = ::LayersIcon.genDataFromLayer(this.getIconBgLayer())
+    res += ::LayersIcon.genDataFromLayer(this.getIconMainLayer())
+    res += ::LayersIcon.genDataFromLayer(this.getIconRankLayer())
     return res
   }
 
@@ -111,12 +117,12 @@ local ModificationBase = class extends ::BaseItem
 
   getIconRankLayer = function()
   {
-    if (!rankRange)
+    if (!this.rankRange)
       return null
 
     let res = ::LayersIcon.findLayerCfg("mod_upgrade_rank")
     if (res)
-      res.img = $"#ui/gameuiskin#item_rank_{clamp(rankRange.y, 1, 6)}.png"
+      res.img = $"#ui/gameuiskin#item_rank_{clamp(this.rankRange.y, 1, 6)}.png"
     return res
   }
 }

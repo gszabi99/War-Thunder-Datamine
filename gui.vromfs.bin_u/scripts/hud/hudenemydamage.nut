@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 
 ::hudEnemyDamage <- {
@@ -80,7 +86,7 @@ let { format } = require("string")
   enabled = true
   lastTargetId = null
   lastTargetVersion = null
-  lastTargetType = ::ES_UNIT_TYPE_INVALID
+  lastTargetType = ES_UNIT_TYPE_INVALID
   lastTargetKilled = false
   partsConfig = {}
 
@@ -88,44 +94,44 @@ let { format } = require("string")
 
   function init(nest)
   {
-    if (!::checkObj(nest))
+    if (!checkObj(nest))
       return
 
-    scene = nest
-    guiScene = scene.getScene()
-    listObj = scene.findObject("hud_enemy_damage")
+    this.scene = nest
+    this.guiScene = this.scene.getScene()
+    this.listObj = this.scene.findObject("hud_enemy_damage")
 
     ::g_hud_event_manager.subscribe("EnemyPartDamage", function (damageData) {
-        onEnemyPartDamage(damageData)
+        this.onEnemyPartDamage(damageData)
       }, this)
     ::g_hud_event_manager.subscribe("HitcamTargetKilled", function (hitcamData) {
-        onHitcamTargetKilled(hitcamData)
+        this.onHitcamTargetKilled(hitcamData)
       }, this)
 
-    rebuildWidgets()
-    resetTargetData()
-    reinit()
+    this.rebuildWidgets()
+    this.resetTargetData()
+    this.reinit()
   }
 
   function reinit()
   {
-    enabled = ::get_show_destroyed_parts()
+    this.enabled = ::get_show_destroyed_parts()
 
-    if (::checkObj(listObj))
-      listObj.pos = ::get_option_xray_kill() ? listObj.posHitcamOn : listObj.posHitcamOff
+    if (checkObj(this.listObj))
+      this.listObj.pos = ::get_option_xray_kill() ? this.listObj.posHitcamOn : this.listObj.posHitcamOff
   }
 
   function resetTargetData()
   {
-    lastTargetId = null
-    lastTargetVersion = null
-    lastTargetType = ::ES_UNIT_TYPE_INVALID
-    lastTargetKilled = false
+    this.lastTargetId = null
+    this.lastTargetVersion = null
+    this.lastTargetType = ES_UNIT_TYPE_INVALID
+    this.lastTargetKilled = false
 
-    partsConfig = {}
-    foreach (sectionIdx, section in partsOrder)
+    this.partsConfig = {}
+    foreach (sectionIdx, section in this.partsOrder)
       foreach (partId in section.parts)
-        partsConfig[partId] <- {
+        this.partsConfig[partId] <- {
           section = section.id
           sectionIdx = sectionIdx
           dmParts = {}
@@ -135,31 +141,31 @@ let { format } = require("string")
 
   function rebuildWidgets()
   {
-    if (!::check_obj(listObj))
+    if (!checkObj(this.listObj))
       return
 
     local markup = ""
-    foreach (sectionIdx, section in partsOrder)
+    foreach (_sectionIdx, section in this.partsOrder)
     {
       foreach (partId in section.parts)
-        markup += ::handyman.renderCached(("%gui/hud/hudEnemyDamage"), {
+        markup += ::handyman.renderCached(("%gui/hud/hudEnemyDamage.tpl"), {
           id = partId
-          text = ::loc($"dmg_msg_short/{partId}")
+          text = loc($"dmg_msg_short/{partId}")
         })
     }
-    guiScene.replaceContentFromText(listObj, markup, markup.len(), this)
+    this.guiScene.replaceContentFromText(this.listObj, markup, markup.len(), this)
   }
 
   function resetWidgets()
   {
-    foreach (sectionIdx, section in partsOrder)
+    foreach (_sectionIdx, section in this.partsOrder)
       foreach (partId in section.parts)
-        hidePart(partId)
+        this.hidePart(partId)
   }
 
   function onEnemyPartDamage(data)
   {
-    if (!enabled || !::checkObj(listObj))
+    if (!this.enabled || !checkObj(this.listObj))
       return
 
     /*
@@ -185,26 +191,26 @@ let { format } = require("string")
     */
 
     let { unitId, unitVersion, partName = null } = data
-    if (unitId != lastTargetId || unitVersion != lastTargetVersion)
+    if (unitId != this.lastTargetId || unitVersion != this.lastTargetVersion)
     {
-      if (!isAllAnimationsFinished())
-        resetWidgets()
+      if (!this.isAllAnimationsFinished())
+        this.resetWidgets()
 
-      resetTargetData()
-      lastTargetId = unitId
-      lastTargetVersion = unitVersion
-      lastTargetType = data?.unitType ?? ::ES_UNIT_TYPE_INVALID
-      lastTargetKilled = data?.unitKilled ?? false
+      this.resetTargetData()
+      this.lastTargetId = unitId
+      this.lastTargetVersion = unitVersion
+      this.lastTargetType = data?.unitType ?? ES_UNIT_TYPE_INVALID
+      this.lastTargetKilled = data?.unitKilled ?? false
     }
     else
     {
-      lastTargetKilled = data?.unitKilled ?? lastTargetKilled
+      this.lastTargetKilled = data?.unitKilled ?? this.lastTargetKilled
     }
 
-    if (partName == null || (partName not in partsConfig))
+    if (partName == null || (partName not in this.partsConfig))
       return
 
-    let cfg = partsConfig[partName]
+    let cfg = this.partsConfig[partName]
     cfg.dmParts[data.partDmName] <- (cfg.dmParts?[data.partDmName] ?? {}).__merge(data)
     let { partDead = false, partKilled = false, partHp = 1.0, partDmg = 0.0
     } = cfg.dmParts[data.partDmName]
@@ -212,44 +218,44 @@ let { format } = require("string")
     cfg.dmParts[data.partDmName].partHp <- showHp
 
     let isHit = partKilled || partDmg > 0
-    let isTank = lastTargetType == ::ES_UNIT_TYPE_TANK
-    let thresholdShowHealthBelow = isTank ? tankThresholdShowHp : 1.0
-    let brightnessKill = isTank ? tankBrightnessKill : 0.0
+    let isTank = this.lastTargetType == ES_UNIT_TYPE_TANK
+    let thresholdShowHealthBelow = isTank ? this.tankThresholdShowHp : 1.0
+    let brightnessKill = isTank ? this.tankBrightnessKill : 0.0
     cfg.show = isHit && showHp < thresholdShowHealthBelow
     if (!cfg.show)
       return
 
     let value = 1.0 / thresholdShowHealthBelow * showHp
-    let hue =  showHp ? (hueHpMin + (hueHpMax - hueHpMin) * value) : hueKill
-    let brightness =  showHp ? (brightnessHpMin - (brightnessHpMin - brightnessHpMax) * value) : brightnessKill
+    let hue =  showHp ? (this.hueHpMin + (this.hueHpMax - this.hueHpMin) * value) : this.hueKill
+    let brightness =  showHp ? (this.brightnessHpMin - (this.brightnessHpMin - this.brightnessHpMax) * value) : brightnessKill
     let color = format("#%s", ::get_color_from_hsv(hue, 1, brightness))
-    showPart(partName, color, !showHp)
+    this.showPart(partName, color, !showHp)
   }
 
   function onHitcamTargetKilled(params)
   {
-    if (::is_multiplayer() || lastTargetKilled)
+    if (::is_multiplayer() || this.lastTargetKilled)
       return
 
-    let unitId      = ::getTblValue("unitId", params)
-    let unitVersion = ::getTblValue("unitVersion", params)
-    if (unitId == null || unitId != lastTargetId || unitVersion != lastTargetVersion)
+    let unitId      = getTblValue("unitId", params)
+    let unitVersion = getTblValue("unitVersion", params)
+    if (unitId == null || unitId != this.lastTargetId || unitVersion != this.lastTargetVersion)
       return
 
-    onEnemyPartDamage({
-      unitId      = lastTargetId
-      unitVersion = lastTargetVersion
-      unitType    = lastTargetType
+    this.onEnemyPartDamage({
+      unitId      = this.lastTargetId
+      unitVersion = this.lastTargetVersion
+      unitType    = this.lastTargetType
       unitKilled  = true
     })
   }
 
   function showPart(partId, color, isKilled)
   {
-    if (!::checkObj(listObj))
+    if (!checkObj(this.listObj))
       return
-    let obj = listObj.findObject(partId)
-    if (!::checkObj(obj))
+    let obj = this.listObj.findObject(partId)
+    if (!checkObj(obj))
       return
     obj.color = color
     obj.partKilled = isKilled ? "yes" : "no"
@@ -258,27 +264,27 @@ let { format } = require("string")
 
   function hidePart(partId)
   {
-    if (!::checkObj(listObj))
+    if (!checkObj(this.listObj))
       return
-    let obj = listObj.findObject(partId)
-    if (::checkObj(obj) && obj?._blink != "no")
+    let obj = this.listObj.findObject(partId)
+    if (checkObj(obj) && obj?._blink != "no")
       obj._blink = "no"
   }
 
   function onEnemyDamageAnimationFinish(obj)
   {
-    if (!::checkObj(obj))
+    if (!checkObj(obj))
       return
-    if (!(obj?.id in partsConfig))
+    if (!(obj?.id in this.partsConfig))
       return
 
-    let cfg = partsConfig[obj.id]
+    let cfg = this.partsConfig[obj.id]
     cfg.show = false
   }
 
   function isAllAnimationsFinished()
   {
-    foreach (partName, cfg in partsConfig)
+    foreach (_partName, cfg in this.partsConfig)
       if (cfg.show)
         return false
     return true

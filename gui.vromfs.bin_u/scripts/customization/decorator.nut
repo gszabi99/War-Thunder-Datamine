@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format, split_by_chars } = require("string")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
@@ -44,241 +50,241 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   constructor(blkOrId, decType)
   {
-    decoratorType = decType
+    this.decoratorType = decType
     if (::u.isString(blkOrId))
-      id = blkOrId
+      this.id = blkOrId
     else if (::u.isDataBlock(blkOrId))
     {
-      blk = blkOrId
-      id = blk.getBlockName()
+      this.blk = blkOrId
+      this.id = this.blk.getBlockName()
     }
 
-    unlockId = ::getTblValue("unlock", blk, "")
-    unlockBlk = ::g_unlocks.getUnlockById(unlockId)
-    limit = ::getTblValue("limit", blk, decoratorType.defaultLimitUsage)
-    category = ::getTblValue("category", blk, "")
-    group = ::getTblValue("group", blk, "")
+    this.unlockId = getTblValue("unlock", this.blk, "")
+    this.unlockBlk = ::g_unlocks.getUnlockById(this.unlockId)
+    this.limit = getTblValue("limit", this.blk, this.decoratorType.defaultLimitUsage)
+    this.category = getTblValue("category", this.blk, "")
+    this.group = getTblValue("group", this.blk, "")
 
     // Only decorators from live.warthunder.com has GUID in id.
-    let slashPos = id.indexof("/")
-    isLive = guidParser.isGuid(slashPos == null ? id : id.slice(slashPos + 1))
+    let slashPos = this.id.indexof("/")
+    this.isLive = guidParser.isGuid(slashPos == null ? this.id : this.id.slice(slashPos + 1))
 
-    cost = decoratorType.getCost(id)
-    maxSurfaceAngle = blk?.maxSurfaceAngle ?? 180
+    this.cost = this.decoratorType.getCost(this.id)
+    this.maxSurfaceAngle = this.blk?.maxSurfaceAngle ?? 180
 
-    tex = blk ? ::get_decal_tex(blk, 1) : id
-    aspect_ratio = blk ? decoratorType.getRatio(blk) : 1
+    this.tex = this.blk ? ::get_decal_tex(this.blk, 1) : this.id
+    this.aspect_ratio = this.blk ? this.decoratorType.getRatio(this.blk) : 1
 
-    if ("countries" in blk)
+    if ("countries" in this.blk)
     {
-      countries = []
-      eachParam(blk.countries, function(access, country) {
+      this.countries = []
+      eachParam(this.blk.countries, function(access, country) {
         if (access == true)
-          countries.append($"country_{country}")
+          this.countries.append($"country_{country}")
       }, this)
     }
 
-    units = []
-    if ("units" in blk)
-      units = split_by_chars(blk.units, "; ")
+    this.units = []
+    if ("units" in this.blk)
+      this.units = split_by_chars(this.blk.units, "; ")
 
-    allowedUnitTypes = blk?.unitType ? (blk % "unitType") : []
+    this.allowedUnitTypes = this.blk?.unitType ? (this.blk % "unitType") : []
 
-    if ("tags" in blk)
-      tags = copyParamsToTable(blk.tags)
+    if ("tags" in this.blk)
+      this.tags = copyParamsToTable(this.blk.tags)
 
-    rarity  = itemRarity.get(blk?.item_quality, blk?.name_color)
+    this.rarity  = itemRarity.get(this.blk?.item_quality, this.blk?.name_color)
 
-    if (blk?.marketplaceItemdefId != null && isMarketplaceEnabled())
+    if (this.blk?.marketplaceItemdefId != null && isMarketplaceEnabled())
     {
-      couponItemdefId = blk.marketplaceItemdefId
+      this.couponItemdefId = this.blk.marketplaceItemdefId
 
-      let couponItem = ::ItemsManager.findItemById(couponItemdefId)
+      let couponItem = ::ItemsManager.findItemById(this.couponItemdefId)
       if (couponItem)
-        updateFromItemdef(couponItem.itemDef)
+        this.updateFromItemdef(couponItem.itemDef)
     }
 
-    if (!isUnlocked() && !isVisible() && ("showByEntitlement" in unlockBlk))
-      lockedByDLC = ::has_entitlement(unlockBlk.showByEntitlement) ? null : unlockBlk.showByEntitlement
+    if (!this.isUnlocked() && !this.isVisible() && ("showByEntitlement" in this.unlockBlk))
+      this.lockedByDLC = ::has_entitlement(this.unlockBlk.showByEntitlement) ? null : this.unlockBlk.showByEntitlement
   }
 
   function getName()
   {
-    let name = decoratorType.getLocName(id)
-    return isRare() ? ::colorize(getRarityColor(), name) : name
+    let name = this.decoratorType.getLocName(this.id)
+    return this.isRare() ? colorize(this.getRarityColor(), name) : name
   }
 
   function getDesc()
   {
-    return decoratorType.getLocDesc(id)
+    return this.decoratorType.getLocDesc(this.id)
   }
 
   function isUnlocked()
   {
-    return decoratorType.isPlayerHaveDecorator(id)
+    return this.decoratorType.isPlayerHaveDecorator(this.id)
   }
 
   function isVisible()
   {
-    return decoratorType.isVisible(blk, this)
+    return this.decoratorType.isVisible(this.blk, this)
   }
 
   function getCost()
   {
-    return cost
+    return this.cost
   }
 
   function canRecieve()
   {
-    return unlockBlk != null || ! getCost().isZero() || getCouponItemdefId() != null
+    return this.unlockBlk != null || ! this.getCost().isZero() || this.getCouponItemdefId() != null
   }
 
   function isSuitableForUnit(unit)
   {
     return unit == null
-      || (!isLockedByCountry(unit) && !isLockedByUnit(unit) && isAllowedByUnitTypes(unit.unitType.tag))
+      || (!this.isLockedByCountry(unit) && !this.isLockedByUnit(unit) && this.isAllowedByUnitTypes(unit.unitType.tag))
   }
 
   function isLockedByCountry(unit)
   {
-    if (countries == null)
+    if (this.countries == null)
       return false
 
-    return !::isInArray(::getUnitCountry(unit), countries)
+    return !isInArray(::getUnitCountry(unit), this.countries)
   }
 
   function isLockedByUnit(unit)
   {
-    if (decoratorType == ::g_decorator_type.SKINS)
-      return unit?.name != ::g_unlocks.getPlaneBySkinId(id)
+    if (this.decoratorType == ::g_decorator_type.SKINS)
+      return unit?.name != ::g_unlocks.getPlaneBySkinId(this.id)
 
-    if (::u.isEmpty(units))
+    if (::u.isEmpty(this.units))
       return false
 
-    return !::isInArray(unit?.name, units)
+    return !isInArray(unit?.name, this.units)
   }
 
   function getUnitTypeLockIcon()
   {
-    if (::u.isEmpty(units))
+    if (::u.isEmpty(this.units))
       return null
 
-    return ::get_unit_type_font_icon(::get_es_unit_type(::getAircraftByName(units[0])))
+    return ::get_unit_type_font_icon(::get_es_unit_type(::getAircraftByName(this.units[0])))
   }
 
   function getTypeDesc()
   {
-    return decoratorType.getTypeDesc(this)
+    return this.decoratorType.getTypeDesc(this)
   }
 
   function getRestrictionsDesc()
   {
-    if (decoratorType == ::g_decorator_type.SKINS)
+    if (this.decoratorType == ::g_decorator_type.SKINS)
       return ""
 
     let important = []
     let common    = []
 
-    if (!::u.isEmpty(units))
+    if (!::u.isEmpty(this.units))
     {
-      let visUnits = ::u.filter(units, @(u) ::getAircraftByName(u)?.isInShop)
-      important.append(::loc("options/unit") + ::loc("ui/colon") +
-        ::g_string.implode(::u.map(visUnits, @(u) ::getUnitName(u)), ::loc("ui/comma")))
+      let visUnits = ::u.filter(this.units, @(u) ::getAircraftByName(u)?.isInShop)
+      important.append(loc("options/unit") + loc("ui/colon") +
+        ::g_string.implode(::u.map(visUnits, @(u) ::getUnitName(u)), loc("ui/comma")))
     }
 
-    if (countries)
+    if (this.countries)
     {
-      let visCountries = ::u.filter(countries, @(c) ::isInArray(c, shopCountriesList))
-      important.append(::loc("events/countres") + " " +
-        ::g_string.implode(::u.map(visCountries, @(c) ::loc(c)), ::loc("ui/comma")))
+      let visCountries = ::u.filter(this.countries, @(c) isInArray(c, shopCountriesList))
+      important.append(loc("events/countres") + " " +
+        ::g_string.implode(::u.map(visCountries, @(c) loc(c)), loc("ui/comma")))
     }
 
-    if (limit != -1)
-      common.append(::loc("mainmenu/decoratorLimit", { limit = limit }))
+    if (this.limit != -1)
+      common.append(loc("mainmenu/decoratorLimit", { limit = this.limit }))
 
-    return ::colorize("warningTextColor", ::g_string.implode(important, "\n")) +
+    return colorize("warningTextColor", ::g_string.implode(important, "\n")) +
       (important.len() ? "\n" : "") + ::g_string.implode(common, "\n")
   }
 
   function getLocationDesc()
   {
-    if (!decoratorType.hasLocations(id))
+    if (!this.decoratorType.hasLocations(this.id))
       return ""
 
-    let mask = skinLocations.getSkinLocationsMaskBySkinId(id, false)
+    let mask = skinLocations.getSkinLocationsMaskBySkinId(this.id, false)
     let locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (!locations.len())
       return ""
 
-    return ::loc("camouflage/for_environment_conditions") +
-      ::loc("ui/colon") + ::g_string.implode(locations.map(@(l) ::colorize("activeTextColor", l)), ", ")
+    return loc("camouflage/for_environment_conditions") +
+      loc("ui/colon") + ::g_string.implode(locations.map(@(l) colorize("activeTextColor", l)), ", ")
   }
 
   function getTagsDesc()
   {
-    local tagsLoc = getTagsLoc()
+    local tagsLoc = this.getTagsLoc()
     if (!tagsLoc.len())
       return ""
 
-    tagsLoc = ::u.map(tagsLoc, @(txt) ::colorize("activeTextColor", txt))
-    return ::loc("ugm/tags") + ::loc("ui/colon") + ::g_string.implode(tagsLoc, ::loc("ui/comma"))
+    tagsLoc = ::u.map(tagsLoc, @(txt) colorize("activeTextColor", txt))
+    return loc("ugm/tags") + loc("ui/colon") + ::g_string.implode(tagsLoc, loc("ui/comma"))
   }
 
   function getCostText()
   {
-    if (isUnlocked())
+    if (this.isUnlocked())
       return ""
 
-    if (cost.isZero())
+    if (this.cost.isZero())
       return ""
 
-    return ::loc("ugm/price")
-           + ::loc("ui/colon")
-           + cost.getTextAccordingToBalance()
+    return loc("ugm/price")
+           + loc("ui/colon")
+           + this.cost.getTextAccordingToBalance()
            + "\n"
-           + ::loc("shop/object/can_be_purchased")
+           + loc("shop/object/can_be_purchased")
   }
 
   function getSmallIcon()
   {
-    return decoratorType.getSmallIcon(this)
+    return this.decoratorType.getSmallIcon(this)
   }
 
   function canBuyUnlock(unit)
   {
-    return isSuitableForUnit(unit) && !isUnlocked() && !getCost().isZero() && ::has_feature("SpendGold")
+    return this.isSuitableForUnit(unit) && !this.isUnlocked() && !this.getCost().isZero() && hasFeature("SpendGold")
   }
 
   function canGetFromCoupon(unit)
   {
-    return isSuitableForUnit(unit) && !isUnlocked()
-      && (::ItemsManager.getInventoryItemById(getCouponItemdefId())?.canConsume() ?? false)
+    return this.isSuitableForUnit(unit) && !this.isUnlocked()
+      && (::ItemsManager.getInventoryItemById(this.getCouponItemdefId())?.canConsume() ?? false)
   }
 
   function canBuyCouponOnMarketplace(unit)
   {
-    return isSuitableForUnit(unit) && !isUnlocked()
-      && (::ItemsManager.findItemById(getCouponItemdefId())?.hasLink() ?? false)
+    return this.isSuitableForUnit(unit) && !this.isUnlocked()
+      && (::ItemsManager.findItemById(this.getCouponItemdefId())?.hasLink() ?? false)
   }
 
   function canUse(unit)
   {
-    return isAvailable(unit) && !isOutOfLimit(unit)
+    return this.isAvailable(unit) && !this.isOutOfLimit(unit)
   }
 
   function isAvailable(unit)
   {
-    return isSuitableForUnit(unit) && isUnlocked()
+    return this.isSuitableForUnit(unit) && this.isUnlocked()
   }
 
   function getCountOfUsingDecorator(unit)
   {
-    if (decoratorType != ::g_decorator_type.ATTACHABLES || !isUnlocked())
+    if (this.decoratorType != ::g_decorator_type.ATTACHABLES || !this.isUnlocked())
       return 0
 
     local numUse = 0
-    for (local i = 0; i < decoratorType.getAvailableSlots(unit); i++)
-      if (id == decoratorType.getDecoratorNameInSlot(i) || (group != "" && group == decoratorType.getDecoratorGroupInSlot(i)))
+    for (local i = 0; i < this.decoratorType.getAvailableSlots(unit); i++)
+      if (this.id == this.decoratorType.getDecoratorNameInSlot(i) || (this.group != "" && this.group == this.decoratorType.getDecoratorGroupInSlot(i)))
         numUse++
 
     return numUse
@@ -286,101 +292,101 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function isOutOfLimit(unit)
   {
-    if (limit < 0)
+    if (this.limit < 0)
       return false
 
-    if (limit == 0)
+    if (this.limit == 0)
       return true
 
-    return limit <= getCountOfUsingDecorator(unit)
+    return this.limit <= this.getCountOfUsingDecorator(unit)
   }
 
   function isRare()
   {
-    return rarity.isRare
+    return this.rarity.isRare
   }
 
   function getRarity()
   {
-    return rarity.value
+    return this.rarity.value
   }
 
   function getRarityColor()
   {
-    return  rarity.color
+    return  this.rarity.color
   }
 
   function getTagsLoc()
   {
-    let res = rarity.tag ? [ rarity.tag ] : []
+    let res = this.rarity.tag ? [ this.rarity.tag ] : []
     let tagsVisibleBlk = GUI.get()?.decorator_tags_visible
-    if (tagsVisibleBlk && tags)
+    if (tagsVisibleBlk && this.tags)
       foreach (tagBlk in tagsVisibleBlk % "i")
-        if (tags?[tagBlk.tag])
-          res.append(::loc("content/tag/" + tagBlk.tag))
+        if (this.tags?[tagBlk.tag])
+          res.append(loc("content/tag/" + tagBlk.tag))
     return res
   }
 
   function updateFromItemdef(itemDef)
   {
-    rarity = itemRarity.get(itemDef?.item_quality, itemDef?.name_color)
-    tags = itemDef?.tags
+    this.rarity = itemRarity.get(itemDef?.item_quality, itemDef?.name_color)
+    this.tags = itemDef?.tags
   }
 
   function setCouponItemdefId(itemdefId)
   {
-    couponItemdefId = itemdefId
+    this.couponItemdefId = itemdefId
   }
 
   function getCouponItemdefId()
   {
-    return couponItemdefId
+    return this.couponItemdefId
   }
 
   function _tostring()
   {
-    return format("Decorator(%s, %s%s)", ::toString(id), decoratorType.name,
-      unlockId == "" ? "" : (", unlock=" + unlockId))
+    return format("Decorator(%s, %s%s)", toString(this.id), this.decoratorType.name,
+      this.unlockId == "" ? "" : (", unlock=" + this.unlockId))
   }
 
   function getLocParamsDesc()
   {
-    return decoratorType.getLocParamsDesc(this)
+    return this.decoratorType.getLocParamsDesc(this)
   }
 
   function canPreview()
   {
-    return isLive ? decoratorType.canPreviewLiveDecorator() : true
+    return this.isLive ? this.decoratorType.canPreviewLiveDecorator() : true
   }
 
   function doPreview()
   {
-    if (canPreview())
-      contentPreview.showResource(id, decoratorType.resourceType)
+    if (this.canPreview())
+      contentPreview.showResource(this.id, this.decoratorType.resourceType)
   }
 
   function isAllowedByUnitTypes(unitType)
   {
-    return (allowedUnitTypes.len() == 0 || allowedUnitTypes.indexof(unitType) != null)
+    return (this.allowedUnitTypes.len() == 0 || this.allowedUnitTypes.indexof(unitType) != null)
   }
 
   function getLocAllowedUnitTypes() {
-    if (blk == null)
+    if (this.blk == null)
       return ""
 
-    let processedUnitTypes = processUnitTypeArray(blk % "unitType")
+    let processedUnitTypes = processUnitTypeArray(this.blk % "unitType")
     if (processedUnitTypes.len() == 0)
       return ""
 
-    return ::colorize("activeTextColor", ::loc("ui/comma").join(
-      processedUnitTypes.map(@(unitType) ::loc($"mainmenu/type_{unitType}"))))
+    return colorize("activeTextColor", loc("ui/comma").join(
+      processedUnitTypes.map(@(unitType) loc($"mainmenu/type_{unitType}"))))
   }
 
   function getVehicleDesc()
   {
-    let locUnitTypes = getLocAllowedUnitTypes()
+    let locUnitTypes = this.getLocAllowedUnitTypes()
     if (locUnitTypes == "")
       return ""
-    return $"{::loc("mainmenu/btnUnits")}{::loc("ui/colon")}{locUnitTypes}"
+    return $"{loc("mainmenu/btnUnits")}{loc("ui/colon")}{locUnitTypes}"
   }
 }

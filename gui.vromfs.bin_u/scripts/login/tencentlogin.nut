@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let statsd = require("statsd")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -24,23 +29,23 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 
   function doLogin()
   {
-    ::dagor.debug("Login: yuplay2_tencent_login")
+    log("Login: yuplay2_tencent_login")
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "tencent"})
     let res = ::yuplay2_tencent_login()
-    if (res == ::YU2_OK)
+    if (res == YU2_OK)
       return this.afterLogin()
 
-    ::dagor.debug("yuplay2_tencent_login returned " + res)
+    log("yuplay2_tencent_login returned " + res)
 
     let buttons = [["exit", exitGame]]
     local defBtn = "exit"
     local cancelFnFunc = exitGame
 
-    if (!::isInArray(res, [::YU2_TENCENT_CLIENT_DLL_LOST, ::YU2_TENCENT_CLIENT_NOT_RUNNING]))
+    if (!isInArray(res, [YU2_TENCENT_CLIENT_DLL_LOST, YU2_TENCENT_CLIENT_NOT_RUNNING]))
     {
-      buttons.append(["tryAgain", ::Callback(this.doLogin, this)])
+      buttons.append(["tryAgain", Callback(this.doLogin, this)])
       defBtn = "tryAgain"
-      cancelFnFunc = ::Callback(this.doLogin, this)
+      cancelFnFunc = Callback(this.doLogin, this)
     }
 
     ::error_message_box("yn1/connect_error", res, buttons, defBtn, { saved = true,  cancel_fn = cancelFnFunc})
@@ -51,14 +56,14 @@ let exitGame = require("%scripts/utils/exitGame.nut")
     this.doLogin()
   }
 
-  function goBack(obj) {}
+  function goBack(_obj) {}
 }
 
 let function do_change_nickname(nick, onSuccess, onCancel = null)
 {
   let taskId = ::char_change_nick(nick)
   let onError = (@(onSuccess, onCancel) function(res) {
-    ::dagor.debug("Change nickname error: " + res)
+    log("Change nickname error: " + res)
     ::change_nickname(onSuccess, onCancel)
   })(onSuccess, onCancel)
 
@@ -68,7 +73,7 @@ let function do_change_nickname(nick, onSuccess, onCancel = null)
 ::change_nickname <- function change_nickname(onSuccess, onCancel = null)
 {
   ::gui_modal_editbox_wnd({
-    title = ::loc("mainmenu/chooseName")
+    title = loc("mainmenu/chooseName")
     maxLen = 16
     validateFunc = function(nick) {
       if (::is_chat_message_empty(nick))

@@ -25,8 +25,12 @@ action_bar_item {
 
     img {
       id:t='action_icon'
-      size:t='pw, ph';
-      background-image:t='<<icon>>';
+      size:t='pw, ph'
+      pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
+      position:t='absolute'
+      background-svg-size:t='pw, ph'
+      background-image:t='<<icon>>'
+      background-repeat:t='aspect-ratio'
     }
   }
 

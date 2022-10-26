@@ -1,26 +1,32 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_crew_spec_type <- {
   types = []
 }
 
-g_crew_spec_type._getNextType <- function _getNextType()
+::g_crew_spec_type._getNextType <- function _getNextType()
 {
-  return ::g_crew_spec_type.getTypeByCode(nextCode)
+  return ::g_crew_spec_type.getTypeByCode(this.nextCode)
 }
 
-g_crew_spec_type._isCrewTrained <- function _isCrewTrained(crew, unit)
+::g_crew_spec_type._isCrewTrained <- function _isCrewTrained(crew, unit)
 {
-  return ::g_crew_spec_type.getTrainedSpecCode(crew, unit) >= code
+  return ::g_crew_spec_type.getTrainedSpecCode(crew, unit) >= this.code
 }
 
-g_crew_spec_type._getUpgradeCostByCrewAndByUnit <- function _getUpgradeCostByCrewAndByUnit(crew, unit, upgradeToSpecCode = -1)
+::g_crew_spec_type._getUpgradeCostByCrewAndByUnit <- function _getUpgradeCostByCrewAndByUnit(crew, unit, upgradeToSpecCode = -1)
 {
   if (upgradeToSpecCode < 0)
-    upgradeToSpecCode = code + 1
+    upgradeToSpecCode = this.code + 1
 
   let cost = ::Cost()
-  for(local specCode = code; specCode < upgradeToSpecCode; specCode++)
+  for(local specCode = this.code; specCode < upgradeToSpecCode; specCode++)
   {
     cost.wp += ::wp_get_specialization_cost(specCode, unit.name, crew.id, -1)
     cost.gold += ::wp_get_specialization_cost_gold(specCode, unit.name, crew.id, -1)
@@ -28,75 +34,75 @@ g_crew_spec_type._getUpgradeCostByCrewAndByUnit <- function _getUpgradeCostByCre
   return cost
 }
 
-g_crew_spec_type._getUpgradeCostByUnitAndExp <- function _getUpgradeCostByUnitAndExp(unit, exp)
+::g_crew_spec_type._getUpgradeCostByUnitAndExp <- function _getUpgradeCostByUnitAndExp(unit, exp)
 {
-  return ::Cost(::wp_get_specialization_cost(code, unit.name, 0, exp),
-                ::wp_get_specialization_cost_gold(code, unit.name, 0, exp))
+  return ::Cost(::wp_get_specialization_cost(this.code, unit.name, 0, exp),
+                ::wp_get_specialization_cost_gold(this.code, unit.name, 0, exp))
 }
 
-g_crew_spec_type._getName <- function _getName()
+::g_crew_spec_type._getName <- function _getName()
 {
-  return ::loc(getNameLocId(), "")
+  return loc(this.getNameLocId(), "")
 }
 
-g_crew_spec_type._hasNextType <- function _hasNextType()
+::g_crew_spec_type._hasNextType <- function _hasNextType()
 {
-  return getNextType() != ::g_crew_spec_type.UNKNOWN
+  return this.getNextType() != ::g_crew_spec_type.UNKNOWN
 }
 
-g_crew_spec_type._getButtonLabel <- function _getButtonLabel()
+::g_crew_spec_type._getButtonLabel <- function _getButtonLabel()
 {
-  return ::loc("crew/qualifyIncrease" + code, "")
+  return loc("crew/qualifyIncrease" + this.code, "")
 }
 
-g_crew_spec_type._getDiscountTooltipByValue <- function _getDiscountTooltipByValue(discountValue)
+::g_crew_spec_type._getDiscountTooltipByValue <- function _getDiscountTooltipByValue(discountValue)
 {
   if (!::u.isString(discountValue))
     discountValue = discountValue.tostring()
-  let locId = format("discount/%s/tooltip", specName)
-  return format(::loc(locId), discountValue)
+  let locId = format("discount/%s/tooltip", this.specName)
+  return format(loc(locId), discountValue)
 }
 
-g_crew_spec_type._getNameLocId <- function _getNameLocId()
+::g_crew_spec_type._getNameLocId <- function _getNameLocId()
 {
-  return format("crew/qualification/%d", code)
+  return format("crew/qualification/%d", this.code)
 }
 
-g_crew_spec_type._getDiscountValueByUnitNames <- function _getDiscountValueByUnitNames(unitNames)
+::g_crew_spec_type._getDiscountValueByUnitNames <- function _getDiscountValueByUnitNames(unitNames)
 {
   let priceBlk = ::get_price_blk()
-  return ::getDiscountByPath(["aircrafts", unitNames, "specialization", specName], priceBlk)
+  return ::getDiscountByPath(["aircrafts", unitNames, "specialization", this.specName], priceBlk)
 }
 
-g_crew_spec_type._getPrevType <- function _getPrevType()
+::g_crew_spec_type._getPrevType <- function _getPrevType()
 {
   foreach (t in ::g_crew_spec_type.types)
-    if (t.nextCode == code)
+    if (t.nextCode == this.code)
       return t
   return ::g_crew_spec_type.UNKNOWN
 }
 
-g_crew_spec_type._hasPrevType <- function _hasPrevType()
+::g_crew_spec_type._hasPrevType <- function _hasPrevType()
 {
-  return getPrevType() != ::g_crew_spec_type.UNKNOWN
+  return this.getPrevType() != ::g_crew_spec_type.UNKNOWN
 }
 
-g_crew_spec_type._getMulValue <- function _getMulValue(prevSpecTypeCode = 0)
+::g_crew_spec_type._getMulValue <- function _getMulValue(prevSpecTypeCode = 0)
 {
   let skillsBlk = ::get_skills_blk()
   local addPct = 0.0
-  for(local specCode = code; specCode > prevSpecTypeCode; specCode--)
+  for(local specCode = this.code; specCode > prevSpecTypeCode; specCode--)
     addPct += skillsBlk?[format("specialization%d_add", specCode + 1)] ?? 0
   return 0.01 * addPct
 }
 
-g_crew_spec_type._getFullBonusesText <- function _getFullBonusesText(crewUnitType, prevSpecTypeCode = -1)
+::g_crew_spec_type._getFullBonusesText <- function _getFullBonusesText(crewUnitType, prevSpecTypeCode = -1)
 {
   ::load_crew_skills_once()
 
   if (prevSpecTypeCode < 0)
-    prevSpecTypeCode = code - 1
-  let specMul = getMulValue(prevSpecTypeCode)
+    prevSpecTypeCode = this.code - 1
+  let specMul = this.getMulValue(prevSpecTypeCode)
   let rowsArray = []
   foreach(page in ::crew_skills)
   {
@@ -108,40 +114,40 @@ g_crew_spec_type._getFullBonusesText <- function _getFullBonusesText(crewUnitTyp
       if (item.isVisible(crewUnitType) && item.useSpecializations)
       {
         let skillCrewLevel = ::g_crew.getSkillCrewLevel(item, specMul * ::g_crew.getMaxSkillValue(item))
-        let skillText = ::loc("crew/" + item.name) + " "
-                          + ::colorize("goodTextColor", "+" + skillCrewLevel)
+        let skillText = loc("crew/" + item.name) + " "
+                          + colorize("goodTextColor", "+" + skillCrewLevel)
         textsArray.append(::stringReplace(skillText, " ", ::nbsp))
       }
 
     if (!textsArray.len())
       continue
 
-    rowsArray.append(::colorize("activeTextColor", ::loc("crew/" + page.id))
-                     + ::loc("ui/colon") + ::g_string.implode(textsArray, ", ") + ::loc("ui/dot"))
+    rowsArray.append(colorize("activeTextColor", loc("crew/" + page.id))
+                     + loc("ui/colon") + ::g_string.implode(textsArray, ", ") + loc("ui/dot"))
   }
   return ::g_string.implode(rowsArray, "\n")
 }
 
-g_crew_spec_type._getReqCrewLevelByCode <- function _getReqCrewLevelByCode(unit, upgradeFromCode)
+::g_crew_spec_type._getReqCrewLevelByCode <- function _getReqCrewLevelByCode(unit, upgradeFromCode)
 {
   ::load_crew_skills_once()
-  let crewUnitType = unit?.getCrewUnitType?() ?? ::CUT_INVALID
+  let crewUnitType = unit?.getCrewUnitType?() ?? CUT_INVALID
   let reqTbl = ::crew_air_train_req?[crewUnitType]
-  let ranksTbl = ::getTblValue(upgradeFromCode, reqTbl)
-  return ::getTblValue(unit.rank, ranksTbl, 0)
+  let ranksTbl = getTblValue(upgradeFromCode, reqTbl)
+  return getTblValue(unit.rank, ranksTbl, 0)
 }
 
-g_crew_spec_type._getReqCrewLevel <- function _getReqCrewLevel(unit)
+::g_crew_spec_type._getReqCrewLevel <- function _getReqCrewLevel(unit)
 {
-  return _getReqCrewLevelByCode(unit, code - 1)
+  return this._getReqCrewLevelByCode(unit, this.code - 1)
 }
 
-g_crew_spec_type._getUpgradeReqCrewLevel <- function _getUpgradeReqCrewLevel(unit)
+::g_crew_spec_type._getUpgradeReqCrewLevel <- function _getUpgradeReqCrewLevel(unit)
 {
-  return _getReqCrewLevelByCode(unit, code)
+  return this._getReqCrewLevelByCode(unit, this.code)
 }
 
-g_crew_spec_type._getNextMaxAvailableType <- function _getNextMaxAvailableType(unit, crewLevel)
+::g_crew_spec_type._getNextMaxAvailableType <- function _getNextMaxAvailableType(unit, crewLevel)
 {
   local resType = this
   local nextType = resType.getNextType()
@@ -156,80 +162,80 @@ g_crew_spec_type._getNextMaxAvailableType <- function _getNextMaxAvailableType(u
   return resType
 }
 
-g_crew_spec_type._getIcon <- function _getIcon(crewTypeCode, crewLevel, unit)
+::g_crew_spec_type._getIcon <- function _getIcon(crewTypeCode, crewLevel, unit)
 {
-  if (crewTypeCode >= code)
-    return icon
+  if (crewTypeCode >= this.code)
+    return this.icon
 
-  if (unit && getReqCrewLevel(unit) <= crewLevel && crewTypeCode != -1)
-    return iconCanBuy
-  return iconInactive
+  if (unit && this.getReqCrewLevel(unit) <= crewLevel && crewTypeCode != -1)
+    return this.iconCanBuy
+  return this.iconInactive
 }
 
-g_crew_spec_type._isExpUpgradableByUnit <- function _isExpUpgradableByUnit(unit)
+::g_crew_spec_type._isExpUpgradableByUnit <- function _isExpUpgradableByUnit(_unit)
 {
   return false
 }
 
 
-g_crew_spec_type._getExpLeftByCrewAndUnit <- function _getExpLeftByCrewAndUnit(crew, unit)
+::g_crew_spec_type._getExpLeftByCrewAndUnit <- function _getExpLeftByCrewAndUnit(_crew, _unit)
 {
   return -1
 }
 
-g_crew_spec_type._getTotalExpByUnit <- function _getTotalExpByUnit(unit)
+::g_crew_spec_type._getTotalExpByUnit <- function _getTotalExpByUnit(_unit)
 {
   return -1
 }
 
-g_crew_spec_type._getExpUpgradeDiscountData <- function _getExpUpgradeDiscountData()
+::g_crew_spec_type._getExpUpgradeDiscountData <- function _getExpUpgradeDiscountData()
 {
   return []
 }
 
-g_crew_spec_type._needShowExpUpgrade <- function _needShowExpUpgrade(crew, unit)
+::g_crew_spec_type._needShowExpUpgrade <- function _needShowExpUpgrade(_crew, unit)
 {
-  return isExpUpgradableByUnit(unit)
+  return this.isExpUpgradableByUnit(unit)
 }
 
 //return empty string when level is enough
-g_crew_spec_type._getReqLevelText <- function _getReqLevelText(crew, unit)
+::g_crew_spec_type._getReqLevelText <- function _getReqLevelText(crew, unit)
 {
   let res = []
-  let reqLevel = getReqCrewLevel(unit)
-  let crewLevel = ::g_crew.getCrewLevel(crew, unit, unit?.getCrewUnitType?() ?? ::CUT_INVALID)
+  let reqLevel = this.getReqCrewLevel(unit)
+  let crewLevel = ::g_crew.getCrewLevel(crew, unit, unit?.getCrewUnitType?() ?? CUT_INVALID)
   let locParams = {
-    wantedQualify = ::colorize("activeTextColor", getName())
-    unitName = ::colorize("activeTextColor", ::getUnitName(unit))
+    wantedQualify = colorize("activeTextColor", this.getName())
+    unitName = colorize("activeTextColor", ::getUnitName(unit))
   }
   let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
   let needToTrainUnit = curSpecType == ::g_crew_spec_type.UNKNOWN
   if (needToTrainUnit)
-    res.append(::colorize("badTextColor", ::loc("crew/qualifyRequirement/toTrainUnit", locParams)))
+    res.append(colorize("badTextColor", loc("crew/qualifyRequirement/toTrainUnit", locParams)))
 
   if (reqLevel > crewLevel && reqLevel > 1)
   {
     let reqLevelLocId = needToTrainUnit ? "crew/qualifyRequirement" : "crew/qualifyRequirement/full"
-    res.append(::colorize("badTextColor", ::loc(reqLevelLocId, locParams.__merge({
-      reqLevel = ::colorize("activeTextColor", reqLevel)
+    res.append(colorize("badTextColor", loc(reqLevelLocId, locParams.__merge({
+      reqLevel = colorize("activeTextColor", reqLevel)
     }))))
   }
 
   return "\n".join(res, true)
 }
 
-g_crew_spec_type._getBaseTooltipText <- function _getBaseTooltipText(crew, unit)
+::g_crew_spec_type._getBaseTooltipText <- function _getBaseTooltipText(crew, unit)
 {
-  local tooltipText = ::loc("crew/qualification/tooltip")
-  let isShowExpUpgrade = needShowExpUpgrade(crew, unit)
-  if (hasNextType())
+  local tooltipText = loc("crew/qualification/tooltip")
+  let isShowExpUpgrade = this.needShowExpUpgrade(crew, unit)
+  if (this.hasNextType())
   {
-    let nextType = getNextType()
+    let nextType = this.getNextType()
     let nextSpecName = nextType.getName()
     tooltipText += format(
       "\n\n%s: %s",
-      ::loc("crew/qualification/nextSpec"),
-      ::colorize("activeTextColor", nextSpecName))
+      loc("crew/qualification/nextSpec"),
+      colorize("activeTextColor", nextSpecName))
 
 
     let reqLevelText = nextType.getReqLevelText(crew, unit)
@@ -238,14 +244,14 @@ g_crew_spec_type._getBaseTooltipText <- function _getBaseTooltipText(crew, unit)
     else
     {
       let specDescriptionPart = isShowExpUpgrade ?
-        ::loc("crew/qualification/specDescriptionPart", {
-          expAmount = ::Cost().setRp(getTotalExpByUnit(unit)).tostring()
+        loc("crew/qualification/specDescriptionPart", {
+          expAmount = ::Cost().setRp(this.getTotalExpByUnit(unit)).tostring()
         })
         : ""
-      let specDescription = ::loc(
+      let specDescription = loc(
         "crew/qualification/specDescriptionMain", {
-          specName = ::colorize("activeTextColor", nextSpecName)
-          trainCost = getUpgradeCostByCrewAndByUnit(crew, unit).tostring()
+          specName = colorize("activeTextColor", nextSpecName)
+          trainCost = this.getUpgradeCostByCrewAndByUnit(crew, unit).tostring()
           descPart = specDescriptionPart
         })
       tooltipText += "\n" + specDescription
@@ -255,28 +261,28 @@ g_crew_spec_type._getBaseTooltipText <- function _getBaseTooltipText(crew, unit)
   {
     tooltipText += format(
       "\n%s: %s / %s",
-      ::loc("crew/qualification/expUpgradeLabel"),
-      ::Cost().setRp(getExpLeftByCrewAndUnit(crew, unit)).toStringWithParams({isRpAlwaysShown = true}),
-      ::Cost().setRp(getTotalExpByUnit(unit)).tostring())
+      loc("crew/qualification/expUpgradeLabel"),
+      ::Cost().setRp(this.getExpLeftByCrewAndUnit(crew, unit)).toStringWithParams({isRpAlwaysShown = true}),
+      ::Cost().setRp(this.getTotalExpByUnit(unit)).tostring())
   }
   return tooltipText
 }
 
-g_crew_spec_type._getTooltipContent <- function _getTooltipContent(crew, unit)
+::g_crew_spec_type._getTooltipContent <- function _getTooltipContent(crew, unit)
 {
-  let progressBarValue = 1000 * getExpLeftByCrewAndUnit(crew, unit)
-    / getTotalExpByUnit(unit)
+  let progressBarValue = 1000 * this.getExpLeftByCrewAndUnit(crew, unit)
+    / this.getTotalExpByUnit(unit)
   let view = {
-    tooltipText = getBaseTooltipText(crew, unit)
-    hasExpUpgrade = needShowExpUpgrade(crew, unit)
+    tooltipText = this.getBaseTooltipText(crew, unit)
+    hasExpUpgrade = this.needShowExpUpgrade(crew, unit)
     markers = []
     progressBarValue = progressBarValue.tointeger()
   }
 
   // Discount markers.
   local expUpgradeText = ""
-  let totalExp = getTotalExpByUnit(unit)
-  foreach (i, dataItem in getExpUpgradeDiscountData())
+  let totalExp = this.getTotalExpByUnit(unit)
+  foreach (i, dataItem in this.getExpUpgradeDiscountData())
   {
     let romanNumeral = ::get_roman_numeral(i + 1)
     let markerView = {
@@ -288,13 +294,13 @@ g_crew_spec_type._getTooltipContent <- function _getTooltipContent(crew, unit)
     if (expUpgradeText.len() > 0)
       expUpgradeText += "\n"
     let expAmount = (dataItem.percent * totalExp / 100).tointeger()
-    let trainCost = getUpgradeCostByUnitAndExp(unit, expAmount)
+    let trainCost = this.getUpgradeCostByUnitAndExp(unit, expAmount)
     let locParams = {
       romanNumeral = romanNumeral
       trainCost = trainCost.tostring()
       expAmount = ::Cost().setRp(expAmount).toStringWithParams({isRpAlwaysShown = true})
     }
-    expUpgradeText += ::loc("crew/qualification/expUpgradeMarkerCaption", locParams)
+    expUpgradeText += loc("crew/qualification/expUpgradeMarkerCaption", locParams)
   }
 
   // Marker at 100% progress.
@@ -307,55 +313,55 @@ g_crew_spec_type._getTooltipContent <- function _getTooltipContent(crew, unit)
     expUpgradeText += "\n"
   let locParams = {
     romanNumeral = romanNumeral
-    specName = ::colorize("activeTextColor", getNextType().getName())
-    expAmount = ::Cost().setRp(getTotalExpByUnit(unit)).toStringWithParams({isRpAlwaysShown = true})
+    specName = colorize("activeTextColor", this.getNextType().getName())
+    expAmount = ::Cost().setRp(this.getTotalExpByUnit(unit)).toStringWithParams({isRpAlwaysShown = true})
   }
-  expUpgradeText += ::loc("crew/qualification/expUpgradeFullUpgrade", locParams)
+  expUpgradeText += loc("crew/qualification/expUpgradeFullUpgrade", locParams)
 
   view.expUpgradeText <- expUpgradeText
 
-  return ::handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip", view)
+  return ::handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
 }
 
-g_crew_spec_type._getBtnBuyTooltipId <- function _getBtnBuyTooltipId(crew, unit)
+::g_crew_spec_type._getBtnBuyTooltipId <- function _getBtnBuyTooltipId(crew, unit)
 {
-  return ::g_tooltip.getIdBuyCrewSpec(crew.id, unit.name, code)
+  return ::g_tooltip.getIdBuyCrewSpec(crew.id, unit.name, this.code)
 }
 
-g_crew_spec_type._getBtnBuyTooltipContent <- function _getBtnBuyTooltipContent(crew, unit)
+::g_crew_spec_type._getBtnBuyTooltipContent <- function _getBtnBuyTooltipContent(crew, unit)
 {
   let view = {
     tooltipText = ""
     tinyTooltipText = ""
   }
 
-  if (isCrewTrained(crew, unit) || !hasPrevType())
+  if (this.isCrewTrained(crew, unit) || !this.hasPrevType())
   {
-    view.tooltipText = ::loc("crew/trained") + ::loc("ui/colon")
-                     + ::colorize("activeTextColor", getName())
+    view.tooltipText = loc("crew/trained") + loc("ui/colon")
+                     + colorize("activeTextColor", this.getName())
   } else
   {
     let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
-    view.tooltipText = getReqLevelText(crew, unit)
+    view.tooltipText = this.getReqLevelText(crew, unit)
     if (!view.tooltipText.len())
-      view.tooltipText = ::loc("crew/qualification/buy",
+      view.tooltipText = loc("crew/qualification/buy",
                            {
-                             qualify = ::colorize("activeTextColor", getName())
-                             unitName = ::colorize("activeTextColor", ::getUnitName(unit))
-                             cost = ::colorize("activeTextColor",
-                                               curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, code).tostring())
+                             qualify = colorize("activeTextColor", this.getName())
+                             unitName = colorize("activeTextColor", ::getUnitName(unit))
+                             cost = colorize("activeTextColor",
+                                               curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, this.code).tostring())
                            })
 
-    view.tinyTooltipText = ::loc("shop/crewQualifyBonuses",
+    view.tinyTooltipText = loc("shop/crewQualifyBonuses",
                              {
-                               qualification = ::colorize("userlogColoredText", getName())
-                               bonuses = getFullBonusesText(unit?.getCrewUnitType?() ?? ::CUT_INVALID,
+                               qualification = colorize("userlogColoredText", this.getName())
+                               bonuses = this.getFullBonusesText(unit?.getCrewUnitType?() ?? CUT_INVALID,
                                  curSpecType.code == -1 ? 0 : curSpecType.code) //show bonuses relatively basic spec for not trained unit
                              })
   }
-  view.tooltipText += "\n\n" + ::loc("crew/qualification/tooltip")
+  view.tooltipText += "\n\n" + loc("crew/qualification/tooltip")
 
-  return ::handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip", view)
+  return ::handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
 }
 
 ::g_crew_spec_type.template <- {
@@ -448,27 +454,27 @@ enums.addTypesByGlobalName("g_crew_spec_type", {
 
     isExpUpgradableByUnit = function (unit)
     {
-      if (expUpgradableFeature && !::has_feature(expUpgradableFeature))
+      if (this.expUpgradableFeature && !hasFeature(this.expUpgradableFeature))
         return false
-      return getTotalExpByUnit(unit) > 0
+      return this.getTotalExpByUnit(unit) > 0
     }
 
     getExpLeftByCrewAndUnit = function (crew, unit)
     {
-      let crewId = ::getTblValue("id", crew)
-      let unitName = ::getTblValue("name", unit)
+      let crewId = getTblValue("id", crew)
+      let unitName = getTblValue("name", unit)
       return ::expert_to_ace_get_unit_exp(crewId, unitName)
     }
 
     getTotalExpByUnit = function (unit)
     {
-      return ::getTblValue("train3Cost_exp", unit) || -1
+      return getTblValue("train3Cost_exp", unit) || -1
     }
 
     getExpUpgradeDiscountData = function ()
     {
       let discountData = []
-      if (expUpgradableFeature && !::has_feature(expUpgradableFeature))
+      if (this.expUpgradableFeature && !hasFeature(this.expUpgradableFeature))
         return discountData
 
       let warpointsBlk = ::get_warpoints_blk()
@@ -482,8 +488,8 @@ enums.addTypesByGlobalName("g_crew_spec_type", {
       foreach (stageBlk in reduceBlk % "stage")
         discountData.append(::buildTableFromBlk(stageBlk))
       discountData.sort(function (a, b) {
-        let percentA = ::getTblValue("percent", a, 0)
-        let percentB = ::getTblValue("percent", b, 0)
+        let percentA = getTblValue("percent", a, 0)
+        let percentB = getTblValue("percent", b, 0)
         if (percentA != percentB)
           return percentA > percentB ? 1 : -1
         return 0
@@ -506,34 +512,34 @@ enums.addTypesByGlobalName("g_crew_spec_type", {
   return a.code < b.code ? -1 : (a.code > b.code ? 1 : 0)
 })
 
-g_crew_spec_type.getTypeByCode <- function getTypeByCode(code)
+::g_crew_spec_type.getTypeByCode <- function getTypeByCode(code)
 {
   return enums.getCachedType("code", code, ::g_crew_spec_type_cache.byCode,
     ::g_crew_spec_type, ::g_crew_spec_type.UNKNOWN)
 }
 
-g_crew_spec_type.getTrainedSpecCode <- function getTrainedSpecCode(crew, unit)
+::g_crew_spec_type.getTrainedSpecCode <- function getTrainedSpecCode(crew, unit)
 {
   if (!unit)
     return -1
 
-  return getTrainedSpecCodeByUnitName(crew, unit.name)
+  return this.getTrainedSpecCodeByUnitName(crew, unit.name)
 }
 
-g_crew_spec_type.getTrainedSpecCodeByUnitName <- function getTrainedSpecCodeByUnitName(crew, unitName)
+::g_crew_spec_type.getTrainedSpecCodeByUnitName <- function getTrainedSpecCodeByUnitName(crew, unitName)
 {
   return crew?.trainedSpec?[unitName] ?? -1
 }
 
-g_crew_spec_type.getTypeByCrewAndUnit <- function getTypeByCrewAndUnit(crew, unit)
+::g_crew_spec_type.getTypeByCrewAndUnit <- function getTypeByCrewAndUnit(crew, unit)
 {
-  let code = getTrainedSpecCode(crew, unit)
+  let code = this.getTrainedSpecCode(crew, unit)
   return ::g_crew_spec_type.getTypeByCode(code)
 }
 
-g_crew_spec_type.getTypeByCrewAndUnitName <- function getTypeByCrewAndUnitName(crew, unitName)
+::g_crew_spec_type.getTypeByCrewAndUnitName <- function getTypeByCrewAndUnitName(crew, unitName)
 {
-  let code = getTrainedSpecCodeByUnitName(crew, unitName)
+  let code = this.getTrainedSpecCodeByUnitName(crew, unitName)
   return ::g_crew_spec_type.getTypeByCode(code)
 }
 

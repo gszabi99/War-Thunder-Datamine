@@ -1,6 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let stdMath = require("%sqstd/math.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 
 /*
   config = {
@@ -43,56 +52,56 @@ let stdMath = require("%sqstd/math.nut")
 
   function initScreen()
   {
-    if (!config || !("options" in config))
-      return goBack()
+    if (!this.config || !("options" in this.config))
+      return this.goBack()
 
-    options = []
-    let configValue = ("value" in config)? config.value : -1
-    foreach(idx, option in config.options)
+    this.options = []
+    let configValue = ("value" in this.config)? this.config.value : -1
+    foreach(idx, option in this.config.options)
     {
-      let isVisible = ::getTblValue("show", option, true)
+      let isVisible = getTblValue("show", option, true)
       if (!isVisible)
         continue
 
-      if (value < 0 || idx == configValue)
-        value = options.len()
-      options.append(option)
+      if (this.value < 0 || idx == configValue)
+        this.value = this.options.len()
+      this.options.append(option)
     }
 
-    initItemsPerPage()
+    this.initItemsPerPage()
 
-    currentPage = max(0, (value / itemsPerPage).tointeger())
+    this.currentPage = max(0, (this.value / this.itemsPerPage).tointeger())
 
-    contentObj = scene.findObject("images_list")
-    fillPage()
-    ::move_mouse_on_child(contentObj, 0)
+    this.contentObj = this.scene.findObject("images_list")
+    this.fillPage()
+    ::move_mouse_on_child(this.contentObj, 0)
 
     this.showSceneBtn("btn_select", ::show_console_buttons)
   }
 
   function initItemsPerPage()
   {
-    guiScene.applyPendingChanges(false)
-    let listObj = scene.findObject("images_list")
-    let cfg = ::g_dagui_utils.countSizeInItems(listObj, imageButtonSize, imageButtonSize, imageButtonInterval, imageButtonInterval)
+    this.guiScene.applyPendingChanges(false)
+    let listObj = this.scene.findObject("images_list")
+    let cfg = ::g_dagui_utils.countSizeInItems(listObj, this.imageButtonSize, this.imageButtonSize, this.imageButtonInterval, this.imageButtonInterval)
 
     //update size for single page
-    if (cfg.itemsCountX * cfg.itemsCountY > options.len())
+    if (cfg.itemsCountX * cfg.itemsCountY > this.options.len())
     {
-      let total = max(options.len(), minAmountButtons)
+      let total = max(this.options.len(), this.minAmountButtons)
       local columns = min(stdMath.calc_golden_ratio_columns(total), cfg.itemsCountX)
-      local rows = ::ceil(total.tofloat() / columns).tointeger()
+      local rows = ceil(total.tofloat() / columns).tointeger()
       if (rows > cfg.itemsCountY)
       {
         rows = cfg.itemsCountY
-        columns = ::ceil(total.tofloat() / rows).tointeger()
+        columns = ceil(total.tofloat() / rows).tointeger()
       }
       cfg.itemsCountX = columns
       cfg.itemsCountY = rows
     }
 
-    ::g_dagui_utils.adjustWindowSizeByConfig(scene.findObject("wnd_frame"), listObj, cfg)
-    itemsPerPage = cfg.itemsCountX * cfg.itemsCountY
+    ::g_dagui_utils.adjustWindowSizeByConfig(this.scene.findObject("wnd_frame"), listObj, cfg)
+    this.itemsPerPage = cfg.itemsCountX * cfg.itemsCountY
   }
 
   function fillPage()
@@ -101,47 +110,47 @@ let stdMath = require("%sqstd/math.nut")
       avatars = []
     }
 
-    let haveCustomTooltip = getTooltipObjFunc() != null
-    let start = currentPage * itemsPerPage
-    let end = min((currentPage + 1) * itemsPerPage, options.len()) - 1
-    let selIdx = valueInited ? min(contentObj.getValue(), end - start)
-      : clamp(value - start, 0, end - start)
+    let haveCustomTooltip = this.getTooltipObjFunc() != null
+    let start = this.currentPage * this.itemsPerPage
+    let end = min((this.currentPage + 1) * this.itemsPerPage, this.options.len()) - 1
+    let selIdx = this.valueInited ? min(this.contentObj.getValue(), end - start)
+      : clamp(this.value - start, 0, end - start)
     for (local i = start; i <= end; i++)
     {
-      let item = options[i]
+      let item = this.options[i]
       let avatar = {
         id          = i
         avatarImage = item?.image
         enabled     = item?.enabled
         haveCustomTooltip = haveCustomTooltip
-        tooltipId   = haveCustomTooltip ? null : ::getTblValue("tooltipId", item)
+        tooltipId   = haveCustomTooltip ? null : getTblValue("tooltipId", item)
         unseenIcon = item?.seenListId && bhvUnseen.makeConfigStr(item?.seenListId, item?.seenEntity)
         hasGjnIcon = item?.marketplaceItemdefId != null && !item?.enabled
       }
       view.avatars.append(avatar)
     }
 
-    isPageFill = true
-    let blk = ::handyman.renderCached("%gui/avatars", view)
-    guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
-    updatePaginator()
+    this.isPageFill = true
+    let blk = ::handyman.renderCached("%gui/avatars.tpl", view)
+    this.guiScene.replaceContentFromText(this.contentObj, blk, blk.len(), this)
+    this.updatePaginator()
 
-    contentObj.setValue(selIdx)
-    valueInited = true
-    isPageFill = false
+    this.contentObj.setValue(selIdx)
+    this.valueInited = true
+    this.isPageFill = false
 
-    updateButtons()
+    this.updateButtons()
   }
 
   function updatePaginator()
   {
-    let paginatorObj = scene.findObject("paginator_place")
-    ::generatePaginator(paginatorObj, this, currentPage, (options.len() - 1) / itemsPerPage)
+    let paginatorObj = this.scene.findObject("paginator_place")
+    ::generatePaginator(paginatorObj, this, this.currentPage, (this.options.len() - 1) / this.itemsPerPage)
 
-    let prevUnseen = currentPage ? getSeenConfig(0, currentPage * itemsPerPage - 1) : null
-    let nextFirstIdx = (currentPage + 1) * itemsPerPage
-    let nextUnseen = nextFirstIdx >= options.len() ? null
-      : getSeenConfig(nextFirstIdx, options.len() - 1)
+    let prevUnseen = this.currentPage ? this.getSeenConfig(0, this.currentPage * this.itemsPerPage - 1) : null
+    let nextFirstIdx = (this.currentPage + 1) * this.itemsPerPage
+    let nextUnseen = nextFirstIdx >= this.options.len() ? null
+      : this.getSeenConfig(nextFirstIdx, this.options.len() - 1)
     ::paginator_set_unseen(paginatorObj,
       prevUnseen && bhvUnseen.makeConfigStr(prevUnseen.listId, prevUnseen.entities),
       nextUnseen && bhvUnseen.makeConfigStr(nextUnseen.listId, nextUnseen.entities))
@@ -149,35 +158,35 @@ let stdMath = require("%sqstd/math.nut")
 
   function goToPage(obj)
   {
-    markCurPageSeen()
-    currentPage = obj.to_page.tointeger()
-    fillPage()
+    this.markCurPageSeen()
+    this.currentPage = obj.to_page.tointeger()
+    this.fillPage()
   }
 
   function chooseImage(idx)
   {
-    choosenValue = idx
-    goBack()
+    this.choosenValue = idx
+    this.goBack()
   }
 
-  function onImageChoose(obj)
+  function onImageChoose(_obj)
   {
-    let selIdx = getSelIconIdx()
+    let selIdx = this.getSelIconIdx()
 
-    if (!(options?[selIdx].enabled ?? false))
+    if (!(this.options?[selIdx].enabled ?? false))
       return
 
-    chooseImage(selIdx)
+    this.chooseImage(selIdx)
   }
 
   function onImageSelect()
   {
-    if (isPageFill)
+    if (this.isPageFill)
       return
 
-    updateButtons()
+    this.updateButtons()
 
-    let item = options?[getSelIconIdx()]
+    let item = this.options?[this.getSelIconIdx()]
 
     if (item?.seenListId)
       seenList.get(item.seenListId).markSeen(item?.seenEntity)
@@ -185,45 +194,45 @@ let stdMath = require("%sqstd/math.nut")
 
   function onDblClick()
   {
-    let selIdx = getSelIconIdx()
-    let option = options?[selIdx]
+    let selIdx = this.getSelIconIdx()
+    let option = this.options?[selIdx]
 
     if (!option)
       return
 
     if (option.enabled)
     {
-      chooseImage(selIdx)
+      this.chooseImage(selIdx)
       return
     }
 
     if (option?.marketplaceItemdefId) {
       let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
       if (inventoryItem != null)
-        inventoryItem.consume(::Callback(function(result) {
+        inventoryItem.consume(Callback(function(result) {
           if (result?.success ?? false)
-            chooseImage(selIdx)
+            this.chooseImage(selIdx)
         }, this), null)
       else {
         let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
         if (item)
-          goToMarketplace(item)
+          this.goToMarketplace(item)
       }
       return
     }
 
-    ::g_unlocks.toggleFav(option.unlockId)
-    updateButtons()
+    toggleUnlockFav(option.unlockId)
+    this.updateButtons()
   }
 
   function onToggleFav() {
-    let idx = getSelIconIdx()
+    let idx = this.getSelIconIdx()
     if (idx == -1)
       return
 
-    let option = options[idx]
-    ::g_unlocks.toggleFav(option.unlockId)
-    updateButtons()
+    let option = this.options[idx]
+    toggleUnlockFav(option.unlockId)
+    this.updateButtons()
   }
 
   function goToMarketplace(item)
@@ -234,16 +243,16 @@ let stdMath = require("%sqstd/math.nut")
 
   function onAction()
   {
-    let selIdx = getSelIconIdx()
+    let selIdx = this.getSelIconIdx()
 
     if (selIdx < 0)
       return
 
-    let option = options?[selIdx]
+    let option = this.options?[selIdx]
 
     if ((option?.enabled ?? false) || option?.marketplaceItemdefId == null)
     {
-      chooseImage(selIdx)
+      this.chooseImage(selIdx)
       return
     }
 
@@ -251,9 +260,9 @@ let stdMath = require("%sqstd/math.nut")
 
     if (inventoryItem != null)
     {
-      inventoryItem.consume(::Callback(function(result) {
+      inventoryItem.consume(Callback(function(result) {
         if (result?.success ?? false)
-          chooseImage(selIdx)
+          this.chooseImage(selIdx)
       }, this), null)
     }
     else
@@ -261,66 +270,66 @@ let stdMath = require("%sqstd/math.nut")
       let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
 
       if (item)
-        goToMarketplace(item)
+        this.goToMarketplace(item)
     }
   }
 
   function getSelIconIdx()
   {
-    if (!::checkObj(contentObj))
+    if (!checkObj(this.contentObj))
       return -1
-    return contentObj.getValue() + currentPage * itemsPerPage
+    return this.contentObj.getValue() + this.currentPage * this.itemsPerPage
   }
 
   function updateButtons()
   {
-    let option = ::getTblValue(getSelIconIdx(), options)
+    let option = getTblValue(this.getSelIconIdx(), this.options)
     let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
     let btn = this.showSceneBtn("btn_select", isVisible)
 
     let isFavBtnVisible = !isVisible
     let favBtnObj = this.showSceneBtn("btn_fav", isFavBtnVisible)
     if (isFavBtnVisible) {
-      favBtnObj.setValue(::g_unlocks.isUnlockFav(option.unlockId)
-        ? ::loc("preloaderSettings/untrackProgress")
-        : ::loc("preloaderSettings/trackProgress"))
+      favBtnObj.setValue(isUnlockFav(option.unlockId)
+        ? loc("preloaderSettings/untrackProgress")
+        : loc("preloaderSettings/trackProgress"))
       return
     }
 
     if (option?.enabled)
     {
-      btn.setValue(::loc("mainmenu/btnSelect"))
+      btn.setValue(loc("mainmenu/btnSelect"))
       return
     }
 
     let item = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
 
     if (item != null)
-      btn.setValue(::loc("item/consume/coupon"))
+      btn.setValue(loc("item/consume/coupon"))
     else
-      btn.setValue(::loc("msgbox/btn_find_on_marketplace"))
+      btn.setValue(loc("msgbox/btn_find_on_marketplace"))
   }
 
   function afterModalDestroy()
   {
-    if (!applyFunc || choosenValue==null)
+    if (!this.applyFunc || this.choosenValue==null)
       return
 
-    if (owner)
-      applyFunc.call(owner, options[choosenValue])
+    if (this.owner)
+      this.applyFunc.call(this.owner, this.options[this.choosenValue])
     else
-      applyFunc(options[choosenValue])
+      this.applyFunc(this.options[this.choosenValue])
   }
 
   function getTooltipObjFunc()
   {
-    return ::getTblValue("tooltipObjFunc", config)
+    return getTblValue("tooltipObjFunc", this.config)
   }
 
   function onImageTooltipOpen(obj)
   {
-    let id = getTooltipObjId(obj)
-    let func = getTooltipObjFunc()
+    let id = ::getTooltipObjId(obj)
+    let func = this.getTooltipObjFunc()
     if (!id || !func)
       return
 
@@ -331,7 +340,7 @@ let stdMath = require("%sqstd/math.nut")
 
   function goBack()
   {
-    markCurPageSeen()
+    this.markCurPageSeen()
     base.goBack()
   }
 
@@ -343,7 +352,7 @@ let stdMath = require("%sqstd/math.nut")
     }
     for(local i = end; i >= start; i--)
     {
-      let item = options[i]
+      let item = this.options[i]
       if (!item?.seenListId || !item?.seenEntity)
         continue
 
@@ -355,8 +364,8 @@ let stdMath = require("%sqstd/math.nut")
 
   function markCurPageSeen()
   {
-    let seenConfig = getSeenConfig(currentPage * itemsPerPage,
-      min((currentPage + 1) * itemsPerPage, options.len()) - 1)
+    let seenConfig = this.getSeenConfig(this.currentPage * this.itemsPerPage,
+      min((this.currentPage + 1) * this.itemsPerPage, this.options.len()) - 1)
     if (seenConfig)
       seenList.get(seenConfig.listId).markSeen(seenConfig.entities)
   }

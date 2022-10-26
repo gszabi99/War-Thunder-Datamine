@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
@@ -32,125 +39,125 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
 
   constructor(params)
   {
-    uid = getUidByParams(params)
-    updateParams(params, true)
+    this.uid = this.getUidByParams(params)
+    this.updateParams(params, true)
   }
 
   static function getUidByParams(params) //must be uniq between invites classes
   {
-    return "ERR_" + ::getTblValue("inviterName", params, "")
+    return "ERR_" + getTblValue("inviterName", params, "")
   }
 
   function updateParams(params, initial = false)
   {
-    reloadParams = params
-    receivedTime = ::dagor.getCurTime()
-    inviterName = ::getTblValue("inviterName", params, inviterName)
-    inviterUid = ::getTblValue("inviterUid", params, inviterUid)
+    this.reloadParams = params
+    this.receivedTime = get_time_msec()
+    this.inviterName = getTblValue("inviterName", params, this.inviterName)
+    this.inviterUid = getTblValue("inviterUid", params, this.inviterUid)
 
-    updateCustomParams(params, initial)
+    this.updateCustomParams(params, initial)
 
-    showInvitePopup() //we are show popup on repeat the same invite.
+    this.showInvitePopup() //we are show popup on repeat the same invite.
   }
 
   function afterScriptsReload(inviteBeforeReload)
   {
-    receivedTime = inviteBeforeReload.receivedTime
+    this.receivedTime = inviteBeforeReload.receivedTime
   }
 
-  function updateCustomParams(params, initial = false) {}
+  function updateCustomParams(_params, _initial = false) {}
 
   function isValid()
   {
-    return !isAutoAccepted
+    return !this.isAutoAccepted
   }
 
   function isOutdated()
   {
-    if ( !isValid() )
+    if ( !this.isValid() )
       return true
-    if ( receivedTime + lifeTimeMsec < ::dagor.getCurTime() )
+    if ( this.receivedTime + this.lifeTimeMsec < get_time_msec() )
       return true
-    if ( timedExpireStamp > 0 && timedExpireStamp <= ::get_charserver_time_sec() )
+    if ( this.timedExpireStamp > 0 && this.timedExpireStamp <= ::get_charserver_time_sec() )
       return true
     return false
   }
 
   function getInviterName()
   {
-    return platformModule.getPlayerName(inviterName)
+    return platformModule.getPlayerName(this.inviterName)
   }
 
   function isVisible()
   {
-    return !isOutdated()
-           && !isDelayed
-           && !isAutoAccepted
-           && !isRejected
-           && !::isUserBlockedByPrivateSetting(inviterUid, inviterName)
+    return !this.isOutdated()
+           && !this.isDelayed
+           && !this.isAutoAccepted
+           && !this.isRejected
+           && !::isUserBlockedByPrivateSetting(this.inviterUid, this.inviterName)
   }
 
   function setDelayed(newIsDelayed)
   {
-    if (isDelayed == newIsDelayed)
+    if (this.isDelayed == newIsDelayed)
       return
 
-    isDelayed = newIsDelayed
-    if (isDelayed)
+    this.isDelayed = newIsDelayed
+    if (this.isDelayed)
       return
 
     ::g_invites.broadcastInviteReceived(this)
-    showInvitePopup()
+    this.showInvitePopup()
   }
 
   function updateDelayedState( now )
   {
-    if ( timedShowStamp > 0 && timedShowStamp <= now )
+    if ( this.timedShowStamp > 0 && this.timedShowStamp <= now )
     {
-      timedShowStamp = -1
-      setDelayed(false)
+      this.timedShowStamp = -1
+      this.setDelayed(false)
     }
   }
 
   function getNextTriggerTimestamp()
   {
-    if ( timedShowStamp > 0 )
-      return timedShowStamp
+    if ( this.timedShowStamp > 0 )
+      return this.timedShowStamp
 
-    if ( timedExpireStamp > 0 )
-      return timedExpireStamp
+    if ( this.timedExpireStamp > 0 )
+      return this.timedExpireStamp
 
     return -1
   }
 
   function setTimedParams( timedShowStamp_, timedExpireStamp_ )
   {
-    timedShowStamp = timedShowStamp_
-    timedExpireStamp  = timedExpireStamp_
-    if ( timedShowStamp > 0 && timedShowStamp > ::get_charserver_time_sec() )
-      setDelayed(true)
+    this.timedShowStamp = timedShowStamp_
+    this.timedExpireStamp  = timedExpireStamp_
+    if ( this.timedShowStamp > 0 && this.timedShowStamp > ::get_charserver_time_sec() )
+      this.setDelayed(true)
   }
 
 
   function getChatLink()
   {
-    return chatLinkPrefix + uid
+    return this.chatLinkPrefix + this.uid
   }
 
   function getChatInviterLink()
   {
-    return ::g_chat.generatePlayerLink(inviterName)
+    return ::g_chat.generatePlayerLink(this.inviterName)
   }
 
   function checkChatLink(link)
   {
-    return link == getChatLink()
+    return link == this.getChatLink()
   }
 
   function autoAccept()
   {
-    isAutoAccepted = true
-    accept()
+    this.isAutoAccepted = true
+    this.accept()
   }
   function accept() {}
   function getChatInviteText() { return "" }
@@ -162,39 +169,39 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
 
   function showInvitePopup()
   {
-    if (!isVisible()
+    if (!this.isVisible()
         || ::g_script_reloader.isInReloading
         || ::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY) == false
       )
       return
-    local msg = getPopupText()
+    local msg = this.getPopupText()
     if (!msg.len())
       return
 
-    msg = [::colorize(inviteColor, msg)]
-    msg.append(getRestrictionText())
+    msg = [colorize(this.inviteColor, msg)]
+    msg.append(this.getRestrictionText())
 
     let buttons = []
-    if (!haveRestrictions())
+    if (!this.haveRestrictions())
     {
       buttons.append(
         { id = "reject_invite",
-          text = ::loc("invite/reject"),
-          func = reject
+          text = loc("invite/reject"),
+          func = this.reject
         }
         { id = "accept_invite",
-          text = ::loc("contacts/accept_invitation"),
-          func = accept
+          text = loc("contacts/accept_invitation"),
+          func = this.accept
         }
       )
     }
 
-    ::g_popups.add(null, ::g_string.implode(msg, "\n"), ::gui_start_invites, buttons, this, "invite_" + uid)
+    ::g_popups.add(null, ::g_string.implode(msg, "\n"), ::gui_start_invites, buttons, this, "invite_" + this.uid)
   }
 
   function reject()
   {
-    remove()
+    this.remove()
   }
 
   function onRemove()
@@ -209,16 +216,16 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
 
   function showInviterMenu(position = null)
   {
-    let contact = inviterUid && ::getContact(inviterUid, inviterName)
-    ::g_chat.showPlayerRClickMenu(inviterName, null, contact, position)
+    let contact = this.inviterUid && ::getContact(this.inviterUid, this.inviterName)
+    ::g_chat.showPlayerRClickMenu(this.inviterName, null, contact, position)
   }
 
   function markSeen(silent = false)
   {
-    if (isSeen)
+    if (this.isSeen)
       return false
 
-    isSeen = true
+    this.isSeen = true
     if (!silent)
       ::g_invites.updateNewInvitesAmount()
     return true
@@ -226,24 +233,24 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
 
   function isNew()
   {
-    return !isSeen && !isOutdated()
+    return !this.isSeen && !this.isOutdated()
   }
 
   function hasInviter()
   {
-    return !::u.isEmpty(inviterName)
+    return !::u.isEmpty(this.inviterName)
   }
 
   function isAvailableByCrossPlay()
   {
     return crossplayModule.isCrossPlayEnabled()
-           || platformModule.isXBoxPlayerName(inviterName)
-           || platformModule.isPS4PlayerName(inviterName)
+           || platformModule.isXBoxPlayerName(this.inviterName)
+           || platformModule.isPS4PlayerName(this.inviterName)
   }
 
   function isAvailableByChatRestriction()
   {
-    return isChatEnableWithPlayer(inviterName)
-      && isCrossNetworkMessageAllowed(inviterName)
+    return isChatEnableWithPlayer(this.inviterName)
+      && isCrossNetworkMessageAllowed(this.inviterName)
   }
 }

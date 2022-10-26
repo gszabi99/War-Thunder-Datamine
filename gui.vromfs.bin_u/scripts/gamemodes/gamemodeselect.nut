@@ -1,9 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
@@ -13,7 +18,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
 ::gui_handlers.GameModeSelect <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneTplName = "%gui/gameModeSelect/gameModeSelect"
+  sceneTplName = "%gui/gameModeSelect/gameModeSelect.tpl"
   shouldBlurSceneBgFn = needUseHangarDof
   needAnimatedSwitchScene = false
 
@@ -43,9 +48,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   ]
 
   static basePanelConfig = [
-    ::ES_UNIT_TYPE_AIRCRAFT,
-    ::ES_UNIT_TYPE_TANK,
-    ::ES_UNIT_TYPE_SHIP
+    ES_UNIT_TYPE_AIRCRAFT,
+    ES_UNIT_TYPE_TANK,
+    ES_UNIT_TYPE_SHIP
   ]
 
   static function open()
@@ -55,25 +60,25 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function getSceneTplView()
   {
-    return { categories = categories }
+    return { categories = this.categories }
   }
 
   function initScreen()
   {
-    backSceneFunc = ::gui_start_mainmenu
-    updateContent()
+    this.backSceneFunc = ::gui_start_mainmenu
+    this.updateContent()
   }
 
   function fillModesList()
   {
-    filledGameModes.clear()
+    this.filledGameModes.clear()
 
-    foreach (cat in categories)
+    foreach (cat in this.categories)
     {
       let modes = this[cat.modesGenFunc]()
       if (modes.len() == 0)
       {
-        filledGameModes.append({
+        this.filledGameModes.append({
           isEmpty = true
           textWhenEmpty = cat?.textWhenEmpty || ""
           isMode = false
@@ -82,33 +87,33 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       }
 
       if (cat?.separator)
-        filledGameModes.append({ separator = true, isMode = false })
-      filledGameModes.extend(modes)
+        this.filledGameModes.append({ separator = true, isMode = false })
+      this.filledGameModes.extend(modes)
     }
 
-    let placeObj = scene.findObject("general_game_modes")
-    if (!::check_obj(placeObj))
+    let placeObj = this.scene.findObject("general_game_modes")
+    if (!checkObj(placeObj))
       return
 
-    let data = ::handyman.renderCached("%gui/gameModeSelect/gameModeBlock", { block = filledGameModes })
-    guiScene.replaceContentFromText(placeObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/gameModeSelect/gameModeBlock.tpl", { block = this.filledGameModes })
+    this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
 
-    setGameModesTimer()
+    this.setGameModesTimer()
   }
 
   function updateContent()
   {
-    gameModesWithTimer.clear()
-    newIconWidgetsByGameModeID.clear()
+    this.gameModesWithTimer.clear()
+    this.newIconWidgetsByGameModeID.clear()
 
-    fillModesList()
+    this.fillModesList()
 
-    registerNewIconWidgets()
-    updateClusters()
-    updateButtons()
-    updateEventDescriptionConsoleButton(::game_mode_manager.getCurrentGameMode())
+    this.registerNewIconWidgets()
+    this.updateClusters()
+    this.updateButtons()
+    this.updateEventDescriptionConsoleButton(::game_mode_manager.getCurrentGameMode())
 
-    updateSelection()
+    this.updateSelection()
   }
 
   function updateSelection()
@@ -117,28 +122,28 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (curGM == null)
       return
 
-    let curGameModeObj = scene.findObject("general_game_modes")
-    if (!::check_obj(curGameModeObj))
+    let curGameModeObj = this.scene.findObject("general_game_modes")
+    if (!checkObj(curGameModeObj))
       return
 
-    let index = filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
+    let index = this.filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
     curGameModeObj.setValue(index)
     ::move_mouse_on_child(curGameModeObj, index)
   }
 
   function registerNewIconWidgets()
   {
-    foreach (gameMode in filledGameModes)
+    foreach (gameMode in this.filledGameModes)
     {
       if (!gameMode.isMode || !gameMode?.hasContent)
         continue
 
-      let widgetObj = scene.findObject(getWidgetId(gameMode.id))
-      if (!::check_obj(widgetObj))
+      let widgetObj = this.scene.findObject(this.getWidgetId(gameMode.id))
+      if (!checkObj(widgetObj))
         continue
 
-      let widget = NewIconWidget(guiScene, widgetObj)
-      newIconWidgetsByGameModeID[gameMode.id] <- widget
+      let widget = ::NewIconWidget(this.guiScene, widgetObj)
+      this.newIconWidgetsByGameModeID[gameMode.id] <- widget
       widget.setWidgetVisible(!::game_mode_manager.isSeen(gameMode.id))
     }
   }
@@ -146,10 +151,10 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function createFeaturedModesView()
   {
     let view = []
-    view.extend(getViewArray(::game_mode_manager.getPveBattlesGameModes()))
-    view.extend(getViewArray(::game_mode_manager.getFeaturedGameModes()))
-    view.extend(createFeaturedLinksView())
-    view.extend(getViewArray(::game_mode_manager.getClanBattlesGameModes()))
+    view.extend(this.getViewArray(::game_mode_manager.getPveBattlesGameModes()))
+    view.extend(this.getViewArray(::game_mode_manager.getFeaturedGameModes()))
+    view.extend(this.createFeaturedLinksView())
+    view.extend(this.getViewArray(::game_mode_manager.getClanBattlesGameModes()))
     return view
   }
 
@@ -162,7 +167,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     {
       while (true)
       {
-        let gameMode = getGameModeByCondition(gameModesArray,
+        let gameMode = this.getGameModeByCondition(gameModesArray,
           @(gameMode) gameMode.displayWide == isWide) // warning disable: -iterator-in-lambda
         if (gameMode == null)
           break
@@ -170,13 +175,13 @@ let { checkAndShowMultiplayerPrivilegeWarning,
           ++numNonWideGameModes
         let index = ::find_in_array(gameModesArray, gameMode)
         gameModesArray.remove(index)
-        view.append(createGameModeView(gameMode))
+        view.append(this.createGameModeView(gameMode))
       }
     }
-    sortByUnitType(view)
+    this.sortByUnitType(view)
     // Putting a dummy block to show featured links in one line.
     if ((numNonWideGameModes & 1) == 1)
-      view.append(createGameModeView(null))
+      view.append(this.createGameModeView(null))
     return view
   }
 
@@ -203,21 +208,21 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     let view = []
     let debugGameModes = ::game_mode_manager.getDebugGameModes()
     foreach (gameMode in debugGameModes)
-      view.append(createGameModeView(gameMode))
+      view.append(this.createGameModeView(gameMode))
     return view
   }
 
   function createFeaturedLinksView()
   {
     let res = []
-    foreach (idx, mode in ::featured_modes)
+    foreach (_idx, mode in ::featured_modes)
     {
       if (!mode.isVisible())
         continue
 
       let id = ::game_mode_manager.getGameModeItemId(mode.modeId)
       let hasNewIconWidget = mode.hasNewIconWidget && !::game_mode_manager.isSeen(id)
-      let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
+      let newIconWidgetContent = hasNewIconWidget? ::NewIconWidget.createLayout() : null
 
       res.append({
         id = id
@@ -236,7 +241,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         onClick = "onGameModeSelect"
         onHover = "markGameModeSeen"
         showEventDescription = false
-        newIconWidgetId = getWidgetId(id)
+        newIconWidgetId = this.getWidgetId(id)
         newIconWidgetContent = newIconWidgetContent
         inactiveColor = mode?.inactiveColor ?? @() false
         crossPlayRestricted = mode?.crossPlayRestricted ?? @() false
@@ -244,7 +249,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         isCrossPlayRequired = mode?.isCrossPlayRequired ?? @() false
       })
       if (mode?.updateByTimeFunc)
-        gameModesWithTimer[id] <- mode.updateByTimeFunc
+        this.gameModesWithTimer[id] <- mode.updateByTimeFunc
     }
     return res
   }
@@ -255,14 +260,14 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     let partitions = ::game_mode_manager.getGameModesPartitions()
     foreach (partition in partitions)
     {
-      let partitionView = createGameModesPartitionView(partition)
+      let partitionView = this.createGameModesPartitionView(partition)
       if (partitionView)
         gameModesView.extend(partitionView)
     }
     return gameModesView
   }
 
-  function createGameModeView(gameMode, separator = false, isNarrow = false)
+  function createGameModeView(gameMode, _separator = false, isNarrow = false)
   {
     if (gameMode == null)
       return {
@@ -271,20 +276,20 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         isMode = true
       }
 
-    let countries = createGameModeCountriesView(gameMode)
+    let countries = this.createGameModeCountriesView(gameMode)
     let isLink = gameMode.displayType.showInEventsWindow
     let event = ::game_mode_manager.getGameModeEvent(gameMode)
     let trophyName = ::events.getEventPVETrophyName(event)
 
     let id = ::game_mode_manager.getGameModeItemId(gameMode.id)
     let hasNewIconWidget = !::game_mode_manager.isSeen(id)
-    let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
+    let newIconWidgetContent = hasNewIconWidget? ::NewIconWidget.createLayout() : null
 
-    let crossPlayRestricted = isMultiplayerPrivilegeAvailable.value && !isCrossPlayEventAvailable(event)
+    let crossPlayRestricted = isMultiplayerPrivilegeAvailable.value && !this.isCrossPlayEventAvailable(event)
     let inactiveColor = !isMultiplayerPrivilegeAvailable.value || crossPlayRestricted
 
     if (gameMode?.updateByTimeFunc)
-      gameModesWithTimer[id] <- mode.updateByTimeFunc
+      this.gameModesWithTimer[id] <- this.mode.updateByTimeFunc
 
     return {
       id = id
@@ -294,7 +299,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       isConsoleBtn = ::show_console_buttons
       text = gameMode.text
       getEvent = gameMode?.getEvent
-      textDescription = ::getTblValue("textDescription", gameMode, null)
+      textDescription = getTblValue("textDescription", gameMode, null)
       tooltip = gameMode.getTooltipText()
       hasCountries = countries.len() != 0
       countries = countries
@@ -305,7 +310,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       videoPreview = gameMode.videoPreview
       checkBox = !isLink
       linkIcon = isLink
-      newIconWidgetId = getWidgetId(id)
+      newIconWidgetId = this.getWidgetId(id)
       newIconWidgetContent = newIconWidgetContent
       isFeatured = true
       onClick = "onGameModeSelect"
@@ -314,12 +319,12 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       gameMode = gameMode
       inactiveColor = (gameMode?.inactiveColor ?? @() false)() || inactiveColor
       crossPlayRestricted = crossPlayRestricted
-      crossplayTooltip = getRestrictionTooltipText(event)
+      crossplayTooltip = this.getRestrictionTooltipText(event)
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
       showEventDescription = !isLink && ::events.isEventNeedInfoButton(event)
-      eventTrophyImage = getTrophyMarkUpData(trophyName)
+      eventTrophyImage = this.getTrophyMarkUpData(trophyName)
       isTrophyRecieved = trophyName == ""? false : !::can_receive_pve_trophy(-1, trophyName)
-      mapPreferences = isShowMapPreferences(gameMode?.getEvent())
+      mapPreferences = this.isShowMapPreferences(gameMode?.getEvent())
       prefTitle = mapPreferencesParams.getPrefTitle(gameMode?.getEvent())
     }
   }
@@ -327,7 +332,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   function getRestrictionTooltipText(event)
   {
     if (!isMultiplayerPrivilegeAvailable.value)
-      return ::loc("xbox/noMultiplayer")
+      return loc("xbox/noMultiplayer")
 
     if (!crossplayModule.needShowCrossPlayInfo()) //No need tooltip on other platforms
       return null
@@ -335,14 +340,14 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     //Always send to other platform if enabled
     //Need to notify about it
     if (crossplayModule.isCrossPlayEnabled())
-      return ::loc("xbox/crossPlayEnabled")
+      return loc("xbox/crossPlayEnabled")
 
     //If only platform - no need to notify
     if (::events.isEventPlatformOnlyAllowed(event))
       return null
 
     //Notify that crossplay is strongly required
-    return ::loc("xbox/crossPlayRequired")
+    return loc("xbox/crossPlayRequired")
   }
 
   function isCrossPlayEventAvailable(event)
@@ -382,7 +387,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       foreach(countryData in ::g_crews_list.get())
       {
         let country = countryData.country
-        if (!::isInArray(country, countries))
+        if (!isInArray(country, countries))
           lockedCountries.append(country)
       }
 
@@ -403,13 +408,13 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     let gameModes = partition.gameModes
     let needEmptyGameModeBlocks = !!::u.search(gameModes, @(gm) !gm.displayWide)
     let view = []
-    foreach (idx, esUnitType in basePanelConfig)
+    foreach (_idx, esUnitType in this.basePanelConfig)
     {
-      let gameMode = chooseGameModeEsUnitType(gameModes, esUnitType, basePanelConfig)
+      let gameMode = this.chooseGameModeEsUnitType(gameModes, esUnitType, this.basePanelConfig)
       if (gameMode)
-        view.append(createGameModeView(gameMode, false, true))
+        view.append(this.createGameModeView(gameMode, false, true))
       else if (needEmptyGameModeBlocks)
-        view.append(createGameModeView(null, false, true))
+        view.append(this.createGameModeView(null, false, true))
     }
 
     return view
@@ -421,9 +426,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
    */
   function chooseGameModeEsUnitType(gameModes, esUnitType, esUnitTypesFilter)
   {
-    return getGameModeByCondition(gameModes,
+    return this.getGameModeByCondition(gameModes,
       @(gameMode) u.max(::game_mode_manager.getRequiredUnitTypes(gameMode).filter(
-        @(esUType) ::isInArray(esUType, esUnitTypesFilter))) == esUnitType)
+        @(esUType) isInArray(esUType, esUnitTypesFilter))) == esUnitType)
   }
 
   function getGameModeByCondition(gameModes, conditionFunc)
@@ -433,9 +438,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
   function onGameModeSelect(obj)
   {
-    markGameModeSeen(obj)
-    let gameModeView = u.search(filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
-    performGameModeSelect(gameModeView.gameMode)
+    this.markGameModeSeen(obj)
+    let gameModeView = u.search(this.filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
+    this.performGameModeSelect(gameModeView.gameMode)
   }
 
   function performGameModeSelect(gameMode)
@@ -445,22 +450,22 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       return
     }
 
-    if (gameMode?.diffCode == ::DIFFICULTY_HARDCORE &&
+    if (gameMode?.diffCode == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return
 
     let event = ::game_mode_manager.getGameModeEvent(gameMode)
-    if (event && !isCrossPlayEventAvailable(event))
+    if (event && !this.isCrossPlayEventAvailable(event))
     {
       if (!::xbox_try_show_crossnetwork_message())
-        ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
+        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
       return
     }
 
-    guiScene.performDelayed(this, function() {
-      if (!isValid())
+    this.guiScene.performDelayed(this, function() {
+      if (!this.isValid())
         return
-      goBack()
+      this.goBack()
 
       if ("startFunction" in gameMode)
         gameMode.startFunction()
@@ -476,7 +481,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (!obj?.id || ::game_mode_manager.isSeen(obj.id))
       return
 
-    let widget = ::getTblValue(obj.id, newIconWidgetsByGameModeID)
+    let widget = getTblValue(obj.id, this.newIconWidgetsByGameModeID)
     if (!widget)
       return
 
@@ -490,11 +495,11 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (val < 0 || val >= obj.childrenCount())
       return
 
-    let gmView = filledGameModes[val]
-    let modeObj = scene.findObject(gmView.id)
+    let gmView = this.filledGameModes[val]
+    let modeObj = this.scene.findObject(gmView.id)
 
-    markGameModeSeen(modeObj)
-    updateEventDescriptionConsoleButton(gmView.gameMode)
+    this.markGameModeSeen(modeObj)
+    this.updateEventDescriptionConsoleButton(gmView.gameMode)
   }
 
   function onOpenClusterSelect(obj)
@@ -502,22 +507,22 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     clustersModule.createClusterSelectMenu(obj)
   }
 
-  function onEventClusterChange(params)
+  function onEventClusterChange(_params)
   {
-    updateClusters()
+    this.updateClusters()
   }
 
   function updateClusters()
   {
-    clustersModule.updateClusters(scene.findObject("cluster_select_button"))
+    clustersModule.updateClusters(this.scene.findObject("cluster_select_button"))
   }
 
   function onClusterSelectActivate(obj)
   {
     let value = obj.getValue()
     let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
-    if (::checkObj(childObj))
-      onOpenClusterSelect(childObj)
+    if (checkObj(childObj))
+      this.onOpenClusterSelect(childObj)
   }
 
   function onGameModeActivate(obj)
@@ -526,25 +531,25 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     if (value < 0)
       return
 
-    performGameModeSelect(filledGameModes[value].gameMode)
+    this.performGameModeSelect(this.filledGameModes[value].gameMode)
   }
 
   function onEventDescription(obj)
   {
-    openEventDescription(::game_mode_manager.getGameModeById(obj.modeId))
+    this.openEventDescription(::game_mode_manager.getGameModeById(obj.modeId))
   }
 
-  function onGamepadEventDescription(obj)
+  function onGamepadEventDescription(_obj)
   {
-    let gameModesObject = getObj("general_game_modes")
-    if (!::checkObj(gameModesObject))
+    let gameModesObject = this.getObj("general_game_modes")
+    if (!checkObj(gameModesObject))
       return
 
     let value = gameModesObject.getValue()
     if (value < 0)
       return
 
-    openEventDescription(filledGameModes[value].gameMode)
+    this.openEventDescription(this.filledGameModes[value].gameMode)
   }
 
   function openEventDescription(gameMode)
@@ -552,7 +557,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     let event = ::game_mode_manager.getGameModeEvent(gameMode)
     if (event != null)
     {
-      restoreFromModal = true
+      this.restoreFromModal = true
       ::events.openEventInfo(event)
     }
   }
@@ -565,46 +570,47 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       && isMultiplayerPrivilegeAvailable.value
     )
 
-    let prefObj = this.showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
+    let prefObj = this.showSceneBtn("map_preferences_console_button", this.isShowMapPreferences(gameMode?.getEvent())
       && ::show_console_buttons)
 
-    if (!::check_obj(prefObj))
+    if (!checkObj(prefObj))
       return
 
     prefObj.setValue(mapPreferencesParams.getPrefTitle(gameMode?.getEvent()))
     prefObj.modeId = gameMode?.id
   }
 
-  function onEventCurrentGameModeIdChanged(p) { updateContent() }
-  function onEventGameModesUpdated(p) { updateContent() }
-  function onEventWWLoadOperation(p) { updateContent() }
-  function onEventWWStopWorldWar(p) { updateContent() }
-  function onEventWWShortGlobalStatusChanged(p) { updateContent() }
-  function onEventCrossPlayOptionChanged(p) { updateContent() }
+  function onEventCurrentGameModeIdChanged(_p) { this.updateContent() }
+  function onEventGameModesUpdated(_p) { this.updateContent() }
+  function onEventWWLoadOperation(_p) { this.updateContent() }
+  function onEventWWStopWorldWar(_p) { this.updateContent() }
+  function onEventWWShortGlobalStatusChanged(_p) { this.updateContent() }
+  function onEventCrossPlayOptionChanged(_p) { this.updateContent() }
+  function onEventXboxMultiplayerPrivilegeUpdated(_p) { this.updateContent() }
 
   function updateButtons()
   {
-    ::showBtn("wiki_link", ::has_feature("AllowExternalLink") && !::is_vendor_tencent(), scene)
+    ::showBtn("wiki_link", hasFeature("AllowExternalLink") && !::is_vendor_tencent(), this.scene)
   }
 
   function setGameModesTimer()
   {
-    let timerObj = scene.findObject("game_modes_timer")
-    if (::check_obj(timerObj))
-      timerObj.setUserData(gameModesWithTimer.len()? this : null)
+    let timerObj = this.scene.findObject("game_modes_timer")
+    if (checkObj(timerObj))
+      timerObj.setUserData(this.gameModesWithTimer.len()? this : null)
   }
 
-  function onTimerUpdate(obj, dt)
+  function onTimerUpdate(_obj, _dt)
   {
-    foreach (gameModeId, updateFunc in gameModesWithTimer)
+    foreach (gameModeId, updateFunc in this.gameModesWithTimer)
     {
-      updateFunc(scene, gameModeId)
+      updateFunc(this.scene, gameModeId)
     }
   }
 
   function isShowMapPreferences(curEvent)
   {
-    return ::has_feature("MapPreferences") && !::is_me_newbie()
+    return hasFeature("MapPreferences") && !::is_me_newbie()
       && isMultiplayerPrivilegeAvailable.value
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)
@@ -617,6 +623,6 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       : ::game_mode_manager.getCurrentGameMode()?.getEvent()
     ::g_squad_utils.checkSquadUnreadyAndDo(
       Callback(@() mapPreferencesModal.open({curEvent = curEvent}), this),
-      null, shouldCheckCrewsReady)
+      null, this.shouldCheckCrewsReady)
   }
 }

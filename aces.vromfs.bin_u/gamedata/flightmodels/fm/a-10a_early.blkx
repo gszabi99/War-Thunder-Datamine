@@ -163,7 +163,7 @@
     "BombBayCd": 0.0,
     "FuseCd": 0.0,
     "AirbrakeCd": 0.125,
-    "CockpitDoorCd": 0.007,
+    "CockpitDoorCd": 0.05321,
     "SweepAxisByMachAuto": [
       0.0,
       0.0,
@@ -1060,22 +1060,22 @@
       "OilRadiatorEffectPower": 0.0,
       "OilMinRadiatorThermalConductionCoeff": 1.0,
       "OilMinThermostatThermalConductionCoeff": 0.3,
-      "OilMinLevelThermalConductionCoeff": 0.2,
+      "OilMinLevelThermalConductionCoeff": 0.02,
       "OilThermalConductionCrossCoeffTable": [
-        0.4,
-        0.2,
+        0.04,
         0.02,
-        0.2
+        0.02,
+        0.02
       ],
       "OilBoilingTemperature": 360.0,
       "OilThermostatInertia": 20.0,
-      "OilThermostatSetPoint": 60.0,
+      "OilThermostatSetPoint": 30.0,
       "DegradationTime_10_5": [
         180.0,
         171.0
       ],
       "HalfHealthWaterTemperatureToleranceDecrease": 170.0,
-      "HalfHealthOilTemperatureToleranceDecrease": 10.0,
+      "HalfHealthOilTemperatureToleranceDecrease": 70.0,
       "WaterAirDensityPower": -2.0,
       "OilAirDensityPower": -1.0,
       "WaterFlowEffectPower": 1.0,
@@ -1141,6 +1141,12 @@
         "OilTemperature": 105.0,
         "WorkTime": 300.0,
         "RecoverTime": 60.0
+      },
+      "Load6": {
+        "WaterTemperature": 845.0,
+        "OilTemperature": 115.0,
+        "WorkTime": 60.0,
+        "RecoverTime": 30.0
       }
     },
     "Compressor": {

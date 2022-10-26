@@ -1,3 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
+
 const MROOM_INFO_UPDATE_DELAY    = 5000
 const MROOM_INFO_REQUEST_TIMEOUT = 15000
 const MROOM_INFO_OUTDATE_TIME    = 600000
@@ -14,71 +22,71 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
 
   constructor(v_roomId)
   {
-    roomId = v_roomId
+    this.roomId = v_roomId
   }
 
   function isValid()
   {
-    return lastRequestTime < 0 || isRequestInProgress() || !isOutdated()
+    return this.lastRequestTime < 0 || this.isRequestInProgress() || !this.isOutdated()
   }
 
   function isOutdated()
   {
-    return lastUpdateTime + MROOM_INFO_OUTDATE_TIME < ::dagor.getCurTime()
+    return this.lastUpdateTime + MROOM_INFO_OUTDATE_TIME < get_time_msec()
   }
 
   function isRequestInProgress()
   {
-    return lastAnswerTime < lastRequestTime
-        && lastRequestTime + MROOM_INFO_REQUEST_TIMEOUT > ::dagor.getCurTime()
+    return this.lastAnswerTime < this.lastRequestTime
+        && this.lastRequestTime + MROOM_INFO_REQUEST_TIMEOUT > get_time_msec()
   }
 
   function canRequest()
   {
-    return !isRoomDestroyed && !isRequestInProgress()
-        && lastAnswerTime + MROOM_INFO_UPDATE_DELAY < ::dagor.getCurTime()
+    return !this.isRoomDestroyed && !this.isRequestInProgress()
+        && this.lastAnswerTime + MROOM_INFO_UPDATE_DELAY < get_time_msec()
   }
 
   function checkRefresh()
   {
-    if (!canRequest())
+    if (!this.canRequest())
       return
 
-    lastRequestTime = ::dagor.getCurTime()
-    let cb = ::Callback(onRefreshCb, this)
+    this.lastRequestTime = get_time_msec()
+    let cb = Callback(this.onRefreshCb, this)
     ::matching_api_func("mrooms.get_room",
       function(p) { cb(p) },
-      { roomId = roomId }
+      { roomId = this.roomId }
     )
   }
 
   function onRefreshCb(params)
   {
-    lastAnswerTime = ::dagor.getCurTime()
+    this.lastAnswerTime = get_time_msec()
 
     if (params.error == SERVER_ERROR_ROOM_NOT_FOUND)
     {
-      lastUpdateTime = lastAnswerTime
-      isRoomDestroyed = true
-      roomData = null
-      ::broadcastEvent("MRoomInfoUpdated", { roomId = roomId })
+      this.lastUpdateTime = this.lastAnswerTime
+      this.isRoomDestroyed = true
+      this.roomData = null
+      ::broadcastEvent("MRoomInfoUpdated", { roomId = this.roomId })
       return
     }
 
     if (!::checkMatchingError(params, false))
       return
 
-    lastUpdateTime = lastAnswerTime
-    roomData = params
-    roomData.roomId <- roomId
-    ::broadcastEvent("MRoomInfoUpdated", { roomId = roomId })
+    this.lastUpdateTime = this.lastAnswerTime
+    this.roomData = params
+    this.roomData.roomId <- this.roomId
+    ::broadcastEvent("MRoomInfoUpdated", { roomId = this.roomId })
   }
 
   function getFullRoomData()
   {
-    checkRefresh()
-    if (isOutdated())
-      roomData = null
-    return roomData
+    this.checkRefresh()
+    if (this.isOutdated())
+      this.roomData = null
+    return this.roomData
   }
 }

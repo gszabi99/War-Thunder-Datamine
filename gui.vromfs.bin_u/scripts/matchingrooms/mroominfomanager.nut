@@ -1,26 +1,29 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::g_mroom_info <- {
   infoByRoomId = {}
-}
 
-g_mroom_info.get <- function get(roomId)
-{
-  clearOutdated()
-  local info = ::getTblValue(roomId, infoByRoomId)
-  if (info)
+  function get(roomId) {
+    this.clearOutdated()
+    local info = getTblValue(roomId, this.infoByRoomId)
+    if (info)
+      return info
+
+    info = ::MRoomInfo(roomId)
+    this.infoByRoomId[roomId] <- info
     return info
+  }
 
-  info = ::MRoomInfo(roomId)
-  infoByRoomId[roomId] <- info
-  return info
-}
+  function clearOutdated() {
+    let outdatedArr = []
+    foreach(roomId, info in this.infoByRoomId)
+      if (!info.isValid())
+        outdatedArr.append(roomId)
 
-g_mroom_info.clearOutdated <- function clearOutdated()
-{
-  let outdatedArr = []
-  foreach(roomId, info in infoByRoomId)
-    if (!info.isValid())
-      outdatedArr.append(roomId)
-
-  foreach(roomId in outdatedArr)
-    delete infoByRoomId[roomId]
+    foreach(roomId in outdatedArr)
+      delete this.infoByRoomId[roomId]
+  }
 }

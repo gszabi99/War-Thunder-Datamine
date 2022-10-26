@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+
 let Unit = require("%scripts/unit/unit.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let { initBulletIcons } = require("%scripts/weaponry/bulletsVisual.nut")
@@ -8,10 +15,11 @@ let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPa
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
+let { floor } = require("math")
 
 ::all_units <- {}
 
-::g_script_reloader.registerPersistentData("initOptionsGlobals", ::getroottable(),
+::g_script_reloader.registerPersistentData("initOptionsGlobals", getroottable(),
   [ "all_units"])
 
 //remap all units to new class on scripts reload
@@ -49,10 +57,10 @@ if (showedUnit.value != null)
   ::countUsageAmountOnce()
   generateUnitShopInfo()
 
-  ::dagor.debug("update_all_units called, got "+::all_units.len()+" items");
+  log("update_all_units called, got "+::all_units.len()+" items");
 }
 
-::usageAmountCounted <- false
+local usageAmountCounted = false
 ::countUsageAmountOnce <- function countUsageAmountOnce()
 {
   if (usageAmountCounted)
@@ -97,7 +105,7 @@ if (showedUnit.value != null)
 
   for(local i = 0; i<::usageRating_amount.len(); i++)
   {
-    let idx = ::floor((i+1).tofloat() * shopStatsAirs.len() / (::usageRating_amount.len()+1) + 0.5)
+    let idx = floor((i+1).tofloat() * shopStatsAirs.len() / (::usageRating_amount.len()+1) + 0.5)
     ::usageRating_amount[i] = (idx==shopStatsAirs.len()-1)? shopStatsAirs[idx] : 0.5 * (shopStatsAirs[idx] + shopStatsAirs[idx+1])
   }
   usageAmountCounted = true

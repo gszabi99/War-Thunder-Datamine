@@ -49,7 +49,7 @@ popup_menu {
     position:t='relative'
     padding:t='1@blockInterval, 0'
     flow:t='vertical'
-    include "%gui/commonParts/checkbox"
+    include "%gui/commonParts/checkbox.tpl"
     Button_text {
       id:t='reset_btn'
       top:t='1@blockInterval'

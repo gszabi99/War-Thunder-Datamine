@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -10,7 +17,7 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true)
 {
   let containerObj = parent_scene.findObject("item_desc")
-  if (!::checkObj(containerObj))
+  if (!checkObj(containerObj))
     return null
   let params = {
     scene = containerObj
@@ -38,128 +45,128 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
 
   function initScreen()
   {
-    playersInTable = []
-    let blk = ::handyman.renderCached("%gui/events/eventDescription", {})
-    guiScene.replaceContentFromText(scene, blk, blk.len(), this)
-    updateContent()
+    this.playersInTable = []
+    let blk = ::handyman.renderCached("%gui/events/eventDescription.tpl", {})
+    this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
+    this.updateContent()
   }
 
   function selectEvent(event, eventRoom = null)
   {
-    if (room)
-      ::g_mroom_info.get(room.roomId).checkRefresh()
-    if (selectedEvent == event && ::u.isEqual(room, eventRoom))
+    if (this.room)
+      ::g_mroom_info.get(this.room.roomId).checkRefresh()
+    if (this.selectedEvent == event && ::u.isEqual(this.room, eventRoom))
       return
 
-    selectedEvent = event
-    room = eventRoom
-    updateContent()
+    this.selectedEvent = event
+    this.room = eventRoom
+    this.updateContent()
   }
 
   function updateContent()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    guiScene.setUpdatesEnabled(false, false)
-    _updateContent()
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(false, false)
+    this._updateContent()
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function _updateContent()
   {
-    currentFullRoomData = getFullRoomData()
-    if (selectedEvent == null)
+    this.currentFullRoomData = this.getFullRoomData()
+    if (this.selectedEvent == null)
     {
-      setEventDescObjVisible(false)
+      this.setEventDescObjVisible(false)
       return
     }
 
-    setEventDescObjVisible(true)
+    this.setEventDescObjVisible(true)
 
-    if (needEventHeader)
-      updateContentHeader()
+    if (this.needEventHeader)
+      this.updateContentHeader()
 
-    let roomMGM = ::events.getMGameMode(selectedEvent, room)
+    let roomMGM = ::events.getMGameMode(this.selectedEvent, this.room)
 
-    let eventDescTextObj = getObject("event_desc_text")
+    let eventDescTextObj = this.getObject("event_desc_text")
     if (eventDescTextObj != null)
-      eventDescTextObj.setValue(::events.getEventDescriptionText(selectedEvent, room))
+      eventDescTextObj.setValue(::events.getEventDescriptionText(this.selectedEvent, this.room))
 
     // Event difficulty
-    let eventDifficultyObj = getObject("event_difficulty")
+    let eventDifficultyObj = this.getObject("event_difficulty")
     if (eventDifficultyObj != null)
     {
-      let difficultyText = ::events.isDifficultyCustom(selectedEvent)
-        ? ::loc("options/custom")
-        : ::events.getDifficultyText(selectedEvent.name)
-      let respawnText = ::events.getRespawnsText(selectedEvent)
+      let difficultyText = ::events.isDifficultyCustom(this.selectedEvent)
+        ? loc("options/custom")
+        : ::events.getDifficultyText(this.selectedEvent.name)
+      let respawnText = ::events.getRespawnsText(this.selectedEvent)
       eventDifficultyObj.text = format(" %s %s", difficultyText, respawnText)
     }
 
     // Event players range
-    let eventPlayersRangeObj = getObject("event_players_range")
+    let eventPlayersRangeObj = this.getObject("event_players_range")
     if (eventPlayersRangeObj != null)
     {
       let rangeData = ::events.getPlayersRangeTextData(roomMGM)
       eventPlayersRangeObj.show(rangeData.isValid)
       if (rangeData.isValid)
       {
-        let labelObj = getObject("event_players_range_label")
+        let labelObj = this.getObject("event_players_range_label")
         if (labelObj != null)
           labelObj.setValue(rangeData.label)
-        let valueObj = getObject("event_players_range_text")
+        let valueObj = this.getObject("event_players_range_text")
         if (valueObj != null)
           valueObj.setValue(rangeData.value)
       }
     }
 
     // Clan info
-    let clanOnlyInfoObj = getObject("clan_event")
+    let clanOnlyInfoObj = this.getObject("clan_event")
     if(clanOnlyInfoObj != null)
-      clanOnlyInfoObj.show(::events.isEventForClan(selectedEvent))
+      clanOnlyInfoObj.show(::events.isEventForClan(this.selectedEvent))
 
     // Allow switch clan
-    let allowSwitchClanObj = getObject("allow_switch_clan")
+    let allowSwitchClanObj = this.getObject("allow_switch_clan")
     if (allowSwitchClanObj != null)
     {
-      let eventType = ::getTblValue("type", selectedEvent, 0)
+      let eventType = getTblValue("type", this.selectedEvent, 0)
       let clanTournamentType = EVENT_TYPE.TOURNAMENT | EVENT_TYPE.CLAN
       let showMessage = (eventType & clanTournamentType) == clanTournamentType
       allowSwitchClanObj.show(showMessage)
       if (showMessage)
       {
-        let locId = "events/allowSwitchClan/" + ::events.isEventAllowSwitchClan(selectedEvent).tostring()
-        allowSwitchClanObj.text = ::loc(locId)
+        let locId = "events/allowSwitchClan/" + ::events.isEventAllowSwitchClan(this.selectedEvent).tostring()
+        allowSwitchClanObj.text = loc(locId)
       }
     }
 
     // Timer
-    let timerObj = getObject("event_time")
+    let timerObj = this.getObject("event_time")
     if (timerObj != null)
     {
-        SecondsUpdater(timerObj, ::Callback(function(obj, params)
+        SecondsUpdater(timerObj, Callback(function(obj, _params)
         {
-          let text = getDescriptionTimeText()
+          let text = this.getDescriptionTimeText()
           obj.setValue(text)
           return text.len() == 0
         }, this))
     }
 
-    let timeLimitObj = this.showSceneBtn("event_time_limit", !!room)
-    if (timeLimitObj && room)
+    let timeLimitObj = this.showSceneBtn("event_time_limit", !!this.room)
+    if (timeLimitObj && this.room)
     {
-      let timeLimit = ::SessionLobby.getTimeLimit(room)
+      let timeLimit = ::SessionLobby.getTimeLimit(this.room)
       local timeText = ""
       if (timeLimit > 0)
       {
         let option = ::get_option(::USEROPT_TIME_LIMIT)
-        timeText = option.getTitle() + ::loc("ui/colon") + option.getValueLocText(timeLimit)
+        timeText = option.getTitle() + loc("ui/colon") + option.getValueLocText(timeLimit)
       }
       timeLimitObj.setValue(timeText)
     }
 
-    this.showSceneBtn("players_list_btn", !!room)
+    this.showSceneBtn("players_list_btn", !!this.room)
 
     // Fill vehicle lists
     local teamObj = null
@@ -167,150 +174,150 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
     foreach(team in ::events.getSidesList())
     {
       let teamName = ::events.getTeamName(team)
-      teamObj = getObject(teamName)
+      teamObj = this.getObject(teamName)
       if (teamObj == null)
         continue
 
-      let show = ::isInArray(team, sides)
+      let show = isInArray(team, sides)
       teamObj.show(show)
       if (!show)
         continue
 
       let titleObj = teamObj.findObject("team_title")
-      if(::checkObj(titleObj))
+      if(checkObj(titleObj))
       {
         let isEventFreeForAll = ::events.isEventFreeForAll(roomMGM)
         titleObj.show( ! ::events.isEventSymmetricTeams(roomMGM) || isEventFreeForAll)
-        titleObj.setValue(isEventFreeForAll ? ::loc("events/ffa")
+        titleObj.setValue(isEventFreeForAll ? loc("events/ffa")
           : ::g_team.getTeamByCode(team).getName())
       }
 
-      let teamData = ::events.getTeamDataWithRoom(roomMGM, team, room)
-      let playersCountObj = getObject("players_count", teamObj)
+      let teamData = ::events.getTeamDataWithRoom(roomMGM, team, this.room)
+      let playersCountObj = this.getObject("players_count", teamObj)
       if (playersCountObj)
-        playersCountObj.setValue(sides.len() > 1 ? getTeamPlayersCountText(team, teamData, roomMGM) : "")
+        playersCountObj.setValue(sides.len() > 1 ? this.getTeamPlayersCountText(team, teamData, roomMGM) : "")
 
-      ::fillCountriesList(getObject("countries", teamObj), ::events.getCountries(teamData))
+      ::fillCountriesList(this.getObject("countries", teamObj), ::events.getCountries(teamData))
       let unitTypes = ::events.getUnitTypesByTeamDataAndName(teamData, teamName)
-      let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
+      let roomSpecialRules = this.room && ::SessionLobby.getRoomSpecialRules(this.room)
       ::events.fillAirsList(this, teamObj, teamData, unitTypes, roomSpecialRules)
     }
 
     // Team separator
-    let separatorObj = getObject("teams_separator")
+    let separatorObj = this.getObject("teams_separator")
     if (separatorObj != null)
       separatorObj.show(sides.len() > 1)
 
     // Misc
-    updateCostText()
-    loadMap()
-    fetchLbData()
+    this.updateCostText()
+    this.loadMap()
+    this.fetchLbData()
   }
 
   function getTeamPlayersCountText(team, teamData, roomMGM)
   {
-    if (!room)
+    if (!this.room)
     {
       if (::events.hasTeamSizeHandicap(roomMGM))
-        return ::colorize("activeTextColor", ::loc("events/handicap") + ::events.getTeamSize(teamData))
+        return colorize("activeTextColor", loc("events/handicap") + ::events.getTeamSize(teamData))
       return ""
     }
 
     let otherTeam = ::g_team.getTeamByCode(team).opponentTeamCode
-    let countTblReady = ::SessionLobby.getMembersCountByTeams(currentFullRoomData, true)
+    let countTblReady = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData, true)
     local countText = countTblReady[team]
     if (countTblReady[team] >= ::events.getTeamSize(teamData)
         || countTblReady[team] - ::events.getMaxLobbyDisbalance(roomMGM) >= countTblReady[otherTeam])
-      countText = ::colorize("warningTextColor", countText)
+      countText = colorize("warningTextColor", countText)
 
-    let countTbl = currentFullRoomData && ::SessionLobby.getMembersCountByTeams(currentFullRoomData)
+    let countTbl = this.currentFullRoomData && ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData)
     local locId = "multiplayer/teamPlayers"
     let locParams = {
       players = countText
       maxPlayers = ::events.getMaxTeamSize(roomMGM)
-      unready = max(0, ::getTblValue(team, countTbl, 0) - countTblReady[team])
+      unready = max(0, getTblValue(team, countTbl, 0) - countTblReady[team])
     }
     if (locParams.unready)
       locId = "multiplayer/teamPlayers/hasUnready"
-    return ::loc("events/players_count") + ::loc("ui/colon") + ::loc(locId, locParams)
+    return loc("events/players_count") + loc("ui/colon") + loc(locId, locParams)
   }
 
   function updateContentHeader()
   {
     // Difficulty image
-    let difficultyImgObj = getObject("difficulty_img")
+    let difficultyImgObj = this.getObject("difficulty_img")
     if (difficultyImgObj)
     {
-      difficultyImgObj["background-image"] = ::events.getDifficultyImg(selectedEvent.name)
-      difficultyImgObj["tooltip"] = ::events.getDifficultyTooltip(selectedEvent.name)
+      difficultyImgObj["background-image"] = ::events.getDifficultyImg(this.selectedEvent.name)
+      difficultyImgObj["tooltip"] = ::events.getDifficultyTooltip(this.selectedEvent.name)
     }
 
     // Event name
-    let eventNameObj = getObject("event_name")
+    let eventNameObj = this.getObject("event_name")
     if (eventNameObj)
-      eventNameObj.setValue(getHeaderText())
+      eventNameObj.setValue(this.getHeaderText())
   }
 
   function getHeaderText()
   {
-    if (!room)
-      return ::events.getEventNameText(selectedEvent) + " " + ::events.getRespawnsText(selectedEvent)
+    if (!this.room)
+      return ::events.getEventNameText(this.selectedEvent) + " " + ::events.getRespawnsText(this.selectedEvent)
 
     local res = ""
-    let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
+    let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, this.room)
     let tierText = ::events.getBrTextByRules(reqUnits)
     if (tierText.len())
       res += tierText + " "
 
-    res += ::SessionLobby.getMissionNameLoc(room)
+    res += ::SessionLobby.getMissionNameLoc(this.room)
 
-    let teamsCnt = ::SessionLobby.getMembersCountByTeams(currentFullRoomData)
+    let teamsCnt = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData)
     local teamsCntText = ""
-    if (::events.isEventSymmetricTeams(::events.getMGameMode(selectedEvent, room)))
-      teamsCntText = ::loc("events/players_count") + ::loc("ui/colon") + (teamsCnt[Team.A] + teamsCnt[Team.B])
+    if (::events.isEventSymmetricTeams(::events.getMGameMode(this.selectedEvent, this.room)))
+      teamsCntText = loc("events/players_count") + loc("ui/colon") + (teamsCnt[Team.A] + teamsCnt[Team.B])
     else
-      teamsCntText = teamsCnt[Team.A] + " " + ::loc("country/VS") + " " + teamsCnt[Team.B]
-    res += ::loc("ui/parentheses/space", { text =teamsCntText })
+      teamsCntText = teamsCnt[Team.A] + " " + loc("country/VS") + " " + teamsCnt[Team.B]
+    res += loc("ui/parentheses/space", { text =teamsCntText })
     return res
   }
 
   function updateCostText()
   {
-    if (selectedEvent == null)
+    if (this.selectedEvent == null)
       return
 
-    let costDescObj = getObject("cost_desc")
+    let costDescObj = this.getObject("cost_desc")
     if (costDescObj == null)
       return
 
-    local text = ::events.getEventActiveTicketText(selectedEvent, "activeTextColor")
-    text += (text.len() ? "\n" : "") + ::events.getEventBattleCostText(selectedEvent, "activeTextColor")
+    local text = ::events.getEventActiveTicketText(this.selectedEvent, "activeTextColor")
+    text += (text.len() ? "\n" : "") + ::events.getEventBattleCostText(this.selectedEvent, "activeTextColor")
     costDescObj.setValue(text)
 
-    let ticketBoughtImgObj = getObject("bought_ticket_img")
+    let ticketBoughtImgObj = this.getObject("bought_ticket_img")
     if (ticketBoughtImgObj != null)
     {
-      let showImg = ::events.hasEventTicket(selectedEvent)
-        && ::events.getEventActiveTicket(selectedEvent).getCost() > ::zero_money
+      let showImg = ::events.hasEventTicket(this.selectedEvent)
+        && ::events.getEventActiveTicket(this.selectedEvent).getCost() > ::zero_money
       ticketBoughtImgObj.show(showImg)
     }
 
-    let hasAchievementGroup = (::events.getEventAchievementGroup(selectedEvent) != "")
+    let hasAchievementGroup = (::events.getEventAchievementGroup(this.selectedEvent) != "")
     this.showSceneBtn("rewards_list_btn",
-      haveRewards(selectedEvent) || getBaseVictoryReward(selectedEvent)
+      haveRewards(this.selectedEvent) || getBaseVictoryReward(this.selectedEvent)
         || hasAchievementGroup)
   }
 
   function loadMap()
   {
-    if (selectedEvent.name.len() == 0)
+    if (this.selectedEvent.name.len() == 0)
       return
 
     local misName = ""
-    if (room)
-      misName = ::SessionLobby.getMissionName(true, room)
+    if (this.room)
+      misName = ::SessionLobby.getMissionName(true, this.room)
     if (!misName.len())
-      misName = ::events.getEventMission(selectedEvent.name)
+      misName = ::events.getEventMission(this.selectedEvent.name)
 
     local hasMission = misName != ""
     if (hasMission)
@@ -320,11 +327,11 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
       {
         let m = ::DataBlock()
         m.load(misData.getStr("mis_file",""))
-        ::g_map_preview.setMapPreview(scene.findObject("tactical-map"), m)
+        ::g_map_preview.setMapPreview(this.scene.findObject("tactical-map"), m)
       }
       else
       {
-        ::dagor.debug("Error: Event " + selectedEvent.name + ": not found mission info for mission " + misName)
+        log("Error: Event " + this.selectedEvent.name + ": not found mission info for mission " + misName)
         hasMission = false
       }
     }
@@ -337,69 +344,69 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
 
   function getDescriptionTimeText()
   {
-    if (!room)
-      return ::events.getEventTimeText(::events.getMGameMode(selectedEvent, room))
+    if (!this.room)
+      return ::events.getEventTimeText(::events.getMGameMode(this.selectedEvent, this.room))
 
-    let startTime = ::SessionLobby.getRoomSessionStartTime(room)
+    let startTime = ::SessionLobby.getRoomSessionStartTime(this.room)
     if (startTime <= 0)
       return ""
 
     let secToStart = startTime - ::get_matching_server_time()
     if (secToStart <= 0)
-      return ::loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
-    return ::loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
+      return loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
+    return loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
   }
 
   function fetchLbData()
   {
     let isLbAvailable = isLeaderboardsAvailable()
-    hideEventLeaderboard(isLbAvailable)
+    this.hideEventLeaderboard(isLbAvailable)
     if (!isLbAvailable)
     {
-      showEventLb(null)
+      this.showEventLb(null)
       return
     }
 
-    newSelfRowRequest = ::events.getMainLbRequest(selectedEvent)
+    this.newSelfRowRequest = ::events.getMainLbRequest(this.selectedEvent)
     ::events.requestSelfRow(
-      newSelfRowRequest,
+      this.newSelfRowRequest,
       "mini_lb_self",
-      (@(selectedEvent) function (self_row) {
+      (@(selectedEvent) function (_self_row) {
         ::events.requestLeaderboard(::events.getMainLbRequest(selectedEvent),
         "mini_lb_self",
         function (lb_data) {
-          showEventLb(lb_data)
+          this.showEventLb(lb_data)
         }, this)
-      })(selectedEvent), this)
+      })(this.selectedEvent), this)
   }
 
   function showEventLb(lb_data)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    let lbWrapObj = getObject("lb_wrap")
-    let lbWaitBox = getObject("msgWaitAnimation")
+    let lbWrapObj = this.getObject("lb_wrap")
+    let lbWaitBox = this.getObject("msgWaitAnimation")
     if (lbWrapObj == null || lbWaitBox == null)
       return
 
-    let btnLb = getObject("leaderboards_btn", lbWrapObj)
-    let lbTable = getObject("lb_table", lbWrapObj)
+    let btnLb = this.getObject("leaderboards_btn", lbWrapObj)
+    let lbTable = this.getObject("lb_table", lbWrapObj)
     if (btnLb == null || lbTable == null)
       return
 
     let isLbAvailable = isLeaderboardsAvailable()
     let lbRows = lb_data?.rows ?? []
-    playersInTable = []
-    guiScene.replaceContentFromText(lbTable, "", 0, this)
+    this.playersInTable = []
+    this.guiScene.replaceContentFromText(lbTable, "", 0, this)
     lbWaitBox.show(!lb_data && isLbAvailable)
 
-    if (::events.isEventForClanGlobalLb(selectedEvent) || newSelfRowRequest == null)
+    if (::events.isEventForClanGlobalLb(this.selectedEvent) || this.newSelfRowRequest == null)
       return
 
-    let field = newSelfRowRequest.lbField
+    let field = this.newSelfRowRequest.lbField
     let lbCategory = ::events.getLbCategoryByField(field)
-    let showTable = checkLbTableVisible(lbRows, lbCategory)
+    let showTable = this.checkLbTableVisible(lbRows, lbCategory)
     let showButton = lbRows.len() > 0 && isLbAvailable
     lbTable.show(showTable)
     btnLb.show(showButton)
@@ -410,12 +417,12 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
     local rowIdx = 0
     foreach(row in lbRows)
     {
-      data += generateRowTableData(row, rowIdx++, lbCategory)
-      playersInTable.append("nick" in row ? row.nick : -1)
+      data += this.generateRowTableData(row, rowIdx++, lbCategory)
+      this.playersInTable.append("nick" in row ? row.nick : -1)
       if (rowIdx >= EVENTS_SHORT_LB_VISIBLE_ROWS)
         break
     }
-    guiScene.replaceContentFromText(lbTable, data, data.len(), this)
+    this.guiScene.replaceContentFromText(lbTable, data, data.len(), this)
   }
 
   function checkLbTableVisible(lb_rows, lbCategory)
@@ -431,16 +438,16 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
       return false
 
     let lastValidatedRow = lb_rows[min(EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW, participants) - 1]
-    return ::getTblValue(lbCategory.field, lastValidatedRow, 0) > 0
+    return getTblValue(lbCategory.field, lastValidatedRow, 0) > 0
   }
 
   function generateRowTableData(row, rowIdx, lbCategory)
   {
-    if (!newSelfRowRequest)
+    if (!this.newSelfRowRequest)
       return ""
 
     let rowName = "row_" + rowIdx
-    let forClan = ::events.isClanLbRequest(newSelfRowRequest)
+    let forClan = ::events.isClanLbRequest(this.newSelfRowRequest)
 
     let name = getPlayerName(row?.name ?? "")
     local text = name
@@ -466,7 +473,7 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
 
     if (lbCategory)
     {
-      let td = lbCategory.getItemCell(::getTblValue(lbCategory.field, row, -1))
+      let td = lbCategory.getItemCell(getTblValue(lbCategory.field, row, -1))
       td.tdalign <- "right"
       rowData.append(td)
     }
@@ -476,7 +483,7 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
 
   function setEventDescObjVisible(value)
   {
-    let eventDescObj = getObject("event_desc")
+    let eventDescObj = this.getObject("event_desc")
     if (eventDescObj != null)
       eventDescObj.show(value)
   }
@@ -484,38 +491,38 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
   function getObject(id, parentObject = null)
   {
     if (parentObject == null)
-      parentObject = scene
+      parentObject = this.scene
     let obj = parentObject.findObject(id)
-    return ::checkObj(obj) ? obj : null
+    return checkObj(obj) ? obj : null
   }
 
-  function onEventInventoryUpdate(params)
+  function onEventInventoryUpdate(_params)
   {
-    updateCostText()
+    this.updateCostText()
   }
 
   function onEventEventlbDataRenewed(params)
   {
-    if (::getTblValue("eventId", params) == ::getTblValue("name", selectedEvent))
-      fetchLbData()
+    if (getTblValue("eventId", params) == getTblValue("name", this.selectedEvent))
+      this.fetchLbData()
   }
 
   function onEventItemBought(params)
   {
-    let item = ::getTblValue("item", params)
-    if (item && item.isForEvent(::getTblValue("name", selectedEvent)))
-      updateCostText()
+    let item = getTblValue("item", params)
+    if (item && item.isForEvent(getTblValue("name", this.selectedEvent)))
+      this.updateCostText()
   }
 
   function onOpenEventLeaderboards()
   {
-    if (selectedEvent != null)
-      ::gui_modal_event_leaderboards(selectedEvent.name)
+    if (this.selectedEvent != null)
+      ::gui_modal_event_leaderboards(this.selectedEvent.name)
   }
 
   function onRewardsList()
   {
-    let eventAchievementGroup = ::events.getEventAchievementGroup(selectedEvent)
+    let eventAchievementGroup = ::events.getEventAchievementGroup(this.selectedEvent)
     if (eventAchievementGroup != "") {
       ::gui_start_profile({
         initialSheet = "UnlockAchievement"
@@ -524,40 +531,40 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
     }
     else
       ::gui_handlers.EventRewardsWnd.open([{
-          header = ::loc("tournaments/rewards")
-          event = selectedEvent
+          header = loc("tournaments/rewards")
+          event = this.selectedEvent
         }])
   }
 
   function onPlayersList()
   {
-    ::gui_handlers.MRoomMembersWnd.open(room)
+    ::gui_handlers.MRoomMembersWnd.open(this.room)
   }
 
   function hideEventLeaderboard(showWaitBox = true)
   {
-    let lbWrapObj = getObject("lb_wrap")
+    let lbWrapObj = this.getObject("lb_wrap")
     if (lbWrapObj == null)
       return
-    let btnLb = getObject("leaderboards_btn", lbWrapObj)
+    let btnLb = this.getObject("leaderboards_btn", lbWrapObj)
     if (btnLb != null)
       btnLb.show(false)
-    let lbTable = getObject("lb_table", lbWrapObj)
+    let lbTable = this.getObject("lb_table", lbWrapObj)
     if (lbTable != null)
       lbTable.show(false)
-    let lbWaitBox = getObject("msgWaitAnimation")
+    let lbWaitBox = this.getObject("msgWaitAnimation")
     if (lbWaitBox != null)
       lbWaitBox.show(showWaitBox)
   }
 
   function getFullRoomData()
   {
-    return room && ::g_mroom_info.get(room.roomId).getFullRoomData()
+    return this.room && ::g_mroom_info.get(this.room.roomId).getFullRoomData()
   }
 
   function onEventMRoomInfoUpdated(p)
   {
-    if (room && p.roomId == room.roomId && !::u.isEqual(currentFullRoomData, getFullRoomData()))
-      updateContent()
+    if (this.room && p.roomId == this.room.roomId && !::u.isEqual(this.currentFullRoomData, this.getFullRoomData()))
+      this.updateContent()
   }
 }

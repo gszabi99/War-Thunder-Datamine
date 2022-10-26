@@ -1,6 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let MAX_UNKNOWN_IDS_PEER_REQUEST = 100
 
-local requestUnknownXboxIds = function(playersList, knownUsers, cb) {} //forward declaration
+local requestUnknownXboxIds = function(_playersList, _knownUsers, _cb) {} //forward declaration
 requestUnknownXboxIds = function(playersList, knownUsers, cb)
 {
   if (!playersList.len())

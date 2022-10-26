@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::g_hud_event_manager <-
 {
   subscribers = {}
@@ -5,13 +11,13 @@
 
   function init()
   {
-    ::subscribe_hud_events(this, onHudEvent)
-    reset()
+    ::subscribe_hud_events(this, this.onHudEvent)
+    this.reset()
   }
 
   function reset()
   {
-    subscribers = {}
+    this.subscribers = {}
   }
 
   function subscribe(event_name, callback_fn, context = null)
@@ -19,36 +25,36 @@
     let cb = Callback(callback_fn, context)
     if (::u.isArray(event_name))
       foreach (evName in event_name)
-        pushCallback(evName, cb)
+        this.pushCallback(evName, cb)
     else
-      pushCallback(event_name, cb)
+      this.pushCallback(event_name, cb)
   }
 
   function pushCallback(event_name, callback_obj)
   {
-    if (!(event_name in subscribers))
-      subscribers[event_name] <- []
+    if (!(event_name in this.subscribers))
+      this.subscribers[event_name] <- []
 
-    subscribers[event_name].append(callback_obj)
+    this.subscribers[event_name].append(callback_obj)
   }
 
   function onHudEvent(event_name, event_data = {})
   {
-    if (!(event_name in subscribers))
+    if (!(event_name in this.subscribers))
       return
 
-    eventsStack.append(event_name)
+    this.eventsStack.append(event_name)
 
-    let eventSubscribers = subscribers[event_name]
+    let eventSubscribers = this.subscribers[event_name]
     for (local i = eventSubscribers.len() - 1; i >= 0; i--)
       if (!eventSubscribers[i].isValid())
         eventSubscribers.remove(i)
 
-    let data = handleData(event_data)
+    let data = this.handleData(event_data)
     for (local i = 0; i < eventSubscribers.len(); i++)
       eventSubscribers[i](data)
 
-    eventsStack.pop()
+    this.eventsStack.pop()
   }
 
   function handleData(data)
@@ -64,7 +70,7 @@
 
   function getCurHudEventName()
   {
-    return eventsStack.len() ? eventsStack.top() : null
+    return this.eventsStack.len() ? this.eventsStack.top() : null
   }
 }
 

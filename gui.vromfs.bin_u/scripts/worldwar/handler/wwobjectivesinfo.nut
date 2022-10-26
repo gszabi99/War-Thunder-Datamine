@@ -1,11 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 ::gui_handlers.WwObjectivesInfo <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
-  sceneTplName = "%gui/worldWar/objectivesInfoWindow"
+  sceneTplName = "%gui/worldWar/objectivesInfoWindow.tpl"
 
   staticBlk = null
   dynamicBlk = null
@@ -20,22 +28,22 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   function getSceneTplView()
   {
     return {
-      teamBlock = getTeamsData()
+      teamBlock = this.getTeamsData()
     }
   }
 
   function getSceneTplContainerObj()
   {
-    return scene.findObject("root-box")
+    return this.scene.findObject("root-box")
   }
 
   function initScreen()
   {
-    teamObjectiveHandlersArray = []
+    this.teamObjectiveHandlersArray = []
     foreach (side in ::g_world_war.getSidesOrder())
-      initSideBlock(side, ::ww_side_val_to_name(side))
-    markSeenCurObjective()
-    guiScene.playSound("ww_globe_battle_select")
+      this.initSideBlock(side, ::ww_side_val_to_name(side))
+    this.markSeenCurObjective()
+    this.guiScene.playSound("ww_globe_battle_select")
   }
 
   function markSeenCurObjective()
@@ -47,8 +55,8 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function initSideBlock(side, objId)
   {
-    let operationBlockObj = scene.findObject(objId)
-    if (!::checkObj(operationBlockObj))
+    let operationBlockObj = this.scene.findObject(objId)
+    if (!checkObj(operationBlockObj))
       return
 
     let objectiveHandler = ::handlersManager.loadHandler(::gui_handlers.wwObjective, {
@@ -62,8 +70,8 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (!objectiveHandler)
       return
 
-    teamObjectiveHandlersArray.append(objectiveHandler)
-    registerSubHandler(objectiveHandler)
+    this.teamObjectiveHandlersArray.append(objectiveHandler)
+    this.registerSubHandler(objectiveHandler)
   }
 
   function getTeamsData()

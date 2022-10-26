@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let globalEnv = require("globalEnv")
 
 ::g_aircraft_helpers <- {
@@ -24,15 +30,15 @@ let globalEnv = require("globalEnv")
     if (oldValue == newValue)
       return
     ::set_gui_option_in_mode(optionId, newValue, ::OPTIONS_MODE_GAMEPLAY)
-    onHelpersChanged(optionId)
+    this.onHelpersChanged(optionId)
   }
 
 
   // Init options if not and get option
   function getOptionValue(optionId)
   {
-    if (!isInitialized)
-      onHelpersChanged()
+    if (!this.isInitialized)
+      this.onHelpersChanged()
     return ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
   }
 
@@ -41,18 +47,18 @@ let globalEnv = require("globalEnv")
   function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false)
   {
     // Do not continue if not logged in or if recursion call happend
-    if (!::g_login.isLoggedIn() || isHelpersChangePerformed)
+    if (!::g_login.isLoggedIn() || this.isHelpersChangePerformed)
       return
-    isHelpersChangePerformed = true
+    this.isHelpersChangePerformed = true
 
     // Get current options values
     let options = {}
     if (!forceUpdateFromPreset)
-      foreach (name, optionId in controlHelpersOptions)
+      foreach (name, optionId in this.controlHelpersOptions)
         options[name] <- ::get_gui_option_in_mode(
           optionId, ::OPTIONS_MODE_GAMEPLAY)
     else
-      foreach (name, optionId in controlHelpersOptions)
+      foreach (name, _optionId in this.controlHelpersOptions)
         options[name] <- null
     let prevOptions = clone options
 
@@ -100,7 +106,7 @@ let globalEnv = require("globalEnv")
           else if (options.instructorEnabled == false)
             options.helpersMode = globalEnv.EM_REALISTIC
           else
-            options.helpersMode = ::is_platform_android ?
+            options.helpersMode = is_platform_android ?
               globalEnv.EM_INSTRUCTOR : globalEnv.EM_MOUSE_AIM
         }
         break
@@ -134,20 +140,20 @@ let globalEnv = require("globalEnv")
     // Load current mouse usage from preset if it undefined
     if (options.mouseUsageNoAim == null)
     {
-      options.mouseUsageNoAim = getPresetMouseUsage()
+      options.mouseUsageNoAim = this.getPresetMouseUsage()
       if (options.mouseUsage == null)
         options.mouseUsage = options.mouseUsageNoAim
     }
 
     // Set changed gui options
-    foreach (name, optionId in controlHelpersOptions)
+    foreach (name, optionId in this.controlHelpersOptions)
       if (options[name] != prevOptions[name])
         ::set_gui_option_in_mode(optionId,
           options[name], ::OPTIONS_MODE_GAMEPLAY)
 
-    updatePresetMouseUsage()
-    isHelpersChangePerformed = false
-    isInitialized = true
+    this.updatePresetMouseUsage()
+    this.isHelpersChangePerformed = false
+    this.isInitialized = true
   }
 
 
@@ -157,11 +163,11 @@ let globalEnv = require("globalEnv")
     // Load current mouse usage from used preset
     let curPreset = ::g_controls_manager.getCurPreset()
 
-    if (::getTblValue("mouseJoystick", curPreset.params))
+    if (getTblValue("mouseJoystick", curPreset.params))
       return AIR_MOUSE_USAGE.JOYSTICK
-    else if (::getTblValue("mouseAxisId", curPreset.getAxis("elevator")) == 1)
+    else if (getTblValue("mouseAxisId", curPreset.getAxis("elevator")) == 1)
       return AIR_MOUSE_USAGE.RELATIVE
-    else if (::getTblValue("mouseAxisId", curPreset.getAxis("camy")) == 1)
+    else if (getTblValue("mouseAxisId", curPreset.getAxis("camy")) == 1)
       return AIR_MOUSE_USAGE.VIEW
     else
       return AIR_MOUSE_USAGE.NOT_USED
@@ -176,7 +182,7 @@ let globalEnv = require("globalEnv")
       ::USEROPT_MOUSE_USAGE_NO_AIM, ::OPTIONS_MODE_GAMEPLAY)
 
     // Do not update mouse usage if it not chagned
-    if (getPresetMouseUsage() == mouseUsageNoAim)
+    if (this.getPresetMouseUsage() == mouseUsageNoAim)
       return
 
     // Update mouseJoystick param
@@ -184,7 +190,7 @@ let globalEnv = require("globalEnv")
       mouseUsageNoAim == AIR_MOUSE_USAGE.JOYSTICK
 
     // Clear mouse axes
-    foreach (axisName, axis in curPreset.axes)
+    foreach (_axisName, axis in curPreset.axes)
       if ("mouseAxisId" in axis &&
         (axis.mouseAxisId == 0 || axis.mouseAxisId == 1))
         axis.mouseAxisId <- -1
@@ -207,24 +213,24 @@ let globalEnv = require("globalEnv")
   }
 
   // Event handlers
-  function onEventLoginComplete(params)
+  function onEventLoginComplete(_params)
   {
-    onHelpersChanged()
+    this.onHelpersChanged()
   }
 
-  function onEventSignOut(params)
+  function onEventSignOut(_params)
   {
-    isInitialized = false
+    this.isInitialized = false
   }
 
-  function onEventBeforeControlsCommit(params)
+  function onEventBeforeControlsCommit(_params)
   {
-    onHelpersChanged()
+    this.onHelpersChanged()
   }
 
-  function onEventControlsReloaded(params)
+  function onEventControlsReloaded(_params)
   {
-    onHelpersChanged(null, true)
+    this.onHelpersChanged(null, true)
   }
 }
 

@@ -1,7 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
+let { abs, ceil, fabs, floor } = require("math")
 let globalEnv = require("globalEnv")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id="helpers_mode"
@@ -11,14 +20,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     skipAllBefore = [null, "msg/use_mouse_for_control", "msg/use_mouse_for_control", "msg/use_mouse_for_control"]
   }
     { id="msg_defaults",
-      text=::loc("msg/mouseAimDefaults"),
+      text=loc("msg/mouseAimDefaults"),
       type= CONTROL_TYPE.MSG_BOX,
       options = ["#options/resetToDefaults", "#options/no"],
       defValue = 1,
       skipAllBefore = [null, "ID_BASIC_CONTROL_HEADER"]
     }
     { id="msg_wasd_type",
-      text=::loc("controls/askKeyboardWasdType"),
+      text=loc("controls/askKeyboardWasdType"),
       type= CONTROL_TYPE.MSG_BOX
       options = ::recomended_control_presets.map(@(name) "#msgbox/btn_" + name)
       defValue = 1,
@@ -26,7 +35,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       {
         let cType = ::recomended_control_presets[value]
         let preset = ::get_controls_preset_by_selected_type(cType)
-        applyPreset(preset.fileName)
+        this.applyPreset(preset.fileName)
       }
     }
   { id="msg/use_mouse_for_control", type= CONTROL_TYPE.MSG_BOX
@@ -36,9 +45,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     skip = [null, null, ["msg/mouseWheelAction", "ID_CAMERA_NEUTRAL"]]
     onButton = function(value)
     {
-      curJoyParams.setMouseAxis(0, ["ailerons", "camx", ""][value])
-      curJoyParams.setMouseAxis(1, ["elevator", "camy", ""][value])
-      curJoyParams.mouseJoystick = value == 0;
+      this.curJoyParams.setMouseAxis(0, ["ailerons", "camx", ""][value])
+      this.curJoyParams.setMouseAxis(1, ["elevator", "camy", ""][value])
+      this.curJoyParams.mouseJoystick = value == 0;
     }
   }
 
@@ -57,24 +66,24 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
         {
           if (isSkipped)
           {
-            skipList.append("msg/holdThrottleForWEP")
+            this.skipList.append("msg/holdThrottleForWEP")
             return
           }
           if (isAxis)
           {
-            curJoyParams.holdThrottleForWEP = false
-            skipList.append("msg/holdThrottleForWEP")
+            this.curJoyParams.holdThrottleForWEP = false
+            this.skipList.append("msg/holdThrottleForWEP")
           }
-          let axis = curJoyParams.getAxis(::get_axis_index("throttle"))
+          let axis = this.curJoyParams.getAxis(::get_axis_index("throttle"))
           axis.relative = !isAxis
           let device = ::joystick_get_default()
-          curJoyParams.applyParams(device)
+          this.curJoyParams.applyParams(device)
         }
       skip = ["msg/holdThrottleForWEP"] //dont work in axis, but need to correct prevItem work, when skipList used in onAxisDone
     }
     { id="msg/holdThrottleForWEP", type= CONTROL_TYPE.MSG_BOX
       options = ["#options/yes", "#options/no", "options/skip"],
-      onButton = function(value) { if (value<2) curJoyParams.holdThrottleForWEP = value==0 }
+      onButton = function(value) { if (value<2) this.curJoyParams.holdThrottleForWEP = value==0 }
     }
     "ID_IGNITE_BOOSTERS"
     "ID_FIRE_MGUNS"
@@ -137,12 +146,12 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       {
         foreach(a in ["camx", "camy", "turret_x", "turret_y"])
         {
-          let axis = curJoyParams.getAxis(::get_axis_index(a))
+          let axis = this.curJoyParams.getAxis(::get_axis_index(a))
           axis.relative = value !=0
           axis.innerDeadzone = (value!=0)? 0.25 : 0.05
         }
         let device = ::joystick_get_default()
-        curJoyParams.applyParams(device)
+        this.curJoyParams.applyParams(device)
       }
     }
       { id="neutral_cam_pos", type= CONTROL_TYPE.SHORTCUT_GROUP
@@ -156,7 +165,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
         options = ["controls/none", "controls/zoom", "controls/throttle"], defValue = 1
         onButton = function(value)
         {
-          curJoyParams.setMouseAxis(2, ["", "zoom", "throttle"][value])
+          this.curJoyParams.setMouseAxis(2, ["", "zoom", "throttle"][value])
         }
       }
       "ID_CAMERA_NEUTRAL" //mouse look
@@ -172,7 +181,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       { id = "trackIrZoom", type= CONTROL_TYPE.MSG_BOX
         filterHide = [globalEnv.EM_MOUSE_AIM]
         options = ["#options/yes", "#options/no"]
-        onButton = function(value) { if (value<2) curJoyParams.trackIrZoom = value==0 }
+        onButton = function(value) { if (value<2) this.curJoyParams.trackIrZoom = value==0 }
       }
 
 
@@ -304,9 +313,20 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 ::gui_modal_controlsWizard <- function gui_modal_controlsWizard()
 {
-  if (!::has_feature("ControlsPresets"))
+  if (!hasFeature("ControlsPresets"))
     return
   ::gui_start_modal_wnd(::gui_handlers.controlsWizardModalHandler)
+}
+
+let function isInArrayRecursive(v, arr) {
+  foreach(i in arr) {
+    if (v==i)
+      return true
+    else
+      if (typeof(i)=="array" && isInArrayRecursive(v, i))
+        return true
+  }
+  return false
 }
 
 ::gui_handlers.controlsWizardModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -315,7 +335,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   sceneBlkName = "%gui/controlsWizard.blk"
   sceneNavBlkName = null
 
-  unitType = ::ES_UNIT_TYPE_AIRCRAFT
+  unitType = ES_UNIT_TYPE_AIRCRAFT
   controls_wizard_config = null
 
   filter = null
@@ -377,47 +397,47 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function initScreen()
   {
-    scene.findObject("input-listener").setUserData(this)
-    scene.findObject("update-timer").setUserData(this)
+    this.scene.findObject("input-listener").setUserData(this)
+    this.scene.findObject("update-timer").setUserData(this)
 
-    skipList = []
-    optionsToSave = []
-    repeatItemsList = []
-    prevItems = []
-    shortcutNames = []
-    shortcutItems = []
+    this.skipList = []
+    this.optionsToSave = []
+    this.repeatItemsList = []
+    this.prevItems = []
+    this.shortcutNames = []
+    this.shortcutItems = []
 
-    curJoyParams = ::JoystickParams()
-    curJoyParams.setFrom(::joystick_get_cur_settings())
-    deviceMapping = ::u.copy(::g_controls_manager.getCurPreset().deviceMapping)
+    this.curJoyParams = ::JoystickParams()
+    this.curJoyParams.setFrom(::joystick_get_cur_settings())
+    this.deviceMapping = ::u.copy(::g_controls_manager.getCurPreset().deviceMapping)
 
-    initAxisPresetup()
-    askPresetsWnd()
+    this.initAxisPresetup()
+    this.askPresetsWnd()
   }
 
   function initShortcutsNames()
   {
-    shortcutNames = []
-    shortcutItems = []
+    this.shortcutNames = []
+    this.shortcutItems = []
 
-    for(local i=0; i < controls_wizard_config.len(); i++)
+    for(local i=0; i < this.controls_wizard_config.len(); i++)
     {
-      let item = controls_wizard_config[i]
+      let item = this.controls_wizard_config[i]
 
       if (item.type == CONTROL_TYPE.SHORTCUT)
       {
-        item.shortcutId = shortcutNames.len()
-        shortcutNames.append(item.id)
-        shortcutItems.append(item)
+        item.shortcutId = this.shortcutNames.len()
+        this.shortcutNames.append(item.id)
+        this.shortcutItems.append(item)
       }
       else if (item.type== CONTROL_TYPE.SHORTCUT_GROUP)
       {
         item.shortcutId = []
-        foreach(idx, name in item.shortcuts)
+        foreach(_idx, name in item.shortcuts)
         {
-          item.shortcutId.append(shortcutNames.len())
-          shortcutNames.append(name)
-          shortcutItems.append(item)
+          item.shortcutId.append(this.shortcutNames.len())
+          this.shortcutNames.append(name)
+          this.shortcutItems.append(item)
         }
       }
       else if (item.type == CONTROL_TYPE.AXIS)
@@ -428,9 +448,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
           item.modifiersId[name] <- []
           foreach(a in item.axesList)
           {
-            item.modifiersId[name].append(shortcutNames.len())
-            shortcutNames.append(a + "_" + name)
-            shortcutItems.append(item)
+            item.modifiersId[name].append(this.shortcutNames.len())
+            this.shortcutNames.append(a + "_" + name)
+            this.shortcutItems.append(item)
           }
         }
       }
@@ -460,177 +480,177 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function nextItem()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    isButtonsListenInCurBox = false
-    isAxisListenInCurBox = false
+    this.isButtonsListenInCurBox = false
+    this.isAxisListenInCurBox = false
 
     local isItemOk = true
-    isRepeat = false
-    if (repeatItemsList.len()>0)
+    this.isRepeat = false
+    if (this.repeatItemsList.len()>0)
     {
-      curItem = repeatItemsList[0]
-      repeatItemsList.remove(0)
+      this.curItem = this.repeatItemsList[0]
+      this.repeatItemsList.remove(0)
       isItemOk = false
-      isRepeat = true
+      this.isRepeat = true
     }
     else
     {
-      curIdx++
-      if (!(curIdx in controls_wizard_config))
+      this.curIdx++
+      if (!(this.curIdx in this.controls_wizard_config))
       {
-        doApply()
+        this.doApply()
         return
       }
 
-      curItem = controls_wizard_config[curIdx]
+      this.curItem = this.controls_wizard_config[this.curIdx]
 
-      switchListenAxis(false)
-      switchListenButton(false)
+      this.switchListenAxis(false)
+      this.switchListenButton(false)
 
-      if (skipAllBefore!=null)
-        if (skipAllBefore==curItem.id)
-          skipAllBefore=null
+      if (this.skipAllBefore!=null)
+        if (this.skipAllBefore==this.curItem.id)
+          this.skipAllBefore=null
         else
-          return nextItem()
-      if (isInArray(curItem.id, skipList))
-        return nextItem()
-      if (("isFilterObj" in curItem) && curItem.isFilterObj && !::can_change_helpers_mode())
+          return this.nextItem()
+      if (isInArray(this.curItem.id, this.skipList))
+        return this.nextItem()
+      if (("isFilterObj" in this.curItem) && this.curItem.isFilterObj && !::can_change_helpers_mode())
       {
-        if ("optionType" in curItem)
+        if ("optionType" in this.curItem)
         {
-          let config = ::get_option(curItem.optionType)
-          filter = config.values[config.value]
+          let config = ::get_option(this.curItem.optionType)
+          this.filter = config.values[config.value]
         } else
-          ::dagor.assertf(false, "Error: not found optionType in wizard filterObj.")
-        return nextItem()
+          assert(false, "Error: not found optionType in wizard filterObj.")
+        return this.nextItem()
       }
-      if (filter!=null &&
-           ((("filterShow" in curItem) && !::isInArray(filter, curItem.filterShow))
-             || (("filterHide" in curItem) && ::isInArray(filter, curItem.filterHide))))
-        return nextItem()
+      if (this.filter!=null &&
+           ((("filterShow" in this.curItem) && !isInArray(this.filter, this.curItem.filterShow))
+             || (("filterHide" in this.curItem) && isInArray(this.filter, this.curItem.filterHide))))
+        return this.nextItem()
 
-      if ("needSkip" in curItem && curItem.needSkip && curItem.needSkip())
-        return nextItem()
+      if ("needSkip" in this.curItem && this.curItem.needSkip && this.curItem.needSkip())
+        return this.nextItem()
     }
 
-    if (curItem.type== CONTROL_TYPE.HEADER)
+    if (this.curItem.type== CONTROL_TYPE.HEADER)
     {
-      scene.findObject("wizard-title").setValue(::loc(getItemText(curItem)))
+      this.scene.findObject("wizard-title").setValue(loc(this.getItemText(this.curItem)))
       isItemOk = false
-      nextItem()
+      this.nextItem()
     }
-    else if (curItem.type == CONTROL_TYPE.SHORTCUT || curItem.type== CONTROL_TYPE.SHORTCUT_GROUP)
+    else if (this.curItem.type == CONTROL_TYPE.SHORTCUT || this.curItem.type== CONTROL_TYPE.SHORTCUT_GROUP)
     {
-      switchToDiv("shortcut-wnd")
-      askShortcut()
+      this.switchToDiv("shortcut-wnd")
+      this.askShortcut()
     }
-    else if (curItem.type == CONTROL_TYPE.AXIS)
+    else if (this.curItem.type == CONTROL_TYPE.AXIS)
     {
-      axisMaxChoosen=false
-      askAxis()
+      this.axisMaxChoosen=false
+      this.askAxis()
     }
-    else if (curItem.type== CONTROL_TYPE.MSG_BOX)
+    else if (this.curItem.type== CONTROL_TYPE.MSG_BOX)
     {
-      switchToDiv("msgBox-wnd")
-      showMsgBox()
+      this.switchToDiv("msgBox-wnd")
+      this.showMsgBox()
     }
-    else if (curItem.type== CONTROL_TYPE.LISTBOX)
+    else if (this.curItem.type== CONTROL_TYPE.LISTBOX)
     {
-      switchToDiv("listbox-wnd")
-      showMsgBox(true)
+      this.switchToDiv("listbox-wnd")
+      this.showMsgBox(true)
     }
     else
     {
       isItemOk = false
-      nextItem()
+      this.nextItem()
     }
 
     if (isItemOk)
-      prevItems.append(curIdx)
+      this.prevItems.append(this.curIdx)
 
-    updateButtons()
-    this.showSceneBtn("btn_prevItem", prevItems.len() > 0)
-    this.showSceneBtn("btn_controlsWizard", prevItems.len()==0)
+    this.updateButtons()
+    this.showSceneBtn("btn_prevItem", this.prevItems.len() > 0)
+    this.showSceneBtn("btn_controlsWizard", this.prevItems.len()==0)
   }
 
   function onPrevItem()
   {
-    isButtonsListenInCurBox = false
-    isAxisListenInCurBox = false
+    this.isButtonsListenInCurBox = false
+    this.isAxisListenInCurBox = false
 
-    if (curIdx == 0)
+    if (this.curIdx == 0)
     {
-      askPresetsWnd()
+      this.askPresetsWnd()
       return
     }
 
-    if (prevItems.len()==0)
+    if (this.prevItems.len()==0)
       return
 
-    if (msgTimer>0) //after axis bind message
+    if (this.msgTimer>0) //after axis bind message
     {
-      msgTimer=0
-      isRepeat = true
+      this.msgTimer=0
+      this.isRepeat = true
     }
 
-    repeatItemsList = []
+    this.repeatItemsList = []
 
-    local lastIdx = prevItems[prevItems.len()-1]
-    if (isRepeat)
+    local lastIdx = this.prevItems[this.prevItems.len()-1]
+    if (this.isRepeat)
     {
-      curIdx = lastIdx-1
-      prevItems.remove(prevItems.len()-1)
-      nextItem()
+      this.curIdx = lastIdx-1
+      this.prevItems.remove(this.prevItems.len()-1)
+      this.nextItem()
     }
-    else if (curItem.type == CONTROL_TYPE.AXIS && axisMaxChoosen)
+    else if (this.curItem.type == CONTROL_TYPE.AXIS && this.axisMaxChoosen)
     {
-      axisMaxChoosen = false
-      axisFixed = false
-      selectedAxisNum = -1
-      askAxis()
+      this.axisMaxChoosen = false
+      this.axisFixed = false
+      this.selectedAxisNum = -1
+      this.askAxis()
     }
     else
     {
-      prevItems.remove(prevItems.len()-1)
-      if (prevItems.len()==0)
+      this.prevItems.remove(this.prevItems.len()-1)
+      if (this.prevItems.len()==0)
         return
 
-      lastIdx = prevItems[prevItems.len()-1]
-      prevItems.remove(prevItems.len()-1)
-      curIdx = lastIdx-1
+      lastIdx = this.prevItems[this.prevItems.len()-1]
+      this.prevItems.remove(this.prevItems.len()-1)
+      this.curIdx = lastIdx-1
 
-      let lastItem = controls_wizard_config[lastIdx]
+      let lastItem = this.controls_wizard_config[lastIdx]
       if ("skip" in lastItem)
-        for(local i=skipList.len()-1; i>=0; i--)
-          if (::isInArrayRecursive(skipList[i], lastItem.skip))
-            skipList.remove(i)
+        for(local i=this.skipList.len()-1; i>=0; i--)
+          if (isInArrayRecursive(this.skipList[i], lastItem.skip))
+            this.skipList.remove(i)
 
-      nextItem()
+      this.nextItem()
     }
 
-    updateButtons()
+    this.updateButtons()
   }
 
   function switchToDiv(divName)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
     foreach(name in ["msgBox-wnd", "shortcut-wnd", "listbox-wnd", "options-wnd", "msg-wnd"])
     {
-      let divObj = scene.findObject(name)
-      if (!::checkObj(divObj))
+      let divObj = this.scene.findObject(name)
+      if (!checkObj(divObj))
         continue
 
       divObj.show(divName == name)
     }
 
     if (divName != "msg-wnd")
-      curDivName = divName
+      this.curDivName = divName
 
-    enableListenerObj(curDivName == "shortcut-wnd")
+    this.enableListenerObj(this.curDivName == "shortcut-wnd")
   }
 
   function enableListenerObj(isEnable)
@@ -642,48 +662,48 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function askShortcut()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    axisMaxChoosen = false
-    scene.findObject("shortcut_text").setValue(::loc(getItemText(curItem)))
-    let textObj = scene.findObject("hold_axis")
-    if (::checkObj(textObj))
+    this.axisMaxChoosen = false
+    this.scene.findObject("shortcut_text").setValue(loc(this.getItemText(this.curItem)))
+    let textObj = this.scene.findObject("hold_axis")
+    if (checkObj(textObj))
     {
-      textObj.setValue(::loc("hotkeys/msg/press_a_key"))
+      textObj.setValue(loc("hotkeys/msg/press_a_key"))
       textObj.show(true)
     }
-    scene.findObject("shortcut_image")["background-image"] = ""
+    this.scene.findObject("shortcut_image")["background-image"] = ""
     this.showSceneBtn("btn-reset-axis-input", false)
-    clearShortcutInfo()
+    this.clearShortcutInfo()
 
-    isButtonsListenInCurBox = true
-    switchListenButton(true)
-    setCurAssignedButtonsText()
+    this.isButtonsListenInCurBox = true
+    this.switchListenButton(true)
+    this.setCurAssignedButtonsText()
   }
 
   function askAxis()
   {
-    switchToDiv("shortcut-wnd")
-    axisApplyParams = null
-    scene.findObject("shortcut_text").setValue(::loc(getItemText(curItem)))
+    this.switchToDiv("shortcut-wnd")
+    this.axisApplyParams = null
+    this.scene.findObject("shortcut_text").setValue(loc(this.getItemText(this.curItem)))
 
-    isButtonsListenInCurBox = !axisMaxChoosen || axisTypeButtons
-    scene.findObject("shortcut_current_button").setValue(isButtonsListenInCurBox? "?" : "")
-    clearShortcutInfo()
-    switchListenButton(isButtonsListenInCurBox)
+    this.isButtonsListenInCurBox = !this.axisMaxChoosen || this.axisTypeButtons
+    this.scene.findObject("shortcut_current_button").setValue(this.isButtonsListenInCurBox? "?" : "")
+    this.clearShortcutInfo()
+    this.switchListenButton(this.isButtonsListenInCurBox)
 
-    isAxisListenInCurBox = !axisMaxChoosen || !axisTypeButtons
-    switchListenAxis(isAxisListenInCurBox, !axisMaxChoosen)
-    if (!axisMaxChoosen)
+    this.isAxisListenInCurBox = !this.axisMaxChoosen || !this.axisTypeButtons
+    this.switchListenAxis(this.isAxisListenInCurBox, !this.axisMaxChoosen)
+    if (!this.axisMaxChoosen)
     {
-      bindAxisNum = -1
-      selectedAxisNum = -1
+      this.bindAxisNum = -1
+      this.selectedAxisNum = -1
     }
-    updateAxisPressKey()
-    updateAxisName()
-    setCurAssignedButtonsText()
-    updateButtons()
+    this.updateAxisPressKey()
+    this.updateAxisName()
+    this.setCurAssignedButtonsText()
+    this.updateButtons()
   }
 
   function setCurAssignedButtonsText()
@@ -691,164 +711,164 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     local axisAssignText = ""
     local buttonAssignText = ""
 
-    if (curItem.type == CONTROL_TYPE.AXIS)
+    if (this.curItem.type == CONTROL_TYPE.AXIS)
     {
-      let axis = curJoyParams.getAxis(curItem.axisIndex[0])
+      let axis = this.curJoyParams.getAxis(this.curItem.axisIndex[0])
       let curPreset = ::g_controls_manager.getCurPreset()
       if (axis.axisId >= 0)
         axisAssignText = ::addHotkeyTxt(::remapAxisName(curPreset, axis.axisId))
-      if (isButtonsListenInCurBox)
+      if (this.isButtonsListenInCurBox)
         buttonAssignText = ::get_shortcut_text({
-          shortcuts = shortcuts,
-          shortcutId = curItem.modifiersId[axisMaxChoosen? "rangeMin" : "rangeMax"][0],
+          shortcuts = this.shortcuts,
+          shortcutId = this.curItem.modifiersId[this.axisMaxChoosen? "rangeMin" : "rangeMax"][0],
           cantBeEmpty = false
         })
     }
-    else if (curItem.type == CONTROL_TYPE.SHORTCUT)
+    else if (this.curItem.type == CONTROL_TYPE.SHORTCUT)
       buttonAssignText = ::get_shortcut_text({
-        shortcuts = shortcuts,
-        shortcutId = curItem.shortcutId,
+        shortcuts = this.shortcuts,
+        shortcutId = this.curItem.shortcutId,
         cantBeEmpty = false
       })
 
-    local assignText = axisAssignText + ((buttonAssignText == "" || axisAssignText == "")? "" : ::loc("ui/semicolon")) + buttonAssignText
+    local assignText = axisAssignText + ((buttonAssignText == "" || axisAssignText == "")? "" : loc("ui/semicolon")) + buttonAssignText
     if (assignText == "")
       assignText = "---"
 
-    scene.findObject("curAssign_text").setValue(::loc("controls/currentAssign") + ::loc("ui/colon") + assignText)
+    this.scene.findObject("curAssign_text").setValue(loc("controls/currentAssign") + loc("ui/colon") + assignText)
   }
 
   function updateAxisPressKey()
   {
     local imgId = 0
     local msgLocId = "hotkeys/msg/choose_maxValue"
-    if (axisTypeButtons && axisMaxChoosen)
+    if (this.axisTypeButtons && this.axisMaxChoosen)
     {
       msgLocId = "hotkeys/msg/choose_minValue_button"
       imgId = 1
     }
-    if (!axisTypeButtons)
-      if (selectedAxisNum>=0)
+    if (!this.axisTypeButtons)
+      if (this.selectedAxisNum>=0)
       {
         msgLocId = "hotkeys/msg/choose_minValue_axis"
         imgId = 1
       }
-    if ("msgType" in curItem)
-      msgLocId += curItem.msgType
+    if ("msgType" in this.curItem)
+      msgLocId += this.curItem.msgType
 
-    let textObj = scene.findObject("hold_axis")
-    if (::checkObj(textObj))
+    let textObj = this.scene.findObject("hold_axis")
+    if (checkObj(textObj))
     {
-      textObj.setValue(::loc(msgLocId))
+      textObj.setValue(loc(msgLocId))
       textObj.show(true)
     }
 
     local image = ""
-    if (("images" in curItem) && (imgId in curItem.images))
-      image = $"#ui/images/wizard/{curItem.images[imgId]}.png"
-    scene.findObject("shortcut_image")["background-image"] = image
+    if (("images" in this.curItem) && (imgId in this.curItem.images))
+      image = $"#ui/images/wizard/{this.curItem.images[imgId]}.png"
+    this.scene.findObject("shortcut_image")["background-image"] = image
   }
 
   function setAxisType(isButtons)
   {
-    axisTypeButtons = isButtons
-    if (axisTypeButtons)
-      switchListenAxis(false)
+    this.axisTypeButtons = isButtons
+    if (this.axisTypeButtons)
+      this.switchListenAxis(false)
     else
     {
-      clearShortcutInfo()
-      switchListenButton(false)
+      this.clearShortcutInfo()
+      this.switchListenButton(false)
     }
 
-    this.showSceneBtn("btn-reset-axis-input", selectedAxisNum>=0 || axisMaxChoosen)
+    this.showSceneBtn("btn-reset-axis-input", this.selectedAxisNum>=0 || this.axisMaxChoosen)
   }
 
   function switchListenButton(value)
   {
-    isListenButton = value
-    let obj = scene.findObject("shortcut_current_button")
-    if (::checkObj(obj))
+    this.isListenButton = value
+    let obj = this.scene.findObject("shortcut_current_button")
+    if (checkObj(obj))
     {
       obj.show(value)
       obj.setValue("?")
     }
 
-    guiScene.sleepKeyRepeat(value)
+    this.guiScene.sleepKeyRepeat(value)
     ::set_bind_mode(value)
   }
 
   function switchListenAxis(value, reinitPresetup=false)
   {
-    isListenAxis = value
+    this.isListenAxis = value
 
-    isAxisVertical = ("isVertical" in curItem)? curItem.isVertical : false
-    scene.findObject("test-axis").show(value && !isAxisVertical)
-    scene.findObject("test-axis-vert").show(value && isAxisVertical)
-    scene.findObject("bind-axis-name").show(value)
+    this.isAxisVertical = ("isVertical" in this.curItem)? this.curItem.isVertical : false
+    this.scene.findObject("test-axis").show(value && !this.isAxisVertical)
+    this.scene.findObject("test-axis-vert").show(value && this.isAxisVertical)
+    this.scene.findObject("bind-axis-name").show(value)
 
     if (value)
     {
-      axisFixed = false
+      this.axisFixed = false
       if (reinitPresetup)
-        initAxisPresetup()
+        this.initAxisPresetup()
     }
-    this.showSceneBtn("btn-reset-axis-input", axisMaxChoosen)
+    this.showSceneBtn("btn-reset-axis-input", this.axisMaxChoosen)
   }
 
   function updateSwitchModesButton()
   {
-    let isShow = curDivName == "shortcut-wnd" && selectedAxisNum < 0 && !axisMaxChoosen
+    let isShow = this.curDivName == "shortcut-wnd" && this.selectedAxisNum < 0 && !this.axisMaxChoosen
     this.showSceneBtn("btn_switchAllModes", isShow)
 
     if (!isShow)
       return
 
-    let isEnabled = isListenAxis || isListenButton
-    let sampleText = ::loc("mainmenu/shortcuts") + " (%s" + ::loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
+    let isEnabled = this.isListenAxis || this.isListenButton
+    let sampleText = loc("mainmenu/shortcuts") + " (%s" + loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
     let coloredText = format(sampleText, "<color=@" + (isEnabled? "goodTextColor" : "warningTextColor") + ">", "</color>")
     let NotColoredText = format(sampleText, "", "")
 
-    setDoubleTextToButton(scene, "btn_switchAllModes", NotColoredText, coloredText)
+    setDoubleTextToButton(this.scene, "btn_switchAllModes", NotColoredText, coloredText)
   }
 
-  function switchAllListenModes(obj)
+  function switchAllListenModes(_obj)
   {
-    axisCurTime = 0.0
-    let btnObj = scene.findObject("btn_switchAllModes")
+    this.axisCurTime = 0.0
+    let btnObj = this.scene.findObject("btn_switchAllModes")
     if (!btnObj.isEnabled())
-      onResetAxisInput()
+      this.onResetAxisInput()
     else
     {
-      clearShortcutInfo()
-      switchButtonMode()
+      this.clearShortcutInfo()
+      this.switchButtonMode()
     }
-    updateButtons()
+    this.updateButtons()
   }
 
   function switchButtonMode()
   {
-    if (curDivName != "shortcut-wnd")
+    if (this.curDivName != "shortcut-wnd")
       return
-    let enable = !(isListenAxis || isListenButton)
-    enableListenerObj(enable)
-    scene.findObject("hold_axis").show(enable)
-    if (isAxisListenInCurBox)
-      switchListenAxis(enable, true)
-    if (isButtonsListenInCurBox)
-      switchListenButton(enable)
+    let enable = !(this.isListenAxis || this.isListenButton)
+    this.enableListenerObj(enable)
+    this.scene.findObject("hold_axis").show(enable)
+    if (this.isAxisListenInCurBox)
+      this.switchListenAxis(enable, true)
+    if (this.isButtonsListenInCurBox)
+      this.switchListenButton(enable)
   }
 
   function updateButtons()
   {
-    let isInListenWnd = curDivName == "shortcut-wnd"
-    let isListening   = isInListenWnd && (isListenAxis || isListenButton)
+    let isInListenWnd = this.curDivName == "shortcut-wnd"
+    let isListening   = isInListenWnd && (this.isListenAxis || this.isListenButton)
 
     if (::show_console_buttons)
     {
       foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"])
       {
-        let btnObj = scene.findObject(name)
-        if (::checkObj(btnObj))
+        let btnObj = this.scene.findObject(name)
+        if (checkObj(btnObj))
         {
           btnObj.hideConsoleImage = isListening ? "yes" : "no"
           btnObj.inactiveColor = isListening ? "yes" : "no"
@@ -856,48 +876,48 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       }
     }
 
-    updateSwitchModesButton()
+    this.updateSwitchModesButton()
     this.showSceneBtn("keep_assign_btn", isInListenWnd)
-    this.showSceneBtn("btn-reset-axis-input", isInListenWnd && (axisMaxChoosen || selectedAxisNum >= 0))
+    this.showSceneBtn("btn-reset-axis-input", isInListenWnd && (this.axisMaxChoosen || this.selectedAxisNum >= 0))
     this.showSceneBtn("btn_back", !isListening)
   }
 
   function onButtonDone()
   {
-    if (curItem.type == CONTROL_TYPE.AXIS)
-      if (!axisMaxChoosen)
+    if (this.curItem.type == CONTROL_TYPE.AXIS)
+      if (!this.axisMaxChoosen)
       {
-        axisMaxChoosen=true
-        setAxisType(true)
-        askAxis()
+        this.axisMaxChoosen=true
+        this.setAxisType(true)
+        this.askAxis()
         return
       } else
       {
-        let axis = curJoyParams.getAxis(curItem.axisIndex[0])
-        axis.relative = ("buttonRelative" in curItem)? curItem.buttonRelative : false
-        axis.relSens = ("relSens" in curItem)? curItem.relSens : 1.0
-        axis.relStep = ("relStep" in curItem)? curItem.relStep : 0
+        let axis = this.curJoyParams.getAxis(this.curItem.axisIndex[0])
+        axis.relative = ("buttonRelative" in this.curItem)? this.curItem.buttonRelative : false
+        axis.relSens = ("relSens" in this.curItem)? this.curItem.relSens : 1.0
+        axis.relStep = ("relStep" in this.curItem)? this.curItem.relStep : 0
         let device = ::joystick_get_default()
-        curJoyParams.applyParams(device)
+        this.curJoyParams.applyParams(device)
       }
 
-    if (curItem.type == CONTROL_TYPE.AXIS && ("onAxisDone" in curItem))
-      curItem.onAxisDone.call(this, !axisTypeButtons, false)
-    nextItem()
+    if (this.curItem.type == CONTROL_TYPE.AXIS && ("onAxisDone" in this.curItem))
+      this.curItem.onAxisDone.call(this, !this.axisTypeButtons, false)
+    this.nextItem()
   }
 
   function onButtonEntered(obj)
   {
-    if (isButtonsListenInCurBox && !isListenButton)
+    if (this.isButtonsListenInCurBox && !this.isListenButton)
       return
 
-    switchListenButton(false)
-    let sc = readShortcutInfo(obj)
+    this.switchListenButton(false)
+    let sc = this.readShortcutInfo(obj)
     if (sc.dev.len() > 0 && sc.dev.len() == sc.btn.len())
-      if (bindShortcut(sc.dev, sc.btn))
+      if (this.bindShortcut(sc.dev, sc.btn))
         return
 
-    onButtonDone()
+    this.onButtonDone()
   }
 
   function isKbdOrMouse(devs) // warning disable: -named-like-return-bool
@@ -906,9 +926,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     foreach(d in devs)
       if (d>0)
         if (isKbd==null)
-          isKbd = d < ::JOYSTICK_DEVICE_0_ID
+          isKbd = d < JOYSTICK_DEVICE_0_ID
         else
-          if (isKbd != (d < ::JOYSTICK_DEVICE_0_ID))
+          if (isKbd != (d < JOYSTICK_DEVICE_0_ID))
             return null
     return isKbd
   }
@@ -918,60 +938,60 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     if (typeof(shortcutId)=="array")
     {
       foreach(id in shortcutId)
-        doBind(devs, btns, id)
+        this.doBind(devs, btns, id)
     } else
     if (typeof(shortcutId)=="integer" && devs.len() > 0)
     {
-      let isKbd = isKbdOrMouse(devs)
+      let isKbd = this.isKbdOrMouse(devs)
       if (isKbd==null)
-        shortcuts[shortcutId] = [{dev = devs, btn = btns}]
+        this.shortcuts[shortcutId] = [{dev = devs, btn = btns}]
       else
       {
-        for(local i=shortcuts[shortcutId].len()-1; i>=0; i--)
-          if (isKbd == isKbdOrMouse(shortcuts[shortcutId][i].dev))
-            shortcuts[shortcutId].remove(i)   //remove shortcuts by same device type
-        shortcuts[shortcutId].append({dev = devs, btn = btns})
-        if (shortcuts[shortcutId].len() > max_shortcuts)
-          shortcuts[shortcutId].remove(0)
+        for(local i=this.shortcuts[shortcutId].len()-1; i>=0; i--)
+          if (isKbd == this.isKbdOrMouse(this.shortcuts[shortcutId][i].dev))
+            this.shortcuts[shortcutId].remove(i)   //remove shortcuts by same device type
+        this.shortcuts[shortcutId].append({dev = devs, btn = btns})
+        if (this.shortcuts[shortcutId].len() > MAX_SHORTCUTS)
+          this.shortcuts[shortcutId].remove(0)
       }
     }
   }
 
   function bindShortcut(devs, btns)
   {
-    local shortcutId = curItem.shortcutId
-    if (curItem.type == CONTROL_TYPE.AXIS)
-      shortcutId = curItem.modifiersId[axisMaxChoosen? "rangeMin" : "rangeMax"]
+    local shortcutId = this.curItem.shortcutId
+    if (this.curItem.type == CONTROL_TYPE.AXIS)
+      shortcutId = this.curItem.modifiersId[this.axisMaxChoosen? "rangeMin" : "rangeMax"]
 
-    let curBinding = findButtons(devs, btns, shortcutId)
+    let curBinding = this.findButtons(devs, btns, shortcutId)
     if (!curBinding || curBinding.len() == 0)
     {
-      doBind(devs, btns, shortcutId)
+      this.doBind(devs, btns, shortcutId)
       return false
     }
 
     local actionText = ""
     foreach(binding in curBinding)
-      actionText += ((actionText=="")? "":", ") + ::loc("hotkeys/"+shortcutNames[binding[0]])
-    let msg = ::loc("hotkeys/msg/unbind_question", { action=actionText })
+      actionText += ((actionText=="")? "":", ") + loc("hotkeys/"+this.shortcutNames[binding[0]])
+    let msg = loc("hotkeys/msg/unbind_question", { action=actionText })
     this.msgBox("controls_wizard_bind_existing_shortcut", msg, [
-      ["add", (@(curBinding, devs, btns, shortcutId) function() {
-        doBind(devs, btns, shortcutId)
-        onButtonDone()
+      ["add", (@(_curBinding, devs, btns, shortcutId) function() {
+        this.doBind(devs, btns, shortcutId)
+        this.onButtonDone()
       })(curBinding, devs, btns, shortcutId)],
       ["replace", (@(curBinding, devs, btns, shortcutId) function() {
         foreach(binding in curBinding)
         {
-          shortcuts[binding[0]].remove(binding[1])
-          let item = shortcutItems[binding[0]]
-          if (!isInArray(item, repeatItemsList))
-            repeatItemsList.append(item)
+          this.shortcuts[binding[0]].remove(binding[1])
+          let item = this.shortcutItems[binding[0]]
+          if (!isInArray(item, this.repeatItemsList))
+            this.repeatItemsList.append(item)
         }
-        doBind(devs, btns, shortcutId)
-        onButtonDone()
+        this.doBind(devs, btns, shortcutId)
+        this.onButtonDone()
       })(curBinding, devs, btns, shortcutId)],
-      ["cancel", function() { askShortcut() }],
-      ["skip", function() { onButtonDone() }],
+      ["cancel", function() { this.askShortcut() }],
+      ["skip", function() { this.onButtonDone() }],
     ], "add")
     return true
   }
@@ -979,23 +999,23 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   function findButtons(devs, btns, shortcutId)
   {
     let firstSc = (typeof(shortcutId)=="integer")? shortcutId : shortcutId[0]
-    let scItem = shortcutItems[firstSc]
-    if (firstSc>maxCheckSc)
-      maxCheckSc = firstSc
+    let scItem = this.shortcutItems[firstSc]
+    if (firstSc>this.maxCheckSc)
+      this.maxCheckSc = firstSc
     let res = []
     let foundedItems = []
 
-    for(local i = 0; i<maxCheckSc; i++)
+    for(local i = 0; i<this.maxCheckSc; i++)
     {
       if (firstSc==i || ((typeof(shortcutId)=="array") && isInArray(i, shortcutId)))
         continue
-      let item = shortcutItems[i]
-      if (item==scItem && (item.type!= CONTROL_TYPE.AXIS || i==scItem.modifiersId[axisMaxChoosen? "rangeMin" : "rangeMax"]))
+      let item = this.shortcutItems[i]
+      if (item==scItem && (item.type!= CONTROL_TYPE.AXIS || i==scItem.modifiersId[this.axisMaxChoosen? "rangeMin" : "rangeMax"]))
         continue
-      if (isInArray(item, repeatItemsList) || isInArray(item, foundedItems))
+      if (isInArray(item, this.repeatItemsList) || isInArray(item, foundedItems))
         continue
 
-      let event = shortcuts[i]
+      let event = this.shortcuts[i]
       foreach (btnIdx, button in event)
       {
         if (!button || button.dev.len() != devs.len())
@@ -1016,28 +1036,28 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     return res
   }
 
-  function onCancelButtonInput(obj)
+  function onCancelButtonInput(_obj)
   {
-    if (isButtonsListenInCurBox || (curItem.type == CONTROL_TYPE.AXIS && !axisTypeButtons))
+    if (this.isButtonsListenInCurBox || (this.curItem.type == CONTROL_TYPE.AXIS && !this.axisTypeButtons))
     {
-      switchListenButton(false)
-      switchListenAxis(false)
-      selectedAxisNum = -1
-      axisApplyParams = null
-      if ("onAxisDone" in curItem)
-        curItem.onAxisDone.call(this, !axisTypeButtons, true)
-      nextItem()
+      this.switchListenButton(false)
+      this.switchListenAxis(false)
+      this.selectedAxisNum = -1
+      this.axisApplyParams = null
+      if ("onAxisDone" in this.curItem)
+        this.curItem.onAxisDone.call(this, !this.axisTypeButtons, true)
+      this.nextItem()
     }
   }
 
   function onButtonAdded(obj)
   {
-    if (!isButtonsListenInCurBox && !isListenButton)
+    if (!this.isButtonsListenInCurBox && !this.isListenButton)
       return
 
-    let sc = readShortcutInfo(obj)
-    curBtnText = getShortcutText(sc) + ((lastNumButtons>=3)? "" : (lastNumButtons>0)? " + ?" : "?")
-    scene.findObject("shortcut_current_button").setValue(curBtnText)
+    let sc = this.readShortcutInfo(obj)
+    this.curBtnText = this.getShortcutText(sc) + ((this.lastNumButtons>=3)? "" : (this.lastNumButtons>0)? " + ?" : "?")
+    this.scene.findObject("shortcut_current_button").setValue(this.curBtnText)
   }
 
   function getShortcutText(sc)
@@ -1052,7 +1072,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   function readShortcutInfo(obj)
   {
     let res = { dev = [], btn = [] }
-    lastNumButtons = 0
+    this.lastNumButtons = 0
 
     for (local i = 0; i < 3; i++)
     {
@@ -1062,7 +1082,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
         let btnId = obj["button" + i].tointeger()
         res.dev.append(devId)
         res.btn.append(btnId)
-        lastNumButtons++
+        this.lastNumButtons++
       }
     }
 
@@ -1071,7 +1091,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function clearShortcutInfo()
   {
-    let obj = scene.findObject("input-listener")
+    let obj = this.scene.findObject("input-listener")
     for (local i = 0; i < 3; i++)
     {
       obj["device" + i] = ""
@@ -1081,121 +1101,121 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function onAxisSelected()
   {
-    switchListenAxis(false)
-    onAxisDone()
+    this.switchListenAxis(false)
+    this.onAxisDone()
   }
 
   function onAxisDone()
   {
-    switchListenAxis(false)
+    this.switchListenAxis(false)
     foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset", "btn-reset-axis-input"])
       this.showSceneBtn(name, false)
 
-    let config = presetupAxisRawValues[selectedAxisNum]
+    let config = this.presetupAxisRawValues[this.selectedAxisNum]
 
-    axisApplyParams = {}
-    axisApplyParams.invert <- false
-    if (fabs(config.min-bindAxisFixVal) < fabs(config.max-bindAxisFixVal))
-      axisApplyParams.invert = true
-    axisApplyParams.relSens <- ("relSens" in curItem)? curItem.relSens : 1.0
-    axisApplyParams.relStep <- ("relStep" in curItem)? curItem.relStep : 0
+    this.axisApplyParams = {}
+    this.axisApplyParams.invert <- false
+    if (fabs(config.min-this.bindAxisFixVal) < fabs(config.max-this.bindAxisFixVal))
+      this.axisApplyParams.invert = true
+    this.axisApplyParams.relSens <- ("relSens" in this.curItem)? this.curItem.relSens : 1.0
+    this.axisApplyParams.relStep <- ("relStep" in this.curItem)? this.curItem.relStep : 0
 
-    axisApplyParams.isSlider <- ("isSlider" in curItem)? curItem.isSlider : false
-    axisApplyParams.kAdd <- 0
-    axisApplyParams.kMul <- 1.0
+    this.axisApplyParams.isSlider <- ("isSlider" in this.curItem)? this.curItem.isSlider : false
+    this.axisApplyParams.kAdd <- 0
+    this.axisApplyParams.kMul <- 1.0
 
-    if (!axisApplyParams.isSlider)
+    if (!this.axisApplyParams.isSlider)
     {
-      let minDev = min(::abs(config.max), ::abs(config.min))
+      let minDev = min(abs(config.max), abs(config.min))
       if (minDev>=3200) //10%
-        axisApplyParams.kMul = 0.1*::floor(320000.0/minDev)
+        this.axisApplyParams.kMul = 0.1*floor(320000.0/minDev)
       else
-        axisApplyParams.isSlider = true  //count this axis as slider
+        this.axisApplyParams.isSlider = true  //count this axis as slider
     }
-    if (axisApplyParams.isSlider)
+    if (this.axisApplyParams.isSlider)
     {
-      axisApplyParams.kMul = 2.0*32000/(config.max-config.min) * 1.05 //accuracy 5%
-      axisApplyParams.kMul = 0.1*::ceil(10.0*axisApplyParams.kMul)
-      axisApplyParams.kAdd = -0.5*(config.min+config.max) / 32000 * axisApplyParams.kMul
+      this.axisApplyParams.kMul = 2.0*32000/(config.max-config.min) * 1.05 //accuracy 5%
+      this.axisApplyParams.kMul = 0.1*ceil(10.0*this.axisApplyParams.kMul)
+      this.axisApplyParams.kAdd = -0.5*(config.min+config.max) / 32000 * this.axisApplyParams.kMul
     }
 
     let curPreset = ::g_controls_manager.getCurPreset()
-    curBtnText = ::remapAxisName(curPreset, selectedAxisNum)
-    showMsg(::loc("hotkeys/msg/axis_choosen") + "\n" + curBtnText, config)
+    this.curBtnText = ::remapAxisName(curPreset, this.selectedAxisNum)
+    this.showMsg(loc("hotkeys/msg/axis_choosen") + "\n" + this.curBtnText, config)
   }
 
   function bindAxis()
   {
-    if (!axisApplyParams) return
+    if (!this.axisApplyParams) return
 
-    foreach(idx, aName in curItem.axesList)
+    foreach(idx, _aName in this.curItem.axesList)
     {
-      let axisIndex = curItem.axisIndex[idx]
-      curJoyParams.bindAxis(axisIndex, selectedAxisNum)
-      let axis = curJoyParams.getAxis(axisIndex)
-      axis.inverse = axisApplyParams.invert
-      axis.innerDeadzone = axisApplyParams.isSlider? 0 : 0.02
-      axis.nonlinearity = axisApplyParams.isSlider? 0 : 1
+      let axisIndex = this.curItem.axisIndex[idx]
+      this.curJoyParams.bindAxis(axisIndex, this.selectedAxisNum)
+      let axis = this.curJoyParams.getAxis(axisIndex)
+      axis.inverse = this.axisApplyParams.invert
+      axis.innerDeadzone = this.axisApplyParams.isSlider? 0 : 0.02
+      axis.nonlinearity = this.axisApplyParams.isSlider? 0 : 1
       axis.relative = false
-      axis.relSens = axisApplyParams.relSens
-      axis.relStep = axisApplyParams.relStep
-      axis.kAdd = axisApplyParams.kAdd
-      axis.kMul = axisApplyParams.kMul
+      axis.relSens = this.axisApplyParams.relSens
+      axis.relStep = this.axisApplyParams.relStep
+      axis.kAdd = this.axisApplyParams.kAdd
+      axis.kMul = this.axisApplyParams.kMul
     }
 
     let device = ::joystick_get_default()
-    curJoyParams.applyParams(device)
+    this.curJoyParams.applyParams(device)
 
     //clear hotkey min|max when use axis
-    foreach(arr in curItem.modifiersId)
+    foreach(arr in this.curItem.modifiersId)
       foreach(id in arr)
-        shortcuts[id] = []
+        this.shortcuts[id] = []
 
-    if ("onAxisDone" in curItem)
-      curItem.onAxisDone.call(this, !axisTypeButtons, false)
+    if ("onAxisDone" in this.curItem)
+      this.curItem.onAxisDone.call(this, !this.axisTypeButtons, false)
 
-    axisApplyParams = null
-    selectedAxisNum = -1
-    nextItem()
+    this.axisApplyParams = null
+    this.selectedAxisNum = -1
+    this.nextItem()
   }
 
   function onAxisApply()
   {
-    let curBinding = findAxis(selectedAxisNum)
+    let curBinding = this.findAxis(this.selectedAxisNum)
     if (curBinding.len() == 0)
     {
-      bindAxis()
+      this.bindAxis()
       return false
     }
 
     local actionText = ""
     foreach(binding in curBinding)
-      actionText += ((actionText=="")? "":", ") + ::loc(getItemName(binding))
-    let msg = ::loc("hotkeys/msg/unbind_axis_question", {
-      button=curBtnText, action=actionText
+      actionText += ((actionText=="")? "":", ") + loc(this.getItemName(binding))
+    let msg = loc("hotkeys/msg/unbind_axis_question", {
+      button=this.curBtnText, action=actionText
     })
     this.msgBox("controls_wizard_bind_existing_axis", msg, [
-      ["add", function() { bindAxis() }],
+      ["add", function() { this.bindAxis() }],
       ["replace", (@(curBinding) function() {
-        repeatItemsList.extend(curBinding)
-        bindAxis()
+        this.repeatItemsList.extend(curBinding)
+        this.bindAxis()
       })(curBinding)],
-      ["cancel", function() { askAxis() }],
-      ["skip", function() { onCancelButtonInput(null) }],
+      ["cancel", function() { this.askAxis() }],
+      ["skip", function() { this.onCancelButtonInput(null) }],
     ], "add")
   }
 
   function findAxis(curAxisId)
   {
     let res = []
-    for(local i = 0; i<=curIdx; i++)
+    for(local i = 0; i<=this.curIdx; i++)
     {
-      let item = controls_wizard_config[i]
-      if (item.type!= CONTROL_TYPE.AXIS || item==curItem)
+      let item = this.controls_wizard_config[i]
+      if (item.type!= CONTROL_TYPE.AXIS || item==this.curItem)
         continue
 
-      let axis = curJoyParams.getAxis(item.axisIndex[0])
-      if (curAxisId == axis.axisId && !isInArray(item, repeatItemsList) && !isInArray(item, res))
+      let axis = this.curJoyParams.getAxis(item.axisIndex[0])
+      if (curAxisId == axis.axisId && !isInArray(item, this.repeatItemsList) && !isInArray(item, res))
         res.append(item)
     }
     return res
@@ -1203,18 +1223,18 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function updateAxisName()
   {
-    let obj = scene.findObject("bind-axis-name")
-    if (!::checkObj(obj))
+    let obj = this.scene.findObject("bind-axis-name")
+    if (!checkObj(obj))
       return
 
-    obj.show(isAxisListenInCurBox)
+    obj.show(this.isAxisListenInCurBox)
 
     let device = ::joystick_get_default()
     let curPreset = ::g_controls_manager.getCurPreset()
-    let axisName = device ? ::remapAxisName(curPreset, bindAxisNum) : ""
+    let axisName = device ? ::remapAxisName(curPreset, this.bindAxisNum) : ""
     obj.setValue(axisName)
 
-    let changeColor = (selectedAxisNum>=0 && selectedAxisNum==bindAxisNum)? "fixedAxis" : ""
+    let changeColor = (this.selectedAxisNum>=0 && this.selectedAxisNum==this.bindAxisNum)? "fixedAxis" : ""
     obj.changeColor = changeColor
   }
 
@@ -1224,43 +1244,43 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     local foundAxis = -1
     let curPreset = ::g_controls_manager.getCurPreset()
     let numAxes = curPreset.getNumAxes()
-    if (numAxes > presetupAxisRawValues.len())
-      initAxisPresetup(false) //add new founded axes
+    if (numAxes > this.presetupAxisRawValues.len())
+      this.initAxisPresetup(false) //add new founded axes
 
     local deviation = 12000 //foundedAxis deviation, cant be lower than a initial value
     for (local i = 0; i < numAxes; i++)
     {
       let rawPos = device.getAxisPosRaw(i)
-      if (rawPos!=0 && !presetupAxisRawValues[i].inited)
+      if (rawPos!=0 && !this.presetupAxisRawValues[i].inited)
       {
         //Some joysticks return zero at first and only then init the current value
-        presetupAxisRawValues[i].inited = true
-        presetupAxisRawValues[i].def=rawPos
-        presetupAxisRawValues[i].min=rawPos
-        presetupAxisRawValues[i].max=rawPos
+        this.presetupAxisRawValues[i].inited = true
+        this.presetupAxisRawValues[i].def=rawPos
+        this.presetupAxisRawValues[i].min=rawPos
+        this.presetupAxisRawValues[i].max=rawPos
       } else
       {
-        if (rawPos>presetupAxisRawValues[i].max)
-          presetupAxisRawValues[i].max = rawPos
-        if (rawPos<presetupAxisRawValues[i].min)
-          presetupAxisRawValues[i].min = rawPos
+        if (rawPos>this.presetupAxisRawValues[i].max)
+          this.presetupAxisRawValues[i].max = rawPos
+        if (rawPos<this.presetupAxisRawValues[i].min)
+          this.presetupAxisRawValues[i].min = rawPos
       }
 
-      let dPos = fabs(rawPos - presetupAxisRawValues[i].def)
+      let dPos = fabs(rawPos - this.presetupAxisRawValues[i].def)
       if (dPos > deviation)
       {
         foundAxis = i
         deviation = dPos
 
-        if (fabs(rawPos-presetupAxisRawValues[i].last) < 1000)  //check stucked axes
+        if (fabs(rawPos-this.presetupAxisRawValues[i].last) < 1000)  //check stucked axes
         {
-          presetupAxisRawValues[i].stuckTime += dt
-          if (presetupAxisRawValues[i].stuckTime > 3.0)
-            presetupAxisRawValues[i].def = rawPos //change cur value to def becoase of stucked
+          this.presetupAxisRawValues[i].stuckTime += dt
+          if (this.presetupAxisRawValues[i].stuckTime > 3.0)
+            this.presetupAxisRawValues[i].def = rawPos //change cur value to def becoase of stucked
         } else
         {
-          presetupAxisRawValues[i].last = rawPos
-          presetupAxisRawValues[i].stuckTime = 0.0
+          this.presetupAxisRawValues[i].last = rawPos
+          this.presetupAxisRawValues[i].stuckTime = 0.0
         }
       }
     }
@@ -1268,106 +1288,106 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     if (checkLastTryAxis)
       if (foundAxis>=0)
       {
-        if (lastTryAxisNum != foundAxis)
+        if (this.lastTryAxisNum != foundAxis)
         {
-          lastTryAxisNum = foundAxis
-          lastTryTime+=dt
+          this.lastTryAxisNum = foundAxis
+          this.lastTryTime+=dt
         }
       } else
-        if (lastTryAxisNum >=0)
-          if (lastTryTime>1.0 ||
-              (presetupAxisRawValues[lastTryAxisNum].max-presetupAxisRawValues[lastTryAxisNum].min) >= 16000)
-            foundAxis = lastTryAxisNum
+        if (this.lastTryAxisNum >=0)
+          if (this.lastTryTime>1.0 ||
+              (this.presetupAxisRawValues[this.lastTryAxisNum].max-this.presetupAxisRawValues[this.lastTryAxisNum].min) >= 16000)
+            foundAxis = this.lastTryAxisNum
 
     return foundAxis
   }
 
-  function onAxisInputTimer(obj, dt)
+  function onAxisInputTimer(_obj, dt)
   {
-    if (!isListenAxis || !is_app_active() || steam_is_overlay_active())
+    if (!this.isListenAxis || !::is_app_active() || ::steam_is_overlay_active())
       return
 
     let device = ::joystick_get_default()
     if (device == null)
       return
 
-    let foundAxis = getCurAxisNum(dt)
-    if (selectedAxisNum<0)
+    let foundAxis = this.getCurAxisNum(dt)
+    if (this.selectedAxisNum<0)
     {
-      if (foundAxis != bindAxisNum)
+      if (foundAxis != this.bindAxisNum)
       {
-        bindAxisNum = foundAxis
+        this.bindAxisNum = foundAxis
 //        if (selectedAxisNum>=0 && bindAxisNum<0)
 //          bindAxisNum = selectedAxisNum
 //        else
-          axisCurTime = 0.0
+          this.axisCurTime = 0.0
       }
     }
 
-    if (lastBindAxisNum != bindAxisNum)
+    if (this.lastBindAxisNum != this.bindAxisNum)
     {
-      lastBindAxisNum = bindAxisNum
-      updateAxisName()
-      if (::is_axis_digital(bindAxisNum))
-        setAxisType(false)
+      this.lastBindAxisNum = this.bindAxisNum
+      this.updateAxisName()
+      if (::is_axis_digital(this.bindAxisNum))
+        this.setAxisType(false)
     }
 
-    if (bindAxisNum < 0)
+    if (this.bindAxisNum < 0)
     {
-      bindAxisCurVal=0
-      moveTestItem(0)
+      this.bindAxisCurVal=0
+      this.moveTestItem(0)
       return
     }
 
-    axisCurTime+=dt
+    this.axisCurTime+=dt
 
-    let val = device.getAxisPosRaw(bindAxisNum)
+    let val = device.getAxisPosRaw(this.bindAxisNum)
     local checkTime = true
-    if (val != bindAxisCurVal)
+    if (val != this.bindAxisCurVal)
     {
-      bindAxisCurVal = val
-      moveTestItem(bindAxisCurVal)
-      axisCurTime = 0.0
-      if (fabs(val-bindAxisCurVal)>1000)
+      this.bindAxisCurVal = val
+      this.moveTestItem(this.bindAxisCurVal)
+      this.axisCurTime = 0.0
+      if (fabs(val-this.bindAxisCurVal)>1000)
         checkTime = false
     }
 
     if (checkTime)
-      if ((axisCurTime>=axisFixTime && fabs(val)>3000) || axisCurTime>=2.0*axisFixTime)  //double wait time near zero
-        if (selectedAxisNum!=bindAxisNum)
+      if ((this.axisCurTime>=this.axisFixTime && fabs(val)>3000) || this.axisCurTime>=2.0*this.axisFixTime)  //double wait time near zero
+        if (this.selectedAxisNum!=this.bindAxisNum)
         {
-          selectedAxisNum = bindAxisNum
-          bindAxisFixVal = bindAxisCurVal
-          setAxisType(false)
-          scene.findObject("input-listener").select()
+          this.selectedAxisNum = this.bindAxisNum
+          this.bindAxisFixVal = this.bindAxisCurVal
+          this.setAxisType(false)
+          this.scene.findObject("input-listener").select()
 
-          updateAxisPressKey()
-          updateAxisName()
-          updateButtons()
+          this.updateAxisPressKey()
+          this.updateAxisName()
+          this.updateButtons()
         }
-        else if (fabs(val-bindAxisFixVal)>12000)
-          onAxisSelected()
+        else if (fabs(val-this.bindAxisFixVal)>12000)
+          this.onAxisSelected()
   }
 
   function onResetAxisInput()
   {
-    if (curItem.type != CONTROL_TYPE.AXIS)
+    if (this.curItem.type != CONTROL_TYPE.AXIS)
       return
-    selectedAxisNum=-1
-    axisMaxChoosen = false
+    this.selectedAxisNum=-1
+    this.axisMaxChoosen = false
     this.showSceneBtn("btn-reset-axis-input", false)
-    initAxisPresetup()
-    askAxis()
+    this.initAxisPresetup()
+    this.askAxis()
   }
 
   function moveTestItem(value, obj=null)
   {
     if (!obj)
-      obj = scene.findObject(isAxisVertical? "test-real-box-vert" : "test-real-box")
-    if ("showInverted" in curItem && curItem.showInverted())
+      obj = this.scene.findObject(this.isAxisVertical? "test-real-box-vert" : "test-real-box")
+    if ("showInverted" in this.curItem && this.curItem.showInverted())
       value = -value
 
-    if (isAxisVertical)
+    if (this.isAxisVertical)
       obj.pos = "0.5pw-0.5w, " + format("%.3f(ph - h)", ((32000 - value).tofloat() / 64000))
     else
       obj.pos = format("%.3f(pw - w)", ((value + 32000).tofloat() / 64000)) + ", 0.5ph- 0.5h"
@@ -1377,19 +1397,19 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   {
     if (fullInit)
     {
-      presetupAxisRawValues = []
-      lastTryAxisNum = -1
+      this.presetupAxisRawValues = []
+      this.lastTryAxisNum = -1
     }
     let device = ::joystick_get_default()
     if (device == null)
       return
 
     let curPreset = ::g_controls_manager.getCurPreset()
-    let start = presetupAxisRawValues.len()
+    let start = this.presetupAxisRawValues.len()
     for (local i = start; i < curPreset.getNumAxes(); i++)
     {
       let rawPos = device.getAxisPosRaw(i)
-      presetupAxisRawValues.append({
+      this.presetupAxisRawValues.append({
                                      def=rawPos,
                                      min=rawPos,
                                      max=rawPos,
@@ -1402,50 +1422,50 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function showMsgBox(isListbox=false)
   {
-    let msgText = getItemText(curItem)
+    let msgText = this.getItemText(this.curItem)
     local defValue = 0
-    msgButtons = []
+    this.msgButtons = []
 
-    if ("optionType" in curItem)
+    if ("optionType" in this.curItem)
     {
-      let config = ::get_option(curItem.optionType)
-      msgButtons = config.items
+      let config = ::get_option(this.curItem.optionType)
+      this.msgButtons = config.items
       defValue = config.value
-    } else if ("options" in curItem)
+    } else if ("options" in this.curItem)
     {
-      msgButtons = curItem.options
-      defValue = ("defValue" in curItem)? curItem.defValue : 0
+      this.msgButtons = this.curItem.options
+      defValue = ("defValue" in this.curItem)? this.curItem.defValue : 0
     }
 
-    if (msgButtons.len()==0)
-      msgButtons.append("msgbox/btn_ok")
+    if (this.msgButtons.len()==0)
+      this.msgButtons.append("msgbox/btn_ok")
 
     if (!isListbox)
     {
-      scene.findObject("msgBox_text").setValue(::loc(msgText))
+      this.scene.findObject("msgBox_text").setValue(loc(msgText))
       local data = ""
-      foreach(idx, btn in msgButtons)
+      foreach(idx, btn in this.msgButtons)
       {
         let text = (btn.len()>0 && btn.slice(0, 1)!="#") ? "#"+btn : btn
         data += format("Button_text { id:t='%d'; text:t='%s'; on_click:t='onMsgButton'; }",
                   idx, text)
       }
-      let btnsHolder = scene.findObject("msgBox_buttons")
-      guiScene.replaceContentFromText(btnsHolder, data, data.len(), this)
+      let btnsHolder = this.scene.findObject("msgBox_buttons")
+      this.guiScene.replaceContentFromText(btnsHolder, data, data.len(), this)
       ::move_mouse_on_obj(btnsHolder.findObject(defValue.tostring()))
     }
     else
     {
-      scene.findObject("listbox_text").setValue(::loc(msgText))
+      this.scene.findObject("listbox_text").setValue(loc(msgText))
 
       let view = { items = [] }
-      foreach(idx, btn in msgButtons)
+      foreach(idx, btn in this.msgButtons)
       {
-        local text = ::getTblValue("text", btn, "")
+        local text = getTblValue("text", btn, "")
         if (::u.isString(btn))
           text = btn
 
-        if (getStrSymbol(text, 0) != "#")
+        if (this.getStrSymbol(text, 0) != "#")
           text = "#" + text
 
         view.items.append({
@@ -1455,16 +1475,16 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
         })
       }
 
-      let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-      let listObj = scene.findObject("listbox")
-      guiScene.replaceContentFromText(listObj, data, data.len(), this)
-      if (defValue in msgButtons)
+      let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+      let listObj = this.scene.findObject("listbox")
+      this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
+      if (defValue in this.msgButtons)
         listObj.setValue(defValue)
       ::move_mouse_on_child(listObj, listObj.getValue())
-      onListboxSelect(null)
+      this.onListboxSelect(null)
     }
 
-    waitMsgButton = true
+    this.waitMsgButton = true
   }
 
   function getStrSymbol(str, i)
@@ -1477,63 +1497,63 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   function onMsgButton(obj)
   {
     let value = obj.id.tointeger()
-    if (value==null || !(value in msgButtons) || !waitMsgButton)
+    if (value==null || !(value in this.msgButtons) || !this.waitMsgButton)
       return
 
-    waitMsgButton = false
-    guiScene.performDelayed(this, (@(value) function() {
-      if ("optionType" in curItem)
+    this.waitMsgButton = false
+    this.guiScene.performDelayed(this, (@(value) function() {
+      if ("optionType" in this.curItem)
       {
-        optionsToSave.append({type = curItem.optionType, value = value})
-        if ("isFilterObj" in curItem && curItem.isFilterObj)
+        this.optionsToSave.append({type = this.curItem.optionType, value = value})
+        if ("isFilterObj" in this.curItem && this.curItem.isFilterObj)
         {
-          let config = ::get_option(curItem.optionType)
-          filter = config.values[value]
+          let config = ::get_option(this.curItem.optionType)
+          this.filter = config.values[value]
         }
       }
-      if (("skipAllBefore" in curItem) && (value in curItem.skipAllBefore))
-        skipAllBefore = curItem.skipAllBefore[value]
-      if (("skip" in curItem) && (value in curItem.skip) && curItem.skip[value])
-        if (typeof(curItem.skip[value]) == "array")
-          skipList.extend(curItem.skip[value])
+      if (("skipAllBefore" in this.curItem) && (value in this.curItem.skipAllBefore))
+        this.skipAllBefore = this.curItem.skipAllBefore[value]
+      if (("skip" in this.curItem) && (value in this.curItem.skip) && this.curItem.skip[value])
+        if (typeof(this.curItem.skip[value]) == "array")
+          this.skipList.extend(this.curItem.skip[value])
         else
-          skipList.append(curItem.skip[value])
-      if ("onButton" in curItem)
-        curItem.onButton.call(this, value)
-      nextItem()
+          this.skipList.append(this.curItem.skip[value])
+      if ("onButton" in this.curItem)
+        this.curItem.onButton.call(this, value)
+      this.nextItem()
     })(value))
   }
 
   function getCurListboxObj()
   {
-    let listObj = scene.findObject("listbox")
+    let listObj = this.scene.findObject("listbox")
     let value = listObj.getValue()
     if (value>=0 && value<listObj.childrenCount())
       return listObj.getChild(value)
     return null
   }
 
-  function onListboxDblClick(obj)
+  function onListboxDblClick(_obj)
   {
-    let curObj = getCurListboxObj()
+    let curObj = this.getCurListboxObj()
     if (curObj)
-      onMsgButton(curObj)
+      this.onMsgButton(curObj)
   }
 
-  function onListboxSelect(obj)
+  function onListboxSelect(_obj)
   {
-    let curObj = getCurListboxObj()
+    let curObj = this.getCurListboxObj()
     if (!curObj) return
-    scene.findObject("listbox-hint").setValue("" + curObj.tooltip, true)
+    this.scene.findObject("listbox-hint").setValue("" + curObj.tooltip, true)
   }
 
   function askPresetsWnd()
   {
-    curIdx = -1
+    this.curIdx = -1
 
-    switchToDiv("options-wnd")
-    let optObj = scene.findObject("optionlist")
-    if (!::checkObj(optObj))
+    this.switchToDiv("options-wnd")
+    let optObj = this.scene.findObject("optionlist")
+    if (!checkObj(optObj))
       return
 
     this.showSceneBtn("btn_prevItem", false)
@@ -1542,9 +1562,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       [::USEROPT_CONTROLS_PRESET, "spinner"],
     ]
     let container = ::create_options_container("preset_options", optionItems, false)
-    guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
-    processPresetValue(getOptionPresetValue())
-    ::move_mouse_on_obj(scene.findObject("controls_preset"))
+    this.guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
+    this.processPresetValue(this.getOptionPresetValue())
+    ::move_mouse_on_obj(this.scene.findObject("controls_preset"))
   }
 
   function getOptionPresetValue()
@@ -1554,7 +1574,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function onSelectPreset(obj)
   {
-    processPresetValue(obj.getValue())
+    this.processPresetValue(obj.getValue())
   }
 
   function processPresetValue(presetValue)
@@ -1562,78 +1582,78 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     let opdata = ::get_option(::USEROPT_CONTROLS_PRESET)
     if (presetValue in opdata.values)
     {
-      presetSelected = opdata.values[presetValue]
-      this.showSceneBtn("btn_controlsWizard", presetSelected == "custom")
-      this.showSceneBtn("btn_selectPreset", presetSelected != "custom")
+      this.presetSelected = opdata.values[presetValue]
+      this.showSceneBtn("btn_controlsWizard", this.presetSelected == "custom")
+      this.showSceneBtn("btn_selectPreset", this.presetSelected != "custom")
     }
   }
 
-  function onPresetDone(obj)
+  function onPresetDone(_obj)
   {
-    applyPreset(::applySelectedPreset(presetSelected))
+    this.applyPreset(::applySelectedPreset(this.presetSelected))
   }
 
   function applyPreset(preset)
   {
     ::apply_joy_preset_xchange(preset)
-    isPresetAlreadyApplied = true
-    goBack()
+    this.isPresetAlreadyApplied = true
+    this.goBack()
   }
 
   function startManualSetup()
   {
-    ::scene_msg_box("ask_unit_type", null, ::loc("mainmenu/askWizardForUnitType"),
+    ::scene_msg_box("ask_unit_type", null, loc("mainmenu/askWizardForUnitType"),
       [
-        [ "aviation", (@() startManualSetupForUnitType(::ES_UNIT_TYPE_AIRCRAFT)).bindenv(this) ],
-        [ "army", (@() startManualSetupForUnitType(::ES_UNIT_TYPE_TANK)).bindenv(this) ]
+        [ "aviation", (@() this.startManualSetupForUnitType(ES_UNIT_TYPE_AIRCRAFT)).bindenv(this) ],
+        [ "army", (@() this.startManualSetupForUnitType(ES_UNIT_TYPE_TANK)).bindenv(this) ]
       ], "aviation")
   }
 
   function startManualSetupForUnitType(esUnitType)
   {
-    if (esUnitType == ::ES_UNIT_TYPE_TANK)
-      controls_wizard_config = ::tank_controls_wizard_config
-    else if (esUnitType == ::ES_UNIT_TYPE_AIRCRAFT)
-      controls_wizard_config = ::aircraft_controls_wizard_config
+    if (esUnitType == ES_UNIT_TYPE_TANK)
+      this.controls_wizard_config = ::tank_controls_wizard_config
+    else if (esUnitType == ES_UNIT_TYPE_AIRCRAFT)
+      this.controls_wizard_config = ::aircraft_controls_wizard_config
     else
       ::script_net_assert_once("unsupported unit type", "Given unit type has not wizard config")
 
-    ::initControlsWizardConfig(controls_wizard_config)
-    initShortcutsNames()
-    shortcuts = ::get_shortcuts(shortcutNames)
+    ::initControlsWizardConfig(this.controls_wizard_config)
+    this.initShortcutsNames()
+    this.shortcuts = ::get_shortcuts(this.shortcutNames)
 
-    curIdx = -1
-    nextItem()
+    this.curIdx = -1
+    this.nextItem()
   }
 
-  function onContinue(obj)
+  function onContinue(_obj)
   {
-    if (curIdx == -1 || !controls_wizard_config) {
-      startManualSetup()
+    if (this.curIdx == -1 || !this.controls_wizard_config) {
+      this.startManualSetup()
     } else {
-      nextItem()
+      this.nextItem()
     }
   }
 
   function doApply()
   {
     ::set_controls_preset("")
-    ::set_shortcuts(shortcuts, shortcutNames)
-    foreach(option in optionsToSave)
+    ::set_shortcuts(this.shortcuts, this.shortcutNames)
+    foreach(option in this.optionsToSave)
       ::set_option(option.type, option.value)
 
     let device = ::joystick_get_default()
-    curJoyParams.applyParams(device)
-    ::joystick_set_cur_settings(curJoyParams)
-    save(false)
+    this.curJoyParams.applyParams(device)
+    ::joystick_set_cur_settings(this.curJoyParams)
+    this.save(false)
   }
 
   function goBack()
   {
-    if (curIdx>0 && !isPresetAlreadyApplied)
-      this.msgBox("ask_save", ::loc("hotkeys/msg/wizardSaveUnfinished"),
+    if (this.curIdx>0 && !this.isPresetAlreadyApplied)
+      this.msgBox("ask_save", loc("hotkeys/msg/wizardSaveUnfinished"),
         [
-          ["yes", function() { doApply() } ],
+          ["yes", function() { this.doApply() } ],
           ["no", function() { ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }],
           ["cancel", @() null ],
         ], "yes", { cancel_fn = function() {}})
@@ -1646,14 +1666,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
-  function onEventActiveHandlersChanged(p)
+  function onEventActiveHandlersChanged(_p)
   {
-    enableListenerObj(curDivName == "shortcut-wnd" && isSceneActiveNoModals())
+    this.enableListenerObj(this.curDivName == "shortcut-wnd" && this.isSceneActiveNoModals())
   }
 
   function afterModalDestroy()
   {
-    guiScene.sleepKeyRepeat(false)
+    this.guiScene.sleepKeyRepeat(false)
     ::set_bind_mode(false)
     ::preset_changed = true
     ::broadcastEvent("ControlsPresetChanged")
@@ -1661,46 +1681,46 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function showMsg(msg=null, config=null, time = 1.0)
   {
-    switchToDiv("msg-wnd")
+    this.switchToDiv("msg-wnd")
     if (msg==null)
-      msg = ::loc("mainmenu/btnOk")
-    scene.findObject("msg_text").setValue(msg)
-    msgTimer = time + waitAxisAddTime
+      msg = loc("mainmenu/btnOk")
+    this.scene.findObject("msg_text").setValue(msg)
+    this.msgTimer = time + this.waitAxisAddTime
 
     local showAxis = false
     if (config && ("min" in config) && ("max" in config))
     {
-      let name = isAxisVertical? "msg-real-box-vert" : "msg-real-box"
-      moveTestItem(config.min, scene.findObject(name+"1"))
-      moveTestItem(config.max, scene.findObject(name+"2"))
+      let name = this.isAxisVertical? "msg-real-box-vert" : "msg-real-box"
+      this.moveTestItem(config.min, this.scene.findObject(name+"1"))
+      this.moveTestItem(config.max, this.scene.findObject(name+"2"))
       showAxis = true
     }
-    scene.findObject("msg-axis").show(showAxis && !isAxisVertical)
-    scene.findObject("msg-axis-vert").show(showAxis && isAxisVertical)
+    this.scene.findObject("msg-axis").show(showAxis && !this.isAxisVertical)
+    this.scene.findObject("msg-axis-vert").show(showAxis && this.isAxisVertical)
   }
 
-  function onUpdate(obj, dt)
+  function onUpdate(_obj, dt)
   {
-    if (msgTimer>0)
+    if (this.msgTimer>0)
     {
-      msgTimer -= dt
-      if (msgTimer<=0)
-        afterMsg()
+      this.msgTimer -= dt
+      if (this.msgTimer<=0)
+        this.afterMsg()
       else
-      if (msgTimer<=waitAxisAddTime)
-        if (getCurAxisNum(dt, false) < 0)
+      if (this.msgTimer<=this.waitAxisAddTime)
+        if (this.getCurAxisNum(dt, false) < 0)
         {
-          msgTimer=0
-          afterMsg()
+          this.msgTimer=0
+          this.afterMsg()
         }
     }
   }
 
   function afterMsg()
   {
-    if (axisApplyParams)
-      onAxisApply()
+    if (this.axisApplyParams)
+      this.onAxisApply()
     else
-      nextItem()
+      this.nextItem()
   }
 }

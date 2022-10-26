@@ -15,7 +15,7 @@
       position:t='absolute'
     <</blockPos>>
     <<#isFullSize>>isFullSize:t='yes'<</isFullSize>>
-    include "%gui/items/item"
+    include "%gui/items/item.tpl"
     tdiv {
       margin-left:t='1@blockInterval'
       <<#component>><<@component>><</component>>

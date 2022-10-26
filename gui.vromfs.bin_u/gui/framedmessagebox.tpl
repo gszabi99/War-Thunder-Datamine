@@ -31,7 +31,7 @@ massTransp {
         position:t='relative'
 
         <<#buttons>>
-          include "%gui/commonParts/button"
+          include "%gui/commonParts/button.tpl"
         <</buttons>>
       }
     }

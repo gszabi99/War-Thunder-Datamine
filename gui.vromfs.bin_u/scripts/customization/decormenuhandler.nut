@@ -1,13 +1,20 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 
 let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { findChild } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/customization/decorWnd.blk"
 
-  categoryTpl = "%gui/customization/decorCategories"
+  categoryTpl = "%gui/customization/decorCategories.tpl"
 
   isOpened = false
 
@@ -17,22 +24,22 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   preSelectDecorId = null
 
   function updateHandlerData(decorType, unit, slotDecorId, preSelectDecoratorId) {
-    curDecorType = decorType
-    curUnit = unit
-    curSlotDecorId = slotDecorId
-    preSelectDecorId = preSelectDecoratorId
+    this.curDecorType = decorType
+    this.curUnit = unit
+    this.curSlotDecorId = slotDecorId
+    this.preSelectDecorId = preSelectDecoratorId
   }
 
   function createCategories() {
-    if (!scene?.isValid())
+    if (!this.scene?.isValid())
       return
 
-    let headerObj = scene.findObject("decals_wnd_header")
-    headerObj.setValue(::loc(curDecorType.listHeaderLocId))
+    let headerObj = this.scene.findObject("decals_wnd_header")
+    headerObj.setValue(loc(this.curDecorType.listHeaderLocId))
 
-    let decorType = curDecorType
-    let decorCache = getDecorCache()
-    let categories = getCategories().map(function(categoryId) {
+    let decorType = this.curDecorType
+    let decorCache = this.getDecorCache()
+    let categories = this.getCategories().map(function(categoryId) {
       let groups = decorCache.catToGroupNames[categoryId]
       let hasGroups = groups.len() > 1 || groups[0] != "other"
       return {
@@ -44,36 +51,36 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       }
     })
 
-    let data = ::handyman.renderCached(categoryTpl, { categories })
-    let listObj = scene.findObject("categories_list")
-    guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    let data = ::handyman.renderCached(this.categoryTpl, { categories })
+    let listObj = this.scene.findObject("categories_list")
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
-  function updateSelectedCategory(decorator) {
-    if (!isOpened)
+  function updateSelectedCategory(_decorator) {
+    if (!this.isOpened)
       return
 
-    let categoryObj = getSelectedCategoryObj()
-    if (!categoryObj?.isValid() || hasGroupsList(categoryObj))
+    let categoryObj = this.getSelectedCategoryObj()
+    if (!categoryObj?.isValid() || this.hasGroupsList(categoryObj))
       return
 
-    let decorListObj = getContentObj(categoryObj)
+    let decorListObj = this.getContentObj(categoryObj)
     if (!decorListObj?.isValid())
       return
 
-    let data = generateDecalCategoryContent(categoryObj.categoryId, categoryObj.groupId)
-    guiScene.replaceContentFromText(decorListObj, data, data.len(), this)
+    let data = this.generateDecalCategoryContent(categoryObj.categoryId, categoryObj.groupId)
+    this.guiScene.replaceContentFromText(decorListObj, data, data.len(), this)
     decorListObj.getChild(decorListObj.getValue()).selected = "yes"
   }
 
   function collapseOpenedCategory() {
-    let listObj = getSelectedCategoryObj()?.getParent()
+    let listObj = this.getSelectedCategoryObj()?.getParent()
     if (!listObj?.isValid())
       return
 
     let prevValue = listObj.getValue()
     listObj.setValue(-1)
-    guiScene.applyPendingChanges(false)
+    this.guiScene.applyPendingChanges(false)
     if (::show_console_buttons)
       ::move_mouse_on_child(listObj, prevValue)
   }
@@ -82,17 +89,17 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     if (categoryId == "")
       return false
 
-    let listObj = scene.findObject("categories_list")
+    let listObj = this.scene.findObject("categories_list")
     let { childIdx, childObj } = findChild(listObj, @(c) c.categoryId == categoryId)
     if (!childObj?.isValid())
       return false
 
     listObj.setValue(childIdx)
 
-    if (!hasGroupsList(childObj) || groupId == "")
+    if (!this.hasGroupsList(childObj) || groupId == "")
       return true
 
-    let groupList = getContentObj(childObj)
+    let groupList = this.getContentObj(childObj)
     let groupIdx = findChild(groupList, @(g) g.groupId == groupId).childIdx
     if (groupIdx == -1)
       return false
@@ -102,14 +109,14 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function isCurCategoryListObjHovered() {
-    let listObj = getContentObj(getSelectedCategoryObj())
+    let listObj = this.getContentObj(this.getSelectedCategoryObj())
     return (listObj?.isValid() ?? false) && listObj.isHovered()
   }
 
   function getSelectedDecor() {
-    let listObj = getOpenedDecorListObj()
-    let decalObj = getSelectedObj(listObj)
-    return getDecoratorByObj(decalObj, curDecorType)
+    let listObj = this.getOpenedDecorListObj()
+    let decalObj = this.getSelectedObj(listObj)
+    return this.getDecoratorByObj(decalObj, this.curDecorType)
   }
 
   function getDecoratorByObj(obj, decoratorType) {
@@ -121,26 +128,26 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getSavedPath() {
-    return ::loadLocalByAccount(curDecorType.currentOpenedCategoryLocalSafePath, "").split("/")
+    return ::loadLocalByAccount(this.curDecorType.currentOpenedCategoryLocalSafePath, "").split("/")
   }
 
   function show(isShown) {
-    isOpened = isShown
-    scene.show(isShown)
-    scene.enable(isShown)
-    ::enableHangarControls(!scene.findObject("hangar_control_tracking").isHovered())
+    this.isOpened = isShown
+    this.scene.show(isShown)
+    this.scene.enable(isShown)
+    ::enableHangarControls(!this.scene.findObject("hangar_control_tracking").isHovered())
   }
 
   // private
 
-  getCategories = @() ::g_decorator.getCachedOrderByType(curDecorType, curUnit.unitType.tag)
-  getDecorCache = @() ::g_decorator.getCachedDataByType(curDecorType, curUnit.unitType.tag)
+  getCategories = @() ::g_decorator.getCachedOrderByType(this.curDecorType, this.curUnit.unitType.tag)
+  getDecorCache = @() ::g_decorator.getCachedDataByType(this.curDecorType, this.curUnit.unitType.tag)
   getContentObj = @(obj) obj != null ? obj.findObject($"content_{obj.id}") : null
   hasGroupsList = @(obj) obj.type == "groupsList"
 
   function generateGroupsCategoryContent(categoryId) {
-    let groups = getDecorCache().catToGroupNames[categoryId]
-    let decorType = curDecorType
+    let groups = this.getDecorCache().catToGroupNames[categoryId]
+    let decorType = this.curDecorType
     let categories = groups.map(@(groupId) {
       id = $"group_{groupId}"
       headerText = $"#{decorType.groupPathPrefix}{groupId}"
@@ -149,7 +156,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       hasGroups = false
       isGroup = true
     })
-    return ::handyman.renderCached(categoryTpl, { categories })
+    return ::handyman.renderCached(this.categoryTpl, { categories })
   }
 
   function getSelectedObj(listObj) {
@@ -167,52 +174,52 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     if (!listObj?.isValid())
       return
 
-    let categoryObj = getSelectedObj(listObj)
+    let categoryObj = this.getSelectedObj(listObj)
     if (!categoryObj?.isValid()) {
-      savePath("")
-      scrollDecalsCategory()
+      this.savePath("")
+      this.scrollDecalsCategory()
       return
     }
 
     let categoryId = categoryObj.categoryId
     let groupId = categoryObj.groupId
-    let isGroupList = hasGroupsList(categoryObj)
+    let isGroupList = this.hasGroupsList(categoryObj)
     let data = isGroupList
-      ? generateGroupsCategoryContent(categoryId)
-      : generateDecalCategoryContent(categoryId, groupId)
+      ? this.generateGroupsCategoryContent(categoryId)
+      : this.generateDecalCategoryContent(categoryId, groupId)
 
-    let contentListObj = getContentObj(categoryObj)
-    guiScene.replaceContentFromText(contentListObj, data, data.len(), this)
+    let contentListObj = this.getContentObj(categoryObj)
+    this.guiScene.replaceContentFromText(contentListObj, data, data.len(), this)
 
-    savePath(categoryId, groupId)
+    this.savePath(categoryId, groupId)
 
     if (!isGroupList) {
-      let decorId = preSelectDecorId ?? curSlotDecorId
-      let decor = ::g_decorator.getDecorator(decorId, curDecorType)
+      let decorId = this.preSelectDecorId ?? this.curSlotDecorId
+      let decor = ::g_decorator.getDecorator(decorId, this.curDecorType)
       let index = (decor && decor.category == categoryId) ? decor.catIndex : 0
       contentListObj.setValue(index)
     }
     else
       contentListObj.setValue(-1)
 
-    scrollDecalsCategory()
-    guiScene.applyPendingChanges(false)
+    this.scrollDecalsCategory()
+    this.guiScene.applyPendingChanges(false)
     let idx = contentListObj.getValue()
     ::move_mouse_on_child(contentListObj, idx != -1 ? idx : 0)
   }
 
   function savePath(categoryId, groupId = "") {
-    let localPath = curDecorType.currentOpenedCategoryLocalSafePath
+    let localPath = this.curDecorType.currentOpenedCategoryLocalSafePath
     ::saveLocalByAccount(localPath, "/".join([categoryId, groupId], true))
   }
 
   function generateDecalCategoryContent(categoryId, groupId) {
-    let decors = getDecorCache().catToGroups?[categoryId][groupId]
+    let decors = this.getDecorCache().catToGroups?[categoryId][groupId]
     if (!decors || decors.len() == 0)
       return ""
 
-    let slotDecorId = curSlotDecorId
-    let unit = curUnit
+    let slotDecorId = this.curSlotDecorId
+    let unit = this.curUnit
     let view = {
       isTooltipByHold = ::show_console_buttons
       buttons = decors.map(@(decorator) getDecorButtonView(decorator, unit, {
@@ -224,11 +231,11 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
           : null
       }))
     }
-    return ::handyman.renderCached("%gui/commonParts/imageButton", view)
+    return ::handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
   }
 
   function scrollDecalsCategory() {
-    let categoryObj = getSelectedCategoryObj()
+    let categoryObj = this.getSelectedCategoryObj()
     if (!categoryObj?.isValid())
       return
 
@@ -236,7 +243,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     if (headerObj?.isValid())
       headerObj.scrollToView(true)
 
-    let contentListObj = getContentObj(categoryObj)
+    let contentListObj = this.getContentObj(categoryObj)
     if (!contentListObj?.isValid() || contentListObj.childrenCount() == 0)
       return
 
@@ -247,21 +254,21 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getSelectedCategoryObj() {
-    let categoryObj = getSelectedObj(scene.findObject("categories_list"))
+    let categoryObj = this.getSelectedObj(this.scene.findObject("categories_list"))
     if (!categoryObj?.isValid())
       return null
 
-    return hasGroupsList(categoryObj)
-      ? getSelectedObj(getContentObj(categoryObj)) ?? categoryObj
+    return this.hasGroupsList(categoryObj)
+      ? this.getSelectedObj(this.getContentObj(categoryObj)) ?? categoryObj
       : categoryObj
   }
 
   function getOpenedDecorListObj() {
-    let categoryObj = getSelectedCategoryObj()
+    let categoryObj = this.getSelectedCategoryObj()
     if (!categoryObj?.isValid())
       return null
 
-    return hasGroupsList(categoryObj) ? null : getContentObj(categoryObj)
+    return this.hasGroupsList(categoryObj) ? null : this.getContentObj(categoryObj)
   }
 
   function moveMouseOnDecalsHeader(listObj, valueDiff = 0) {
@@ -274,19 +281,19 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onBtnCloseDecalsMenu() {
-    show(false)
+    this.show(false)
   }
 
   function onDecorCategorySelect(listObj) {
-    fillDecalsCategoryContent(listObj)
+    this.fillDecalsCategoryContent(listObj)
   }
 
-  function onDecorCategoryActivate(listObj) {
-    collapseOpenedCategory()
+  function onDecorCategoryActivate(_listObj) {
+    this.collapseOpenedCategory()
   }
 
   function onDecorItemClick(obj) {
-    let decorator = getDecoratorByObj(obj, curDecorType)
+    let decorator = this.getDecoratorByObj(obj, this.curDecorType)
     if (!decorator)
       return
 
@@ -298,7 +305,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onDecorItemDoubleClick(obj) {
-    let decorator = getDecoratorByObj(obj, curDecorType)
+    let decorator = this.getDecoratorByObj(obj, this.curDecorType)
     if (!decorator)
       return
 
@@ -315,7 +322,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onDecorItemActivate(listObj) {
-    onDecorItemClick(getSelectedObj(listObj))
+    this.onDecorItemClick(this.getSelectedObj(listObj))
   }
 
   function onDecorListHoverChange() {
@@ -324,12 +331,12 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onDecorItemHeader(listObj) {
     let parentList = listObj.getParent().getParent()
-    moveMouseOnDecalsHeader(parentList)
+    this.moveMouseOnDecalsHeader(parentList)
   }
 
   function onDecorItemNextHeader(listObj) {
     let parentList = listObj.getParent().getParent()
-    if (!moveMouseOnDecalsHeader(parentList, 1))
+    if (!this.moveMouseOnDecalsHeader(parentList, 1))
       ::set_dirpad_event_processed(false)
   }
 

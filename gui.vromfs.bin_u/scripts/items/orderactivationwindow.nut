@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
@@ -16,27 +22,27 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   function initScreen() {
     base.initScreen()
     this.showSceneBtn("tabs_list", false)
-    scene.findObject("back_scene_name").setValue(::loc("mainmenu/btnBack"))
-    scene.findObject("bc_shop_header").setValue(::loc("flightmenu/btnActivateOrder"))
+    this.scene.findObject("back_scene_name").setValue(loc("mainmenu/btnBack"))
+    this.scene.findObject("bc_shop_header").setValue(loc("flightmenu/btnActivateOrder"))
   }
 
   /*override*/ function updateButtons()
   {
-    let item = getCurItem()
+    let item = this.getCurItem()
     let mainActionData = item ? item.getMainActionData() : null
     let showMainAction = !!mainActionData
     let buttonObj = this.showSceneBtn("btn_main_action", showMainAction)
     if (showMainAction)
     {
-      buttonObj.visualStyle = curTab == itemsTab.INVENTORY? "secondary" : "purchase"
-      setDoubleTextToButton(scene, "btn_main_action", mainActionData.btnName,
+      buttonObj.visualStyle = this.curTab == itemsTab.INVENTORY? "secondary" : "purchase"
+      setDoubleTextToButton(this.scene, "btn_main_action", mainActionData.btnName,
                               mainActionData?.btnColoredName || mainActionData.btnName)
     }
 
     local text = ""
-    if (curTab == itemsTab.INVENTORY)
+    if (this.curTab == itemsTab.INVENTORY)
       text =::g_orders.getWarningText(item)
-    setWarningText(text)
+    this.setWarningText(text)
   }
 
   function goBack() {
@@ -49,24 +55,24 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
   /*override*/ function onTimer(obj, dt)
   {
     base.onTimer(obj, dt)
-    updateButtons()
+    this.updateButtons()
   }
 
-  function onEventActiveOrderChanged(params)
+  function onEventActiveOrderChanged(_params)
   {
-    fillPage()
+    this.fillPage()
   }
 
   /*override*/ function onMainActionComplete(result)
   {
     // This forces "Activate" button for each item to update.
     if (base.onMainActionComplete(result))
-      fillPage()
+      this.fillPage()
   }
 
-  function onEventOrderUseResultMsgBoxClosed(params)
+  function onEventOrderUseResultMsgBoxClosed(_params)
   {
-    goBack()
+    this.goBack()
   }
 
   /*override*/ function isItemLocked(item)

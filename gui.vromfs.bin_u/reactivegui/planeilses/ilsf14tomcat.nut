@@ -1,3 +1,5 @@
+from "%rGui/globals/ui_library.nut" import *
+
 let {IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetPos, RadarTargetDist,
   BombingMode, BombCCIPMode, RocketMode, CannonMode,
   TargetPosValid, TargetPos } = require("%rGui/planeState/planeToolsState.nut")
@@ -217,7 +219,7 @@ let shellName = @() {
   color = IlsColor.value
   fontSize = 80
   font = Fonts.f14_ils
-  text = ShellMode.value ? "ORD" : (isAAMMode.value && !CannonMode.value ? ::loc(CurWeaponName.value) :  "G")
+  text = ShellMode.value ? "ORD" : (isAAMMode.value && !CannonMode.value ? loc(CurWeaponName.value) :  "G")
 }
 
 let shellValue = Computed(@() !isAAMMode.value ? ShellCnt.value / 100 : ShellCnt.value)

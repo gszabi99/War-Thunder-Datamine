@@ -70,7 +70,7 @@ tdiv {
       width:t='pw'
       background-color:t='@objectiveHeaderBackground'
 
-      include "%gui/worldWar/wwControlHelp"
+      include "%gui/worldWar/wwControlHelp.tpl"
     }
 
     tdiv {

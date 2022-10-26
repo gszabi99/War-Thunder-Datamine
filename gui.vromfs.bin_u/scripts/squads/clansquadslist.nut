@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
   const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 //ms
   const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -19,54 +26,54 @@ local ClanSquadsList = class
 
   function isNewest()
   {
-    return (clanId == ::clan_get_my_clan_id()) && !isInUpdate
-             && ::dagor.getCurTime() - lastUpdateTimeMsec < CLAN_SQUADS_LIST_REFRESH_MIN_TIME
+    return (this.clanId == ::clan_get_my_clan_id()) && !this.isInUpdate
+             && get_time_msec() - this.lastUpdateTimeMsec < CLAN_SQUADS_LIST_REFRESH_MIN_TIME
   }
 
   function canRequestByTime()
   {
-    let checkTime = isInUpdate ? CLAN_SQUADS_LIST_REQUEST_TIME_OUT
+    let checkTime = this.isInUpdate ? CLAN_SQUADS_LIST_REQUEST_TIME_OUT
       : CLAN_SQUADS_LIST_REFRESH_MIN_TIME
-    return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
+    return  get_time_msec() - this.lastRequestTimeMsec >= checkTime
   }
 
   function canRequest()
   {
-    return !isNewest() && canRequestByTime()
+    return !this.isNewest() && this.canRequestByTime()
   }
 
   function isListValid()
   {
-    return ((clanId == ::clan_get_my_clan_id())
-      && (::dagor.getCurTime() - lastUpdateTimeMsec < CLAN_SQUADS_LIST_TIME_OUT))
+    return ((this.clanId == ::clan_get_my_clan_id())
+      && (get_time_msec() - this.lastUpdateTimeMsec < CLAN_SQUADS_LIST_TIME_OUT))
   }
 
   function validateList()
   {
-    if (!isListValid())
-      clanSquadsList.clear()
+    if (!this.isListValid())
+      this.clanSquadsList.clear()
   }
 
   function getList()
   {
-    validateList()
-    requestList()
+    this.validateList()
+    this.requestList()
 
-    return clanSquadsList
+    return this.clanSquadsList
   }
 
   function requestList()
   {
-    if (!canRequest())
+    if (!this.canRequest())
       return false
 
-    isInUpdate = true
-    lastRequestTimeMsec = ::dagor.getCurTime()
+    this.isInUpdate = true
+    this.lastRequestTimeMsec = get_time_msec()
 
     let requestClanId = ::clan_get_my_clan_id()
-    let cb = ::Callback(@(resp) requestListCb(resp, requestClanId), this)
+    let cb = Callback(@(resp) this.requestListCb(resp, requestClanId), this)
 
-    matching_api_func("msquad.get_squads", cb, {players = getClanUidsList()})
+    ::matching_api_func("msquad.get_squads", cb, {players = this.getClanUidsList()})
     return true
   }
 
@@ -88,16 +95,16 @@ local ClanSquadsList = class
 
   function requestListCb(p, requestClanId)
   {
-    isInUpdate = false
-    clanId = requestClanId
+    this.isInUpdate = false
+    this.clanId = requestClanId
 
     let squads = ::checkMatchingError(p, false) ? (p?.squads) : null
     if (!squads)
       return
 
-    lastUpdateTimeMsec = ::dagor.getCurTime()
-    updateClanSquadsList(squads)
-    ::broadcastEvent("ClanSquadsListChanged", { clanSquadsList = clanSquadsList })
+    this.lastUpdateTimeMsec = get_time_msec()
+    this.updateClanSquadsList(squads)
+    ::broadcastEvent("ClanSquadsListChanged", { clanSquadsList = this.clanSquadsList })
   }
 
   function updateClanSquadsList(squads) //can be called each update
@@ -111,9 +118,9 @@ local ClanSquadsList = class
       squads.resize(MAX_SQUADS_LIST_LEN)
     }
 
-    clanSquadsList.clear()
+    this.clanSquadsList.clear()
     foreach(squad in squads)
-      clanSquadsList.append(squad)
+      this.clanSquadsList.append(squad)
   }
 
 }

@@ -1,15 +1,23 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler
 {
   wndType = handlerType.CUSTOM
-  sceneTplName = "%gui/worldWar/airfieldObject"
+  sceneTplName = "%gui/worldWar/airfieldObject.tpl"
   sceneBlkName = null
-  airfieldBlockTplName = "%gui/worldWar/worldWarMapArmyItem"
+  airfieldBlockTplName = "%gui/worldWar/worldWarMapArmyItem.tpl"
 
   airfieldIdPrefix = "airfield_"
 
-  side = ::SIDE_NONE
+  side = SIDE_NONE
 
   ownedAirfieldsNumber = -1
   updateTimer = null
@@ -20,40 +28,40 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     return {
       isControlHelpCentered = true
       consoleButtonsIconName = ::show_console_buttons ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
-      controlHelpText = ::show_console_buttons ? null : ::loc("key/RMB")
-      controlHelpDesc = ::loc("worldwar/state/air_fly_out_control")
+      controlHelpText = ::show_console_buttons ? null : loc("key/RMB")
+      controlHelpDesc = loc("worldwar/state/air_fly_out_control")
     }
   }
 
   function initScreen()
   {
-    updateAirfields()
+    this.updateAirfields()
     if (::ww_get_selected_airfield() >= 0)
     {
-      updateSelectedAirfield(::ww_get_selected_airfield())
-      selectDefaultFormation()
+      this.updateSelectedAirfield(::ww_get_selected_airfield())
+      this.selectDefaultFormation()
     }
   }
 
   function getSceneTplContainerObj()
   {
-    return scene
+    return this.scene
   }
 
   function isValid()
   {
-    return ::checkObj(scene) && ::checkObj(scene.findObject("airfields_list"))
+    return checkObj(this.scene) && checkObj(this.scene.findObject("airfields_list"))
   }
 
   function getAirfields()
   {
     let selAirfield = ::ww_get_selected_airfield()
     let airfields = []
-    let fieldsArray = ::g_world_war.getAirfieldsArrayBySide(side)
+    let fieldsArray = ::g_world_war.getAirfieldsArrayBySide(this.side)
     foreach(idx, field in fieldsArray)
     {
       airfields.append({
-        id = getAirfieldId(field.index)
+        id = this.getAirfieldId(field.index)
         text = (idx+1)
         selected = selAirfield == field.index
         type = "".concat("ww_",field.airfieldType.objName)
@@ -65,34 +73,34 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function updateAirfields()
   {
-    let airfields = getAirfields()
-    let placeObj = scene.findObject("airfields_list")
+    let airfields = this.getAirfields()
+    let placeObj = this.scene.findObject("airfields_list")
     let view = { airfields = airfields }
-    let data = ::handyman.renderCached("%gui/worldWar/wwAirfieldsList", view)
-    guiScene.replaceContentFromText(placeObj, data, data.len(), this)
-    ownedAirfieldsNumber = airfields.len()
+    let data = ::handyman.renderCached("%gui/worldWar/wwAirfieldsList.tpl", view)
+    this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
+    this.ownedAirfieldsNumber = airfields.len()
   }
 
   function fillTimer(airfieldIdx, cooldownView)
   {
-    let placeObj = scene.findObject("airfield_object")
-    if (!::check_obj(placeObj))
+    let placeObj = this.scene.findObject("airfield_object")
+    if (!checkObj(placeObj))
       return
 
-    if (updateTimer)
-      updateTimer.destroy()
+    if (this.updateTimer)
+      this.updateTimer.destroy()
 
-    updateTimer = ::Timer(placeObj, updateDelay,
+    this.updateTimer = ::Timer(placeObj, this.updateDelay,
       (@(placeObj, airfieldIdx, cooldownView) function() {
-        onUpdateTimer(placeObj, airfieldIdx, cooldownView)
+        this.onUpdateTimer(placeObj, airfieldIdx, cooldownView)
       })(placeObj, airfieldIdx, cooldownView), this, true)
 
-    onUpdateTimer(placeObj, airfieldIdx, cooldownView)
+    this.onUpdateTimer(placeObj, airfieldIdx, cooldownView)
   }
 
   function onUpdateTimer(placeObj, airfieldIdx, cooldownView)
   {
-    if (!::getTblValue("army", cooldownView))
+    if (!getTblValue("army", cooldownView))
       return
 
     let airfield = ::g_world_war.getAirfieldByIndex(airfieldIdx)
@@ -101,17 +109,17 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
     if (cooldownView.army.len() != airfield.getCooldownsWithManageAccess().len())
     {
-      updateSelectedAirfield(airfieldIdx)
+      this.updateSelectedAirfield(airfieldIdx)
       return
     }
 
-    foreach (idx, item in cooldownView.army)
+    foreach (_idx, item in cooldownView.army)
     {
       let blockObj = placeObj.findObject(item.getId())
-      if (!::check_obj(blockObj))
+      if (!checkObj(blockObj))
         return
       let timerObj = blockObj.findObject("arrival_time_text")
-      if (!::check_obj(timerObj))
+      if (!checkObj(timerObj))
         return
 
       let timerText = airfield.cooldownFormations[item.getFormationID()].getCooldownText()
@@ -121,17 +129,17 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function updateAirfieldFormation(index = -1)
   {
-    let blockObj = scene.findObject("airfield_block")
-    if (!::check_obj(blockObj))
+    let blockObj = this.scene.findObject("airfield_block")
+    if (!checkObj(blockObj))
       return
     let placeObj = blockObj.findObject("free_formations")
-    if (!::check_obj(placeObj))
+    if (!checkObj(placeObj))
       return
 
     if (index < 0)
     {
       blockObj.show(false)
-      guiScene.replaceContentFromText(placeObj, "", 0, this)
+      this.guiScene.replaceContentFromText(placeObj, "", 0, this)
       return
     }
 
@@ -147,7 +155,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
       formationType = "formation"
     }
 
-    foreach (i, formation in [airfield.clanFormation, airfield.allyFormation])
+    foreach (_i, formation in [airfield.clanFormation, airfield.allyFormation])
       if (formation)
       {
         let wwFormationView = formation.getView()
@@ -155,8 +163,8 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
           formationView.army.append(formation.getView())
       }
 
-    let data = ::handyman.renderCached(airfieldBlockTplName, formationView)
-    guiScene.replaceContentFromText(placeObj, data, data.len(), this)
+    let data = ::handyman.renderCached(this.airfieldBlockTplName, formationView)
+    this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
 
     blockObj.show(true)
   }
@@ -176,9 +184,9 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function updateAirfieldCooldownList(index = -1)
   {
-    let placeObj = scene.findObject("cooldowns_list")
+    let placeObj = this.scene.findObject("cooldowns_list")
     if (index < 0)
-      guiScene.replaceContentFromText(placeObj, "", 0, this)
+      this.guiScene.replaceContentFromText(placeObj, "", 0, this)
 
     let cooldownView = {
       army = []
@@ -193,12 +201,12 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
     let airfield = ::g_world_war.getAirfieldByIndex(index)
     let cooldownFormations = airfield.getCooldownsWithManageAccess()
-    foreach (i, cooldown in cooldownFormations)
+    foreach (_i, cooldown in cooldownFormations)
       cooldownView.army.append(cooldown.getView())
 
-    let data = ::handyman.renderCached(airfieldBlockTplName, cooldownView)
-    guiScene.replaceContentFromText(placeObj, data, data.len(), this)
-    fillTimer(index, cooldownView)
+    let data = ::handyman.renderCached(this.airfieldBlockTplName, cooldownView)
+    this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
+    this.fillTimer(index, cooldownView)
   }
 
   function hasArmyOnCooldown(airfield)
@@ -212,8 +220,8 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function updateAirfieldDescription(index = -1)
   {
-    let airfieldBlockObj = scene.findObject("airfield_block")
-    if (!::check_obj(airfieldBlockObj))
+    let airfieldBlockObj = this.scene.findObject("airfield_block")
+    if (!checkObj(airfieldBlockObj))
       return
 
     let airfield = ::g_world_war.getAirfieldByIndex(index)
@@ -224,16 +232,16 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
       return
 
     let airfieldInfoObj = airfieldBlockObj.findObject("airfield_info_text")
-    if (!::check_obj(airfieldInfoObj))
+    if (!checkObj(airfieldInfoObj))
       return
 
     let airfieldUnitsText = "".concat(
-      ::loc("".concat("worldwar/", airfield.airfieldType.objName, "_units")),
-        ::loc("ui/colon"))
-    let airfieldInFlyText = ::loc("worldwar/airfield_in_fly") + ::loc("ui/colon")
+      loc("".concat("worldwar/", airfield.airfieldType.objName, "_units")),
+        loc("ui/colon"))
+    let airfieldInFlyText = loc("worldwar/airfield_in_fly") + loc("ui/colon")
     let airfieldCapacityText = "".concat(
-      ::loc("".concat("worldwar/", airfield.airfieldType.objName, "_capacity")),
-        ::loc("ui/colon"))
+      loc("".concat("worldwar/", airfield.airfieldType.objName, "_capacity")),
+        loc("ui/colon"))
     let iconText = airfield.airfieldType.unitType.fontIcon
 
     let airfieldUnitsNumber = airfield.getUnitsNumber()
@@ -243,32 +251,32 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
     local airfieldInfoValue = airfieldUnitsNumber
     local airfieldTooltip = airfieldUnitsText +
-      ::colorize("@white", airfieldUnitsNumber + " " + iconText)
+      colorize("@white", airfieldUnitsNumber + " " + iconText)
     if (inFlyUnitsNumber > 0)
     {
       airfieldInfoValue += "+" + inFlyUnitsNumber
       airfieldTooltip += "\n" + airfieldInFlyText +
-        ::colorize("@white", inFlyUnitsNumber + " " + iconText)
+        colorize("@white", inFlyUnitsNumber + " " + iconText)
     }
     airfieldInfoValue += "/" + airfieldCapacityNumber + " " + iconText
     airfieldTooltip += "\n" + airfieldCapacityText +
-      ::colorize("@white", airfieldCapacityNumber + " " + iconText)
+      colorize("@white", airfieldCapacityNumber + " " + iconText)
     if (isFull)
-      airfieldTooltip += "\n" + ::colorize("@badTextColor", ::loc("worldwar/airfield_is_full"))
+      airfieldTooltip += "\n" + colorize("@badTextColor", loc("worldwar/airfield_is_full"))
 
     airfieldInfoObj.setValue(airfieldCapacityText +
-      ::colorize(isFull ? "@badTextColor" : "@white", airfieldInfoValue))
+      colorize(isFull ? "@badTextColor" : "@white", airfieldInfoValue))
     airfieldInfoObj.tooltip = airfieldTooltip
 
-    let hasFormationUnits = hasFormationsForFly(airfield)
-    let hasCooldownUnits = hasArmyOnCooldown(airfield)
+    let hasFormationUnits = this.hasFormationsForFly(airfield)
+    let hasCooldownUnits = this.hasArmyOnCooldown(airfield)
     let formationTextObj = airfieldBlockObj.findObject("free_formations_text")
-    if (!::check_obj(formationTextObj))
+    if (!checkObj(formationTextObj))
       return
 
-    let text = hasFormationUnits ? ::loc("worldwar/state/ready_to_fly") + ::loc("ui/colon")
-      : hasCooldownUnits ? ::loc("worldwar/state/no_units_to_fly")
-      : ::loc($"worldwar/state/{airfield.airfieldType.objName}_empty")
+    let text = hasFormationUnits ? loc("worldwar/state/ready_to_fly") + loc("ui/colon")
+      : hasCooldownUnits ? loc("worldwar/state/no_units_to_fly")
+      : loc($"worldwar/state/{airfield.airfieldType.objName}_empty")
     formationTextObj.setValue(text)
 
     let hasEnoughToFly = airfield.hasEnoughUnitsToFly()
@@ -281,12 +289,12 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getAirfieldId(index)
   {
-    return airfieldIdPrefix + index
+    return this.airfieldIdPrefix + index
   }
 
   function selectRadioButtonBlock(rbObj, idx)
   {
-    if (::check_obj(rbObj))
+    if (checkObj(rbObj))
       if (rbObj.childrenCount() > idx && idx >= 0)
         if (rbObj.getChild(idx))
           rbObj.getChild(idx).setValue(true)
@@ -294,14 +302,14 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function deselectRadioButtonBlocks(rbObj)
   {
-    if (::check_obj(rbObj))
+    if (checkObj(rbObj))
       for (local i = 0; i < rbObj.childrenCount(); i++)
         rbObj.getChild(i).setValue(false)
   }
 
   function onChangeFormationValue(obj)
   {
-    deselectRadioButtonBlocks(scene.findObject("cooldowns_list"))
+    this.deselectRadioButtonBlocks(this.scene.findObject("cooldowns_list"))
     ::ww_event("MapAirfieldFormationSelected", {
       airfieldIdx = ::ww_get_selected_airfield(),
       formationType = "formation",
@@ -310,7 +318,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function onChangeCooldownValue(obj)
   {
-    deselectRadioButtonBlocks(scene.findObject("free_formations"))
+    this.deselectRadioButtonBlocks(this.scene.findObject("free_formations"))
     ::ww_event("MapAirfieldFormationSelected", {
       airfieldIdx = ::ww_get_selected_airfield(),
       formationType = "cooldown",
@@ -319,7 +327,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function onAirfieldClick(obj)
   {
-    let index = ::to_integer_safe(obj.id.slice(airfieldIdPrefix.len()), -1)
+    let index = ::to_integer_safe(obj.id.slice(this.airfieldIdPrefix.len()), -1)
     let mapObj = ::get_cur_gui_scene()["worldwar_map"]
     ::ww_gui_bhv.worldWarMapControls.selectAirfield.call(
       ::ww_gui_bhv.worldWarMapControls, mapObj, {airfieldIdx = index})
@@ -327,48 +335,48 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function selectDefaultFormation()
   {
-    let placeObj = scene.findObject("free_formations")
-    selectRadioButtonBlock(placeObj, 0)
+    let placeObj = this.scene.findObject("free_formations")
+    this.selectRadioButtonBlock(placeObj, 0)
   }
 
   function updateSelectedAirfield(selectedAirfield = -1)
   {
-    if (ownedAirfieldsNumber != getAirfields().len())
-      updateAirfields()
+    if (this.ownedAirfieldsNumber != this.getAirfields().len())
+      this.updateAirfields()
 
     for (local index = 0; index < ::ww_get_airfields_count(); index++)
     {
-      let airfieldObj = scene.findObject(getAirfieldId(index))
-      if (::checkObj(airfieldObj))
+      let airfieldObj = this.scene.findObject(this.getAirfieldId(index))
+      if (checkObj(airfieldObj))
         airfieldObj.selected = selectedAirfield == index? "yes" : "no"
     }
-    updateAirfieldFormation(selectedAirfield)
-    updateAirfieldCooldownList(selectedAirfield)
-    updateAirfieldDescription(selectedAirfield)
-    selectDefaultFormation()
+    this.updateAirfieldFormation(selectedAirfield)
+    this.updateAirfieldCooldownList(selectedAirfield)
+    this.updateAirfieldDescription(selectedAirfield)
+    this.selectDefaultFormation()
   }
 
-  function onEventWWMapAirfieldSelected(params)
+  function onEventWWMapAirfieldSelected(_params)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    updateSelectedAirfield(::ww_get_selected_airfield())
+    this.updateSelectedAirfield(::ww_get_selected_airfield())
   }
 
-  function onEventWWMapAirfieldCleared(params)
+  function onEventWWMapAirfieldCleared(_params)
   {
-    updateSelectedAirfield()
+    this.updateSelectedAirfield()
   }
 
-  function onEventWWLoadOperation(params = {})
+  function onEventWWLoadOperation(_params = {})
   {
-    updateSelectedAirfield(::ww_get_selected_airfield())
+    this.updateSelectedAirfield(::ww_get_selected_airfield())
   }
 
   function onEventWWMapClearSelectionBySelectedObject(params)
   {
     if (params.objSelected != mapObjectSelect.AIRFIELD)
-      updateSelectedAirfield()
+      this.updateSelectedAirfield()
   }
 }

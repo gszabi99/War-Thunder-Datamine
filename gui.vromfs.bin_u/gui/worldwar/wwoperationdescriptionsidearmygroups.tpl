@@ -42,7 +42,7 @@ tdiv {
       }
     <</armyGroupNames>>
     <<#managers>>
-      include "%gui/worldWar/wwArmyManagersStat"
+      include "%gui/worldWar/wwArmyManagersStat.tpl"
     <</managers>>
   }
   <</columns>>

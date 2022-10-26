@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -5,7 +12,8 @@ let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText,
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
-  getUnitRarity, getUnitRequireUnlockText } = require("%scripts/unit/unitInfoTexts.nut")
+  getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
@@ -31,17 +39,14 @@ let { getShopItem } = require("%scripts/onlineShop/entitlementsStore.nut")
 let { getUnitFileName } = require("vehicleModel")
 let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
 
-
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
-global enum CheckFeatureLockAction
-{
+global enum CheckFeatureLockAction {
   BUY,
   RESEARCH
 }
 
-let function afterUpdateAirModificators(unit, callback)
-{
+let function afterUpdateAirModificators(unit, callback) {
   if (unit.secondaryWeaponMods)
     unit.secondaryWeaponMods = null //invalidate secondary weapons cache
   ::broadcastEvent("UnitModsRecount", { unit = unit })
@@ -49,9 +54,8 @@ let function afterUpdateAirModificators(unit, callback)
     callback()
 }
 
-let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
-{
-  if (!::checkObj(obj) || !maxExp)
+let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
+  if (!checkObj(obj) || !maxExp)
     return
 
   let guiScene = obj.getScene()
@@ -61,7 +65,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   guiScene.replaceContent(obj, "%gui/countryExpItem.blk", this)
 
   local barObj = obj.findObject("expProgressOld")
-  if (::checkObj(barObj))
+  if (checkObj(barObj))
   {
     barObj.show(true)
     barObj.setValue(1000.0 * curExp / maxExp)
@@ -69,7 +73,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   }
 
   barObj = obj.findObject("expProgress")
-  if (::checkObj(barObj))
+  if (checkObj(barObj))
   {
     barObj.show(true)
     barObj.setValue(1000.0 * newExp / maxExp)
@@ -79,7 +83,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
 ::get_es_unit_type <- function get_es_unit_type(unit)
 {
-  return unit?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
+  return unit?.esUnitType ?? ES_UNIT_TYPE_INVALID
 }
 
 ::getUnitTypeTextByUnit <- function getUnitTypeTextByUnit(unit)
@@ -95,7 +99,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 ::getUnitsNeedBuyToOpenNextInEra <- function getUnitsNeedBuyToOpenNextInEra(countryId, unitType, rank, ranksBlk = null)
 {
   ranksBlk = ranksBlk || ::get_ranks_blk()
-  let unitTypeText = getUnitTypeText(unitType)
+  let unitTypeText = ::getUnitTypeText(unitType)
 
   local needToOpen = ranksBlk?.needBuyToOpenNextInEra[countryId]["needBuyToOpenNextInEra" + unitTypeText + rank]
   if (needToOpen != null)
@@ -145,8 +149,8 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   let isInShop = unit?.isInShop
   if (isInShop == null)
   {
-    ::debugTableData(unit)
-    ::dagor.assertf(false, "not existing isInShop param")
+    debugTableData(unit)
+    assert(false, "not existing isInShop param")
     return false
   }
 
@@ -157,7 +161,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     return false
 
   let status = ::shop_unit_research_status(unit.name)
-  return (0 != (status & (::ES_ITEM_STATUS_IN_RESEARCH | ::ES_ITEM_STATUS_CAN_RESEARCH))) && !::isUnitMaxExp(unit)
+  return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !::isUnitMaxExp(unit)
 }
 
 ::canBuyUnit <- function canBuyUnit(unit)
@@ -169,7 +173,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     return false
 
   let status = ::shop_unit_research_status(unit.name)
-  return (0 != (status & ::ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
+  return (0 != (status & ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
 }
 
 let isEventUnit = @(unit) unit.event != null
@@ -208,7 +212,7 @@ let isEventUnit = @(unit) unit.event != null
     return false
 
   local status = ::shop_unit_research_status(unit.name)
-  return ((status & ::ES_ITEM_STATUS_IN_RESEARCH) != 0) && !::isUnitMaxExp(unit)
+  return ((status & ES_ITEM_STATUS_IN_RESEARCH) != 0) && !::isUnitMaxExp(unit)
 }
 
 ::findUnitNoCase <- function findUnitNoCase(unitName)
@@ -225,18 +229,18 @@ let isEventUnit = @(unit) unit.event != null
   let unitId = ::u.isUnit(unit) ? unit.name
     : ::u.isString(unit) ? unit
     : ""
-  let localized = ::loc(unitId + (shopName ? "_shop" : "_0"), unitId)
+  let localized = loc(unitId + (shopName ? "_shop" : "_0"), unitId)
   return shopName ? ::stringReplace(localized, " ", ::nbsp) : localized
 }
 
 ::isUnitDescriptionValid <- function isUnitDescriptionValid(unit)
 {
-  if (!::has_feature("UnitInfo"))
+  if (!hasFeature("UnitInfo"))
     return false
-  if (::has_feature("WikiUnitInfo"))
+  if (hasFeature("WikiUnitInfo"))
     return true // Because there is link to wiki.
-  let desc = unit ? ::loc("encyclopedia/" + unit.name + "/desc", "") : ""
-  return desc != "" && desc != ::loc("encyclopedia/no_unit_description")
+  let desc = unit ? loc("encyclopedia/" + unit.name + "/desc", "") : ""
+  return desc != "" && desc != loc("encyclopedia/no_unit_description")
 }
 
 ::getUnitRealCost <- function getUnitRealCost(unit)
@@ -257,7 +261,7 @@ let isEventUnit = @(unit) unit.event != null
 
 ::isUnitEliteByStatus <- function isUnitEliteByStatus(status)
 {
-  return status > ::ES_UNIT_ELITE_STAGE1
+  return status > ES_UNIT_ELITE_STAGE1
 }
 
 ::isUnitElite <- function isUnitElite(unit)
@@ -282,7 +286,7 @@ let isEventUnit = @(unit) unit.event != null
 
 ::isUnitFeatureLocked <- function isUnitFeatureLocked(unit)
 {
-  return unit.reqFeature != null && !::has_feature(unit.reqFeature)
+  return unit.reqFeature != null && !hasFeature(unit.reqFeature)
 }
 
 ::getUnitRepairCost <- function getUnitRepairCost(unit)
@@ -312,14 +316,14 @@ let isEventUnit = @(unit) unit.event != null
   if (silent)
     return ::impl_buyUnit(unit)
 
-  let unitName  = ::colorize("userlogColoredText", ::getUnitName(unit, true))
+  let unitName  = colorize("userlogColoredText", ::getUnitName(unit, true))
   let unitPrice = unitCost.getTextAccordingToBalance()
-  let msgText = warningIfGold(::loc("shop/needMoneyQuestion_purchaseAircraft",
+  let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_purchaseAircraft",
       {unitName = unitName, cost = unitPrice}),
     unitCost)
 
   local additionalCheckBox = null
-  if (::facebook_is_logged_in() && ::has_feature("FacebookWallPost"))
+  if (::facebook_is_logged_in() && hasFeature("FacebookWallPost"))
   {
     additionalCheckBox = "cardImg{ background-image:t='#ui/gameuiskin#facebook_logo.svg';}" +
                      "CheckBox {" +
@@ -366,7 +370,7 @@ let isEventUnit = @(unit) unit.event != null
   else
     taskId = ::shop_purchase_aircraft(unitName)
 
-  let progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase"), null, null)
+  let progressBox = ::scene_msg_box("char_connecting", null, loc("charServer/purchase"), null, null)
   ::add_bg_task_cb(taskId, function() {
     ::destroyMsgBox(progressBox)
     ::broadcastEvent("UnitBought", {unitName = unit.name})
@@ -379,7 +383,7 @@ let isEventUnit = @(unit) unit.event != null
   if (unit.unitType.canSpendGold())
     return true
 
-  ::g_popups.add(::getUnitName(unit), ::loc("msgbox/unitTypeRestrictFromSpendGold"),
+  ::g_popups.add(::getUnitName(unit), loc("msgbox/unitTypeRestrictFromSpendGold"),
     null, null, null, "cant_spend_gold_on_unit")
   return false
 }
@@ -399,7 +403,7 @@ let isEventUnit = @(unit) unit.event != null
   if (!::isUnitFeatureLocked(unit))
     return true
   let params = {
-    purchaseAvailable = ::has_feature("OnlineShopPacks")
+    purchaseAvailable = hasFeature("OnlineShopPacks")
     featureLockAction = lockAction
     unit = unit
   }
@@ -421,16 +425,16 @@ let isEventUnit = @(unit) unit.event != null
   if (!::isUnitSpecial(unit) && !::isUnitGift(unit)
     && !isSquadronVehicle && !::isUnitsEraUnlocked(unit))
   {
-    ::showInfoMsgBox(getCantBuyUnitReason(unit), "need_unlock_rank")
+    ::showInfoMsgBox(::getCantBuyUnitReason(unit), "need_unlock_rank")
     return false
   }
 
   if (isSquadronVehicle)
   {
     if (min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit)) <= 0
-      && (!::has_feature("ClanVehicles") || !::is_in_clan()))
+      && (!hasFeature("ClanVehicles") || !::is_in_clan()))
     {
-      if (!::has_feature("ClanVehicles"))
+      if (!hasFeature("ClanVehicles"))
       {
         ::show_not_available_msg_box()
         return false
@@ -438,7 +442,7 @@ let isEventUnit = @(unit) unit.event != null
 
       let button = [["#mainmenu/btnFindSquadron", @() ::gui_modal_clans()]]
       local defButton = "#mainmenu/btnFindSquadron"
-      let msg = [::loc("mainmenu/needJoinSquadronForResearch")]
+      let msg = [loc("mainmenu/needJoinSquadronForResearch")]
 
       let canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
       let priceText = unit.getOpenCost().getTextAccordingToBalance()
@@ -447,7 +451,7 @@ let isEventUnit = @(unit) unit.event != null
         button.append(["purchase", @() ::buyUnit(unit, true)])
         defButton = "purchase"
         msg.append("\n")
-        msg.append(::loc("mainmenu/canOpenVehicle", {price = priceText}))
+        msg.append(loc("mainmenu/canOpenVehicle", {price = priceText}))
       }
       button.append(["cancel", function() {}])
 
@@ -466,7 +470,7 @@ let isEventUnit = @(unit) unit.event != null
 ::getCantBuyUnitReason <- function getCantBuyUnitReason(unit, isShopTooltip = false)
 {
   if (!unit)
-    return ::loc("leaderboards/notAvailable")
+    return loc("leaderboards/notAvailable")
 
   if (::isUnitBought(unit) || ::isUnitGift(unit))
     return ""
@@ -490,32 +494,32 @@ let isEventUnit = @(unit) unit.event != null
 
       if (unitsLeft > 0)
       {
-        return ::loc("shop/unlockTier/locked", { rank = ::get_roman_numeral(rank) })
-          + "\n" + ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", { prevRank = ::get_roman_numeral(prevRank), amount = unitsLeft })
+        return loc("shop/unlockTier/locked", { rank = ::get_roman_numeral(rank) })
+          + "\n" + loc("shop/unlockTier/reqBoughtUnitsPrevRank", { prevRank = ::get_roman_numeral(prevRank), amount = unitsLeft })
       }
     }
-    return ::loc("shop/unlockTier/locked", { rank = ::get_roman_numeral(rank) })
+    return loc("shop/unlockTier/locked", { rank = ::get_roman_numeral(rank) })
   }
   else if (!::isPrevUnitResearched(unit))
   {
     if (isShopTooltip)
-      return ::loc("mainmenu/needResearchPreviousVehicle")
+      return loc("mainmenu/needResearchPreviousVehicle")
     if (!::isUnitResearched(unit))
-      return ::loc("msgbox/need_unlock_prev_unit/research",
-        {name = ::colorize("userlogColoredText", ::getUnitName(::getPrevUnit(unit), true))})
-    return ::loc("msgbox/need_unlock_prev_unit/researchAndPurchase",
-      {name = ::colorize("userlogColoredText", ::getUnitName(::getPrevUnit(unit), true))})
+      return loc("msgbox/need_unlock_prev_unit/research",
+        {name = colorize("userlogColoredText", ::getUnitName(::getPrevUnit(unit), true))})
+    return loc("msgbox/need_unlock_prev_unit/researchAndPurchase",
+      {name = colorize("userlogColoredText", ::getUnitName(::getPrevUnit(unit), true))})
   }
   else if (!::isPrevUnitBought(unit))
   {
     if (isShopTooltip)
-      return ::loc("mainmenu/needBuyPreviousVehicle")
-    return ::loc("msgbox/need_unlock_prev_unit/purchase", {name = ::colorize("userlogColoredText", ::getUnitName(::getPrevUnit(unit), true))})
+      return loc("mainmenu/needBuyPreviousVehicle")
+    return loc("msgbox/need_unlock_prev_unit/purchase", {name = colorize("userlogColoredText", ::getUnitName(::getPrevUnit(unit), true))})
   }
   else if (unitStatus.isRequireUnlockForUnit(unit))
     return getUnitRequireUnlockText(unit)
   else if (!special && !isSquadronVehicle && !::canBuyUnit(unit) && ::canResearchUnit(unit))
-    return ::loc(::isUnitInResearch(unit) ? "mainmenu/needResearch/researching" : "mainmenu/needResearch")
+    return loc(::isUnitInResearch(unit) ? "mainmenu/needResearch/researching" : "mainmenu/needResearch")
 
   if (!isShopTooltip)
   {
@@ -524,9 +528,9 @@ let isEventUnit = @(unit) unit.event != null
     let balanceG = info?.gold ?? 0
 
     if (special && (::wp_get_cost_gold(unit.name) > balanceG))
-      return ::loc("mainmenu/notEnoughGold")
+      return loc("mainmenu/notEnoughGold")
     else if (!special && (::wp_get_cost(unit.name) > balance))
-      return ::loc("mainmenu/notEnoughWP")
+      return loc("mainmenu/notEnoughWP")
    }
 
   return ""
@@ -536,18 +540,18 @@ let isEventUnit = @(unit) unit.event != null
 {
   if (air == null || !air.unitType.isAvailable())
     return false
-  if (gm == ::GM_TEST_FLIGHT)
+  if (gm == GM_TEST_FLIGHT)
     return air.testFlight != ""
-  if (gm == ::GM_DYNAMIC)
+  if (gm == GM_DYNAMIC)
     return air.isAir()
-  if (gm == ::GM_BUILDER)
+  if (gm == GM_BUILDER)
     return air.isAir() && ::isUnitInSlotbar(air)
   return true
 }
 
 ::isTestFlightAvailable <- function isTestFlightAvailable(unit, skipUnitCheck = false)
 {
-  if (!::isUnitAvailableForGM(unit, ::GM_TEST_FLIGHT))
+  if (!::isUnitAvailableForGM(unit, GM_TEST_FLIGHT))
     return false
 
   if (unit.isUsable()
@@ -573,7 +577,7 @@ let isEventUnit = @(unit) unit.event != null
   }
 
   if (air.modificatorsRequestTime > 0
-    && air.modificatorsRequestTime + MODIFICATORS_REQUEST_TIMEOUT_MSEC > ::dagor.getCurTime())
+    && air.modificatorsRequestTime + MODIFICATORS_REQUEST_TIMEOUT_MSEC > get_time_msec())
   {
     if (forceUpdate)
       ::remove_calculate_modification_effect_jobs()
@@ -585,8 +589,8 @@ let isEventUnit = @(unit) unit.event != null
 
   if (air.isShipOrBoat())
   {
-    air.modificatorsRequestTime = ::dagor.getCurTime()
-    calculate_ship_parameters_async(air.name, this, (@(air, callBack) function(effect, ...) {
+    air.modificatorsRequestTime = get_time_msec()
+    ::calculate_ship_parameters_async(air.name, this, (@(air, callBack) function(effect, ...) {
       air.modificatorsRequestTime = -1
       if (effect)
       {
@@ -612,8 +616,8 @@ let isEventUnit = @(unit) unit.event != null
 
   if (air.isTank())
   {
-    air.modificatorsRequestTime = ::dagor.getCurTime()
-    calculate_tank_parameters_async(air.name, this, (@(air, callBack) function(effect, ...) {
+    air.modificatorsRequestTime = get_time_msec()
+    ::calculate_tank_parameters_async(air.name, this, (@(air, callBack) function(effect, ...) {
       air.modificatorsRequestTime = -1
       if (effect)
       {
@@ -636,7 +640,7 @@ let isEventUnit = @(unit) unit.event != null
     return false
   }
 
-  air.modificatorsRequestTime = ::dagor.getCurTime()
+  air.modificatorsRequestTime = get_time_msec()
   ::calculate_min_and_max_parameters(air.name, this, (@(air, callBack) function(effect, ...) {
     air.modificatorsRequestTime = -1
     if (effect)
@@ -684,8 +688,8 @@ let isEventUnit = @(unit) unit.event != null
 {
   switch(::get_es_unit_type(unit))
   {
-    case ::ES_UNIT_TYPE_AIRCRAFT:
-    case ::ES_UNIT_TYPE_HELICOPTER:
+    case ES_UNIT_TYPE_AIRCRAFT:
+    case ES_UNIT_TYPE_HELICOPTER:
 
       let weaponName = getLastWeapon(unit.name)
       local secondaryMods = unit.secondaryWeaponMods
@@ -719,8 +723,8 @@ let isEventUnit = @(unit) unit.event != null
       })
       return false
 
-    case ::ES_UNIT_TYPE_BOAT:
-    case ::ES_UNIT_TYPE_SHIP:
+    case ES_UNIT_TYPE_BOAT:
+    case ES_UNIT_TYPE_SHIP:
 
       let torpedoMod = "torpedoes_movement_mode"
       let mod = getModificationByName(unit, torpedoMod)
@@ -779,7 +783,7 @@ let isEventUnit = @(unit) unit.event != null
 ::isUnitLocked <- function isUnitLocked(unit)
 {
   let status = ::shop_unit_research_status(unit.name)
-  return 0 != (status & ::ES_ITEM_STATUS_LOCKED)
+  return 0 != (status & ES_ITEM_STATUS_LOCKED)
 }
 
 ::isUnitResearched <- function isUnitResearched(unit)
@@ -788,7 +792,7 @@ let isEventUnit = @(unit) unit.event != null
     return true
 
   let status = ::shop_unit_research_status(unit.name)
-  return (0 != (status & ::ES_ITEM_STATUS_RESEARCHED))
+  return (0 != (status & ES_ITEM_STATUS_RESEARCHED))
 }
 
 ::isPrevUnitResearched <- function isPrevUnitResearched(unit)
@@ -846,7 +850,7 @@ let isEventUnit = @(unit) unit.event != null
 
 ::get_battle_type_by_unit <- function get_battle_type_by_unit(unit)
 {
-  return (::get_es_unit_type(unit) == ::ES_UNIT_TYPE_TANK)? BATTLE_TYPES.TANK : BATTLE_TYPES.AIR
+  return (::get_es_unit_type(unit) == ES_UNIT_TYPE_TANK)? BATTLE_TYPES.TANK : BATTLE_TYPES.AIR
 }
 
 ::getCharacteristicActualValue <- function getCharacteristicActualValue(air, characteristicName, prepareTextFunc, modeName, showLocalState = true)
@@ -870,17 +874,16 @@ let isEventUnit = @(unit) unit.event != null
   let weaponModValue = air?.secondaryWeaponMods.effect[modeName][characteristicName[1]] ?? 0
   local weaponModText = ""
   if(weaponModValue != 0)
-    weaponModText = "<color=@badTextColor>" + (weaponModValue > 0 ? " + " : " - ") + prepareTextFunc(fabs(weaponModValue)) + "</color>"
+    weaponModText = "<color=@badTextColor>" + (weaponModValue > 0 ? " + " : " - ") + prepareTextFunc(stdMath.fabs(weaponModValue)) + "</color>"
   return [text, weaponModText, vMin, vMax, value, air.shop[characteristicName[0]], showReferenceText]
 }
 
-::setReferenceMarker <- function setReferenceMarker(obj, vMin, vMax, refer, modeName)
-{
-  if(!::checkObj(obj))
+let function setReferenceMarker(obj, vMin, vMax, refer, modeName) {
+  if(!checkObj(obj))
     return
 
   let refMarkerObj = obj.findObject("aircraft-reference-marker")
-  if (::checkObj(refMarkerObj))
+  if (checkObj(refMarkerObj))
   {
     if(vMin == vMax || (modeName == "arcade"))
     {
@@ -894,9 +897,8 @@ let isEventUnit = @(unit) unit.event != null
   }
 }
 
-::fillAirCharProgress <- function fillAirCharProgress(progressObj, vMin, vMax, cur)
-{
-  if(!::checkObj(progressObj))
+let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
+  if(!checkObj(progressObj))
     return
   if(vMin == vMax)
     return progressObj.show(false)
@@ -908,20 +910,19 @@ let isEventUnit = @(unit) unit.event != null
 
 ::fillAirInfoTimers <- function fillAirInfoTimers(holderObj, air, needShopInfo)
 {
-  SecondsUpdater(holderObj, function(obj, params) {
+  SecondsUpdater(holderObj, function(obj, _params) {
     local isActive = false
 
     // Unit repair cost
-    let hp = shop_get_aircraft_hp(air.name)
+    let hp = ::shop_get_aircraft_hp(air.name)
     let isBroken = hp >= 0 && hp < 1
     isActive = isActive || isBroken // warning disable: -const-in-bool-expr
     let hpTrObj = obj.findObject("aircraft-condition-tr")
     if (hpTrObj)
       if (isBroken)
       {
-        //local hpText = format("%d%%", ::floor(hp*100))
-        //hpText += (hp < 1)? " (" + time.hoursToString(shop_time_until_repair(air.name)) + ")" : ""
-        let hpText = ::loc("shop/damaged") + " (" + time.hoursToString(shop_time_until_repair(air.name), false, true) + ")"
+        let timeStr = time.hoursToString(::shop_time_until_repair(air.name), false, true)
+        let hpText = "".concat(loc("shop/damaged"), loc("ui/parentheses/space", { text = timeStr }))
         hpTrObj.show(true)
         hpTrObj.findObject("aircraft-condition").setValue(hpText)
       } else
@@ -937,7 +938,7 @@ let isEventUnit = @(unit) unit.event != null
     let isRented = air.isRented()
     isActive = isActive || isRented
     let rentObj = obj.findObject("unit_rent_time")
-    if (::checkObj(rentObj))
+    if (checkObj(rentObj))
     {
       let sec = air.getRentTimeleft()
       let show = sec > 0
@@ -945,7 +946,7 @@ let isEventUnit = @(unit) unit.event != null
       if (show)
       {
         let timeStr = time.hoursToString(time.secondsToHours(sec), false, true, true)
-        value = ::colorize("goodTextColor", ::loc("mainmenu/unitRentTimeleft") + ::loc("ui/colon") + timeStr)
+        value = colorize("goodTextColor", loc("mainmenu/unitRentTimeleft") + loc("ui/colon") + timeStr)
       }
       if (rentObj.isVisible() != show)
         rentObj.show(show)
@@ -959,12 +960,12 @@ let isEventUnit = @(unit) unit.event != null
     let specialOfferItem = haveDiscount > 0 ? ::ItemsManager.getBestSpecialOfferItemByUnit(air) : null
     isActive = isActive || specialOfferItem != null
     let discountObj = obj.findObject("special_offer_time")
-    if (::check_obj(rentObj)) {
+    if (checkObj(rentObj)) {
       let expireTimeText = specialOfferItem?.getExpireTimeTextShort() ?? ""
       let show = expireTimeText != ""
       discountObj.show(show)
       if (show)
-        discountObj.setValue(::colorize("goodTextColor", ::loc("specialOffer/TillTime", { time = expireTimeText })))
+        discountObj.setValue(colorize("goodTextColor", loc("specialOffer/TillTime", { time = expireTimeText })))
     }
 
     let unlockTime = ::isInMenu() ? getCrewUnlockTimeByUnit(air) : 0
@@ -974,6 +975,9 @@ let isEventUnit = @(unit) unit.event != null
       lockObj.findObject("time").setValue(time.secondsToString(unlockTime))
     isActive = isActive || needShowUnlockTime
 
+    let needShowPromUnitInfo = needShopInfo && fillPromUnitInfo(holderObj, air)
+    isActive = isActive || needShowPromUnitInfo
+
     return !isActive
   })
 }
@@ -982,14 +986,14 @@ let isEventUnit = @(unit) unit.event != null
 {
   handler = handler || ::handlersManager.getActiveRootHandler()
 
-  if (!::checkObj(holderObj))
+  if (!checkObj(holderObj))
   {
     if(holderObj != null)
       return
 
     if (handler)
       holderObj = handler.scene.findObject("slot_info")
-    if (!::checkObj(holderObj))
+    if (!checkObj(holderObj))
       return
   }
 
@@ -998,9 +1002,9 @@ let isEventUnit = @(unit) unit.event != null
     return
 
   let tableObj = holderObj.findObject("air_info_panel_table")
-  if (::check_obj(tableObj))
+  if (checkObj(tableObj))
   {
-    let isShowProgress = ::isInArray(air.esUnitType, [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ])
+    let isShowProgress = isInArray(air.esUnitType, [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ])
     tableObj["showStatsProgress"] = isShowProgress ? "yes" : "no"
   }
 
@@ -1045,20 +1049,20 @@ let isEventUnit = @(unit) unit.event != null
     && ::check_secondary_weapon_mods_recount(air)
 
   local obj = holderObj.findObject("aircraft-name")
-  if (::checkObj(obj))
+  if (checkObj(obj))
     obj.setValue(::getUnitName(air.name, false))
 
   obj = holderObj.findObject("aircraft-type")
-  if (::checkObj(obj))
+  if (checkObj(obj))
   {
     let fonticon = getUnitRoleIcon(air)
     let typeText = getFullUnitRoleText(air)
     obj.show(typeText != "")
-    obj.setValue(::colorize(::getUnitClassColor(air), fonticon + " " + typeText))
+    obj.setValue(colorize(::getUnitClassColor(air), fonticon + " " + typeText))
   }
 
   obj = holderObj.findObject("player_country_exp")
-  if (::checkObj(obj))
+  if (checkObj(obj))
   {
     obj.show(showLocalState && canResearch)
     if (showLocalState && canResearch)
@@ -1077,22 +1081,22 @@ let isEventUnit = @(unit) unit.event != null
         expTotal, !isResearching)
 
       let labelObj = obj.findObject("exp")
-      if (::checkObj(labelObj))
+      if (checkObj(labelObj))
       {
-        let statusText = isResearching ? ::loc("shop/in_research") + ::loc("ui/colon") : ""
+        let statusText = isResearching ? loc("shop/in_research") + loc("ui/colon") : ""
         let expCurText = isSquadronVehicle
           ? ::Cost().setSap(expCur).toStringWithParams({isSapAlwaysShown = true})
           : ::Cost().setRp(expCur).toStringWithParams({isRpAlwaysShown = true})
         local expText = format("%s%s%s%s",
           statusText,
           expCurText,
-          ::loc("ui/slash"),
+          loc("ui/slash"),
           isSquadronVehicle ? ::Cost().setSap(expTotal).tostring() : ::Cost().setRp(expTotal).tostring())
-        expText = ::colorize(isResearching ? "cardProgressTextColor" : "commonTextColor", expText)
+        expText = colorize(isResearching ? "cardProgressTextColor" : "commonTextColor", expText)
         if (isResearching && expInvest > 0)
-          expText += ::colorize(isSquadronVehicle
+          expText += colorize(isSquadronVehicle
             ? "cardProgressChangeSquadronColor"
-            : "cardProgressTextBonusColor", ::loc("ui/parentheses/space",
+            : "cardProgressTextBonusColor", loc("ui/parentheses/space",
             { text = "+ " + (isSquadronVehicle
               ? ::Cost().setSap(expInvest).tostring()
               : ::Cost().setRp(expInvest).tostring()) }))
@@ -1102,17 +1106,17 @@ let isEventUnit = @(unit) unit.event != null
   }
 
   obj = ::showBtn("aircraft-countryImg", !showShortestUnitInfo, holderObj)
-  if (::checkObj(obj) && !showShortestUnitInfo)
+  if (checkObj(obj) && !showShortestUnitInfo)
   {
     obj["background-image"] = ::get_unit_country_icon(air, true)
-    obj["tooltip"] = "".concat(::loc("shop/unitCountry/operator"), ::loc("ui/colon"), ::loc(air.getOperatorCountry()),
-      "\n", ::loc("shop/unitCountry/research"), ::loc("ui/colon"), ::loc(air.shopCountry))
+    obj["tooltip"] = "".concat(loc("shop/unitCountry/operator"), loc("ui/colon"), loc(air.getOperatorCountry()),
+      "\n", loc("shop/unitCountry/research"), loc("ui/colon"), loc(air.shopCountry))
   }
 
-  if (::has_feature("UnitTooltipImage"))
+  if (hasFeature("UnitTooltipImage"))
   {
     obj = holderObj.findObject("aircraft-image")
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj["background-image"] = getUnitTooltipImage(air)
   }
 
@@ -1123,13 +1127,13 @@ let isEventUnit = @(unit) unit.event != null
   ::showBtn("aircraft-tooltip-info", true, holderObj)
 
   let ageObj = holderObj.findObject("aircraft-age")
-  if (::checkObj(ageObj))
+  if (checkObj(ageObj))
   {
     let nameObj = ageObj.findObject("age_number")
-    if (::checkObj(nameObj))
-      nameObj.setValue(::loc("shop/age") + ::loc("ui/colon"))
+    if (checkObj(nameObj))
+      nameObj.setValue(loc("shop/age") + loc("ui/colon"))
     let yearsObj = ageObj.findObject("age_years")
-    if (::checkObj(yearsObj))
+    if (checkObj(yearsObj))
       yearsObj.setValue(::get_roman_numeral(air.rank))
   }
 
@@ -1138,12 +1142,12 @@ let isEventUnit = @(unit) unit.event != null
   let battleRating = air.getBattleRating(ediff)
   let brObj = ::showBtn("aircraft-battle_rating", showBr, holderObj)
   if (showBr) {
-    brObj.findObject("aircraft-battle_rating-header").setValue($"{::loc("shop/battle_rating")}{::loc("ui/colon")}")
+    brObj.findObject("aircraft-battle_rating-header").setValue($"{loc("shop/battle_rating")}{loc("ui/colon")}")
     brObj.findObject("aircraft-battle_rating-value").setValue(format("%.1f", air.getBattleRating(ediff)))
   }
 
   let meetObj = holderObj.findObject("aircraft-chance_to_met_tr")
-  if (::checkObj(meetObj))
+  if (checkObj(meetObj))
   {
     local erCompare = params?.economicRankCompare
     if (erCompare != null)
@@ -1160,14 +1164,14 @@ let isEventUnit = @(unit) unit.event != null
   {
     let prevUnitObj = holderObj.findObject("aircraft-prevUnit_bonus_tr")
     let prevUnit = ::getPrevUnit(air)
-    if (::checkObj(prevUnitObj) && prevUnit)
+    if (checkObj(prevUnitObj) && prevUnit)
     {
       prevUnitObj.show(true)
       let tdNameObj = prevUnitObj.findObject("aircraft-prevUnit")
-      if (::checkObj(tdNameObj))
-        tdNameObj.setValue(format(::loc("shop/prevUnitEfficiencyResearch"), ::getUnitName(prevUnit, true)))
+      if (checkObj(tdNameObj))
+        tdNameObj.setValue(format(loc("shop/prevUnitEfficiencyResearch"), ::getUnitName(prevUnit, true)))
       let tdValueObj = prevUnitObj.findObject("aircraft-prevUnit_bonus")
-      if (::checkObj(tdValueObj))
+      if (checkObj(tdValueObj))
       {
         let param_name = "prevAirExpMulMode"
         let curVal = rBlk?[param_name + diffCode.tostring()] ?? 1
@@ -1181,7 +1185,7 @@ let isEventUnit = @(unit) unit.event != null
   }
 
   let rpObj = holderObj.findObject("aircraft-require_rp_tr")
-  if (::checkObj(rpObj))
+  if (checkObj(rpObj))
   {
     let showRpReq = showLocalState && !isOwn && !special && !gift && !isResearched && !canResearch
     rpObj.show(showRpReq)
@@ -1200,25 +1204,25 @@ let isEventUnit = @(unit) unit.event != null
   }
 
   let modCharacteristics = {
-    [::ES_UNIT_TYPE_AIRCRAFT] = [
+    [ES_UNIT_TYPE_AIRCRAFT] = [
       {id = "maxSpeed", id2 = "speed", prepareTextFunc = @(value) countMeasure(0, value)},
-      {id = "turnTime", id2 = "virage", prepareTextFunc = function(value){return format("%.1f %s", value, ::loc("measureUnits/seconds"))}},
+      {id = "turnTime", id2 = "virage", prepareTextFunc = function(value){return format("%.1f %s", value, loc("measureUnits/seconds"))}},
       {id = "climbSpeed", id2 = "climb", prepareTextFunc = @(value) countMeasure(3, value)}
     ],
-    [::ES_UNIT_TYPE_TANK] = [
-      {id = "mass", id2 = "mass", prepareTextFunc = function(value){return format("%.1f %s", (value / 1000.0), ::loc("measureUnits/ton"))}},
+    [ES_UNIT_TYPE_TANK] = [
+      {id = "mass", id2 = "mass", prepareTextFunc = function(value){return format("%.1f %s", (value / 1000.0), loc("measureUnits/ton"))}},
       {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)},
-      {id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value){return format("%.1f%s", value.tofloat(), ::loc("measureUnits/deg_per_sec"))}}
+      {id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value){return format("%.1f%s", value.tofloat(), loc("measureUnits/deg_per_sec"))}}
     ],
-    [::ES_UNIT_TYPE_BOAT] = [
+    [ES_UNIT_TYPE_BOAT] = [
       //TODO ship modificators
       {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)}
     ],
-    [::ES_UNIT_TYPE_SHIP] = [
+    [ES_UNIT_TYPE_SHIP] = [
       //TODO ship modificators
       {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)}
     ],
-    [::ES_UNIT_TYPE_HELICOPTER] = [
+    [ES_UNIT_TYPE_HELICOPTER] = [
       {id = "maxSpeed", id2 = "speed", prepareTextFunc = @(value) countMeasure(0, value)}
       {id = "climbSpeed", id2 = "climb", prepareTextFunc = @(value) countMeasure(3, value)}
     ]
@@ -1248,10 +1252,10 @@ let isEventUnit = @(unit) unit.event != null
       waitObj.show(!isSecondaryModsValid)
   }
   let refTextObj = holderObj.findObject("references_text")
-  if (::checkObj(refTextObj)) refTextObj.show(showReferenceText)
+  if (checkObj(refTextObj)) refTextObj.show(showReferenceText)
 
   holderObj.findObject("aircraft-speedAlt").setValue((air.shop?.maxSpeedAlt ?? 0) > 0 ?
-    countMeasure(1, air.shop.maxSpeedAlt) : ::loc("shop/max_speed_alt_sea"))
+    countMeasure(1, air.shop.maxSpeedAlt) : loc("shop/max_speed_alt_sea"))
 //    holderObj.findObject("aircraft-climbTime").setValue(format("%02d:%02d", air.shop.climbTime.tointeger() / 60, air.shop.climbTime.tointeger() % 60))
 //    holderObj.findObject("aircraft-climbAlt").setValue(countMeasure(1, air.shop.climbAlt))
   holderObj.findObject("aircraft-altitude").setValue(countMeasure(1, air.shop.maxAltitude))
@@ -1260,48 +1264,48 @@ let isEventUnit = @(unit) unit.event != null
 //  holderObj.findObject("aircraft-range").setValue(countMeasure(2, air.shop.range * 1000.0))
 
   let totalCrewObj = holderObj.findObject("total-crew")
-  if (::check_obj(totalCrewObj))
+  if (checkObj(totalCrewObj))
     totalCrewObj.setValue(air.getCrewTotalCount().tostring())
 
-  let cardAirplaneWingLoadingParameter = ::has_feature("CardAirplaneWingLoadingParameter")
-  let cardAirplanePowerParameter = ::has_feature("CardAirplanePowerParameter")
-  let cardHelicopterClimbParameter = ::has_feature("CardHelicopterClimbParameter")
+  let cardAirplaneWingLoadingParameter = hasFeature("CardAirplaneWingLoadingParameter")
+  let cardAirplanePowerParameter = hasFeature("CardAirplanePowerParameter")
+  let cardHelicopterClimbParameter = hasFeature("CardHelicopterClimbParameter")
 
   let showCharacteristics = {
-    ["aircraft-turnTurretTime-tr"]        = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-angleVerticalGuidance-tr"] = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-shotFreq-tr"]              = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-reloadTime-tr"]            = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-weaponPresets-tr"]         = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-massPerSec-tr"]            = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-armorThicknessHull-tr"]    = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-armorThicknessTurret-tr"]  = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-armorPiercing-tr"]         = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-armorPiercingDist-tr"]     = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-mass-tr"]                  = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-horsePowers-tr"]           = [ ::ES_UNIT_TYPE_TANK ],
-    ["aircraft-maxSpeed-tr"]              = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK,
-                                              ::ES_UNIT_TYPE_BOAT, ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-maxDepth-tr"]              = [ ::ES_UNIT_TYPE_BOAT, ::ES_UNIT_TYPE_SHIP ],
-    ["aircraft-speedAlt-tr"]              = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-altitude-tr"]              = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-turnTime-tr"]              = [ ::ES_UNIT_TYPE_AIRCRAFT ],
-    ["aircraft-climbSpeed-tr"]            = cardHelicopterClimbParameter ? [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ] : [ ::ES_UNIT_TYPE_AIRCRAFT ],
-    ["aircraft-airfieldLen-tr"]           = [ ::ES_UNIT_TYPE_AIRCRAFT ],
-    ["aircraft-wingLoading-tr"]           = cardAirplaneWingLoadingParameter ? [ ::ES_UNIT_TYPE_AIRCRAFT ] : [],
-    ["aircraft-visibilityFactor-tr"]      = [ ::ES_UNIT_TYPE_TANK ]
+    ["aircraft-turnTurretTime-tr"]        = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-angleVerticalGuidance-tr"] = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-shotFreq-tr"]              = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-reloadTime-tr"]            = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-weaponPresets-tr"]         = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-massPerSec-tr"]            = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-armorThicknessHull-tr"]    = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-armorThicknessTurret-tr"]  = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-armorPiercing-tr"]         = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-armorPiercingDist-tr"]     = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-mass-tr"]                  = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-horsePowers-tr"]           = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-maxSpeed-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK,
+                                              ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-maxDepth-tr"]              = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ],
+    ["aircraft-speedAlt-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-altitude-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-turnTime-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-climbSpeed-tr"]            = cardHelicopterClimbParameter ? [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ] : [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-airfieldLen-tr"]           = [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-wingLoading-tr"]           = cardAirplaneWingLoadingParameter ? [ ES_UNIT_TYPE_AIRCRAFT ] : [],
+    ["aircraft-visibilityFactor-tr"]      = [ ES_UNIT_TYPE_TANK ]
   }
 
   foreach (rowId, showForTypes in showCharacteristics)
   {
     let rowObj = holderObj.findObject(rowId)
     if (rowObj)
-      rowObj.show(::isInArray(unitType, showForTypes))
+      rowObj.show(isInArray(unitType, showForTypes))
   }
 
   let powerToWeightRatioObject = holderObj.findObject("aircraft-powerToWeightRatio-tr")
   if (cardAirplanePowerParameter
-    && ::isInArray(unitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER])
+    && isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])
     && "powerToWeightRatio" in air.shop)
   {
     holderObj.findObject("aircraft-powerToWeightRatio").setValue(countMeasure(6, air.shop.powerToWeightRatio))
@@ -1311,7 +1315,7 @@ let isEventUnit = @(unit) unit.event != null
     powerToWeightRatioObject.show(false)
 
   let thrustToWeightRatioObject = holderObj.findObject("aircraft-thrustToWeightRatio-tr")
-  if (cardAirplanePowerParameter && unitType == ::ES_UNIT_TYPE_AIRCRAFT && air.shop?.thrustToWeightRatio)
+  if (cardAirplanePowerParameter && unitType == ES_UNIT_TYPE_AIRCRAFT && air.shop?.thrustToWeightRatio)
   {
     holderObj.findObject("aircraft-thrustToWeightRatio").setValue(format("%.2f", air.shop.thrustToWeightRatio))
     thrustToWeightRatioObject.show(true)
@@ -1327,13 +1331,13 @@ let isEventUnit = @(unit) unit.event != null
     let horsePowersRPM = currentParams.maxHorsePowersRPM;
     holderObj.findObject("aircraft-horsePowers").setValue(
       format("%s %s %d %s", ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(horsePowers),
-        ::loc("shop/unitValidCondition"), horsePowersRPM.tointeger(), ::loc("measureUnits/rpm")))
+        loc("shop/unitValidCondition"), horsePowersRPM.tointeger(), loc("measureUnits/rpm")))
     local thickness = currentParams.armorThicknessHull;
-    holderObj.findObject("aircraft-armorThicknessHull").setValue(format("%d / %d / %d %s", thickness[0].tointeger(), thickness[1].tointeger(), thickness[2].tointeger(), ::loc("measureUnits/mm")))
+    holderObj.findObject("aircraft-armorThicknessHull").setValue(format("%d / %d / %d %s", thickness[0].tointeger(), thickness[1].tointeger(), thickness[2].tointeger(), loc("measureUnits/mm")))
     thickness = currentParams.armorThicknessTurret;
-    holderObj.findObject("aircraft-armorThicknessTurret").setValue(format("%d / %d / %d %s", thickness[0].tointeger(), thickness[1].tointeger(), thickness[2].tointeger(), ::loc("measureUnits/mm")))
+    holderObj.findObject("aircraft-armorThicknessTurret").setValue(format("%d / %d / %d %s", thickness[0].tointeger(), thickness[1].tointeger(), thickness[2].tointeger(), loc("measureUnits/mm")))
     let angles = currentParams.angleVerticalGuidance;
-    holderObj.findObject("aircraft-angleVerticalGuidance").setValue(format("%d / %d%s", angles[0].tointeger(), angles[1].tointeger(), ::loc("measureUnits/deg")))
+    holderObj.findObject("aircraft-angleVerticalGuidance").setValue(format("%d / %d%s", angles[0].tointeger(), angles[1].tointeger(), loc("measureUnits/deg")))
     let armorPiercing = currentParams.armorPiercing;
     if (armorPiercing.len() > 0)
     {
@@ -1341,13 +1345,13 @@ let isEventUnit = @(unit) unit.event != null
       local countOutputValue = min(armorPiercing.len(), 3)
       for(local i = 0; i < countOutputValue; i++)
         textParts.append(stdMath.round(armorPiercing[i]).tointeger())
-      holderObj.findObject("aircraft-armorPiercing").setValue(format("%s %s", ::g_string.implode(textParts, " / "), ::loc("measureUnits/mm")))
+      holderObj.findObject("aircraft-armorPiercing").setValue(format("%s %s", ::g_string.implode(textParts, " / "), loc("measureUnits/mm")))
       let armorPiercingDist = currentParams.armorPiercingDist;
       textParts.clear()
       countOutputValue = min(armorPiercingDist.len(), 3)
       for(local i = 0; i < countOutputValue; i++)
         textParts.append(armorPiercingDist[i].tointeger())
-      holderObj.findObject("aircraft-armorPiercingDist").setValue(format("%s %s", ::g_string.implode(textParts, " / "), ::loc("measureUnits/meters_alt")))
+      holderObj.findObject("aircraft-armorPiercingDist").setValue(format("%s %s", ::g_string.implode(textParts, " / "), loc("measureUnits/meters_alt")))
     }
     else
     {
@@ -1367,18 +1371,18 @@ let isEventUnit = @(unit) unit.event != null
     if (shotFreq)
     {
       let val = stdMath.roundToDigits(shotFreq * 60, 3).tostring()
-      holderObj.findObject("aircraft-shotFreq").setValue(format("%s %s", val, ::loc("measureUnits/shotPerMinute")))
+      holderObj.findObject("aircraft-shotFreq").setValue(format("%s %s", val, loc("measureUnits/shotPerMinute")))
     }
     if (reloadTime)
-      holderObj.findObject("aircraft-reloadTime").setValue(format("%.1f %s", reloadTime, ::loc("measureUnits/seconds")))
+      holderObj.findObject("aircraft-reloadTime").setValue(format("%.1f %s", reloadTime, loc("measureUnits/seconds")))
     if (visibilityFactor)
     {
-      holderObj.findObject("aircraft-visibilityFactor-title").setValue(::loc("shop/visibilityFactor") + ::loc("ui/colon"))
+      holderObj.findObject("aircraft-visibilityFactor-title").setValue(loc("shop/visibilityFactor") + loc("ui/colon"))
       holderObj.findObject("aircraft-visibilityFactor-value").setValue(format("%d %%", visibilityFactor))
     }
   }
 
-  if (unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
+  if (unitType == ES_UNIT_TYPE_SHIP || unitType == ES_UNIT_TYPE_BOAT)
   {
     let unitTags = ::get_unittags_blk()?[air.name] ?? {}
 
@@ -1388,7 +1392,7 @@ let isEventUnit = @(unit) unit.event != null
     if(displacementKilos!= null)
     {
       let displacementString = ::g_measure_type.SHIP_DISPLACEMENT_TON.getMeasureUnitsText(displacementKilos/1000, true)
-      holderObj.findObject("ship-displacement-title").setValue(::loc("info/ship/displacement") + ::loc("ui/colon"))
+      holderObj.findObject("ship-displacement-title").setValue(loc("info/ship/displacement") + loc("ui/colon"))
       holderObj.findObject("ship-displacement-value").setValue(displacementString)
     }
 
@@ -1396,7 +1400,7 @@ let isEventUnit = @(unit) unit.event != null
     let depthValue = unitTags?.Shop?.maxDepth ?? 0
     holderObj.findObject("aircraft-maxDepth-tr").show(depthValue > 0)
     if(depthValue > 0)
-      holderObj.findObject("aircraft-maxDepth").setValue(depthValue + ::loc("measureUnits/meters_alt"))
+      holderObj.findObject("aircraft-maxDepth").setValue(depthValue + loc("measureUnits/meters_alt"))
 
     // ship-citadelArmor
     let armorThicknessCitadel = unitTags?.Shop.armorThicknessCitadel
@@ -1408,9 +1412,9 @@ let isEventUnit = @(unit) unit.event != null
         stdMath.round(armorThicknessCitadel.y).tointeger(),
         stdMath.round(armorThicknessCitadel.z).tointeger(),
       ]
-      holderObj.findObject("ship-citadelArmor-title").setValue(::loc("info/ship/citadelArmor") + ::loc("ui/colon"))
+      holderObj.findObject("ship-citadelArmor-title").setValue(loc("info/ship/citadelArmor") + loc("ui/colon"))
       holderObj.findObject("ship-citadelArmor-value").setValue(
-        format("%d / %d / %d %s", val[0], val[1],val[2], ::loc("measureUnits/mm")))
+        format("%d / %d / %d %s", val[0], val[1],val[2], loc("measureUnits/mm")))
     }
 
     // ship-mainFireTower
@@ -1423,9 +1427,9 @@ let isEventUnit = @(unit) unit.event != null
         stdMath.round(armorThicknessMainFireTower.y).tointeger(),
         stdMath.round(armorThicknessMainFireTower.z).tointeger(),
       ]
-      holderObj.findObject("ship-mainFireTower-title").setValue(::loc("info/ship/mainFireTower") + ::loc("ui/colon"))
+      holderObj.findObject("ship-mainFireTower-title").setValue(loc("info/ship/mainFireTower") + loc("ui/colon"))
       holderObj.findObject("ship-mainFireTower-value").setValue(
-        format("%d / %d / %d %s", val[0], val[1],val[2], ::loc("measureUnits/mm")))
+        format("%d / %d / %d %s", val[0], val[1],val[2], loc("measureUnits/mm")))
     }
 
     // ship-antiTorpedoProtection
@@ -1434,9 +1438,9 @@ let isEventUnit = @(unit) unit.event != null
     if(atProtection != null)
     {
       holderObj.findObject("ship-antiTorpedoProtection-title").setValue(
-        "".concat(::loc("info/ship/antiTorpedoProtection"), ::loc("ui/colon")))
+        "".concat(loc("info/ship/antiTorpedoProtection"), loc("ui/colon")))
       holderObj.findObject("ship-antiTorpedoProtection-value").setValue(
-        format("%d %s", atProtection, ::loc("measureUnits/kg")))
+        format("%d %s", atProtection, loc("measureUnits/kg")))
     }
 
     let shipMaterials = getShipMaterialTexts(air.name)
@@ -1448,7 +1452,7 @@ let isEventUnit = @(unit) unit.event != null
       holderObj.findObject("ship-hullMaterial-tr").show(isShow)
       if (isShow)
       {
-        let labelText = (shipMaterials?.hullLabel ?? "") + ::loc("ui/colon")
+        let labelText = (shipMaterials?.hullLabel ?? "") + loc("ui/colon")
         holderObj.findObject("ship-hullMaterial-title").setValue(labelText)
         holderObj.findObject("ship-hullMaterial-value").setValue(valueText)
       }
@@ -1461,7 +1465,7 @@ let isEventUnit = @(unit) unit.event != null
       holderObj.findObject("ship-superstructureMaterial-tr").show(isShow)
       if (isShow)
       {
-        let labelText = (shipMaterials?.superstructureLabel ?? "") + ::loc("ui/colon")
+        let labelText = (shipMaterials?.superstructureLabel ?? "") + loc("ui/colon")
         holderObj.findObject("ship-superstructureMaterial-title").setValue(labelText)
         holderObj.findObject("ship-superstructureMaterial-value").setValue(valueText)
       }
@@ -1501,10 +1505,10 @@ let isEventUnit = @(unit) unit.event != null
     local wpMultText = [ wpMuls.wpMul.tostring() ]
     local wpTimedText = [ wpMuls.wpTimed.tostring() ]
     if (wpMuls.premMul != 1.0) {
-      wpMultText.append(::colorize("minorTextColor", ::loc("ui/multiply")),
-        ::colorize("yellow", format("%.1f", wpMuls.premMul)))
-      wpTimedText.append(::colorize("minorTextColor", ::loc("ui/multiply")),
-        ::colorize("yellow", format("%.1f", wpMuls.premMul)))
+      wpMultText.append(colorize("minorTextColor", loc("ui/multiply")),
+        colorize("yellow", format("%.1f", wpMuls.premMul)))
+      wpTimedText.append(colorize("minorTextColor", loc("ui/multiply")),
+        colorize("yellow", format("%.1f", wpMuls.premMul)))
     }
     wpMultText = "".join(wpMultText)
     wpTimedText = "".join(wpTimedText)
@@ -1564,7 +1568,7 @@ let isEventUnit = @(unit) unit.event != null
         hasTimedAward = true
       let result = f.multiplier * f.premUnitMul * ( f.noBonus + f.premAccBonus + f.premModBonus + f.boosterBonus )
       local resultText = f.isTimedAward ? result : ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(result)
-      resultText = "".concat(::colorize("activeTextColor", resultText), ::loc(f.currency), f.isTimedAward ? ::loc("measureUnits/perMinute") : "")
+      resultText = "".concat(colorize("activeTextColor", resultText), loc(f.currency), f.isTimedAward ? loc("measureUnits/perMinute") : "")
 
       let sources = [NO_BONUS.__merge({ text = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.noBonus) })]
       if (f.premAccBonus  > 0)
@@ -1574,21 +1578,21 @@ let isEventUnit = @(unit) unit.event != null
       if (f.boosterBonus  > 0)
         sources.append(BOOSTER.__merge({ text = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.boosterBonus) }))
       sources[sources.len()-1].isLastBlock <- true
-      let formula = ::handyman.renderCached("%gui/debriefing/rewardSources", {
+      let formula = ::handyman.renderCached("%gui/debriefing/rewardSources.tpl", {
         multiplier = f.multText
         sources
       })
 
       holderObj.getScene().replaceContentFromText(f.obj.findObject($"aircraft-reward_{id}"), formula, formula.len(), handler)
-      local rewardText = ::loc(f.locId)
+      local rewardText = loc(f.locId)
       if (f.isTimedAward)
         rewardText = "".concat(rewardText, showReferenceText ? "**" : "*")
-      f.obj.findObject($"aircraft-reward_{id}-label").setValue($"{rewardText} {resultText}{::loc("ui/colon")}")
+      f.obj.findObject($"aircraft-reward_{id}-label").setValue($"{rewardText} {resultText}{loc("ui/colon")}")
     }
 
     let timedAwardHintTextObj = holderObj.findObject("timed_award_hint_text")
     if (timedAwardHintTextObj?.isValid() && hasTimedAward) {
-      let hintText = ::colorize("fadedTextColor", ::loc("shop/timed_award_hint", {note_symbol = showReferenceText ? "**" : "*"}))
+      let hintText = colorize("fadedTextColor", loc("shop/timed_award_hint", {note_symbol = showReferenceText ? "**" : "*"}))
       timedAwardHintTextObj.setValue(hintText)
       timedAwardHintTextObj.show(true)
     }
@@ -1599,7 +1603,7 @@ let isEventUnit = @(unit) unit.event != null
     let spareCount = showLocalState ? ::get_spare_aircrafts_count(air.name) : 0
     holderObj.findObject("aircraft-spare-tr").show(spareCount > 0)
     if (spareCount > 0)
-      holderObj.findObject("aircraft-spare").setValue(spareCount.tostring() + ::loc("icon/spare"))
+      holderObj.findObject("aircraft-spare").setValue(spareCount.tostring() + loc("icon/spare"))
   }
 
   let fullRepairTd = holderObj.findObject("aircraft-full_repair_cost-td")
@@ -1610,7 +1614,7 @@ let isEventUnit = @(unit) unit.event != null
     let freeRepairsUnlimited = ::isUnitDefault(air)
     let egdCode = difficulty.egdCode
     if (freeRepairsUnlimited)
-      repairCostData = format("textareaNoTab { smallFont:t='yes'; text:t='%s' }", ::loc("shop/free"))
+      repairCostData = format("textareaNoTab { smallFont:t='yes'; text:t='%s' }", loc("shop/free"))
     else
     {
       let avgRepairMul = wBlk?.avgRepairMul ?? 1.0
@@ -1634,14 +1638,14 @@ let isEventUnit = @(unit) unit.event != null
       let hours = showLocalState || needCrewModificators ? ::shop_get_full_repair_time_by_mode(air.name, egdCode)
         : (air[$"repairTimeHrs{::get_name_by_gamemode(egdCode, true)}"] ?? 0)
       let repairTimeText = time.hoursToString(hours, false)
-      let label = ::loc((showLocalState || needCrewModificators) && crew ? "shop/full_repair_time_crew" : "shop/full_repair_time")
+      let label = loc((showLocalState || needCrewModificators) && crew ? "shop/full_repair_time_crew" : "shop/full_repair_time")
       holderObj.findObject("aircraft-full_repair_time_crew-tr").show(true)
       holderObj.findObject("aircraft-full_repair_time_crew-tr").tooltip = label
       holderObj.findObject("aircraft-full_repair_time_label").setValue(label)
       holderObj.findObject("aircraft-full_repair_time_crew").setValue(repairTimeText)
 
       let freeRepairs = showAsRent ? 0
-        : (showLocalState || needCrewModificators) ? air.freeRepairs - shop_get_free_repairs_used(air.name)
+        : (showLocalState || needCrewModificators) ? air.freeRepairs - ::shop_get_free_repairs_used(air.name)
         : air.freeRepairs
       let showFreeRepairs = freeRepairs > 0
       holderObj.findObject("aircraft-free_repairs-tr").show(showFreeRepairs)
@@ -1661,20 +1665,20 @@ let isEventUnit = @(unit) unit.event != null
   let addInfoTextsList = []
 
   if (air.isPkgDev)
-    addInfoTextsList.append(::colorize("badTextColor", ::loc("locatedInPackage", { package = "PKG_DEV" })))
+    addInfoTextsList.append(colorize("badTextColor", loc("locatedInPackage", { package = "PKG_DEV" })))
   if (air.isRecentlyReleased())
-    addInfoTextsList.append(::colorize("chapterUnlockedColor", ::loc("shop/unitIsRecentlyReleased")))
+    addInfoTextsList.append(colorize("chapterUnlockedColor", loc("shop/unitIsRecentlyReleased")))
   if (isSquadronVehicle)
-    addInfoTextsList.append(::colorize("currencySapColor", ::loc("mainmenu/squadronVehicle")))
+    addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/squadronVehicle")))
   if (air.disableFlyout)
-    addInfoTextsList.append(::colorize("warningTextColor", ::loc("mainmenu/vehicleCanNotGoToBattle")))
+    addInfoTextsList.append(colorize("warningTextColor", loc("mainmenu/vehicleCanNotGoToBattle")))
   if (air.event) {
     let eventLangBlk = GUI.get()?.eventLang
     let eventLang = eventLangBlk?[air.event]
-      ? "".join(::g_localization.getLocIdsArray(eventLangBlk?[air.event]).map(@(id) ::loc(id)))
-      : ::loc($"event/{air.event}")
-    addInfoTextsList.append(::colorize("chapterUnlockedColor",
-      ::loc($"mainmenu/eventVehicle", { event = eventLang })))
+      ? "".join(::g_localization.getLocIdsArray(eventLangBlk?[air.event]).map(@(id) loc(id)))
+      : loc($"event/{air.event}")
+    addInfoTextsList.append(colorize("chapterUnlockedColor",
+      loc($"mainmenu/eventVehicle", { event = eventLang })))
   }
 
   if (isSquadronVehicle && needShopInfo)
@@ -1682,16 +1686,16 @@ let isEventUnit = @(unit) unit.event != null
     if (isInClan)
     {
       if (isResearched)
-        addInfoTextsList.append(::loc("mainmenu/leaveSquadronNotLockedVehicle"))
+        addInfoTextsList.append(loc("mainmenu/leaveSquadronNotLockedVehicle"))
       else if (!isResearched && expCur > 0)
-        addInfoTextsList.append(::loc("mainmenu/leaveSquadronNotClearProgress"))
+        addInfoTextsList.append(loc("mainmenu/leaveSquadronNotClearProgress"))
     }
     else if (!isResearched)
     {
       if (expCur > 0)
-        addInfoTextsList.append(::colorize("badTextColor", ::loc("mainmenu/needJoinSquadronForResearch/continue")))
+        addInfoTextsList.append(colorize("badTextColor", loc("mainmenu/needJoinSquadronForResearch/continue")))
       else
-        addInfoTextsList.append(::colorize("badTextColor", ::loc("mainmenu/needJoinSquadronForResearch")))
+        addInfoTextsList.append(colorize("badTextColor", loc("mainmenu/needJoinSquadronForResearch")))
     }
   }
 
@@ -1700,8 +1704,8 @@ let isEventUnit = @(unit) unit.event != null
     let missionRules = ::g_mis_custom_state.getCurMissionRules()
     if (missionRules.isWorldWarUnit(air.name))
     {
-      addInfoTextsList.append(::loc("icon/worldWar/colored") + ::colorize("activeTextColor",::loc("worldwar/unit")))
-      addInfoTextsList.append(::loc("worldwar/unit/desc"))
+      addInfoTextsList.append(loc("icon/worldWar/colored") + colorize("activeTextColor",loc("worldwar/unit")))
+      addInfoTextsList.append(loc("worldwar/unit/desc"))
     }
     if (missionRules.hasCustomUnitRespawns())
     {
@@ -1713,22 +1717,22 @@ let isEventUnit = @(unit) unit.event != null
       {
         if (missionRules.isUnitAvailableBySpawnScore(air))
         {
-          addInfoTextsList.append(::loc("icon/star/white") + ::colorize("activeTextColor",::loc("worldWar/unit/wwSpawnScore")))
-          addInfoTextsList.append(::loc("worldWar/unit/wwSpawnScore/desc"))
+          addInfoTextsList.append(loc("icon/star/white") + colorize("activeTextColor",loc("worldWar/unit/wwSpawnScore")))
+          addInfoTextsList.append(loc("worldWar/unit/wwSpawnScore/desc"))
         }
         else
         {
           let respText = missionRules.getRespawnInfoTextForUnitInfo(air)
           let color = respawnsleft ? "@userlogColoredText" : "@warningTextColor"
-          addInfoTextsList.append(::colorize(color, respText))
+          addInfoTextsList.append(colorize(color, respText))
         }
       }
       else if (disabledUnitByBRText)
-        addInfoTextsList.append(::colorize("badTextColor", disabledUnitByBRText))
+        addInfoTextsList.append(colorize("badTextColor", disabledUnitByBRText))
     }
 
     if (!isOwn)
-      addInfoTextsList.append(::colorize("warningTextColor", ::loc("mainmenu/noLeaderboardProgress")))
+      addInfoTextsList.append(colorize("warningTextColor", loc("mainmenu/noLeaderboardProgress")))
   }
 
   let warbondId = params?.wbId
@@ -1744,45 +1748,43 @@ let isEventUnit = @(unit) unit.event != null
   {
     if (rentTimeHours > 0)
     {
-      let rentTimeStr = ::colorize("activeTextColor", time.hoursToString(rentTimeHours))
-      addInfoTextsList.append(::colorize("userlogColoredText", ::loc("shop/rentFor", { time =  rentTimeStr })))
+      let rentTimeStr = colorize("activeTextColor", time.hoursToString(rentTimeHours))
+      addInfoTextsList.append(colorize("userlogColoredText", loc("shop/rentFor", { time =  rentTimeStr })))
     }
     else
-      addInfoTextsList.append(::colorize("userlogColoredText", ::loc("trophy/unlockables_names/trophy")))
+      addInfoTextsList.append(colorize("userlogColoredText", loc("trophy/unlockables_names/trophy")))
     if (isOwn && !isReceivedPrizes)
     {
-      let text = ::loc("mainmenu/itemReceived") + ::loc("ui/dot") + " " +
-        ::loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce")
-      addInfoTextsList.append(::colorize("badTextColor", text))
+      let text = loc("mainmenu/itemReceived") + loc("ui/dot") + " " +
+        loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce")
+      addInfoTextsList.append(colorize("badTextColor", text))
     }
   }
   else
   {
     if (::canBuyUnitOnline(air))
-      addInfoTextsList.append(::colorize("userlogColoredText",
-        format(::loc("shop/giftAir/"+air.gift+"/info"), air.giftParam ? ::loc(air.giftParam) : "")))
+      addInfoTextsList.append(colorize("userlogColoredText",
+        format(loc("shop/giftAir/"+air.gift+"/info"), air.giftParam ? loc(air.giftParam) : "")))
     if (::isUnitDefault(air))
-      addInfoTextsList.append(::loc("shop/reserve/info"))
+      addInfoTextsList.append(loc("shop/reserve/info"))
     if (::canBuyUnitOnMarketplace(air))
-      addInfoTextsList.append(::colorize("userlogColoredText",::loc("shop/giftAir/coupon/info")))
+      addInfoTextsList.append(colorize("userlogColoredText",loc("shop/giftAir/coupon/info")))
   }
 
   let showPriceText = rentTimeHours == -1 && showLocalState && !::isUnitBought(air)
     && ::isUnitResearched(air) && !::canBuyUnitOnline(air) && ::canBuyUnit(air)
   let priceObj = ::showBtn("aircraft_price", showPriceText, holderObj)
-  if (showPriceText && ::check_obj(priceObj) && ::g_discount.getUnitDiscountByName(air.name) > 0) {
+  if (showPriceText && checkObj(priceObj) && ::g_discount.getUnitDiscountByName(air.name) > 0) {
     placePriceTextToButton(holderObj, "aircraft_price",
-      ::colorize("userlogColoredText", ::loc("events/air_can_buy")), ::getUnitCost(air), 0, ::getUnitRealCost(air))
+      colorize("userlogColoredText", loc("events/air_can_buy")), ::getUnitCost(air), 0, ::getUnitRealCost(air))
   } else if (showPriceText) {
-    let priceText = ::colorize("activeTextColor", ::getUnitCost(air).getTextAccordingToBalance())
-    addInfoTextsList.append(::colorize("userlogColoredText", ::loc("mainmenu/canBuyThisVehicle", { price = priceText })))
+    let priceText = colorize("activeTextColor", ::getUnitCost(air).getTextAccordingToBalance())
+    addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/canBuyThisVehicle", { price = priceText })))
   }
 
-  if(needShopInfo)
-    fillPromUnitInfo(holderObj, air)
 
   let infoObj = ::showBtn("aircraft-addInfo", !showShortestUnitInfo, holderObj)
-  if (::checkObj(infoObj))
+  if (checkObj(infoObj))
     infoObj.setValue(::g_string.implode(addInfoTextsList, "\n"))
 
   if (needCrewInfo && crew)
@@ -1795,32 +1797,32 @@ let isEventUnit = @(unit) unit.event != null
     let crewSpecName = specType.getName()
 
     obj = holderObj.findObject("aircraft-crew_info")
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj.show(true)
 
     obj = holderObj.findObject("aircraft-crew_name")
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj.setValue(::g_crew.getCrewName(crew))
 
     obj = holderObj.findObject("aircraft-crew_level")
-    if (::checkObj(obj))
-      obj.setValue(::loc("crew/usedSkills") + " " + crewLevel)
+    if (checkObj(obj))
+      obj.setValue(loc("crew/usedSkills") + " " + crewLevel)
     obj = holderObj.findObject("aircraft-crew_spec-label")
-    if (::checkObj(obj))
-      obj.setValue(::loc("crew/trained") + ::loc("ui/colon"))
+    if (checkObj(obj))
+      obj.setValue(loc("crew/trained") + loc("ui/colon"))
     obj = holderObj.findObject("aircraft-crew_spec-icon")
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj["background-image"] = crewSpecIcon
     obj = holderObj.findObject("aircraft-crew_spec")
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj.setValue(crewSpecName)
 
     obj = holderObj.findObject("aircraft-crew_points")
-    if (::checkObj(obj) && !isInFlight && crewStatus != "")
+    if (checkObj(obj) && !isInFlight && crewStatus != "")
     {
-      let crewPointsText = ::colorize("white", ::get_crew_sp_text(getCrewPoints(crew)))
+      let crewPointsText = colorize("white", ::get_crew_sp_text(getCrewPoints(crew)))
       obj.show(true)
-      obj.setValue(::loc("crew/availablePoints/advice") + ::loc("ui/colon") + crewPointsText)
+      obj.setValue(loc("crew/availablePoints/advice") + loc("ui/colon") + crewPointsText)
       obj["crewStatus"] = crewStatus
     }
   }
@@ -1829,12 +1831,12 @@ let isEventUnit = @(unit) unit.event != null
   {
     let reason = ::getCantBuyUnitReason(air, true)
     let addTextObj = ::showBtn("aircraft-cant_buy_info", !showShortestUnitInfo, holderObj)
-    if (::checkObj(addTextObj) && !::u.isEmpty(reason))
+    if (checkObj(addTextObj) && !::u.isEmpty(reason))
     {
-      addTextObj.setValue(::colorize("redMenuButtonColor", reason))
+      addTextObj.setValue(colorize("redMenuButtonColor", reason))
 
       let unitNest = ::showBtn("prev_unit_nest", !showShortestUnitInfo, holderObj)
-      if (::checkObj(unitNest) && (!::isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
+      if (checkObj(unitNest) && (!::isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
         ::is_era_available(air.shopCountry, air?.rank ?? -1, unitType))
       {
         let prevUnit = ::getPrevUnit(air)
@@ -1851,9 +1853,9 @@ let isEventUnit = @(unit) unit.event != null
     if (blk?["aircrafts"])
     {
       let stats = blk["aircrafts"]?[air.name]
-      local surviveText = ::loc("multiplayer/notAvailable")
-      local winsText = ::loc("multiplayer/notAvailable")
-      local usageText = ::loc("multiplayer/notAvailable")
+      local surviveText = loc("multiplayer/notAvailable")
+      local winsText = loc("multiplayer/notAvailable")
+      local usageText = loc("multiplayer/notAvailable")
       local rating = -1
       if (stats)
       {
@@ -1870,7 +1872,7 @@ let isEventUnit = @(unit) unit.event != null
           foreach(r in ::usageRating_amount)
             if (usage > r)
               rating++
-          usageText = ::loc("shop/usageRating/" + rating)
+          usageText = loc("shop/usageRating/" + rating)
           if (::has_entitlement("AccessTest"))
             usageText += " (" + (usage * 100).tointeger() + "%)"
         }
@@ -1894,13 +1896,13 @@ let isEventUnit = @(unit) unit.event != null
   let massPerSecValue = getUnitMassPerSecValue(air, showLocalState)
   if (massPerSecValue != 0)
   {
-    let massPerSecText = format("%.2f %s", massPerSecValue, ::loc("measureUnits/kgPerSec"))
+    let massPerSecText = format("%.2f %s", massPerSecValue, loc("measureUnits/kgPerSec"))
     obj = holderObj.findObject("aircraft-massPerSec")
-    if (::checkObj(obj))
+    if (checkObj(obj))
       obj.setValue(massPerSecText)
   }
   obj = holderObj.findObject("aircraft-massPerSec-tr")
-  if (::checkObj(obj))
+  if (checkObj(obj))
     obj.show(massPerSecValue != 0)
 
   obj = ::showBtn("aircraft-research-efficiency-tr", showRewardsInfo, holderObj)
@@ -1908,34 +1910,34 @@ let isEventUnit = @(unit) unit.event != null
   {
     let minAge = ::getMinBestLevelingRank(air)
     let maxAge = ::getMaxBestLevelingRank(air)
-    let rangeText = (minAge == maxAge) ? (::get_roman_numeral(minAge) + ::nbsp + ::loc("shop/age")) :
-        (::get_roman_numeral(minAge) + ::nbsp + ::loc("ui/mdash") + ::nbsp + ::get_roman_numeral(maxAge) + ::nbsp + ::loc("mainmenu/ranks"))
+    let rangeText = (minAge == maxAge) ? (::get_roman_numeral(minAge) + ::nbsp + loc("shop/age")) :
+        (::get_roman_numeral(minAge) + ::nbsp + loc("ui/mdash") + ::nbsp + ::get_roman_numeral(maxAge) + ::nbsp + loc("mainmenu/ranks"))
     obj.findObject("aircraft-research-efficiency").setValue(rangeText)
   }
 
   let wPresets = getUnitWeaponPresetsCount(air)
   obj = holderObj.findObject("aircraft-weaponPresets")
-  if (::checkObj(obj))
+  if (checkObj(obj))
     obj.setValue(wPresets.tostring())
 
   obj = ::showBtn("current_game_mode_footnote_text", !showShortestUnitInfo, holderObj)
-  if (::checkObj(obj))
+  if (checkObj(obj))
   {
     let battleType = ::get_battle_type_by_ediff(ediff)
     let fonticon = !::CAN_USE_EDIFF ? "" :
-      ::loc(battleType == BATTLE_TYPES.AIR ? "icon/unittype/aircraft" : "icon/unittype/tank")
+      loc(battleType == BATTLE_TYPES.AIR ? "icon/unittype/aircraft" : "icon/unittype/tank")
     let diffName = ::g_string.implode([ fonticon, difficulty.getLocName() ], ::nbsp)
 
     let unitStateId = !showLocalState ? "reference"
       : crew ? "current_crew"
       : "current"
-    let unitState = ::loc("shop/showing_unit_state/" + unitStateId)
+    let unitState = loc("shop/showing_unit_state/" + unitStateId)
 
-    obj.setValue(::loc("shop/all_info_relevant_to_current_game_mode") + ::loc("ui/colon") + diffName + "\n" + unitState)
+    obj.setValue(loc("shop/all_info_relevant_to_current_game_mode") + loc("ui/colon") + diffName + "\n" + unitState)
   }
 
   obj = holderObj.findObject("unit_rent_time")
-  if (::checkObj(obj))
+  if (checkObj(obj))
     obj.show(false)
 
   if (showLocalState)
@@ -1989,7 +1991,7 @@ let isEventUnit = @(unit) unit.event != null
 let function isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought)
 {
   // Keep this in sync with getUnitsCountAtRank() in chard
-  return (esUnitType == ::get_es_unit_type(unit) || esUnitType == ::ES_UNIT_TYPE_TOTAL)
+  return (esUnitType == ::get_es_unit_type(unit) || esUnitType == ES_UNIT_TYPE_TOTAL)
     && (country == unit.shopCountry || country == "")
     && (unit.rank == rank || (!exact_rank && unit.rank > rank))
     && ((!needBought || ::isUnitBought(unit)) && unit.isVisibleInShop())

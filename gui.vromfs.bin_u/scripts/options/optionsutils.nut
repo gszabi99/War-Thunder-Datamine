@@ -1,7 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { hasFeature } = require("%scripts/user/features.nut")
+let { get_gui_option } = require("guiOptions")
 
 let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
 
@@ -10,7 +16,7 @@ let checkArgument = function(id, arg, varType) {
     return true
 
   local msg = "[ERROR] Wrong argument type supplied for option item '" + id + ".\n"
-  msg += "Value = " + ::toString(arg) + ".\n"
+  msg += "Value = " + toString(arg) + ".\n"
   msg += "Expected '" + varType + "' found '" + typeof arg + "'."
 
   ::script_net_assert_once(id, msg)
@@ -34,28 +40,28 @@ let createDefaultOption = function() {
     needRestartClient = false
     diffCode = null
 
-    getTrId = @() id + "_tr"
+    getTrId = @() this.id + "_tr"
 
-    getTitle = @() title || ::loc("options/" + id)
+    getTitle = @() this.title || loc("options/" + this.id)
 
-    getCurrentValueLocText = @() getValueLocText(value)
+    getCurrentValueLocText = @() this.getValueLocText(this.value)
 
     getValueLocText = function(val) {
-      switch(controlType)
+      switch(this.controlType)
       {
         case optionControlType.CHECKBOX:
           if (val == true)
-            return ::loc("options/yes")
+            return loc("options/yes")
           else if (val == false)
-            return ::loc("options/no")
+            return loc("options/no")
           break
 
         case optionControlType.LIST:
-          let result = ::getTblValue(values.indexof(val), items)
-          local locKey = (::u.isString(result)) ? result : ::getTblValue("text", result, "")
+          let result = getTblValue(this.values.indexof(val), this.items)
+          local locKey = (::u.isString(result)) ? result : getTblValue("text", result, "")
           if (::g_string.startsWith(locKey, "#"))
             locKey = locKey.slice(1)
-          return ::loc(locKey)
+          return loc(locKey)
 
         case optionControlType.SLIDER:
         case optionControlType.EDITBOX:
@@ -81,7 +87,7 @@ let fillBoolOption = function(descr, id, optionIdx)
   descr.boolOptionIdx <- optionIdx
 }
 
-let setHSVOption_ThermovisionColor = function(desrc, value)
+let setHSVOption_ThermovisionColor = function(_desrc, value)
 {
   ::set_thermovision_index(value)
 }
@@ -115,7 +121,7 @@ let function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat 
 {
   let hueStep = 22.5
   if (curHue==null)
-    curHue = ::get_gui_option(descr.type)
+    curHue = get_gui_option(descr.type)
   if (!::is_numeric(curHue))
     curHue = -1
 
@@ -123,7 +129,7 @@ let function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat 
   descr.items = []
   descr.values = []
   if (defHue != null)
-    addHueParamsToOptionDescr(descr, defHue, ::loc("options/hudDefault"), defSat, defBri)
+    addHueParamsToOptionDescr(descr, defHue, loc("options/hudDefault"), defSat, defBri)
 
   //default palette
   local even = false
@@ -150,7 +156,7 @@ let function fillHueOption(descr, id, defHue = null, curHue = null)
 {
   let hueStep = 22.5
   if (curHue==null)
-    curHue = ::get_gui_option(descr.type)
+    curHue = get_gui_option(descr.type)
   if (!::is_numeric(curHue))
     curHue = -1
 
@@ -158,7 +164,7 @@ let function fillHueOption(descr, id, defHue = null, curHue = null)
   descr.items = []
   descr.values = []
   if (defHue != null)
-    addHueParamsToOptionDescr(descr, defHue, ::loc("options/hudDefault"))
+    addHueParamsToOptionDescr(descr, defHue, loc("options/hudDefault"))
 
   //default palette
   local even = false
@@ -192,7 +198,7 @@ let function fillMultipleHueOption(descr, id, currentHueIndex)
       hueValues.append(hueBlock.getParamValue(j))
     }
     if (i == 0)
-      descr.items.append({ hues = hueValues, text = ::loc("options/hudDefault")})
+      descr.items.append({ hues = hueValues, text = loc("options/hudDefault")})
     else
       descr.items.append({ hues = hueValues })
     descr.values.append(hueValues)
@@ -206,7 +212,7 @@ let fillDynMapOption = function(descr)
   let dynLayouts = ::get_dynamic_layouts()
   foreach(layout in dynLayouts)
   {
-    if (::get_game_mode() == ::GM_BUILDER)
+    if (::get_game_mode() == GM_BUILDER)
     {
       let db = blkFromPath(layout.mis_file)
       let tags = db.mission_settings.mission.tags % "tag"
@@ -224,7 +230,7 @@ let fillDynMapOption = function(descr)
         if (!found)
         {
           skip = true
-          ::dagor.debug("SKIP "+layout.name+" because of tag "+tag)
+          log("SKIP "+layout.name+" because of tag "+tag)
           break
         }
       }
@@ -240,10 +246,10 @@ let fillDynMapOption = function(descr)
 
   if (descr.items.len() == 0 && dynLayouts.len() > 0)
   {
-    ::dagor.debug("[WARNING] All dynamic layouts are skipped due to tags of current aircraft. Adding '" +
+    log("[WARNING] All dynamic layouts are skipped due to tags of current aircraft. Adding '" +
       dynLayouts[0].name + "' to avoid empty list.")
 
-    // must be at least one dynamic layout in USEROPT_DYN_MAP
+    // must be at least one dynamic layout in ::USEROPT_DYN_MAP
     descr.items.append("#dynamic/" + dynLayouts[0].name)
     descr.values.append(dynLayouts[0].mis_file)
   }

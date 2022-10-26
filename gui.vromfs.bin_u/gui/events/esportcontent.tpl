@@ -21,7 +21,7 @@ slotsScrollDiv {
   class:t='tournamentDiv'
   overflow-x:t='auto'
 
-  include "%gui/events/eSportItem"
+  include "%gui/events/eSportItem.tpl"
 }
 
 popupFilter {

@@ -1,5 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.BenchmarkResultModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -11,23 +18,23 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
   function initScreen()
   {
-    if (title)
-      scene.findObject("mission_title").setValue(title)
+    if (this.title)
+      this.scene.findObject("mission_title").setValue(this.title)
 
-    if ("benchTotalTime" in benchmark_data)
+    if ("benchTotalTime" in this.benchmark_data)
     {
       local resultTableData = ""
-      let avgfps = format("%.1f", benchmark_data.benchTotalTime > 0.1 ?
-        (benchmark_data.benchTotalFrames / benchmark_data.benchTotalTime) : 0.0 )
+      let avgfps = format("%.1f", this.benchmark_data.benchTotalTime > 0.1 ?
+        (this.benchmark_data.benchTotalFrames / this.benchmark_data.benchTotalTime) : 0.0 )
 
-      resultTableData = getStatRow("stat_avgfps", "benchmark/avgfps", avgfps)
+      resultTableData = this.getStatRow("stat_avgfps", "benchmark/avgfps", avgfps)
 
-      let minfps = format("%.1f", benchmark_data.benchMinFPS)
-      resultTableData += getStatRow("stat_minfps", "benchmark/minfps", minfps)
+      let minfps = format("%.1f", this.benchmark_data.benchMinFPS)
+      resultTableData += this.getStatRow("stat_minfps", "benchmark/minfps", minfps)
 
-      resultTableData += getStatRow("stat_total", "benchmark/total", benchmark_data.benchTotalFrames)
+      resultTableData += this.getStatRow("stat_total", "benchmark/total", this.benchmark_data.benchTotalFrames)
 
-      guiScene.replaceContentFromText("results_list", resultTableData, resultTableData.len(), this)
+      this.guiScene.replaceContentFromText("results_list", resultTableData, resultTableData.len(), this)
     }
 
     if (isPlatformSony)
@@ -38,7 +45,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
   {
     let rowData = [
                       {
-                        text = ::loc(statType),
+                        text = loc(statType),
                         tdalign = "right",
                         width = "46%pw"
                       }

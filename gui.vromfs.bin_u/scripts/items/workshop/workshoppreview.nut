@@ -1,15 +1,22 @@
-let minWindowWidthScale = 1.33  //1.33@sf
+from "%scripts/dagui_library.nut" import *
 
-::gui_handlers.WorkshopPreview <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+const minWindowWidthScale = 1.33  //1.33@sf
+
+::gui_handlers.WorkshopPreview <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
-  sceneTplName = "%gui/items/workshopPreview"
+  sceneTplName = "%gui/items/workshopPreview.tpl"
 
   wSet = null
 
   function getSceneTplView()
   {
-    let blk = wSet.previewBlk
+    let blk = this.wSet.previewBlk
     let infoBlocks = []
     for ( local i = 0; i < blk.paramCount(); i++ )
     {
@@ -20,7 +27,7 @@ let minWindowWidthScale = 1.33  //1.33@sf
         })
       else if (name == "text")
         infoBlocks.append({
-          text = ::loc(blk.getParamValue(i))
+          text = loc(blk.getParamValue(i))
         })
       else if (name == "imageScale" && infoBlocks.len())
         infoBlocks[infoBlocks.len() - 1][name] <- blk.getParamValue(i)
@@ -28,7 +35,7 @@ let minWindowWidthScale = 1.33  //1.33@sf
 
     let mainImageScale = blk?.main_image_scale ?? minWindowWidthScale
     return {
-      headerText = ::loc(blk?.main_header ?? "items/workshop")
+      headerText = loc(blk?.main_header ?? "items/workshop")
       bgImage = blk?.main_image
       windowWidthScale = max(mainImageScale, minWindowWidthScale)
       mainImageScale = mainImageScale
@@ -38,8 +45,8 @@ let minWindowWidthScale = 1.33  //1.33@sf
 
   function afterModalDestroy()
   {
-    wSet.markPreviewed()
-    ::gui_start_items_list(itemsTab.WORKSHOP, { curSheet = { id = wSet.getShopTabId() } })
+    this.wSet.markPreviewed()
+    ::gui_start_items_list(itemsTab.WORKSHOP, { curSheet = { id = this.wSet.getShopTabId() } })
   }
 }
 

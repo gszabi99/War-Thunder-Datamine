@@ -1,11 +1,19 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { generateQrBlocks } = require("%sqstd/qrCode.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
 
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
 local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/wndLib/qrWindow"
+  sceneTplName = "%gui/wndLib/qrWindow.tpl"
 
   headerText = ""
   baseUrl = ""
@@ -21,32 +29,32 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   needShowUrlLink = true
 
   getSceneTplView = @() {
-    headerText = headerText
-    qrCode = getQrCodeView()
-    baseUrl = baseUrl
-    urlWithoutTags = urlWithoutTags
-    buttons = buttons
-    needShowUrlLink = needShowUrlLink
-    isAllowExternalLink = ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
-    infoText = infoText ?? $"{::loc("qrWindow/info")} {additionalInfoText}"
+    headerText = this.headerText
+    qrCode = this.getQrCodeView()
+    baseUrl = this.baseUrl
+    urlWithoutTags = this.urlWithoutTags
+    buttons = this.buttons
+    needShowUrlLink = this.needShowUrlLink
+    isAllowExternalLink = hasFeature("AllowExternalLink") && !::is_vendor_tencent()
+    infoText = this.infoText ?? $"{loc("qrWindow/info")} {this.additionalInfoText}"
   }
 
   function initScreen() {
-    if (baseUrl == "" || urlWithoutTags == "")
-      goBack()
+    if (this.baseUrl == "" || this.urlWithoutTags == "")
+      this.goBack()
 
-    scene.findObject("wnd_update").setUserData(this)
+    this.scene.findObject("wnd_update").setUserData(this)
   }
 
   function getQrCodeView() {
-    let urlConfig = getAuthenticatedUrlConfig(baseUrl)
+    let urlConfig = getAuthenticatedUrlConfig(this.baseUrl)
     if (urlConfig == null)
       return null
 
-    urlWithoutTags = urlConfig.urlWithoutTags
-    let urlForQr = needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
+    this.urlWithoutTags = urlConfig.urlWithoutTags
+    let urlForQr = this.needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
     let list = generateQrBlocks(urlForQr)
-    let cellSize = ((qrSize ?? ::to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
+    let cellSize = ((this.qrSize ?? to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
     let size = cellSize * (list.size + 8)
     return {
       qrSize = size
@@ -59,16 +67,16 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateQrCode() {
-    let data = ::handyman.renderCached("%gui/commonParts/qrCode", getQrCodeView())
-    guiScene.replaceContentFromText(scene.findObject("wnd_content"), data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/commonParts/qrCode.tpl", this.getQrCodeView())
+    this.guiScene.replaceContentFromText(this.scene.findObject("wnd_content"), data, data.len(), this)
   }
 
-  function onUpdate(obj, dt) {
-    updateQrCode()
+  function onUpdate(_obj, _dt) {
+    this.updateQrCode()
   }
 
   function goBack() {
-    onEscapeCb?()
+    this.onEscapeCb?()
     base.goBack()
   }
 }

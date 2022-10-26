@@ -34,7 +34,7 @@ root {
         left:t='0.5pw-0.5w'
         position:t='relative'
         <<#qrCode>>
-        include "%gui/commonParts/qrCode"
+        include "%gui/commonParts/qrCode.tpl"
         <</qrCode>>
       }
 
@@ -74,7 +74,7 @@ root {
     <<#buttons>>
     navBar {
       navMiddle {
-        include "%gui/commonParts/buttonsList"
+        include "%gui/commonParts/buttonsList.tpl"
       }
     }
     <</buttons>>

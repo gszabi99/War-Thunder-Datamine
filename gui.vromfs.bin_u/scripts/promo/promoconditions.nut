@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { split_by_chars } = require("string")
 let visibleConditionsList = {
   isInClan = @() ::is_in_clan()

@@ -1,5 +1,13 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+
+const MAX_FETCH_RETRIES = 5
 
 local unstableClusters = null
 
@@ -34,25 +42,25 @@ let mkCluster = @(name) {
     if (!::is_online_available())
       return
 
-    __clusters_fetching = false
-    __update_clusters_list()
+    this.__clusters_fetching = false
+    this.__update_clusters_list()
   }
 
   function onClustersLoaded(params)
   {
-    ::dagor.debug("[MM] clusters loaded")
-    ::debugTableData(params)
+    log("[MM] clusters loaded")
+    debugTableData(params)
 
-    let clusters = ::getTblValue("clusters", params)
+    let clusters = getTblValue("clusters", params)
     if (!::u.isArray(clusters))
       return false
 
-    clusters_info.clear()
-    foreach (idx, val in params.clusters)
-      clusters_info.append(mkCluster(val))
+    this.clusters_info.clear()
+    foreach (_idx, val in params.clusters)
+      this.clusters_info.append(mkCluster(val))
     //TODO: need to update clusters in GUI
 
-    return clusters_info.len() > 0
+    return this.clusters_info.len() > 0
   }
 
   function onClustersChanged(params)
@@ -62,7 +70,7 @@ let mkCluster = @(name) {
       foreach (cluster in params.added)
       {
         local found = false
-        foreach (idx, c in clusters_info)
+        foreach (_idx, c in this.clusters_info)
         {
           if (c.name == cluster)
           {
@@ -72,8 +80,8 @@ let mkCluster = @(name) {
         }
         if (!found)
         {
-          clusters_info.append(mkCluster(cluster))
-          ::dagor.debug("[MM] cluster added " + cluster)
+          this.clusters_info.append(mkCluster(cluster))
+          log("[MM] cluster added " + cluster)
         }
       }
     }
@@ -82,19 +90,19 @@ let mkCluster = @(name) {
     {
       foreach (cluster in params.removed)
       {
-        foreach (idx, c in clusters_info)
+        foreach (idx, c in this.clusters_info)
         {
           if (c.name == cluster)
           {
-            clusters_info.remove(idx)
+            this.clusters_info.remove(idx)
             break
           }
         }
-        ::dagor.debug("[MM] cluster removed " + cluster)
+        log("[MM] cluster removed " + cluster)
       }
     }
-    ::dagor.debug("clusters list updated")
-    ::debugTableData(clusters_info)
+    log("clusters list updated")
+    debugTableData(this.clusters_info)
     //TODO: need to update clusters in GUI
   }
 
@@ -104,31 +112,31 @@ let mkCluster = @(name) {
 
   function __update_clusters_list()
   {
-    if (__clusters_fetching)
+    if (this.__clusters_fetching)
       return
 
-    __clusters_fetching = true
-    __fetch_counter++
+    this.__clusters_fetching = true
+    this.__fetch_counter++
     ::fetch_clusters_list(null,
       function(params)
       {
         if (!this)
           return
 
-        __clusters_fetching = false
+        this.__clusters_fetching = false
 
         if (::checkMatchingError(params, false)
-            && onClustersLoaded(params))
+            && this.onClustersLoaded(params))
         {
-          __fetch_counter = 0
+          this.__fetch_counter = 0
           return
         }
 
         //clusters not loaded or broken data
-        if (__fetch_counter < MAX_FETCH_RETRIES)
+        if (this.__fetch_counter < MAX_FETCH_RETRIES)
         {
-          ::dagor.debug("fetch cluster error, retry - " + __fetch_counter)
-          __update_clusters_list()
+          log("fetch cluster error, retry - " + this.__fetch_counter)
+          this.__update_clusters_list()
         } else
         {
           ::checkMatchingError(params, true)
@@ -138,26 +146,26 @@ let mkCluster = @(name) {
       }.bindenv(::g_clusters))
   }
 
-  function onEventSignOut(p)
+  function onEventSignOut(_p)
   {
-    clusters_info.clear()
+    this.clusters_info.clear()
   }
 
-  function onEventScriptsReloaded(p)
+  function onEventScriptsReloaded(_p)
   {
-    forceUpdateClustersList()
+    this.forceUpdateClustersList()
   }
 
-  function onEventMatchingConnect(p)
+  function onEventMatchingConnect(_p)
   {
-    forceUpdateClustersList()
+    this.forceUpdateClustersList()
   }
 
   function getClusterLocName(clusterName)
   {
     if (clusterName.indexof("wthost") != null)
       return clusterName
-    return ::loc("cluster/" + clusterName)
+    return loc("cluster/" + clusterName)
   }
 
   isClusterUnstable

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 enum PRESENCE_SORT
 {
@@ -22,10 +28,10 @@ enum PRESENCE_SORT
     textColor = ""
     iconTransparency = 180
 
-    getTooltip = @() "status/" + presenceName
-    getText = @(locParams = {}) ::colorize(textColor, ::loc(getTooltip(), locParams))
-    getIcon = @() "#ui/gameuiskin#" + iconName
-    getIconColor = @() ::get_main_gui_scene().getConstantValue(iconColor) || ""
+    getTooltip = @() "status/" + this.presenceName
+    getText = @(locParams = {}) colorize(this.textColor, loc(this.getTooltip(), locParams))
+    getIcon = @() "#ui/gameuiskin#" + this.iconName
+    getIconColor = @() ::get_main_gui_scene().getConstantValue(this.iconColor) || ""
   }
 }
 
@@ -82,5 +88,5 @@ enums.addTypesByGlobalName("g_contact_presence", {
     textColor = "@userlogColoredText"
   }
 },
-@() presenceName = typeName.tolower(),
+@() this.presenceName = this.typeName.tolower(),
 "typeName")

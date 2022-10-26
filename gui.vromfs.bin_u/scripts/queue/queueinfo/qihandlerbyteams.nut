@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 ::gui_handlers.QiHandlerByTeams <- class extends ::gui_handlers.QiHandlerBase
 {
@@ -6,31 +12,31 @@ let { format } = require("string")
 
   function updateStats()
   {
-    local myTeamNum = ::queues.getQueueTeam(queue)
+    local myTeamNum = ::queues.getQueueTeam(this.queue)
     if (myTeamNum == Team.Any)
     {
-      let teams = ::events.getAvailableTeams(event)
+      let teams = ::events.getAvailableTeams(this.event)
       if (teams.len() == 1)
         myTeamNum = teams[0]
     }
 
-    if (event && queue.queueStats)
-      updateQueueStats(::queues.getQueueClusters(queue), queue.queueStats, myTeamNum)
+    if (this.event && this.queue.queueStats)
+      this.updateQueueStats(::queues.getQueueClusters(this.queue), this.queue.queueStats, myTeamNum)
   }
 
   function updateQueueStats(clusters, queueStats, myTeamNum)
   {
-    let teams = ::events.getSidesList(event)
+    let teams = ::events.getSidesList(this.event)
     foreach(team in ::events.getSidesList())
     {
-      let show = ::isInArray(team, teams)
+      let show = isInArray(team, teams)
                    && (!queueStats.isSymmetric || team == Team.A)
       let blockObj = this.showSceneBtn(team + "_block", show)
       if (!show)
         continue
 
       let teamName = ::events.getTeamName(team)
-      let teamData = ::events.getTeamData(event, team)
+      let teamData = ::events.getTeamData(this.event, team)
 
       local tableMarkup = ""
       local playersCountText = ""
@@ -42,7 +48,7 @@ let { format } = require("string")
       else
       {
         teamColor = (myTeamNum == Team.Any || team == myTeamNum) ? "blue" : "red"
-        teamNameLoc = ::loc("events/team" + (team == Team.A ? "A" : "B"))
+        teamNameLoc = loc("events/team" + (team == Team.A ? "A" : "B"))
       }
 
       if (!queueStats.isClanStats)
@@ -50,20 +56,20 @@ let { format } = require("string")
         let clusterName = queueStats.getMaxClusterName()
         let players = queueStats.getPlayersCountByTeam(teamName, clusterName)
         if (clusterName == "")
-          playersCountText = ::loc("events/players_count")
+          playersCountText = loc("events/players_count")
         else
-          playersCountText = format("%s (%s)", ::loc("events/max_players_count"),
+          playersCountText = format("%s (%s)", loc("events/max_players_count"),
                                       ::g_clusters.getClusterLocName(clusterName))
-        playersCountText += ::loc("ui/colon") + players
-        tableMarkup = getQueueTableMarkup(queueStats, teamName, clusters)
+        playersCountText += loc("ui/colon") + players
+        tableMarkup = this.getQueueTableMarkup(queueStats, teamName, clusters)
       }
       else
       {
-        playersCountText = ::loc("events/clans_count") + ::loc("ui/colon") + queueStats.getClansCount()
-        tableMarkup = getClanQueueTableMarkup(queueStats)
+        playersCountText = loc("events/clans_count") + loc("ui/colon") + queueStats.getClansCount()
+        tableMarkup = this.getClanQueueTableMarkup(queueStats)
       }
 
-      fillQueueTeam(blockObj,
+      this.fillQueueTeam(blockObj,
                     teamData,
                     tableMarkup,
                     playersCountText,
@@ -79,26 +85,26 @@ let { format } = require("string")
 
     teamObj.bgTeamColor = teamColor
     teamObj.show(!!(teamData && teamData.len()))
-    fillCountriesList(teamObj.findObject("countries"), ::events.getCountries(teamData))
+    ::fillCountriesList(teamObj.findObject("countries"), ::events.getCountries(teamData))
     teamObj.findObject("team_name").setValue(teamName)
     teamObj.findObject("players_count").setValue(playersCountText)
 
     let queueTableObj = teamObj.findObject("table_queue_stat")
-    if (!::checkObj(queueTableObj))
+    if (!checkObj(queueTableObj))
       return
-    guiScene.replaceContentFromText(queueTableObj, tableMarkup, tableMarkup.len(), this)
+    this.guiScene.replaceContentFromText(queueTableObj, tableMarkup, tableMarkup.len(), this)
   }
 
   function getQueueTableMarkup(queueStats, teamName, clusters)
   {
-    local res = buildQueueStatsHeader()
+    local res = this.buildQueueStatsHeader()
     let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
     if (queueStats.isMultiCluster)
     {
       let maxCluster = queueStats.getMaxClusterName()
       let teamStats = queueStats.getQueueTableByTeam(teamName, maxCluster)
-      let rowData = buildQueueStatsRowData(teamStats)
+      let rowData = this.buildQueueStatsRowData(teamStats)
       res += ::buildTableRow("", rowData, 0, rowParams, "0")
       return res
     }
@@ -106,7 +112,7 @@ let { format } = require("string")
     foreach (clusterName in clusters)
     {
       let teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
-      let rowData = buildQueueStatsRowData(teamStats, ::g_clusters.getClusterLocName(clusterName))
+      let rowData = this.buildQueueStatsRowData(teamStats, ::g_clusters.getClusterLocName(clusterName))
       res += ::buildTableRow("", rowData, 0, rowParams, "0")
     }
     return res
@@ -118,29 +124,29 @@ let { format } = require("string")
     if (!totalClans)
       return ""
 
-    local res = buildQueueStatsHeader()
+    local res = this.buildQueueStatsHeader()
     let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
     let myClanQueueTable = queueStats.getMyClanQueueTable()
     if (myClanQueueTable)
     {
       let headerData = [{
-        text = ::loc("multiplayer/playersInYourClan")
+        text = loc("multiplayer/playersInYourClan")
         width = "0.1@sf"
       }]
       res += ::buildTableRow("", headerData, null, rowParams, "0")
 
-      let rowData = buildQueueStatsRowData(myClanQueueTable)
+      let rowData = this.buildQueueStatsRowData(myClanQueueTable)
       res += ::buildTableRow("", rowData, null, rowParams, "0")
     }
 
     let headerData = [{
-      text = ::loc("multiplayer/clansInQueue")
+      text = loc("multiplayer/clansInQueue")
       width = "0.1@sf"
     }]
     res += ::buildTableRow("", headerData, null, rowParams, "0")
 
-    let rowData = buildQueueStatsRowData(queueStats.getClansQueueTable())
+    let rowData = this.buildQueueStatsRowData(queueStats.getClansQueueTable())
     res += ::buildTableRow("", rowData, null, rowParams, "0")
     return res
   }
@@ -157,7 +163,7 @@ let { format } = require("string")
     for(local i = 1; i <= ::max_country_rank; i++)
     {
       params.append({
-        text = ::getTblValue(i.tostring(), queueStatData, 0).tostring()
+        text = getTblValue(i.tostring(), queueStatData, 0).tostring()
         tdalign = "center"
       })
     }

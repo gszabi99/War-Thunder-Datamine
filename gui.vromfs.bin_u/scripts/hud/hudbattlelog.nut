@@ -1,8 +1,15 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format, split_by_chars } = require("string")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 enum BATTLE_LOG_FILTER
 {
@@ -25,104 +32,104 @@ enum BATTLE_LOG_FILTER
   skipDuplicatesSec = 10
 
   supportedMsgTypes = [
-    ::HUD_MSG_MULTIPLAYER_DMG
-    ::HUD_MSG_STREAK_EX
-    ::HUD_MSG_STREAK
+    HUD_MSG_MULTIPLAYER_DMG
+    HUD_MSG_STREAK_EX
+    HUD_MSG_STREAK
   ]
 
   unitTypeSuffix = {
-    [::ES_UNIT_TYPE_AIRCRAFT] = "_a",
-    [::ES_UNIT_TYPE_TANK]     = "_t",
-    [::ES_UNIT_TYPE_BOAT]     = "_s",
-    [::ES_UNIT_TYPE_SHIP]     = "_s",
-    [::ES_UNIT_TYPE_HELICOPTER] = "_a",
+    [ES_UNIT_TYPE_AIRCRAFT] = "_a",
+    [ES_UNIT_TYPE_TANK]     = "_t",
+    [ES_UNIT_TYPE_BOAT]     = "_s",
+    [ES_UNIT_TYPE_SHIP]     = "_s",
+    [ES_UNIT_TYPE_HELICOPTER] = "_a",
   }
 
   actionVerbs = {
     kill = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
-      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     crash = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_HAS_CRASHED",
-      [::ES_UNIT_TYPE_TANK]       = "NET_PLAYER_GM_HAS_DESTROYED",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_GM_HAS_DESTROYED",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_GM_HAS_DESTROYED",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_HAS_CRASHED",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_HAS_CRASHED",
+      [ES_UNIT_TYPE_TANK]       = "NET_PLAYER_GM_HAS_DESTROYED",
+      [ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_GM_HAS_DESTROYED",
+      [ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_GM_HAS_DESTROYED",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_HAS_CRASHED",
     }
     crit = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_CRITICAL_HIT",
-      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_CRITICAL_HIT",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_CRITICAL_HIT",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_CRITICAL_HIT",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_CRITICAL_HIT",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_CRITICAL_HIT",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_CRITICAL_HIT",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_CRITICAL_HIT",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_CRITICAL_HIT",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_CRITICAL_HIT",
     }
     burn = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_CRITICAL_HIT_BURN",
-      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_CRITICAL_HIT_BURN",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_CRITICAL_HIT_BURN",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_CRITICAL_HIT_BURN",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_CRITICAL_HIT_BURN",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_CRITICAL_HIT_BURN",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_CRITICAL_HIT_BURN",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_CRITICAL_HIT_BURN",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_CRITICAL_HIT_BURN",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_CRITICAL_HIT_BURN",
     }
     rocket = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
-      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     torpedo = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
-      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     artillery = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
-      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     depth_bomb = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
-      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     mine = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
-      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     exit = {
-      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_EXITED",
-      [::ES_UNIT_TYPE_TANK]       = "NET_PLAYER_EXITED",
-      [::ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_EXITED",
-      [::ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_EXITED",
-      [::ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_EXITED",
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_EXITED",
+      [ES_UNIT_TYPE_TANK]       = "NET_PLAYER_EXITED",
+      [ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_EXITED",
+      [ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_EXITED",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_EXITED",
     }
   }
 
   utToEsUnitType = { //!!FIX ME: better to set different icons fot each unitType
-    [::UT_Airplane]      = ::ES_UNIT_TYPE_AIRCRAFT,
-    [::UT_Balloon]       = ::ES_UNIT_TYPE_AIRCRAFT,
-    [::UT_Artillery]     = ::ES_UNIT_TYPE_TANK,
-    [::UT_HeavyVehicle]  = ::ES_UNIT_TYPE_TANK,
-    [::UT_LightVehicle]  = ::ES_UNIT_TYPE_TANK,
-    [::UT_Ship]          = ::ES_UNIT_TYPE_SHIP,
-    [::UT_WarObj]        = ::ES_UNIT_TYPE_TANK,
-    [::UT_InfTroop]      = ::ES_UNIT_TYPE_TANK,
-    [::UT_Fortification] = ::ES_UNIT_TYPE_TANK,
-    [::UT_AirWing]       = ::ES_UNIT_TYPE_AIRCRAFT,
-    [::UT_AirSquadron]   = ::ES_UNIT_TYPE_AIRCRAFT,
+    [UT_Airplane]      = ES_UNIT_TYPE_AIRCRAFT,
+    [UT_Balloon]       = ES_UNIT_TYPE_AIRCRAFT,
+    [UT_Artillery]     = ES_UNIT_TYPE_TANK,
+    [UT_HeavyVehicle]  = ES_UNIT_TYPE_TANK,
+    [UT_LightVehicle]  = ES_UNIT_TYPE_TANK,
+    [UT_Ship]          = ES_UNIT_TYPE_SHIP,
+    [UT_WarObj]        = ES_UNIT_TYPE_TANK,
+    [UT_InfTroop]      = ES_UNIT_TYPE_TANK,
+    [UT_Fortification] = ES_UNIT_TYPE_TANK,
+    [UT_AirWing]       = ES_UNIT_TYPE_AIRCRAFT,
+    [UT_AirSquadron]   = ES_UNIT_TYPE_AIRCRAFT,
     //
 
 
@@ -158,25 +165,25 @@ enum BATTLE_LOG_FILTER
 
   function init()
   {
-    reset(true)
+    this.reset(true)
 
     ::g_hud_event_manager.subscribe("HudMessage", function(msg)
       {
-        onHudMessage(msg)
+        this.onHudMessage(msg)
       }, this)
   }
 
   function reset(safe = false)
   {
-    if (safe && battleLog.len() && battleLog[battleLog.len() - 1].time < ::get_usefull_total_time())
+    if (safe && this.battleLog.len() && this.battleLog[this.battleLog.len() - 1].time < ::get_usefull_total_time())
       return
-    battleLog = []
+    this.battleLog = []
     ::call_darg("clearBattleLog")
   }
 
   function onHudMessage(msg)
   {
-    if (!::isInArray(msg.type, supportedMsgTypes))
+    if (!isInArray(msg.type, this.supportedMsgTypes))
       return
 
     if (!("id" in msg))
@@ -186,23 +193,23 @@ enum BATTLE_LOG_FILTER
 
     let now = ::get_usefull_total_time()
     if (msg.id != -1)
-      foreach (logEntry in battleLog)
+      foreach (logEntry in this.battleLog)
         if (logEntry.msg.id == msg.id)
           return
     if (msg.id == -1 && msg.text != "")
     {
-      let skipDupTime = now - skipDuplicatesSec
-      for (local i = battleLog.len() - 1; i >= 0; i--)
+      let skipDupTime = now - this.skipDuplicatesSec
+      for (local i = this.battleLog.len() - 1; i >= 0; i--)
       {
-        if (battleLog[i].time < skipDupTime)
+        if (this.battleLog[i].time < skipDupTime)
           break
-        if (battleLog[i].msg.text == msg.text)
+        if (this.battleLog[i].msg.text == msg.text)
           return
       }
     }
 
     local filters = 0
-    if (msg.type == ::HUD_MSG_MULTIPLAYER_DMG)
+    if (msg.type == HUD_MSG_MULTIPLAYER_DMG)
     {
       let p1 = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
       let p2 = ::get_mplayer_by_id(msg?.victimPlayerId ?? ::my_user_id_int64)
@@ -241,13 +248,13 @@ enum BATTLE_LOG_FILTER
     switch (msg.type)
     {
       // All players messages
-      case ::HUD_MSG_MULTIPLAYER_DMG: // Any player unit damaged or destroyed
-        let text = msgMultiplayerDmgToText(msg)
-        message = timestamp + ::colorize("userlogColoredText", text)
+      case HUD_MSG_MULTIPLAYER_DMG: // Any player unit damaged or destroyed
+        let text = this.msgMultiplayerDmgToText(msg)
+        message = timestamp + colorize("userlogColoredText", text)
         break
-      case ::HUD_MSG_STREAK_EX: // Any player got streak
-        let text = msgStreakToText(msg)
-        message = timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
+      case HUD_MSG_STREAK_EX: // Any player got streak
+        let text = this.msgStreakToText(msg)
+        message = timestamp + colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text)
         break
       default:
         return
@@ -260,9 +267,9 @@ enum BATTLE_LOG_FILTER
       filters = filters
     }
 
-    if (battleLog.len() == logMaxLen)
-      battleLog.remove(0)
-    battleLog.append(logEntry)
+    if (this.battleLog.len() == this.logMaxLen)
+      this.battleLog.remove(0)
+    this.battleLog.append(logEntry)
     ::call_darg("pushBattleLogEntry", logEntry)
     ::broadcastEvent("BattleLogMessage", logEntry)
   }
@@ -278,17 +285,17 @@ enum BATTLE_LOG_FILTER
 
   function getLength()
   {
-    return battleLog.len()
+    return this.battleLog.len()
   }
 
   function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0)
   {
     filter = filter || BATTLE_LOG_FILTER.ALL
     let lines = []
-    for (local i = battleLog.len() - 1; i >= 0 ; i--)
-      if (battleLog[i].filters & filter)
+    for (local i = this.battleLog.len() - 1; i >= 0 ; i--)
+      if (this.battleLog[i].filters & filter)
       {
-        lines.insert(0, battleLog[i].message)
+        lines.insert(0, this.battleLog[i].message)
         if (limit && lines.len() == limit)
           break
       }
@@ -304,15 +311,15 @@ enum BATTLE_LOG_FILTER
       player.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
     return player ? ::build_mplayer_name(player, true, true, true, unitNameLoc) : // Player
-      ::colorize(::get_team_color(teamId), unitNameLoc) // AI
+      colorize(::get_team_color(teamId), unitNameLoc) // AI
   }
 
   function getUnitTypeEx(msg, isVictim = false)
   {
-    let uType = ::getTblValue(isVictim ? "victimUnitType" : "unitType", msg)
+    let uType = getTblValue(isVictim ? "victimUnitType" : "unitType", msg)
 
-    local res = ::getTblValue(uType, utToEsUnitType, ::ES_UNIT_TYPE_INVALID)
-    if (res == ::ES_UNIT_TYPE_INVALID) //we do not receive unitType for player killer unit, but can easy get it by unitName
+    local res = getTblValue(uType, this.utToEsUnitType, ES_UNIT_TYPE_INVALID)
+    if (res == ES_UNIT_TYPE_INVALID) //we do not receive unitType for player killer unit, but can easy get it by unitName
     {
       let unit = ::getAircraftByName(msg[isVictim ? "victimUnitName" : "unitName"])
       if (unit)
@@ -324,7 +331,7 @@ enum BATTLE_LOG_FILTER
 
   function getUnitTypeSuffix(unitType)
   {
-    return getTblValue(unitType, unitTypeSuffix, unitTypeSuffix[::ES_UNIT_TYPE_TANK])
+    return getTblValue(unitType, this.unitTypeSuffix, this.unitTypeSuffix[ES_UNIT_TYPE_TANK])
   }
 
   function getActionTextIconic(msg)
@@ -332,28 +339,28 @@ enum BATTLE_LOG_FILTER
     let msgAction = msg?.action ?? "kill"
     local iconId = msgAction
     if (msgAction == "kill")
-      iconId += getUnitTypeSuffix(getUnitTypeEx(msg, false))
+      iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, false))
     if (msgAction == "kill" || msgAction == "crash")
-      iconId += getUnitTypeSuffix(getUnitTypeEx(msg, true))
+      iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, true))
     let actionColor = msg?.isKill ?? true ? "userlogColoredText" : "silver"
-    return ::colorize(actionColor, ::loc("icon/hud_msg_mp_dmg/" + iconId))
+    return colorize(actionColor, loc("icon/hud_msg_mp_dmg/" + iconId))
   }
 
   function getActionTextVerbal(msg)
   {
-    let victimUnitType = getUnitTypeEx(msg, true)
+    let victimUnitType = this.getUnitTypeEx(msg, true)
     let msgAction = msg?.action ?? "kill"
-    let verb = ::getTblValue(victimUnitType, ::getTblValue(msgAction, actionVerbs, {}), msgAction)
+    let verb = getTblValue(victimUnitType, getTblValue(msgAction, this.actionVerbs, {}), msgAction)
     let isLoss = (msg?.victimTeam ?? ::get_player_army_for_hud()) == ::get_player_army_for_hud()
     let color = "hudColor" + (msg?.isKill ?? true ? (isLoss ? "DeathAlly" : "DeathEnemy") : (isLoss ? "DarkRed" : "DarkBlue"))
-    return ::colorize(color, ::loc(verb))
+    return colorize(color, loc(verb))
   }
 
   function msgMultiplayerDmgToText(msg, iconic = false)
   {
-    let what = iconic ? getActionTextIconic(msg) : getActionTextVerbal(msg)
-    let who  = getUnitNameEx(msg?.playerId ?? ::my_user_id_int64, msg?.unitNameLoc ?? my_user_name, msg?.team ?? Team.A)
-    let whom = getUnitNameEx(msg?.victimPlayerId ?? ::my_user_id_int64, msg?.victimUnitNameLoc ?? my_user_name, msg?.victimTeam ?? Team.B)
+    let what = iconic ? this.getActionTextIconic(msg) : this.getActionTextVerbal(msg)
+    let who  = this.getUnitNameEx(msg?.playerId ?? ::my_user_id_int64, msg?.unitNameLoc ?? ::my_user_name, msg?.team ?? Team.A)
+    let whom = this.getUnitNameEx(msg?.victimPlayerId ?? ::my_user_id_int64, msg?.victimUnitNameLoc ?? ::my_user_name, msg?.victimTeam ?? Team.B)
 
     let msgAction = msg?.action ?? "kill"
     let isCrash = msgAction == "crash" || msgAction == "exit"
@@ -366,9 +373,9 @@ enum BATTLE_LOG_FILTER
     let playerId = msg?.playerId ?? -1
     let localPlayerId = is_replay_playing() ? spectatorWatchedHero.id : ::get_local_mplayer().id
     let isLocal = !forceThirdPerson && playerId == localPlayerId
-    let streakNameType = isLocal ? ::SNT_MY_STREAK_HEADER : :: SNT_OTHER_STREAK_TEXT
+    let streakNameType = isLocal ? SNT_MY_STREAK_HEADER : SNT_OTHER_STREAK_TEXT
     let what = ::get_loc_for_streak(streakNameType, msg?.unlockId ?? "", msg?.stage ?? 0)
-    return isLocal ? what : format("%s %s", getUnitNameEx(playerId), what)
+    return isLocal ? what : format("%s %s", this.getUnitNameEx(playerId), what)
   }
 
   function msgEscapeCodesToCssColors(sequence)
@@ -376,11 +383,11 @@ enum BATTLE_LOG_FILTER
     local ret = ""
     foreach (w in split_by_chars(sequence, "\x1B"))
     {
-      if (w.len() >= 3 && rePatternNumeric.match(w.slice(0, 3)))
+      if (w.len() >= 3 && this.rePatternNumeric.match(w.slice(0, 3)))
       {
-        let color = ::getTblValue(w.slice(0,3).tointeger(), escapeCodeToCssColor)
+        let color = getTblValue(w.slice(0,3).tointeger(), this.escapeCodeToCssColor)
         let value = w.slice(3)
-        ret += color ? ::colorize(color, value) : value
+        ret += color ? colorize(color, value) : value
       }
       else
         ret += w

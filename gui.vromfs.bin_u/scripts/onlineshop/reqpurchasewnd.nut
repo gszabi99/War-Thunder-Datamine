@@ -1,7 +1,16 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+
 /*
   config {
-    purchaseData = (OnlineShopModel.getPurchaseData) //required
+    purchaseData = (::OnlineShopModel.getPurchaseData) //required
     image = (string)  //full path to image
     imageRatioHeight = (float)
     header = (string)
@@ -32,17 +41,17 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
   function initScreen()
   {
-    guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
 
-    scene.findObject("award_name").setValue(header)
-    scene.findObject("award_desc").setValue(text)
+    this.scene.findObject("award_name").setValue(this.header)
+    this.scene.findObject("award_desc").setValue(this.text)
 
-    validateImageData()
-    let imgObj = scene.findObject("award_image")
-    imgObj["background-image"] = image
-    imgObj["height"] = imageRatioHeight + "w"
+    this.validateImageData()
+    let imgObj = this.scene.findObject("award_image")
+    imgObj["background-image"] = this.image
+    imgObj["height"] = this.imageRatioHeight + "w"
 
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function getNavbarTplView()
@@ -51,7 +60,7 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
       middle = [
         {
           id = "btn_online_store"
-          text = btnStoreText
+          text = this.btnStoreText
           shortcut = "A"
           funcName = "onOnlineStore"
           isToBattle = true
@@ -63,11 +72,11 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
   function validateImageData()
   {
-    if (!::u.isEmpty(image))
+    if (!::u.isEmpty(this.image))
       return
 
-    image = "#ui/images/login_reward.jpg?P1"
-    let imgBlk = get_blk_by_path_array(["entitlementsAdvert", purchaseData.sourceEntitlement],
+    this.image = "#ui/images/login_reward.jpg?P1"
+    let imgBlk = get_blk_by_path_array(["entitlementsAdvert", this.purchaseData.sourceEntitlement],
                                            ::get_gui_regional_blk())
     if (!::u.isDataBlock(imgBlk))
       return
@@ -75,27 +84,27 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
     let rndImg = ::u.chooseRandom(imgBlk % "image")
     if (::u.isString(rndImg))
     {
-      let country = ::get_profile_country_sq()
-      image = rndImg.subst({ country = ::g_string.cutPrefix(country, "country_", country) })
+      let country = profileCountrySq.value
+      this.image = rndImg.subst({ country = ::g_string.cutPrefix(country, "country_", country) })
     }
     if (::is_numeric(imgBlk?.imageRatio))
-      imageRatioHeight = imgBlk.imageRatio
+      this.imageRatioHeight = imgBlk.imageRatio
   }
 
   function onOnlineStore()
   {
-    ::OnlineShopModel.openBrowserByPurchaseData(purchaseData)
+    ::OnlineShopModel.openBrowserByPurchaseData(this.purchaseData)
   }
 
-  function onEventProfileUpdated(p)
+  function onEventProfileUpdated(_p)
   {
-    if (!::has_entitlement(purchaseData.sourceEntitlement))
+    if (!::has_entitlement(this.purchaseData.sourceEntitlement))
       return
 
-    if (!::u.isEmpty(checkPackage))
-      ::check_package_and_ask_download(checkPackage)
+    if (!::u.isEmpty(this.checkPackage))
+      ::check_package_and_ask_download(this.checkPackage)
 
-    goBack()
+    this.goBack()
   }
 
   function onFacebookPostLink() {}

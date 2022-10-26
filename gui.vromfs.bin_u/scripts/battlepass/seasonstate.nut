@@ -1,11 +1,18 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { activeUnlocks, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { userstatStats, refreshUserstatDescList } = require("%scripts/userstat/userstat.nut")
 let { basicUnlock, premiumUnlock, hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
+let { getRangeTextByPoint2 } = require("%scripts/unlocks/unlocksConditions.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let { floor } = require("math")
 
 let expStatId = "battlepass_exp"
 
-let season = ::Computed(@() userstatStats.value?.stats.seasons["$index"] ?? 0)
+let season = Computed(@() userstatStats.value?.stats.seasons["$index"] ?? 0)
 
 local lastSeasonIndex = 0
 season.subscribe(function(seasonIndex) {
@@ -18,7 +25,7 @@ season.subscribe(function(seasonIndex) {
   lastSeasonIndex = seasonIndex
 })
 
-let totalProgressExp = ::Computed(@() basicUnlock.value?.current ?? 0)
+let totalProgressExp = Computed(@() basicUnlock.value?.current ?? 0)
 
 let function getLevelByExp(exp) {
   let stages = basicUnlock.value?.stages ?? []
@@ -28,7 +35,7 @@ let function getLevelByExp(exp) {
   return stages.findindex(@(s) exp < s.progress) ?? 0
 }
 
-let levelExp = ::Computed(function() {
+let levelExp = Computed(function() {
   let res = {
     level = 1
     curLevelExp = 0
@@ -60,27 +67,27 @@ let levelExp = ::Computed(function() {
   let freeExp = curProgress - loopStage.progress
   return {
     level = lastStageIdx + 1
-      + ::floor(freeExp.tofloat() / progressForStage).tointeger()
+      + floor(freeExp.tofloat() / progressForStage).tointeger()
     curLevelExp = freeExp % progressForStage
     expForLevel = loopStage.progress - prevLoopStage.progress
   }
 })
 
-let seasonLevel = ::Computed(@() levelExp.value.level)
+let seasonLevel = Computed(@() levelExp.value.level)
 
-let maxSeasonLvl = ::Computed(@() max(basicUnlock.value?.meta.mainPrizeStage ?? 1,
+let maxSeasonLvl = Computed(@() max(basicUnlock.value?.meta.mainPrizeStage ?? 1,
   premiumUnlock.value?.meta.mainPrizeStage ?? 1))
 
-let loginUnlockId = ::Computed(@() $"battlepass_login_streak_1")
-let loginUnlock = ::Computed(@() activeUnlocks.value?[loginUnlockId.value])
-let loginStreak = ::Computed(@() loginUnlock.value?.stage ?? 0)
+let loginUnlockId = Computed(@() $"battlepass_login_streak_1")
+let loginUnlock = Computed(@() activeUnlocks.value?[loginUnlockId.value])
+let loginStreak = Computed(@() loginUnlock.value?.stage ?? 0)
 
 let getExpRewardStage = @(stageState) stageState?.updStats
   .findvalue(@(stat) stat?.name == expStatId).value.tointeger() ?? 0
 
-let todayLoginExp = ::Computed(@() getExpRewardStage(
+let todayLoginExp = Computed(@() getExpRewardStage(
   getStageByIndex(loginUnlock.value, (loginUnlock.value?.stage ?? 0) - 1)))
-let tomorowLoginExp = ::Computed(@() getExpRewardStage(
+let tomorowLoginExp = Computed(@() getExpRewardStage(
   getStageByIndex(loginUnlock.value, (loginUnlock.value?.stage ?? 0))))
 
 let function getExpRangeTextOfLoginStreak() {
@@ -106,27 +113,27 @@ let function getExpRangeTextOfLoginStreak() {
     break
   }
 
-  let text = ::UnlockConditions.getRangeTextByPoint2(
+  let text = getRangeTextByPoint2(
     { x = x ?? 0, y = y ?? 0 }, {
       valueStr = "%d"
-      maxOnlyStr = ::loc("conditions/unitRank/format_max")
-      minOnlyStr = ::loc("conditions/unitRank/format_min")
+      maxOnlyStr = loc("conditions/unitRank/format_max")
+      minOnlyStr = loc("conditions/unitRank/format_min")
     })
-  return "".concat(::loc("progress/amount/forValues", { amount = curExp }),
-    ::loc("ui/colon"), text)
+  return "".concat(loc("progress/amount/forValues", { amount = curExp }),
+    loc("ui/colon"), text)
 }
 
-let warbondsShopLevelByStages = ::Computed(@() basicUnlock.value?.meta.wbShopLevel ?? {})
+let warbondsShopLevelByStages = Computed(@() basicUnlock.value?.meta.wbShopLevel ?? {})
 
-let seasonMainPrizesData = ::Computed(@() [].extend(premiumUnlock.value?.meta.promo ?? [],
+let seasonMainPrizesData = Computed(@() [].extend(premiumUnlock.value?.meta.promo ?? [],
   basicUnlock.value?.meta.promo ?? []))
 
-let battlePassShopConfig = ::Computed(@() basicUnlock.value?.meta.purchaseWndItems)
+let battlePassShopConfig = Computed(@() basicUnlock.value?.meta.purchaseWndItems)
 
 battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
   let itemsToRequest = []
   foreach (config in (itemsConfigForRequest ?? [])) {
-    foreach (key, value in config) {
+    foreach (_key, value in config) {
       let itemId = ::to_integer_safe(value, value, false)
       if (::ItemsManager.isItemdefId(itemId))
         itemsToRequest.append(itemId)
@@ -136,7 +143,7 @@ battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
     inventoryClient.requestItemdefsByIds(itemsToRequest)
 })
 
-let hasBattlePassReward = ::Computed(@() basicUnlock.value?.hasReward
+let hasBattlePassReward = Computed(@() basicUnlock.value?.hasReward
   || (hasBattlePass.value && premiumUnlock.value?.hasReward))
 
 return {

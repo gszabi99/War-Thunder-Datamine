@@ -1,5 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
@@ -9,7 +15,7 @@ let function updateHangarPreset(forceUpdate = false) {
   if (!::isInMenu())
     return
 
-  let country = ::get_profile_country_sq()
+  let country = profileCountrySq.value
   let newSlotCountryId = shopCountriesList.findindex(@(cName) cName == country) ?? -1
   let newSlotIdInCountry = ::selected_crews?[newSlotCountryId] ?? -1
   let newPresetId = ::slotbarPresets.getCurrent()
@@ -24,8 +30,8 @@ let function updateHangarPreset(forceUpdate = false) {
 }
 
 addListenersWithoutEnv({
-  CrewsListChanged      = @(p) updateHangarPreset()
-  CrewChanged           = @(p) updateHangarPreset()
-  CountryChanged        = @(p) updateHangarPreset()
-  LoadingStateChange    = @(p) updateHangarPreset(true)
+  CrewsListChanged      = @(_p) updateHangarPreset()
+  CrewChanged           = @(_p) updateHangarPreset()
+  CountryChanged        = @(_p) updateHangarPreset()
+  LoadingStateChange    = @(_p) updateHangarPreset(true)
 })

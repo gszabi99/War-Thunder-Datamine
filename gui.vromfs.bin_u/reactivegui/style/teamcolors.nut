@@ -1,4 +1,8 @@
-local cc = ::require_native("colorCorrector")
+from "%rGui/globals/ui_library.nut" import *
+
+let {interop} = require("%rGui/globals/interop.nut")
+let cross_call = require("%rGui/globals/cross_call.nut")
+local cc = require_native("colorCorrector")
 let {hexStringToInt} = require("%sqstd/string.nut")
 let {localTeam} = require("%rGui/missionState.nut")
 let {isEqual} = require("%sqstd/underscore.nut")
@@ -36,17 +40,17 @@ local teamColors = Watched({
 })
 
 
-::interop.recalculateTeamColors <- function (forcedColors = {}) {
+interop.recalculateTeamColors <- function (forcedColors = {}) {
   local newTeamColors = clone teamColors.value
   newTeamColors.forcedTeamColors = forcedColors
-  local standardColors = !::cross_call.login.isLoggedIn() || !::cross_call.isPlayerDedicatedSpectator()
+  local standardColors = !cross_call.login.isLoggedIn() || !cross_call.isPlayerDedicatedSpectator()
   local allyTeam, allyTeamColor, enemyTeamColor
   local isForcedColor = forcedColors && forcedColors.len() > 0
   if (isForcedColor) {
 
     allyTeam = localTeam.value
-    allyTeamColor = hexStringToInt( ::str("FF", (allyTeam == 2 ? forcedColors?.colorTeamB : forcedColors?.colorTeamA)) )
-    enemyTeamColor = hexStringToInt( ::str("FF", (allyTeam == 2 ? forcedColors?.colorTeamA : forcedColors?.colorTeamB) ))
+    allyTeamColor = hexStringToInt( str("FF", (allyTeam == 2 ? forcedColors?.colorTeamB : forcedColors?.colorTeamA)) )
+    enemyTeamColor = hexStringToInt( str("FF", (allyTeam == 2 ? forcedColors?.colorTeamA : forcedColors?.colorTeamB) ))
   }
   local squadTheme = @() standardColors ? cc.TARGET_HUE_SQUAD : cc.TARGET_HUE_SPECTATOR_ALLY
   local allyTheme =  @() standardColors ? cc.TARGET_HUE_ALLY  : cc.TARGET_HUE_SPECTATOR_ALLY
@@ -84,10 +88,10 @@ local teamColors = Watched({
     teamColors.update(newTeamColors)
 }
 
-::interop.recalculateTeamColors()
+interop.recalculateTeamColors()
 
 localTeam.subscribe(function (_new_val) {
-  ::interop.recalculateTeamColors(teamColors.value.forcedTeamColors)
+  interop.recalculateTeamColors(teamColors.value.forcedTeamColors)
 })
 
 return teamColors

@@ -35,6 +35,7 @@ actionBarItemDiv {
       img {
         id:t='action_icon'
         size:t='pw, ph';
+        background-svg-size:t='pw, ph'
         background-image:t='<<icon>>';
       }
       <</bullets>>

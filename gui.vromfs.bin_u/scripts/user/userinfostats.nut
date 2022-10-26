@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let avatars = require("%scripts/user/avatars.nut")
@@ -122,6 +129,39 @@ foreach(idx, stat in statsConfig)
     if (!(param in stat))
       statsConfig[idx][param] <- value
 
+let airStatsListConfig = [
+  { id = "victories", icon = "lb_each_player_victories", text = "multiplayer/each_player_victories" },
+  { id = "sessions", icon = "lb_each_player_session", text = "multiplayer/each_player_session"
+    countFunc = function(statBlk) {
+      local sessions = statBlk?.victories ?? 0
+      sessions += statBlk?.defeats ?? 0
+      return sessions
+    }
+  },
+  { id = "victories_battles", type = ::g_lb_data_type.PERCENT
+    countFunc = function(statBlk) {
+      let victories = statBlk?.victories ?? 0
+      let sessions = victories + (statBlk?.defeats ?? 0)
+      if (sessions > 0)
+        return victories.tofloat() / sessions
+      return 0
+    }
+  },
+  "flyouts",
+  "deaths",
+  "air_kills",
+  "ground_kills",
+  { id = "naval_kills", icon = "lb_naval_kills", text = "multiplayer/naval_kills", reqFeature = ["Ships"] },
+  { id = "wp_total", icon = "lb_wp_total_gained", text = "multiplayer/wp_total_gained", ownProfileOnly = true },
+  { id = "online_exp_total", icon = "lb_online_exp_gained_for_common", text = "multiplayer/online_exp_gained_for_common" },
+]
+foreach (idx, val in airStatsListConfig) {
+  if (typeof(val) == "string")
+    airStatsListConfig[idx] = { id = val }
+  if ("type" not in airStatsListConfig[idx])
+    airStatsListConfig[idx].type <- ::g_lb_data_type.NUM
+}
+
 let function getAirsStatsFromBlk(blk) {
   let res = {}
   eachBlock(blk, function(diffBlk, diffName) {
@@ -133,7 +173,7 @@ let function getAirsStatsFromBlk(blk) {
       eachBlock(typeBlk, function(airBlk, airName) {
 
         let airData = { name = airName }
-        foreach(stat in ::air_stats_list)
+        foreach(stat in airStatsListConfig)
         {
           if ("reqFeature" in stat && !hasAllFeatures(stat.reqFeature))
             continue
@@ -193,11 +233,11 @@ let function buildProfileSummaryRowData(config, summary, diffCode, textId = "")
     { text = s, tooltip = diff.getLocName() }
   ]
 
-  return buildTableRowNoPad("", row)
+  return ::buildTableRowNoPad("", row)
 }
 
 let function fillProfileSummary(sObj, summary, diff) {
-  if (!::checkObj(sObj))
+  if (!checkObj(sObj))
     return
 
   let guiScene = sObj.getScene()
@@ -209,14 +249,14 @@ let function fillProfileSummary(sObj, summary, diff) {
       continue
 
     if (item.header)
-      data += buildTableRowNoPad("", ["#" + item.name], null,
+      data += ::buildTableRowNoPad("", ["#" + item.name], null,
                   format("headerRow:t='%s'; ", idx? "yes" : "first"))
     else if (item.separateRowsByFm)
       for (local i = 0; i < statsFm.len(); i++)
       {
-        if (::isInArray(statsFm[i], statsTanks) && !::has_feature("Tanks"))
+        if (isInArray(statsFm[i], statsTanks) && !hasFeature("Tanks"))
           continue
-        if (::isInArray(statsFm[i], statsShips) && !::has_feature("Ships"))
+        if (isInArray(statsFm[i], statsShips) && !hasFeature("Ships"))
           continue
 
         let rowId = "row_" + idx + "_" + i
@@ -226,7 +266,7 @@ let function fillProfileSummary(sObj, summary, diff) {
           continue
 
         data += row
-        textsToSet["txt_" + rowId] <- ::loc(item.name) + " (" + ::loc("mainmenu/type_"+ statsFm[i].tolower()) +")"
+        textsToSet["txt_" + rowId] <- loc(item.name) + " (" + loc("mainmenu/type_"+ statsFm[i].tolower()) +")"
       }
     else {
       let row = buildProfileSummaryRowData(item, summary, diff)
@@ -247,7 +287,7 @@ let function getCountryMedals(countryId, profileData = null)
   let unlocks = ::g_unlocks.getUnlocksByTypeInBlkOrder("medal")
   foreach (cb in unlocks)
     if (cb?.country == countryId)
-      if ((!profileData && ::is_unlocked_scripted(::UNLOCKABLE_MEDAL, cb.id)) || (medalsList?[cb.id] ?? 0) > 0)
+      if ((!profileData && ::is_unlocked_scripted(UNLOCKABLE_MEDAL, cb.id)) || (medalsList?[cb.id] ?? 0) > 0)
         res.append(cb.id)
   return res
 }
@@ -301,7 +341,7 @@ let function getPlayerStatsFromBlk(blk) {
     player.unlocks[uType][unlock] <- uBlk?.stage ?? 1
   })
 
-  foreach(i, country in shopCountriesList)
+  foreach(_i, country in shopCountriesList)
   {
     let cData = {
       medalsCount = getCountryMedals(country, player).len()
@@ -337,4 +377,5 @@ return {
   fillProfileSummary
   getCountryMedals
   getPlayerStatsFromBlk
+  airStatsListConfig
 }

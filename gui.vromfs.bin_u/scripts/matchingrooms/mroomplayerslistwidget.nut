@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /*
  API:
  static create(config)
@@ -13,11 +19,12 @@
 */
 
 
-::gui_handlers.MRoomPlayersListWidget <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.MRoomPlayersListWidget <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/mpLobby/playersList"
+  sceneTplName = "%gui/mpLobby/playersList.tpl"
 
   teams = null
   room = null
@@ -36,9 +43,9 @@
 
   static function create(config)
   {
-    if (!::getTblValue("teams", config) || !::check_obj(::getTblValue("scene", config)))
+    if (!getTblValue("teams", config) || !checkObj(getTblValue("scene", config)))
     {
-      ::dagor.assertf(false, "cant create playersListWidget - no teams or scene")
+      assert(false, "cant create playersListWidget - no teams or scene")
       return null
     }
     return ::handlersManager.loadHandler(::gui_handlers.MRoomPlayersListWidget, config)
@@ -47,7 +54,7 @@
   function getSceneTplView()
   {
     let view = {
-      teamsAmount = teams.len()
+      teamsAmount = this.teams.len()
       teams = []
     }
 
@@ -58,14 +65,14 @@
         name = { width = "fw" }
       }
     }
-    foreach(idx, team in teams)
+    foreach(idx, team in this.teams)
     {
-      markupData.invert <- idx == 0  && teams.len() == 2
+      markupData.invert <- idx == 0  && this.teams.len() == 2
       view.teams.append(
       {
         isFirst = idx == 0
-        tableId = getTeamTableId(team)
-        content = ::build_mp_table([], markupData, columnsList)
+        tableId = this.getTeamTableId(team)
+        content = ::build_mp_table([], markupData, this.columnsList)
       })
     }
     return view
@@ -73,10 +80,10 @@
 
   function initScreen()
   {
-    setFullRoomInfo()
-    playersInTeamTables = {}
-    focusedTeam = teams[0]
-    updatePlayersTbl()
+    this.setFullRoomInfo()
+    this.playersInTeamTables = {}
+    this.focusedTeam = this.teams[0]
+    this.updatePlayersTbl()
   }
 
   /*************************************************************************************************/
@@ -85,13 +92,13 @@
 
   function getSelectedPlayer()
   {
-    let objTbl = getFocusedTeamTableObj()
-    return objTbl && ::getTblValue(objTbl.getValue(), ::getTblValue(focusedTeam, playersInTeamTables))
+    let objTbl = this.getFocusedTeamTableObj()
+    return objTbl && getTblValue(objTbl.getValue(), getTblValue(this.focusedTeam, this.playersInTeamTables))
   }
 
   function getSelectedRowPos()
   {
-    let objTbl = getFocusedTeamTableObj()
+    let objTbl = this.getFocusedTeamTableObj()
     if(!objTbl)
       return null
     let rowNum = objTbl.getValue()
@@ -110,23 +117,23 @@
 
   function getTeamTableId(team)
   {
-    return TEAM_TBL_PREFIX + team.id
+    return this.TEAM_TBL_PREFIX + team.id
   }
 
   function updatePlayersTbl()
   {
-    isTablesInUpdate = true
-    let playersList = ::SessionLobby.getMembersInfoList(room)
-    foreach(team in teams)
-      updateTeamPlayersTbl(team, playersList)
-    isTablesInUpdate = false
-    onPlayerSelect()
+    this.isTablesInUpdate = true
+    let playersList = ::SessionLobby.getMembersInfoList(this.room)
+    foreach(team in this.teams)
+      this.updateTeamPlayersTbl(team, playersList)
+    this.isTablesInUpdate = false
+    this.onPlayerSelect()
   }
 
   function updateTeamPlayersTbl(team, playersList)
   {
-    let objTbl = scene.findObject(getTeamTableId(team))
-    if (!::checkObj(objTbl))
+    let objTbl = this.scene.findObject(this.getTeamTableId(team))
+    if (!checkObj(objTbl))
       return
 
     let teamList = team == ::g_team.ANY ? playersList
@@ -134,7 +141,7 @@
     ::set_mp_table(objTbl, teamList)
     ::update_team_css_label(objTbl)
 
-    playersInTeamTables[team] <- teamList
+    this.playersInTeamTables[team] <- teamList
 
     //update cur value
     if (teamList.len() > 0)
@@ -148,41 +155,41 @@
 
   function getFocusedTeamTableObj()
   {
-    return getObj(getTeamTableId(focusedTeam))
+    return this.getObj(this.getTeamTableId(this.focusedTeam))
   }
 
   function updateFocusedTeamByObj(obj)
   {
-    focusedTeam = ::getTblValue(::getObjIdByPrefix(obj, TEAM_TBL_PREFIX), ::g_team, focusedTeam)
+    this.focusedTeam = getTblValue(::getObjIdByPrefix(obj, this.TEAM_TBL_PREFIX), ::g_team, this.focusedTeam)
   }
 
   function onTableClick(obj)
   {
-    updateFocusedTeamByObj(obj)
-    onPlayerSelect()
+    this.updateFocusedTeamByObj(obj)
+    this.onPlayerSelect()
   }
 
   function onTableSelect(obj)
   {
-    if (isTablesInUpdate)
+    if (this.isTablesInUpdate)
       return
-    updateFocusedTeamByObj(obj)
-    onPlayerSelect()
+    this.updateFocusedTeamByObj(obj)
+    this.onPlayerSelect()
   }
 
   function onPlayerSelect()
   {
-    if (onPlayerSelectCb)
-      onPlayerSelectCb(getSelectedPlayer())
+    if (this.onPlayerSelectCb)
+      this.onPlayerSelectCb(this.getSelectedPlayer())
   }
 
-  function onTableDblClick()    { if (onPlayerDblClickCb) onPlayerDblClickCb(getSelectedPlayer()) }
-  function onTableRClick()      { if (onPlayerRClickCb)   onPlayerRClickCb(getSelectedPlayer()) }
-  function onTableHover(obj)    { if (onTablesHoverChange) onTablesHoverChange(obj.id, obj.isHovered()) }
+  function onTableDblClick()    { if (this.onPlayerDblClickCb) this.onPlayerDblClickCb(this.getSelectedPlayer()) }
+  function onTableRClick()      { if (this.onPlayerRClickCb)   this.onPlayerRClickCb(this.getSelectedPlayer()) }
+  function onTableHover(obj)    { if (this.onTablesHoverChange) this.onTablesHoverChange(obj.id, obj.isHovered()) }
 
   function onPlayerHover(obj)
   {
-    if (!::check_obj(obj) || !obj.isHovered())
+    if (!checkObj(obj) || !obj.isHovered())
       return
     let value = ::to_integer_safe(obj?.rowIdx, -1, false)
     let listObj = obj.getParent()
@@ -190,41 +197,41 @@
       listObj.setValue(value)
   }
 
-  function onEventLobbyMembersChanged(p)
+  function onEventLobbyMembersChanged(_p)
   {
-    updatePlayersTbl()
+    this.updatePlayersTbl()
   }
 
-  function onEventLobbyMemberInfoChanged(p)
+  function onEventLobbyMemberInfoChanged(_p)
   {
-    updatePlayersTbl()
+    this.updatePlayersTbl()
   }
 
-  function onEventLobbySettingsChange(p)
+  function onEventLobbySettingsChange(_p)
   {
-    updatePlayersTbl()
+    this.updatePlayersTbl()
   }
 
   function setFullRoomInfo()
   {
-    if (!room)
+    if (!this.room)
       return
-    let fullRoom = ::g_mroom_info.get(room.roomId).getFullRoomData()
+    let fullRoom = ::g_mroom_info.get(this.room.roomId).getFullRoomData()
     if (fullRoom)
-      room = fullRoom
+      this.room = fullRoom
   }
 
   function onEventMRoomInfoUpdated(p)
   {
-    if (room && p.roomId == room.roomId)
+    if (this.room && p.roomId == this.room.roomId)
     {
-      setFullRoomInfo()
-      updatePlayersTbl()
+      this.setFullRoomInfo()
+      this.updatePlayersTbl()
     }
   }
 
   function moveMouse() {
-    if (scene.childrenCount() > 0)
-      ::move_mouse_on_child(scene.getChild(0), 0)
+    if (this.scene.childrenCount() > 0)
+      ::move_mouse_on_child(this.scene.getChild(0), 0)
   }
 }

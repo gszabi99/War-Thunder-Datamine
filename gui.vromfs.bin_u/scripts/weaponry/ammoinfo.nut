@@ -1,4 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { get_game_params } = require("gameparams")
 
 let AMMO = {
   PRIMARY      = 0, //bullets, modifications
@@ -60,8 +66,12 @@ let function getAmmoWarningMinimum(ammoType, unit, maxAmount)
 {
   if (unit.unitType == unitTypes.SHIP || unit.unitType == unitTypes.BOAT)
     return max(1, maxAmount / 10)
-  return (ammoType == AMMO.MODIFICATION) ? ::weaponsWarningMinimumPrimary
-    : ::weaponsWarningMinimumSecondary
+  let gp = get_game_params()
+  if (gp == null)
+    return 1
+  return (ammoType == AMMO.MODIFICATION)
+        ? gp.weaponsWarningMinimumPrimary
+        : gp.weaponsWarningMinimumSecondary
 }
 
 let function getAmmoAmountData(unit, ammoName, ammoType)

@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -5,7 +10,7 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { is_fully_translated } = ::require_native("acesInfo")
+let { is_fully_translated } = require_native("acesInfo")
 
 let function check_members_pkg(pack) {
   let members = ::g_squad_manager.checkMembersPkg(pack)
@@ -15,9 +20,9 @@ let function check_members_pkg(pack) {
   local mText = ""
   foreach(m in members)
     mText += ((mText == "")? "" : ", ") + m.name
-  local msg = ::loc("msgbox/members_no_package", {
-                      members = ::colorize("userlogColoredText", mText)
-                      package = ::colorize("activeTextColor", ::get_pkg_loc_name(pack))
+  local msg = loc("msgbox/members_no_package", {
+                      members = colorize("userlogColoredText", mText)
+                      package = colorize("activeTextColor", ::get_pkg_loc_name(pack))
                     })
   ::showInfoMsgBox(msg, "members_req_new_content")
 }
@@ -36,7 +41,7 @@ let function check_members_pkg(pack) {
 
 ::check_gamemode_pkg <- function check_gamemode_pkg(gm, silent = false)
 {
-  if (::isInArray(gm, [::GM_SINGLE_MISSION, ::GM_SKIRMISH, ::GM_DYNAMIC, ::GM_USER_MISSION]))
+  if (isInArray(gm, [GM_SINGLE_MISSION, GM_SKIRMISH, GM_DYNAMIC, GM_USER_MISSION]))
     return ::check_package_full("pkg_main", silent)
 
   return true
@@ -44,7 +49,7 @@ let function check_members_pkg(pack) {
 
 ::check_diff_pkg <- function check_diff_pkg(diff, silent = false)
 {
-  foreach(d in [::DIFFICULTY_HARDCORE, ::DIFFICULTY_CUSTOM])
+  foreach(d in [DIFFICULTY_HARDCORE, DIFFICULTY_CUSTOM])
     if (diff == d || ::get_difficulty_name(d) == diff)
       return ::check_package_full("pkg_main", silent)
   return true
@@ -52,20 +57,20 @@ let function check_members_pkg(pack) {
 
 ::get_pkg_loc_name <- function get_pkg_loc_name(pack, isShort = false)
 {
-  return ::loc("package/" + pack + (isShort ? "/short" : ""))
+  return loc("package/" + pack + (isShort ? "/short" : ""))
 }
 
 let function checkReqContentByName(ename, pack)
 {
-  if (::has_entitlement(ename) || ::has_feature(ename))
+  if (::has_entitlement(ename) || hasFeature(ename))
   {
-    ::dagor.debug("[PACK] has entitlement "+ename+", checking for pack "+pack);
+    log("[PACK] has entitlement "+ename+", checking for pack "+pack);
     let status = ::package_get_status(pack)
-    if (status == ::PACKAGE_STATUS_NOT_EXIST)
+    if (status == PACKAGE_STATUS_NOT_EXIST)
       return pack
   }
   else
-    ::dagor.debug("[PACK] don't have entitlement "+ename+", ignoring pack "+pack);
+    log("[PACK] don't have entitlement "+ename+", ignoring pack "+pack);
 
   return null
 }
@@ -81,7 +86,7 @@ let function checkReqContent(ename, blk)
 {
   if (!contentStateModule.isConsoleClientFullyDownloaded())
     return false
-  return ::package_get_status(packName) == ::PACKAGE_STATUS_OK
+  return ::package_get_status(packName) == PACKAGE_STATUS_OK
 }
 
 let function request_packages(packList)
@@ -93,18 +98,18 @@ let function request_packages(packList)
 let function request_packages_and_restart(packList)
 {
   request_packages(packList)
-  if (::target_platform == "linux64")
+  if (target_platform == "linux64")
     return ::quit_and_run_cmd("./launcher -silentupdate")
-  else if (::target_platform == "macosx")
+  else if (target_platform == "macosx")
     return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
-  if (::is_platform_windows)
+  if (is_platform_windows)
   {
     let exec = "launcher.exe -silentupdate";
 
     return ::quit_and_run_cmd(exec)
   }
 
-  ::dagor.debug("ERROR: new_content action not implemented");
+  log("ERROR: new_content action not implemented");
 }
 
 
@@ -116,7 +121,7 @@ let function request_packages_and_restart(packList)
   if (!::g_login.isLoggedIn())
     return
 
-  ::dagor.debug("[PACK] updateContentPacks called");
+  log("[PACK] updateContentPacks called");
 
   let reqPacksList = []
   for(local i = reqPacksList.len() - 1; i >= 0; i--)
@@ -138,7 +143,7 @@ let function request_packages_and_restart(packList)
   if (!::have_package(langPack) && is_fully_translated(langId))
   {
     if (!reqPacksList.len())
-      text = ::loc("yn1/have_new_content_lang")
+      text = loc("yn1/have_new_content_lang")
     ::u.appendOnce(langPack, reqPacksList)
   }
 
@@ -151,15 +156,15 @@ let function request_packages_and_restart(packList)
   if (!reqPacksList.len())
     return
 
-  if (!::has_feature("Packages"))
+  if (!hasFeature("Packages"))
     return request_packages(reqPacksList)
 
   if (text=="")
   {
-    text = ::loc("yn1/have_new_content")
+    text = loc("yn1/have_new_content")
     local pText = ""
     foreach(pack in reqPacksList)
-      pText += ((pText=="")? "" : ", ") + ::colorize("activeTextColor", ::get_pkg_loc_name(pack))
+      pText += ((pText=="")? "" : ", ") + colorize("activeTextColor", ::get_pkg_loc_name(pack))
     text += "\n" + pText
   }
 
@@ -227,9 +232,9 @@ let function set_asked_pack(pack, askTag = null)
         ending = "/info"
       else if (continueFunc)
         ending = "/continue"
-      _msg = ::loc("msgbox/no_package" + ending)
+      _msg = loc("msgbox/no_package" + ending)
     }
-    _msg = format(_msg, ::colorize("activeTextColor", ::get_pkg_loc_name(pack)))
+    _msg = format(_msg, colorize("activeTextColor", ::get_pkg_loc_name(pack)))
   }
 
   local defButton = ::can_download_package()? "cancel" : "ok"
@@ -247,7 +252,7 @@ let function set_asked_pack(pack, askTag = null)
       defButton = "apply"
     }
   }
-  else if (::can_download_package() && !::is_platform_xbox)
+  else if (::can_download_package() && !is_platform_xbox)
   {
     buttons.insert(0, ["download", (@(pack) function() {
                        request_packages_and_restart([pack])
@@ -287,17 +292,17 @@ let function set_asked_pack(pack, askTag = null)
   local params = null
   if (langId != "English")
   {
-    let messageEn = ::g_string.stripTags(::loc("yn1/have_new_content_lang/en"))
+    let messageEn = ::g_string.stripTags(loc("yn1/have_new_content_lang/en"))
     let buttonsEn = ::g_string.stripTags(format("[%s] = %s, [%s] = %s",
-      ::loc("msgbox/btn_download"), ::loc("msgbox/btn_download/en"),
-      ::loc("msgbox/btn_cancel"), ::loc("msgbox/btn_cancel/en")))
+      loc("msgbox/btn_download"), loc("msgbox/btn_download/en"),
+      loc("msgbox/btn_cancel"), loc("msgbox/btn_cancel/en")))
     params = {
       data_below_text = "tdiv { flow:t='vertical' textarea {left:t='pw/2-w/2' position:t='relative' text:t='" +
         messageEn + "'} textarea {left:t='pw/2-w/2' position:t='relative' text:t='" + buttonsEn + "'} }"
     }
   }
 
-  ::scene_msg_box("req_pkg_locatization", null, ::loc("yn1/have_new_content_lang"),
+  ::scene_msg_box("req_pkg_locatization", null, loc("yn1/have_new_content_lang"),
     [["download", (@(pack) function() { request_packages_and_restart([pack]) })(pack)], ["cancel"]], "cancel", params)
 }
 
@@ -321,7 +326,7 @@ let function set_asked_pack(pack, askTag = null)
   ::scene_msg_box(
     "new_content",
     null,
-    ::loc("yn1/have_new_crews_content_lang"),
+    loc("yn1/have_new_crews_content_lang"),
     [
       [
         "ok",
@@ -339,27 +344,27 @@ let function restart_to_launcher()
 {
   if (isPlatformSony)
     return startLogout()
-  else if (::is_platform_xbox)
+  else if (is_platform_xbox)
     return exitGame()
-  else if (::target_platform == "linux64")
+  else if (target_platform == "linux64")
     return ::quit_and_run_cmd("./launcher -silentupdate")
-  else if (::target_platform == "macosx")
+  else if (target_platform == "macosx")
     return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
-  if (::is_platform_windows)
+  if (is_platform_windows)
   {
     let exec = "launcher.exe -silentupdate";
 
     return ::quit_and_run_cmd(exec)
   }
 
-  ::dagor.debug("ERROR: restart_to_launcher action not implemented");
+  log("ERROR: restart_to_launcher action not implemented");
 }
 
 
 ::error_load_model_and_restart <- function error_load_model_and_restart(model)
 {
-  local _msg = ::loc("msgbox/no_package/info")
-  _msg = format(_msg, ::colorize("activeTextColor", model))
+  local _msg = loc("msgbox/no_package/info")
+  _msg = format(_msg, colorize("activeTextColor", model))
 
   ::scene_msg_box(
     "new_content",
@@ -378,5 +383,5 @@ let function restart_to_launcher()
 
 }
 
-addPromoAction("content_pack", @(handler, params, obj) ::check_package_and_ask_download(params?[0] ?? ""),
-  @(params) ::has_feature("Packages") && !::have_package(params?[0] ?? ""))
+addPromoAction("content_pack", @(_handler, params, _obj) ::check_package_and_ask_download(params?[0] ?? ""),
+  @(params) hasFeature("Packages") && !::have_package(params?[0] ?? ""))

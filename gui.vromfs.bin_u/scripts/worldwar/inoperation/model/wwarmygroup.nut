@@ -1,5 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { round } = require("math")
 
 ::WwArmyGroup <- class
 {
@@ -21,67 +28,67 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 
   constructor(blk)
   {
-    clanId               = ::getTblValue("clanId", blk, "").tostring()
-    name                 = ::getTblValue("name", blk, "")
-    supremeCommanderUid   = ::getTblValue("supremeCommanderUid", blk, "")
-    supremeCommanderNick = ::getTblValue("supremeCommanderNick", blk, "")
-    owner                = ::WwArmyOwner(blk.getBlockByName("owner"))
-    managerUids          = blk.getBlockByName("managerUids") % "item"
-    observerUids         = blk.getBlockByName("observerUids") % "item" || []
-    armyManagers         = getArmyManagers(blk.getBlockByName("managerStats"))
+    this.clanId               = getTblValue("clanId", blk, "").tostring()
+    this.name                 = getTblValue("name", blk, "")
+    this.supremeCommanderUid   = getTblValue("supremeCommanderUid", blk, "")
+    this.supremeCommanderNick = getTblValue("supremeCommanderNick", blk, "")
+    this.owner                = ::WwArmyOwner(blk.getBlockByName("owner"))
+    this.managerUids          = blk.getBlockByName("managerUids") % "item"
+    this.observerUids         = blk.getBlockByName("observerUids") % "item" || []
+    this.armyManagers         = this.getArmyManagers(blk.getBlockByName("managerStats"))
   }
 
   function clear()
   {
-    clanId               = ""
-    name                 = ""
-    supremeCommanderUid   = ""
-    supremeCommanderNick = ""
+    this.clanId               = ""
+    this.name                 = ""
+    this.supremeCommanderUid   = ""
+    this.supremeCommanderNick = ""
 
-    owner = null
+    this.owner = null
 
-    managerUids  = null
-    observerUids = null
+    this.managerUids  = null
+    this.observerUids = null
 
-    armyView = null
+    this.armyView = null
 
-    armyManagers = []
-    isArmyManagersUpdated = false
+    this.armyManagers = []
+    this.isArmyManagersUpdated = false
   }
 
   function isValid()
   {
-    return name.len() > 0 && owner && owner.isValid()
+    return this.name.len() > 0 && this.owner && this.owner.isValid()
   }
 
   function getView()
   {
-    if (!armyView)
-      armyView = ::WwArmyView(this)
-    return armyView
+    if (!this.armyView)
+      this.armyView = ::WwArmyView(this)
+    return this.armyView
   }
 
   function isMyArmy(army)
   {
-    return getArmyGroupIdx() == army.getArmyGroupIdx() &&
-           getArmySide()     == army.getArmySide()     &&
-           getArmyCountry()  == army.getArmyCountry()
+    return this.getArmyGroupIdx() == army.getArmyGroupIdx() &&
+           this.getArmySide()     == army.getArmySide()     &&
+           this.getArmyCountry()  == army.getArmyCountry()
   }
 
   function getGroupUnitType()
   {
-    return unitType
+    return this.unitType
   }
 
 
   function getFullName()
   {
-    return format("%d %s", getArmyGroupIdx(), name)
+    return format("%d %s", this.getArmyGroupIdx(), this.name)
   }
 
   function getCountryIcon()
   {
-    return getCustomViewCountryData(getArmyCountry()).icon
+    return getCustomViewCountryData(this.getArmyCountry()).icon
   }
 
   function showArmyGroupText()
@@ -91,38 +98,38 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 
   function getClanTag()
   {
-    return name
+    return this.name
   }
 
   function getClanId()
   {
-    return clanId
+    return this.clanId
   }
 
   function isMySide(side)
   {
-    return getArmySide() == side
+    return this.getArmySide() == side
   }
 
   function getArmyGroupIdx()
   {
-    return owner.getArmyGroupIdx()
+    return this.owner.getArmyGroupIdx()
   }
 
   function getArmyCountry()
   {
-    return owner.getCountry()
+    return this.owner.getCountry()
   }
 
   function getArmySide()
   {
-    return owner.getSide()
+    return this.owner.getSide()
   }
 
   function isBelongsToMyClan()
   {
     let myClanId = ::clan_get_my_clan_id()
-    if (myClanId && myClanId == getClanId())
+    if (myClanId && myClanId == this.getClanId())
       return true
 
     return false
@@ -130,14 +137,14 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 
   function getAccessLevel()
   {
-    if (supremeCommanderUid == ::my_user_id_int64 || ::has_feature("worldWarMaster"))
+    if (this.supremeCommanderUid == ::my_user_id_int64 || hasFeature("worldWarMaster"))
       return WW_BATTLE_ACCESS.SUPREME
 
-    if (owner.side == ::ww_get_player_side())
+    if (this.owner.side == ::ww_get_player_side())
     {
-      if (::isInArray(::my_user_id_int64, managerUids))
+      if (isInArray(::my_user_id_int64, this.managerUids))
         return WW_BATTLE_ACCESS.MANAGER
-      if (::isInArray(::my_user_id_int64, observerUids))
+      if (isInArray(::my_user_id_int64, this.observerUids))
         return WW_BATTLE_ACCESS.OBSERVER
     }
 
@@ -146,14 +153,14 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 
   function hasManageAccess()
   {
-    let accessLevel = getAccessLevel()
+    let accessLevel = this.getAccessLevel()
     return accessLevel == WW_BATTLE_ACCESS.MANAGER ||
            accessLevel == WW_BATTLE_ACCESS.SUPREME
   }
 
   function hasObserverAccess()
   {
-    let accessLevel = getAccessLevel()
+    let accessLevel = this.getAccessLevel()
     return accessLevel == WW_BATTLE_ACCESS.OBSERVER ||
            accessLevel == WW_BATTLE_ACCESS.MANAGER ||
            accessLevel == WW_BATTLE_ACCESS.SUPREME
@@ -179,24 +186,24 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 
   function updateManagerStat(armyManagersNames)
   {
-    let total = armyManagers.map(@(m) m.actionsCount).reduce(@(res, value) res + value, 0).tofloat()
-    foreach(armyManager in armyManagers) {
+    let total = this.armyManagers.map(@(m) m.actionsCount).reduce(@(res, value) res + value, 0).tofloat()
+    foreach(armyManager in this.armyManagers) {
       armyManager.activity = total > 0
-        ? ::round(100 * armyManager.actionsCount / total).tointeger()
+        ? round(100 * armyManager.actionsCount / total).tointeger()
         : 0
       armyManager.name = armyManagersNames?[armyManager.uid].name ?? ""
     }
-    armyManagers.sort(@(a,b) b.activity <=> a.activity || a.name<=> b.name)
-    isArmyManagersUpdated = true
+    this.armyManagers.sort(@(a,b) b.activity <=> a.activity || a.name<=> b.name)
+    this.isArmyManagersUpdated = true
   }
 
   function hasManagersStat()
   {
-    return isArmyManagersUpdated && armyManagers.len() > 0
+    return this.isArmyManagersUpdated && this.armyManagers.len() > 0
   }
 
   function getUidsForNickRequest(armyManagersNames)
   {
-    return armyManagers.filter(@(m) m.name == "" && !(m.uid in armyManagersNames)).map(@(m) m.uid)
+    return this.armyManagers.filter(@(m) m.name == "" && !(m.uid in armyManagersNames)).map(@(m) m.uid)
   }
 }

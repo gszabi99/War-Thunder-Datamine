@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
 
 ::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {})
 {
@@ -21,35 +29,35 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
   function initScreen()
   {
-    let listObj = scene.findObject("items_list")
-    if (!::checkObj(listObj))
-      return goBack()
+    let listObj = this.scene.findObject("items_list")
+    if (!checkObj(listObj))
+      return this.goBack()
 
-    infoHandler = itemInfoHandler(scene.findObject("item_info"))
+    this.infoHandler = itemInfoHandler(this.scene.findObject("item_info"))
 
-    let titleObj = scene.findObject("title")
-    if (::check_obj(titleObj))
-      titleObj.setValue(::loc(tittleLocId))
+    let titleObj = this.scene.findObject("title")
+    if (checkObj(titleObj))
+      titleObj.setValue(loc(this.tittleLocId))
 
-    fillList(listObj)
+    this.fillList(listObj)
 
-    if (rewardsArray.len() > 4)
-      listObj.width = (listObj.getSize()[0] + ::to_pixels("1@scrollBarSize")).tostring()
+    if (this.rewardsArray.len() > 4)
+      listObj.width = (listObj.getSize()[0] + to_pixels("1@scrollBarSize")).tostring()
 
-    listObj.setValue(rewardsArray.len() > 0 ? 0 : -1)
+    listObj.setValue(this.rewardsArray.len() > 0 ? 0 : -1)
     ::move_mouse_on_child_by_value(listObj)
   }
 
   function fillList(listObj)
   {
-    let data = getItemsImages()
-    guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    let data = this.getItemsImages()
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
   function getItemsImages()
   {
     local data = ""
-    foreach(idx, reward in rewardsArray)
+    foreach(_idx, reward in this.rewardsArray)
       data += ::trophyReward.getImageByConfig(reward, false, "trophy_reward_place", true)
 
     return data
@@ -58,31 +66,31 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
   function updateItemInfo(obj)
   {
     let val = obj.getValue()
-    let reward_config = rewardsArray[val]
+    let reward_config = this.rewardsArray[val]
     let rewardType = ::trophyReward.getType(reward_config)
     let isItem = ::trophyReward.isRewardItem(rewardType)
-    infoHandler?.setHandlerVisible(isItem)
+    this.infoHandler?.setHandlerVisible(isItem)
     let prizeInfo = this.showSceneBtn("prize_info", !isItem)
     if (isItem)
     {
-      if (!infoHandler)
+      if (!this.infoHandler)
         return
 
       let item = ::ItemsManager.findItemById(reward_config[rewardType])
-      infoHandler.updateHandlerData(item, true, true, reward_config)
+      this.infoHandler.updateHandlerData(item, true, true, reward_config)
       return
     }
     let trophyDesc = ::trophyReward.getFullDescriptonView(reward_config)
-    guiScene.replaceContentFromText(prizeInfo, trophyDesc, trophyDesc.len(), this)
+    this.guiScene.replaceContentFromText(prizeInfo, trophyDesc, trophyDesc.len(), this)
   }
 
-  function onEventItemsShopUpdate(p)
+  function onEventItemsShopUpdate(_p)
   {
-    let listObj = scene.findObject("items_list")
-    if (!::check_obj(listObj))
+    let listObj = this.scene.findObject("items_list")
+    if (!checkObj(listObj))
       return
 
-    fillList(listObj)
+    this.fillList(listObj)
     if (listObj.childrenCount() > 0 && listObj.getValue() < 0)
       listObj.setValue(0)
     ::move_mouse_on_child_by_value(listObj)

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
@@ -11,7 +17,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::gui_start_tactical_map_tc <- function gui_start_tactical_map_tc()
 {
-  gui_start_tactical_map(true);
+  ::gui_start_tactical_map(true);
 }
 
 ::gui_handlers.TacticalMap <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -33,80 +39,80 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
   numUnits = 0
   wasPlayer = 0
   focus = -1
-  restoreType = ::ERT_TACTICAL_CONTROL
+  restoreType = ERT_TACTICAL_CONTROL
   isFocusChanged = false
   wasMenuShift = false
   isActiveTactical = false
 
   function initScreen()
   {
-    scene.findObject("update_timer").setUserData(this)
+    this.scene.findObject("update_timer").setUserData(this)
 
-    subHandlers.append(
-      ::gui_load_mission_objectives(scene.findObject("primary_tasks_list"),   false, 1 << ::OBJECTIVE_TYPE_PRIMARY),
-      ::gui_load_mission_objectives(scene.findObject("secondary_tasks_list"), false, 1 << ::OBJECTIVE_TYPE_SECONDARY)
+    this.subHandlers.append(
+      ::gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   false, 1 << OBJECTIVE_TYPE_PRIMARY),
+      ::gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), false, 1 << OBJECTIVE_TYPE_SECONDARY)
     )
 
-    initWnd()
+    this.initWnd()
   }
 
   function initWnd()
   {
-    restoreType = ::get_mission_restore_type();
+    this.restoreType = ::get_mission_restore_type();
 
-    if ((restoreType != ::ERT_TACTICAL_CONTROL))
-      isActiveTactical = false
+    if ((this.restoreType != ERT_TACTICAL_CONTROL))
+      this.isActiveTactical = false
 
     let playerArr = [1]
-    numUnits = ::get_player_group(units, playerArr)
-    ::dagor.debug("numUnits = "+numUnits)
+    this.numUnits = ::get_player_group(this.units, playerArr)
+    log("numUnits = "+this.numUnits)
 
-    initData()
+    this.initData()
 
 //    scene.findObject("dmg_hud").tag = "" + units[focus]
 
     local isRespawn = false
 
-    if (restoreType == ::ERT_TACTICAL_CONTROL)
+    if (this.restoreType == ERT_TACTICAL_CONTROL)
     {
-      for (local i = 0; i < numUnits; i++)
+      for (local i = 0; i < this.numUnits; i++)
       {
-        if (::is_aircraft_delayed(units[i]))
+        if (::is_aircraft_delayed(this.units[i]))
           continue
 
-        if (::is_aircraft_player(units[i]))
+        if (::is_aircraft_player(this.units[i]))
         {
-          if (! ::is_aircraft_active(units[i]))
+          if (! ::is_aircraft_active(this.units[i]))
             isRespawn = true
           break
         }
       }
-      if (isRespawn || forceTacticalControl)
+      if (isRespawn || this.forceTacticalControl)
       {
-        ::dagor.debug("[TMAP] isRespawn = "+isRespawn)
-        ::dagor.debug("[TMAP] 2 forceTacticalControl = " + forceTacticalControl)
-        isActiveTactical = true
+        log("[TMAP] isRespawn = "+isRespawn)
+        log("[TMAP] 2 forceTacticalControl = " + this.forceTacticalControl)
+        this.isActiveTactical = true
       }
       else
-        isActiveTactical = false
+        this.isActiveTactical = false
     }
 
-    scene.findObject("objectives_panel").show(!isActiveTactical)
-    scene.findObject("pilots_panel").show(isActiveTactical)
+    this.scene.findObject("objectives_panel").show(!this.isActiveTactical)
+    this.scene.findObject("pilots_panel").show(this.isActiveTactical)
 
-    updatePlayer()
-    update(null, 0.03)
-    updateTitle()
+    this.updatePlayer()
+    this.update(null, 0.03)
+    this.updateTitle()
 
-    this.showSceneBtn("btn_select", isActiveTactical)
+    this.showSceneBtn("btn_select", this.isActiveTactical)
     this.showSceneBtn("btn_back", true)
     this.showSceneBtn("screen_button_back", useTouchscreen)
   }
 
   function reinitScreen(params = {})
   {
-    setParams(params)
-    initWnd()
+    this.setParams(params)
+    this.initWnd()
     /*
     initData()
     updatePlayer()
@@ -119,304 +125,304 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
   {
     let gt = ::get_game_type()
     local titleText = ::loc_current_mission_name()
-    if (gt & ::GT_VERSUS)
-      titleText = ::loc("multiplayer/" + ::get_cur_game_mode_name() + "Mode")
+    if (gt & GT_VERSUS)
+      titleText = loc("multiplayer/" + ::get_cur_game_mode_name() + "Mode")
 
-    setSceneTitle(titleText, scene, "menu-title")
+    this.setSceneTitle(titleText, this.scene, "menu-title")
   }
 
   function update(obj, dt)
   {
-    updateTacticalControl(obj, dt)
+    this.updateTacticalControl(obj, dt)
 
     if (::is_respawn_screen())
     {
-      guiScene.performDelayed({}, function() {
+      this.guiScene.performDelayed({}, function() {
         ::gui_start_respawn()
         ::update_gamercards()
       })
     }
   }
 
-  function updateTacticalControl(obj, dt)
+  function updateTacticalControl(_obj, _dt)
   {
-    if (restoreType != ::ERT_TACTICAL_CONTROL)
+    if (this.restoreType != ERT_TACTICAL_CONTROL)
       return;
-    if (!isActiveTactical)
+    if (!this.isActiveTactical)
       return
 
-    if (focus >= 0 && focus < numUnits)
+    if (this.focus >= 0 && this.focus < this.numUnits)
     {
-      let isActive = ::is_aircraft_active(units[focus])
+      let isActive = ::is_aircraft_active(this.units[this.focus])
       if (!isActive)
       {
-        scene.findObject("objectives_panel").show(false)
-        scene.findObject("pilots_panel").show(true)
+        this.scene.findObject("objectives_panel").show(false)
+        this.scene.findObject("pilots_panel").show(true)
 
-        onFocusDown(null)
+        this.onFocusDown(null)
       }
-      if (!::is_aircraft_active(units[focus]))
+      if (!::is_aircraft_active(this.units[this.focus]))
       {
-        ::dagor.debug("still no active aircraft");
-        guiScene.performDelayed(this, function()
+        log("still no active aircraft");
+        this.guiScene.performDelayed(this, function()
         {
-          doClose()
+          this.doClose()
         })
         return;
       }
       if (!isActive)
       {
-        ::set_tactical_screen_player(units[focus], false)
-        guiScene.performDelayed(this, function()
+        ::set_tactical_screen_player(this.units[this.focus], false)
+        this.guiScene.performDelayed(this, function()
         {
-          doClose()
+          this.doClose()
         })
       }
     }
 
 
-    for (local i = 0; i < numUnits; i++)
+    for (local i = 0; i < this.numUnits; i++)
     {
-      if (::is_aircraft_delayed(units[i]))
+      if (::is_aircraft_delayed(this.units[i]))
       {
-        ::dagor.debug("unit "+i+" is delayed");
+        log("unit "+i+" is delayed");
         continue;
       }
 
-      let isActive = ::is_aircraft_active(units[i]);
-      if (isActive != unitsActive[i])
+      let isActive = ::is_aircraft_active(this.units[i]);
+      if (isActive != this.unitsActive[i])
       {
-        let trObj = scene.findObject("pilot_name" + i)
+        let trObj = this.scene.findObject("pilot_name" + i)
         trObj.enable = isActive ? "yes" : "no";
         trObj.inactive = isActive ? null : "yes"
-        unitsActive[i] = isActive;
+        this.unitsActive[i] = isActive;
       }
     }
   }
 
   function initData()
   {
-    if (restoreType != ::ERT_TACTICAL_CONTROL)
+    if (this.restoreType != ERT_TACTICAL_CONTROL)
       return;
-    fillPilotsTable()
+    this.fillPilotsTable()
 
-    for (local i = 0; i < numUnits; i++)
+    for (local i = 0; i < this.numUnits; i++)
     {
-      if (::is_aircraft_delayed(units[i]))
+      if (::is_aircraft_delayed(this.units[i]))
         continue
 
-      if (::is_aircraft_player(units[i]))
+      if (::is_aircraft_player(this.units[i]))
       {
-        wasPlayer = i
-        focus = wasPlayer
+        this.wasPlayer = i
+        this.focus = this.wasPlayer
         break
       }
     }
 
-    for (local i = 0; i < numUnits; i++)
-      unitsActive.append(true)
+    for (local i = 0; i < this.numUnits; i++)
+      this.unitsActive.append(true)
 
-    for (local i = 0; i < numUnits; i++)
+    for (local i = 0; i < this.numUnits; i++)
     {
-      if (::is_aircraft_delayed(units[i]))
+      if (::is_aircraft_delayed(this.units[i]))
         continue;
 
       local pilotFullName = ""
-      let pilotId = ::get_pilot_name(units[i], i)
+      let pilotId = ::get_pilot_name(this.units[i], i)
       if (pilotId != "")
       {
-        if (::get_game_type() & ::GT_COOPERATIVE)
+        if (::get_game_type() & GT_COOPERATIVE)
         {
           pilotFullName = pilotId; //player nick
         }
         else
         {
-          pilotFullName = ::loc(pilotId)
+          pilotFullName = loc(pilotId)
         }
       }
       else
         pilotFullName = "Pilot "+(i+1).tostring()
 
-      ::dagor.debug("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
+      log("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
 
-      scene.findObject("pilot_text" + i).setValue(pilotFullName)
-      let objTr = scene.findObject("pilot_name" + i)
-      let isActive = ::is_aircraft_active(units[i])
+      this.scene.findObject("pilot_text" + i).setValue(pilotFullName)
+      let objTr = this.scene.findObject("pilot_name" + i)
+      let isActive = ::is_aircraft_active(this.units[i])
 
-      objTr.mainPlayer = (wasPlayer == i)? "yes" : "no"
+      objTr.mainPlayer = (this.wasPlayer == i)? "yes" : "no"
       objTr.enable = isActive ? "yes" : "no"
       objTr.inactive = isActive ? null : "yes"
-      objTr.selected = (focus == i)? "yes" : "no"
+      objTr.selected = (this.focus == i)? "yes" : "no"
     }
 
-    if (numUnits > 0)
-      setMousePointerInitialPos(scene.findObject("pilots_list").getChild(wasPlayer))
+    if (this.numUnits > 0)
+      setMousePointerInitialPos(this.scene.findObject("pilots_list").getChild(this.wasPlayer))
   }
 
   function fillPilotsTable()
   {
     local data = ""
-    for(local k = 0; k < numUnits; k++)
+    for(local k = 0; k < this.numUnits; k++)
       data += format("tr { id:t = 'pilot_name%d'; css-hier-invalidate:t='all'; td { text { id:t = 'pilot_text%d'; }}}",
                      k, k)
 
-    let pilotsObj = scene.findObject("pilots_list")
-    guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
-    pilotsObj.baseRow = (numUnits < 13)? "yes" : "rows16"
+    let pilotsObj = this.scene.findObject("pilots_list")
+    this.guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
+    pilotsObj.baseRow = (this.numUnits < 13)? "yes" : "rows16"
   }
 
   function updatePlayer()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    if (numUnits && (restoreType == ::ERT_TACTICAL_CONTROL) && isActiveTactical)
+    if (this.numUnits && (this.restoreType == ERT_TACTICAL_CONTROL) && this.isActiveTactical)
     {
-      if (!(focus in units))
-        focus = 0
+      if (!(this.focus in this.units))
+        this.focus = 0
 
-      ::set_tactical_screen_player(units[focus], true)
+      ::set_tactical_screen_player(this.units[this.focus], true)
 
-      for (local i = 0; i < numUnits; i++)
+      for (local i = 0; i < this.numUnits; i++)
       {
-        if (::is_aircraft_delayed(units[i]))
+        if (::is_aircraft_delayed(this.units[i]))
           continue
 
 //        if ((focus < 0) && ::is_aircraft_player(units[i]))
 //          focus = i
 
-        scene.findObject("pilot_name" + i).selected = (focus == i) ? "yes" : "no"
+        this.scene.findObject("pilot_name" + i).selected = (this.focus == i) ? "yes" : "no"
       }
 
   //    scene.findObject("dmg_hud").tag = "" + units[focus]
-      let obj = scene.findObject("pilot_name" + focus)
+      let obj = this.scene.findObject("pilot_name" + this.focus)
       if (obj)
         obj.scrollToView()
     }
 
-    let obj = scene.findObject("pilot_aircraft")
+    let obj = this.scene.findObject("pilot_aircraft")
     if (obj)
     {
       let fm = ::get_player_unit_name()
       let unit = ::getAircraftByName(fm)
       local text = ::getUnitName(fm)
       if (unit?.isAir() || unit?.isHelicopter?())
-        text += ::loc("ui/colon") + getWeaponShortTypeFromWpName(::get_cur_unit_weapon_preset(), fm)
+        text += loc("ui/colon") + getWeaponShortTypeFromWpName(::get_cur_unit_weapon_preset(), fm)
       obj.setValue(text)
     }
   }
 
-  function onFocusDown(obj)
+  function onFocusDown(_obj)
   {
-    if (restoreType != ::ERT_TACTICAL_CONTROL)
+    if (this.restoreType != ERT_TACTICAL_CONTROL)
       return
-    if (!isActiveTactical)
+    if (!this.isActiveTactical)
       return
 
-    let wasFocus = focus
-    focus++
-    if (focus >= numUnits)
-      focus = 0;
+    let wasFocus = this.focus
+    this.focus++
+    if (this.focus >= this.numUnits)
+      this.focus = 0;
 
-    local cur = focus
-    for (local i = 0; i < numUnits; i++)
+    local cur = this.focus
+    for (local i = 0; i < this.numUnits; i++)
     {
-      let isActive = ::is_aircraft_active(units[cur])
-      let isDelayed = ::is_aircraft_delayed(units[cur])
+      let isActive = ::is_aircraft_active(this.units[cur])
+      let isDelayed = ::is_aircraft_delayed(this.units[cur])
       if (isActive && !isDelayed)
         break
 
       cur++
-      if (cur >= numUnits)
+      if (cur >= this.numUnits)
         cur = 0
     }
 
-    focus = cur
-    if (wasFocus != focus)
+    this.focus = cur
+    if (wasFocus != this.focus)
     {
-      updatePlayer()
+      this.updatePlayer()
     }
     else
-      ::dagor.debug("onFocusDown - can't find aircraft that is active and not delayed")
+      log("onFocusDown - can't find aircraft that is active and not delayed")
   }
 
-  function onFocusUp(obj)
+  function onFocusUp(_obj)
   {
-    if (restoreType != ::ERT_TACTICAL_CONTROL)
+    if (this.restoreType != ERT_TACTICAL_CONTROL)
       return
-    if (!isActiveTactical)
+    if (!this.isActiveTactical)
       return
 
-    let wasFocus = focus
-    focus--
-    if (focus < 0)
-      focus = numUnits - 1;
+    let wasFocus = this.focus
+    this.focus--
+    if (this.focus < 0)
+      this.focus = this.numUnits - 1;
 
-    local cur = focus
-    for (local i = 0; i < numUnits; i++)
+    local cur = this.focus
+    for (local i = 0; i < this.numUnits; i++)
     {
-      let isActive = ::is_aircraft_active(units[cur])
-      let isDelayed = ::is_aircraft_delayed(units[cur])
+      let isActive = ::is_aircraft_active(this.units[cur])
+      let isDelayed = ::is_aircraft_delayed(this.units[cur])
 
       if (isActive && !isDelayed)
         break
 
       cur--
       if (cur < 0)
-        cur = numUnits - 1
+        cur = this.numUnits - 1
     }
 
-    focus = cur
+    this.focus = cur
 
-    if (wasFocus != focus)
-      updatePlayer()
+    if (wasFocus != this.focus)
+      this.updatePlayer()
   }
 
-  function onPilotsSelect(obj)
+  function onPilotsSelect(_obj)
   {
-    if (restoreType != ::ERT_TACTICAL_CONTROL || !isActiveTactical)
+    if (this.restoreType != ERT_TACTICAL_CONTROL || !this.isActiveTactical)
       return
 
-    let newFocus = scene.findObject("pilots_list").getValue()
-    if (focus == newFocus)
+    let newFocus = this.scene.findObject("pilots_list").getValue()
+    if (this.focus == newFocus)
       return
 
-    focus = scene.findObject("pilots_list").getValue()
-    updatePlayer()
+    this.focus = this.scene.findObject("pilots_list").getValue()
+    this.updatePlayer()
   }
 
   function doClose()
   {
     let closeFn = base.goBack
-    guiScene.performDelayed(this, function()
+    this.guiScene.performDelayed(this, function()
     {
       if (::is_in_flight())
       {
         ::close_ingame_gui()
-        if (isSceneActive())
+        if (this.isSceneActive())
           closeFn()
       }
     })
   }
 
-  goBack  = @() doClose()
+  goBack  = @() this.doClose()
 
   function onStart(obj)
   {
-    if ((restoreType != ::ERT_TACTICAL_CONTROL) || !isActiveTactical)
-      return doClose()
+    if ((this.restoreType != ERT_TACTICAL_CONTROL) || !this.isActiveTactical)
+      return this.doClose()
 
-    updateTacticalControl(obj, 0.0)
-    if (focus in units)
-      ::set_tactical_screen_player(units[focus], false)
-    doClose()
+    this.updateTacticalControl(obj, 0.0)
+    if (this.focus in this.units)
+      ::set_tactical_screen_player(this.units[this.focus], false)
+    this.doClose()
   }
 
   function onPilotsDblClick(obj) {
     if (::show_console_buttons)
       return
 
-    onStart(obj)
+    this.onStart(obj)
   }
 }
 

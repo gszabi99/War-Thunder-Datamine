@@ -1,3 +1,3 @@
 return{
-  is_fully_translated = @(value) true
+  is_fully_translated = @(_value) true
 }

@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format, split_by_chars } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
@@ -11,23 +17,23 @@ elemModelType.addTypes({
   SQUADRON_EXP_ICON = {
     init = function() {
       ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
-      subscribe(seenList.id, null, ::Callback(@() notify([]), this))
+      subscribe(seenList.id, null, Callback(@() this.notify([]), this))
     }
 
     isVisible = @() seenList.getNewCount() == 0
-      && ::has_feature("ClanVehicles")
+      && hasFeature("ClanVehicles")
       && ::clan_get_exp() > 0
       && ::clan_get_researching_unit() != ""
       && !isAllClanUnitsResearched()
 
-    getTooltip = @() format(::loc("mainmenu/availableFreeExpForNewResearch"),
+    getTooltip = @() format(loc("mainmenu/availableFreeExpForNewResearch"),
       ::Cost().setSap(::clan_get_exp()).tostring())
 
-    onEventFlushSquadronExp = @(p) notify([])
-    onEventShopWndSwitched = @(p) notify([])
-    onEventClanChanged = @(p) notify([])
-    onEventUnitResearch = @(p) notify([])
-    onEventSquadronExpChanged = @(p) notify([])
+    onEventFlushSquadronExp = @(_p) this.notify([])
+    onEventShopWndSwitched = @(_p) this.notify([])
+    onEventClanChanged = @(_p) this.notify([])
+    onEventUnitResearch = @(_p) this.notify([])
+    onEventSquadronExpChanged = @(_p) this.notify([])
   }
 })
 
@@ -36,21 +42,21 @@ elemViewType.addTypes({
   SHOP_SQUADRON_EXP_ICON = {
     model = elemModelType.SQUADRON_EXP_ICON
 
-    updateView = function(obj, params)
+    updateView = function(obj, _params)
     {
-      let isVisible = model.isVisible()
+      let isVisible = this.model.isVisible()
       obj.show(isVisible)
       if (isVisible)
-        obj.tooltip = model.getTooltip()
+        obj.tooltip = this.model.getTooltip()
     }
   }
 
   COUNTRY_SQUADRON_EXP_ICON = {
     model = elemModelType.SQUADRON_EXP_ICON
 
-    updateView = function(obj, params)
+    updateView = function(obj, _params)
     {
-      local isVisible = topMenuShopActive.value && model.isVisible()
+      local isVisible = topMenuShopActive.value && this.model.isVisible()
       if(!isVisible)
       {
         obj.show(isVisible)
@@ -61,16 +67,16 @@ elemViewType.addTypes({
       isVisible = isVisible && unit?.shopCountry == obj.countryId
       obj.show(isVisible)
       if (isVisible)
-        obj.tooltip = model.getTooltip()
+        obj.tooltip = this.model.getTooltip()
     }
   }
 
   SHOP_PAGES_SQUADRON_EXP_ICON = {
     model = elemModelType.SQUADRON_EXP_ICON
 
-    updateView = function(obj, params)
+    updateView = function(obj, _params)
     {
-      local isVisible = topMenuShopActive.value && model.isVisible()
+      local isVisible = topMenuShopActive.value && this.model.isVisible()
       if(!isVisible)
       {
         obj.show(isVisible)
@@ -83,7 +89,7 @@ elemViewType.addTypes({
         && unit?.unitType?.armyId == objConfig?[1]
       obj.show(isVisible)
       if (isVisible)
-        obj.tooltip = model.getTooltip()
+        obj.tooltip = this.model.getTooltip()
     }
   }
 })

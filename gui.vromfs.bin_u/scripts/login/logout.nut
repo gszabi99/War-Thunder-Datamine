@@ -1,4 +1,9 @@
-let needLogoutAfterSession = persist("needLogoutAfterSession", @() ::Watched(false))
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
 
 let function canLogout() {
   return !::disable_network() && !::is_vendor_tencent()
@@ -23,7 +28,7 @@ let function startLogout() {
   if (::should_disable_menu() || ::g_login.isProfileReceived())
     ::broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
 
-  ::dagor.debug("Start Logout")
+  log("Start Logout")
   ::disable_autorelogin_once <- true
   needLogoutAfterSession(false)
   ::g_login.reset()

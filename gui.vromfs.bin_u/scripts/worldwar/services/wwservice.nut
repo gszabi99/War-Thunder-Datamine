@@ -1,6 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let curSubscribeOperationId = persist("curSubscribeOperationId", @() ::Watched(-1))
+let curSubscribeOperationId = persist("curSubscribeOperationId", @() Watched(-1))
 
 let function unsubscribeOperationNotify(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
   ::request_matching("worldwar.unsubscribe_operation_notify", successCallback,
@@ -30,7 +35,7 @@ let function subscribeOperationNotifyOnce(operationId, successCallback = null, e
 }
 
 subscriptions.addListenersWithoutEnv({
-  WWStopWorldWar = @(p) unsubscribeCurOperation()
+  WWStopWorldWar = @(_p) unsubscribeCurOperation()
 })
 
 return {

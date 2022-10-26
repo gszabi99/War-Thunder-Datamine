@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { get_unit_option, set_unit_option } = require("guiOptions")
 let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { setUnitLastBullets,
@@ -6,7 +13,7 @@ let { setUnitLastBullets,
 let { AMMO,
         getAmmoAmount,
         isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
-local { clearUnitOption } = ::require_native("guiOptions")
+local { clearUnitOption } = require_native("guiOptions")
 
 ::BulletGroup <- class
 {
@@ -28,57 +35,57 @@ local { clearUnitOption } = ::require_native("guiOptions")
 
   constructor(v_unit, v_groupIndex, v_gunInfo, params)
   {
-    unit = v_unit
-    groupIndex = v_groupIndex
-    gunInfo = v_gunInfo
-    guns = ::getTblValue("guns", gunInfo) || 1
-    active = params?.isActive ?? active
-    canChangeActivity = params?.canChangeActivity ?? canChangeActivity
-    isForcedAvailable = params?.isForcedAvailable ?? isForcedAvailable
-    maxToRespawn = params?.maxToRespawn ?? maxToRespawn
+    this.unit = v_unit
+    this.groupIndex = v_groupIndex
+    this.gunInfo = v_gunInfo
+    this.guns = getTblValue("guns", this.gunInfo) || 1
+    this.active = params?.isActive ?? this.active
+    this.canChangeActivity = params?.canChangeActivity ?? this.canChangeActivity
+    this.isForcedAvailable = params?.isForcedAvailable ?? this.isForcedAvailable
+    this.maxToRespawn = params?.maxToRespawn ?? this.maxToRespawn
 
-    bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
-    selectedName = ::getTblValue(bullets.value, bullets.values, "")
-    let saveValue = getBulletNameForCode(selectedName)
+    this.bullets = getOptionsBulletsList(this.unit, this.groupIndex, false, this.isForcedAvailable)
+    this.selectedName = getTblValue(this.bullets.value, this.bullets.values, "")
+    let saveValue = this.getBulletNameForCode(this.selectedName)
 
-    if (::get_last_bullets(unit.name, groupIndex) != saveValue)
-      setUnitLastBullets(unit, groupIndex, selectedName)
+    if (::get_last_bullets(this.unit.name, this.groupIndex) != saveValue)
+      setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)
 
-    let bulletOptionId = ::USEROPT_BULLET_COUNT0 + groupIndex
-    let count = ::get_unit_option(unit.name, bulletOptionId)
+    let bulletOptionId = ::USEROPT_BULLET_COUNT0 + this.groupIndex
+    let count = get_unit_option(this.unit.name, bulletOptionId)
     if (type(count) == "string") //validate bullets option type
-      clearUnitOption(unit.name, bulletOptionId)
+      clearUnitOption(this.unit.name, bulletOptionId)
     else if (count != null)
-      bulletsCount = (count / guns).tointeger()
-    updateCounts()
+      this.bulletsCount = (count / this.guns).tointeger()
+    this.updateCounts()
   }
 
   function canChangeBulletsCount()
   {
-    return gunInfo != null
+    return this.gunInfo != null
   }
 
   function getGunIdx()
   {
-    return getTblValue("gunIdx", gunInfo, 0)
+    return getTblValue("gunIdx", this.gunInfo, 0)
   }
 
   function setBullet(bulletName)
   {
-    if (selectedName == bulletName)
+    if (this.selectedName == bulletName)
       return false
 
-    let bulletIdx = bullets.values.indexof(bulletName)
+    let bulletIdx = this.bullets.values.indexof(bulletName)
     if (bulletIdx == null)
       return false
 
-    selectedName = bulletName
-    selectedBullet = null
-    setUnitLastBullets(unit, groupIndex, selectedName)
-    if (option)
-      option.value = bulletIdx
+    this.selectedName = bulletName
+    this.selectedBullet = null
+    setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)
+    if (this.option)
+      this.option.value = bulletIdx
 
-    updateCounts()
+    this.updateCounts()
 
     return true
   }
@@ -86,16 +93,16 @@ local { clearUnitOption } = ::require_native("guiOptions")
   //return is new bullet not from list
   function setBulletNotFromList(bList)
   {
-    if (!::isInArray(selectedName, bList))
+    if (!isInArray(this.selectedName, bList))
       return true
 
-    foreach(idx, value in bullets.values)
+    foreach(idx, value in this.bullets.values)
     {
-      if (!bullets.items[idx].enabled)
+      if (!this.bullets.items[idx].enabled)
         continue
-      if (::isInArray(value, bList))
+      if (isInArray(value, bList))
         continue
-      if (setBullet(value))
+      if (this.setBullet(value))
         return true
     }
     return false
@@ -103,103 +110,103 @@ local { clearUnitOption } = ::require_native("guiOptions")
 
   function getBulletNameByIdx(idx)
   {
-    return ::getTblValue(idx, bullets.values)
+    return getTblValue(idx, this.bullets.values)
   }
 
   function setBulletsCount(count)
   {
-    if (bulletsCount == count)
+    if (this.bulletsCount == count)
       return
 
-    bulletsCount = count
-    ::set_unit_option(unit.name, ::USEROPT_BULLET_COUNT0 + groupIndex, (count * guns).tointeger())
+    this.bulletsCount = count
+    set_unit_option(this.unit.name, ::USEROPT_BULLET_COUNT0 + this.groupIndex, (count * this.guns).tointeger())
   }
 
   //return bullets changed
   function updateCounts()
   {
-    if (!gunInfo)
+    if (!this.gunInfo)
       return false
 
-    maxBulletsCount = gunInfo.total
-    if (!isAmmoFree(unit, selectedName, AMMO.PRIMARY))
+    this.maxBulletsCount = this.gunInfo.total
+    if (!isAmmoFree(this.unit, this.selectedName, AMMO.PRIMARY))
     {
-      let boughtCount = (getAmmoAmount(unit, selectedName, AMMO.PRIMARY) / guns).tointeger()
-      maxBulletsCount = isForcedAvailable? gunInfo.total : min(boughtCount, gunInfo.total)
+      let boughtCount = (getAmmoAmount(this.unit, this.selectedName, AMMO.PRIMARY) / this.guns).tointeger()
+      this.maxBulletsCount = this.isForcedAvailable? this.gunInfo.total : min(boughtCount, this.gunInfo.total)
     }
 
-    if (maxToRespawn > 0)
-      maxBulletsCount = min(maxBulletsCount, maxToRespawn)
+    if (this.maxToRespawn > 0)
+      this.maxBulletsCount = min(this.maxBulletsCount, this.maxToRespawn)
 
-    if (bulletsCount < 0 || bulletsCount <= maxBulletsCount)
+    if (this.bulletsCount < 0 || this.bulletsCount <= this.maxBulletsCount)
       return false
 
-    setBulletsCount(maxBulletsCount)
+    this.setBulletsCount(this.maxBulletsCount)
     return true
   }
 
   function getGunMaxBullets()
   {
-    return ::getTblValue("total", gunInfo, 0)
+    return getTblValue("total", this.gunInfo, 0)
   }
 
   function getOption()
   {
-    if (!option)
+    if (!this.option)
     {
-      ::aircraft_for_weapons = unit.name
-      option = ::get_option(::USEROPT_BULLETS0 + groupIndex)
+      ::aircraft_for_weapons = this.unit.name
+      this.option = ::get_option(::USEROPT_BULLETS0 + this.groupIndex)
     }
-    return option
+    return this.option
   }
 
   function _tostring()
   {
     return format("BulletGroup( unit = %s, idx = %d, active = %s, selected = %s )",
-                    unit.name, groupIndex, active.tostring(), selectedName)
+                    this.unit.name, this.groupIndex, this.active.tostring(), this.selectedName)
   }
 
   function getHeader()
   {
-    if (!bullets || !unit)
+    if (!this.bullets || !this.unit)
       return ""
-    return getBulletsListHeader(unit, bullets)
+    return getBulletsListHeader(this.unit, this.bullets)
   }
 
   function getBulletNameForCode(bulName) {
-    let mod = getModByBulletName(bulName)
+    let mod = this.getModByBulletName(bulName)
     return "isDefaultForGroup" in mod? "" : mod.name
   }
 
   function getModByBulletName(bulName)
   {
-    local mod = getModificationByName(unit, bulName)
+    local mod = getModificationByName(this.unit, bulName)
     if (!mod) //default
-      mod = { name = bulName, isDefaultForGroup = groupIndex, type = weaponsItem.modification }
+      mod = { name = bulName, isDefaultForGroup = this.groupIndex, type = weaponsItem.modification }
     return mod
   }
 
   _bulletsModsList = null
   function getBulletsModsList()
   {
-    if (!_bulletsModsList)
+    if (!this._bulletsModsList)
     {
-      _bulletsModsList = []
-      foreach(bulName in bullets.values)
-        _bulletsModsList.append(getModByBulletName(bulName))
+      this._bulletsModsList = []
+      foreach(bulName in this.bullets.values)
+        this._bulletsModsList.append(this.getModByBulletName(bulName))
     }
-    return _bulletsModsList
+    return this._bulletsModsList
   }
 
   function getSelBullet()
   {
-    if (!selectedBullet)
-      selectedBullet = getModByBulletName(selectedName)
-    return selectedBullet
+    if (!this.selectedBullet)
+      this.selectedBullet = this.getModByBulletName(this.selectedName)
+    return this.selectedBullet
   }
 
   function shouldHideBullet()
   {
-    return gunInfo?.forcedMaxBulletsInRespawn ?? false
+    return this.gunInfo?.forcedMaxBulletsInRespawn ?? false
   }
 }

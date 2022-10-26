@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { PRICE } = require("%scripts/utils/configs.nut")
 
@@ -20,38 +26,38 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
 
   function getList(filterFunc = null)
   {
-    validateList()
+    this.validateList()
     if (filterFunc)
-      return ::u.filter(list, filterFunc)
-    return list
+      return ::u.filter(this.list, filterFunc)
+    return this.list
   }
 
-  getUnseenAwardIds = @() getList().reduce(@(acc, wb) acc.extend(wb.getUnseenAwardIds()), [])
+  getUnseenAwardIds = @() this.getList().reduce(@(acc, wb) acc.extend(wb.getUnseenAwardIds()), [])
 }
 
-g_warbonds.getVisibleList <- function getVisibleList(filterFunc = null)
+::g_warbonds.getVisibleList <- function getVisibleList(filterFunc = null)
 {
-  return getList((@(filterFunc) function(wb) {
+  return this.getList((@(filterFunc) function(wb) {
                    if (!wb.isVisible())
                      return false
                    return filterFunc ? filterFunc(wb) : true
                  })(filterFunc))
 }
 
-g_warbonds.validateList <- function validateList()
+::g_warbonds.validateList <- function validateList()
 {
   PRICE.checkUpdate()
-  if (isListValid)
+  if (this.isListValid)
     return
-  isListValid = true
+  this.isListValid = true
 
-  list.clear()
+  this.list.clear()
 
   let wBlk = ::get_price_blk()?.warbonds
   if (!wBlk)
     return
 
-  maxAllowedWarbondsBalance = wBlk?.maxAllowedWarbondsBalance ?? maxAllowedWarbondsBalance
+  this.maxAllowedWarbondsBalance = wBlk?.maxAllowedWarbondsBalance ?? this.maxAllowedWarbondsBalance
   for(local i = 0; i < wBlk.blockCount(); i++)
   {
     let warbondBlk = wBlk.getBlock(i)
@@ -59,12 +65,12 @@ g_warbonds.validateList <- function validateList()
     {
       let wbListBlk = warbondBlk.getBlock(j)
       let wbClass = ::Warbond(warbondBlk.getBlockName(), wbListBlk.getBlockName())
-      list.append(wbClass)
+      this.list.append(wbClass)
       seenWarbondsShop.setSubListGetter(wbClass.getSeenId(), @() wbClass.getUnseenAwardIds())
     }
   }
 
-  list.sort(function(a, b)
+  this.list.sort(function(a, b)
   {
     if (a.expiredTime != b.expiredTime)
       return a.expiredTime > b.expiredTime ? -1 : 1
@@ -75,17 +81,17 @@ g_warbonds.validateList <- function validateList()
   seenWarbondsShop.onListChanged()
 }
 
-g_warbonds.getBalanceText <- function getBalanceText()
+::g_warbonds.getBalanceText <- function getBalanceText()
 {
-  let wbList = getVisibleList()
+  let wbList = this.getVisibleList()
   return wbList.len()? wbList[0].getBalanceText() : ""
 }
 
-g_warbonds.isWarbondsRecounted <- function isWarbondsRecounted()
+::g_warbonds.isWarbondsRecounted <- function isWarbondsRecounted()
 {
   local hasCurrent = false
   local timersValid = true
-  foreach(wb in getList())
+  foreach(wb in this.getList())
   {
     hasCurrent = hasCurrent || wb.isCurrent()
     timersValid = timersValid && wb.getChangeStateTimeLeft() >= 0
@@ -93,81 +99,81 @@ g_warbonds.isWarbondsRecounted <- function isWarbondsRecounted()
   return hasCurrent && timersValid
 }
 
-g_warbonds.getInfoText <- function getInfoText()
+::g_warbonds.getInfoText <- function getInfoText()
 {
   if (!::g_warbonds.isWarbondsRecounted())
-    return ::loc("warbonds/recalculating")
-  return getBalanceText()
+    return loc("warbonds/recalculating")
+  return this.getBalanceText()
 }
 
-g_warbonds.findWarbond <- function findWarbond(wbId, wbListId = null)
+::g_warbonds.findWarbond <- function findWarbond(wbId, wbListId = null)
 {
   if (!wbListId)
     wbListId = ::get_warbond_curr_stage_name(wbId)
 
-  return ::u.search(getList(), @(wb) wbId == wb.id && wbListId == wb.listId)
+  return ::u.search(this.getList(), @(wb) wbId == wb.id && wbListId == wb.listId)
 }
 
-g_warbonds.getCurrentWarbond <- function getCurrentWarbond()
+::g_warbonds.getCurrentWarbond <- function getCurrentWarbond()
 {
-  return findWarbond(WARBOND_ID)
+  return this.findWarbond(this.WARBOND_ID)
 }
 
-g_warbonds.getWarbondByFullId <- function getWarbondByFullId(wbFullId)
+::g_warbonds.getWarbondByFullId <- function getWarbondByFullId(wbFullId)
 {
-  let data = ::g_string.split(wbFullId, FULL_ID_SEPARATOR)
+  let data = ::g_string.split(wbFullId, this.FULL_ID_SEPARATOR)
   if (data.len() >= 2)
-    return findWarbond(data[0], data[1])
+    return this.findWarbond(data[0], data[1])
   return null
 }
 
-g_warbonds.getWarbondAwardByFullId <- function getWarbondAwardByFullId(wbAwardFullId)
+::g_warbonds.getWarbondAwardByFullId <- function getWarbondAwardByFullId(wbAwardFullId)
 {
-  let data = ::g_string.split(wbAwardFullId, FULL_ID_SEPARATOR)
+  let data = ::g_string.split(wbAwardFullId, this.FULL_ID_SEPARATOR)
   if (data.len() < 3)
     return null
 
-  let wb = findWarbond(data[0], data[1])
+  let wb = this.findWarbond(data[0], data[1])
   return wb && wb.getAwardByIdx(data[2])
 }
 
-g_warbonds.getWarbondPriceText <- function getWarbondPriceText(amount)
+::g_warbonds.getWarbondPriceText <- function getWarbondPriceText(amount)
 {
   if (!amount)
     return ""
-  return amount + ::loc(defaultWbFontIcon)
+  return amount + loc(this.defaultWbFontIcon)
 }
 
-g_warbonds.openShop <- function openShop(params = {})
+::g_warbonds.openShop <- function openShop(params = {})
 {
-  if (!isShopAvailable())
-    return ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
+  if (!this.isShopAvailable())
+    return ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
   ::g_warbonds_view.resetShowProgressBarFlag()
   ::handlersManager.loadHandler(::gui_handlers.WarbondsShop, params)
 }
 
-g_warbonds.isShopAvailable <- function isShopAvailable()
+::g_warbonds.isShopAvailable <- function isShopAvailable()
 {
-  return ::has_feature("Warbonds") && ::has_feature("WarbondsShop") && getList().len() > 0
+  return hasFeature("Warbonds") && hasFeature("WarbondsShop") && this.getList().len() > 0
 }
 
-g_warbonds.isShopButtonVisible <- function isShopButtonVisible()
+::g_warbonds.isShopButtonVisible <- function isShopButtonVisible()
 {
-  return ::has_feature("Warbonds")
+  return hasFeature("Warbonds")
 }
 
-g_warbonds.getLimit <- function getLimit()
+::g_warbonds.getLimit <- function getLimit()
 {
-  return maxAllowedWarbondsBalance
+  return this.maxAllowedWarbondsBalance
 }
 
-g_warbonds.checkOverLimit <- function checkOverLimit(wbAmount, onAcceptFn, params, silent = false)
+::g_warbonds.checkOverLimit <- function checkOverLimit(wbAmount, onAcceptFn, params, silent = false)
 {
   let curWb = ::g_warbonds.getCurrentWarbond()
   if (!curWb)
     return true
-  let limit = getLimit()
+  let limit = this.getLimit()
   let newBalance = curWb.getBalance() + wbAmount
   if (newBalance <= limit)
     return true
@@ -176,7 +182,7 @@ g_warbonds.checkOverLimit <- function checkOverLimit(wbAmount, onAcceptFn, param
   {
     ::scene_msg_box("warbonds_over_limit",
       null,
-      ::loc("warbond/msg/awardMayBeLost", {maxWarbonds = limit, lostWarbonds = newBalance - limit}),
+      loc("warbond/msg/awardMayBeLost", {maxWarbonds = limit, lostWarbonds = newBalance - limit}),
       [
         ["yes", @() onAcceptFn(params)],
         ["#mainmenu/btnWarbondsShop", @() ::g_warbonds.openShop()],
@@ -188,14 +194,14 @@ g_warbonds.checkOverLimit <- function checkOverLimit(wbAmount, onAcceptFn, param
   return false
 }
 
-g_warbonds.onEventPriceUpdated <- function onEventPriceUpdated(p)
+::g_warbonds.onEventPriceUpdated <- function onEventPriceUpdated(_p)
 {
-  isListValid = false
+  this.isListValid = false
 }
 
-g_warbonds.onEventInitConfigs <- function onEventInitConfigs(p)
+::g_warbonds.onEventInitConfigs <- function onEventInitConfigs(_p)
 {
-  isFontIconsValid = false
+  this.isFontIconsValid = false
 }
 
 ::subscribe_handler(::g_warbonds ::g_listener_priority.CONFIG_VALIDATION)

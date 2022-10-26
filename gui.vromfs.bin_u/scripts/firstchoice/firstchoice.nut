@@ -1,9 +1,14 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerName, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
-let isFirstChoiceShown = persist("isFirstChoiceShown", @() ::Watched(false))
+let isFirstChoiceShown = persist("isFirstChoiceShown", @() Watched(false))
 
-let getFirstChosenUnitType = function(defValue = ::ES_UNIT_TYPE_INVALID)
+let getFirstChosenUnitType = function(defValue = ES_UNIT_TYPE_INVALID)
 {
   foreach(unitType in unitTypes.types)
     if (unitType.isFirstChosen())
@@ -13,12 +18,12 @@ let getFirstChosenUnitType = function(defValue = ::ES_UNIT_TYPE_INVALID)
 
 let isNeedFirstCountryChoice = function()
 {
-  return getFirstChosenUnitType() == ::ES_UNIT_TYPE_INVALID
+  return getFirstChosenUnitType() == ES_UNIT_TYPE_INVALID
          && !::stat_get_value_respawns(0, 1)
          && !::disable_network()
 }
 
-let fillUserNick = function (nestObj, headerLocId = null) {
+let fillUserNick = function (nestObj, _headerLocId = null) {
   if (!isPlatformXboxOne)
     return
 
@@ -30,9 +35,9 @@ let fillUserNick = function (nestObj, headerLocId = null) {
     return
 
   let cfg = ::get_profile_info()
-  let data =  ::handyman.renderCached("%gui/firstChoice/userNick", {
+  let data =  ::handyman.renderCached("%gui/firstChoice/userNick.tpl", {
       userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}.png" : ""
-      userName = ::colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))
+      userName = colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))
     })
   guiScene.replaceContentFromText(nestObj, data, data.len())
 }

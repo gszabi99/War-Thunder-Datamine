@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -7,7 +12,7 @@ return [
     id = "ID_TANK_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
     unitTypes = [ unitTypes.TANK ]
-    showFunc = @() ::has_feature("Tanks")
+    showFunc = @() hasFeature("Tanks")
     needShowInHelp = true
   }
 //-------------------------------------------------------
@@ -204,6 +209,12 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_WEAPON_LEAD_TANK"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_SENSOR_SWITCH_TANK"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
@@ -263,7 +274,7 @@ return [
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::has_feature("RadarElevationControl")
+    showFunc = @() hasFeature("RadarElevationControl")
   }
   {
     id = "ID_TANK_NIGHT_VISION"
@@ -386,16 +397,16 @@ return [
   {
     id = "aim_time_nonlinearity_tank"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_AIM_TIME_NONLINEARITY_TANK)
-    setValue = @(joyParams, objValue)
-      ::set_option_multiplier(::OPTION_AIM_TIME_NONLINEARITY_TANK, objValue / 100.0)
+    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK)
+    setValue = @(_joyParams, objValue)
+      ::set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK, objValue / 100.0)
   }
   {
     id = "aim_acceleration_delay_tank"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_AIM_ACCELERATION_DELAY_TANK)
-    setValue = @(joyParams, objValue)
-      ::set_option_multiplier(::OPTION_AIM_ACCELERATION_DELAY_TANK, objValue / 100.0)
+    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK)
+    setValue = @(_joyParams, objValue)
+      ::set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK, objValue / 100.0)
   }
   {
     id = "mouse_z_ground"
@@ -403,14 +414,14 @@ return [
     axis_num = MouseAxis.MOUSE_SCROLL_TANK
     values = ["none", "gm_zoom", "gm_sight_distance"]
     onChangeValue = "onMouseWheel"
-    showFunc = @() ::has_feature("EnableMouse") && ::has_feature("Tanks")
+    showFunc = @() hasFeature("EnableMouse") && hasFeature("Tanks")
   }
   {
     id = "mouse_z_mult_ground"
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_MOUSE_Z_TANK_MULT)
-    setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_MOUSE_Z_TANK_MULT, objValue / 100.0)
-    showFunc = @() ::has_feature("EnableMouse") && ::has_feature("Tanks")
+    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_MOUSE_Z_TANK_MULT)
+    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_MOUSE_Z_TANK_MULT, objValue / 100.0)
+    showFunc = @() hasFeature("EnableMouse") && hasFeature("Tanks")
   }
 //-------------------------------------------------------
   {
@@ -546,19 +557,38 @@ return [
     id = "ID_SCOUT"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::has_feature("ActiveScouting")
+    showFunc = @() hasFeature("ActiveScouting")
   }
   {
     id = "ID_START_SUPPORT_PLANE"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::has_feature("TankSupportPlane")
+    showFunc = @() hasFeature("TankSupportPlane")
   }
+  {
+    id = "ID_SUPPORT_PLANE_ORBITING"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+    showFunc = @() hasFeature("TankSupportPlane")
+  }
+  //
+
+
+
+
+
+
+
+
+
+
+
+
   {
     id = "ID_TOGGLE_STEALTH"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::has_feature("TankStealth")
+    showFunc = @() hasFeature("TankStealth")
   }
   {
     id = "ID_RANGEFINDER"
@@ -574,13 +604,13 @@ return [
     id = "ID_RELOAD_USER_SIGHT_GM"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::can_add_tank_alt_crosshair() && ::has_feature("TankAltCrosshair")
+    showFunc = @() ::can_add_tank_alt_crosshair() && hasFeature("TankAltCrosshair")
   }
   {
     id = "ID_GM_TERRAFORM_TOGGLE"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::has_feature("tankTerraform")
+    showFunc = @() hasFeature("tankTerraform")
   }
   {
     id = "gm_sight_distance"

@@ -1,5 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent } = require("%scripts/events/eSport.nut")
+let { hasAlredyActiveJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 
 let function openLastTournamentWnd(lastEvent) {
   ::gui_start_mainmenu()
@@ -12,8 +18,10 @@ let function openLastTournamentWnd(lastEvent) {
     eSportTournamentModal({ tournament, curTourParams, curEvent = lastEvent })
 }
 
-local goToBattleAction = function() {
+local function goToBattleAction() {
   ::get_cur_gui_scene().performDelayed({}, function() {
+    if (hasAlredyActiveJoinProcess())
+      return
     if (::g_squad_manager.isSquadMember() && !::g_squad_manager.isMeReady()) {
       ::g_squad_manager.setReadyFlag(true)
       return
@@ -37,7 +45,9 @@ local goToBattleAction = function() {
 
     if (!handler && eventDisplayType.showInEventsWindow) {
       ::gui_start_modal_events()
-      ::get_cur_gui_scene().performDelayed(::getroottable(), function() {
+      ::get_cur_gui_scene().performDelayed(getroottable(), function() {
+        if (hasAlredyActiveJoinProcess())
+          return
         handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.EventsHandler)
         if (handler)
           handler.goToBattleFromDebriefing()
@@ -48,6 +58,5 @@ local goToBattleAction = function() {
 
 return {
   openLastTournamentWnd
-  getGoToBattleAction = @() goToBattleAction
-  overrideGoToBattleAction = @(func) goToBattleAction = func
+  goToBattleAction
 }

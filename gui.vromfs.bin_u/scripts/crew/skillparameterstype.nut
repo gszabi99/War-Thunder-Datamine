@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { fabs } = require("math")
 let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -23,35 +30,35 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
     let parameterName = paramData.name
     local measureType = getMeasureTypeBySkillParameterName(parameterName)
     let isNotFoundMeasureType = measureType == ::g_measure_type.UNKNOWN
-    let sign = getDiffSign(parametersByRequestType, parameterName)
+    let sign = this.getDiffSign(parametersByRequestType, parameterName)
     let needMemberName = paramData.valuesArr.len() > 1
     let parsedMembers = []
     foreach(idx, value in paramData.valuesArr)
     {
-      if(::isInArray(value.memberName, parsedMembers))
+      if(isInArray(value.memberName, parsedMembers))
         continue
 
       if(isNotFoundMeasureType)
         measureType = getMeasureTypeBySkillParameterName(value.skillName)
 
       let parameterView = {
-        descriptionLabel = parameterName.indexof("weapons/") == 0 ? ::loc(parameterName)
-          : ::loc(format("crewSkillParameter/%s", parameterName))
+        descriptionLabel = parameterName.indexof("weapons/") == 0 ? loc(parameterName)
+          : loc(format("crewSkillParameter/%s", parameterName))
         valueItems = []
       }
 
       if (needMemberName)
-        parameterView.descriptionLabel += format(" (%s)", ::loc("crew/" + value.memberName))
+        parameterView.descriptionLabel += format(" (%s)", loc("crew/" + value.memberName))
 
       let params = {
         idx = idx
         parameterName = parameterName
       }
-      parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
+      this.parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
         measureType, sign, parameterView, params)
 
-      parameterView.progressBarValue <- getProgressBarValue(parametersByRequestType, params)
-      parameterView.progressBarSelectedValue <- getProgressBarValue(selectedParametersByRequestType, params)
+      parameterView.progressBarValue <- this.getProgressBarValue(parametersByRequestType, params)
+      parameterView.progressBarSelectedValue <- this.getProgressBarValue(selectedParametersByRequestType, params)
       resArray.append(parameterView)
       parsedMembers.append(value.memberName)
     }
@@ -62,16 +69,16 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   {
     foreach (columnType in columnTypes)
     {
-      let prevValue = getValue(
+      let prevValue = this.getValue(
         columnType.previousParametersRequestType, parametersByRequestType, params)
 
-      let curValue = getValue(
+      let curValue = this.getValue(
         columnType.currentParametersRequestType, parametersByRequestType, params)
 
-      let prevSelectedValue = getValue(
+      let prevSelectedValue = this.getValue(
         columnType.previousParametersRequestType, selectedParametersByRequestType, params)
 
-      let curSelectedValue = getValue(
+      let curSelectedValue = this.getValue(
         columnType.currentParametersRequestType, selectedParametersByRequestType, params)
 
       let valueItem = columnType.createValueItem(
@@ -84,23 +91,23 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   getDiffSign = function(parametersByRequestType, parameterName)
   {
     let params = { parameterName = parameterName, idx = 0, columnIndex = 0 }
-    let baseValue = getValue(
+    let baseValue = this.getValue(
       ::g_skill_parameters_column_type.BASE.currentParametersRequestType, parametersByRequestType, params)
-    let maxValue = getValue(
+    let maxValue = this.getValue(
       ::g_skill_parameters_column_type.MAX.currentParametersRequestType, parametersByRequestType, params)
     return maxValue >= baseValue
   }
 
   getProgressBarValue = function(parametersByRequestType, params = null)
   {
-    let currentParameterValue = getValue(
+    let currentParameterValue = this.getValue(
       ::g_skill_parameters_request_type.CURRENT_VALUES, parametersByRequestType, params)
-    let maxParameterValue = getValue(
+    let maxParameterValue = this.getValue(
       ::g_skill_parameters_request_type.MAX_VALUES, parametersByRequestType, params)
-    let baseParameterValue = getValue(
+    let baseParameterValue = this.getValue(
       ::g_skill_parameters_request_type.BASE_VALUES, parametersByRequestType, params)
-    let curDiff = ::fabs(currentParameterValue - baseParameterValue)
-    let maxDiff = ::fabs(maxParameterValue - baseParameterValue)
+    let curDiff = fabs(currentParameterValue - baseParameterValue)
+    let maxDiff = fabs(maxParameterValue - baseParameterValue)
     if (maxDiff > 0.0)
       return (1000 * (curDiff / maxDiff)).tointeger()
     return 0
@@ -123,7 +130,7 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
       if (!currentDistanceErrorData.len())
         return
 
-      let sign = getDiffSign(parametersByRequestType, paramData.name)
+      let sign = this.getDiffSign(parametersByRequestType, paramData.name)
 
       foreach (i, parameterTable in currentDistanceErrorData[0].value)
       {
@@ -131,16 +138,16 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
           errorText = ::g_measure_type.ALTITUDE.getMeasureUnitsText(parameterTable.error, true, true)
         }
         let parameterView = {
-          descriptionLabel = ::loc("crewSkillParameter/" + paramData.name, descriptionLocParams)
+          descriptionLabel = loc("crewSkillParameter/" + paramData.name, descriptionLocParams)
           valueItems = []
         }
         let params = {
           columnIndex = i
           parameterName = paramData.name
         }
-        parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
+        this.parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
           ::g_measure_type.DISTANCE, sign, parameterView, params)
-        parameterView.progressBarValue <- getProgressBarValue(parametersByRequestType, params)
+        parameterView.progressBarValue <- this.getProgressBarValue(parametersByRequestType, params)
         resArray.append(parameterView)
       }
     }
@@ -157,7 +164,7 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
   }
 })
 
-g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName)
+::g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName)
 {
-  return enums.getCachedType("paramNames", paramName, cache.byParamName, this, DEFAULT)
+  return enums.getCachedType("paramNames", paramName, cache.byParamName, this, this.DEFAULT)
 }

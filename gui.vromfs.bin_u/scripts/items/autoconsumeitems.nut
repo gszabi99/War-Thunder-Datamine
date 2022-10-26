@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local shouldCheckAutoConsume = false
@@ -35,7 +40,7 @@ let function checkAutoConsume() {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(p) failedAutoConsumeItems.clear()
+  SignOut = @(_p) failedAutoConsumeItems.clear()
 })
 
 return {

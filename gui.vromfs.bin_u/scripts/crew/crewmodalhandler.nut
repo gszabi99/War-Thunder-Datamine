@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -8,13 +14,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 
-::gui_modal_crew <- function gui_modal_crew(params = {})
-{
-  if (::has_feature("CrewSkills"))
+::gui_modal_crew <- function gui_modal_crew(params = {}) {
+  if (hasFeature("CrewSkills"))
     ::gui_start_modal_wnd(::gui_handlers.CrewModalHandler, params)
   else
-    ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
+    ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 }
 
 ::gui_handlers.CrewModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -28,7 +35,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
   idInCountry = -1
   showTutorial = false
   crew = null
-  curCrewUnitType = ::CUT_INVALID
+  curCrewUnitType = CUT_INVALID
   curPage = 0
   curPageId = null
   pageBonuses = 0
@@ -54,121 +61,121 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function initScreen()
   {
-    if (!scene)
-      return goBack()
-    crew = getSlotCrew()
-    if (!crew)
-      return goBack()
+    if (!this.scene)
+      return this.goBack()
+    this.crew = this.getSlotCrew()
+    if (!this.crew)
+      return this.goBack()
 
-    let country = ::g_crews_list.get()?[countryId].country
+    let country = ::g_crews_list.get()?[this.countryId].country
     if (country)
-      ::switch_profile_country(country)
+      switchProfileCountry(country)
 
-    initMainParams(true, true)
-    if (!needHideSlotbar)
-      createSlotbar({
+    this.initMainParams(true, true)
+    if (!this.needHideSlotbar)
+      this.createSlotbar({
         emptyText="#shop/aircraftNotSelected",
-        beforeSlotbarSelect = @(onOk, onCancel, slotData) checkSkillPointsAndDo(onOk, onCancel)
-        afterSlotbarSelect = openSelectedCrew
-        onSlotDblClick = onSlotDblClick
-      }.__update(getSlotbarParams()))
+        beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
+        afterSlotbarSelect = this.openSelectedCrew
+        onSlotDblClick = this.onSlotDblClick
+      }.__update(this.getSlotbarParams()))
 
-    if (showTutorial)
-      onUpgrCrewSkillsTutorial()
+    if (this.showTutorial)
+      this.onUpgrCrewSkillsTutorial()
     else if (!::loadLocalByAccount("upgradeCrewSpecTutorialPassed", false)
           && !::g_crew.isAllCrewsMinLevel()
           && ::g_crew.isAllCrewsHasBasicSpec()
-          && canUpgradeCrewSpec(crew))
-      onUpgrCrewSpec1Tutorial()
+          && this.canUpgradeCrewSpec(this.crew))
+      this.onUpgrCrewSpec1Tutorial()
   }
 
   getSlotbarParams = @() {
-    crewId = crew.id
+    crewId = this.crew.id
     showNewSlot=false
   }
 
   function updateCrewInfo()
   {
     local text = ""
-    if (curUnit != null && curUnit.getCrewUnitType() == curCrewUnitType)
+    if (this.curUnit != null && this.curUnit.getCrewUnitType() == this.curCrewUnitType)
     {
       text = ::g_string.implode([
-        ::loc("crew/currentAircraft") + ::loc("ui/colon")
-          + ::colorize("activeTextColor", ::getUnitName(curUnit))
-        ::loc("crew/totalCrew") + ::loc("ui/colon")
-          + ::colorize("activeTextColor", curUnit.getCrewTotalCount())
-      ], ::loc("ui/comma"))
-      if (curUnit.unitType.hasAiGunners && (curUnit?.gunnersCount ?? 0) > 0)
-        text += "\n" + ::loc("crew/numDefensiveArmamentTurrets") + ::loc("ui/colon")
-          + ::colorize("activeTextColor", curUnit.gunnersCount)
+        loc("crew/currentAircraft") + loc("ui/colon")
+          + colorize("activeTextColor", ::getUnitName(this.curUnit))
+        loc("crew/totalCrew") + loc("ui/colon")
+          + colorize("activeTextColor", this.curUnit.getCrewTotalCount())
+      ], loc("ui/comma"))
+      if (this.curUnit.unitType.hasAiGunners && (this.curUnit?.gunnersCount ?? 0) > 0)
+        text += "\n" + loc("crew/numDefensiveArmamentTurrets") + loc("ui/colon")
+          + colorize("activeTextColor", this.curUnit.gunnersCount)
     }
-    scene.findObject("crew-info-text").setValue(text)
+    this.scene.findObject("crew-info-text").setValue(text)
   }
 
   function initMainParams(reloadSkills=true, reinitUnitType = false)
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    curUnit = getCrewUnit(crew)
-    curCrewUnitType = reinitUnitType ? (curUnit?.getCrewUnitType?() ?? curCrewUnitType) : curCrewUnitType
+    this.curUnit = this.getCrewUnit(this.crew)
+    this.curCrewUnitType = reinitUnitType ? (this.curUnit?.getCrewUnitType?() ?? this.curCrewUnitType) : this.curCrewUnitType
 
     ::update_gamercards()
     if (reloadSkills)
       ::load_crew_skills()
 
-    scene.findObject("crew_name").setValue(::g_crew.getCrewName(crew))
+    this.scene.findObject("crew_name").setValue(::g_crew.getCrewName(this.crew))
 
-    updateUnitTypeRadioButtons()
-    updateButtons()
+    this.updateUnitTypeRadioButtons()
+    this.updateButtons()
   }
 
   function countSkills()
   {
-    curPoints = ("skillPoints" in crew)? crew.skillPoints : 0
-    crewCurLevel = ::g_crew.getCrewLevel(crew, curUnit, curCrewUnitType)
-    crewLevelInc = ::g_crew.getCrewLevel(crew, curUnit, curCrewUnitType, true) - crewCurLevel
+    this.curPoints = ("skillPoints" in this.crew)? this.crew.skillPoints : 0
+    this.crewCurLevel = ::g_crew.getCrewLevel(this.crew, this.curUnit, this.curCrewUnitType)
+    this.crewLevelInc = ::g_crew.getCrewLevel(this.crew, this.curUnit, this.curCrewUnitType, true) - this.crewCurLevel
     foreach(page in ::crew_skills)
       foreach(item in page.items)
       {
-        let value = getSkillValue(crew.id, curUnit, page.id, item.name)
-        let newValue = ::getTblValue("newValue", item, value)
+        let value = getSkillValue(this.crew.id, this.curUnit, page.id, item.name)
+        let newValue = getTblValue("newValue", item, value)
         if (newValue > value)
-          curPoints -= ::g_crew.getSkillCost(item, newValue, value)
+          this.curPoints -= ::g_crew.getSkillCost(item, newValue, value)
       }
-    updateSkillsHandlerPoints()
-    scene.findObject("crew_cur_skills").setValue(stdMath.round_by_value(crewCurLevel, 0.01).tostring())
-    updatePointsText()
-    updateBuyAllButton()
-    updateAvailableSkillsIcons()
+    this.updateSkillsHandlerPoints()
+    this.scene.findObject("crew_cur_skills").setValue(stdMath.round_by_value(this.crewCurLevel, 0.01).tostring())
+    this.updatePointsText()
+    this.updateBuyAllButton()
+    this.updateAvailableSkillsIcons()
   }
 
   function onSkillRowChange(item, newValue)
   {
-    let wasValue = ::g_crew.getSkillNewValue(item, crew, curUnit)
+    let wasValue = ::g_crew.getSkillNewValue(item, this.crew, this.curUnit)
     let changeCost = ::g_crew.getSkillCost(item, newValue, wasValue)
     let crewLevelChange = ::g_crew.getSkillCrewLevel(item, newValue, wasValue)
     item.newValue <- newValue //!!FIX ME: this code must be in g_crew too
-    curPoints -= changeCost
-    updateSkillsHandlerPoints()
-    crewLevelInc += crewLevelChange
+    this.curPoints -= changeCost
+    this.updateSkillsHandlerPoints()
+    this.crewLevelInc += crewLevelChange
 
-    updatePointsText()
-    updateBuyAllButton()
-    updatePointsAdvice()
-    updateAvailableSkillsIcons()
-    ::broadcastEvent("CrewNewSkillsChanged", { crew = crew })
+    this.updatePointsText()
+    this.updateBuyAllButton()
+    this.updatePointsAdvice()
+    this.updateAvailableSkillsIcons()
+    ::broadcastEvent("CrewNewSkillsChanged", { crew = this.crew })
   }
 
   function getCurCountryName()
   {
-    return ::g_crews_list.get()[countryId].country
+    return ::g_crews_list.get()[this.countryId].country
   }
 
   function updateUnitTypeRadioButtons()
   {
-    let rbObj = scene.findObject("rb_unit_type")
-    if (!::checkObj(rbObj))
+    let rbObj = this.scene.findObject("rb_unit_type")
+    if (!checkObj(rbObj))
       return
 
     local data = ""
@@ -180,68 +187,68 @@ let { getCrew } = require("%scripts/crew/crew.nut")
         continue
 
       let crewUnitType = unitType.crewUnitType
-      if (::isInArray(crewUnitType,crewUnitTypes))
+      if (isInArray(crewUnitType,crewUnitTypes))
         continue
 
-      if (!isCountryHaveUnitType(getCurCountryName(), unitType.esUnitType))
+      if (!isCountryHaveUnitType(this.getCurCountryName(), unitType.esUnitType))
         continue
 
       crewUnitTypes.append(crewUnitType)
-      let isCurrent = curCrewUnitType == crewUnitType
+      let isCurrent = this.curCrewUnitType == crewUnitType
       isVisibleCurCrewTypeButton = isVisibleCurCrewTypeButton || isCurrent
       data += format("RadioButton { id:t='%s'; text:t='%s'; %s RadioButtonImg{} }",
                      "unit_type_" + crewUnitType,
                      unitType.getCrewArmyLocName(),
                      isCurrent ? "selected:t='yes';" : "")
     }
-    guiScene.replaceContentFromText(rbObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(rbObj, data, data.len(), this)
     if (!isVisibleCurCrewTypeButton) //need switch unit type if cur type not visible
       rbObj.setValue(0)
-    updateUnitType()
+    this.updateUnitType()
   }
 
   function updateUnitType()
   {
-    countSkills()
-    updateCrewInfo()
-    initPages()
+    this.countSkills()
+    this.updateCrewInfo()
+    this.initPages()
   }
 
   function initPages()
   {
-    updateDiscountInfo()
+    this.updateDiscountInfo()
 
-    pages = []
+    this.pages = []
     foreach(page in ::crew_skills)
-      if (page.isVisible(curCrewUnitType))
-        pages.append(page)
-    pages.append({ id = "trained" })
+      if (page.isVisible(this.curCrewUnitType))
+        this.pages.append(page)
+    this.pages.append({ id = "trained" })
 
-    let maxDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo, false)
+    let maxDiscount = ::g_crew.getMaxDiscountByInfo(this.discountInfo, false)
     let discountText = maxDiscount > 0? ("-" + maxDiscount + "%") : ""
-    let discountTooltip = ::g_crew.getDiscountsTooltipByInfo(discountInfo, false)
+    let discountTooltip = ::g_crew.getDiscountsTooltipByInfo(this.discountInfo, false)
 
-    curPage = 0
+    this.curPage = 0
 
 
     let view = {
       tabs = []
     }
-    foreach(index, page in pages)
+    foreach(index, page in this.pages)
     {
-      if (page.id == curPageId)
-        curPage = index
+      if (page.id == this.curPageId)
+        this.curPage = index
 
       let tabData = {
         id = page.id
-        tabName = ::loc("crew/"+ page.id)
-        navImagesText = ::get_navigation_images_text(index, pages.len())
+        tabName = loc("crew/"+ page.id)
+        navImagesText = ::get_navigation_images_text(index, this.pages.len())
       }
 
-      if (isSkillsPage(page))
+      if (this.isSkillsPage(page))
         tabData.cornerImg <- {
           cornerImg = ""
-          cornerImgId = getCornerImgId(page)
+          cornerImgId = this.getCornerImgId(page)
         }
       else if (page.id == "trained")
         tabData.discount <- {
@@ -251,22 +258,22 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
       view.tabs.append(tabData)
     }
-    let pagesObj = scene.findObject("crew_pages_list")
-    pagesObj.smallFont = needSmallerHeaderFont(pagesObj.getSize(), view.tabs) ? "yes" : "no"
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    guiScene.replaceContentFromText(pagesObj, data, data.len(), this)
+    let pagesObj = this.scene.findObject("crew_pages_list")
+    pagesObj.smallFont = this.needSmallerHeaderFont(pagesObj.getSize(), view.tabs) ? "yes" : "no"
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    this.guiScene.replaceContentFromText(pagesObj, data, data.len(), this)
 
-    pagesObj.setValue(curPage)
-    updateAvailableSkillsIcons()
+    pagesObj.setValue(this.curPage)
+    this.updateAvailableSkillsIcons()
   }
 
   function needSmallerHeaderFont(targetSize, viewTabs)
   {
     local width = 0
     foreach(tab in viewTabs)
-      width += daguiFonts.getStringWidthPx(tab.tabName, "fontNormal", guiScene)
+      width += daguiFonts.getStringWidthPx(tab.tabName, "fontNormal", this.guiScene)
 
-    width += viewTabs.len() * ::to_pixels("2@listboxHPadding + 1@listboxItemsInterval")
+    width += viewTabs.len() * to_pixels("2@listboxHPadding + 1@listboxItemsInterval")
     if (::show_console_buttons)
       width += 2*targetSize[1] //gamepad navigation icons width = ph
 
@@ -275,8 +282,8 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function onChangeUnitType(obj)
   {
-    curCrewUnitType = obj.getValue()
-    updateUnitType()
+    this.curCrewUnitType = obj.getValue()
+    this.updateUnitType()
   }
 
   function onCrewPage(obj)
@@ -284,11 +291,11 @@ let { getCrew } = require("%scripts/crew/crew.nut")
     if (!obj)
       return
     let value = obj.getValue()
-    if (value in pages)
+    if (value in this.pages)
     {
-      curPage = value
-      curPageId = obj.getChild(value).id
-      fillPage()
+      this.curPage = value
+      this.curPageId = obj.getChild(value).id
+      this.fillPage()
     }
   }
 
@@ -304,58 +311,58 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function fillPage()
   {
-    updatePage()
+    this.updatePage()
   }
 
   function updatePointsText()
   {
-    let isMaxLevel = ::g_crew.isCrewMaxLevel(crew, curUnit, getCurCountryName(), curCrewUnitType)
-    let curPointsText = ::get_crew_sp_text(curPoints)
-    scene.findObject("crew_cur_points").setValue(isMaxLevel ? "" : curPointsText)
+    let isMaxLevel = ::g_crew.isCrewMaxLevel(this.crew, this.curUnit, this.getCurCountryName(), this.curCrewUnitType)
+    let curPointsText = ::get_crew_sp_text(this.curPoints)
+    this.scene.findObject("crew_cur_points").setValue(isMaxLevel ? "" : curPointsText)
 
     local levelIncText = ""
-    local levelIncTooltip = ::loc("crew/usedSkills/tooltip")
+    local levelIncTooltip = loc("crew/usedSkills/tooltip")
     if (isMaxLevel)
     {
-      levelIncText = ::loc("ui/parentheses/space", { text = ::loc("options/quality_max") })
-      levelIncTooltip += "\n" + ::loc("crew/availablePoints") + curPointsText
+      levelIncText = loc("ui/parentheses/space", { text = loc("options/quality_max") })
+      levelIncTooltip += "\n" + loc("crew/availablePoints") + curPointsText
     }
-    else if (crewLevelInc > 0.005)
-      levelIncText = "+" + stdMath.round_by_value(crewLevelInc, 0.01)
+    else if (this.crewLevelInc > 0.005)
+      levelIncText = "+" + stdMath.round_by_value(this.crewLevelInc, 0.01)
 
-    scene.findObject("crew_new_skills").setValue(levelIncText)
-    scene.findObject("crew_level_block").tooltip = levelIncTooltip
-    scene.findObject("btn_apply").enable(crewLevelInc > 0)
+    this.scene.findObject("crew_new_skills").setValue(levelIncText)
+    this.scene.findObject("crew_level_block").tooltip = levelIncTooltip
+    this.scene.findObject("btn_apply").enable(this.crewLevelInc > 0)
     this.showSceneBtn("crew_cur_points_block", !isMaxLevel)
-    this.showSceneBtn("btn_buy", ::has_feature("SpendGold") && !isMaxLevel && crew.id != -1)
+    this.showSceneBtn("btn_buy", hasFeature("SpendGold") && !isMaxLevel && this.crew.id != -1)
   }
 
   function updatePointsAdvice()
   {
-    let page = pages[curPage]
-    let isSkills = isSkillsPage(page)
-    scene.findObject("crew_points_advice_block").show(isSkills)
+    let page = this.pages[this.curPage]
+    let isSkills = this.isSkillsPage(page)
+    this.scene.findObject("crew_points_advice_block").show(isSkills)
     if (!isSkills)
       return
-    let statusType = ::g_skills_page_status.getPageStatus(crew, curUnit, page, curCrewUnitType, curPoints)
-    scene.findObject("crew_points_advice").show(statusType.show)
-    scene.findObject("crew_points_advice_text")["crewStatus"] = statusType.style
+    let statusType = ::g_skills_page_status.getPageStatus(this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
+    this.scene.findObject("crew_points_advice").show(statusType.show)
+    this.scene.findObject("crew_points_advice_text")["crewStatus"] = statusType.style
   }
 
   function updateBuyAllButton()
   {
-    if (!::has_feature("CrewBuyAllSkills"))
+    if (!hasFeature("CrewBuyAllSkills"))
       return
 
-    let totalPointsToMax = ::g_crew.getSkillPointsToMaxAllSkills(crew, curUnit, curCrewUnitType)
-    this.showSceneBtn("btn_buy_all", totalPointsToMax > 0 && crew.id != -1)
-    let text = ::loc("mainmenu/btnBuyAll") + ::loc("ui/parentheses/space", { text = ::get_crew_sp_text(totalPointsToMax) })
-    setColoredDoubleTextToButton(scene, "btn_buy_all", text)
+    let totalPointsToMax = ::g_crew.getSkillPointsToMaxAllSkills(this.crew, this.curUnit, this.curCrewUnitType)
+    this.showSceneBtn("btn_buy_all", totalPointsToMax > 0 && this.crew.id != -1)
+    let text = loc("mainmenu/btnBuyAll") + loc("ui/parentheses/space", { text = ::get_crew_sp_text(totalPointsToMax) })
+    setColoredDoubleTextToButton(this.scene, "btn_buy_all", text)
   }
 
   function onBuyAll()
   {
-    ::g_crew.buyAllSkills(crew, curUnit, curCrewUnitType)
+    ::g_crew.buyAllSkills(this.crew, this.curUnit, this.curCrewUnitType)
   }
 
   function getCornerImgId(page)
@@ -365,52 +372,52 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function updateAvailableSkillsIcons()
   {
-    if (!pages)
+    if (!this.pages)
       return
 
-    guiScene.setUpdatesEnabled(false, false)
-    let pagesObj = scene.findObject("crew_pages_list")
-    foreach(page in pages)
+    this.guiScene.setUpdatesEnabled(false, false)
+    let pagesObj = this.scene.findObject("crew_pages_list")
+    foreach(page in this.pages)
     {
-      if (!isSkillsPage(page))
+      if (!this.isSkillsPage(page))
         continue
-      let obj = pagesObj.findObject(getCornerImgId(page))
-      if (!::checkObj(obj))
+      let obj = pagesObj.findObject(this.getCornerImgId(page))
+      if (!checkObj(obj))
         continue
 
       let statusType = ::g_skills_page_status.getPageStatus(
-        crew, curUnit, page, curCrewUnitType, curPoints)
+        this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
       obj["background-image"] = statusType.icon
-      obj["background-color"] = guiScene.getConstantValue(statusType.color) || ""
+      obj["background-color"] = this.guiScene.getConstantValue(statusType.color) || ""
       obj.wink = statusType.wink ? "yes" : "no"
       obj.show(statusType.show)
     }
-    guiScene.setUpdatesEnabled(true, true)
+    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function updateDiscountInfo()
   {
-    discountInfo = ::g_crew.getDiscountInfo(countryId, idInCountry)
-    updateAirList()
+    this.discountInfo = ::g_crew.getDiscountInfo(this.countryId, this.idInCountry)
+    this.updateAirList()
 
-    let obj = scene.findObject("buyPoints_discount")
-    let buyPointsDiscount = ::getTblValue("buyPoints", discountInfo, 0)
+    let obj = this.scene.findObject("buyPoints_discount")
+    let buyPointsDiscount = getTblValue("buyPoints", this.discountInfo, 0)
     ::showCurBonus(obj, buyPointsDiscount, "buyPoints", true, true)
   }
 
   function updateAirList()
   {
-    airList = []
-    if (!("trainedSpec" in crew))
+    this.airList = []
+    if (!("trainedSpec" in this.crew))
       return
 
     let sortData = [] // { unit, locname }
     foreach(unit in ::all_units)
-      if (unit.name in crew.trainedSpec && unit.getCrewUnitType() == curCrewUnitType)
+      if (unit.name in this.crew.trainedSpec && unit.getCrewUnitType() == this.curCrewUnitType)
       {
-        let isCurrent = ::getTblValue("aircraft", crew, "") == unit.name
+        let isCurrent = getTblValue("aircraft", this.crew, "") == unit.name
         if (isCurrent)
-          airList.append(unit)
+          this.airList.append(unit)
         else
         {
           sortData.append({
@@ -426,89 +433,89 @@ let { getCrew } = require("%scripts/crew/crew.nut")
     })
 
     foreach(data in sortData)
-      airList.append(data.unit)
+      this.airList.append(data.unit)
   }
 
   function updatePage()
   {
-    let page = pages[curPage]
-    if (isSkillsPage(page))
+    let page = this.pages[this.curPage]
+    if (this.isSkillsPage(page))
     {
       let skillsHandlerParams = {
-        scene = scene.findObject("skills_table")
+        scene = this.scene.findObject("skills_table")
         curPage = page
-        crew = crew
-        curCrewUnitType = curCrewUnitType
-        curPoints = curPoints
-        onSkillRowChangeCb = ::Callback(onSkillRowChange, this)
-        unit = curUnit
+        crew = this.crew
+        curCrewUnitType = this.curCrewUnitType
+        curPoints = this.curPoints
+        onSkillRowChangeCb = Callback(this.onSkillRowChange, this)
+        unit = this.curUnit
       }
-      if (unitSpecHandler != null)
-        unitSpecHandler.setHandlerVisible(false)
-      if (skillsPageHandler == null)
-        skillsPageHandler = crewSkillsPageHandler(skillsHandlerParams)
+      if (this.unitSpecHandler != null)
+        this.unitSpecHandler.setHandlerVisible(false)
+      if (this.skillsPageHandler == null)
+        this.skillsPageHandler = crewSkillsPageHandler(skillsHandlerParams)
       else
-        skillsPageHandler.updateHandlerData(skillsHandlerParams)
-      if (skillsPageHandler != null)
-        skillsPageHandler.setHandlerVisible(true)
+        this.skillsPageHandler.updateHandlerData(skillsHandlerParams)
+      if (this.skillsPageHandler != null)
+        this.skillsPageHandler.setHandlerVisible(true)
     }
     else if (page.id=="trained")
     {
-      if (skillsPageHandler != null)
-        skillsPageHandler.setHandlerVisible(false)
-      if (unitSpecHandler == null)
-        unitSpecHandler = ::g_crew.createCrewUnitSpecHandler(scene)
-      if (unitSpecHandler != null)
+      if (this.skillsPageHandler != null)
+        this.skillsPageHandler.setHandlerVisible(false)
+      if (this.unitSpecHandler == null)
+        this.unitSpecHandler = ::g_crew.createCrewUnitSpecHandler(this.scene)
+      if (this.unitSpecHandler != null)
       {
-        unitSpecHandler.setHandlerVisible(true)
-        unitSpecHandler.setHandlerData(crew, crewCurLevel, airList, curCrewUnitType)
+        this.unitSpecHandler.setHandlerVisible(true)
+        this.unitSpecHandler.setHandlerData(this.crew, this.crewCurLevel, this.airList, this.curCrewUnitType)
       }
     }
-    updatePointsAdvice()
-    updateUnitTypeWarning(isSkillsPage(page))
+    this.updatePointsAdvice()
+    this.updateUnitTypeWarning(this.isSkillsPage(page))
   }
 
   function updateUnitTypeWarning(skillsVisible)
   {
     local show = false
     if (skillsVisible)
-      show = curUnit != null && curUnit.getCrewUnitType() != curCrewUnitType
-    scene.findObject("skills_unit_type_warning").show(show)
+      show = this.curUnit != null && this.curUnit.getCrewUnitType() != this.curCrewUnitType
+    this.scene.findObject("skills_unit_type_warning").show(show)
   }
 
   function onBuyPoints()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    updateDiscountInfo()
-    ::g_crew.createCrewBuyPointsHandler(crew)
+    this.updateDiscountInfo()
+    ::g_crew.createCrewBuyPointsHandler(this.crew)
   }
 
   function goBack()
   {
-    checkSkillPointsAndDo(base.goBack)
+    this.checkSkillPointsAndDo(base.goBack)
   }
 
-  function onEventSetInQueue(params)
+  function onEventSetInQueue(_params)
   {
     base.goBack()
   }
 
   function onApply()
   {
-    if (progressBox)
+    if (this.progressBox)
       return
 
     let blk = ::DataBlock()
     foreach(page in ::crew_skills)
-      if (isSkillsPage(page))
+      if (this.isSkillsPage(page))
       {
         let typeBlk = ::DataBlock()
-        foreach(idx, item in page.items)
+        foreach(_idx, item in page.items)
           if ("newValue" in item)
           {
-            let value = getSkillValue(crew.id, curUnit, page.id, item.name)
+            let value = getSkillValue(this.crew.id, this.curUnit, page.id, item.name)
             if (value<item.newValue)
               typeBlk[item.name] = item.newValue-value
           }
@@ -517,7 +524,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
     let curHandler = this //to prevent handler destroy even when invalid.
     let isTaskCreated = ::g_tasker.addTask(
-      ::shop_upgrade_crew(crew.id, blk),
+      ::shop_upgrade_crew(this.crew.id, blk),
       { showProgressBox = true },
       function()
       {
@@ -530,7 +537,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
         }
         ::g_crews_list.flushSlotbarUpdate()
       },
-      @(err) ::g_crews_list.flushSlotbarUpdate()
+      @(_err) ::g_crews_list.flushSlotbarUpdate()
     )
 
     if (isTaskCreated)
@@ -539,25 +546,25 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function onSelect()
   {
-    onApply()
+    this.onApply()
   }
 
   function checkSkillPointsAndDo(action, cancelAction = function() {}, updateAfterApply = true)
   {
-    let crewPoints = ::getTblValue("skillPoints", crew, 0)
-    if (curPoints == crewPoints)
+    let crewPoints = getTblValue("skillPoints", this.crew, 0)
+    if (this.curPoints == crewPoints)
       return action()
 
     let msgOptions = [
       ["yes", function() {
-        afterApplyAction = action
-        updateAfterApplyAction = updateAfterApply
-        onApply()
+        this.afterApplyAction = action
+        this.updateAfterApplyAction = updateAfterApply
+        this.onApply()
       }],
       ["no", action]
     ]
 
-    this.msgBox("applySkills", ::loc("crew/applySkills"), msgOptions, "yes", {
+    this.msgBox("applySkills", loc("crew/applySkills"), msgOptions, "yes", {
       cancel_fn = cancelAction
       checkDuplicateId = true
     })
@@ -570,30 +577,30 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function goForward(startFunc, needFade=true)
   {
-    checkSkillPointsAndDo(::Callback(@() baseGoForward(startFunc, needFade), this))
+    this.checkSkillPointsAndDo(Callback(@() this.baseGoForward(startFunc, needFade), this))
   }
 
-  function onSlotDblClick(slotCrew)
+  function onSlotDblClick(_slotCrew)
   {
-    if (curUnit != null)
-      checkSkillPointsAndDo(@() ::open_weapons_for_unit(curUnit))
+    if (this.curUnit != null)
+      this.checkSkillPointsAndDo(@() ::open_weapons_for_unit(this.curUnit))
   }
 
   function beforeSlotbarChange(action, cancelAction)
   {
-    checkSkillPointsAndDo(action, cancelAction)
+    this.checkSkillPointsAndDo(action, cancelAction)
   }
 
   function openSelectedCrew()
   {
-    let newCrew = getCurCrew()
+    let newCrew = this.getCurCrew()
     if (!newCrew)
       return
 
-    crew = newCrew
-    countryId = crew.idCountry
-    idInCountry = crew.idInCountry
-    initMainParams(true, true)
+    this.crew = newCrew
+    this.countryId = this.crew.idCountry
+    this.idInCountry = this.crew.idInCountry
+    this.initMainParams(true, true)
   }
 
   function onUpgrCrewSkillsTutorial()
@@ -601,50 +608,50 @@ let { getCrew } = require("%scripts/crew/crew.nut")
     let steps = [
       {
         obj = ["crew_cur_points_block"]
-        text = ::loc("tutorials/upg_crew/total_skill_points")
+        text = loc("tutorials/upg_crew/total_skill_points")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
       },
       {
         obj = [["crew_pages_list", "driver_available"]]
-        text = ::loc("tutorials/upg_crew/skill_groups")
+        text = loc("tutorials/upg_crew/skill_groups")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
       },
       {
-        obj = [getObj("skill_row0").findObject("incCost"), "skill_row0"]
-        text = ::loc("tutorials/upg_crew/take_skill_points")
+        obj = [this.getObj("skill_row0").findObject("incCost"), "skill_row0"]
+        text = loc("tutorials/upg_crew/take_skill_points")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
       },
       {
-        obj = [getObj("skill_row0").findObject("buttonInc"), "skill_row0"]
-        text = ::loc("tutorials/upg_crew/inc_skills")
+        obj = [this.getObj("skill_row0").findObject("buttonInc"), "skill_row0"]
+        text = loc("tutorials/upg_crew/inc_skills")
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = ::Callback(@() onButtonInc(getObj("skill_row0").findObject("buttonInc")), this)
+        cb = Callback(@() this.onButtonInc(this.getObj("skill_row0").findObject("buttonInc")), this)
       },
       {
-        obj = [getObj("skill_row1").findObject("buttonInc"), "skill_row1"]
-        text = ::loc("tutorials/upg_crew/inc_skills")
+        obj = [this.getObj("skill_row1").findObject("buttonInc"), "skill_row1"]
+        text = loc("tutorials/upg_crew/inc_skills")
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = ::Callback(@() onButtonInc(getObj("skill_row1").findObject("buttonInc")), this)
+        cb = Callback(@() this.onButtonInc(this.getObj("skill_row1").findObject("buttonInc")), this)
       },
       {
         obj = ["btn_apply"]
-        text = ::loc("tutorials/upg_crew/apply_upgr_skills")
+        text = loc("tutorials/upg_crew/apply_upgr_skills")
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = ::Callback(function() {
-          afterApplyAction = canUpgradeCrewSpec(crew) ? onUpgrCrewSpec1Tutorial
-            : onUpgrCrewTutorFinalStep
-          onApply() }, this)
+        cb = Callback(function() {
+          this.afterApplyAction = this.canUpgradeCrewSpec(this.crew) ? this.onUpgrCrewSpec1Tutorial
+            : this.onUpgrCrewTutorFinalStep
+          this.onApply() }, this)
       }
     ]
     ::gui_modal_tutor(steps, this)
@@ -652,13 +659,13 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function canUpgradeCrewSpec(upgCrew)
   {
-    if (curUnit == null)
+    if (this.curUnit == null)
       return false
 
-    let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(upgCrew, curUnit)
-    let wpSpecCost = curSpecType.getUpgradeCostByCrewAndByUnit(upgCrew, curUnit)
-    let reqLevel = curSpecType.getUpgradeReqCrewLevel(curUnit)
-    let crewLevel = ::g_crew.getCrewLevel(upgCrew, curUnit, curUnit.getCrewUnitType())
+    let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(upgCrew, this.curUnit)
+    let wpSpecCost = curSpecType.getUpgradeCostByCrewAndByUnit(upgCrew, this.curUnit)
+    let reqLevel = curSpecType.getUpgradeReqCrewLevel(this.curUnit)
+    let crewLevel = ::g_crew.getCrewLevel(upgCrew, this.curUnit, this.curUnit.getCrewUnitType())
 
     return ::get_cur_warpoints() >= wpSpecCost.wp &&
            curSpecType == ::g_crew_spec_type.BASIC &&
@@ -667,8 +674,8 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function onUpgrCrewSpec1Tutorial()
   {
-    let tblObj = scene.findObject("skills_table")
-    if (!::check_obj(tblObj))
+    let tblObj = this.scene.findObject("skills_table")
+    if (!checkObj(tblObj))
       return
 
     local skillRowObj = null
@@ -677,11 +684,11 @@ let { getCrew } = require("%scripts/crew/crew.nut")
     for(local i = 0; i < tblObj.childrenCount(); i++)
     {
       skillRowObj = tblObj.findObject("skill_row" + i)
-      if (!::check_obj(skillRowObj))
+      if (!checkObj(skillRowObj))
         continue
 
       btnSpecObj = skillRowObj.findObject("btn_spec1")
-      if (::check_obj(btnSpecObj) && btnSpecObj.isVisible())
+      if (checkObj(btnSpecObj) && btnSpecObj.isVisible())
         break
 
       btnSpecObj = null
@@ -693,11 +700,11 @@ let { getCrew } = require("%scripts/crew/crew.nut")
     let steps = [
       {
         obj = [btnSpecObj, skillRowObj]
-        text = ::loc("tutorials/upg_crew/spec1")
+        text = loc("tutorials/upg_crew/spec1")
         actionType = tutorAction.ANY_CLICK
         nextActionShortcut = "help/NEXT_ACTION"
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = ::Callback(onUpgrCrewSpec1ConfirmTutorial, this)
+        cb = Callback(this.onUpgrCrewSpec1ConfirmTutorial, this)
       }
     ]
     ::gui_modal_tutor(steps, this)
@@ -705,20 +712,20 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function onUpgrCrewSpec1ConfirmTutorial()
   {
-    ::g_crew.upgradeUnitSpec(crew, curUnit, null, ::g_crew_spec_type.EXPERT)
+    ::g_crew.upgradeUnitSpec(this.crew, this.curUnit, null, ::g_crew_spec_type.EXPERT)
 
     if (::scene_msg_boxes_list.len() == 0)
     {
-      let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, curUnit)
+      let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
       let message = format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
                                "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
                                ::my_user_id_str,
-                               crew.country,
-                               crew.idInCountry.tostring(),
-                               curUnit.name,
+                               this.crew.country,
+                               this.crew.idInCountry.tostring(),
+                               this.curUnit.name,
                                curSpec.code.tostring())
       ::script_net_assert_once("empty scene_msg_boxes_list", message)
-      onUpgrCrewTutorFinalStep()
+      this.onUpgrCrewTutorFinalStep()
       return
     }
 
@@ -726,7 +733,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
     let steps = [
       {
         obj = [[specMsgBox.findObject("buttons_holder"), specMsgBox.findObject("msgText")]]
-        text = ::loc("tutorials/upg_crew/confirm_spec1")
+        text = loc("tutorials/upg_crew/confirm_spec1")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
@@ -741,7 +748,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
   {
     let steps = [
       {
-        text = ::loc("tutorials/upg_crew/final_massage")
+        text = loc("tutorials/upg_crew/final_massage")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
@@ -752,15 +759,15 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 
   function onEventCrewSkillsChanged(params)
   {
-    crew = getSlotCrew()
-    initMainParams(!::getTblValue("isOnlyPointsChanged", params, false))
+    this.crew = this.getSlotCrew()
+    this.initMainParams(!getTblValue("isOnlyPointsChanged", params, false))
   }
 
   /** Triggered from CrewUnitSpecHandler. */
-  function onEventQualificationIncreased(params)
+  function onEventQualificationIncreased(_params)
   {
-    crew = getSlotCrew()
-    initMainParams()
+    this.crew = this.getSlotCrew()
+    this.initMainParams()
   }
 
   function onEventCrewTakeUnit(p)
@@ -769,68 +776,68 @@ let { getCrew } = require("%scripts/crew/crew.nut")
       return
 
     if (!p?.prevUnit)
-      openSelectedCrew()
+      this.openSelectedCrew()
     else
     {
-      crew = getSlotCrew()
-      initMainParams(false, true)
+      this.crew = this.getSlotCrew()
+      this.initMainParams(false, true)
     }
-    updatePage()
+    this.updatePage()
   }
 
-  function onEventSlotbarPresetLoaded(params)
+  function onEventSlotbarPresetLoaded(_params)
   {
-    openSelectedCrew()
-    updatePage()
+    this.openSelectedCrew()
+    this.updatePage()
   }
 
   function onButtonInc(obj)
   {
-    if (::handlersManager.isHandlerValid(skillsPageHandler) && skillsPageHandler.isHandlerVisible)
-      skillsPageHandler.onButtonInc(obj)
+    if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+      this.skillsPageHandler.onButtonInc(obj)
   }
 
   function onButtonIncRepeat(obj)
   {
-    if (::handlersManager.isHandlerValid(skillsPageHandler) && skillsPageHandler.isHandlerVisible)
-      skillsPageHandler.onButtonIncRepeat(obj)
+    if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+      this.skillsPageHandler.onButtonIncRepeat(obj)
   }
 
   function onButtonDec(obj)
   {
-    if (::handlersManager.isHandlerValid(skillsPageHandler) && skillsPageHandler.isHandlerVisible)
-      skillsPageHandler.onButtonDec(obj)
+    if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+      this.skillsPageHandler.onButtonDec(obj)
   }
 
   function onButtonDecRepeat(obj)
   {
-    if (::handlersManager.isHandlerValid(skillsPageHandler) && skillsPageHandler.isHandlerVisible)
-      skillsPageHandler.onButtonDecRepeat(obj)
+    if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+      this.skillsPageHandler.onButtonDecRepeat(obj)
   }
 
   function getCrewLevel()
   {
-    return crewCurLevel
+    return this.crewCurLevel
   }
 
   function getCurrentEdiff()
   {
-    return curEdiff == -1 ? ::get_current_ediff() : curEdiff
+    return this.curEdiff == -1 ? ::get_current_ediff() : this.curEdiff
   }
 
   function updateSkillsHandlerPoints()
   {
-    if (skillsPageHandler != null)
-      skillsPageHandler.setCurPoints(curPoints)
+    if (this.skillsPageHandler != null)
+      this.skillsPageHandler.setCurPoints(this.curPoints)
   }
 
   getCrewUnit = @(slotCrew) ::g_crew.getCrewUnit(slotCrew)
-  getSlotCrew = @() getCrew(countryId, idInCountry)
+  getSlotCrew = @() getCrew(this.countryId, this.idInCountry)
   onRecruitCrew = @() null
 
   function updateButtons()
   {
-    scene.findObject("btn_apply").show(true)
+    this.scene.findObject("btn_apply").show(true)
   }
 }
 

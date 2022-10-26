@@ -1,4 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { fatal } = require("dagor.debug")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -9,7 +17,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 ::gui_handlers.ShopCheckResearch <- class extends ::gui_handlers.ShopMenuHandler
 {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/shop/shopCheckResearch"
+  sceneTplName = "%gui/shop/shopCheckResearch.tpl"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   canQuitByGoBack = false
@@ -32,37 +40,37 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function initScreen()
   {
-    let unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
-    curAirName = unitName
-    researchedUnit = ::getAircraftByName(unitName)
-    unitCountry = researchBlock.country
-    unitType = ::get_es_unit_type(researchedUnit)
-    sendUnitResearchedStatistic(researchedUnit)
-    updateResearchVariables()
+    let unitName = getTblValue(::researchedUnitForCheck, this.researchBlock)
+    this.curAirName = unitName
+    this.researchedUnit = ::getAircraftByName(unitName)
+    this.unitCountry = this.researchBlock.country
+    this.unitType = ::get_es_unit_type(this.researchedUnit)
+    this.sendUnitResearchedStatistic(this.researchedUnit)
+    this.updateResearchVariables()
 
     base.initScreen()
 
     this.showSceneBtn("modesRadiobuttons", false)
 
     if(!isSmallScreen)
-      createSlotbar(
+      this.createSlotbar(
         {
           showNewSlot = true,
           showEmptySlot = true,
           isCountryChoiceAllowed = false,
-          customCountry = unitCountry,
+          customCountry = this.unitCountry,
           showTopPanel = false
         },
         "slotbar_place")
 
-    selectRequiredUnit()
+    this.selectRequiredUnit()
   }
 
   function getNotResearchedUnitByFeature()
   {
     foreach(unit in ::all_units)
-      if (    (!unitCountry || ::getUnitCountry(unit) == unitCountry)
-           && (unitType == null || ::get_es_unit_type(unit) == unitType)
+      if (    (!this.unitCountry || ::getUnitCountry(unit) == this.unitCountry)
+           && (this.unitType == null || ::get_es_unit_type(unit) == this.unitType)
            && ::isUnitFeatureLocked(unit)
          )
         return unit
@@ -72,87 +80,87 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function getMaxEraAvailableByCountry()
   {
     for (local era = 1; era <= ::max_country_rank; era++)
-      if (!::is_era_available(unitCountry, era, unitType))
+      if (!::is_era_available(this.unitCountry, era, this.unitType))
         return (era - 1)
     return ::max_country_rank
   }
 
   function showRankRestrictionMsgBox()
   {
-    if (!hasNextResearch() || showRankLockedMsgBoxOnce || !isSceneActiveNoModals())
+    if (!this.hasNextResearch() || this.showRankLockedMsgBoxOnce || !this.isSceneActiveNoModals())
       return
 
-    showRankLockedMsgBoxOnce = true
+    this.showRankLockedMsgBoxOnce = true
 
-    let rank = getMaxEraAvailableByCountry()
+    let rank = this.getMaxEraAvailableByCountry()
     let nextRank = rank + 1
 
     if (nextRank > ::max_country_rank)
       return
 
-    let unitLockedByFeature = getNotResearchedUnitByFeature()
+    let unitLockedByFeature = this.getNotResearchedUnitByFeature()
     if (unitLockedByFeature && !::checkFeatureLock(unitLockedByFeature, CheckFeatureLockAction.RESEARCH))
       return
 
     let ranksBlk = ::get_ranks_blk()
-    let unitsCount = boughtVehiclesCount[rank]
-    let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(unitCountry, unitType, rank, ranksBlk)
+    let unitsCount = this.boughtVehiclesCount[rank]
+    let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(this.unitCountry, this.unitType, rank, ranksBlk)
     let reqUnits = max(0, unitsNeed - unitsCount)
     if (reqUnits > 0)
     {
-      let text = ::loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
-                    + ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", {amount = reqUnits, prevRank = ::get_roman_numeral(rank)})
+      let text = loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
+                    + loc("shop/unlockTier/reqBoughtUnitsPrevRank", {amount = reqUnits, prevRank = ::get_roman_numeral(rank)})
       this.msgBox("locked_rank", text, [["ok", function(){}]], "ok", { cancel_fn = function(){}})
     }
   }
 
   function updateHeaderText()
   {
-    let headerObj = scene.findObject("shop_header")
-    if (!::checkObj(headerObj))
+    let headerObj = this.scene.findObject("shop_header")
+    if (!checkObj(headerObj))
       return
 
-    let expText = ::get_flush_exp_text(availableFlushExp)
-    local headerText = ::loc("mainmenu/nextResearch/title")
+    let expText = ::get_flush_exp_text(this.availableFlushExp)
+    local headerText = loc("mainmenu/nextResearch/title")
     if (expText != "")
-      headerText += ::loc("ui/parentheses/space", {text = expText})
+      headerText += loc("ui/parentheses/space", {text = expText})
     headerObj.setValue(headerText)
   }
 
   function updateResearchVariables()
   {
-    updateCurResearchingUnit()
-    updateExcessExp()
+    this.updateCurResearchingUnit()
+    this.updateExcessExp()
   }
 
   function updateCurResearchingUnit()
   {
-    let curUnitName = ::shop_get_researchable_unit_name(unitCountry, unitType)
-    if (curUnitName == ::getTblValue("name", curResearchingUnit, ""))
+    let curUnitName = ::shop_get_researchable_unit_name(this.unitCountry, this.unitType)
+    if (curUnitName == getTblValue("name", this.curResearchingUnit, ""))
       return
 
-    curResearchingUnit = ::getAircraftByName(curUnitName)
+    this.curResearchingUnit = ::getAircraftByName(curUnitName)
   }
 
   function updateExcessExp()
   {
-    availableFlushExp = ::shop_get_country_excess_exp(unitCountry, unitType)
-    updateHeaderText()
+    this.availableFlushExp = ::shop_get_country_excess_exp(this.unitCountry, this.unitType)
+    this.updateHeaderText()
   }
 
   function hasNextResearch()
   {
-    return availableFlushExp > 0 &&
-      (curResearchingUnit == null || ::isUnitResearched(curResearchingUnit))
+    return this.availableFlushExp > 0 &&
+      (this.curResearchingUnit == null || ::isUnitResearched(this.curResearchingUnit))
   }
 
   function getMaxRankUnboughtUnitByCountry()
   {
     local unit = null
     foreach (newUnit in ::all_units)
-      if (!unitCountry || unitCountry == ::getUnitCountry(newUnit))
-        if (::getTblValue("rank", newUnit, 0) > ::getTblValue("rank", unit, 0))
-          if (unitType == ::get_es_unit_type(newUnit)
+      if (!this.unitCountry || this.unitCountry == ::getUnitCountry(newUnit))
+        if (getTblValue("rank", newUnit, 0) > getTblValue("rank", unit, 0))
+          if (this.unitType == ::get_es_unit_type(newUnit)
               && !::isUnitSpecial(newUnit)
               && ::canBuyUnit(newUnit)
               && ::isPrevUnitBought(newUnit))
@@ -164,8 +172,8 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   {
     local unit = null
     foreach (newUnit in ::all_units)
-      if (unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
-        && unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
+      if (this.unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
+        && this.unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
           unit = newUnit.rank > (unit?.rank ?? 0) ? newUnit : unit
     return unit
   }
@@ -173,47 +181,47 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function selectRequiredUnit()
   {
     local unit = null
-    if (availableFlushExp > 0)
+    if (this.availableFlushExp > 0)
     {
-      if (curResearchingUnit && !::isUnitResearched(curResearchingUnit))
-        unit = curResearchingUnit
+      if (this.curResearchingUnit && !::isUnitResearched(this.curResearchingUnit))
+        unit = this.curResearchingUnit
       else
       {
-        unit = getMaxRankResearchingUnitByCountry()
-        setUnitOnResearch(unit)
+        unit = this.getMaxRankResearchingUnitByCountry()
+        this.setUnitOnResearch(unit)
       }
     }
-    else if (!curResearchingUnit || ::isUnitResearched(curResearchingUnit))
+    else if (!this.curResearchingUnit || ::isUnitResearched(this.curResearchingUnit))
     {
-      let nextResearchingUnit = getMaxRankResearchingUnitByCountry()
+      let nextResearchingUnit = this.getMaxRankResearchingUnitByCountry()
       if (nextResearchingUnit)
         unit = nextResearchingUnit
       else
-        unit = getMaxRankUnboughtUnitByCountry()
+        unit = this.getMaxRankUnboughtUnitByCountry()
     }
     else
-      unit = curResearchingUnit
+      unit = this.curResearchingUnit
 
     if (!unit)
     {
-      guiScene.performDelayed(this, function() {
-        if (!isSceneActiveNoModals())
+      this.guiScene.performDelayed(this, function() {
+        if (!this.isSceneActiveNoModals())
           return
-        showRankRestrictionMsgBox()
+        this.showRankRestrictionMsgBox()
       })
       return
     }
 
-    destroyGroupChoose(::isGroupPart(unit)? unit.group : "")
+    this.destroyGroupChoose(::isGroupPart(unit)? unit.group : "")
 
     if (::isGroupPart(unit))
-      guiScene.performDelayed(this, (@(unit) function() {
-        if (!isSceneActiveNoModals())
+      this.guiScene.performDelayed(this, (@(unit) function() {
+        if (!this.isSceneActiveNoModals())
           return
-        checkSelectAirGroup(getItemBlockFromShopTree(unit.group), unit.name)
+        this.checkSelectAirGroup(this.getItemBlockFromShopTree(unit.group), unit.name)
       })(unit))
 
-    selectCellByUnitName(unit.name)
+    this.selectCellByUnitName(unit.name)
   }
 
   function showResearchUnitTutorial()
@@ -223,15 +231,15 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
     tutorialModule.saveShowedTutorial("researchUnit")
 
-    let visibleObj = scene.findObject("shop_items_visible_div")
+    let visibleObj = this.scene.findObject("shop_items_visible_div")
     if (!visibleObj)
       return
 
     let visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
     let unitsObj = []
     foreach (newUnit in ::all_units)
-      if (unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
-        && unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
+      if (this.unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
+        && this.unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
       {
         local newUnitName = ""
         if (::isGroupPart(newUnit))
@@ -239,7 +247,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
         else
           newUnitName = newUnit.name
 
-        let unitObj = scene.findObject(newUnitName)
+        let unitObj = this.scene.findObject(newUnitName)
         if (unitObj)
         {
           let unitBox = ::GuiBox().setFromDaguiObj(unitObj)
@@ -252,7 +260,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     let steps = [
       {
         obj = unitsObj
-        text = ::loc("tutorials/research_next_aircraft")
+        text = loc("tutorials/research_next_aircraft")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
@@ -263,12 +271,12 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function onUnitSelect()
   {
-    updateButtons()
+    this.updateButtons()
   }
 
   function getDefaultUnitInGroup(unitGroup)
   {
-    let unitsList = ::getTblValue("airsGroup", unitGroup)
+    let unitsList = getTblValue("airsGroup", unitGroup)
     if (!unitsList)
       return null
 
@@ -282,34 +290,34 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       else if (!res && (::canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
         res = unit
 
-    return res || ::getTblValue(0, unitsList)
+    return res || getTblValue(0, unitsList)
   }
 
   function updateButtons()
   {
-    if (!::checkObj(scene))
+    if (!checkObj(this.scene))
       return
 
-    updateRepairAllButton()
-    this.showSceneBtn("btn_back", curResearchingUnit == null || ::isUnitResearched(curResearchingUnit))
+    this.updateRepairAllButton()
+    this.showSceneBtn("btn_back", this.curResearchingUnit == null || ::isUnitResearched(this.curResearchingUnit))
 
-    let unit = getCurAircraft(true, true)
+    let unit = this.getCurAircraft(true, true)
     if (!unit)
       return
 
-    updateSpendExpBtn(unit)
+    this.updateSpendExpBtn(unit)
 
     let isFakeUnit = unit?.isFakeUnit ?? false
     let canBuyIngame = !isFakeUnit && ::canBuyUnit(unit)
     let canBuyOnline = !isFakeUnit && ::canBuyUnitOnline(unit)
     let showBuyUnit = canBuyIngame || canBuyOnline
-    showNavButton("btn_buy_unit", showBuyUnit)
+    this.showNavButton("btn_buy_unit", showBuyUnit)
     if (showBuyUnit)
     {
-      let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
+      let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
       let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : ::Cost()
-      placePriceTextToButton(navBarObj,      "btn_buy_unit", locText, unitCost)
-      placePriceTextToButton(navBarGroupObj, "btn_buy_unit", locText, unitCost)
+      placePriceTextToButton(this.navBarObj,      "btn_buy_unit", locText, unitCost)
+      placePriceTextToButton(this.navBarGroupObj, "btn_buy_unit", locText, unitCost)
     }
   }
 
@@ -321,19 +329,19 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     if (showSpendBtn)
     {
       let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
-      let flushExp = reqExp < availableFlushExp ? reqExp : availableFlushExp
-      let textSample = ::loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
-      let textValue = flushExp ? ::loc("ui/parentheses/space",
+      let flushExp = reqExp < this.availableFlushExp ? reqExp : this.availableFlushExp
+      let textSample = loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
+      let textValue = flushExp ? loc("ui/parentheses/space",
         {text = ::Cost().setRp(flushExp).tostring()}) : ""
       coloredText = format(textSample, textValue)
     }
 
-    foreach(navBar in [navBarObj, navBarGroupObj])
+    foreach(navBar in [this.navBarObj, this.navBarGroupObj])
     {
-      if (!::checkObj(navBar))
+      if (!checkObj(navBar))
         continue
       let spendExpBtn = navBar.findObject("btn_spend_exp")
-      if (!::checkObj(spendExpBtn))
+      if (!checkObj(spendExpBtn))
         continue
 
       spendExpBtn.inactive = showSpendBtn? "no" : "yes"
@@ -351,15 +359,15 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function onSpendExcessExp()
   {
-    if (hasSpendExpProcess)
+    if (this.hasSpendExpProcess)
       return
 
-    hasSpendExpProcess = true
-    let unit = getCurAircraft(true, true)
-    flushItemExp(unit, @() setUnitOnResearch(unit, function() {
-      hasSpendExpProcess = false
+    this.hasSpendExpProcess = true
+    let unit = this.getCurAircraft(true, true)
+    this.flushItemExp(unit, @() this.setUnitOnResearch(unit, function() {
+      this.hasSpendExpProcess = false
       ::add_big_query_record("choosed_new_research_unit", unit.name)
-      sendUnitResearchedStatistic(unit)
+      this.sendUnitResearchedStatistic(unit)
     }))
   }
 
@@ -402,43 +410,43 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
     if (unit)
     {
-      lastResearchUnit = unit
+      this.lastResearchUnit = unit
       unitActions.research(unit, false)
     }
     else
-      ::shop_reset_researchable_unit(unitCountry, unitType)
-    updateButtons()
+      ::shop_reset_researchable_unit(this.unitCountry, this.unitType)
+    this.updateButtons()
   }
 
   function flushItemExp(unitOnResearch, afterDoneFunc = null)
   {
-    let executeAfterDoneFunc = (@(unitOnResearch, afterDoneFunc) function() {
-        if (!isValid())
+    let executeAfterDoneFunc = (@(_unitOnResearch, afterDoneFunc) function() {
+        if (!this.isValid())
           return
 
-        setResearchManually = true
-        updateResearchVariables()
-        fillAircraftsList()
-        updateButtons()
+        this.setResearchManually = true
+        this.updateResearchVariables()
+        this.fillAircraftsList()
+        this.updateButtons()
 
-        selectRequiredUnit()
+        this.selectRequiredUnit()
 
         if (afterDoneFunc)
           afterDoneFunc()
       })(unitOnResearch, afterDoneFunc)
 
-    if (availableFlushExp <= 0)
+    if (this.availableFlushExp <= 0)
     {
       executeAfterDoneFunc()
       return
     }
 
-    taskId = ::flushExcessExpToUnit(unitOnResearch.name)
-    if (taskId >= 0)
+    this.taskId = ::flushExcessExpToUnit(unitOnResearch.name)
+    if (this.taskId >= 0)
     {
-      ::set_char_cb(this, slotOpCb)
-      afterSlotOp = executeAfterDoneFunc
-      afterSlotOpError = (@(executeAfterDoneFunc) function(res) {
+      ::set_char_cb(this, this.slotOpCb)
+      this.afterSlotOp = executeAfterDoneFunc
+      this.afterSlotOpError = (@(executeAfterDoneFunc) function(_res) {
           executeAfterDoneFunc()
         })(executeAfterDoneFunc)
     }
@@ -446,25 +454,25 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function onCloseShop()
   {
-    destroyGroupChoose()
-    let curResName = ::shop_get_researchable_unit_name(unitCountry, unitType)
-    if (::getTblValue("name", lastResearchUnit, "") != curResName)
-      setUnitOnResearch(::getAircraftByName(curResName))
+    this.destroyGroupChoose()
+    let curResName = ::shop_get_researchable_unit_name(this.unitCountry, this.unitType)
+    if (getTblValue("name", this.lastResearchUnit, "") != curResName)
+      this.setUnitOnResearch(::getAircraftByName(curResName))
 
     ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
   }
 
   function onEventModalWndDestroy(params)
   {
-    let closedHandler = ::getTblValue("handler", params, null)
+    let closedHandler = getTblValue("handler", params, null)
     if (!closedHandler)
       return
 
     if (closedHandler.getclass() == ::gui_handlers.researchUnitNotification)
     {
-      showResearchUnitTutorial()
-      selectRequiredUnit()
-      showRankRestrictionMsgBox()
+      this.showResearchUnitTutorial()
+      this.selectRequiredUnit()
+      this.showRankRestrictionMsgBox()
     }
   }
 
@@ -515,7 +523,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
         {
           let airBlk = rblk.getBlock(a)
           let airName = airBlk.getBlockName()
-          local air = getAircraftByName(airName)
+          local air = ::getAircraftByName(airName)
           if (!air)
           {
             let groupTotal = airBlk.blockCount()
@@ -528,14 +536,14 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
             for(local ga=0; ga<groupTotal; ga++)
             {
               let gAirBlk = airBlk.getBlock(ga)
-              air = getAircraftByName(gAirBlk.getBlockName())
+              air = ::getAircraftByName(gAirBlk.getBlockName())
               if (!air)
                 resText += ((resText!="")? "\n":"") + "Not found aircraft " + gAirBlk.getBlockName() + " in " + country
             }
           } else
             if ((airBlk?.reqAir ?? "") != "")
             {
-              let reqAir = getAircraftByName(airBlk.reqAir)
+              let reqAir = ::getAircraftByName(airBlk.reqAir)
               if (!reqAir && !isInArray(airBlk.reqAir, groups))
                 resText += ((resText!="")? "\n":"") + "Not found reqAir " + airBlk.reqAir + " for " + airName + " in " + country
             }
@@ -544,7 +552,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     }
   }
   if (resText=="")
-    ::dagor.debug("Shop.blk checked.")
+    log("Shop.blk checked.")
   else
-    dagor.fatal("Incorrect shop.blk!\n" + resText)
+    fatal("Incorrect shop.blk!\n" + resText)
 }

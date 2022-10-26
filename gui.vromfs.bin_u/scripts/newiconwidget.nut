@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /*
   widget API:
   static createLayout()  - return widget layout
@@ -33,131 +39,131 @@
 
   constructor(guiScene, containerObj = null)
   {
-    _guiScene = guiScene
-    setContainer(containerObj)
+    this._guiScene = guiScene
+    this.setContainer(containerObj)
   }
 
   static function createLayout(params = {})
   {
     let view = {
-      needContainer = ::getTblValue("needContainer", params, true)
-      icon = ::getTblValue("icon", params, ::NewIconWidget.defaultIcon)
-      tooltip = ::getTblValue("tooltip", params, "")
+      needContainer = getTblValue("needContainer", params, true)
+      icon = getTblValue("icon", params, ::NewIconWidget.defaultIcon)
+      tooltip = getTblValue("tooltip", params, "")
     }
-    return ::handyman.renderCached("%gui/newIconWidget", view)
+    return ::handyman.renderCached("%gui/newIconWidget.tpl", view)
   }
 
   function setContainer(containerObj)
   {
-    _containerObj = containerObj
-    if (::check_obj(_containerObj))
+    this._containerObj = containerObj
+    if (checkObj(this._containerObj))
     {
-      _containerObj.setUserData(this.weakref())
-      update()
+      this._containerObj.setUserData(this.weakref())
+      this.update()
     }
   }
 
   function _updateSubObjects()
   {
-    _textObj = _getTextObj()
-    _iconObj = _getIconObj()
+    this._textObj = this._getTextObj()
+    this._iconObj = this._getIconObj()
   }
 
   function isValidContainerData()
   {
-    return ::check_obj(_textObj) && ::check_obj(_iconObj)
+    return checkObj(this._textObj) && checkObj(this._iconObj)
   }
 
   function validateContent()
   {
-    if (!::check_obj(_containerObj))
+    if (!checkObj(this._containerObj))
       return
 
-    if (isValidContainerData())
+    if (this.isValidContainerData())
       return
 
-    let needContainer = _containerObj?.tag != widgetContainerTag
-    let data = createLayout({
+    let needContainer = this._containerObj?.tag != this.widgetContainerTag
+    let data = this.createLayout({
                                 needContainer = needContainer
-                                icon = icon || defaultIcon
+                                icon = this.icon || this.defaultIcon
                               })
-    _guiScene.replaceContentFromText(_containerObj, data, data.len(), this)
+    this._guiScene.replaceContentFromText(this._containerObj, data, data.len(), this)
 
     if (needContainer)
-      setContainer(_containerObj.findObject("widget_container"))
+      this.setContainer(this._containerObj.findObject("widget_container"))
     else
-      _updateSubObjects()
+      this._updateSubObjects()
   }
 
   function setText(newText)
   {
-    currentValue = newText
-    update()
+    this.currentValue = newText
+    this.update()
   }
 
   function setValue(value)
   {
-    currentValue = value
-    currentVisibility = value != 0
-    update()
+    this.currentValue = value
+    this.currentVisibility = value != 0
+    this.update()
   }
 
   function setWidgetVisible(value)
   {
-    currentVisibility = value
-    update()
+    this.currentVisibility = value
+    this.update()
   }
 
   function update()
   {
-    validateContent()
+    this.validateContent()
 
-    if (::check_obj(_textObj))
+    if (checkObj(this._textObj))
     {
-      let newText = (currentValue > 0) ? currentValue.tostring() : ""
-      if (::check_obj(_containerObj))
+      let newText = (this.currentValue > 0) ? this.currentValue.tostring() : ""
+      if (checkObj(this._containerObj))
       {
-         _containerObj.widgetClass = (newText == "") ? "" : "text"
-         _containerObj.show(currentVisibility)
-         _containerObj.enable(currentVisibility)
+         this._containerObj.widgetClass = (newText == "") ? "" : "text"
+         this._containerObj.show(this.currentVisibility)
+         this._containerObj.enable(this.currentVisibility)
       }
-      _textObj.setValue(newText)
+      this._textObj.setValue(newText)
     }
   }
 
   function setIcon(newIcon)
   {
-    icon = newIcon
-    if (::check_obj(_iconObj))
-      _iconObj["background-image"] = icon
+    this.icon = newIcon
+    if (checkObj(this._iconObj))
+      this._iconObj["background-image"] = this.icon
   }
 
   function _getTextObj()
   {
-    if (!::check_obj(_containerObj))
+    if (!checkObj(this._containerObj))
       return null
-    let obj = _containerObj.findObject("new_icon_widget_text")
-    if (!::check_obj(obj))
+    let obj = this._containerObj.findObject("new_icon_widget_text")
+    if (!checkObj(obj))
       return null
     return obj
   }
 
   function _getIconObj()
   {
-    if (!::check_obj(_containerObj))
+    if (!checkObj(this._containerObj))
       return null
-    let obj = _containerObj.findObject("new_icon_widget_icon")
-    return ::check_obj(obj) ? obj : null
+    let obj = this._containerObj.findObject("new_icon_widget_icon")
+    return checkObj(obj) ? obj : null
   }
 
   static function getWidgetByObj(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return null
     let widget = obj.getUserData()
     if (widget == null)
       return null
-    if (widget instanceof NewIconWidget)
+    if (widget instanceof ::NewIconWidget)
       return widget
     return null
   }

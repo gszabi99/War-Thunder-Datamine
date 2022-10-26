@@ -1,6 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let regexp2 = require("regexp2")
-let { sin, PI } = require("math")
+let { abs, round, sin, PI } = require("math")
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -11,12 +17,13 @@ let { KGF_TO_NEWTON,
         getPrimaryWeaponsList,
         getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let { doesLocTextExist = @(k) true } = require("dagor.localize")
+let { doesLocTextExist } = require("dagor.localize")
 let { hasLoadedModel } = require("%scripts/hangarModelLoadManager.nut")
 let { unique } = require("%sqstd/underscore.nut")
 let { fileName } = require("%sqstd/path.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 
 /*
@@ -52,7 +59,7 @@ const AFTERBURNER_CHAMBER = 3
   active = false
   // This is saved view mode. It is used to restore
   // view mode after player returns from somewhere.
-  view_mode = ::DM_VIEWER_NONE
+  view_mode = DM_VIEWER_NONE
   unit = null
   crew = null
   unitBlk = null
@@ -62,9 +69,9 @@ const AFTERBURNER_CHAMBER = 3
   difficulty = null
 
   modes = {
-    [::DM_VIEWER_NONE]  = "none",
-    [::DM_VIEWER_ARMOR] = "armor",
-    [::DM_VIEWER_XRAY]  = "xray",
+    [DM_VIEWER_NONE]  = "none",
+    [DM_VIEWER_ARMOR] = "armor",
+    [DM_VIEWER_XRAY]  = "xray",
   }
 
   isVisibleExternalPartsArmor = true
@@ -102,69 +109,69 @@ const AFTERBURNER_CHAMBER = 3
   isDebugBatchExportProcess = false
   isSecondaryModsValid = false
 
-  _currentViewMode = ::DM_VIEWER_NONE
-  function getCurrentViewMode() { return _currentViewMode }
+  _currentViewMode = DM_VIEWER_NONE
+  function getCurrentViewMode() { return this._currentViewMode }
   function setCurrentViewMode(value)
   {
-    _currentViewMode = value
+    this._currentViewMode = value
     ::hangar_set_dm_viewer_mode(value)
-    updateNoPartsNotification()
+    this.updateNoPartsNotification()
   }
 
   function init(handler)
   {
-    screen = [ ::screen_width(), ::screen_height() ]
-    unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
-    offset = [ screen[1] * 0.1, 0 ]
+    this.screen = [ ::screen_width(), ::screen_height() ]
+    this.unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
+    this.offset = [ this.screen[1] * 0.1, 0 ]
 
     let cfgBlk = GUI.get()?.xray
-    absoluteArmorThreshold = cfgBlk?.armor_thickness_absolute_threshold ?? absoluteArmorThreshold
-    relativeArmorThreshold = cfgBlk?.armor_thickness_relative_threshold ?? relativeArmorThreshold
-    showStellEquivForArmorClassesList = (cfgBlk?.show_steel_thickness_equivalent_for_armor_class
+    this.absoluteArmorThreshold = cfgBlk?.armor_thickness_absolute_threshold ?? this.absoluteArmorThreshold
+    this.relativeArmorThreshold = cfgBlk?.armor_thickness_relative_threshold ?? this.relativeArmorThreshold
+    this.showStellEquivForArmorClassesList = (cfgBlk?.show_steel_thickness_equivalent_for_armor_class
       ?? ::DataBlock()) % "o"
 
-    updateUnitInfo()
+    this.updateUnitInfo()
     let timerObj = handler.getObj("dmviewer_hint")
     if (timerObj)
       timerObj.setUserData(handler) //!!FIX ME: it a bad idea link timer to handler.
                                     //better to link all timers here, and switch them off when not active.
 
-    update()
+    this.update()
   }
 
   function updateSecondaryMods()
   {
-    if (isDebugBatchExportProcess) {
-      isSecondaryModsValid = true
+    if (this.isDebugBatchExportProcess) {
+      this.isSecondaryModsValid = true
       return
     }
 
-    if( ! unit)
+    if( ! this.unit)
       return
-    isSecondaryModsValid = ::check_unit_mods_update(unit)
-            && ::check_secondary_weapon_mods_recount(unit)
+    this.isSecondaryModsValid = ::check_unit_mods_update(this.unit)
+            && ::check_secondary_weapon_mods_recount(this.unit)
   }
 
   function onEventSecondWeaponModsUpdated(params)
   {
-    if( ! unit || unit.name != params?.unit.name)
+    if( ! this.unit || this.unit.name != params?.unit.name)
       return
-    isSecondaryModsValid = true
-    resetXrayCache()
-    prevHintParams = {}
-    reinit()
+    this.isSecondaryModsValid = true
+    this.resetXrayCache()
+    this.prevHintParams = {}
+    this.reinit()
   }
 
   function resetXrayCache()
   {
-    xrayDescriptionCache.clear()
+    this.xrayDescriptionCache.clear()
   }
 
   function canUse()
   {
     let hangarUnitName = ::hangar_get_current_unit_name()
     let hangarUnit = ::getAircraftByName(hangarUnitName)
-    return ::has_feature("DamageModelViewer") && hangarUnit
+    return hasFeature("DamageModelViewer") && hangarUnit
   }
 
   function reinit()
@@ -172,95 +179,95 @@ const AFTERBURNER_CHAMBER = 3
     if (!::g_login.isLoggedIn())
       return
 
-    updateUnitInfo()
-    update()
+    this.updateUnitInfo()
+    this.update()
   }
 
   function updateUnitInfo(fircedUnitId = null)
   {
     let unitId = fircedUnitId || ::hangar_get_current_unit_name()
-    if (unit && unitId == unit.name)
+    if (this.unit && unitId == this.unit.name)
       return
-    unit = ::getAircraftByName(unitId)
-    if( ! unit)
+    this.unit = ::getAircraftByName(unitId)
+    if( ! this.unit)
       return
-    crew = ::getCrewByAir(unit)
-    loadUnitBlk()
-    let map = ::getTblValue("xray", unitBlk)
-    xrayRemap = map ? ::u.map(map, function(val) { return val }) : {}
-    armorClassToSteel = collectArmorClassToSteelMuls()
-    resetXrayCache()
-    clearHint()
-    difficulty = ::get_difficulty_by_ediff(::get_current_ediff())
-    updateSecondaryMods()
+    this.crew = ::getCrewByAir(this.unit)
+    this.loadUnitBlk()
+    let map = getTblValue("xray", this.unitBlk)
+    this.xrayRemap = map ? ::u.map(map, function(val) { return val }) : {}
+    this.armorClassToSteel = this.collectArmorClassToSteelMuls()
+    this.resetXrayCache()
+    this.clearHint()
+    this.difficulty = ::get_difficulty_by_ediff(::get_current_ediff())
+    this.updateSecondaryMods()
   }
 
   function updateNoPartsNotification()
   {
     let isShow = hasLoadedModel()
-      && getCurrentViewMode() == ::DM_VIEWER_ARMOR && ::hangar_get_dm_viewer_parts_count() == 0
+      && this.getCurrentViewMode() == DM_VIEWER_ARMOR && ::hangar_get_dm_viewer_parts_count() == 0
     let handler = ::handlersManager.getActiveBaseHandler()
-    if (!handler || !::check_obj(handler.scene))
+    if (!handler || !checkObj(handler.scene))
       return
     let obj = handler.scene.findObject("unit_has_no_armoring")
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
     obj.show(isShow)
-    clearHint()
+    this.clearHint()
   }
 
   function loadUnitBlk()
   {
     // Unit weapons and sensors are part of unit blk, should be unloaded togeter with unitBlk
-    clearCachedUnitBlkNodes()
-    unitBlk = ::get_full_unit_blk(unit.name)
+    this.clearCachedUnitBlkNodes()
+    this.unitBlk = ::get_full_unit_blk(this.unit.name)
   }
 
   function getUnitWeaponList()
   {
-    if(unitWeaponBlkList == null)
-      recacheWeapons()
-    return unitWeaponBlkList
+    if(this.unitWeaponBlkList == null)
+      this.recacheWeapons()
+    return this.unitWeaponBlkList
   }
 
   function recacheWeapons()
   {
-    unitWeaponBlkList = []
-    if( ! unitBlk)
+    this.unitWeaponBlkList = []
+    if( ! this.unitBlk)
       return
 
-    let primaryList = [ getLastPrimaryWeapon(unit) ]
-    foreach (modName in getPrimaryWeaponsList(unit))
+    let primaryList = [ getLastPrimaryWeapon(this.unit) ]
+    foreach (modName in getPrimaryWeaponsList(this.unit))
       ::u.appendOnce(modName, primaryList)
 
     foreach(modName in primaryList)
-      foreach (weapon in getCommonWeapons(unitBlk, modName))
+      foreach (weapon in getCommonWeapons(this.unitBlk, modName))
         if (weapon?.blk && !weapon?.dummy)
-          ::u.appendOnce(weapon, unitWeaponBlkList, false, compareWeaponFunc)
+          ::u.appendOnce(weapon, this.unitWeaponBlkList, false, compareWeaponFunc)
 
-    let weapons = getUnitWeapons(unitBlk)
+    let weapons = getUnitWeapons(this.unitBlk)
     foreach (weap in weapons)
       if (weap?.blk && !weap?.dummy)
-        ::u.appendOnce(::u.copy(weap), unitWeaponBlkList, false, compareWeaponFunc)
+        ::u.appendOnce(::u.copy(weap), this.unitWeaponBlkList, false, compareWeaponFunc)
   }
 
   function getUnitSensorsList()
   {
-    if (unitSensorsBlkList == null)
+    if (this.unitSensorsBlkList == null)
     {
-      local sensorsBlk = findAnyModEffectValue("sensors")
+      local sensorsBlk = this.findAnyModEffectValue("sensors")
       let isMod = sensorsBlk != null
-      sensorsBlk = sensorsBlk ?? unitBlk?.sensors
+      sensorsBlk = sensorsBlk ?? this.unitBlk?.sensors
 
-      unitSensorsBlkList = []
+      this.unitSensorsBlkList = []
       for (local b = 0; b < (sensorsBlk?.blockCount() ?? 0); b++)
-        unitSensorsBlkList.append(sensorsBlk.getBlock(b))
+        this.unitSensorsBlkList.append(sensorsBlk.getBlock(b))
 
-      if (isDebugBatchExportProcess && isMod && unitBlk?.sensors != null)
-        for (local b = 0; b < unitBlk.sensors.blockCount(); b++)
-          ::u.appendOnce(unitBlk.sensors.getBlock(b), unitSensorsBlkList, false, ::u.isEqual)
+      if (this.isDebugBatchExportProcess && isMod && this.unitBlk?.sensors != null)
+        for (local b = 0; b < this.unitBlk.sensors.blockCount(); b++)
+          ::u.appendOnce(this.unitBlk.sensors.getBlock(b), this.unitSensorsBlkList, false, ::u.isEqual)
     }
-    return unitSensorsBlkList
+    return this.unitSensorsBlkList
   }
 
   function collectArmorClassToSteelMuls()
@@ -268,12 +275,12 @@ const AFTERBURNER_CHAMBER = 3
     let res = {}
     let armorClassesBlk = blkOptFromPath("gameData/damage_model/armor_classes.blk")
     let steelArmorQuality = armorClassesBlk?.ship_structural_steel.armorQuality ?? 0
-    if (unitBlk?.DamageParts == null || steelArmorQuality == 0)
+    if (this.unitBlk?.DamageParts == null || steelArmorQuality == 0)
       return res
-    for (local i = 0; i < unitBlk.DamageParts.blockCount(); i++)
+    for (local i = 0; i < this.unitBlk.DamageParts.blockCount(); i++)
     {
-      let blk = unitBlk.DamageParts.getBlock(i)
-      if (showStellEquivForArmorClassesList.contains(blk?.armorClass) && res?[blk.armorClass] == null)
+      let blk = this.unitBlk.DamageParts.getBlock(i)
+      if (this.showStellEquivForArmorClassesList.contains(blk?.armorClass) && res?[blk.armorClass] == null)
         res[blk.armorClass] <- (armorClassesBlk?[blk.armorClass].armorQuality ?? 0) / steelArmorQuality
     }
     return res
@@ -281,37 +288,37 @@ const AFTERBURNER_CHAMBER = 3
 
   function toggle(state = null)
   {
-    if (state == view_mode)
+    if (state == this.view_mode)
       return
 
-    view_mode =
-      (state == null) ? (( view_mode + 1 ) % modes.len()) :
-      (state in modes) ? state :
-      ::DM_VIEWER_NONE
+    this.view_mode =
+      (state == null) ? (( this.view_mode + 1 ) % this.modes.len()) :
+      (state in this.modes) ? state :
+      DM_VIEWER_NONE
 
     //need to update active status before repaint
-    if (!update() && active)
-      show()
-    if (!active || view_mode == ::DM_VIEWER_NONE)
-      clearHint()
+    if (!this.update() && this.active)
+      this.show()
+    if (!this.active || this.view_mode == DM_VIEWER_NONE)
+      this.clearHint()
   }
 
   function show(vis = true)
   {
-    active = vis
-    let viewMode = (active && canUse()) ? view_mode : ::DM_VIEWER_NONE
-    setCurrentViewMode(viewMode)
-    if (!active)
-      clearHint()
-    repaint()
+    this.active = vis
+    let viewMode = (this.active && this.canUse()) ? this.view_mode : DM_VIEWER_NONE
+    this.setCurrentViewMode(viewMode)
+    if (!this.active)
+      this.clearHint()
+    this.repaint()
   }
 
   function update()
   {
-    updateNoPartsNotification()
+    this.updateNoPartsNotification()
 
-    local newActive = canUse() && !::handlersManager.isAnyModalHandlerActive()
-    if (!newActive && !active) //no need to check other conditions when not canUse and not active.
+    local newActive = this.canUse() && !::handlersManager.isAnyModalHandlerActive()
+    if (!newActive && !this.active) //no need to check other conditions when not canUse and not active.
       return false
 
     let handler = ::handlersManager.getActiveBaseHandler()
@@ -319,14 +326,18 @@ const AFTERBURNER_CHAMBER = 3
     if (topMenuHandler.value?.isSceneActive() ?? false)
       newActive = newActive && topMenuHandler.value.canShowDmViewer()
 
-    if (newActive == active)
+    if (newActive == this.active)
     {
-      repaint()
+      this.repaint()
       return false
     }
 
-    show(newActive)
+    this.show(newActive)
     return true
+  }
+
+  function needShowExtHints() {
+    return ::load_local_account_settings("dmViewver/needShowExtHints", true)
   }
 
   function repaint()
@@ -335,68 +346,76 @@ const AFTERBURNER_CHAMBER = 3
     if (!handler)
       return
 
-    local obj = ::showBtn("air_info_dmviewer_listbox", canUse(), handler.scene)
-    if(!::checkObj(obj))
+    local obj = ::showBtn("air_info_dmviewer_listbox", this.canUse(), handler.scene)
+    if(!checkObj(obj))
       return
 
-    obj.setValue(view_mode)
-    obj.enable(active)
+    obj.setValue(this.view_mode)
+    obj.enable(this.active)
 
     // Protection analysis button
-    if (::has_feature("DmViewerProtectionAnalysis"))
+    if (hasFeature("DmViewerProtectionAnalysis"))
     {
       obj = handler.scene.findObject("dmviewer_protection_analysis_btn")
-      if (::check_obj(obj))
-        obj.show(view_mode == ::DM_VIEWER_ARMOR && (unit?.unitType.canShowProtectionAnalysis() ?? false))
+      if (checkObj(obj))
+        obj.show(this.view_mode == DM_VIEWER_ARMOR && (this.unit?.unitType.canShowProtectionAnalysis() ?? false))
     }
 
     // Outer parts visibility toggle in Armor and Xray modes
-    if (::has_feature("DmViewerExternalArmorHiding"))
+    if (hasFeature("DmViewerExternalArmorHiding"))
     {
-      let isTankOrShip = unit != null && (unit.isTank() || unit.isShipOrBoat())
+      let isTankOrShip = this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat())
       obj = handler.scene.findObject("dmviewer_show_external_dm")
-      if (::check_obj(obj))
+      if (checkObj(obj))
       {
-        let isShowOption = view_mode == ::DM_VIEWER_ARMOR && isTankOrShip
+        let isShowOption = this.view_mode == DM_VIEWER_ARMOR && isTankOrShip
         obj.show(isShowOption)
         if (isShowOption)
-          obj.setValue(isVisibleExternalPartsArmor)
+          obj.setValue(this.isVisibleExternalPartsArmor)
       }
       obj = handler.scene.findObject("dmviewer_show_extra_xray")
-      if (::check_obj(obj))
+      if (checkObj(obj))
       {
-        let isShowOption = view_mode == ::DM_VIEWER_XRAY && isTankOrShip
+        let isShowOption = this.view_mode == DM_VIEWER_XRAY && isTankOrShip
         obj.show(isShowOption)
         if (isShowOption)
-          obj.setValue(isVisibleExternalPartsXray)
+          obj.setValue(this.isVisibleExternalPartsXray)
       }
+    }
+
+    obj = handler.scene.findObject("dmviewer_show_extended_hints")
+    if (obj?.isValid()) {
+      let isShowOption = this.view_mode == DM_VIEWER_XRAY && this.unit.isShipOrBoat()
+      obj.show(isShowOption)
+      if (isShowOption)
+        obj.setValue(this.needShowExtHints())
     }
 
     // Customization navbar button
     obj = handler.scene.findObject("btn_dm_viewer")
-    if(!::checkObj(obj))
+    if(!checkObj(obj))
       return
 
-    let modeNameCur  = modes[ view_mode  ]
-    let modeNameNext = modes[ ( view_mode + 1 ) % modes.len() ]
+    let modeNameCur  = this.modes[ this.view_mode  ]
+    let modeNameNext = this.modes[ ( this.view_mode + 1 ) % this.modes.len() ]
 
-    obj.tooltip = ::loc("mainmenu/viewDamageModel/tooltip_" + modeNameNext)
-    obj.setValue(::loc("mainmenu/btn_dm_viewer_" + modeNameNext))
+    obj.tooltip = loc("mainmenu/viewDamageModel/tooltip_" + modeNameNext)
+    obj.setValue(loc("mainmenu/btn_dm_viewer_" + modeNameNext))
 
     let objIcon = obj.findObject("btn_dm_viewer_icon")
-    if (::checkObj(objIcon))
+    if (checkObj(objIcon))
       objIcon["background-image"] = "#ui/gameuiskin#btn_dm_viewer_" + modeNameCur + ".svg"
   }
 
   function clearHint()
   {
-    updateHint({ thickness = 0, name = null, posX = 0, posY = 0})
+    this.updateHint({ thickness = 0, name = null, posX = 0, posY = 0})
   }
 
   function clearCachedUnitBlkNodes()
   {
-    unitWeaponBlkList = null
-    unitSensorsBlkList = null
+    this.unitWeaponBlkList = null
+    this.unitSensorsBlkList = null
   }
 
   function getHintObj()
@@ -405,27 +424,27 @@ const AFTERBURNER_CHAMBER = 3
     if (!handler)
       return null
     let res = handler.scene.findObject("dmviewer_hint")
-    return ::check_obj(res) ? res : null
+    return checkObj(res) ? res : null
   }
 
   function resetPrevHint()
   {
-    prevHintParams = {}
+    this.prevHintParams = {}
   }
 
   function hasPrevHint()
   {
-    return prevHintParams.len() != 0
+    return this.prevHintParams.len() != 0
   }
 
   function updateHint(params)
   {
-    if (!active)
+    if (!this.active)
     {
-      if (hasPrevHint())
+      if (this.hasPrevHint())
       {
-        resetPrevHint()
-        let hintObj = getHintObj()
+        this.resetPrevHint()
+        let hintObj = this.getHintObj()
         if (hintObj)
           hintObj.show(false)
       }
@@ -435,12 +454,12 @@ const AFTERBURNER_CHAMBER = 3
     local needUpdatePos = false
     local needUpdateContent = false
 
-    if(view_mode == ::DM_VIEWER_XRAY)
+    if(this.view_mode == DM_VIEWER_XRAY)
       // change tooltip info only for new unit part
-      needUpdateContent = (::getTblValue("name", params, true) != ::getTblValue("name", prevHintParams, false))
+      needUpdateContent = (getTblValue("name", params, true) != getTblValue("name", this.prevHintParams, false))
     else
       foreach (key, val in params)
-        if (val != ::getTblValue(key, prevHintParams))
+        if (val != getTblValue(key, this.prevHintParams))
         {
           if (key == "posX" || key == "posY")
             needUpdatePos = true
@@ -450,66 +469,81 @@ const AFTERBURNER_CHAMBER = 3
 
     if (!needUpdatePos && !needUpdateContent)
       return
-    prevHintParams = params
+    this.prevHintParams = params
 
-    let obj = getHintObj()
+    let obj = this.getHintObj()
     if(!obj)
       return
     if (needUpdatePos && !needUpdateContent)
-      return placeHint(obj)
+      return this.placeHint(obj)
 
-    let nameId = getPartNameId(params)
+    let nameId = this.getPartNameId(params)
     let isVisible = nameId != ""
     obj.show(isVisible)
     if (!isVisible)
       return
 
     local info = { title="", desc="" }
-    let isUseCache = view_mode == ::DM_VIEWER_XRAY && !isDebugMode
-    let cacheId = ::getTblValue("name", params, "")
+    let isUseCache = this.view_mode == DM_VIEWER_XRAY && !this.isDebugMode
+    let cacheId = getTblValue("name", params, "")
 
-    if (isUseCache && (cacheId in xrayDescriptionCache))
-      info = xrayDescriptionCache[cacheId]
+    if (isUseCache && (cacheId in this.xrayDescriptionCache))
+      info = this.xrayDescriptionCache[cacheId]
     else
     {
-      info = getPartTooltipInfo(nameId, params)
+      info = this.getPartTooltipInfo(nameId, params)
       info.title = ::stringReplace(info.title, " ", ::nbsp)
       info.desc  = ::stringReplace(info.desc,  " ", ::nbsp)
 
       if (isUseCache)
-        xrayDescriptionCache[cacheId] <- info
+        this.xrayDescriptionCache[cacheId] <- info
     }
 
     obj.findObject("dmviewer_title").setValue(info.title)
-    obj.findObject("dmviewer_desc").setValue(info.desc)
-    placeHint(obj)
+
+    let descObj = obj.findObject("dmviewer_desc")
+    descObj.setValue(info.desc)
+
+    let needShowExtHint = info.extDesc != ""
+    let extHintObj = obj.findObject("dmviewer_ext_hint")
+    extHintObj.show(needShowExtHint)
+    if (needShowExtHint) {
+      let handler = ::handlersManager.getActiveBaseHandler()
+      handler.guiScene.applyPendingChanges(false)
+      extHintObj.width = max(extHintObj.getSize()[0], descObj.getSize()[0])
+      obj.findObject("dmviewer_ext_hint_desc").setValue(info.extDesc)
+      obj.findObject("dmviewer_ext_hint_icon")["background-image"] = info.extIcon
+      obj.findObject("dmviewer_ext_hint_shortcut").setValue(info.extShortcut)
+    }
+
+    this.placeHint(obj)
   }
 
   function placeHint(obj)
   {
-    if(!::checkObj(obj))
+    if(!checkObj(obj))
       return
     let guiScene = obj.getScene()
 
     guiScene.setUpdatesEnabled(true, true)
     let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     let size = obj.getSize()
-    let posX = clamp(cursorPos[0] + offset[0], unsafe[0], max(unsafe[0], screen[0] - unsafe[0] - size[0]))
-    let posY = clamp(cursorPos[1] + offset[1], unsafe[1], max(unsafe[1], screen[1] - unsafe[1] - size[1]))
+    let posX = clamp(cursorPos[0] + this.offset[0], this.unsafe[0], max(this.unsafe[0], this.screen[0] - this.unsafe[0] - size[0]))
+    let posY = clamp(cursorPos[1] + this.offset[1], this.unsafe[1], max(this.unsafe[1], this.screen[1] - this.unsafe[1] - size[1]))
     obj.pos = format("%d, %d", posX, posY)
   }
 
   function getPartNameId(params)
   {
-    local nameId = ::getTblValue("name", params) || ""
-    if (view_mode != ::DM_VIEWER_XRAY || nameId == "")
+    local nameId = getTblValue("name", params) || ""
+    if (this.view_mode != DM_VIEWER_XRAY || nameId == "")
       return nameId
 
-    nameId = ::getTblValue(nameId, xrayRemap, nameId)
-    foreach(re in prepareNameId)
+    nameId = getTblValue(nameId, this.xrayRemap, nameId)
+    foreach(re in this.prepareNameId)
       nameId = re.pattern.replace(re.replace, nameId)
     if (nameId == "gunner")
-      nameId += "_" + ::getUnitTypeTextByUnit(unit).tolower()
+      nameId += "_" + ::getUnitTypeTextByUnit(this.unit).tolower()
     return nameId
   }
 
@@ -521,16 +555,16 @@ const AFTERBURNER_CHAMBER = 3
     let idxSeparator = nameId.indexof("_")
     if(idxSeparator)
       nameVariations.append(nameId.slice(0, idxSeparator))
-    if(unit != null)
-      nameVariations.append(::getUnitTypeText(unit.esUnitType).tolower() + "_" + nameId)
-    if (unit?.esUnitType ==::ES_UNIT_TYPE_BOAT)
+    if(this.unit != null)
+      nameVariations.append(::getUnitTypeText(this.unit.esUnitType).tolower() + "_" + nameId)
+    if (this.unit?.esUnitType ==ES_UNIT_TYPE_BOAT)
       nameVariations.append($"ship_{nameId}")
 
     foreach(localizationSource in localizationSources)
       foreach(nameVariant in nameVariations)
       {
         let locId = "".concat(localizationSource, nameVariant)
-        localizedName = doesLocTextExist(locId) ? ::loc(locId, "") : ""
+        localizedName = doesLocTextExist(locId) ? loc(locId, "") : ""
         if(localizedName != "")
           return ::g_string.utf8ToUpper(localizedName, 1);
       }
@@ -540,14 +574,17 @@ const AFTERBURNER_CHAMBER = 3
   function getPartLocNameByBlkFile(locKeyPrefix, blkFilePath, blk)
   {
     let nameLocId = $"{locKeyPrefix}/{blk?.nameLocId ?? fileName(blkFilePath).slice(0, -4)}"
-    return doesLocTextExist(nameLocId) ? ::loc(nameLocId) : (blk?.name ?? nameLocId)
+    return doesLocTextExist(nameLocId) ? loc(nameLocId) : (blk?.name ?? nameLocId)
   }
 
   function getPartTooltipInfo(nameId, params)
   {
     let res = {
-      title = ""
-      desc  = ""
+      title       = ""
+      desc        = ""
+      extDesc     = ""
+      extIcon     = ""
+      extShortcut = ""
     }
 
     let isHuman = nameId == "steel_tankman"
@@ -556,81 +593,201 @@ const AFTERBURNER_CHAMBER = 3
 
     params.nameId <- nameId
 
-    switch (view_mode)
+    switch (this.view_mode)
     {
-      case ::DM_VIEWER_ARMOR:
-        res.desc = getDescriptionInArmorMode(params)
+      case DM_VIEWER_ARMOR:
+        res.desc = this.getDescriptionInArmorMode(params)
         break
-      case ::DM_VIEWER_XRAY:
-        res.desc = getDescriptionInXrayMode(params)
+      case DM_VIEWER_XRAY:
+        res.desc = this.getDescriptionInXrayMode(params)
+        res.__update(this.getExtendedHintInfo(params))
         break
-      default:
     }
 
-    res.title = getPartNameLocText(params?.partLocId ?? params.nameId)
+    res.title = this.getPartNameLocText(params?.partLocId ?? params.nameId)
 
     return res
+  }
+
+  function getExtendedHintInfo(params) {
+    if (!this.unit?.isShipOrBoat() || !this.unitBlk)
+      return {}
+
+    if (!this.needShowExtHints())
+      return {}
+
+    if (!hasFeature("XRayDescription") || !params?.name)
+      return {}
+
+    let partType = params?.nameId ?? ""
+    let partName = params.name
+
+    let extDescLocKey = this.getExtHintLocKey(partType, partName)
+
+    return {
+      extDesc = loc(extDescLocKey)
+      extShortcut = loc($"{extDescLocKey}/shortcut", "")
+      extIcon = this.getExtHintIcon(partType)
+    }
+  }
+
+  function getExtHintIcon(partType) {
+    switch (partType) {
+      case "ammo_turret":
+        return "#ui/gameuiskin#icon_weapons_relocation_in_progress.svg"
+
+      case "bridge":
+        return "#ui/gameuiskin#ship_crew_driver.svg"
+
+      case "engine_room":
+        return "#ui/gameuiskin#engine_state_indicator.svg"
+
+      case "transmission":
+        return "#ui/gameuiskin#ship_transmission_state_indicator.svg"
+
+      case "steering_gear":
+        return "#ui/gameuiskin#ship_steering_gear_state_indicator.svg"
+
+      case "ammunition_storage":
+      case "ammunition_storage_shells":
+      case "ammunition_storage_charges":
+      case "ammunition_storage_aux":
+        return "#ui/gameuiskin#ship_ammo_wetting.png"
+    }
+    return ""
+  }
+
+  function isStockTorpedo(partName) {
+    let ammoCount = this.unitBlk?.ammoStowages.blockCount() ?? 0
+    for (local i = 0; i < ammoCount; ++i) {
+      let ammo = this.unitBlk.ammoStowages.getBlock(i)
+      if (ammo?.entityMunition != "torpedo") // skipping blocks without torpedos
+        continue
+
+      foreach (shells in (ammo % "shells"))
+        for (local j = 0; j < shells.blockCount(); ++j)
+          if (partName == shells.getBlock(j).getBlockName())
+            return shells?.isStock ?? false
+    }
+    return false
+  }
+
+  function getExtHintLocKey(partType, partName) {
+    switch (partType) {
+      case "ammo_turret":
+      case "pump":
+      case "bridge":
+      case "radio_station":
+      case "fire_control_room":
+      case "aircraft":
+      case "engine_room":
+      case "transmission":
+      case "funnel":
+      case "steering_gear":
+      case "fuel_tank":
+      case "coal_bunker":
+      case "mine":
+      case "depth_charge":
+      case "torpedo":
+      case "elevator":
+      case "tt":
+      case "antenna_target_location":
+      case "ammunition_storage":
+      case "antenna_target_tagging":
+      case "fire_director":
+      case "rangefinder":
+      case "catapult":
+        return partType != "torpedo" || this.isStockTorpedo(partName)
+          ? $"xray_ext_hint/{partType}"
+          : ""
+
+      case "main_caliber_turret":
+      case "auxiliary_caliber_turret":
+      case "aa_turret":
+        return "xray_ext_hint/turret"
+
+      case "engine":
+        return "xray_ext_hint/engine_room"
+
+      case "catapult_mount":
+        return "xray_ext_hint/catapult"
+
+      case "ammunition_storage_shells":
+      case "ammunition_storage_charges":
+      case "ammunition_storage_aux":
+        return "xray_ext_hint/ammunition_storage"
+
+      case "antenna_target_tagging_mount":
+        return "xray_ext_hint/antenna_target_tagging"
+
+      case "fire_director_mount":
+        return "xray_ext_hint/fire_director"
+
+      case "rangefinder_mount":
+        return "xray_ext_hint/rangefinder"
+    }
+    return ""
   }
 
   function getDescriptionInArmorMode(params)
   {
     let desc = []
 
-    let solid = ::getTblValue("solid", params)
-    let variableThickness = ::getTblValue("variable_thickness", params)
-    let thickness = ::getTblValue("thickness", params)
-    let effectiveThickness = ::getTblValue("effective_thickness", params)
+    let solid = getTblValue("solid", params)
+    let variableThickness = getTblValue("variable_thickness", params)
+    let thickness = getTblValue("thickness", params)
+    let effectiveThickness = getTblValue("effective_thickness", params)
 
     if (solid && variableThickness)
     {
-      desc.append(::loc("armor_class/variable_thickness_armor"))
+      desc.append(loc("armor_class/variable_thickness_armor"))
     }
     else if (thickness)
     {
       let thicknessStr = thickness.tostring()
-      desc.append(::loc("armor_class/thickness") + ::nbsp +
-        ::colorize("activeTextColor", thicknessStr) + ::nbsp + ::loc("measureUnits/mm"))
+      desc.append(loc("armor_class/thickness") + ::nbsp +
+        colorize("activeTextColor", thicknessStr) + ::nbsp + loc("measureUnits/mm"))
     }
 
-    let normalAngleValue = ::getTblValue("normal_angle", params, null)
+    let normalAngleValue = getTblValue("normal_angle", params, null)
     if (normalAngleValue != null)
-      desc.append(::loc("armor_class/normal_angle") + ::nbsp +
-        (normalAngleValue+0.5).tointeger() + ::nbsp + ::loc("measureUnits/deg"))
+      desc.append(loc("armor_class/normal_angle") + ::nbsp +
+        (normalAngleValue+0.5).tointeger() + ::nbsp + loc("measureUnits/deg"))
 
-    let angleValue = ::getTblValue("angle", params, null)
+    let angleValue = getTblValue("angle", params, null)
     if (angleValue != null)
-      desc.append(::loc("armor_class/impact_angle") + ::nbsp + ::round(angleValue) + ::nbsp + ::loc("measureUnits/deg"))
+      desc.append(loc("armor_class/impact_angle") + ::nbsp + round(angleValue) + ::nbsp + loc("measureUnits/deg"))
 
     if (effectiveThickness)
     {
       if (solid)
       {
-        desc.append(::loc("armor_class/armor_dimensions_at_point") + ::nbsp +
-          ::colorize("activeTextColor", ::round(effectiveThickness)) +
-          ::nbsp + ::loc("measureUnits/mm"))
+        desc.append(loc("armor_class/armor_dimensions_at_point") + ::nbsp +
+          colorize("activeTextColor", round(effectiveThickness)) +
+          ::nbsp + loc("measureUnits/mm"))
 
-        if ((armorClassToSteel?[params.name] ?? 0) != 0)
+        if ((this.armorClassToSteel?[params.name] ?? 0) != 0)
         {
-          let equivSteelMm = ::round(effectiveThickness * armorClassToSteel[params.name])
-          desc.append(::loc("shop/armorThicknessEquivalent/steel",
-            { thickness = "".concat(::colorize("activeTextColor", equivSteelMm), " ", ::loc("measureUnits/mm")) }))
+          let equivSteelMm = round(effectiveThickness * this.armorClassToSteel[params.name])
+          desc.append(loc("shop/armorThicknessEquivalent/steel",
+            { thickness = "".concat(colorize("activeTextColor", equivSteelMm), " ", loc("measureUnits/mm")) }))
         }
       }
       else
       {
         let effectiveThicknessClamped = min(effectiveThickness,
-          min((relativeArmorThreshold * thickness).tointeger(), absoluteArmorThreshold))
+          min((this.relativeArmorThreshold * thickness).tointeger(), this.absoluteArmorThreshold))
 
-        desc.append(::loc("armor_class/effective_thickness") + ::nbsp +
+        desc.append(loc("armor_class/effective_thickness") + ::nbsp +
           (effectiveThicknessClamped < effectiveThickness ? ">" : "") +
-          ::round(effectiveThicknessClamped) + ::nbsp + ::loc("measureUnits/mm"))
+          round(effectiveThicknessClamped) + ::nbsp + loc("measureUnits/mm"))
       }
     }
 
-    if(isDebugMode)
-      desc.append("\n" + ::colorize("badTextColor", params.nameId))
+    if(this.isDebugMode)
+      desc.append("\n" + colorize("badTextColor", params.nameId))
 
-    let rawPartName = ::getTblValue("raw_name", params)
+    let rawPartName = getTblValue("raw_name", params)
     if (rawPartName)
       desc.append(rawPartName)
 
@@ -682,10 +839,10 @@ const AFTERBURNER_CHAMBER = 3
 
   function getDescriptionInXrayMode(params)
   {
-    if (!unit || !unitBlk)
+    if (!this.unit || !this.unitBlk)
       return ""
 
-    if (!::has_feature("XRayDescription") || !params?.name)
+    if (!hasFeature("XRayDescription") || !params?.name)
       return ""
 
     let partId = params?.nameId ?? ""
@@ -701,73 +858,73 @@ const AFTERBURNER_CHAMBER = 3
       case "gunner_tank":
       case "machine_gunner":
       case "loader":
-        if (unit.esUnitType != ::ES_UNIT_TYPE_TANK)
+        if (this.unit.esUnitType != ES_UNIT_TYPE_TANK)
           break
-        let memberBlk = getCrewMemberBlkByDMPart(unitBlk.tank_crew, partName)
+        let memberBlk = this.getCrewMemberBlkByDMPart(this.unitBlk.tank_crew, partName)
         if (!memberBlk)
           break
-        let memberRole = crewMemberToRole[partId]
+        let memberRole = this.crewMemberToRole[partId]
         let duplicateRoles = (memberBlk % "role")
           .filter(@(r) r != memberRole)
-          .map(@(r) ::loc($"duplicate_role/{r}", ""))
+          .map(@(r) loc($"duplicate_role/{r}", ""))
           .filter(@(n) n != "")
         desc.extend(duplicateRoles)
         break
 
       case "engine":              // Engines
-        switch (unit.esUnitType)
+        switch (this.unit.esUnitType)
         {
-          case ::ES_UNIT_TYPE_TANK:
-            let infoBlk = findAnyModEffectValue("engine") ?? unitBlk?.VehiclePhys.engine
+          case ES_UNIT_TYPE_TANK:
+            let infoBlk = this.findAnyModEffectValue("engine") ?? this.unitBlk?.VehiclePhys.engine
             if(infoBlk)
             {
-              let engineModelName = getEngineModelName(infoBlk)
+              let engineModelName = this.getEngineModelName(infoBlk)
               desc.append(engineModelName)
 
               let engineConfig = []
               let engineType = infoBlk?.type ?? (engineModelName != "" ? "diesel" : "")
               if (engineType != "")
-                engineConfig.append(::loc($"engine_type/{engineType}"))
+                engineConfig.append(loc($"engine_type/{engineType}"))
               if (infoBlk?.configuration)
-                engineConfig.append(::loc("engine_configuration/" + infoBlk.configuration))
-              let typeText = ::loc("ui/comma").join(engineConfig, true)
+                engineConfig.append(loc("engine_configuration/" + infoBlk.configuration))
+              let typeText = loc("ui/comma").join(engineConfig, true)
               if (typeText != "")
-                desc.append("".concat(::loc("plane_engine_type"), ::loc("ui/colon"), typeText))
+                desc.append("".concat(loc("plane_engine_type"), loc("ui/colon"), typeText))
 
               if (infoBlk?.displacement)
-                desc.append(::loc("engine_displacement")
-                          + ::loc("ui/colon")
-                          + ::loc("measureUnits/displacement", { num = infoBlk.displacement.tointeger() }))
+                desc.append(loc("engine_displacement")
+                          + loc("ui/colon")
+                          + loc("measureUnits/displacement", { num = infoBlk.displacement.tointeger() }))
             }
 
-            if ( ! isSecondaryModsValid)
-              updateSecondaryMods()
+            if ( ! this.isSecondaryModsValid)
+              this.updateSecondaryMods()
 
-            let currentParams = unit?.modificators[difficulty.crewSkillName]
-            if (isSecondaryModsValid && currentParams && currentParams.horsePowers && currentParams.maxHorsePowersRPM)
+            let currentParams = this.unit?.modificators[this.difficulty.crewSkillName]
+            if (this.isSecondaryModsValid && currentParams && currentParams.horsePowers && currentParams.maxHorsePowersRPM)
             {
-              desc.append(format("%s %s (%s %d %s)", ::loc("engine_power") + ::loc("ui/colon"),
+              desc.append(format("%s %s (%s %d %s)", loc("engine_power") + loc("ui/colon"),
                 ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(currentParams.horsePowers),
-                ::loc("shop/unitValidCondition"), currentParams.maxHorsePowersRPM.tointeger(), ::loc("measureUnits/rpm")))
+                loc("shop/unitValidCondition"), currentParams.maxHorsePowersRPM.tointeger(), loc("measureUnits/rpm")))
             }
             if (infoBlk)
-              desc.append(getMassInfo(infoBlk))
+              desc.append(this.getMassInfo(infoBlk))
           break;
 
-          case ::ES_UNIT_TYPE_AIRCRAFT:
-          case ::ES_UNIT_TYPE_HELICOPTER:
-            local partIndex = ::to_integer_safe(trimBetween(partName, "engine", "_"), -1, false)
+          case ES_UNIT_TYPE_AIRCRAFT:
+          case ES_UNIT_TYPE_HELICOPTER:
+            local partIndex = ::to_integer_safe(this.trimBetween(partName, "engine", "_"), -1, false)
             if (partIndex <= 0)
               break
 
-            let fmBlk = ::get_fm_file(unit.name, unitBlk)
+            let fmBlk = ::get_fm_file(this.unit.name, this.unitBlk)
             if (!fmBlk)
               break
 
             partIndex-- //engine1_dm -> Engine0
 
-            let infoBlk = getInfoBlk(partName)
-            desc.append(getEngineModelName(infoBlk))
+            let infoBlk = this.getInfoBlk(partName)
+            desc.append(this.getEngineModelName(infoBlk))
 
             let enginePartId = infoBlk?.part_id ?? ("Engine" + partIndex.tostring())
             let engineTypeId = "EngineType" + (fmBlk?[enginePartId].Type ?? -1).tostring()
@@ -785,33 +942,33 @@ const AFTERBURNER_CHAMBER = 3
             if (!engineMainBlk)
               break
             let engineInfo = []
-            local engineType = getFirstFound([infoBlk, engineMainBlk], @(b) b?.Type ?? b?.type, "").tolower()
-            if (unit.esUnitType == ::ES_UNIT_TYPE_HELICOPTER && engineType == "turboprop")
+            local engineType = this.getFirstFound([infoBlk, engineMainBlk], @(b) b?.Type ?? b?.type, "").tolower()
+            if (this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER && engineType == "turboprop")
               engineType = "turboshaft"
             if (engineType != "")
-              engineInfo.append(::loc($"plane_engine_type/{engineType}"))
+              engineInfo.append(loc($"plane_engine_type/{engineType}"))
             if (engineType == "inline" || engineType == "radial")
             {
-              let cylinders = getFirstFound([infoBlk, engineMainBlk], @(b) b?.Cylinders ?? b?.cylinders, 0)
+              let cylinders = this.getFirstFound([infoBlk, engineMainBlk], @(b) b?.Cylinders ?? b?.cylinders, 0)
               if (cylinders > 0)
-                engineInfo.append(cylinders + ::loc("engine_cylinders_postfix"))
+                engineInfo.append(cylinders + loc("engine_cylinders_postfix"))
             }
-            let typeText = ::loc("ui/comma").join(engineInfo, true)
+            let typeText = loc("ui/comma").join(engineInfo, true)
             if (typeText != "")
-              desc.append("".concat(::loc("plane_engine_type"), ::loc("ui/colon"), typeText))
+              desc.append("".concat(loc("plane_engine_type"), loc("ui/colon"), typeText))
 
             // display cooling type only for Inline and Radial engines
             if ((engineType == "inline" || engineType == "radial")
                 && "IsWaterCooled" in engineMainBlk)           // Plane : Engine : Cooling
             {
               let coolingKey = engineMainBlk?.IsWaterCooled ? "water" : "air"
-              desc.append(::loc("plane_engine_cooling_type") + ::loc("ui/colon")
-              + ::loc("plane_engine_cooling_type_" + coolingKey))
+              desc.append(loc("plane_engine_cooling_type") + loc("ui/colon")
+              + loc("plane_engine_cooling_type_" + coolingKey))
             }
 
-            if (!isSecondaryModsValid)
+            if (!this.isSecondaryModsValid)
             {
-              updateSecondaryMods()
+              this.updateSecondaryMods()
               break;
             }
             // calculating power values
@@ -829,9 +986,9 @@ const AFTERBURNER_CHAMBER = 3
               afterburneThrustMaxCoef = engineThrustMaxBlk?.ThrAftMaxCoeff_0_0 ?? 1
             }
 
-            let horsePowerValue = getFirstFound([infoBlk, engineMainBlk],
+            let horsePowerValue = this.getFirstFound([infoBlk, engineMainBlk],
               @(b) b?.ThrustMax?.PowerMax0 ?? b?.HorsePowers ?? b?.Power, 0)
-            let thrustValue = getFirstFound([infoBlk, engineMainBlk], @(b) b?.ThrustMax?.ThrustMax0, 0)
+            let thrustValue = this.getFirstFound([infoBlk, engineMainBlk], @(b) b?.ThrustMax?.ThrustMax0, 0)
 
             local thrustMult = 1.0
             local thrustTakeoffMult = 1.0
@@ -846,11 +1003,11 @@ const AFTERBURNER_CHAMBER = 3
               thrustTakeoffMult = modeBlk.ThrustMult
             }
 
-            let throttleBoost = getFirstFound([infoBlk, engineMainBlk], @(b) b?.ThrottleBoost, 0)
-            let afterburnerBoost = getFirstFound([infoBlk, engineMainBlk], @(b) b?.AfterburnerBoost, 0)
+            let throttleBoost = this.getFirstFound([infoBlk, engineMainBlk], @(b) b?.ThrottleBoost, 0)
+            let afterburnerBoost = this.getFirstFound([infoBlk, engineMainBlk], @(b) b?.AfterburnerBoost, 0)
             // for planes modifications have delta values
-            let thrustModDelta = (unit?.modificators[difficulty.crewSkillName].thrust ?? 0) / KGF_TO_NEWTON
-            let horsepowerModDelta = unit?.modificators[difficulty.crewSkillName].horsePowers ?? 0
+            let thrustModDelta = (this.unit?.modificators[this.difficulty.crewSkillName].thrust ?? 0) / KGF_TO_NEWTON
+            let horsepowerModDelta = this.unit?.modificators[this.difficulty.crewSkillName].horsePowers ?? 0
             switch(engineType)
             {
               case "inline":
@@ -869,7 +1026,7 @@ const AFTERBURNER_CHAMBER = 3
                 let boosterMainBlk = fmBlk?["Booster" + partIndex].Main
                 if (boosterMainBlk)
                   sources.insert(1, boosterMainBlk)
-                thrustTakeoff = getFirstFound(sources, @(b) b?.Thrust ?? b?.thrust, 0)
+                thrustTakeoff = this.getFirstFound(sources, @(b) b?.Thrust ?? b?.thrust, 0)
               break
 
               case "turboprop":
@@ -891,29 +1048,29 @@ const AFTERBURNER_CHAMBER = 3
             }
 
             // final values can be overriden in info block
-            powerMax = ::getTblValue("power_max", infoBlk, powerMax)
-            powerTakeoff = ::getTblValue("power_takeoff", infoBlk, powerTakeoff)
-            thrustMax = ::getTblValue("thrust_max", infoBlk, thrustMax)
-            thrustTakeoff = ::getTblValue("thrust_takeoff", infoBlk, thrustTakeoff)
+            powerMax = getTblValue("power_max", infoBlk, powerMax)
+            powerTakeoff = getTblValue("power_takeoff", infoBlk, powerTakeoff)
+            thrustMax = getTblValue("thrust_max", infoBlk, thrustMax)
+            thrustTakeoff = getTblValue("thrust_takeoff", infoBlk, thrustTakeoff)
 
             // display power values
             if (powerMax > 0)
             {
               powerMax += horsepowerModDelta
-              desc.append(::loc("engine_power_max") + ::loc("ui/colon")
+              desc.append(loc("engine_power_max") + loc("ui/colon")
                 + ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(powerMax))
             }
             if (powerTakeoff > 0)
             {
               powerTakeoff += horsepowerModDelta
-              desc.append(::loc("engine_power_takeoff") + ::loc("ui/colon")
+              desc.append(loc("engine_power_takeoff") + loc("ui/colon")
                 + ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(powerTakeoff))
             }
             if (thrustMax > 0)
             {
               thrustMax += thrustModDelta
               thrustMax *= thrustMaxCoef
-              desc.append(::loc("engine_thrust_max") + ::loc("ui/colon")
+              desc.append(loc("engine_thrust_max") + loc("ui/colon")
                 + ::g_measure_type.THRUST_KGF.getMeasureUnitsText(thrustMax))
             }
             if (thrustTakeoff > 0)
@@ -926,29 +1083,29 @@ const AFTERBURNER_CHAMBER = 3
 
               thrustTakeoff += thrustModDelta
               thrustTakeoff *= thrustMaxCoef * afterburneThrustMaxCoef
-              desc.append(::loc(thrustTakeoffLocId) + ::loc("ui/colon")
+              desc.append(loc(thrustTakeoffLocId) + loc("ui/colon")
                 + ::g_measure_type.THRUST_KGF.getMeasureUnitsText(thrustTakeoff))
             }
 
             // mass
-            desc.append(getMassInfo(infoBlk))
+            desc.append(this.getMassInfo(infoBlk))
           break;
         }
         break
 
       case "transmission":
-        let info = unitBlk?.VehiclePhys?.mechanics
+        let info = this.unitBlk?.VehiclePhys?.mechanics
         if (info)
         {
-          let manufacturer = info?.manufacturer ? ::loc("transmission_manufacturer/" + info.manufacturer,
-            ::loc("engine_manufacturer/" + info.manufacturer, ""))
+          let manufacturer = info?.manufacturer ? loc("transmission_manufacturer/" + info.manufacturer,
+            loc("engine_manufacturer/" + info.manufacturer, ""))
                                : ""
-          let model = info?.model ? ::loc("transmission_model/" + info.model, "") : ""
-          let props = info?.type ? ::g_string.utf8ToLower(::loc("transmission_type/" + info.type, "")) : ""
+          let model = info?.model ? loc("transmission_model/" + info.model, "") : ""
+          let props = info?.type ? ::g_string.utf8ToLower(loc("transmission_type/" + info.type, "")) : ""
           desc.append(::g_string.implode([ manufacturer, model ], " ") +
-            (props == "" ? "" : ::loc("ui/parentheses/space", { text = props })))
+            (props == "" ? "" : loc("ui/parentheses/space", { text = props })))
 
-          let maxSpeed = unit?.modificators?[difficulty.crewSkillName]?.maxSpeed ?? 0
+          let maxSpeed = this.unit?.modificators?[this.difficulty.crewSkillName]?.maxSpeed ?? 0
           if (maxSpeed && info?.gearRatios)
           {
             local gearsF = 0
@@ -968,13 +1125,13 @@ const AFTERBURNER_CHAMBER = 3
             let maxSpeedF = maxSpeed
             let maxSpeedB = ratioB ? (maxSpeed * ratioF / ratioB) : 0
             if (maxSpeedF && gearsF)
-              desc.append(::loc("xray/transmission/maxSpeed/forward") + ::loc("ui/colon") +
-                countMeasure(0, maxSpeedF) + ::loc("ui/comma") +
-                  ::loc("xray/transmission/gears") + ::loc("ui/colon") + gearsF)
+              desc.append(loc("xray/transmission/maxSpeed/forward") + loc("ui/colon") +
+                countMeasure(0, maxSpeedF) + loc("ui/comma") +
+                  loc("xray/transmission/gears") + loc("ui/colon") + gearsF)
             if (maxSpeedB && gearsB)
-              desc.append(::loc("xray/transmission/maxSpeed/backward") + ::loc("ui/colon") +
-                countMeasure(0, maxSpeedB) + ::loc("ui/comma") +
-                  ::loc("xray/transmission/gears") + ::loc("ui/colon") + gearsB)
+              desc.append(loc("xray/transmission/maxSpeed/backward") + loc("ui/colon") +
+                countMeasure(0, maxSpeedB) + loc("ui/comma") +
+                  loc("xray/transmission/gears") + loc("ui/colon") + gearsB)
           }
         }
         break
@@ -986,36 +1143,36 @@ const AFTERBURNER_CHAMBER = 3
       case "ammunition_storage_shells":
       case "ammunition_storage_charges":
       case "ammunition_storage_aux":
-        let isShipOrBoat = unit.isShipOrBoat()
+        let isShipOrBoat = this.unit.isShipOrBoat()
         if (isShipOrBoat)
         {
-          let ammoQuantity = getAmmoQuantityByPartName(partName)
+          let ammoQuantity = this.getAmmoQuantityByPartName(partName)
           if (ammoQuantity > 1)
-            desc.append(::loc("shop/ammo") + ::loc("ui/colon") + ammoQuantity)
+            desc.append(loc("shop/ammo") + loc("ui/colon") + ammoQuantity)
         }
-        let stowageInfo = getAmmoStowageInfo(null, partName, isShipOrBoat)
+        let stowageInfo = this.getAmmoStowageInfo(null, partName, isShipOrBoat)
         if (stowageInfo.isCharges)
           params.partLocId <- isShipOrBoat ? "ship_charges_storage" : "ammo_charges"
         if (stowageInfo.firstStageCount)
         {
-          local txt = ::loc(isShipOrBoat ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage")
-          if (unit.isTank())
-            txt += ::loc("ui/comma") + stowageInfo.firstStageCount + " " + ::loc("measureUnits/pcs")
+          local txt = loc(isShipOrBoat ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage")
+          if (this.unit.isTank())
+            txt += loc("ui/comma") + stowageInfo.firstStageCount + " " + loc("measureUnits/pcs")
           desc.append(txt)
         }
         if (stowageInfo.isAutoLoad)
-          desc.append(::loc("xray/ammo/mechanized_ammo_rack"))
+          desc.append(loc("xray/ammo/mechanized_ammo_rack"))
         break
 
       case "drive_turret_h":
       case "drive_turret_v":
 
         weaponPartName = ::stringReplace(partName, partId, "gun_barrel")
-        let weaponInfoBlk = getWeaponByXrayPartName(weaponPartName, partName)
+        let weaponInfoBlk = this.getWeaponByXrayPartName(weaponPartName, partName)
         if( ! weaponInfoBlk)
           break
         let isHorizontal = partId == "drive_turret_h"
-        desc.extend(getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, isHorizontal, !isHorizontal))
+        desc.extend(this.getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, isHorizontal, !isHorizontal))
         break
 
       case "pilot":
@@ -1027,42 +1184,42 @@ const AFTERBURNER_CHAMBER = 3
           { label = "avionics_sight_bomb",   ccipKey = "haveCCIPForBombs",  ccrpKey = "haveCCRPForBombs"   }
         ])
         {
-          let haveCcip = unitBlk?[cfg.ccipKey] ?? false
-          let haveCcrp = unitBlk?[cfg.ccrpKey] ?? false
+          let haveCcip = this.unitBlk?[cfg.ccipKey] ?? false
+          let haveCcrp = this.unitBlk?[cfg.ccrpKey] ?? false
           if (haveCcip || haveCcrp)
-            desc.append("".concat(::loc(cfg.label), ::loc("ui/colon"),
-              ::loc("ui/comma").join([ haveCcip ? ::loc("CCIP") : "", haveCcrp ? ::loc("CCRP") : "" ], true)))
+            desc.append("".concat(loc(cfg.label), loc("ui/colon"),
+              loc("ui/comma").join([ haveCcip ? loc("CCIP") : "", haveCcrp ? loc("CCRP") : "" ], true)))
         }
 
-        let nightVisionBlk = findAnyModEffectValue("nightVision")
+        let nightVisionBlk = this.findAnyModEffectValue("nightVision")
         if (partId == "pilot")
         {
           if (nightVisionBlk?.pilotIr != null)
-            desc.append(::loc("modification/night_vision_system"))
+            desc.append(loc("modification/night_vision_system"))
         }
         else
         {
           if (nightVisionBlk?.gunnerIr != null)
-            desc.append(::loc("modification/night_vision_system"))
+            desc.append(loc("modification/night_vision_system"))
         }
 
-        if ((unitBlk?.haveOpticTurret || unit.esUnitType == ::ES_UNIT_TYPE_HELICOPTER) && unitBlk?.gunnerOpticFps != null)
-          if (unitBlk?.cockpit.sightOutFov != null || unitBlk?.cockpit.sightInFov != null)
+        if ((this.unitBlk?.haveOpticTurret || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER) && this.unitBlk?.gunnerOpticFps != null)
+          if (this.unitBlk?.cockpit.sightOutFov != null || this.unitBlk?.cockpit.sightInFov != null)
           {
-            let optics = getOpticsParams(unitBlk?.cockpit.sightOutFov ?? 0, unitBlk?.cockpit.sightInFov ?? 0)
+            let optics = this.getOpticsParams(this.unitBlk?.cockpit.sightOutFov ?? 0, this.unitBlk?.cockpit.sightInFov ?? 0)
             if (optics.zoom != "")
             {
-              let visionModes = ::loc("ui/comma").join([
+              let visionModes = loc("ui/comma").join([
                 { mode = "tv",   have = nightVisionBlk?.sightIr != null || nightVisionBlk?.sightThermal != null }
                 { mode = "lltv", have = nightVisionBlk?.sightIr != null }
                 { mode = "flir", have = nightVisionBlk?.sightThermal != null }
-              ].map(@(v) v.have ? ::loc($"avionics_sight_vision/{v.mode}") : ""), true)
-              desc.append("".concat(::loc("armor_class/optic"), ::loc("ui/colon"), optics.zoom,
-                visionModes != "" ? ::loc("ui/parentheses/space", { text = visionModes }) : ""))
+              ].map(@(v) v.have ? loc($"avionics_sight_vision/{v.mode}") : ""), true)
+              desc.append("".concat(loc("armor_class/optic"), loc("ui/colon"), optics.zoom,
+                visionModes != "" ? loc("ui/parentheses/space", { text = visionModes }) : ""))
             }
           }
 
-        foreach (sensorBlk in getUnitSensorsList())
+        foreach (sensorBlk in this.getUnitSensorsList())
         {
           let sensorFilePath = sensorBlk.getStr("blk", "")
           if (sensorFilePath == "")
@@ -1097,26 +1254,26 @@ const AFTERBURNER_CHAMBER = 3
           }
           else if (sensorType == "lds")
             continue
-          desc.append("".concat(::loc($"avionics_sensor_{sensorType}"), ::loc("ui/colon"),
-            getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
+          desc.append("".concat(loc($"avionics_sensor_{sensorType}"), loc("ui/colon"),
+            this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
         }
 
-        if (unitBlk.getBool("havePointOfInterestDesignator", false) || unit.esUnitType == ::ES_UNIT_TYPE_HELICOPTER)
-          desc.append(::loc("avionics_aim_spi"))
-        if (unitBlk.getBool("laserDesignator", false))
-          desc.append(::loc("avionics_aim_laser_designator"))
+        if (this.unitBlk.getBool("havePointOfInterestDesignator", false) || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER)
+          desc.append(loc("avionics_aim_spi"))
+        if (this.unitBlk.getBool("laserDesignator", false))
+          desc.append(loc("avionics_aim_laser_designator"))
 
-        for (local b = 0; b < (unitBlk?.counterMeasures.blockCount() ?? 0); b++)
+        for (local b = 0; b < (this.unitBlk?.counterMeasures.blockCount() ?? 0); b++)
         {
-          let counterMeasureBlk = unitBlk.counterMeasures.getBlock(b)
+          let counterMeasureBlk = this.unitBlk.counterMeasures.getBlock(b)
           let counterMeasureFilePath = counterMeasureBlk.getStr("blk", "")
           if (counterMeasureFilePath == "")
             continue
           let counterMeasurePropsBlk = ::DataBlock()
           counterMeasurePropsBlk.load(counterMeasureFilePath)
           let counterMeasureType = counterMeasurePropsBlk.getStr("type", "")
-          desc.append("".concat(::loc($"avionics_countermeasure_{counterMeasureType}"), ::loc("ui/colon"),
-            getPartLocNameByBlkFile("counterMeasures", counterMeasureFilePath, counterMeasurePropsBlk)))
+          desc.append("".concat(loc($"avionics_countermeasure_{counterMeasureType}"), loc("ui/colon"),
+            this.getPartLocNameByBlkFile("counterMeasures", counterMeasureFilePath, counterMeasurePropsBlk)))
         }
         break
 
@@ -1126,10 +1283,10 @@ const AFTERBURNER_CHAMBER = 3
       case "optic_gun":
 
         // naval params are temporary disabled as they do not match to historical ones
-        if (unit.isShipOrBoat())
+        if (this.unit.isShipOrBoat())
           break
 
-        foreach (sensorBlk in getUnitSensorsList())
+        foreach (sensorBlk in this.getUnitSensorsList())
         {
           if ((sensorBlk % "dmPart").findindex(@(v) v == partName) == null)
             continue
@@ -1142,11 +1299,12 @@ const AFTERBURNER_CHAMBER = 3
           let sensorType = sensorPropsBlk.getStr("type", "")
           if (sensorType == "radar")
           {
-            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"),
-              getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
+            desc.append("".concat(loc("xray/model"), loc("ui/colon"),
+              this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
 
             local isRadar = false
             local isIrst = false
+            local isTv = false
             local rangeMax = 0.0
             local radarFreqBand = 8
             local searchZoneAzimuthWidth = 0.0
@@ -1159,6 +1317,8 @@ const AFTERBURNER_CHAMBER = 3
               rangeMax = max(rangeMax, range)
               if (transiverBlk?.visibilityType == "infraRed")
                 isIrst = true
+              else if ( transiverBlk?.visibilityType == "optic")
+                isTv = true
               else
               {
                 isRadar = true
@@ -1198,8 +1358,8 @@ const AFTERBURNER_CHAMBER = 3
                   lookDown = true
               }
             }
-            let isSearchRadar = findBlockByName(sensorPropsBlk, "addTarget")
-            let isTrackRadar = findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
+            let isSearchRadar = this.findBlockByName(sensorPropsBlk, "addTarget")
+            let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
 
             local radarType = ""
             if (isRadar)
@@ -1209,6 +1369,12 @@ const AFTERBURNER_CHAMBER = 3
               if (radarType != "")
                 radarType = radarType + "_"
               radarType = radarType + "irst"
+            }
+            if (isTv)
+            {
+              if (radarType != "")
+                radarType = radarType + "_"
+              radarType = radarType + "tv"
             }
             if (isSearchRadar && isTrackRadar)
               radarType = "" + radarType
@@ -1221,10 +1387,10 @@ const AFTERBURNER_CHAMBER = 3
               else
                 radarType = radarType + "_range_finder"
             }
-            desc.append(::loc("plane_engine_type") + ::loc("ui/colon") + ::loc(radarType))
+            desc.append(loc("plane_engine_type") + loc("ui/colon") + loc(radarType))
             if (isRadar)
-              desc.append(::loc("radar_freq_band") + ::loc("ui/colon") + ::loc(format("radar_freq_band_%d", radarFreqBand)))
-            desc.append(::loc("radar_range_max") + ::loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
+              desc.append(loc("radar_freq_band") + loc("ui/colon") + loc(format("radar_freq_band_%d", radarFreqBand)))
+            desc.append(loc("radar_range_max") + loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
 
             let scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
             for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++)
@@ -1266,37 +1432,37 @@ const AFTERBURNER_CHAMBER = 3
               }
             }
             if (isSearchRadar)
-              desc.append("".concat(::loc("radar_search_zone_max"), ::loc("ui/colon"),
-                ::round(searchZoneAzimuthWidth), ::loc("measureUnits/deg"), ::loc("ui/multiply"),
-                ::round(searchZoneElevationWidth), ::loc("measureUnits/deg")))
+              desc.append("".concat(loc("radar_search_zone_max"), loc("ui/colon"),
+                round(searchZoneAzimuthWidth), loc("measureUnits/deg"), loc("ui/multiply"),
+                round(searchZoneElevationWidth), loc("measureUnits/deg")))
             if (lookDown)
-              desc.append(::loc("radar_ld"))
+              desc.append(loc("radar_ld"))
             if (iff)
-              desc.append(::loc("radar_iff"))
+              desc.append(loc("radar_iff"))
 
             if (isTrackRadar)
             {
-              let hasBVR = findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
+              let hasBVR = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
               if (hasBVR)
-                desc.append(::loc("radar_bvr_mode"))
-              let hasACM = findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "constRange")
+                desc.append(loc("radar_bvr_mode"))
+              let hasACM = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "constRange")
               if (hasACM)
-                desc.append(::loc("radar_acm_mode"))
+                desc.append(loc("radar_acm_mode"))
             }
           }
         }
 
         if (partId == "optic_gun") {
-          let info = unitBlk?.cockpit
-          let cockpitMod = findAnyModEffectValue("cockpit");
+          let info = this.unitBlk?.cockpit
+          let cockpitMod = this.findAnyModEffectValue("cockpit");
           if (info?.sightName || cockpitMod?.sightName)
-            desc.extend(getOpticsDesc(info, cockpitMod))
+            desc.extend(this.getOpticsDesc(info, cockpitMod))
         }
         break
 
       case "countermeasure":
 
-        let counterMeasuresBlk = unitBlk?.counterMeasures
+        let counterMeasuresBlk = this.unitBlk?.counterMeasures
         if (counterMeasuresBlk)
         {
           for (local i = 0; i < counterMeasuresBlk.blockCount(); i++)
@@ -1304,22 +1470,22 @@ const AFTERBURNER_CHAMBER = 3
             let cmBlk = counterMeasuresBlk.getBlock(i)
             if (cmBlk?.dmPart != partName || (cmBlk?.blk ?? "") == "")
               continue
-            let info = DataBlock()
+            let info = ::DataBlock()
             info.load(cmBlk.blk)
 
-            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"),
-              getPartLocNameByBlkFile("counterMeasures", cmBlk.blk, info)))
+            desc.append("".concat(loc("xray/model"), loc("ui/colon"),
+              this.getPartLocNameByBlkFile("counterMeasures", cmBlk.blk, info)))
 
             foreach (cfg in [
               { label = "xray/ircm_protected_sector/hor",  sectorKey = "azimuthSector",   directionKey = "azimuth"   }
               { label = "xray/ircm_protected_sector/vert", sectorKey = "elevationSector", directionKey = "elevation" }
             ])
             {
-              let sector = ::round(info?[cfg.sectorKey] ?? 0.0)
-              local direction = ::round((info?[cfg.directionKey] ?? 0.0) * 2.0) / 2
+              let sector = round(info?[cfg.sectorKey] ?? 0.0)
+              local direction = round((info?[cfg.directionKey] ?? 0.0) * 2.0) / 2
               if (sector == 0)
                 continue
-              let deg = ::loc("measureUnits/deg")
+              let deg = loc("measureUnits/deg")
               local comment = ""
               if (direction != 0 && sector < 360)
               {
@@ -1335,9 +1501,9 @@ const AFTERBURNER_CHAMBER = 3
                     a -= 360
                   return "".concat(a >= 0 ? "+" : "", a, deg)
                 })
-                comment = ::loc("ui/parentheses/space", { text = "/".join(angles) })
+                comment = loc("ui/parentheses/space", { text = "/".join(angles) })
               }
-              desc.append("".concat(::loc(cfg.label), ::loc("ui/colon"), sector, deg, comment))
+              desc.append("".concat(loc(cfg.label), loc("ui/colon"), sector, deg, comment))
             }
             break
           }
@@ -1345,13 +1511,13 @@ const AFTERBURNER_CHAMBER = 3
         break
 
       case "aps_sensor":
-        let activeProtectionSystemBlk = unitBlk?.ActiveProtectionSystem
+        let activeProtectionSystemBlk = this.unitBlk?.ActiveProtectionSystem
         if (activeProtectionSystemBlk)
-          desc.extend(getAPSDesc(activeProtectionSystemBlk))
+          desc.extend(this.getAPSDesc(activeProtectionSystemBlk))
         break
 
       case "aps_launcher":
-        let activeProtectionSystemBlk = unitBlk?.ActiveProtectionSystem
+        let activeProtectionSystemBlk = this.unitBlk?.ActiveProtectionSystem
         if (activeProtectionSystemBlk)
         {
           for (local i = 0; i < activeProtectionSystemBlk.blockCount(); i++)
@@ -1359,7 +1525,7 @@ const AFTERBURNER_CHAMBER = 3
             let moduleBlk = activeProtectionSystemBlk.getBlock(i)
             if (moduleBlk?.launcherDmPart == partName)
             {
-              desc.extend(getAPSDesc(moduleBlk))
+              desc.extend(this.getAPSDesc(moduleBlk))
               break
             }
           }
@@ -1370,7 +1536,7 @@ const AFTERBURNER_CHAMBER = 3
       case "auxiliary_caliber_turret":
       case "aa_turret":
         weaponPartName = ::stringReplace(partName, "turret", "gun")
-        foreach(weapon in getUnitWeaponList())
+        foreach(weapon in this.getUnitWeaponList())
           if (weapon?.turret?.gunnerDm == partName && weapon?.breechDP)
           {
             weaponPartName = weapon.breechDP
@@ -1395,11 +1561,11 @@ const AFTERBURNER_CHAMBER = 3
       case "aa_gun":
 
         local weaponInfoBlk = null
-        let weaponTrigger = ::getTblValue("weapon_trigger", params)
+        let weaponTrigger = getTblValue("weapon_trigger", params)
         let triggerParam = "trigger"
         if (weaponTrigger)
         {
-          let weaponList = getUnitWeaponList()
+          let weaponList = this.getUnitWeaponList()
           foreach(weapon in weaponList)
           {
             if (triggerParam in weapon && weapon[triggerParam] == weaponTrigger)
@@ -1413,52 +1579,52 @@ const AFTERBURNER_CHAMBER = 3
         if (!weaponInfoBlk)
         {
           weaponPartName = weaponPartName || partName
-          weaponInfoBlk = getWeaponByXrayPartName(weaponPartName)
+          weaponInfoBlk = this.getWeaponByXrayPartName(weaponPartName)
         }
 
         if( ! weaponInfoBlk)
           break
 
-        let isSpecialBullet = ::isInArray(partId, [ "torpedo", "depth_charge", "mine" ])
-        let isSpecialBulletEmitter = ::isInArray(partId, [ "tt" ])
+        let isSpecialBullet = isInArray(partId, [ "torpedo", "depth_charge", "mine" ])
+        let isSpecialBulletEmitter = isInArray(partId, [ "tt" ])
 
         let weaponBlkLink = weaponInfoBlk?.blk ?? ""
         let weaponName = getWeaponNameByBlkPath(weaponBlkLink)
 
-        let ammo = isSpecialBullet ? 1 : getWeaponTotalBulletCount(partId, weaponInfoBlk)
+        let ammo = isSpecialBullet ? 1 : this.getWeaponTotalBulletCount(partId, weaponInfoBlk)
         let shouldShowAmmoInTitle = isSpecialBulletEmitter
-        let ammoTxt = ammo > 1 && shouldShowAmmoInTitle ? format(::loc("weapons/counter"), ammo) : ""
+        let ammoTxt = ammo > 1 && shouldShowAmmoInTitle ? format(loc("weapons/counter"), ammo) : ""
 
         if(weaponName != "")
-          desc.append("".concat(::loc($"weapons/{weaponName}"), ammoTxt))
+          desc.append("".concat(loc($"weapons/{weaponName}"), ammoTxt))
         if(weaponInfoBlk && ammo > 1 && !shouldShowAmmoInTitle)
-          desc.append(::loc("shop/ammo") + ::loc("ui/colon") + ammo)
+          desc.append(loc("shop/ammo") + loc("ui/colon") + ammo)
 
         if (isSpecialBullet || isSpecialBulletEmitter)
-          desc[desc.len() - 1] += getWeaponXrayDescText(weaponInfoBlk, unit, ::get_current_ediff())
+          desc[desc.len() - 1] += getWeaponXrayDescText(weaponInfoBlk, this.unit, ::get_current_ediff())
         else {
-          let status = getWeaponStatus(weaponPartName, weaponInfoBlk)
-          desc.extend(getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status))
-          desc.append(getMassInfo(blkOptFromPath(weaponBlkLink)))
+          let status = this.getWeaponStatus(weaponPartName, weaponInfoBlk)
+          desc.extend(this.getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status))
+          desc.append(this.getMassInfo(blkOptFromPath(weaponBlkLink)))
           if (status?.isPrimary || status?.isSecondary)
           {
             if (weaponInfoBlk?.autoLoader)
-              desc.append(::loc("xray/ammo/auto_load"))
-            let firstStageCount = getAmmoStowageInfo(weaponInfoBlk?.trigger).firstStageCount
+              desc.append(loc("xray/ammo/auto_load"))
+            let firstStageCount = this.getAmmoStowageInfo(weaponInfoBlk?.trigger).firstStageCount
             if (firstStageCount)
-              desc.append("".concat(::loc(unit.isShipOrBoat() ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage"),
-                ::loc("ui/colon"), firstStageCount))
+              desc.append("".concat(loc(this.unit.isShipOrBoat() ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage"),
+                loc("ui/colon"), firstStageCount))
           }
-          desc.extend(getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, true, true))
+          desc.extend(this.getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, true, true))
         }
 
-        checkPartLocId(partId, partName, weaponInfoBlk, params)
+        this.checkPartLocId(partId, partName, weaponInfoBlk, params)
       break;
 
       case "tank":                     // aircraft fuel tank (tank's fuel tank is 'fuel_tank')
-        local tankInfoTable = unit?.info?[params.name]
+        local tankInfoTable = this.unit?.info?[params.name]
         if (!tankInfoTable)
-          tankInfoTable = unit?.info?.tanks_params
+          tankInfoTable = this.unit?.info?.tanks_params
         if (!tankInfoTable)
           break
 
@@ -1467,13 +1633,13 @@ const AFTERBURNER_CHAMBER = 3
         if ("protected" in tankInfoTable)
         {
           tankInfo.append(tankInfoTable.protected ?
-          ::loc("fuelTank/selfsealing") :
-          ::loc("fuelTank/not_selfsealing"))
+          loc("fuelTank/selfsealing") :
+          loc("fuelTank/not_selfsealing"))
         }
         if ("protected_boost" in tankInfoTable)
-          tankInfo.append(::loc("fuelTank/neutralGasSystem"))
+          tankInfo.append(loc("fuelTank/neutralGasSystem"))
         if ("filling_polyurethane" in tankInfoTable)
-          tankInfo.append(::loc("fuelTank/fillingPolyurethane"))
+          tankInfo.append(loc("fuelTank/fillingPolyurethane"))
         if (tankInfo.len())
           desc.append(::g_string.implode(tankInfo, ", "))
 
@@ -1483,11 +1649,11 @@ const AFTERBURNER_CHAMBER = 3
       case "composite_armor_turret":          // tank Composite armor
       case "ex_era_hull":                     // tank Explosive reactive armor
       case "ex_era_turret":                   // tank Explosive reactive armor
-        let info = getModernArmorParamsByDmPartName(partName)
+        let info = this.getModernArmorParamsByDmPartName(partName)
 
-        let strUnits = ::nbsp + ::loc("measureUnits/mm")
-        let strBullet = ::loc("ui/bullet")
-        let strColon  = ::loc("ui/colon")
+        let strUnits = ::nbsp + loc("measureUnits/mm")
+        let strBullet = loc("ui/bullet")
+        let strColon  = loc("ui/colon")
 
         if (info.titleLoc != "")
           params.nameId <- info.titleLoc
@@ -1495,17 +1661,17 @@ const AFTERBURNER_CHAMBER = 3
         foreach (data in info.referenceProtectionArray)
         {
           if (::u.isPoint2(data.angles))
-            desc.append(::loc("shop/armorThicknessEquivalent/angles",
-              { angle1 = ::abs(data.angles.y), angle2 = ::abs(data.angles.x) }))
+            desc.append(loc("shop/armorThicknessEquivalent/angles",
+              { angle1 = abs(data.angles.y), angle2 = abs(data.angles.x) }))
           else
-            desc.append(::loc("shop/armorThicknessEquivalent"))
+            desc.append(loc("shop/armorThicknessEquivalent"))
 
           if (data.kineticProtectionEquivalent)
-            desc.append(strBullet + ::loc("shop/armorThicknessEquivalent/kinetic") + strColon +
-              ::round(data.kineticProtectionEquivalent) + strUnits)
+            desc.append(strBullet + loc("shop/armorThicknessEquivalent/kinetic") + strColon +
+              round(data.kineticProtectionEquivalent) + strUnits)
           if (data.cumulativeProtectionEquivalent)
-            desc.append(strBullet + ::loc("shop/armorThicknessEquivalent/cumulative") + strColon +
-              ::round(data.cumulativeProtectionEquivalent) + strUnits)
+            desc.append(strBullet + loc("shop/armorThicknessEquivalent/cumulative") + strColon +
+              round(data.cumulativeProtectionEquivalent) + strUnits)
         }
 
         let blockSep = desc.len() ? "\n" : ""
@@ -1517,89 +1683,89 @@ const AFTERBURNER_CHAMBER = 3
           {
             local thicknessText = ""
             if (::u.isFloat(layer?.armorThickness) && layer.armorThickness > 0)
-              thicknessText = ::round(layer.armorThickness).tostring()
+              thicknessText = round(layer.armorThickness).tostring()
             else if (::u.isPoint2(layer?.armorThickness) && layer.armorThickness.x > 0 && layer.armorThickness.y > 0)
-              thicknessText = ::round(layer.armorThickness.x).tostring() + ::loc("ui/mdash") + ::round(layer.armorThickness.y).tostring()
+              thicknessText = round(layer.armorThickness.x).tostring() + loc("ui/mdash") + round(layer.armorThickness.y).tostring()
             if (thicknessText != "")
-              thicknessText = ::loc("ui/parentheses/space", { text = thicknessText + strUnits })
-            texts.append(strBullet + getPartNameLocText(layer?.armorClass) + thicknessText)
+              thicknessText = loc("ui/parentheses/space", { text = thicknessText + strUnits })
+            texts.append(strBullet + this.getPartNameLocText(layer?.armorClass) + thicknessText)
           }
-          desc.append(blockSep + ::loc("xray/armor_composition") + ::loc("ui/colon") + "\n" + ::g_string.implode(texts, "\n"))
+          desc.append(blockSep + loc("xray/armor_composition") + loc("ui/colon") + "\n" + ::g_string.implode(texts, "\n"))
         }
         else if (!info.isComposite && !::u.isEmpty(info.armorClass)) // reactive armor
-          desc.append(blockSep + ::loc("plane_engine_type") + ::loc("ui/colon") + getPartNameLocText(info.armorClass))
+          desc.append(blockSep + loc("plane_engine_type") + loc("ui/colon") + this.getPartNameLocText(info.armorClass))
 
         break
 
       case "coal_bunker":
-        let coalToSteelMul = armorClassToSteel?["ships_coal_bunker"] ?? 0
+        let coalToSteelMul = this.armorClassToSteel?["ships_coal_bunker"] ?? 0
         if (coalToSteelMul != 0)
-          desc.append(::loc("shop/armorThicknessEquivalent/coal_bunker",
-            { thickness = "".concat(::round(coalToSteelMul * 1000).tostring(), " ", ::loc("measureUnits/mm")) }))
+          desc.append(loc("shop/armorThicknessEquivalent/coal_bunker",
+            { thickness = "".concat(round(coalToSteelMul * 1000).tostring(), " ", loc("measureUnits/mm")) }))
         break
 
       case "commander_panoramic_sight":
-        if (unitBlk?.commanderView)
-          desc.extend(getOpticsDesc(unitBlk.commanderView))
+        if (this.unitBlk?.commanderView)
+          desc.extend(this.getOpticsDesc(this.unitBlk.commanderView))
         break
 
       case "rangefinder":
       case "fire_director":
         // "partName" node may belong to only one system
-        let fcBlk = getFireControlSystems("dmPart", partName)?[0]
+        let fcBlk = this.getFireControlSystems("dmPart", partName)?[0]
         if (!fcBlk)
           break
 
         // 1. Gives fire solution for
-        let weaponNames = getFireControlWeaponNames(fcBlk)
+        let weaponNames = this.getFireControlWeaponNames(fcBlk)
         if (weaponNames.len() == 0)
           break
 
-        desc.append(::loc("xray/fire_control/weapons"))
+        desc.append(loc("xray/fire_control/weapons"))
         desc.extend(weaponNames
-          .map(@(n) ::loc($"weapons/{n}"))
-          .map(@(n) $"{::loc("ui/bullet")}{n}"))
+          .map(@(n) loc($"weapons/{n}"))
+          .map(@(n) $"{loc("ui/bullet")}{n}"))
 
         // 2. Measure accuracy
-        let accuracy = getFireControlAccuracy(fcBlk)
+        let accuracy = this.getFireControlAccuracy(fcBlk)
         if (accuracy != -1)
-          desc.append(format("%s %d%s", ::loc("xray/fire_control/accuracy"),
-            accuracy, ::loc("measureUnits/percent")))
+          desc.append(format("%s %d%s", loc("xray/fire_control/accuracy"),
+            accuracy, loc("measureUnits/percent")))
 
         // 3. Fire solution calculation time
         let lockTime = fcBlk?.targetLockTime
         if (lockTime)
-          desc.append(format("%s %d%s", ::loc("xray/fire_control/lock_time"),
-            lockTime, ::loc("measureUnits/seconds")))
+          desc.append(format("%s %d%s", loc("xray/fire_control/lock_time"),
+            lockTime, loc("measureUnits/seconds")))
 
         // 4. Fire solution update time
         let calcTime = fcBlk?.calcTime
         if (calcTime)
-          desc.append(format("%s %d%s", ::loc("xray/fire_control/calc_time"),
-            calcTime, ::loc("measureUnits/seconds")))
+          desc.append(format("%s %d%s", loc("xray/fire_control/calc_time"),
+            calcTime, loc("measureUnits/seconds")))
 
         break
 
       case "fire_control_room":
       case "bridge":
-        let numRangefinders = getNumFireControlNodes(partName, "rangefinder")
-        let numFireDirectors = getNumFireControlNodes(partName, "fire_director")
+        let numRangefinders = this.getNumFireControlNodes(partName, "rangefinder")
+        let numFireDirectors = this.getNumFireControlNodes(partName, "fire_director")
         if (numRangefinders == 0 && numFireDirectors == 0)
           break
 
-        desc.append(::loc("xray/fire_control/devices"))
+        desc.append(loc("xray/fire_control/devices"))
         if (numRangefinders > 0)
-          desc.append($"{::loc("ui/bullet")}{::loc("xray/fire_control/num_rangefinders", {n = numRangefinders})}")
+          desc.append($"{loc("ui/bullet")}{loc("xray/fire_control/num_rangefinders", {n = numRangefinders})}")
         if (numFireDirectors > 0)
-          desc.append($"{::loc("ui/bullet")}{::loc("xray/fire_control/num_fire_directors", {n = numFireDirectors})}")
+          desc.append($"{loc("ui/bullet")}{loc("xray/fire_control/num_fire_directors", {n = numFireDirectors})}")
 
         break
     }
 
-    if (isDebugMode)
-      desc.append("\n" + ::colorize("badTextColor", partName))
+    if (this.isDebugMode)
+      desc.append("\n" + colorize("badTextColor", partName))
 
-    let rawPartName = ::getTblValue("raw_name", params)
+    let rawPartName = getTblValue("raw_name", params)
     if (rawPartName)
       desc.append(rawPartName)
 
@@ -1610,20 +1776,20 @@ const AFTERBURNER_CHAMBER = 3
   function getEngineModelName(infoBlk)
   {
     return " ".join([
-      infoBlk?.manufacturer ? ::loc($"engine_manufacturer/{infoBlk.manufacturer}") : ""
-      infoBlk?.model ? ::loc($"engine_model/{infoBlk.model}") : ""
+      infoBlk?.manufacturer ? loc($"engine_manufacturer/{infoBlk.manufacturer}") : ""
+      infoBlk?.model ? loc($"engine_model/{infoBlk.model}") : ""
     ], true)
   }
 
   function getFireControlSystems(key, node)
   {
-    return getUnitSensorsList()
+    return this.getUnitSensorsList()
       .filter(@(blk) blk.getBlockName() == "fireDirecting" && (blk % key).findvalue(@(v) v == node) != null)
   }
 
   function getNumFireControlNodes(mainNode, nodeId)
   {
-    return getFireControlSystems("dmPartMain", mainNode)
+    return this.getFireControlSystems("dmPartMain", mainNode)
       .map(@(fcBlk) fcBlk % "dmPart")
       .map(@(nodes) nodes.filter(@(node) node.indexof(nodeId) == 0).len())
       .reduce(@(sum, num) sum + num, 0)
@@ -1645,8 +1811,8 @@ const AFTERBURNER_CHAMBER = 3
 
   function getFireControlWeaponNames(fcBlk)
   {
-    let triggerGroups = getFireControlTriggerGroups(fcBlk)
-    let weapons = getUnitWeaponList().filter(@(w) triggerGroups.contains(w?.triggerGroup) && w?.blk)
+    let triggerGroups = this.getFireControlTriggerGroups(fcBlk)
+    let weapons = this.getUnitWeaponList().filter(@(w) triggerGroups.contains(w?.triggerGroup) && w?.blk)
     return unique(weapons, @(w) w.blk).map(@(w) getWeaponNameByBlkPath(w.blk))
   }
 
@@ -1656,12 +1822,12 @@ const AFTERBURNER_CHAMBER = 3
     if (!accuracy)
       return -1
 
-    return ::round(accuracy / getModEffect("ship_rangefinder", "shipDistancePrecisionErrorMult") * 100)
+    return round(accuracy / this.getModEffect("ship_rangefinder", "shipDistancePrecisionErrorMult") * 100)
   }
 
   function getModEffect(modId, effectId)
   {
-    if (::shop_is_modification_enabled(unit.name, modId))
+    if (::shop_is_modification_enabled(this.unit.name, modId))
       return 1.0
 
     return ::get_modifications_blk()?.modifications[modId].effects[effectId] ?? 1.0
@@ -1669,12 +1835,12 @@ const AFTERBURNER_CHAMBER = 3
 
   function findAnyModEffectValue(effectId)
   {
-    for (local b = 0; b < (unitBlk?.modifications.blockCount() ?? 0); b++)
+    for (local b = 0; b < (this.unitBlk?.modifications.blockCount() ?? 0); b++)
     {
-      let modBlk = unitBlk.modifications.getBlock(b)
+      let modBlk = this.unitBlk.modifications.getBlock(b)
       let value = modBlk?.effects[effectId]
       if (value != null
-        && (isDebugBatchExportProcess || ::shop_is_modification_enabled(unit.name, modBlk.getBlockName())))
+        && (this.isDebugBatchExportProcess || ::shop_is_modification_enabled(this.unit.name, modBlk.getBlockName())))
           return value
     }
     return null
@@ -1685,15 +1851,15 @@ const AFTERBURNER_CHAMBER = 3
     let fovToZoom = @(fov) sin(80/2*PI/180)/sin(fov/2*PI/180)
     let fovOutIn = [zoomOutFov, zoomInFov].filter(@(fov) fov > 0)
     let zoom = fovOutIn.map(@(fov) fovToZoom(fov))
-    if (zoom.len() == 2 && ::abs(zoom[0] - zoom[1]) < 0.1) {
+    if (zoom.len() == 2 && abs(zoom[0] - zoom[1]) < 0.1) {
       zoom.remove(0)
       fovOutIn.remove(0)
     }
     let zoomTexts = ::u.map(zoom, @(zoom) format("%.1fx", zoom))
-    let fovTexts = fovOutIn.map(@(fov) "".concat(::round(fov), ::loc("measureUnits/deg")))
+    let fovTexts = fovOutIn.map(@(fov) "".concat(round(fov), loc("measureUnits/deg")))
     return {
-      zoom = ::g_string.implode(zoomTexts, ::loc("ui/mdash"))
-      fov  = ::g_string.implode(fovTexts,  ::loc("ui/mdash"))
+      zoom = ::g_string.implode(zoomTexts, loc("ui/mdash"))
+      fov  = ::g_string.implode(fovTexts,  loc("ui/mdash"))
     }
   }
 
@@ -1703,21 +1869,21 @@ const AFTERBURNER_CHAMBER = 3
       ? mod?.sightName
       : info?.sightName
     if (sightName)
-      desc.append(::loc($"sight_model/{sightName}", ""))
+      desc.append(loc($"sight_model/{sightName}", ""))
     let zoomOutFov = mod?.zoomOutFov ?? (info?.zoomOutFov ?? 0)
     let zoomInFov = mod?.zoomInFov ?? (info?.zoomInFov ?? 0)
-    let optics = getOpticsParams(zoomOutFov, zoomInFov)
+    let optics = this.getOpticsParams(zoomOutFov, zoomInFov)
     if (optics.zoom != "")
-      desc.append("".concat(::loc("optic/zoom"), ::loc("ui/colon"), optics.zoom))
+      desc.append("".concat(loc("optic/zoom"), loc("ui/colon"), optics.zoom))
     if (optics.fov != "")
-      desc.append("".concat(::loc("optic/fov"), ::loc("ui/colon"), optics.fov))
+      desc.append("".concat(loc("optic/fov"), loc("ui/colon"), optics.fov))
     return desc
   }
 
   function getAPSDesc(info) {
     let desc = []
 
-    let deg = ::loc("measureUnits/deg")
+    let deg = loc("measureUnits/deg")
     let {
       model = null, reactionTime = null,
       reloadTime = null, targetSpeed = null,
@@ -1726,29 +1892,29 @@ const AFTERBURNER_CHAMBER = 3
     } = info
 
     if (model)
-      desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"), ::loc($"aps/{model}")))
+      desc.append("".concat(loc("xray/model"), loc("ui/colon"), loc($"aps/{model}")))
     if (horAngles)
-      desc.append("".concat(::loc("xray/aps/protected_sector/hor"), ::loc("ui/colon"),
+      desc.append("".concat(loc("xray/aps/protected_sector/hor"), loc("ui/colon"),
         ( horAngles.x + horAngles.y == 0
-          ? format("±%d%s", ::abs(horAngles.y), deg)
+          ? format("±%d%s", abs(horAngles.y), deg)
           : format("%+d%s/%+d%s", horAngles.x, deg, horAngles.y, deg) ) ) )
     if (verAngles)
-      desc.append("".concat(::loc("xray/aps/protected_sector/vert"), ::loc("ui/colon"),
+      desc.append("".concat(loc("xray/aps/protected_sector/vert"), loc("ui/colon"),
         ( verAngles.x + verAngles.y == 0
-          ? format("±%d%s", ::abs(verAngles.y), deg)
+          ? format("±%d%s", abs(verAngles.y), deg)
           : format("%+d%s/%+d%s", verAngles.x, deg, verAngles.y, deg) ) ) )
     if (reloadTime)
-      desc.append("".concat(::loc("xray/aps/reloadTime"), ::loc("ui/colon"),
-        reloadTime, " ", ::loc("measureUnits/seconds") ) )
+      desc.append("".concat(loc("xray/aps/reloadTime"), loc("ui/colon"),
+        reloadTime, " ", loc("measureUnits/seconds") ) )
     if (reactionTime)
-      desc.append("".concat(::loc("xray/aps/reactionTime"), ::loc("ui/colon"),
-        reactionTime * 1000, " ", ::loc("measureUnits/milliseconds") ) )
+      desc.append("".concat(loc("xray/aps/reactionTime"), loc("ui/colon"),
+        reactionTime * 1000, " ", loc("measureUnits/milliseconds") ) )
     if (targetSpeed)
-      desc.append("".concat(::loc("xray/aps/targetSpeed"), ::loc("ui/colon"),
-        $"{targetSpeed.x}-{targetSpeed.y}", " ", ::loc("measureUnits/metersPerSecond_climbSpeed") ) )
+      desc.append("".concat(loc("xray/aps/targetSpeed"), loc("ui/colon"),
+        $"{targetSpeed.x}-{targetSpeed.y}", " ", loc("measureUnits/metersPerSecond_climbSpeed") ) )
     if (shotCount)
-      desc.append("".concat(::loc("xray/aps/shotCount"), ::loc("ui/colon"),
-        shotCount, " " , ::loc("measureUnits/pcs") ) )
+      desc.append("".concat(loc("xray/aps/shotCount"), loc("ui/colon"),
+        shotCount, " " , loc("measureUnits/pcs") ) )
     return desc
   }
 
@@ -1760,23 +1926,23 @@ const AFTERBURNER_CHAMBER = 3
       let currentBreechDp = weaponInfoBlk?.breechDP
       if (!currentBreechDp)
         return result
-      foreach(weapon in getUnitWeaponList())
+      foreach(weapon in this.getUnitWeaponList())
       {
         if (weapon?.breechDP == currentBreechDp)
-          result += ::getTblValue("bullets", weapon, 0)
+          result += getTblValue("bullets", weapon, 0)
       }
       return result
     } else
-      return ::getTblValue("bullets", weaponInfoBlk, 0)
+      return getTblValue("bullets", weaponInfoBlk, 0)
   }
 
   function getInfoBlk(partName = null)
   {
-    let sources = [unitBlk]
-    let unitTags = ::getTblValue(unit.name, ::get_unittags_blk(), null)
+    let sources = [this.unitBlk]
+    let unitTags = getTblValue(this.unit.name, ::get_unittags_blk(), null)
     if (unitTags != null)
       sources.insert(0, unitTags)
-    local infoBlk = getFirstFound(sources, @(b) partName ? b?.info?[partName] : b?.info)
+    local infoBlk = this.getFirstFound(sources, @(b) partName ? b?.info?[partName] : b?.info)
     if (infoBlk && partName != null && "alias" in infoBlk)
       infoBlk = getInfoBlk(infoBlk.alias)
     return infoBlk
@@ -1784,7 +1950,7 @@ const AFTERBURNER_CHAMBER = 3
 
   function getXrayViewerDataByDmPartName(partName)
   {
-    let dataBlk = unitBlk && unitBlk?.xray_viewer_data
+    let dataBlk = this.unitBlk && this.unitBlk?.xray_viewer_data
     local partIdx = null
     if (dataBlk)
       for (local b = 0; b < dataBlk.blockCount(); b++)
@@ -1794,7 +1960,7 @@ const AFTERBURNER_CHAMBER = 3
           return blk
         if (blk?.xrayDmPartFmt != null)
         {
-          partIdx = partIdx ?? extractIndexFromDmPartName(partName)
+          partIdx = partIdx ?? this.extractIndexFromDmPartName(partName)
           if (partIdx != -1
               && partIdx >= (blk?.xrayDmPartRange.x ?? -1) && partIdx <= (blk?.xrayDmPartRange.y ?? -1)
               && format(blk.xrayDmPartFmt, partIdx) == partName)
@@ -1806,7 +1972,7 @@ const AFTERBURNER_CHAMBER = 3
 
   function getAmmoQuantityByPartName(partName)
   {
-    let ammoStowages = unitBlk?.ammoStowages
+    let ammoStowages = this.unitBlk?.ammoStowages
     if (ammoStowages)
       for (local i = 0; i < ammoStowages.blockCount(); i++)
       {
@@ -1824,7 +1990,7 @@ const AFTERBURNER_CHAMBER = 3
     let turretLinkedParts = [ "horDriveDm", "verDriveDm" ]
     let partLinkSources = [ "dm", "barrelDP", "breechDP", "maskDP", "gunDm", "ammoDP", "emitter" ]
     let partLinkSourcesGenFmt = [ "emitterGenFmt", "ammoDpGenFmt" ]
-    let weaponList = getUnitWeaponList()
+    let weaponList = this.getUnitWeaponList()
     foreach(weapon in weaponList)
     {
       if (linkedPartName != null && weapon?.turret != null)
@@ -1843,8 +2009,8 @@ const AFTERBURNER_CHAMBER = 3
           {
             if (weapon[linkKeyFmt].indexof("%02d") == null)
             {
-              ::dagor.assertf(false, "Bad weapon param " + linkKeyFmt + "='" + weapon[linkKeyFmt] +
-                "' on " + unit.name)
+              assert(false, "Bad weapon param " + linkKeyFmt + "='" + weapon[linkKeyFmt] +
+                "' on " + this.unit.name)
               continue
             }
             for(local i = rangeMin; i <= rangeMax; i++)
@@ -1860,16 +2026,16 @@ const AFTERBURNER_CHAMBER = 3
 
   function getWeaponStatus(weaponPartName, weaponInfoBlk)
   {
-    switch (unit.esUnitType)
+    switch (this.unit.esUnitType)
     {
-      case ::ES_UNIT_TYPE_TANK:
+      case ES_UNIT_TYPE_TANK:
         let blkPath = weaponInfoBlk?.blk ?? ""
         let blk = blkOptFromPath(blkPath)
         let isRocketGun = blk?.rocketGun
         let isMachinegun = !!blk?.bullet?.caliber && !isCaliberCannon(1000 * blk.bullet.caliber)
         local isPrimary = !isRocketGun && !isMachinegun
         if (!isPrimary)
-          foreach (weapon in getCommonWeapons(dmViewer.unitBlk, "")) {
+          foreach (weapon in getCommonWeapons(::dmViewer.unitBlk, "")) {
             if (!weapon?.blk || weapon?.dummy)
               continue
             isPrimary = weapon.blk == blkPath
@@ -1878,8 +2044,8 @@ const AFTERBURNER_CHAMBER = 3
 
         let isSecondary = !isPrimary && !isMachinegun
         return { isPrimary = isPrimary, isSecondary = isSecondary, isMachinegun = isMachinegun }
-      case ::ES_UNIT_TYPE_BOAT:
-      case ::ES_UNIT_TYPE_SHIP:
+      case ES_UNIT_TYPE_BOAT:
+      case ES_UNIT_TYPE_SHIP:
         let isPrimaryName       = ::g_string.startsWith(weaponPartName, "main")
         let isSecondaryName     = ::g_string.startsWith(weaponPartName, "auxiliary")
         let isPrimaryTrigger    = weaponInfoBlk?.triggerGroup == "primary"
@@ -1889,8 +2055,8 @@ const AFTERBURNER_CHAMBER = 3
           isSecondary   = isSecondaryTrigger || (isSecondaryName && !isPrimaryTrigger)
           isMachinegun  = weaponInfoBlk?.triggerGroup == "machinegun"
         }
-      case ::ES_UNIT_TYPE_AIRCRAFT:
-      case ::ES_UNIT_TYPE_HELICOPTER:
+      case ES_UNIT_TYPE_AIRCRAFT:
+      case ES_UNIT_TYPE_HELICOPTER:
         return { isPrimary = true, isSecondary = false, isMachinegun = false }
     }
     return { isPrimary = true, isSecondary = false, isMachinegun = false }
@@ -1902,11 +2068,11 @@ const AFTERBURNER_CHAMBER = 3
   {
     let desc = []
     let needSingleAxis = !needAxisX || !needAxisY
-    let status = getWeaponStatus(weaponPartName, weaponInfoBlk)
-    if (!needSingleAxis && unit?.isTank() && !status.isPrimary && !status.isSecondary)
+    let status = this.getWeaponStatus(weaponPartName, weaponInfoBlk)
+    if (!needSingleAxis && this.unit?.isTank() && !status.isPrimary && !status.isSecondary)
       return desc
 
-    let deg = ::loc("measureUnits/deg")
+    let deg = loc("measureUnits/deg")
     let isInverted = weaponInfoBlk?.invertedLimitsInViewer ?? false
     let isSwaped = weaponInfoBlk?.swapLimitsInViewer ?? false
     let verticalLabel = "shop/angleVerticalGuidance"
@@ -1920,16 +2086,16 @@ const AFTERBURNER_CHAMBER = 3
         continue
 
       let { x, y } = g.angles
-      let anglesText = (x + y == 0) ? format("±%d%s", ::abs(y), deg)
-        : (isSwaped && g.canSwap) ? format("%+d%s/%+d%s", ::abs(y) * getSign(x), deg, ::abs(x) * getSign(y), deg)
+      let anglesText = (x + y == 0) ? format("±%d%s", abs(y), deg)
+        : (isSwaped && g.canSwap) ? format("%+d%s/%+d%s", abs(y) * this.getSign(x), deg, abs(x) * this.getSign(y), deg)
         : format("%+d%s/%+d%s", x, deg, y, deg)
 
-      desc.append(" ".concat(::loc(g.label), anglesText))
+      desc.append(" ".concat(loc(g.label), anglesText))
     }
 
-    if (needSingleAxis || status.isPrimary || unit?.isShipOrBoat())
+    if (needSingleAxis || status.isPrimary || this.unit?.isShipOrBoat())
     {
-      let unitModificators = unit?.modificators?[difficulty.crewSkillName]
+      let unitModificators = this.unit?.modificators?[this.difficulty.crewSkillName]
       foreach (a in [
         { need = needAxisX, modifName = "turnTurretSpeed",      blkName = "speedYaw",
           shipFxName = [ "mainSpeedYawK",   "auxSpeedYawK",   "aaSpeedYawK"   ] },
@@ -1940,17 +2106,17 @@ const AFTERBURNER_CHAMBER = 3
           continue
 
         local speed = 0
-        switch (unit.esUnitType)
+        switch (this.unit.esUnitType)
         {
-          case ::ES_UNIT_TYPE_TANK:
+          case ES_UNIT_TYPE_TANK:
             let mainTurretSpeed = unitModificators?[a.modifName] ?? 0
             let value = weaponInfoBlk?[a.blkName] ?? 0
-            let weapons = getUnitWeaponList()
+            let weapons = this.getUnitWeaponList()
             let mainTurretValue = weapons?[0]?[a.blkName] ?? 0
             speed = mainTurretValue ? (mainTurretSpeed * value / mainTurretValue) : mainTurretSpeed
             break
-          case ::ES_UNIT_TYPE_BOAT:
-          case ::ES_UNIT_TYPE_SHIP:
+          case ES_UNIT_TYPE_BOAT:
+          case ES_UNIT_TYPE_SHIP:
             let modId   = status.isPrimary    ? "new_main_caliber_turrets"
                           : status.isSecondary  ? "new_aux_caliber_turrets"
                           : status.isMachinegun ? "new_aa_caliber_turrets"
@@ -1960,21 +2126,21 @@ const AFTERBURNER_CHAMBER = 3
                            : status.isMachinegun ? a.shipFxName[2]
                            : ""
             let baseSpeed = weaponInfoBlk?[a.blkName] ?? 0
-            let modMul =  getModEffect(modId, effectId)
+            let modMul =  this.getModEffect(modId, effectId)
             speed = baseSpeed * modMul
             break
         }
 
         if (speed)
         {
-          let speedTxt = speed < 10 ? format("%.1f", speed) : format("%d", ::round(speed))
-          desc.append(::loc("crewSkillParameter/" + a.modifName) + ::loc("ui/colon") +
-            speedTxt + ::loc("measureUnits/deg_per_sec"))
+          let speedTxt = speed < 10 ? format("%.1f", speed) : format("%d", round(speed))
+          desc.append(loc("crewSkillParameter/" + a.modifName) + loc("ui/colon") +
+            speedTxt + loc("measureUnits/deg_per_sec"))
         }
       }
     }
 
-    if (unit?.isTank())
+    if (this.unit?.isTank())
     {
       let gunStabilizer = weaponInfoBlk?.gunStabilizer
       let isStabilizerX = needAxisX && gunStabilizer?.hasHorizontal
@@ -1983,7 +2149,7 @@ const AFTERBURNER_CHAMBER = 3
       {
         let valueLoc = needSingleAxis ? "options/yes"
           : (isStabilizerX ? "shop/gunStabilizer/twoPlane" : "shop/gunStabilizer/vertical")
-        desc.append(::loc("shop/gunStabilizer") + " " + ::loc(valueLoc))
+        desc.append(loc("shop/gunStabilizer") + " " + loc(valueLoc))
       }
     }
 
@@ -2014,26 +2180,26 @@ const AFTERBURNER_CHAMBER = 3
     let isCartridge = weaponBlk?.reloadTime != null
     local cyclicShotFreqS  = weaponBlk?.shotFreq ?? 0.0 // rounds/sec
 
-    switch (unit.esUnitType)
+    switch (this.unit.esUnitType)
     {
-      case ::ES_UNIT_TYPE_AIRCRAFT:
-      case ::ES_UNIT_TYPE_HELICOPTER:
+      case ES_UNIT_TYPE_AIRCRAFT:
+      case ES_UNIT_TYPE_HELICOPTER:
         shotFreqRPM = cyclicShotFreqS * 60
         break
 
-      case ::ES_UNIT_TYPE_TANK:
+      case ES_UNIT_TYPE_TANK:
         if (!status.isPrimary)
           break
 
-        let mainWeaponInfoBlk = getUnitWeaponList()?[0]
+        let mainWeaponInfoBlk = this.getUnitWeaponList()?[0]
         if (!mainWeaponInfoBlk)
           break
 
-        local mainGunReloadTime = unit?.modificators?[difficulty.crewSkillName]?.reloadTime ?? 0.0
-        if (!mainGunReloadTime && crew)
+        local mainGunReloadTime = this.unit?.modificators?[this.difficulty.crewSkillName]?.reloadTime ?? 0.0
+        if (!mainGunReloadTime && this.crew)
         {
-          let crewSkillParams = getParametersByCrewId(crew.id, unit.name)
-          let crewSkill = crewSkillParams?[difficulty.crewSkillName]?.loader
+          let crewSkillParams = getParametersByCrewId(this.crew.id, this.unit.name)
+          let crewSkill = crewSkillParams?[this.difficulty.crewSkillName]?.loader
           mainGunReloadTime = crewSkill?.loading_time_mult?.tankLoderReloadingTime ?? 0.0
         }
 
@@ -2043,7 +2209,7 @@ const AFTERBURNER_CHAMBER = 3
           break
         }
 
-        let thisGunReloadTimeMax = getGunReloadTimeMax(weaponInfoBlk)
+        let thisGunReloadTimeMax = this.getGunReloadTimeMax(weaponInfoBlk)
         if (!thisGunReloadTimeMax)
           break
 
@@ -2053,20 +2219,20 @@ const AFTERBURNER_CHAMBER = 3
           break
         }
 
-        let mainGunReloadTimeMax = getGunReloadTimeMax(mainWeaponInfoBlk)
+        let mainGunReloadTimeMax = this.getGunReloadTimeMax(mainWeaponInfoBlk)
         if (!mainGunReloadTimeMax)
           break
 
         reloadTimeS = mainGunReloadTime * thisGunReloadTimeMax / mainGunReloadTimeMax
         break
 
-      case ::ES_UNIT_TYPE_BOAT:
-      case ::ES_UNIT_TYPE_SHIP:
+      case ES_UNIT_TYPE_BOAT:
+      case ES_UNIT_TYPE_SHIP:
         if (isCartridge)
-          if (crew)
+          if (this.crew)
           {
-            let crewSkillParams = getParametersByCrewId(crew.id, unit.name)
-            let crewSkill = crewSkillParams?[difficulty.crewSkillName]?.ship_artillery
+            let crewSkillParams = getParametersByCrewId(this.crew.id, this.unit.name)
+            let crewSkill = crewSkillParams?[this.difficulty.crewSkillName]?.ship_artillery
             foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ])
             {
               reloadTimeS = (crewSkill?[c]?[$"weapons/{weaponName}"]) ?? 0.0
@@ -2076,7 +2242,7 @@ const AFTERBURNER_CHAMBER = 3
           }
           else
           {
-            let wpcostUnit = ::get_wpcost_blk()?[unit.name]
+            let wpcostUnit = ::get_wpcost_blk()?[this.unit.name]
             foreach (c in [ "shipMainCaliberReloadTime", "shipAuxCaliberReloadTime", "shipAntiAirCaliberReloadTime" ])
             {
               reloadTimeS = wpcostUnit?[$"{c}_{weaponName}"] ?? 0.0
@@ -2087,55 +2253,55 @@ const AFTERBURNER_CHAMBER = 3
 
         if (reloadTimeS)
           break
-        cyclicShotFreqS = ::u.search(getCommonWeapons(dmViewer.unitBlk, ""),
+        cyclicShotFreqS = ::u.search(getCommonWeapons(::dmViewer.unitBlk, ""),
           @(inst) inst.trigger  == weaponInfoBlk.trigger)?.shotFreq ?? cyclicShotFreqS
         shotFreqRPM = cyclicShotFreqS * 60
 
-        if (haveFirstStageShells(weaponInfoBlk?.trigger))
+        if (this.haveFirstStageShells(weaponInfoBlk?.trigger))
         {
           firstStageShotFreq = shotFreqRPM
-          shotFreqRPM *= 1/getAmmoStowageReloadTimeMult(weaponInfoBlk?.trigger)
+          shotFreqRPM *= 1/this.getAmmoStowageReloadTimeMult(weaponInfoBlk?.trigger)
         }
         break
     }
 
     let desc = []
     if (firstStageShotFreq)
-      desc.append(::g_string.implode([::loc("shop/shotFreq/firstStage"),
-        ::round(firstStageShotFreq),
-        ::loc("measureUnits/rounds_per_min")], " "))
+      desc.append(::g_string.implode([loc("shop/shotFreq/firstStage"),
+        round(firstStageShotFreq),
+        loc("measureUnits/rounds_per_min")], " "))
 
     if (shotFreqRPM)
     {
       shotFreqRPM = ::round(shotFreqRPM, shotFreqRPM > 600 ? -1
         : shotFreqRPM < 10 ? 1
         : 0)
-      desc.append(" ".concat(::loc("shop/shotFreq"), shotFreqRPM, ::loc("measureUnits/rounds_per_min")))
+      desc.append(" ".concat(loc("shop/shotFreq"), shotFreqRPM, loc("measureUnits/rounds_per_min")))
     }
     if (reloadTimeS)
     {
       reloadTimeS = (reloadTimeS % 1) ? format("%.1f", reloadTimeS) : format("%d", reloadTimeS)
-      desc.append(::loc("shop/reloadTime") + " " + reloadTimeS + " " + ::loc("measureUnits/seconds"))
+      desc.append(loc("shop/reloadTime") + " " + reloadTimeS + " " + loc("measureUnits/seconds"))
     }
     return desc
   }
 
   function getAmmoStowageBlockByParam(trigger, paramName) {
-    if (!unitBlk?.ammoStowages || !trigger)
+    if (!this.unitBlk?.ammoStowages || !trigger)
       return null
 
-    let ammoCount = unitBlk.ammoStowages.blockCount()
+    let ammoCount = this.unitBlk.ammoStowages.blockCount()
     for(local i = 0; i < ammoCount; i++) {
-      let ammo = unitBlk.ammoStowages.getBlock(i)
+      let ammo = this.unitBlk.ammoStowages.getBlock(i)
       if((ammo % "weaponTrigger").findvalue(@(inst) inst == trigger))
         return (ammo % "shells").findvalue(@(inst) inst?[paramName])
     }
     return null
   }
 
-  getAmmoStowageReloadTimeMult = @(trigger) getAmmoStowageBlockByParam(trigger, "reloadTimeMult")?.reloadTimeMult ?? 1
+  getAmmoStowageReloadTimeMult = @(trigger) this.getAmmoStowageBlockByParam(trigger, "reloadTimeMult")?.reloadTimeMult ?? 1
 
-  haveFirstStageShells = @(trigger) getAmmoStowageBlockByParam(trigger, "firstStage") ?? false
+  haveFirstStageShells = @(trigger) this.getAmmoStowageBlockByParam(trigger, "firstStage") ?? false
 
   // Gets info either by weaponTrigger (for guns and turrets)
   // or by ammoStowageId (for tank stowage or ship ammo storage)
@@ -2145,13 +2311,13 @@ const AFTERBURNER_CHAMBER = 3
     for (local ammoNum = 1; ammoNum <= 20; ammoNum++) // tanks use 1, ships use 1 - ~10.
     {
       let ammoId = $"ammo{ammoNum}"
-      let stowage = unitBlk?.ammoStowages?[ammoId]
+      let stowage = this.unitBlk?.ammoStowages?[ammoId]
       if (!stowage)
         break
       if (weaponTrigger && stowage.weaponTrigger != weaponTrigger)
         continue
-      if ((unitBlk.ammoStowages % ammoId).len() > 1) {
-        let unitName = unit?.name // warning disable: -declared-never-used
+      if ((this.unitBlk.ammoStowages % ammoId).len() > 1) {
+        let unitName = this.unit?.name // warning disable: -declared-never-used
         ::script_net_assert_once("ammoStowages_contains_non-unique_ammo", "ammoStowages contains non-unique ammo")
       }
       foreach (blockName in [ "shells", "charges" ])
@@ -2188,7 +2354,7 @@ const AFTERBURNER_CHAMBER = 3
       layersArray = []
     }
 
-    let blk = getXrayViewerDataByDmPartName(partName)
+    let blk = this.getXrayViewerDataByDmPartName(partName)
     if (blk)
     {
       res.titleLoc = blk?.titleLoc ?? ""
@@ -2207,7 +2373,7 @@ const AFTERBURNER_CHAMBER = 3
 
       foreach (layer in armorLayersArray)
       {
-        let info = getDamagePartParamsByDmPartName(layer?.dmPart, armorParams)
+        let info = this.getDamagePartParamsByDmPartName(layer?.dmPart, armorParams)
         if (layer?.xrayTextThickness != null)
           info.armorThickness = layer.xrayTextThickness
         res.layersArray.append(info)
@@ -2216,7 +2382,7 @@ const AFTERBURNER_CHAMBER = 3
     else
     {
       let armorParams = { armorClass = "", kineticProtectionEquivalent = 0, cumulativeProtectionEquivalent = 0 }
-      let info = getDamagePartParamsByDmPartName(partName, armorParams)
+      let info = this.getDamagePartParamsByDmPartName(partName, armorParams)
       res.referenceProtectionArray = [{
         angles = null
         kineticProtectionEquivalent    = info.kineticProtectionEquivalent
@@ -2231,9 +2397,9 @@ const AFTERBURNER_CHAMBER = 3
   function getDamagePartParamsByDmPartName(partName, paramsTbl)
   {
     local res = clone paramsTbl
-    if (!unitBlk?.DamageParts)
+    if (!this.unitBlk?.DamageParts)
       return res
-    let dmPartsBlk = unitBlk.DamageParts
+    let dmPartsBlk = this.unitBlk.DamageParts
     res = ::u.tablesCombine(res, dmPartsBlk, @(a, b) b == null ? a : b, null, false)
     for (local b = 0; b < dmPartsBlk.blockCount(); b++)
     {
@@ -2256,26 +2422,26 @@ const AFTERBURNER_CHAMBER = 3
 
   function checkPartLocId(partId, partName, weaponInfoBlk, params)
   {
-    switch (unit.esUnitType)
+    switch (this.unit.esUnitType)
     {
-      case ::ES_UNIT_TYPE_TANK:
+      case ES_UNIT_TYPE_TANK:
         if (partId == "gun_barrel" &&  weaponInfoBlk?.blk)
         {
-          let status = getWeaponStatus(partName, weaponInfoBlk)
+          let status = this.getWeaponStatus(partName, weaponInfoBlk)
           params.partLocId <- status.isPrimary ? "weapon/primary"
             : status.isMachinegun ? "weapon/machinegun"
             : "weapon/secondary"
         }
         break
-      case ::ES_UNIT_TYPE_BOAT:
-      case ::ES_UNIT_TYPE_SHIP:
+      case ES_UNIT_TYPE_BOAT:
+      case ES_UNIT_TYPE_SHIP:
         if (::g_string.startsWith(partId, "main") && weaponInfoBlk?.triggerGroup == "secondary")
           params.partLocId <- ::stringReplace(partId, "main", "auxiliary")
         if (::g_string.startsWith(partId, "auxiliary") && weaponInfoBlk?.triggerGroup == "primary")
           params.partLocId <- ::stringReplace(partId, "auxiliary", "main")
         break
-      case ::ES_UNIT_TYPE_HELICOPTER:
-        if (::isInArray(partId, [ "gun", "cannon" ]))
+      case ES_UNIT_TYPE_HELICOPTER:
+        if (isInArray(partId, [ "gun", "cannon" ]))
           params.partLocId <- ::g_string.startsWith(weaponInfoBlk?.trigger, "gunner") ? "turret" : "cannon"
     }
   }
@@ -2303,62 +2469,62 @@ const AFTERBURNER_CHAMBER = 3
     foreach(pattern in massPatterns)
       foreach(nameVariant in pattern.variants)
         if(nameVariant in data)
-          return format(::loc("shop/tank_mass") + " " + ::loc(pattern.langKey), data[nameVariant])
+          return format(loc("shop/tank_mass") + " " + loc(pattern.langKey), data[nameVariant])
     return "";
   }
 
   function showExternalPartsArmor(isShow)
   {
-    isVisibleExternalPartsArmor = isShow
+    this.isVisibleExternalPartsArmor = isShow
     ::hangar_show_external_dm_parts_change(isShow)
   }
 
   function showExternalPartsXray(isShow)
   {
-    isVisibleExternalPartsXray = isShow
+    this.isVisibleExternalPartsXray = isShow
     ::hangar_show_hidden_xray_parts_change(isShow)
   }
 
-  function onEventActiveHandlersChanged(p)
+  function onEventActiveHandlersChanged(_p)
   {
-    update()
+    this.update()
   }
 
-  function onEventHangarModelLoading(p)
+  function onEventHangarModelLoading(_p)
   {
-    reinit()
+    this.reinit()
   }
 
-  function onEventHangarModelLoaded(p)
+  function onEventHangarModelLoaded(_p)
   {
-    reinit()
+    this.reinit()
   }
 
   function onEventUnitModsRecount(p)
   {
-    if (p?.unit != unit)
+    if (p?.unit != this.unit)
       return
-    clearCachedUnitBlkNodes()
-    resetXrayCache()
+    this.clearCachedUnitBlkNodes()
+    this.resetXrayCache()
   }
 
   function onEventUnitWeaponChanged(p)
   {
-    if (!unit || p?.unitName != unit.name)
+    if (!this.unit || p?.unitName != this.unit.name)
       return
-    clearCachedUnitBlkNodes()
-    resetXrayCache()
+    this.clearCachedUnitBlkNodes()
+    this.resetXrayCache()
   }
 
-  function onEventCurrentGameModeIdChanged(p)
+  function onEventCurrentGameModeIdChanged(_p)
   {
-    difficulty = ::get_difficulty_by_ediff(::get_current_ediff())
-    resetXrayCache()
+    this.difficulty = ::get_difficulty_by_ediff(::get_current_ediff())
+    this.resetXrayCache()
   }
 
-  function onEventGameLocalizationChanged(p)
+  function onEventGameLocalizationChanged(_p)
   {
-    resetXrayCache()
+    this.resetXrayCache()
   }
 }
 

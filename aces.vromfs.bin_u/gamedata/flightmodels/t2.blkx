@@ -2258,15 +2258,15 @@
       ],
       "fuel_consume": [
         0.0,
-        100.0
+        150.0
       ],
       "fuel_consume1": [
         0.0,
-        100.0
+        150.0
       ],
       "rpm_hour": [
         0.0,
-        10000.0
+        13600.0
       ],
       "rpm_min": [
         0.0,
@@ -2274,7 +2274,7 @@
       ],
       "rpm1_hour": [
         0.0,
-        10000.0
+        13600.0
       ],
       "rpm1_min": [
         0.0,
@@ -2354,14 +2354,8 @@
   },
   "commonWeapons": {
     "Weapon": {
-      "trigger": "cannon",
-      "blk": "gameData/Weapons/cannonJM61A1.blk",
-      "emitter": "flare1",
-      "flash": "flare1",
-      "dm": "cannon1_dm",
-      "bullets": 500,
-      "spread": 1.2,
-      "traceOffset": 1
+      "slot": 0,
+      "preset": "m61_common"
     }
   },
   "weapon_presets": {
@@ -2375,80 +2369,458 @@
         "blk": "gameData/flightModels/weaponPresets/t2_2xaim9.blk"
       },
       {
+        "name": "t2_2xaim9e",
+        "blk": "gameData/flightModels/weaponPresets/t2_2xaim9e.blk"
+      },
+      {
         "name": "t2_8x500lbs",
-        "blk": "gameData/flightModels/weaponPresets/t2_8x500lbs.blk",
-        "reqModification": "us_500lb_m82"
+        "blk": "gameData/flightModels/weaponPresets/t2_8x500lbs.blk"
       },
       {
         "name": "t2_5x750lbs",
-        "blk": "gameData/flightModels/weaponPresets/t2_5x750lbs.blk",
-        "reqModification": "jp_750lb_jm117"
-      },
-      {
-        "name": "t2_zuni",
-        "blk": "gameData/flightModels/weaponPresets/t2_zuni.blk",
-        "reqModification": "t2_rl4_zuni"
+        "blk": "gameData/flightModels/weaponPresets/t2_5x750lbs.blk"
       },
       {
         "name": "t2_2xAero7",
-        "blk": "gameData/flightModels/weaponPresets/t2_2xAero7.blk",
-        "reqModification": "jp_jlau_3a"
+        "blk": "gameData/flightModels/weaponPresets/t2_2xAero7.blk"
       },
       {
-        "name": "t2_8x500lbs_aim9b",
-        "blk": "gameData/flightModels/weaponPresets/t2_8x500lbs_aim9b.blk",
-        "reqModification": "us_500lb_m82"
+        "name": "t2_zuni",
+        "blk": "gameData/flightModels/weaponPresets/t2_zuni.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 4000.0,
+    "maxloadMassLeftConsoles": 2000.0,
+    "maxloadMassRightConsoles": 2000.0,
+    "maxDisbalance": 1500.0,
+    "HideNodes": {
+      "node": [
+        "aero_3b_l",
+        "pylon1_l",
+        "pylon4_l",
+        "pylon1_c",
+        "pylon4_r",
+        "pylon1_r",
+        "aero_3b_r",
+        "pylon4a_r",
+        "pylon4a_l",
+        "us_aim_9b_sidewinder_l",
+        "us_aim_9b_sidewinder_r"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "m61_common",
+          "Weapon": {
+            "trigger": "cannon",
+            "blk": "gameData/Weapons/cannonJM61A1.blk",
+            "emitter": "flare1",
+            "flash": "flare1",
+            "dm": "cannon1_dm",
+            "bullets": 500,
+            "spread": 1.2,
+            "traceOffset": 1
+          }
+        }
       },
       {
-        "name": "t2_5x750lbs_aim9b",
-        "blk": "gameData/flightModels/weaponPresets/t2_5x750lbs_aim9b.blk",
-        "reqModification": "jp_750lb_jm117"
-      },
-      {
-        "name": "t2_zuni_aim9b",
-        "blk": "gameData/flightModels/weaponPresets/t2_zuni_aim9b.blk",
-        "reqModification": "t2_rl4_zuni"
-      },
-      {
-        "name": "t2_2xAero7_aim9b",
-        "blk": "gameData/flightModels/weaponPresets/t2_2xAero7_aim9b.blk",
-        "reqModification": "jp_jlau_3a"
-      },
-      {
-        "name": "t2_2xaim9e",
-        "blk": "gameData/flightModels/weaponPresets/t2_2xaim9e.blk",
-        "reqModification": "us_aim_9e"
-      },
-      {
-        "name": "t2_8x500lbs_aim9e",
-        "blk": "gameData/flightModels/weaponPresets/t2_8x500lbs_aim9e.blk",
-        "reqModification": [
-          "us_500lb_m82",
-          "us_aim_9e"
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim_9b",
+            "ShowNodes": {
+              "node": "aero_3b_l"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_l",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9e",
+            "reqModification": "us_aim_9e",
+            "ShowNodes": {
+              "node": "aero_3b_l"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_l",
+              "bullets": 1
+            }
+          }
         ]
       },
       {
-        "name": "t2_5x750lbs_aim9e",
-        "blk": "gameData/flightModels/weaponPresets/t2_5x750lbs_aim9e.blk",
-        "reqModification": [
-          "jp_750lb_jm117",
-          "us_aim_9e"
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "us_500lb",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb_anm117_2",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "jp_750lb",
+            "reqModification": "jp_750lb_jm117",
+            "ShowNodes": {
+              "node": "pylon1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45_japan.blk",
+              "emitter": "bomb_anm117_2",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "jlau_3a",
+            "reqModification": "jp_jlau_3a",
+            "ShowNodes": {
+              "node": "pylon1_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_l_b001",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "rl4_zuni",
+            "reqModification": "t2_rl4_zuni",
+            "ShowNodes": {
+              "node": "pylon1_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "aero_7_l_b001",
+              "machLimit": 1.01
+            }
+          }
         ]
       },
       {
-        "name": "t2_zuni_aim9e",
-        "blk": "gameData/flightModels/weaponPresets/t2_zuni_aim9e.blk",
-        "reqModification": [
-          "t2_rl4_zuni",
-          "us_aim_9e"
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "us_500lb",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon4_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb_anm117_4",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "jp_750lb",
+            "reqModification": "jp_750lb_jm117",
+            "ShowNodes": {
+              "node": "pylon4_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45_japan.blk",
+              "emitter": "bomb_anm117_4",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "jlau_3a",
+            "reqModification": "jp_jlau_3a",
+            "ShowNodes": {
+              "node": "pylon4_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_l_b003",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "rl4_zuni",
+            "reqModification": "t2_rl4_zuni",
+            "ShowNodes": {
+              "node": "pylon4_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "aero_7_l_b003",
+              "machLimit": 1.01
+            }
+          }
         ]
       },
       {
-        "name": "t2_2xAero7_aim9e",
-        "blk": "gameData/flightModels/weaponPresets/t2_2xAero7_aim9e.blk",
-        "reqModification": [
-          "jp_jlau_3a",
-          "us_aim_9e"
+        "index": 4,
+        "tier": 6,
+        "order": 7,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "us_500lb",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon1_c"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb_anm117_1",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "jp_750lb",
+            "reqModification": "jp_750lb_jm117",
+            "ShowNodes": {
+              "node": "pylon1_c"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45_japan.blk",
+              "emitter": "bomb_anm117_1",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "us_500lb",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon4_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb_anm117_5",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "jp_750lb",
+            "reqModification": "jp_750lb_jm117",
+            "ShowNodes": {
+              "node": "pylon4_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45_japan.blk",
+              "emitter": "bomb_anm117_5",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "jlau_3a",
+            "reqModification": "jp_jlau_3a",
+            "ShowNodes": {
+              "node": "pylon4_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_l_b004",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "rl4_zuni",
+            "reqModification": "t2_rl4_zuni",
+            "ShowNodes": {
+              "node": "pylon4_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "aero_7_l_b004",
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "us_500lb",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb_anm117_3",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "jp_750lb",
+            "reqModification": "jp_750lb_jm117",
+            "ShowNodes": {
+              "node": "pylon1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45_japan.blk",
+              "emitter": "bomb_anm117_3",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "jlau_3a",
+            "reqModification": "jp_jlau_3a",
+            "ShowNodes": {
+              "node": "pylon1_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_l_b002",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "rl4_zuni",
+            "reqModification": "t2_rl4_zuni",
+            "ShowNodes": {
+              "node": "pylon1_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "aero_7_l_b002",
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim_9b",
+            "ShowNodes": {
+              "node": "aero_3b_r"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_r",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9e",
+            "reqModification": "us_aim_9e",
+            "ShowNodes": {
+              "node": "aero_3b_r"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_r",
+              "bullets": 1
+            }
+          }
         ]
       }
     ]

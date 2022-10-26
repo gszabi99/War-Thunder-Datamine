@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
+let { get_time_msec } = require("dagor.time")
 ::g_item_limits <- {
 
   /** Seconds to keep limit data without updating. */
@@ -20,44 +27,44 @@ let { format } = require("string")
 // Public
 //
 
-g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
+::g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
 {
-  if (requestLockTime < max(::dagor.getCurTime() - REQUEST_UNLOCK_TIMEOUT * 1000, 0))
-    isRequestLocked = false
+  if (this.requestLockTime < max(get_time_msec() - this.REQUEST_UNLOCK_TIMEOUT * 1000, 0))
+    this.isRequestLocked = false
 
-  if (isRequestLocked)
+  if (this.isRequestLocked)
     return false
 
-  let curTime = ::dagor.getCurTime()
+  let curTime = get_time_msec()
 
   let requestBlk = ::DataBlock()
   local requestSize = 0
-  while (itemNamesQueue.len() > 0 && checkRequestSize(requestSize))
+  while (this.itemNamesQueue.len() > 0 && this.checkRequestSize(requestSize))
   {
-    let itemName = itemNamesQueue.pop()
-    let limitData = getLimitDataByItemName(itemName)
-    if (limitData.lastUpdateTime < max(curTime - ITEM_REFRESH_TIME * 1000, 0))
+    let itemName = this.itemNamesQueue.pop()
+    let limitData = this.getLimitDataByItemName(itemName)
+    if (limitData.lastUpdateTime < max(curTime - this.ITEM_REFRESH_TIME * 1000, 0))
     {
       requestBlk["name"] <- itemName
       ++requestSize
     }
   }
 
-  itemNamesQueue.clear()
+  this.itemNamesQueue.clear()
   if (requestSize == 0)
     return false
 
-  isRequestLocked = true
-  requestLockTime = curTime
+  this.isRequestLocked = true
+  this.requestLockTime = curTime
 
   let taskId = ::get_items_count_for_limits(requestBlk)
   let taskOptions = {
     showProgressBox = isBlocking
   }
-  let taskCallback = function (result = ::YU2_OK)
+  let taskCallback = function (result = YU2_OK)
     {
       ::g_item_limits.isRequestLocked = false
-      if (result == ::YU2_OK)
+      if (result == YU2_OK)
       {
         let resultBlk = ::get_items_count_for_limits_result()
         ::g_item_limits.onRequestComplete(resultBlk)
@@ -67,47 +74,47 @@ g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
   return ::g_tasker.addTask(taskId, taskOptions, taskCallback, taskCallback)
 }
 
-g_item_limits.enqueueItem <- function enqueueItem(itemName)
+::g_item_limits.enqueueItem <- function enqueueItem(itemName)
 {
-  ::u.appendOnce(itemName, itemNamesQueue)
+  ::u.appendOnce(itemName, this.itemNamesQueue)
 }
 
-g_item_limits.requestLimitsForItem <- function requestLimitsForItem(itemId, forceRefresh = false)
+::g_item_limits.requestLimitsForItem <- function requestLimitsForItem(itemId, forceRefresh = false)
 {
   if (forceRefresh)
-    getLimitDataByItemName(itemId).lastUpdateTime = -1
-  enqueueItem(itemId)
-  requestLimits()
+    this.getLimitDataByItemName(itemId).lastUpdateTime = -1
+  this.enqueueItem(itemId)
+  this.requestLimits()
 }
 
-g_item_limits.getLimitDataByItemName <- function getLimitDataByItemName(itemName)
+::g_item_limits.getLimitDataByItemName <- function getLimitDataByItemName(itemName)
 {
-  return ::getTblValue(itemName, limitDataByItemName) || createLimitData(itemName)
+  return getTblValue(itemName, this.limitDataByItemName) || this.createLimitData(itemName)
 }
 
 //
 // Private
 //
 
-g_item_limits.onRequestComplete <- function onRequestComplete(resultBlk)
+::g_item_limits.onRequestComplete <- function onRequestComplete(resultBlk)
 {
   for (local i = resultBlk.blockCount() - 1; i >= 0; --i)
   {
     let itemBlk = resultBlk.getBlock(i)
     let itemName = itemBlk.getBlockName()
-    let limitData = getLimitDataByItemName(itemName)
+    let limitData = this.getLimitDataByItemName(itemName)
     limitData.countGlobal = itemBlk?.countGlobal ?? 0
     limitData.countPersonalTotal = itemBlk?.countPersonalTotal ?? 0
     limitData.countPersonalAtTime = itemBlk?.countPersonalAtTime ?? 0
-    limitData.lastUpdateTime = ::dagor.getCurTime()
+    limitData.lastUpdateTime = get_time_msec()
   }
-  requestLimits()
+  this.requestLimits()
 }
 
-g_item_limits.createLimitData <- function createLimitData(itemName)
+::g_item_limits.createLimitData <- function createLimitData(itemName)
 {
-  ::dagor.assertf(
-    !(itemName in limitDataByItemName),
+  assert(
+    !(itemName in this.limitDataByItemName),
     format("Limit data with name %s already exists.", itemName)
   )
 
@@ -118,11 +125,11 @@ g_item_limits.createLimitData <- function createLimitData(itemName)
     countPersonalAtTime = -1
     lastUpdateTime = -1 // Milliseconds
   }
-  limitDataByItemName[itemName] <- limitData
+  this.limitDataByItemName[itemName] <- limitData
   return limitData
 }
 
-g_item_limits.checkRequestSize <- function checkRequestSize(requestSize)
+::g_item_limits.checkRequestSize <- function checkRequestSize(requestSize)
 {
-  return MAX_REQUEST_SIZE == 0 || requestSize < MAX_REQUEST_SIZE
+  return this.MAX_REQUEST_SIZE == 0 || requestSize < this.MAX_REQUEST_SIZE
 }

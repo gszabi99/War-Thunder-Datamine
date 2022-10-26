@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 /*
  API:
  static open(config)
@@ -9,8 +15,9 @@
                      called only if list was changed
 */
 
-::gui_handlers.ChooseMissionsListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.ChooseMissionsListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/missions/chooseMissionsListWnd.blk"
 
@@ -28,11 +35,11 @@
 
   static function open(config)
   {
-    let misList = ::getTblValue("missionsList", config)
+    let misList = getTblValue("missionsList", config)
     if (!::u.isArray(misList) || !misList.len())
     {
       ::script_net_assert_once(" bad_missions_list",
-        "Bad missions list to choose: " + ::toString(misList))
+        "Bad missions list to choose: " + toString(misList))
       return
     }
     ::handlersManager.loadHandler(::gui_handlers.ChooseMissionsListWnd, config)
@@ -40,22 +47,22 @@
 
   function initScreen()
   {
-    misListObj = scene.findObject("items_list")
-    scene.findObject("wnd_title").setValue(headerText)
+    this.misListObj = this.scene.findObject("items_list")
+    this.scene.findObject("wnd_title").setValue(this.headerText)
 
-    selMissionsMap = selMissionsToMap(missionsList, selMissions)
-    initialSelMissionsMap = clone selMissionsMap
-    initDescHandler()
-    fillMissionsList()
+    this.selMissionsMap = this.selMissionsToMap(this.missionsList, this.selMissions)
+    this.initialSelMissionsMap = clone this.selMissionsMap
+    this.initDescHandler()
+    this.fillMissionsList()
 
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
+    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initDescHandler()
   {
-    let descHandler = ::gui_handlers.MissionDescription.create(getObj("mission_desc"), curMission)
-    registerSubHandler(descHandler)
-    missionDescWeak = descHandler.weakref()
+    let descHandler = ::gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
+    this.registerSubHandler(descHandler)
+    this.missionDescWeak = descHandler.weakref()
   }
 
   function selMissionsToMap(fullList, selList)
@@ -72,19 +79,19 @@
   {
     let res = []
     foreach(mission in fullList)
-      if (::getTblValue(mission.id, misMap, false))
+      if (getTblValue(mission.id, misMap, false))
         res.append(mission)
     return res
   }
 
   function isMissionSelected(mission)
   {
-    return ::getTblValue(mission.id, selMissionsMap, false)
+    return getTblValue(mission.id, this.selMissionsMap, false)
   }
 
   function isAllMissionsSelected()
   {
-    foreach(value in selMissionsMap)
+    foreach(value in this.selMissionsMap)
       if (!value)
         return false
     return true
@@ -93,67 +100,67 @@
   function fillMissionsList()
   {
     let view = { items = [] }
-    foreach(mission in missionsList)
+    foreach(mission in this.missionsList)
       view.items.append({
         id = mission.id
         itemText = mission.getNameText()
         checkBoxActionName = "onMissionCheckBox"
-        isChosen = isMissionSelected(mission) ? "yes" : "no"
+        isChosen = this.isMissionSelected(mission) ? "yes" : "no"
       })
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
-    guiScene.replaceContentFromText(misListObj, data, data.len(), this)
-    misListObj.setValue(0)
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    this.guiScene.replaceContentFromText(this.misListObj, data, data.len(), this)
+    this.misListObj.setValue(0)
   }
 
   function updateButtons()
   {
-    let chooseBtn = this.showSceneBtn("btn_choose", !!curMission)
-    if (curMission)
-      chooseBtn.setValue(isMissionSelected(curMission) ? ::loc("misList/unselectMission") : ::loc("misList/selectMission"))
+    let chooseBtn = this.showSceneBtn("btn_choose", !!this.curMission)
+    if (this.curMission)
+      chooseBtn.setValue(this.isMissionSelected(this.curMission) ? loc("misList/unselectMission") : loc("misList/selectMission"))
 
-    let chooseAllText = isAllMissionsSelected() ? ::loc("misList/unselectAll") : ::loc("misList/selectAll")
-    scene.findObject("btn_choose_all").setValue(chooseAllText)
+    let chooseAllText = this.isAllMissionsSelected() ? loc("misList/unselectAll") : loc("misList/selectAll")
+    this.scene.findObject("btn_choose_all").setValue(chooseAllText)
   }
 
   function markSelected(mission, isSelected)
   {
-    if (isSelected == isMissionSelected(mission))
+    if (isSelected == this.isMissionSelected(mission))
       return
 
-    selMissionsMap[mission.id] <- isSelected
-    let checkBoxObj = misListObj.findObject("checkbox_" + mission.id)
-    if (::check_obj(checkBoxObj) && checkBoxObj.getValue() != isSelected)
+    this.selMissionsMap[mission.id] <- isSelected
+    let checkBoxObj = this.misListObj.findObject("checkbox_" + mission.id)
+    if (checkObj(checkBoxObj) && checkBoxObj.getValue() != isSelected)
       checkBoxObj.setValue(isSelected)
   }
 
   function onMissionSelect(obj)
   {
-    let mission = ::getTblValue(obj.getValue(), missionsList)
-    if (mission == curMission)
+    let mission = getTblValue(obj.getValue(), this.missionsList)
+    if (mission == this.curMission)
       return
 
-    curMission = mission
-    if (missionDescWeak)
-      missionDescWeak.setMission(curMission)
-    updateButtons()
+    this.curMission = mission
+    if (this.missionDescWeak)
+      this.missionDescWeak.setMission(this.curMission)
+    this.updateButtons()
   }
 
   function onChooseMission()
   {
-    if (!curMission)
+    if (!this.curMission)
       return
 
-    markSelected(curMission, !isMissionSelected(curMission))
-    updateButtons()
+    this.markSelected(this.curMission, !this.isMissionSelected(this.curMission))
+    this.updateButtons()
   }
 
   function onChooseAll()
   {
-    let needSelect = !isAllMissionsSelected()
-    foreach(mission in missionsList)
-      markSelected(mission, needSelect)
-    updateButtons()
+    let needSelect = !this.isAllMissionsSelected()
+    foreach(mission in this.missionsList)
+      this.markSelected(mission, needSelect)
+    this.updateButtons()
   }
 
   function onMissionCheckBox(obj)
@@ -162,26 +169,26 @@
     if (!id)
       return
 
-    if (!curMission || curMission.id != id)
+    if (!this.curMission || this.curMission.id != id)
     {
-      let idx = missionsList.findindex(@(m) m.id == id)
+      let idx = this.missionsList.findindex(@(m) m.id == id)
       if (idx == null)
         return
 
-      misListObj.setValue(idx)
+      this.misListObj.setValue(idx)
     }
 
     let value = obj.getValue()
-    if (isMissionSelected(curMission) != obj.getValue())
+    if (this.isMissionSelected(this.curMission) != obj.getValue())
     {
-      markSelected(curMission, value)
-      updateButtons()
+      this.markSelected(this.curMission, value)
+      this.updateButtons()
     }
   }
 
   function afterModalDestroy()
   {
-    if (onApplyListCb && !::u.isEqual(selMissionsMap, initialSelMissionsMap))
-      onApplyListCb(mapToSelectedMissions(missionsList, selMissionsMap))
+    if (this.onApplyListCb && !::u.isEqual(this.selMissionsMap, this.initialSelMissionsMap))
+      this.onApplyListCb(this.mapToSelectedMissions(this.missionsList, this.selMissionsMap))
   }
 }

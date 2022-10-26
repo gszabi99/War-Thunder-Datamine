@@ -1,5 +1,10 @@
-let saclosMissileBeaconIRSourceBand = persist("saclosMissileBeaconIRSourceBand", @() ::Watched(4))
-let reloadCooldownTimeByCaliber = persist("reloadCooldownTimeByCaliber", @() ::Watched({}))
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let saclosMissileBeaconIRSourceBand = persist("saclosMissileBeaconIRSourceBand", @() Watched(4))
+let reloadCooldownTimeByCaliber = persist("reloadCooldownTimeByCaliber", @() Watched({}))
 
 
 let function initWeaponParams() {

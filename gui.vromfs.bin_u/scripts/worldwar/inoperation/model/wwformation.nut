@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::WwFormation <- class
 {
   name = ""
@@ -18,43 +24,43 @@
 
   function clear()
   {
-    owner?.clear()
-    units?.clear()
+    this.owner?.clear()
+    this.units?.clear()
 
-    name = ""
-    morale = -1
-    unitType = ::g_ww_unit_type.UNKNOWN.code
-    isUnitsValid = false
-    artilleryAmmo = null
+    this.name = ""
+    this.morale = -1
+    this.unitType = ::g_ww_unit_type.UNKNOWN.code
+    this.isUnitsValid = false
+    this.artilleryAmmo = null
   }
 
   function getArmyGroup()
   {
-    if (!armyGroup)
-      armyGroup = ::g_world_war.getArmyGroupByArmy(this)
-    return armyGroup
+    if (!this.armyGroup)
+      this.armyGroup = ::g_world_war.getArmyGroupByArmy(this)
+    return this.armyGroup
   }
 
   function getView()
   {
-    if (!armyView)
-      armyView = ::WwArmyView(this)
-    return armyView
+    if (!this.armyView)
+      this.armyView = ::WwArmyView(this)
+    return this.armyView
   }
 
   function getUnitType()
   {
-    return unitType
+    return this.unitType
   }
 
   function getUnits(excludeInfantry = false)
   {
-    updateUnits()
+    this.updateUnits()
     if (excludeInfantry)
-      return ::u.filter(units, function (unit) {
+      return ::u.filter(this.units, function (unit) {
         return !::g_ww_unit_type.isInfantry(unit.getWwUnitType().code)
       })
-    return units
+    return this.units
   }
 
   function updateUnits() {} //default func
@@ -66,46 +72,46 @@
 
   function getClanId()
   {
-    let group = getArmyGroup()
+    let group = this.getArmyGroup()
     return group ? group.getClanId() : ""
   }
 
   function getClanTag()
   {
-    let group = getArmyGroup()
+    let group = this.getArmyGroup()
     return group ? group.getClanTag() : ""
   }
 
   function isBelongsToMyClan()
   {
-    let group = getArmyGroup()
+    let group = this.getArmyGroup()
     return group ? group.isBelongsToMyClan() : false
   }
 
   function getArmySide()
   {
-    return owner.getSide()
+    return this.owner.getSide()
   }
 
   function isMySide(side)
   {
-    return getArmySide() == side
+    return this.getArmySide() == side
   }
 
   function getArmyGroupIdx()
   {
-    return owner.getArmyGroupIdx()
+    return this.owner.getArmyGroupIdx()
   }
 
   function getArmyCountry()
   {
-    return owner.getCountry()
+    return this.owner.getCountry()
   }
 
   function getUnitsNameArray()
   {
     let res = []
-    foreach (unit in units)
+    foreach (unit in this.units)
       res.append(unit.getFullName())
 
     return res
@@ -113,13 +119,13 @@
 
   function hasManageAccess()
   {
-    let group = getArmyGroup()
+    let group = this.getArmyGroup()
     return group ? group.hasManageAccess() : false
   }
 
   function hasObserverAccess()
   {
-    let group = getArmyGroup()
+    let group = this.getArmyGroup()
     return group ? group.hasObserverAccess() : false
   }
 
@@ -140,27 +146,27 @@
 
   function setName(nameText)
   {
-    name = nameText
+    this.name = nameText
   }
 
   function setFormationID(id)
   {
-    formationId = id
+    this.formationId = id
   }
 
   function getFormationID()
   {
-    return formationId
+    return this.formationId
   }
 
   function setUnitType(wwUnitTypeCode)
   {
-    unitType = wwUnitTypeCode
+    this.unitType = wwUnitTypeCode
   }
 
   function getMoral()
   {
-    return morale
+    return this.morale
   }
 
   function getPosition()
@@ -175,45 +181,45 @@
 
   function hasStrike()
   {
-    return artilleryAmmo ? artilleryAmmo.hasStrike() : null
+    return this.artilleryAmmo ? this.artilleryAmmo.hasStrike() : null
   }
 
   function hasAmmo()
   {
-    return getAmmoCount() > 0
+    return this.getAmmoCount() > 0
   }
 
   function getAmmoCount()
   {
-    return artilleryAmmo ? artilleryAmmo.getAmmoCount() : 0
+    return this.artilleryAmmo ? this.artilleryAmmo.getAmmoCount() : 0
   }
 
   function getNextAmmoRefillTime()
   {
-    return artilleryAmmo ? artilleryAmmo.getNextAmmoRefillTime() : -1
+    return this.artilleryAmmo ? this.artilleryAmmo.getNextAmmoRefillTime() : -1
   }
 
   function getMaxAmmoCount()
   {
-    return artilleryAmmo ? artilleryAmmo.getMaxAmmoCount() : 0
+    return this.artilleryAmmo ? this.artilleryAmmo.getMaxAmmoCount() : 0
   }
 
   function getMapObjectName()
   {
-    return mapObjectName
+    return this.mapObjectName
   }
 
   function getOverrideIcon()
   {
-    if (::u.isEmpty(overrideIconId))
+    if (::u.isEmpty(this.overrideIconId))
       return null
 
-    return ::ww_get_army_override_icon(overrideIconId, loadedArmyType, hasArtilleryAbility)
+    return ::ww_get_army_override_icon(this.overrideIconId, this.loadedArmyType, this.hasArtilleryAbility)
   }
 
   function getOverrideUnitType()
   {
-    switch (overrideIconId)
+    switch (this.overrideIconId)
     {
       case "infantry":
         return ::g_ww_unit_type.INFANTRY.code
@@ -226,13 +232,13 @@
 
   function setMapObjectName(mapObjName)
   {
-    mapObjectName = mapObjName
+    this.mapObjectName = mapObjName
   }
 
   function getUnitsNumber()
   {
     local count = 0
-    foreach (unit in units)
+    foreach (unit in this.units)
       count += unit.getCount()
 
     return count

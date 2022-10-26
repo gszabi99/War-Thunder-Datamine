@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { calcPercent } = require("%sqstd/math.nut")
 let psnStore = require("sony.store")
 let psnUser = require("sony.user")
@@ -20,7 +25,7 @@ enum PURCHASE_STATUS {
 
 let function handleNewPurchase(itemId) {
   ::ps4_update_purchases_on_auth()
-  let taskParams = { showProgressBox = true, progressBoxText = ::loc("charServer/checking") }
+  let taskParams = { showProgressBox = true, progressBoxText = loc("charServer/checking") }
   ::g_tasker.addTask(::update_entitlements_limited(true), taskParams)
   ::broadcastEvent("PS4ItemUpdate", {id = itemId})
 }
@@ -54,7 +59,7 @@ let function sendBqRecord(metric, itemId, result = null) {
   )
 }
 
-let function reportRecord(data, record_name) {
+let function reportRecord(data, _record_name) {
   sendBqRecord([data.ctx.metricPlaceCall, "checkout.close"], data.ctx.itemId, data.result)
   if (data.result.action == psnStore.Action.PURCHASED)
     handleNewPurchase(data.ctx.itemId)
@@ -96,142 +101,142 @@ local Ps4ShopPurchasableItem = class
   skuInfo = null
 
   constructor(blk, release_date) {
-    id = blk.label
-    entitlementId = getEntitlementId(id)
-    name = blk.name
-    category = blk?.category ?? ""
-    description = blk?.long_desc ?? ""
-    releaseDate = release_date //PSN not give releaseDate param. but it return data in sorted order by release date
+    this.id = blk.label
+    this.entitlementId = getEntitlementId(this.id)
+    this.name = blk.name
+    this.category = blk?.category ?? ""
+    this.description = blk?.long_desc ?? ""
+    this.releaseDate = release_date //PSN not give releaseDate param. but it return data in sorted order by release date
 
     let imagesArray = blk?.images != null ? (blk.images % "array") : []
     let imageIndex = imagesArray.findindex(@(t) t.type == IMAGE_TYPE_INDEX)
 
     let psnShopBlk = GUI.get()?.ps4_ingame_shop
     if (imageIndex != null && imagesArray[imageIndex]?.url)
-      imagePath = $"{imagesArray[imageIndex].url}?P1"
+      this.imagePath = $"{imagesArray[imageIndex].url}?P1"
     else if (psnShopBlk?.mainPart != null && psnShopBlk?.fileExtension != null)
-      imagePath = $"!{psnShopBlk.mainPart}{id}{psnShopBlk.fileExtension}"
+      this.imagePath = $"!{psnShopBlk.mainPart}{this.id}{psnShopBlk.fileExtension}"
 
     let customServiceLabelBlk = psnShopBlk?.customServiceLabel[targetPlatform]
     if (customServiceLabelBlk)
-      srvLabel = customServiceLabelBlk?[id] ?? serviceLabel
+      this.srvLabel = customServiceLabelBlk?[this.id] ?? serviceLabel
 
-    updateSkuInfo(blk)
+    this.updateSkuInfo(blk)
   }
 
   function updateSkuInfo(blk)
   {
-    skuInfo = (blk?.skus.blockCount() ?? 0) > 0? blk.skus.getBlock(0) : ::DataBlock()
+    this.skuInfo = (blk?.skus.blockCount() ?? 0) > 0? blk.skus.getBlock(0) : ::DataBlock()
     let userHasPlus = psnUser.hasPremium()
-    let isPlusPrice = skuInfo?.is_plus_price ?? false
-    let displayPrice = skuInfo?.display_price ?? ""
-    let skuPrice = skuInfo?.price
+    let isPlusPrice = this.skuInfo?.is_plus_price ?? false
+    let displayPrice = this.skuInfo?.display_price ?? ""
+    let skuPrice = this.skuInfo?.price
 
-    priceText = (!userHasPlus && isPlusPrice) ? (skuInfo?.display_original_price ?? "")
-      : (userHasPlus && !isPlusPrice) ? (skuInfo?.display_plus_upsell_price ?? displayPrice)
+    this.priceText = (!userHasPlus && isPlusPrice) ? (this.skuInfo?.display_original_price ?? "")
+      : (userHasPlus && !isPlusPrice) ? (this.skuInfo?.display_plus_upsell_price ?? displayPrice)
       : displayPrice
-    listPriceText = skuInfo?.display_original_price ?? skuInfo?.display_price ?? priceText
+    this.listPriceText = this.skuInfo?.display_original_price ?? this.skuInfo?.display_price ?? this.priceText
 
-    price = (!userHasPlus && isPlusPrice) ? skuInfo?.original_price
-      : (userHasPlus && !isPlusPrice) ? (skuInfo?.plus_upsell_price ?? skuPrice)
+    this.price = (!userHasPlus && isPlusPrice) ? this.skuInfo?.original_price
+      : (userHasPlus && !isPlusPrice) ? (this.skuInfo?.plus_upsell_price ?? skuPrice)
       : skuPrice
-    listPrice = skuInfo?.original_price ?? skuInfo?.price ?? price
+    this.listPrice = this.skuInfo?.original_price ?? this.skuInfo?.price ?? this.price
 
-    needHeader = price != null && listPrice != null
+    this.needHeader = this.price != null && this.listPrice != null
 
-    productId = skuInfo?.product_id
-    let purchStatus = skuInfo?.annotation_name ?? PURCHASE_STATUS.NOT_PURCHASED
-    isBought = purchStatus == PURCHASE_STATUS.PURCHASED
-    isPurchasable = purchStatus != PURCHASE_STATUS.PURCHASED && (skuInfo?.is_purchaseable ?? false)
-    isMultiConsumable = (skuInfo?.use_count ?? 0) > 0
-    if (isMultiConsumable)
-      defaultIconStyle = "reward_gold"
+    this.productId = this.skuInfo?.product_id
+    let purchStatus = this.skuInfo?.annotation_name ?? PURCHASE_STATUS.NOT_PURCHASED
+    this.isBought = purchStatus == PURCHASE_STATUS.PURCHASED
+    this.isPurchasable = purchStatus != PURCHASE_STATUS.PURCHASED && (this.skuInfo?.is_purchaseable ?? false)
+    this.isMultiConsumable = (this.skuInfo?.use_count ?? 0) > 0
+    if (this.isMultiConsumable)
+      this.defaultIconStyle = "reward_gold"
   }
 
-  haveDiscount = @() !isBought && price != null && listPrice != null && price != listPrice
-  havePsPlusDiscount = @() psnUser.hasPremium() && ("display_plus_upsell_price" in skuInfo || skuInfo?.is_plus_price) //use in markup
-  getDiscountPercent = @() (price == null && listPrice == null)? 0 : calcPercent(1 - (price.tofloat() / listPrice))
+  haveDiscount = @() !this.isBought && this.price != null && this.listPrice != null && this.price != this.listPrice
+  havePsPlusDiscount = @() psnUser.hasPremium() && ("display_plus_upsell_price" in this.skuInfo || this.skuInfo?.is_plus_price) //use in markup
+  getDiscountPercent = @() (this.price == null && this.listPrice == null)? 0 : calcPercent(1 - (this.price.tofloat() / this.listPrice))
 
   getPriceText = function() {
-    if (priceText == "")
+    if (this.priceText == "")
       return ""
 
-    let color = !haveDiscount() ? ""
-      : havePsPlusDiscount() ? "psplusTextColor"
+    let color = !this.haveDiscount() ? ""
+      : this.havePsPlusDiscount() ? "psplusTextColor"
       : "goodTextColor"
 
-    return ::colorize(color, priceText)
+    return colorize(color, this.priceText)
   }
 
   getDescription = function() {
     //TEMP HACK!!! for PS4 TRC R4052A, to show all symbols of a single 2000-letter word
     let maxSymbolsInLine = 50 // Empirically fits with the biggest font we have
-    if (description.len() > maxSymbolsInLine && description.indexof(" ") == null) {
-      local splitDesc = description.slice(0, maxSymbolsInLine)
-      let len = description.len()
+    if (this.description.len() > maxSymbolsInLine && this.description.indexof(" ") == null) {
+      local splitDesc = this.description.slice(0, maxSymbolsInLine)
+      let len = this.description.len()
       let totalLines = (len / maxSymbolsInLine).tointeger() + 1
       for (local i = 1; i < totalLines; i++) {
         splitDesc += "\n"
-        splitDesc += description.slice(i * maxSymbolsInLine, (i+1) * maxSymbolsInLine)
+        splitDesc += this.description.slice(i * maxSymbolsInLine, (i+1) * maxSymbolsInLine)
       }
       return splitDesc
     }
 
-    return description
+    return this.description
   }
 
   getViewData = @(params = {}) {
-    isAllBought = isBought
-    price = getPriceText()
-    layered_image = getIcon()
+    isAllBought = this.isBought
+    price = this.getPriceText()
+    layered_image = this.getIcon()
     enableBackground = true
-    isInactive = isInactive()
-    isItemLocked = !isPurchasable
-    itemHighlight = isBought
+    isInactive = this.isInactive()
+    isItemLocked = !this.isPurchasable
+    itemHighlight = this.isBought
     needAllBoughtIcon = true
     needPriceFadeBG = true
-    headerText = shortName
-    havePsPlusDiscount = havePsPlusDiscount()
+    headerText = this.shortName
+    havePsPlusDiscount = this.havePsPlusDiscount()
   }.__merge(params)
 
-  getItemsView = @() getEntitlementView(entitlementId)
+  getItemsView = @() getEntitlementView(this.entitlementId)
 
-  isCanBuy = @() isPurchasable && !isBought
-  isInactive = @() !isPurchasable || isBought
+  isCanBuy = @() this.isPurchasable && !this.isBought
+  isInactive = @() !this.isPurchasable || this.isBought
 
-  getIcon = @(...) imagePath ? ::LayersIcon.getCustomSizeIconData(imagePath, "pw, ph")
-                             : ::LayersIcon.getIconData(null, null, 1.0, defaultIconStyle)
+  getIcon = @(...) this.imagePath ? ::LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
+                             : ::LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
 
   getBigIcon = function() {
     let ps4ShopBlk = GUI.get()?.ps4_ingame_shop
     let ingameShopImages = ps4ShopBlk?.items
-    if (ingameShopImages?[id] && ps4ShopBlk?.mainPart && ps4ShopBlk?.fileExtension)
-      return ::LayersIcon.getCustomSizeIconData("!" + ps4ShopBlk.mainPart + id + ps4ShopBlk.fileExtension, "pw, ph")
+    if (ingameShopImages?[this.id] && ps4ShopBlk?.mainPart && ps4ShopBlk?.fileExtension)
+      return ::LayersIcon.getCustomSizeIconData("!" + ps4ShopBlk.mainPart + this.id + ps4ShopBlk.fileExtension, "pw, ph")
 
     return null
   }
 
-  getSeenId = @() id.tostring()
-  canBeUnseen = @() isBought
+  getSeenId = @() this.id.tostring()
+  canBeUnseen = @() this.isBought
   showDetails = function(metricPlaceCall = "ingame_store") {
-    let itemId = id
+    let itemId = this.id
     let eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
     sendBqRecord([metricPlaceCall, "checkout.open"], itemId)
     psnStore.open_checkout(
       [itemId],
-      srvLabel,
+      this.srvLabel,
       "storeCheckoutClosed",
       eventData
     )
   }
 
   showDescription = function(metricPlaceCall = "ingame_store") {
-    let itemId = id
+    let itemId = this.id
     let eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
     sendBqRecord([metricPlaceCall, "description.open"], itemId)
     psnStore.open_product(
       itemId,
-      srvLabel,
+      this.srvLabel,
       "storeDescriptionClosed",
       eventData
     )

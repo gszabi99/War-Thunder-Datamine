@@ -1,8 +1,19 @@
-// TEST: gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? close_cur_wheelmenu() })
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+// TEST: ::gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? ::close_cur_wheelmenu() })
 
 let { getGamepadAxisTexture } = require("%scripts/controls/gamepadIcons.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { getHudUnitType } = require("hudState")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
+let { getComplexAxesId } = require("%scripts/controls/shortcutsUtils.nut")
+let { PI } = require("math")
+let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -14,8 +25,7 @@ const ITEMS_PER_PAGE = 8
     owner = null
     mouseEnabled    = false
     axisEnabled     = true
-    contentTemplate = "%gui/wheelMenu/textContent"
-    contentPartails = {}
+    contentTemplate = "%gui/wheelMenu/textContent.tpl"
   }
 
   ::inherit_table(params, defaultParams)
@@ -92,99 +102,98 @@ const ITEMS_PER_PAGE = 8
   mouseEnabled = false
   axisEnabled = true
   shouldShadeBackground = true
-  contentTemplate = "%gui/wheelMenu/textContent"
-  contentPartails = {}
+  contentTemplate = "%gui/wheelMenu/textContent.tpl"
   pageIdx = 0
   pagesTotal = 1
   itemsTotal = 0
 
   function initScreen()
   {
-    if (!menu || !::checkObj(scene))
-      return close()
+    if (!this.menu || !checkObj(this.scene))
+      return this.close()
 
     ::close_cur_wheelmenu()
 
-    guiScene = scene.getScene()
-    showScene(true)
-    fill(true)
-    updateSelectShortcutImage()
-    if (axisEnabled)
+    this.guiScene = this.scene.getScene()
+    this.showScene(true)
+    this.fill(true)
+    this.updateSelectShortcutImage()
+    if (this.axisEnabled)
     {
-      watchAxis = ::joystickInterface.getAxisWatch(true)
-      stuckAxis = ::joystickInterface.getAxisStuck(watchAxis)
-      joystickSelection = null
-      isKbdShortcutDown = false
+      this.watchAxis = ::joystickInterface.getAxisWatch(true)
+      this.stuckAxis = ::joystickInterface.getAxisStuck(this.watchAxis)
+      this.joystickSelection = null
+      this.isKbdShortcutDown = false
 
-      scene.findObject("wheelmenu_axis_input_timer").setUserData(this)
-      onWheelmenuAxisInputTimer()
+      this.scene.findObject("wheelmenu_axis_input_timer").setUserData(this)
+      this.onWheelmenuAxisInputTimer()
     }
-    let wheelmenu = scene.findObject("wheelmenu")
-    wheelmenu["total-input-transparent"] = mouseEnabled ? "no" : "yes"
+    let wheelmenu = this.scene.findObject("wheelmenu")
+    wheelmenu["total-input-transparent"] = this.mouseEnabled ? "no" : "yes"
     this.showSceneBtn("fast_shortcuts_block", false)
-    this.showSceneBtn("wheelmenu_bg_shade", shouldShadeBackground)
+    this.showSceneBtn("wheelmenu_bg_shade", this.shouldShadeBackground)
 
-    ::g_hud_event_manager.subscribe("LocalPlayerDead", @(_) quit(), this)
+    ::g_hud_event_manager.subscribe("LocalPlayerDead", @(_) this.quit(), this)
 
-    wndControlsAllowMask = wndControlsAllowMaskWhenActive
+    this.wndControlsAllowMask = this.wndControlsAllowMaskWhenActive
   }
 
   function reinitScreen(params = {})
   {
-    setParams(params)
-    initScreen()
+    this.setParams(params)
+    this.initScreen()
   }
 
   function updateContent(params = {})
   {
-    setParams(params)
-    if ((menu?.len() ?? 0) == 0 || !::check_obj(scene))
-      return close()
+    this.setParams(params)
+    if ((this.menu?.len() ?? 0) == 0 || !checkObj(this.scene))
+      return this.close()
 
-    fill()
+    this.fill()
   }
 
   function fill(isInitial = false)
   {
-    itemsTotal = 0
-    foreach (idx, v in menu)
+    this.itemsTotal = 0
+    foreach (idx, v in this.menu)
       if (v != null)
-        itemsTotal = idx + 1
-    pagesTotal = max(1, (itemsTotal + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE)
-    pageIdx = isInitial ? 0 : min(pageIdx, pagesTotal - 1)
+        this.itemsTotal = idx + 1
+    this.pagesTotal = max(1, (this.itemsTotal + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE)
+    this.pageIdx = isInitial ? 0 : min(this.pageIdx, this.pagesTotal - 1)
 
-    fillMenuItems()
-    updatePageInfo()
-    updateTitlePos()
+    this.fillMenuItems()
+    this.updatePageInfo()
+    this.updateTitlePos()
 
     if (!isInitial)
-      highlightItemBySide(joystickSelection, true)
+      this.highlightItemBySide(this.joystickSelection, true)
   }
 
   function fillMenuItems()
   {
-    let startIdx = pageIdx * ITEMS_PER_PAGE
+    let startIdx = this.pageIdx * ITEMS_PER_PAGE
 
-    let itemsCount = max(itemsTotal - startIdx, ITEMS_PER_PAGE)
-    btnSetIdx = btnSetsConfig.len() - 1
-    for (local i = 0; i < btnSetsConfig.len(); i++)
-      if (btnSetsConfig[i].len() >= itemsCount)
+    let itemsCount = max(this.itemsTotal - startIdx, ITEMS_PER_PAGE)
+    this.btnSetIdx = this.btnSetsConfig.len() - 1
+    for (local i = 0; i < this.btnSetsConfig.len(); i++)
+      if (this.btnSetsConfig[i].len() >= itemsCount)
         {
-          btnSetIdx = i
+          this.btnSetIdx = i
           break
         }
-    let btnSet = btnSetsConfig[btnSetIdx]
+    let btnSet = this.btnSetsConfig[this.btnSetIdx]
 
-    foreach (suffix in joystickSides)
+    foreach (suffix in this.joystickSides)
     {
       let btnIdx = btnSet.indexof(suffix)
-      let index = btnIdx != null ? (startIdx + btnIdx) : invalidIndex
-      let item = menu?[index]
+      let index = btnIdx != null ? (startIdx + btnIdx) : this.invalidIndex
+      let item = this.menu?[index]
       let isShow = (item?.name ?? "") != ""
       let enabled = isShow && (item?.wheelmenuEnabled ?? true)
       let bObj = this.showSceneBtn($"wheelmenuItem{suffix}", isShow)
 
-      if (::checkObj(bObj))
+      if (checkObj(bObj))
       {
         let buttonType = item?.buttonType ?? ""
         if (buttonType != "")
@@ -193,8 +202,8 @@ const ITEMS_PER_PAGE = 8
         if (isShow)
         {
           let content = bObj.findObject("content")
-          let blk = ::handyman.renderCached(contentTemplate, item, contentPartails)
-          guiScene.replaceContentFromText(content, blk, blk.len(), this)
+          let blk = ::handyman.renderCached(this.contentTemplate, item)
+          this.guiScene.replaceContentFromText(content, blk, blk.len(), this)
         }
 
         bObj.index = index
@@ -206,32 +215,32 @@ const ITEMS_PER_PAGE = 8
 
   function updatePageInfo()
   {
-    let shouldShowPages = pagesTotal > 1
-    let objPageInfo = scene.findObject("wheel_menu_page")
+    let shouldShowPages = this.pagesTotal > 1
+    let objPageInfo = this.scene.findObject("wheel_menu_page")
     objPageInfo.setValue(shouldShowPages
-      ? ::loc("mainmenu/pageNumOfPages", { num = pageIdx + 1, total = pagesTotal })
+      ? loc("mainmenu/pageNumOfPages", { num = this.pageIdx + 1, total = this.pagesTotal })
       : "")
     this.showSceneBtn("btnSwitchPage", shouldShowPages)
   }
 
   function updateTitlePos()
   {
-    let obj = scene.findObject("wheel_menu_title")
-    let startIdx = pageIdx * ITEMS_PER_PAGE
-    let hasTopItem = menu?[startIdx + 7] != null
+    let obj = this.scene.findObject("wheel_menu_title")
+    let startIdx = this.pageIdx * ITEMS_PER_PAGE
+    let hasTopItem = this.menu?[startIdx + 7] != null
     obj.top = hasTopItem ? obj?.topWithTopMenuItem : obj?.topWithoutTopMenuItem
   }
 
   function updateSelectShortcutImage()
   {
-    let obj = scene.findObject("wheelmenu_select_shortcut")
-    local isShow = ::show_console_buttons && axisEnabled
+    let obj = this.scene.findObject("wheelmenu_select_shortcut")
+    local isShow = ::show_console_buttons && this.axisEnabled
     if (isShow)
     {
-      let shortcuts = getPlayerCurUnit()?.unitType.wheelmenuAxis ?? []
+      let shortcuts = unitTypeByHudUnitType?[getHudUnitType()].wheelmenuAxis ?? []
       let shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
       isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
-      let axesId = shortcutType.getComplexAxesId(shortcuts)
+      let axesId = getComplexAxesId(shortcuts)
       obj["background-image"] = getGamepadAxisTexture(axesId)
     }
     obj.show(isShow)
@@ -239,143 +248,143 @@ const ITEMS_PER_PAGE = 8
 
   function onWheelmenuItemClick(obj)
   {
-    if (!obj || (!mouseEnabled && !useTouchscreen && !::is_cursor_visible_in_gui()) )
+    if (!obj || (!this.mouseEnabled && !useTouchscreen && !::is_cursor_visible_in_gui()) )
       return
 
     let index = obj.index.tointeger()
-    sendAvailableAnswerDelayed(index)
+    this.sendAvailableAnswerDelayed(index)
   }
 
-  function onWheelmenuAxisInputTimer(obj=null, dt=null)
+  function onWheelmenuAxisInputTimer(_obj=null, _dt=null)
   {
-    if (!axisEnabled || isKbdShortcutDown)
+    if (!this.axisEnabled || this.isKbdShortcutDown)
       return
 
-    let axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
-    let joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, joystickMinDeviation)
+    let axisData = ::joystickInterface.getAxisData(this.watchAxis, this.stuckAxis)
+    let joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, this.joystickMinDeviation)
     if (joystickData == null || joystickData.normLength == 0)
       return
 
     let side = ((joystickData.angle / PI + 2.125) * 4).tointeger() % 8
-    highlightItemBySide(joystickSides?[side])
+    this.highlightItemBySide(this.joystickSides?[side])
   }
 
   function highlightItemBySide(selection, isForced = false)
   {
-    if (selection == joystickSelection && !isForced)
+    if (selection == this.joystickSelection && !isForced)
       return
 
-    local bObj = joystickSelection && scene.findObject("wheelmenuItem" + joystickSelection)
+    local bObj = this.joystickSelection && this.scene.findObject("wheelmenuItem" + this.joystickSelection)
     if (bObj)
       bObj.selected = "no"
 
-    bObj = selection && scene.findObject("wheelmenuItem" + selection)
+    bObj = selection && this.scene.findObject("wheelmenuItem" + selection)
     if (bObj)
       bObj.selected = "yes"
 
-    joystickSelection = selection
+    this.joystickSelection = selection
   }
 
   function highlightItemByBtnIdx(btnIdx)
   {
-    let selection = btnSetsConfig[btnSetIdx]?[btnIdx]
-    highlightItemBySide(selection)
+    let selection = this.btnSetsConfig[this.btnSetIdx]?[btnIdx]
+    this.highlightItemBySide(selection)
   }
 
   function activateSelectedItem()
   {
-    if (! joystickSelection) return
+    if (! this.joystickSelection) return
 
-    let bObj = scene.findObject("wheelmenuItem" + joystickSelection)
+    let bObj = this.scene.findObject("wheelmenuItem" + this.joystickSelection)
     let index = bObj && bObj.index.tointeger()
-    sendAvailableAnswerDelayed(index)
+    this.sendAvailableAnswerDelayed(index)
   }
 
-  function onWheelmenuAccesskeyApply(obj)
+  function onWheelmenuAccesskeyApply(_obj)
   {
-    activateSelectedItem()
+    this.activateSelectedItem()
   }
 
-  function onWheelmenuAccesskeyCancel(obj)
+  function onWheelmenuAccesskeyCancel(_obj)
   {
-    sendAnswerAndClose(invalidIndex)
+    this.sendAnswerAndClose(this.invalidIndex)
   }
 
-  function onWheelmenuSwitchPage(obj)
+  function onWheelmenuSwitchPage(_obj)
   {
-    pageIdx = (pageIdx + 1) % pagesTotal
-    fill()
+    this.pageIdx = (this.pageIdx + 1) % this.pagesTotal
+    this.fill()
   }
 
-  function onVoiceMessageSwitchChannel(obj) {}
+  function onVoiceMessageSwitchChannel(_obj) {}
 
   function onShortcutSelectCallback(btnIdx, isDown)
   {
-    let index = (pageIdx * ITEMS_PER_PAGE) + btnIdx
-    if (!isItemAvailable(index))
+    let index = (this.pageIdx * ITEMS_PER_PAGE) + btnIdx
+    if (!this.isItemAvailable(index))
       return false
-    isKbdShortcutDown = isDown
-    highlightItemByBtnIdx(isDown ? btnIdx : -1)
+    this.isKbdShortcutDown = isDown
+    this.highlightItemByBtnIdx(isDown ? btnIdx : -1)
     if (!isDown)
-      sendAvailableAnswerDelayed(index)
+      this.sendAvailableAnswerDelayed(index)
     return true // processed
   }
 
   function onActivateItemCallback()
   {
-    activateSelectedItem()
+    this.activateSelectedItem()
   }
 
   function isItemAvailable(index)
   {
-    return (menu?[index].name ?? "") != "" && (menu?[index].wheelmenuEnabled ?? true)
+    return (this.menu?[index].name ?? "") != "" && (this.menu?[index].wheelmenuEnabled ?? true)
   }
 
   function sendAvailableAnswerDelayed(index)
   {
-    if (isItemAvailable(index))
-      guiScene.performDelayed(this, function() {
-        if (isValid())
-          sendAnswerAndClose(index)
+    if (this.isItemAvailable(index))
+      this.guiScene.performDelayed(this, function() {
+        if (this.isValid())
+          this.sendAnswerAndClose(index)
       })
   }
 
   function sendAnswerAndClose(index)
   {
     if (index!=null)
-      applyIndex = index
-    close()
+      this.applyIndex = index
+    this.close()
   }
 
   function showScene(show)
   {
-    scene.show(show)
-    scene.enable(show)
-    isActive = show
-    switchControlsAllowMask(isActive ? wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
+    this.scene.show(show)
+    this.scene.enable(show)
+    this.isActive = show
+    this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
   }
 
   function close()
   {
-    doApply()
+    this.doApply()
   }
 
   function afterModalDestroy()
   {
-    doApply()
+    this.doApply()
   }
 
   function doApply()
   {
-    if (!callbackFunc)
+    if (!this.callbackFunc)
       return
 
-    if (owner)
-      callbackFunc.call(owner, applyIndex)
+    if (this.owner)
+      this.callbackFunc.call(this.owner, this.applyIndex)
     else
-      callbackFunc(applyIndex)
+      this.callbackFunc(this.applyIndex)
   }
 
-  quit = @() sendAnswerAndClose(invalidIndex)
-  onEventHudTypeSwitched = @(_) quit()
+  quit = @() this.sendAnswerAndClose(this.invalidIndex)
+  onEventHudTypeSwitched = @(_) this.quit()
 }

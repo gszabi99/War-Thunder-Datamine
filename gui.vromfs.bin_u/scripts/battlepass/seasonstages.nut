@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { warbondsShopLevelByStages, seasonLevel } = require("%scripts/battlePass/seasonState.nut")
 let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId, hasBattlePass
 } = require("%scripts/battlePass/unlocksRewardsState.nut")
@@ -8,8 +13,8 @@ let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 10
 
-let overrideStagesIcon = ::Computed(@() basicUnlock.value?.meta.overrideStageIcon ?? {})
-let doubleWidthStagesIcon = ::Computed(@() basicUnlock.value?.meta.doubleWidthStageIcon ?? [])
+let overrideStagesIcon = Computed(@() basicUnlock.value?.meta.overrideStageIcon ?? {})
+let doubleWidthStagesIcon = Computed(@() basicUnlock.value?.meta.doubleWidthStageIcon ?? [])
 
 let getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.value ? "past"
   : (stageIdx + 1) == seasonLevel.value ? "current"
@@ -49,7 +54,7 @@ let function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stage
   }
 }
 
-let seasonStages = ::Computed(function() {
+let seasonStages = Computed(function() {
   let stagesCount = max(basicUnlock.value?.stages?.len() ?? 0,
     premiumUnlock.value?.stages?.len() ?? 0,
     seasonLevel.value + COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES)

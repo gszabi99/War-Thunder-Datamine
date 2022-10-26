@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 //All input classes are lives here
 ::Input <- {}
 
@@ -41,7 +46,7 @@
 
   function getDeviceId()
   {
-    return ::NULL_INPUT_DEVICE_ID
+    return NULL_INPUT_DEVICE_ID
   }
 
 

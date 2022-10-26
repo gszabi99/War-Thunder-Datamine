@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let {
   is_mplayer_host = @() ::is_mplayer_host() //compatibility with 2.16.0.X
 } = require_optional("multiplayer")
@@ -15,7 +21,7 @@ let { is_replay_playing } = require("replays")
   ::flight_menu_handler = ::handlersManager.loadHandler(::gui_handlers.FlightMenu)
 }
 
-::gui_start_flight_menu_failed <- gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
+::gui_start_flight_menu_failed <- ::gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
 ::gui_start_flight_menu_psn <- function gui_start_flight_menu_psn() {} //unused atm, but still have a case in code
 
 ::gui_handlers.FlightMenu <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -35,41 +41,41 @@ let { is_replay_playing } = require("replays")
 
   function initScreen()
   {
-    setSceneTitle(getCurMpTitle())
+    this.setSceneTitle(::getCurMpTitle())
 
-    menuButtonsCfg = flightMenuButtonTypes.types.filter(@(btn) btn.isAvailableInMission())
-    let markup = ::handyman.renderCached("%gui/flightMenu/menuButtons", { buttons = menuButtonsCfg })
-    guiScene.replaceContentFromText(scene.findObject("menu-buttons"), markup, markup.len(), this)
-    guiScene.applyPendingChanges(false)
+    this.menuButtonsCfg = flightMenuButtonTypes.types.filter(@(btn) btn.isAvailableInMission())
+    let markup = ::handyman.renderCached("%gui/flightMenu/menuButtons.tpl", { buttons = this.menuButtonsCfg })
+    this.guiScene.replaceContentFromText(this.scene.findObject("menu-buttons"), markup, markup.len(), this)
+    this.guiScene.applyPendingChanges(false)
 
-    reinitScreen()
+    this.reinitScreen()
   }
 
-  function reinitScreen(params = null)
+  function reinitScreen(_params = null)
   {
-    isMissionFailed = ::get_mission_status() == ::MISSION_STATUS_FAIL
-    usePause = !::is_game_paused()
+    this.isMissionFailed = ::get_mission_status() == MISSION_STATUS_FAIL
+    this.usePause = !::is_game_paused()
 
     if (!::handlersManager.isFullReloadInProgress)
     {
       ::in_flight_menu(true)
-      if (usePause)
+      if (this.usePause)
         ::pause_game(true)
     }
 
-    updateButtons()
-    restoreFocus(true)
+    this.updateButtons()
+    this.restoreFocus(true)
   }
 
   function updateButtons()
   {
-    if (!::check_obj(scene))
+    if (!checkObj(this.scene))
       return
 
-    foreach (btn in menuButtonsCfg)
+    foreach (btn in this.menuButtonsCfg)
     {
       let isShow = btn.isVisible()
-      let btnObj = ::showBtn(btn.buttonId, isShow, scene)
+      let btnObj = ::showBtn(btn.buttonId, isShow, this.scene)
       if (!isShow)
         continue
       let txt = btn.getUpdatedLabelText()
@@ -77,15 +83,15 @@ let { is_replay_playing } = require("replays")
         btnObj.setValue(txt)
     }
 
-    ::showBtn("btn_back", !isMissionFailed, scene)
+    ::showBtn("btn_back", !this.isMissionFailed, this.scene)
   }
 
   function restoreFocus(isInitial = false)
   {
-    if (!isSceneActiveNoModals())
+    if (!this.isSceneActiveNoModals())
       return
-    let btnId = lastSelectedBtnId ?? (isMissionFailed ? "btn_restart" : "btn_resume")
-    let btnObj = getObj(btnId)
+    let btnId = this.lastSelectedBtnId ?? (this.isMissionFailed ? "btn_restart" : "btn_resume")
+    let btnObj = this.getObj(btnId)
 
     if (::show_console_buttons)
       ::move_mouse_on_obj(btnObj)
@@ -93,53 +99,53 @@ let { is_replay_playing } = require("replays")
       setMousePointerInitialPos(btnObj)
   }
 
-  function onEventModalWndDestroy(params)
+  function onEventModalWndDestroy(_params)
   {
-    restoreFocus()
+    this.restoreFocus()
   }
 
   function goBack()
   {
-    onResume()
+    this.onResume()
   }
 
-  function onResume(obj = null)
+  function onResume(_obj = null)
   {
-    if (isMissionFailed)
+    if (this.isMissionFailed)
       return
-    onResumeRaw()
+    this.onResumeRaw()
   }
 
   _isWaitForResume = false
   function onResumeRaw()
   {
-    if (isMissionFailed || _isWaitForResume)
+    if (this.isMissionFailed || this._isWaitForResume)
       return
 
-    _isWaitForResume = true
-    guiScene.performDelayed(this, function()
+    this._isWaitForResume = true
+    this.guiScene.performDelayed(this, function()
     {
-      if (!isValid())
+      if (!this.isValid())
         return
-      _isWaitForResume = false
-      lastSelectedBtnId = null
+      this._isWaitForResume = false
+      this.lastSelectedBtnId = null
       ::in_flight_menu(false) //in_flight_menu will call closeScene which call stat chat
-      if (usePause)
+      if (this.usePause)
         ::pause_game(false)
     })
   }
 
   function onCancel(obj)
   {
-    onResume(obj)
+    this.onResume(obj)
   }
 
-  function onOptions(obj)
+  function onOptions(_obj)
   {
     openOptionsWnd()
   }
 
-  function onControls(obj)
+  function onControls(_obj)
   {
     ::gui_start_controls();
   }
@@ -151,27 +157,27 @@ let { is_replay_playing } = require("replays")
     if (("is_offline_version" in getroottable()) && ::is_offline_version)
       return ::restart_mission();
 
-    if ([ ::GM_CAMPAIGN, ::GM_SINGLE_MISSION, ::GM_DYNAMIC ].contains(::get_game_mode()))
-       goForward(::gui_start_briefing_restart)
+    if ([ GM_CAMPAIGN, GM_SINGLE_MISSION, GM_DYNAMIC ].contains(::get_game_mode()))
+       this.goForward(::gui_start_briefing_restart)
     else
       ::restart_current_mission()
   }
 
-  function onRestart(obj)
+  function onRestart(_obj)
   {
     if (!canRestart())
       return
     if (("is_offline_version" in getroottable()) && ::is_offline_version)
       return ::restart_mission();
 
-    if (isMissionFailed)
-      restartBriefing()
+    if (this.isMissionFailed)
+      this.restartBriefing()
     else
-    if (::get_mission_status() == ::MISSION_STATUS_RUNNING)
+    if (::get_mission_status() == MISSION_STATUS_RUNNING)
     {
-      this.msgBox("question_restart_mission", ::loc("flightmenu/questionRestartMission"),
+      this.msgBox("question_restart_mission", loc("flightmenu/questionRestartMission"),
       [
-        ["yes", restartBriefing],
+        ["yes", this.restartBriefing],
         ["no"]
       ], "no", { cancel_fn = @() null })
     }
@@ -188,10 +194,10 @@ let { is_replay_playing } = require("replays")
     if (::is_multiplayer())
     {
       ::leave_mp_session()
-      onResumeRaw()
+      this.onResumeRaw()
     }
     else
-      quitToDebriefing()
+      this.quitToDebriefing()
   }
 
   function quitToDebriefing()
@@ -199,49 +205,49 @@ let { is_replay_playing } = require("replays")
     ::g_orders.disableOrders()
     ::quit_to_debriefing()
     ::interrupt_multiplayer(true)
-    onResumeRaw()
+    this.onResumeRaw()
   }
 
-  function onQuitMission(obj)
+  function onQuitMission(_obj)
   {
     if (("is_offline_version" in getroottable()) && ::is_offline_version)
       return ::restart_mission();
 
     if (is_replay_playing())
     {
-      quitToDebriefing()
+      this.quitToDebriefing()
     }
-    else if (::get_mission_status() == ::MISSION_STATUS_RUNNING)
+    else if (::get_mission_status() == MISSION_STATUS_RUNNING)
     {
       local text = ""
       if (is_mplayer_host())
-        text = ::loc("flightmenu/questionQuitMissionHost")
-      else if (::get_game_mode() == ::GM_DOMINATION)
+        text = loc("flightmenu/questionQuitMissionHost")
+      else if (::get_game_mode() == GM_DOMINATION)
       {
         let unitsData = ::g_mis_custom_state.getCurMissionRules().getAvailableToSpawnUnitsData()
         let unitsTexts = ::u.map(unitsData,
                                    function(ud)
                                    {
-                                     local res = ::colorize("userlogColoredText", ::getUnitName(ud.unit))
+                                     local res = colorize("userlogColoredText", ::getUnitName(ud.unit))
                                      if (ud.comment.len())
-                                       res += ::loc("ui/parentheses/space", { text = ud.comment })
+                                       res += loc("ui/parentheses/space", { text = ud.comment })
                                      return res
                                    })
         if (unitsTexts.len())
-          text = ::loc("flightmenu/haveAvailableCrews") + "\n" + ::g_string.implode(unitsTexts, ", ") + "\n\n"
+          text = loc("flightmenu/haveAvailableCrews") + "\n" + ::g_string.implode(unitsTexts, ", ") + "\n\n"
 
-        text += ::loc("flightmenu/questionQuitMissionInProgress")
+        text += loc("flightmenu/questionQuitMissionInProgress")
       } else
-        text = ::loc("flightmenu/questionQuitMission")
+        text = loc("flightmenu/questionQuitMission")
       this.msgBox("question_quit_mission", text,
       [
-        ["yes", sendDisconnectMessage],
+        ["yes", this.sendDisconnectMessage],
         ["no"]
       ], "no", { cancel_fn = @() null })
     }
-    else if (isMissionFailed)
+    else if (this.isMissionFailed)
     {
-      let text = ::loc("flightmenu/questionQuitMission")
+      let text = loc("flightmenu/questionQuitMission")
       this.msgBox("question_quit_mission", text,
       [
         ["yes", function()
@@ -249,7 +255,7 @@ let { is_replay_playing } = require("replays")
           ::quit_to_debriefing()
           ::interrupt_multiplayer(true)
           ::in_flight_menu(false)
-          if (usePause)
+          if (this.usePause)
             ::pause_game(false)
         }],
         ["no"]
@@ -258,18 +264,18 @@ let { is_replay_playing } = require("replays")
     else
     {
       ::quit_mission_after_complete()
-      onResumeRaw()
+      this.onResumeRaw()
     }
   }
 
   function onCompleteMission(obj)
   {
-    onQuitMission(obj)
+    this.onQuitMission(obj)
   }
 
-  function onQuitGame(obj)
+  function onQuitGame(_obj)
   {
-    this.msgBox("question_quit_flight", ::loc("flightmenu/questionQuitGame"),
+    this.msgBox("question_quit_flight", loc("flightmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no"]
@@ -281,21 +287,21 @@ let { is_replay_playing } = require("replays")
     if (canBailout())
       ::do_player_bailout()
 
-    onResume(null)
+    this.onResume(null)
   }
 
-  function onBailout(obj)
+  function onBailout(_obj)
   {
     if (canBailout())
     {
       this.msgBox("question_bailout", getPlayerCurUnit()?.unitType.getBailoutQuestionText() ?? "",
         [
-          ["yes", doBailout],
+          ["yes", this.doBailout],
           ["no"]
         ], "no", { cancel_fn = @() null })
     }
     else
-      onResume(null)
+      this.onResume(null)
   }
 
   function onControlsHelp()
@@ -307,18 +313,18 @@ let { is_replay_playing } = require("replays")
 
   function onMenuBtnHover(obj)
   {
-    if (!::check_obj(obj))
+    if (!checkObj(obj))
       return
     let id = obj.id
     let isHover = obj.isHovered()
-    if (!isHover && id != lastSelectedBtnId)
+    if (!isHover && id != this.lastSelectedBtnId)
       return
-    lastSelectedBtnId = isHover ? id : null
+    this.lastSelectedBtnId = isHover ? id : null
   }
 
-  function onFreecam(obj)
+  function onFreecam(_obj)
   {
-    onResumeRaw()
+    this.onResumeRaw()
 
     if ("toggle_freecam" in getroottable())
       ::toggle_freecam()
@@ -329,7 +335,7 @@ let { is_replay_playing } = require("replays")
 {
   ::in_flight_menu(false)
   ::pause_game(false)
-  gui_start_hud()
+  ::gui_start_hud()
   ::broadcastEvent("PlayerQuitMission")
 
   if (::is_multiplayer())

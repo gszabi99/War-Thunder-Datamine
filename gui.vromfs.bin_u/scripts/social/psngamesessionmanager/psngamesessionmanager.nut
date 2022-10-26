@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let psnsm = require("%scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
 
@@ -33,7 +38,7 @@ let getSessionJoinData = function(pushContextId, isSpectator = false) {
   return {[isSpectator? "spectators" : "players"] = [res]}
 }
 
-let createdSessionData = persist("createdSessionData", @() ::Watched({}))
+let createdSessionData = persist("createdSessionData", @() Watched({}))
 let dumpSessionData = function(sessionId, pushContextId, sessionData) {
   createdSessionData.mutate(@(v) v[sessionId] <- {
     pushContextId = pushContextId
@@ -42,7 +47,7 @@ let dumpSessionData = function(sessionId, pushContextId, sessionData) {
 }
 
 
-let pendingSessions = persist("pendingSessions", @() ::Watched({}))
+let pendingSessions = persist("pendingSessions", @() Watched({}))
 
 
 let create = function() {
@@ -52,7 +57,7 @@ let create = function() {
 
   psnsm.create(
     pendingSessions.value[pushContextId],
-    ::Callback(function(r, err) {
+    Callback(function(r, err) {
       let sessionId = r?.gameSessions[0].sessionId
 
       if (!err && !isEmpty(sessionId)) {
@@ -66,12 +71,12 @@ let create = function() {
 }
 
 let destroy = function() {
-  foreach (sessionId, info in createdSessionData.value)
+  foreach (sessionId, _info in createdSessionData.value)
     if (!isEmpty(sessionId)) {
       let sId = sessionId
       psnsm.destroy(
         sId,
-        ::Callback(function(r, err) {
+        Callback(function(_r, _err) {
           if (sId in createdSessionData.value)
             createdSessionData.mutate(@(v) delete v[sId])
         }, this)
@@ -86,7 +91,7 @@ let function update(sessionId) {
     sessionId,
     existSessionInfo?.data.gameSessions[0],
     sessionData.gameSessions[0],
-    ::Callback(function(r, err) {
+    Callback(function(_r, err) {
       if (err != null || (sessionId not in createdSessionData.value))
         return
       createdSessionData.mutate(@(v) v[sessionId].data = copy(sessionData))
@@ -103,8 +108,8 @@ let join = function(sessionId, isSpectator, pushContextId, onFinishCb) {
 }
 
 addListenersWithoutEnv({
-  RoomJoined = function(p) {
-    if (::get_game_mode() != ::GM_SKIRMISH)
+  RoomJoined = function(_p) {
+    if (::get_game_mode() != GM_SKIRMISH)
       return
 
     let sessionId = ::SessionLobby.getExternalId()
@@ -119,7 +124,7 @@ addListenersWithoutEnv({
         sessionId,
         ::SessionLobby.spectator,
         psnNotify.createPushContext(),
-        ::Callback(function(sId, pushContextId, r, err) {
+        Callback(function(sId, pushContextId, _r, err) {
           if (!err)
             dumpSessionData(sId, pushContextId, {})
           if (sId in pendingSessions.value)
@@ -128,7 +133,7 @@ addListenersWithoutEnv({
       )
     }
   }
-  LobbyStatusChange = function(p) {
+  LobbyStatusChange = function(_p) {
     if (!::SessionLobby.isInRoom()) {
       destroy()
       return
@@ -144,7 +149,7 @@ addListenersWithoutEnv({
       create()
     }
   }
-  LobbySettingsChange = function(p) {
+  LobbySettingsChange = function(_p) {
     let sessionId = ::SessionLobby.getExternalId()
     if (isEmpty(sessionId) || !::SessionLobby.isInRoom())
       return
@@ -157,7 +162,7 @@ addListenersWithoutEnv({
         sessionId,
         ::SessionLobby.spectator,
         psnNotify.createPushContext(),
-        ::Callback(function(sId, pushContextId, r, err) {
+        Callback(function(sId, pushContextId, _r, err) {
           if (!err)
             dumpSessionData(sId, pushContextId, {})
           if (sId in pendingSessions.value)

@@ -2428,299 +2428,379 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "buccaneer_s2_default",
+        "name": "buccaneer_s1_default",
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_1000lb_bombs.blk"
       },
       {
-        "name": "buccaneer_s1_rp3",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_rp3.blk",
-        "reqModification": "uk_rp3_mk12"
+        "name": "buccaneer_s1_matra7",
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_matra7.blk"
       },
       {
-        "name": "buccaneer_s1_matra7",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_matra7.blk",
-        "reqModification": "uk_matra_7"
+        "name": "buccaneer_s1_rp3",
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_rp3.blk"
       },
       {
         "name": "buccaneer_s1_agm_12",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_agm_12.blk",
-        "reqModification": "fj_4b_agm_12b"
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_agm_12.blk"
       },
       {
-        "name": "buccaneer_s1_matra7_agm_12",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_matra7_agm_12.blk",
-        "reqModification": [
-          "fj_4b_agm_12b",
-          "uk_matra_7"
+        "name": "buccaneer_s1_1000lb_bombs_internal",
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_1000lb_bombs_internal.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 3800.0,
+    "maxloadMassLeftConsoles": 1800.0,
+    "maxloadMassRightConsoles": 1800.0,
+    "maxDisbalance": 1000.0,
+    "HideNodes": {
+      "node": [
+        "early_short_pylon1",
+        "early_long_pylon1",
+        "aero_3b_001",
+        "uk_rp3_rocket_pylon1",
+        "chaff_disp_l",
+        "early_short_pylon2",
+        "early_long_pylon2",
+        "uk_rp3_rocket_pylon2",
+        "early_long_pylon3",
+        "early_short_pylon3",
+        "early_short_pylon4",
+        "early_long_pylon4",
+        "uk_rp3_rocket_pylon4",
+        "aero_3b_002",
+        "chaff_disp_r"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_he_large",
+            "name": "matra_7",
+            "reqModification": "uk_matra_7",
+            "ShowNodes": {
+              "node": "early_short_pylon1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "uk_matra_7_launcher1",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "rockets_ap_small_group",
+            "name": "rp3",
+            "reqModification": "uk_rp3_mk12",
+            "ShowNodes": {
+              "node": [
+                "early_short_pylon1",
+                "uk_rp3_rocket_pylon1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/uk_rp3_late.blk",
+              "emitter": "uk_rp3_rocket_pylon1",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "agm12b",
+            "reqModification": "fj_4b_agm_12b",
+            "ShowNodes": {
+              "node": "early_long_pylon1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "us_agm_12b_bullpup_rocket1",
+              "bullets": 1,
+              "dragCx": 0.005
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_default",
+            "ShowNodes": {
+              "node": "early_short_pylon1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
+              "emitter": "1000_lb_uk_ld_bomb5",
+              "bullets": 1
+            }
+          }
         ]
       },
       {
-        "name": "buccaneer_s1_matra7_1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_matra7_1000lb.blk",
-        "reqModification": "uk_matra_7",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/uk_2_inch_rocket.blk",
-              "iconType": "nar_he_large",
-              "amountPerTier": 36.0,
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_he_large",
+            "name": "matra_7",
+            "reqModification": "uk_matra_7",
+            "ShowNodes": {
+              "node": "early_short_pylon2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "uk_matra_7_launcher3",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "rockets_ap_small_group",
+            "name": "rp3",
+            "reqModification": "uk_rp3_mk12",
+            "ShowNodes": {
+              "node": [
+                "early_short_pylon2",
+                "uk_rp3_rocket_pylon2"
               ]
             },
-            {
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/uk_rp3_late.blk",
+              "emitter": "uk_rp3_rocket_pylon2",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "agm12b",
+            "reqModification": "fj_4b_agm_12b",
+            "ShowNodes": {
+              "node": "early_long_pylon2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "us_agm_12b_bullpup_rocket2",
+              "bullets": 1,
+              "dragCx": 0.005
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_default",
+            "ShowNodes": {
+              "node": "early_short_pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
-              "iconType": "bombs_large",
-              "amountPerTier": 1.0,
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
+              "emitter": "1000_lb_uk_ld_bomb6",
+              "bullets": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "bombs_large_group_x4",
+          "name": "1000lbs",
+          "reqModification": "uk_mk_10_1000lb",
+          "Weapon": [
+            {
+              "trigger": "bombs",
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "1000_lb_uk_gp_bomb1",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "1000_lb_uk_gp_bomb2",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "1000_lb_uk_gp_bomb3",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "1000_lb_uk_gp_bomb4",
+              "bullets": 1
             }
           ]
         }
       },
       {
-        "name": "buccaneer_s1_rp3_1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_rp3_1000lb.blk",
-        "reqModification": "uk_rp3_mk12",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
-              "iconType": "rockets_he_small_group",
-              "amountPerTier": 4.0,
-              "tier": {
-                "idx": 4
-              }
+        "index": 4,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_he_large",
+            "name": "matra_7",
+            "reqModification": "uk_matra_7",
+            "ShowNodes": {
+              "node": "early_short_pylon3"
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
-              "iconType": "rockets_he_small_group",
-              "amountPerTier": 4.0,
-              "tier": {
-                "idx": 8
-              }
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
-              "iconType": "bombs_large",
-              "amountPerTier": 1.0,
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "uk_matra_7_launcher4",
+              "machLimit": 1.01
             }
-          ]
-        }
-      },
-      {
-        "name": "buccaneer_s1_agm_12_1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_agm_12_1000lb.blk",
-        "reqModification": [
-          "uk_mk_10_1000lb",
-          "fj_4b_agm_12b"
+          },
+          {
+            "iconType": "rockets_ap_small_group",
+            "name": "rp3",
+            "reqModification": "uk_rp3_mk12",
+            "ShowNodes": {
+              "node": [
+                "early_short_pylon3",
+                "uk_rp3_rocket_pylon3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/uk_rp3_late.blk",
+              "emitter": "uk_rp3_rocket_pylon3",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "agm12b",
+            "reqModification": "fj_4b_agm_12b",
+            "ShowNodes": {
+              "node": "early_long_pylon3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "us_agm_12b_bullpup_rocket3",
+              "bullets": 1,
+              "dragCx": 0.005
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_default",
+            "ShowNodes": {
+              "node": "early_short_pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
+              "emitter": "1000_lb_uk_ld_bomb7",
+              "bullets": 1
+            }
+          }
         ]
       },
       {
-        "name": "buccaneer_s1_1000lb_bombs_4x1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_1000lb_bombs_4x1000lb.blk",
-        "reqModification": "uk_mk_10_1000lb"
-      },
-      {
-        "name": "buccaneer_s1_rp3_4x1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_rp3_4x1000lb.blk",
-        "reqModification": [
-          "uk_rp3_mk12",
-          "uk_mk_10_1000lb"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
-              "iconType": "bombs_large",
-              "amountPerTier": 1.0,
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                }
-              ]
+        "index": 5,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_he_large",
+            "name": "matra_7",
+            "reqModification": "uk_matra_7",
+            "ShowNodes": {
+              "node": "early_short_pylon4"
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
-              "iconType": "rockets_he_small_group",
-              "amountPerTier": 4.0,
-              "tier": {
-                "idx": 3
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
-              "iconType": "rockets_he_small_group",
-              "amountPerTier": 4.0,
-              "tier": {
-                "idx": 9
-              }
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "uk_matra_7_launcher2",
+              "machLimit": 1.01
             }
-          ]
-        }
-      },
-      {
-        "name": "buccaneer_s1_matra7_4x1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_matra7_4x1000lb.blk",
-        "reqModification": [
-          "uk_matra_7",
-          "uk_mk_10_1000lb"
-        ]
-      },
-      {
-        "name": "buccaneer_s1_agm_12_4x1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_agm_12_4x1000lb.blk",
-        "reqModification": [
-          "fj_4b_agm_12b",
-          "uk_mk_10_1000lb"
-        ]
-      },
-      {
-        "name": "buccaneer_s1_matra7_agm_12_4x1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_matra7_agm_12_4x1000lb.blk",
-        "reqModification": [
-          "fj_4b_agm_12b",
-          "uk_matra_7",
-          "uk_mk_10_1000lb"
-        ]
-      },
-      {
-        "name": "buccaneer_s1_matra7_1000lb_4x1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_matra7_1000lb_4x1000lb.blk",
-        "reqModification": [
-          "uk_matra_7",
-          "uk_mk_10_1000lb"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/uk_2_inch_rocket.blk",
-              "iconType": "nar_he_large",
-              "amountPerTier": 36.0,
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 10
-                }
+          },
+          {
+            "iconType": "rockets_ap_small_group",
+            "name": "rp3",
+            "reqModification": "uk_rp3_mk12",
+            "ShowNodes": {
+              "node": [
+                "early_short_pylon4",
+                "uk_rp3_rocket_pylon4"
               ]
             },
-            {
-              "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
-              "iconType": "bombs_large",
-              "amountPerTier": 1.0,
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/uk_rp3_late.blk",
+              "emitter": "uk_rp3_rocket_pylon4",
+              "machLimit": 1.01
             }
-          ]
-        }
-      },
-      {
-        "name": "buccaneer_s1_rp3_1000lb_4x1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_rp3_1000lb_4x1000lb.blk",
-        "reqModification": [
-          "uk_rp3_mk12",
-          "uk_mk_10_1000lb"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
-              "iconType": "bombs_large",
-              "amountPerTier": 1.0,
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "agm12b",
+            "reqModification": "fj_4b_agm_12b",
+            "ShowNodes": {
+              "node": "early_long_pylon4"
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
-              "iconType": "rockets_he_small_group",
-              "amountPerTier": 4.0,
-              "tier": {
-                "idx": 2
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
-              "iconType": "rockets_he_small_group",
-              "amountPerTier": 4.0,
-              "tier": {
-                "idx": 10
-              }
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "us_agm_12b_bullpup_rocket4",
+              "bullets": 1,
+              "dragCx": 0.005
             }
-          ]
-        }
-      },
-      {
-        "name": "buccaneer_s1_agm_12_1000lb_4x1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s1_agm_12_1000lb_4x1000lb.blk",
-        "reqModification": [
-          "fj_4b_agm_12b",
-          "uk_mk_10_1000lb"
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_default",
+            "ShowNodes": {
+              "node": "early_short_pylon4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_ld_he_mc_mk_1.blk",
+              "emitter": "1000_lb_uk_ld_bomb8",
+              "bullets": 1
+            }
+          }
         ]
       }
     ]
@@ -2865,6 +2945,11 @@
   },
   "modifications": {
     "cd_98": {},
+    "air_extinguisher": {
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
+    },
     "CdMin_Fuse": {},
     "new_cover": {},
     "structure_str": {},

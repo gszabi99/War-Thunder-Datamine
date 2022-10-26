@@ -12,6 +12,7 @@ require daslib/static_let
 require daslib/strings
 require daslib/defer
 require math
+require daslib/math_bits
 
 struct MonthNameAndDay
     name: string
@@ -98,7 +99,31 @@ def public random_float ( var faker:Faker )
     //! Generates random float.
     var i = 0u
     faker.rnd |> next(i)
-    return unsafe(reinterpret<float> i)
+    return uint_bits_to_float(i)
+
+def public random_int2 ( var faker:Faker )
+    //! Generates random int2.
+    return int2(faker |> random_int, faker |> random_int)
+
+def public random_int3 ( var faker:Faker )
+    //! Generates random int3.
+    return int3(faker |> random_int, faker |> random_int, faker |> random_int)
+
+def public random_int4 ( var faker:Faker )
+    //! Generates random int4.
+    return int4(faker |> random_int, faker |> random_int, faker |> random_int, faker |> random_int)
+
+def public random_uint2 ( var faker:Faker )
+    //! Generates random uint2.
+    return uint2(faker |> random_uint, faker |> random_uint)
+
+def public random_uint3 ( var faker:Faker )
+    //! Generates random uint3.
+    return uint3(faker |> random_uint, faker |> random_uint, faker |> random_uint)
+
+def public random_uint4 ( var faker:Faker )
+    //! Generates random uint4.
+    return uint4(faker |> random_uint, faker |> random_uint, faker |> random_uint, faker |> random_uint)
 
 def public random_float2 ( var faker:Faker )
     //! Generates random float2.
@@ -141,6 +166,18 @@ def public random_float4x4 ( var faker:Faker )
 variant BitRepresentation64 //! 64-bit representation of a float
     ui2 : uint[2]
     d   : double
+    i64 : int64
+    u64 : uint64
+
+def public random_int64 ( var faker:Faker )
+    //! Generates random int64
+    var b = [[ BitRepresentation64 ui2=[[uint[2] faker |> random_uint; faker |> random_uint]] ]]
+    return unsafe(b.i64)
+
+def public random_uint64 ( var faker:Faker )
+    //! Generates random uint64
+    var b = [[ BitRepresentation64 ui2=[[uint[2] faker |> random_uint; faker |> random_uint]] ]]
+    return unsafe(b.u64)
 
 def public random_double ( var faker:Faker )
     //! Generates random double.

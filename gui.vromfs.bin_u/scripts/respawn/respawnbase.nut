@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getRespawnBaseNameById, isDefaultRespawnBase } = require("guiRespawn")
 
 let MAP_SELECT_NOTHING = -1
@@ -16,26 +22,26 @@ local RespawnBase = class
 
   constructor(v_id, v_isAutoSelected = false)
   {
-    id = v_id
-    isAutoSelected = v_isAutoSelected
-    name = getRespawnBaseNameById(id)
-    isRandom = name == "missions/random_spawn" || name == "missions/ground_spawn_random"
-    isDefault = isDefaultRespawnBase(id)
-    isMapSelectable = !isRandom && !isAutoSelected
-    mapId = !isRandom ? id : MAP_ID_NOTHING
+    this.id = v_id
+    this.isAutoSelected = v_isAutoSelected
+    this.name = getRespawnBaseNameById(this.id)
+    this.isRandom = this.name == "missions/random_spawn" || this.name == "missions/ground_spawn_random"
+    this.isDefault = isDefaultRespawnBase(this.id)
+    this.isMapSelectable = !this.isRandom && !this.isAutoSelected
+    this.mapId = !this.isRandom ? this.id : this.MAP_ID_NOTHING
   }
 
   function getTitle()
   {
-    local res = (name == "") ? ::loc("missions/spawn_number", { number = id + 1 }) : ::loc(name)
-    if (isAutoSelected)
-      res = ::loc("missions/auto_spawn", { spawn = res })
+    local res = (this.name == "") ? loc("missions/spawn_number", { number = this.id + 1 }) : loc(this.name)
+    if (this.isAutoSelected)
+      res = loc("missions/auto_spawn", { spawn = res })
     return res
   }
 
   function isEqual(respBase)
   {
-    return respBase != null && isAutoSelected == respBase.isAutoSelected && id == respBase.id
+    return respBase != null && this.isAutoSelected == respBase.isAutoSelected && this.id == respBase.id
   }
 }
 

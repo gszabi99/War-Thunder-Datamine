@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 ::WwOperationsGroup <- class
@@ -6,45 +12,45 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
 
   constructor(v_mapId)
   {
-    mapId = v_mapId
+    this.mapId = v_mapId
   }
 
   function isEqual(opGroup)
   {
-    return opGroup != null && opGroup.mapId == mapId
+    return opGroup != null && opGroup.mapId == this.mapId
   }
 
   function getMap()
   {
-    return getMapByName(mapId)
+    return getMapByName(this.mapId)
   }
 
   function getNameText()
   {
-    let map = getMap()
+    let map = this.getMap()
     return map ? map.getNameText() : ""
   }
 
   function getDescription()
   {
-    let map = getMap()
+    let map = this.getMap()
     return map ? map.getDescription() : ""
   }
 
   function getGeoCoordsText()
   {
-    local map = getMap()
+    local map = this.getMap()
     return map ? map.getGeoCoordsText() : ""
   }
 
   _operationsList = null
   function getOperationsList()
   {
-    if (!_operationsList)
-      _operationsList = ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(
-                          (@(mapId) function(op) { return op.getMapId() == mapId })(mapId)
+    if (!this._operationsList)
+      this._operationsList = ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(
+                          (@(mapId) function(op) { return op.getMapId() == mapId })(this.mapId)
                         )
-    return _operationsList
+    return this._operationsList
   }
 
   /*
@@ -55,12 +61,12 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
   _countriesByTeams = null
   function getCountriesByTeams()
   {
-    if (_countriesByTeams)
-      return _countriesByTeams
+    if (this._countriesByTeams)
+      return this._countriesByTeams
 
-    _countriesByTeams = {}
-    foreach(op in getOperationsList())
-      _countriesByTeams = ::u.tablesCombine(_countriesByTeams, op.getCountriesByTeams(),
+    this._countriesByTeams = {}
+    foreach(op in this.getOperationsList())
+      this._countriesByTeams = ::u.tablesCombine(this._countriesByTeams, op.getCountriesByTeams(),
         function(list1, list2)
         {
           if (!list1)
@@ -73,21 +79,21 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
         }
       )
 
-    return _countriesByTeams
+    return this._countriesByTeams
   }
 
   function canJoinByCountry(country)
   {
-    let countriesByTeams = getCountriesByTeams()
+    let countriesByTeams = this.getCountriesByTeams()
     foreach(cList in countriesByTeams)
-      if (::isInArray(country, cList))
+      if (isInArray(country, cList))
         return true
     return false
   }
 
-  hasActiveOperations = @() getOperationsList().findvalue(
+  hasActiveOperations = @() this.getOperationsList().findvalue(
     @(o) o.isAvailableToJoin()) != null
-  hasOperations = @() getOperationsList().len() > 0
+  hasOperations = @() this.getOperationsList().len() > 0
 
   function getCantJoinReasonData(country)
   {
@@ -96,14 +102,14 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
       reasonText = ""
     }
 
-    if (!canJoinByCountry(country))
+    if (!this.canJoinByCountry(country))
     {
-      res.reasonText = ::loc("worldWar/chooseAvailableCountry")
+      res.reasonText = loc("worldWar/chooseAvailableCountry")
       return res
     }
 
     //find operation which can join by country
-    let operation = ::u.search(getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
+    let operation = ::u.search(this.getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
     if (!operation)
       return res
     return operation.getCantJoinReasonData(country)
@@ -111,10 +117,10 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
 
   function join(country)
   {
-    let opList = ::u.filter(getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
+    let opList = ::u.filter(this.getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
     if (!opList.len())
     {
-      ::showInfoMsgBox(getCantJoinReasonData(country).reasonText)
+      ::showInfoMsgBox(this.getCantJoinReasonData(country).reasonText)
       return false
     }
 
@@ -123,7 +129,7 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
 
   function isMyClanParticipate()
   {
-    foreach(o in getOperationsList())
+    foreach(o in this.getOperationsList())
       if (o.isMyClanParticipate())
         return true
     return false

@@ -1,3 +1,10 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { getRewardConditionId, getRewardConditionById, getConditionValue, getConditionField,
   getBaseVictoryReward, getSortedRewardsByConditions, getRewardRowIcon, getRewardDescText,
@@ -8,8 +15,8 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
 {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
-  sceneTplName = "%gui/events/eventRewardsWnd"
-  rewardsTableTplName = "%gui/events/eventRewardsTbl"
+  sceneTplName = "%gui/events/eventRewardsWnd.tpl"
+  rewardsTableTplName = "%gui/events/eventRewardsTbl.tpl"
 
   currTabIdx = 0
   //Incoming params
@@ -43,22 +50,22 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
 
   function initScreen() {
     local tabs = []
-    foreach (idx, tab in tabsList)
+    foreach (idx, tab in this.tabsList)
       tabs.append({
         id = idx.tostring()
         tabName = tab.header
-        navImagesText = tabsList.len() > 1 ? ::get_navigation_images_text(idx, tabsList.len()) : ""
+        navImagesText = this.tabsList.len() > 1 ? ::get_navigation_images_text(idx, this.tabsList.len()) : ""
         selected = idx == 0
       })
-    let data = ::handyman.renderCached(sceneTplName, {tabs})
-    guiScene.replaceContentFromText(scene.findObject("root-box"), data, data.len(), this)
+    let data = ::handyman.renderCached(this.sceneTplName, {tabs})
+    this.guiScene.replaceContentFromText(this.scene.findObject("root-box"), data, data.len(), this)
 
-    updateRewards()
-    fetchRewardsProgress()
+    this.updateRewards()
+    this.fetchRewardsProgress()
   }
 
   function updateRewards() {
-    let curTabData = tabsList?[currTabIdx]
+    let curTabData = this.tabsList?[this.currTabIdx]
     if (!curTabData)
       return
 
@@ -68,9 +75,9 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
       total      = rewards.len()
       baseReward = (@(event) function () {
         let reward = getBaseVictoryReward(event)
-        return reward ? ::loc("tournaments/reward/everyVictory",  {reward = reward}) : reward
+        return reward ? loc("tournaments/reward/everyVictory",  {reward = reward}) : reward
       })(event)
-      items = (@(rewards, event) function () {
+      items = (@(rewards, _event) function () {
         local even = true
         let res = []
         foreach(conditionName, condition in rewards)
@@ -95,12 +102,12 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
       })(rewards, event)
     }
 
-    let data = ::handyman.renderCached(rewardsTableTplName, view)
-    guiScene.replaceContentFromText(scene.findObject("rewards_content"), data, data.len(), this)
+    let data = ::handyman.renderCached(this.rewardsTableTplName, view)
+    this.guiScene.replaceContentFromText(this.scene.findObject("rewards_content"), data, data.len(), this)
   }
 
   function fetchRewardsProgress() {
-    let curTabData = tabsList?[currTabIdx]
+    let curTabData = this.tabsList?[this.currTabIdx]
     if (!curTabData)
       return
 
@@ -115,7 +122,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
             function (progress) {
               let condId = getRewardConditionId(reward)
               let conditionField = getConditionField(reward)
-              let conditionTextObj = scene.findObject(
+              let conditionTextObj = this.scene.findObject(
                 $"reward_condition_text_{condId}_{conditionField}_{index}")
               if (conditionTextObj?.isValid())
                 conditionTextObj.setValue(getConditionText(reward, progress))
@@ -124,12 +131,12 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
   }
 
   function updateTabInfo() {
-    let finalAwardDate = tabsList[currTabIdx].finalAwardDate
+    let finalAwardDate = this.tabsList[this.currTabIdx].finalAwardDate
     let infoTxt = finalAwardDate
-      ? "".concat(::loc("tournaments/rewardBeCredited"), " ",
-        ::colorize("activeTextColor", buildDateTimeStr(getTimestampFromStringUtc(finalAwardDate))))
+      ? "".concat(loc("tournaments/rewardBeCredited"), " ",
+        colorize("activeTextColor", buildDateTimeStr(getTimestampFromStringUtc(finalAwardDate))))
       : ""
-    scene.findObject("info_txt")?.setValue(infoTxt)
+    this.scene.findObject("info_txt")?.setValue(infoTxt)
   }
 
   function onTabChange(obj) {
@@ -137,10 +144,10 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
     if (!curTabObj?.isValid())
       return
 
-    currTabIdx = curTabObj.id.tointeger()
-    updateTabInfo()
-    updateRewards()
-    fetchRewardsProgress()
+    this.currTabIdx = curTabObj.id.tointeger()
+    this.updateTabInfo()
+    this.updateRewards()
+    this.fetchRewardsProgress()
   }
 
 }

@@ -1,6 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
-local { emulateShortcut } = ::require_native("controls")
+local { emulateShortcut } = require_native("controls")
 
 //--------------------------------------------------------------------------------------------------
 
@@ -24,57 +30,57 @@ local { emulateShortcut } = ::require_native("controls")
   {
     base.initScreen()
 
-    path = path ?? []
-    path.append(curSectionId)
+    this.path = this.path ?? []
+    this.path.append(this.curSectionId)
 
-    updateCaption()
+    this.updateCaption()
   }
 
   function updateCaption()
   {
-    let objCaption = scene.findObject("wheel_menu_category")
-    let text = getMfmSectionTitle(mfmDescription[curSectionId])
-    objCaption.setValue(::colorize("hudGreenTextColor", text))
+    let objCaption = this.scene.findObject("wheel_menu_category")
+    let text = getMfmSectionTitle(this.mfmDescription[this.curSectionId])
+    objCaption.setValue(colorize("hudGreenTextColor", text))
   }
 
   function toggleShortcut(shortcutId)
   {
     if (::is_xinput_device())
-      switchControlsAllowMask(wndControlsAllowMaskWhenInactive)
+      this.switchControlsAllowMask(this.wndControlsAllowMaskWhenInactive)
 
     emulateShortcut(shortcutId)
 
-    if (::is_xinput_device() && isActive)
-      switchControlsAllowMask(wndControlsAllowMaskWhenActive)
+    if (::is_xinput_device() && this.isActive)
+      this.switchControlsAllowMask(this.wndControlsAllowMaskWhenActive)
   }
 
   function gotoPrevMenuOrQuit()
   {
-    if (path.len() == 0)
+    if (this.path.len() == 0)
       return
 
-    let escapingSectionId = path.pop()
-    mfmDescription[escapingSectionId]?.onExit()
+    let escapingSectionId = this.path.pop()
+    this.mfmDescription[escapingSectionId]?.onExit()
 
-    if (path.len() > 0)
-      openMfm(mfmDescription, path.pop(), false)
+    if (this.path.len() > 0)
+      openMfm(this.mfmDescription, this.path.pop(), false)
     else
-      quit()
+      this.quit()
   }
 
   function gotoSection(sectionId)
   {
-    openMfm(mfmDescription, sectionId)
+    openMfm(this.mfmDescription, sectionId)
   }
 
   function quit()
   {
-    if (isActive)
+    if (this.isActive)
     {
-      foreach (escapingSectionId in path.reverse())
-        mfmDescription[escapingSectionId]?.onExit()
-      path.clear()
-      showScene(false)
+      for ( local i=0; i<this.path.len()-1; i++)
+        this.mfmDescription[this.path[i]]?.onExit()
+      this.path.clear()
+      this.showScene(false)
     }
   }
 }

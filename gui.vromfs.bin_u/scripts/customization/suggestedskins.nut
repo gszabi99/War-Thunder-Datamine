@@ -1,3 +1,8 @@
+from "%scripts/dagui_library.nut" import *
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"

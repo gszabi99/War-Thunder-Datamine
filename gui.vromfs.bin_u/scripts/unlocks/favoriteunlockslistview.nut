@@ -1,5 +1,13 @@
-::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getFavoriteUnlocks, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+
+::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/unlocks/favoriteUnlocksList.blk"
   curFavoriteUnlocksBlk = null
@@ -10,60 +18,60 @@
 
   function initScreen()
   {
-    scene.setUserData(this)
-    curFavoriteUnlocksBlk = ::DataBlock()
-    listContainer = scene.findObject("favorite_unlocks_list")
-    updateList()
+    this.scene.setUserData(this)
+    this.curFavoriteUnlocksBlk = ::DataBlock()
+    this.listContainer = this.scene.findObject("favorite_unlocks_list")
+    this.updateList()
   }
 
   function updateList()
   {
-    if (!::checkObj(listContainer))
+    if (!checkObj(this.listContainer))
       return
 
-    if(!unlocksListIsValid)
-      curFavoriteUnlocksBlk.setFrom(::g_unlocks.getFavoriteUnlocks())
+    if(!this.unlocksListIsValid)
+      this.curFavoriteUnlocksBlk.setFrom(getFavoriteUnlocks())
 
-    let unlocksObjCount = listContainer.childrenCount()
-    let total = max(unlocksObjCount, curFavoriteUnlocksBlk.blockCount())
+    let unlocksObjCount = this.listContainer.childrenCount()
+    let total = max(unlocksObjCount, this.curFavoriteUnlocksBlk.blockCount())
     if (unlocksObjCount == 0 && total > 0) {
-      let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified"),
+      let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified.tpl"),
         { unlocks = array(total, { hasCloseButton = true, hasHiddenContent = true })})
-      guiScene.appendWithBlk(listContainer, blk, this)
+      this.guiScene.appendWithBlk(this.listContainer, blk, this)
     }
 
     for(local i = 0; i < total; i++)
     {
-      let unlockObj = getUnlockObj(i)
-      ::g_unlock_view.fillSimplifiedUnlockInfo(curFavoriteUnlocksBlk.getBlock(i), unlockObj, this)
+      let unlockObj = this.getUnlockObj(i)
+      ::g_unlock_view.fillSimplifiedUnlockInfo(this.curFavoriteUnlocksBlk.getBlock(i), unlockObj, this)
     }
 
     this.showSceneBtn("no_favorites_txt",
-      ! (curFavoriteUnlocksBlk.blockCount() && listContainer.childrenCount()))
-    unlocksListIsValid = true
+      ! (this.curFavoriteUnlocksBlk.blockCount() && this.listContainer.childrenCount()))
+    this.unlocksListIsValid = true
   }
 
-  function onEventFavoriteUnlocksChanged(params)
+  function onEventFavoriteUnlocksChanged(_params)
   {
-    unlocksListIsValid = false
-    doWhenActiveOnce("updateList")
+    this.unlocksListIsValid = false
+    this.doWhenActiveOnce("updateList")
   }
 
-  function onEventProfileUpdated(params)
+  function onEventProfileUpdated(_params)
   {
-    doWhenActiveOnce("updateList")
+    this.doWhenActiveOnce("updateList")
   }
 
   function onRemoveUnlockFromFavorites(obj)
   {
-    ::g_unlocks.removeUnlockFromFavorites(obj.unlockId)
+    toggleUnlockFav(obj.unlockId)
   }
 
   function getUnlockObj(idx)
   {
-    if (listContainer.childrenCount() > idx)
-        return listContainer.getChild(idx)
+    if (this.listContainer.childrenCount() > idx)
+        return this.listContainer.getChild(idx)
 
-    return listContainer.getChild(idx-1).getClone(listContainer, this)
+    return this.listContainer.getChild(idx-1).getClone(this.listContainer, this)
   }
 }

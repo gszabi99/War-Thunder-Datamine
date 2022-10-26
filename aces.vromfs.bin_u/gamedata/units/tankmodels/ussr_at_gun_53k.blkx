@@ -633,6 +633,9 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -1637,6 +1640,11 @@
         "ammo_body_53_dm",
         "ammo_body_54_dm",
         "ammo_body_55_dm",
+        "ammo_body_56_dm",
+        "ammo_body_57_dm",
+        "ammo_body_58_dm",
+        "ammo_body_59_dm",
+        "ammo_body_60_dm",
         "ammo_body_l_01_dm",
         "ammo_body_l_02_dm",
         "ammo_body_l_03_dm",
@@ -1733,7 +1741,13 @@
       "blk": "gameData/Weapons/groundModels_weapons/45mm_20K_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
-      "recoilMultiplier": 0.4,
+      "recoilMultiplier": 0.1,
+      "recoilOffset": 0.25,
+      "recoilTimes": [
+        0.1,
+        0.1
+      ],
+      "jammedReloadTime": 10.0,
       "defaultYaw": 0.0,
       "defaultPitch": 0.0,
       "barrelDP": "gun_barrel_dm",
@@ -1760,12 +1774,6 @@
         "head": "bone_turret",
         "gun": "bone_gun",
         "barrel": "bone_gun_barrel",
-        "recoilOffset": 0.25,
-        "recoilTimes": [
-          0.1,
-          0.1
-        ],
-        "jammedReloadTime": 10.0,
         "linkedAnimPart": {
           "verNode": "bone_camera_gunner",
           "verLimits": [
@@ -1780,12 +1788,12 @@
       },
       "limits": {
         "yaw": [
-          -40.0,
-          40.0
+          -30.0,
+          30.0
         ],
         "pitch": [
-          -2.0,
-          20.0
+          -8.0,
+          25.0
         ]
       },
       "gunStabilizer": {
@@ -1824,17 +1832,17 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 5000.0,
-      "Fuel": 200.0,
-      "TakeOff": 5000.0,
+      "Empty": 560.0,
+      "Fuel": 0.0,
+      "TakeOff": 560.0,
       "momentOfInertia": [
         6.0,
         1.0,
         6.0
       ],
       "CenterOfGravity": [
-        -0.2,
-        0.0,
+        -0.8,
+        0.2,
         0.0
       ],
       "AdvancedMass": false,
@@ -1878,9 +1886,9 @@
     },
     "suspension": {
       "suspensionOffsets": [
-        -0.07,
-        -0.06,
-        0.06
+        -0.05,
+        -0.05,
+        0.05
       ],
       "defaultGearRadius": 0.372,
       "defaultDampeningForce": [
@@ -1894,7 +1902,13 @@
       "wheel_l_01": 0.372,
       "wheel_r_01": 0.372,
       "wheel_l_02": 0.372,
-      "wheel_r_02": 0.372
+      "wheel_r_02": 0.372,
+      "driven": {
+        "wheel_l_01": true,
+        "wheel_r_01": true,
+        "wheel_l_02": true,
+        "wheel_r_02": true
+      }
     }
   },
   "ammo": {
@@ -1950,9 +1964,11 @@
     ]
   },
   "cockpit": {
+    "zoomOutFov": 38.5,
+    "zoomInFov": 37.5,
+    "sightFov": 18.75,
+    "sightName": "pp1_2",
     "openedCockpit": true,
-    "zoomOutFov": 40.0,
-    "zoomInFov": 21.0,
     "headPos": [
       0.2,
       3.3,

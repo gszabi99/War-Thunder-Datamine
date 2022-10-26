@@ -1,6 +1,12 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 ::gui_handlers.UniversalSpareApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
 {
-  sceneTplName = "%gui/items/universalSpareApplyWnd"
+  sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"
 
   unit = null
 
@@ -16,7 +22,7 @@
     list = ::u.filter(list, @(item) item.canActivateOnUnit(unitToActivate))
     if (!list.len())
     {
-      ::showInfoMsgBox(::loc("msg/noUniversalSpareForUnit"))
+      ::showInfoMsgBox(loc("msg/noUniversalSpareForUnit"))
       return
     }
     ::handlersManager.loadHandler(::gui_handlers.UniversalSpareApplyWnd,
@@ -30,61 +36,61 @@
 
   function initScreen()
   {
-    sliderObj = scene.findObject("amount_slider")
-    amountTextObj = scene.findObject("amount_text")
+    this.sliderObj = this.scene.findObject("amount_slider")
+    this.amountTextObj = this.scene.findObject("amount_text")
 
     base.initScreen()
 
-    if (itemsList.findindex(@(i) i.hasTimer()) != null)
-      scene.findObject("update_timer").setUserData(this)
+    if (this.itemsList.findindex(@(i) i.hasTimer()) != null)
+      this.scene.findObject("update_timer").setUserData(this)
   }
 
   function setCurItem(item)
   {
     base.setCurItem(item)
-    updateAmountSlider()
-    updateButtons()
+    this.updateAmountSlider()
+    this.updateButtons()
   }
 
   function updateAmountSlider()
   {
-    let itemsAmount = curItem.getAmount()
-    let availableAmount = ::g_weaponry_types.SPARE.getMaxAmount(unit, null)  - ::g_weaponry_types.SPARE.getAmount(unit, null)
-    maxAmount = min(itemsAmount, availableAmount)
-    curAmount = 1
+    let itemsAmount = this.curItem.getAmount()
+    let availableAmount = ::g_weaponry_types.SPARE.getMaxAmount(this.unit, null)  - ::g_weaponry_types.SPARE.getAmount(this.unit, null)
+    this.maxAmount = min(itemsAmount, availableAmount)
+    this.curAmount = 1
 
-    let canChangeAmount = maxAmount > minAmount && !curItem.isExpired()
+    let canChangeAmount = this.maxAmount > this.minAmount && !this.curItem.isExpired()
     this.showSceneBtn("slider_block", canChangeAmount)
     this.showSceneBtn("buttonMax", canChangeAmount)
     if (!canChangeAmount)
       return
 
-    sliderObj.min = minAmount.tostring()
-    sliderObj.max = maxAmount.tostring()
-    sliderObj.setValue(curAmount)
-    updateText()
+    this.sliderObj.min = this.minAmount.tostring()
+    this.sliderObj.max = this.maxAmount.tostring()
+    this.sliderObj.setValue(this.curAmount)
+    this.updateText()
   }
 
   function updateText()
   {
-    amountTextObj.setValue(curAmount + ::loc("icon/universalSpare"))
-    scene.findObject("buttonMax").enable(curAmount != maxAmount)
+    this.amountTextObj.setValue(this.curAmount + loc("icon/universalSpare"))
+    this.scene.findObject("buttonMax").enable(this.curAmount != this.maxAmount)
   }
 
   function updateButtons()
   {
-    scene.findObject("buttonActivate").enable(!curItem.isExpired())
+    this.scene.findObject("buttonActivate").enable(!this.curItem.isExpired())
   }
 
-  function onTimer(obj, dt)
+  function onTimer(_obj, _dt)
   {
-    let listObj = scene.findObject("items_list")
+    let listObj = this.scene.findObject("items_list")
     if (!listObj?.isValid())
       return
 
-    for (local i = 0; i < itemsList.len(); ++i)
+    for (local i = 0; i < this.itemsList.len(); ++i)
     {
-      let item = itemsList[i]
+      let item = this.itemsList[i]
       if (!item.hasTimer())
         continue
 
@@ -99,41 +105,41 @@
       timeTxtObj.setValue(item.getTimeLeftText())
     }
 
-    updateAmountSlider()
-    updateButtons()
+    this.updateAmountSlider()
+    this.updateButtons()
   }
 
   function onAmountInc()
   {
-    if (curAmount < maxAmount)
-      sliderObj.setValue(curAmount + 1)
+    if (this.curAmount < this.maxAmount)
+      this.sliderObj.setValue(this.curAmount + 1)
   }
 
   function onAmountDec()
   {
-    if (curAmount > minAmount)
-      sliderObj.setValue(curAmount - 1)
+    if (this.curAmount > this.minAmount)
+      this.sliderObj.setValue(this.curAmount - 1)
   }
 
   function onAmountChange()
   {
-    curAmount = sliderObj.getValue()
-    updateText()
+    this.curAmount = this.sliderObj.getValue()
+    this.updateText()
   }
 
   function onActivate()
   {
-    let text = ::loc("msgbox/wagerActivate", { name = curItem.getNameWithCount(true, curAmount) })
-    let goBackSaved = ::Callback(goBack, this)
-    let aUnit= unit
-    let item = curItem
-    let amount = curAmount
+    let text = loc("msgbox/wagerActivate", { name = this.curItem.getNameWithCount(true, this.curAmount) })
+    let goBackSaved = Callback(this.goBack, this)
+    let aUnit= this.unit
+    let item = this.curItem
+    let amount = this.curAmount
     let onOk = @() item.activateOnUnit(aUnit, amount, goBackSaved)
     ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes", { cancel_fn=@()null })
   }
 
   function onButtonMax()
   {
-    sliderObj.setValue(maxAmount)
+    this.sliderObj.setValue(this.maxAmount)
   }
 }

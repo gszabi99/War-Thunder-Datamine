@@ -1,5 +1,12 @@
-::gui_handlers.EventDescriptionWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+::gui_handlers.EventDescriptionWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   event = null
 
@@ -7,23 +14,23 @@
 
   function initScreen()
   {
-    if (!checkEvent(event))
+    if (!this.checkEvent(this.event))
     {
-      goBack()
+      this.goBack()
       return
     }
 
     let view = {
       eventHeader = {
-        difficultyImage = ::events.getDifficultyImg(event.name)
-        difficultyTooltip = ::events.getDifficultyTooltip(event.name)
-        eventName = ::events.getEventNameText(event) + " " + ::events.getRespawnsText(event)
+        difficultyImage = ::events.getDifficultyImg(this.event.name)
+        difficultyTooltip = ::events.getDifficultyTooltip(this.event.name)
+        eventName = ::events.getEventNameText(this.event) + " " + ::events.getRespawnsText(this.event)
       }
       showOkButton = false
     }
-    let data = ::handyman.renderCached("%gui/events/eventDescriptionWindow", view)
-    guiScene.replaceContentFromText(scene, data, data.len(), this)
-    eventDescription = ::create_event_description(scene, event, false)
+    let data = ::handyman.renderCached("%gui/events/eventDescriptionWindow.tpl", view)
+    this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
+    this.eventDescription = ::create_event_description(this.scene, this.event, false)
   }
 
   function checkEvent(ev)

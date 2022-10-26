@@ -1,4 +1,11 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 //ms
+let { get_time_msec } = require("dagor.time")
 
 local WwOperationPreloader = class
 {
@@ -8,58 +15,58 @@ local WwOperationPreloader = class
 
   function loadPreview(operationId, accessCb, hasProgressBox = false)
   {
-    curTask = {
+    this.curTask = {
       operationId = operationId.tointeger()
       accessCb = accessCb
       hasProgressBox = hasProgressBox
     }
 
-    requestPreview()
+    this.requestPreview()
   }
 
   function requestPreview()
   {
-    if (isRequestInProgress && !isRequestTimedOut())
+    if (this.isRequestInProgress && !this.isRequestTimedOut())
       return
 
-    if (!curTask)
+    if (!this.curTask)
       return
 
-    isRequestInProgress = true
-    lastRequestTimeMsec = ::dagor.getCurTime()
+    this.isRequestInProgress = true
+    this.lastRequestTimeMsec = get_time_msec()
 
     ::ww_stop_preview()
 
-    let operationId = curTask.operationId
+    let operationId = this.curTask.operationId
     let taskId = ::ww_preview_operation(operationId)
-    let accessCb = ::Callback(
+    let accessCb = Callback(
       function() {
-        isRequestInProgress = false
-        if (operationId != curTask?.operationId)
+        this.isRequestInProgress = false
+        if (operationId != this.curTask?.operationId)
         {
-          requestPreview()
+          this.requestPreview()
           return
         }
 
         ::ww_event("OperationPreviewLoaded")
-        if (curTask?.accessCb)
-          curTask.accessCb()
-        curTask = null
+        if (this.curTask?.accessCb)
+          this.curTask.accessCb()
+        this.curTask = null
       },
       this)
 
-    let errorCb = ::Callback(
-      function(res) {
-        isRequestInProgress = false
-        if (operationId != curTask?.operationId)
-          requestPreview()
+    let errorCb = Callback(
+      function(_res) {
+        this.isRequestInProgress = false
+        if (operationId != this.curTask?.operationId)
+          this.requestPreview()
         else
-          curTask = null
+          this.curTask = null
       },
       this)
 
     let param = {
-      showProgressBox = curTask.hasProgressBox
+      showProgressBox = this.curTask.hasProgressBox
     }
 
     ::g_tasker.addTask(taskId, param, accessCb, errorCb)
@@ -67,7 +74,7 @@ local WwOperationPreloader = class
 
   function isRequestTimedOut()
   {
-    return ::dagor.getCurTime() - lastRequestTimeMsec >= PREVIEW_WW_OPERATION_REQUEST_TIME_OUT
+    return get_time_msec() - this.lastRequestTimeMsec >= PREVIEW_WW_OPERATION_REQUEST_TIME_OUT
   }
 }
 

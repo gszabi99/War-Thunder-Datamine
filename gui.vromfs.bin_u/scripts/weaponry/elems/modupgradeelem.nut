@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { format } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
@@ -8,19 +14,19 @@ elemModelType.addTypes({
     hasUpgradeItems = null
 
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
-    onEventModUpgraded = @(p) notify([p.unit.name, p.mod.name])
-    onEventOverdriveActivated = @(p) notify([])
-    onEventInventoryUpdate = function(p)
+    onEventModUpgraded = @(p) this.notify([p.unit.name, p.mod.name])
+    onEventOverdriveActivated = @(_p) this.notify([])
+    onEventInventoryUpdate = function(_p)
     {
-      hasUpgradeItems = null
-      notify([])
+      this.hasUpgradeItems = null
+      this.notify([])
     }
 
     needShowAvailableUpgrades = function()
     {
-      if (hasUpgradeItems == null)
-        hasUpgradeItems = ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len() > 0
-      return hasUpgradeItems
+      if (this.hasUpgradeItems == null)
+        this.hasUpgradeItems = ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len() > 0
+      return this.hasUpgradeItems
     }
   }
 })
@@ -28,12 +34,12 @@ elemModelType.addTypes({
 elemViewType.addTypes({
   MOD_UPGRADE_ICON = {
     model = elemModelType.MOD_UPGRADE
-    getBhvParamsString = @(params) bhvParamsToString(
+    getBhvParamsString = @(params) this.bhvParamsToString(
       params.__merge({
         subscriptions = [params?.unit || "", params?.mod || ""]
       }))
     createMarkup = @(params, objId = null) format("modUpgradeImg { id:t='%s'; value:t='%s' } ",
-      objId || "", ::g_string.stripTags(getBhvParamsString(params)))
+      objId || "", ::g_string.stripTags(this.getBhvParamsString(params)))
 
     updateView = function(obj, params)
     {
@@ -47,7 +53,7 @@ elemViewType.addTypes({
       if (modName)
         if (::get_modification_level(unitName, modName))
           upgradeIcon = "#ui/gameuiskin#mark_upgrade.svg"
-        else if (model.needShowAvailableUpgrades() && isModUpgradeable(modName))
+        else if (this.model.needShowAvailableUpgrades() && isModUpgradeable(modName))
           upgradeIcon = "#ui/gameuiskin#mark_can_upgrade.svg"
       let upgradeColor = upgradeIcon ? "#FFFFFFFF" : "#00000000"
 
@@ -66,5 +72,5 @@ return {
   createMarkup = @(objId = null, unitName = null, modName = null)
     elemViewType.MOD_UPGRADE_ICON.createMarkup(makeConfig(unitName, modName), objId)
   setValueToObj = @(obj, unitName, modName)
-    ::check_obj(obj) && obj.setValue(elemViewType.MOD_UPGRADE_ICON.getBhvParamsString(makeConfig(unitName, modName)))
+    checkObj(obj) && obj.setValue(elemViewType.MOD_UPGRADE_ICON.getBhvParamsString(makeConfig(unitName, modName)))
 }

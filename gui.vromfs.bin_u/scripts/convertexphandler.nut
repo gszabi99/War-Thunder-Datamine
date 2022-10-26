@@ -1,9 +1,18 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
+let { ceil } = require("math")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { research } = require("%scripts/unit/unitActions.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 enum windowState
 {
@@ -14,7 +23,7 @@ enum windowState
 
 ::gui_modal_convertExp <- function gui_modal_convertExp(unit = null)
 {
-  if (!::has_feature("SpendGold") || !::has_feature("SpendFreeRP"))
+  if (!hasFeature("SpendGold") || !hasFeature("SpendFreeRP"))
     return
   if (unit && !::can_spend_gold_on_unit_with_popup(unit))
     return
@@ -52,71 +61,71 @@ enum windowState
 
   function initScreen()
   {
-    if (!scene)
-      return goBack()
+    if (!this.scene)
+      return this.goBack()
 
-    unitList = []
-    unitTypesList = []
+    this.unitList = []
+    this.unitTypesList = []
 
-    initUnitTypes()
-    initCountriesList()
-    updateData()
+    this.initUnitTypes()
+    this.initCountriesList()
+    this.updateData()
 
-    if (availableExp < expPerGold)
+    if (this.availableExp < this.expPerGold)
     {
-      goBack()
-      showNoRPmsgbox()
+      this.goBack()
+      this.showNoRPmsgbox()
       return
     }
 
-    if (!unit)
-      unit = getAvailableUnitForConversion()
+    if (!this.unit)
+      this.unit = this.getAvailableUnitForConversion()
 
-    listType = ::get_es_unit_type(unit)
-    updateWindow()
+    this.listType = ::get_es_unit_type(this.unit)
+    this.updateWindow()
   }
 
   function updateData()
   {
-    updateUserCurrency()
-    expPerGold = ::wp_get_exp_convert_exp_for_gold_rate(country) || 1
+    this.updateUserCurrency()
+    this.expPerGold = ::wp_get_exp_convert_exp_for_gold_rate(this.country) || 1
 
-    if (currentState != windowState.noUnit)
+    if (this.currentState != windowState.noUnit)
     {
-      unitExpGranted = ::getUnitExp(unit)
-      unitReqExp = ::getUnitReqExp(unit)
+      this.unitExpGranted = ::getUnitExp(this.unit)
+      this.unitReqExp = ::getUnitReqExp(this.unit)
     }
     else
     {
-      unitExpGranted = 0
-      unitReqExp = 0
+      this.unitExpGranted = 0
+      this.unitReqExp = 0
     }
   }
 
   function updateUserCurrency()
   {
-    availableExp = ::shop_get_free_exp()
-    playersGold = max(::get_balance().gold, 0)
+    this.availableExp = ::shop_get_free_exp()
+    this.playersGold = max(::get_balance().gold, 0)
   }
 
   function loadUnitList(unitType)
   {
-    unitList = []
+    this.unitList = []
     foreach (unitForList in ::all_units)
-      if (unitForList.shopCountry == country
+      if (unitForList.shopCountry == this.country
           && ::canResearchUnit(unitForList)
           && !unitForList.isSquadronVehicle()
           && ::get_es_unit_type(unitForList) == unitType)
-        unitList.append(unitForList)
+        this.unitList.append(unitForList)
     let ediff = ::get_current_ediff()
-    unitList.sort(@(a, b) a.getBattleRating(ediff) <=> b.getBattleRating(ediff))
+    this.unitList.sort(@(a, b) a.getBattleRating(ediff) <=> b.getBattleRating(ediff))
   }
 
   function getCurExpValue()
   {
-    local expToBuy = (curGoldValue - minGoldValue) * expPerGold
-    if ((expToBuy + unitExpGranted) > unitReqExp && (unitReqExp - unitExpGranted <= availableExp))
-      expToBuy = unitReqExp - unitExpGranted
+    local expToBuy = (this.curGoldValue - this.minGoldValue) * this.expPerGold
+    if ((expToBuy + this.unitExpGranted) > this.unitReqExp && (this.unitReqExp - this.unitExpGranted <= this.availableExp))
+      expToBuy = this.unitReqExp - this.unitExpGranted
     return expToBuy
   }
 
@@ -130,7 +139,7 @@ enum windowState
   function initCountriesList()
   {
     local curValue = 0
-    country = ::get_profile_country_sq()
+    this.country = profileCountrySq.value
 
     let view = { items = [] }
     foreach(idx, countryItem in shopCountriesList)
@@ -143,13 +152,13 @@ enum windowState
         discountNotification = true
       })
 
-      if (country == countryItem)
+      if (this.country == countryItem)
         curValue = idx
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-    let countriesObj = scene.findObject("countries_list")
-    guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    let countriesObj = this.scene.findObject("countries_list")
+    this.guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
     countriesObj.setValue(curValue)
 
     foreach(c in shopCountriesList)
@@ -158,97 +167,97 @@ enum windowState
 
   function fillUnitList()
   {
-    let isShow = unitList.len() > 1
-    let nestObj = scene.findObject("choose_unit_list")
+    let isShow = this.unitList.len() > 1
+    let nestObj = this.scene.findObject("choose_unit_list")
     nestObj.show(isShow)
     local unitListBlk = []
-    foreach(unitForResearch in unitList)
+    foreach(unitForResearch in this.unitList)
       unitListBlk.append(::build_aircraft_item(unitForResearch.name, unitForResearch))
     unitListBlk = "".join(unitListBlk)
-    guiScene.replaceContentFromText(nestObj, unitListBlk, unitListBlk.len(), this)
-    nestObj.setValue(unitList.indexof(unit) ?? -1)
-    foreach(unitForResearch in unitList)
+    this.guiScene.replaceContentFromText(nestObj, unitListBlk, unitListBlk.len(), this)
+    nestObj.setValue(this.unitList.indexof(this.unit) ?? -1)
+    foreach(unitForResearch in this.unitList)
       ::fill_unit_item_timers(nestObj.findObject(unitForResearch.name), unitForResearch)
   }
 
   function updateWindow()
   {
-    let oldState = currentState
-    if (!unit)
-      currentState = windowState.noUnit
-    else if (::canBuyUnit(unit) || ::isUnitResearched(unit))
-      currentState = windowState.canBuy
+    let oldState = this.currentState
+    if (!this.unit)
+      this.currentState = windowState.noUnit
+    else if (::canBuyUnit(this.unit) || ::isUnitResearched(this.unit))
+      this.currentState = windowState.canBuy
     else
-      currentState = windowState.research
+      this.currentState = windowState.research
 
-    if (isRefreshingAfterConvert && oldState != currentState  && currentState == windowState.canBuy)
+    if (this.isRefreshingAfterConvert && oldState != this.currentState  && this.currentState == windowState.canBuy)
       ::add_big_query_record("completed_new_research_unit",
-        ::save_to_json({ unit = unit.name
+        ::save_to_json({ unit = this.unit.name
           howResearched = "convert_exp" }))
 
-    updateData()
-    fillContent()
-    updateButtons()
-    fillUnitList()
-    updateUnitTypesList()
+    this.updateData()
+    this.fillContent()
+    this.updateButtons()
+    this.fillUnitList()
+    this.updateUnitTypesList()
   }
 
   function showConversionUnit()
   {
-    if (!unit)
-      return goBack()
+    if (!this.unit)
+      return this.goBack()
 
-    let unitBlk = ::build_aircraft_item(unit.name, unit)
-    let unitNest = scene.findObject("unit_nest")
-    guiScene.replaceContentFromText(unitNest, unitBlk, unitBlk.len(), this)
-    ::fill_unit_item_timers(unitNest.findObject(unit.name), unit)
+    let unitBlk = ::build_aircraft_item(this.unit.name, this.unit)
+    let unitNest = this.scene.findObject("unit_nest")
+    this.guiScene.replaceContentFromText(unitNest, unitBlk, unitBlk.len(), this)
+    ::fill_unit_item_timers(unitNest.findObject(this.unit.name), this.unit)
   }
 
   function fillFreeExp()
   {
-    scene.findObject("available_exp").setValue(::g_language.decimalFormat(availableExp))
+    this.scene.findObject("available_exp").setValue(::g_language.decimalFormat(this.availableExp))
   }
 
   function initUnitTypes()
   {
-    let listObj = scene.findObject("unit_types_list")
-    if (!::check_obj(listObj))
+    let listObj = this.scene.findObject("unit_types_list")
+    if (!checkObj(listObj))
       return
 
-    unitTypesList = unitTypes.types
+    this.unitTypesList = unitTypes.types
       .filter(@(t) t.isVisibleInShop())
       .sort(@(a, b) a.visualSortOrder <=> b.visualSortOrder)
 
     let view = { items = [] }
-    foreach (idx, unitType in unitTypesList)
+    foreach (_idx, unitType in this.unitTypesList)
       view.items.append({
         id = unitType.armyId
         text = unitType.fontIcon + " " + unitType.getArmyLocName()
-        tooltip = unitType.canSpendGold() ? null : ::loc("msgbox/unitTypeRestrictFromSpendGold")
+        tooltip = unitType.canSpendGold() ? null : loc("msgbox/unitTypeRestrictFromSpendGold")
       })
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-    guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
   function updateUnitTypesList()
   {
-    let listObj = scene.findObject("unit_types_list")
-    if (!::check_obj(listObj))
+    let listObj = this.scene.findObject("unit_types_list")
+    if (!checkObj(listObj))
       return
 
     local curIdx = 0
-    foreach (idx, unitType in unitTypesList)
+    foreach (idx, unitType in this.unitTypesList)
     {
-      let isShow = unitType.haveAnyUnitInCountry(country)
-      let selected = isShow && listType == unitType.esUnitType
+      let isShow = unitType.haveAnyUnitInCountry(this.country)
+      let selected = isShow && this.listType == unitType.esUnitType
       if (selected)
         curIdx = idx
 
       let btnObj = ::showBtn(unitType.armyId, isShow, listObj)
       if (btnObj)
       {
-        btnObj.inactive = getCountryResearchUnit(country, unitType.esUnitType)? "no" : "yes"
+        btnObj.inactive = this.getCountryResearchUnit(this.country, unitType.esUnitType)? "no" : "yes"
         btnObj.enable(unitType.canSpendGold())
       }
     }
@@ -258,12 +267,12 @@ enum windowState
 
   function fillSlider()
   {
-    let sliderDivObj = scene.findObject("exp_slider_nest")
-    if (!::checkObj(sliderDivObj))
+    let sliderDivObj = this.scene.findObject("exp_slider_nest")
+    if (!checkObj(sliderDivObj))
       return
 
-    let is_enough_availExp = availableExp > 0
-    let is_need_to_convert = (unitReqExp - unitExpGranted) > 0
+    let is_enough_availExp = this.availableExp > 0
+    let is_need_to_convert = (this.unitReqExp - this.unitExpGranted) > 0
 
     let showExpSlider = is_enough_availExp && is_need_to_convert
     sliderDivObj.show(showExpSlider)
@@ -274,127 +283,127 @@ enum windowState
       let oldProgressOb = sliderDivObj.findObject("old_exp_progress")
       let newProgressOb = sliderDivObj.findObject("new_exp_progress")
 
-      let diffExp = unitReqExp - unitExpGranted
-      let maxGoldDiff = ::ceil(diffExp.tofloat() / expPerGold).tointeger()
-      minGoldValue  = (unitExpGranted.tofloat() / expPerGold).tointeger()
-      maxGoldForAir = minGoldValue + maxGoldDiff
+      let diffExp = this.unitReqExp - this.unitExpGranted
+      let maxGoldDiff = ceil(diffExp.tofloat() / this.expPerGold).tointeger()
+      this.minGoldValue  = (this.unitExpGranted.tofloat() / this.expPerGold).tointeger()
+      this.maxGoldForAir = this.minGoldValue + maxGoldDiff
 
-      let goldLimitByExp  = (availableExp >= diffExp) ? maxGoldDiff : (availableExp.tofloat() / expPerGold).tointeger()
-      maxGoldValue = minGoldValue + min(goldLimitByExp, playersGold)
-      curGoldValue = maxGoldValue
+      let goldLimitByExp  = (this.availableExp >= diffExp) ? maxGoldDiff : (this.availableExp.tofloat() / this.expPerGold).tointeger()
+      this.maxGoldValue = this.minGoldValue + min(goldLimitByExp, this.playersGold)
+      this.curGoldValue = this.maxGoldValue
 
-      sliderObj.max     = maxGoldForAir
-      oldProgressOb.max = maxGoldForAir
-      newProgressOb.max = maxGoldForAir
+      sliderObj.max     = this.maxGoldForAir
+      oldProgressOb.max = this.maxGoldForAir
+      newProgressOb.max = this.maxGoldForAir
 
-      oldProgressOb.setValue(minGoldValue)
-      updateSlider()
+      oldProgressOb.setValue(this.minGoldValue)
+      this.updateSlider()
     }
   }
 
   function fillUnitResearchedContent()
   {
-    let noExpObj = scene.findObject("buy_unit_cost")
-    if (!::checkObj(noExpObj))
+    let noExpObj = this.scene.findObject("buy_unit_cost")
+    if (!checkObj(noExpObj))
       return
 
-    let unitCost = ::wp_get_cost(unit.name)
+    let unitCost = ::wp_get_cost(this.unit.name)
     noExpObj.setValue(::getPriceAccordingToPlayersCurrency(unitCost, 0, true))
   }
 
   function updateSlider()
   {
-    let sliderObj = scene.findObject("convert_slider")
-    let newProgressOb = scene.findObject("new_exp_progress")
-    newProgressOb.setValue(curGoldValue)
-    sliderObj.setValue(curGoldValue)
+    let sliderObj = this.scene.findObject("convert_slider")
+    let newProgressOb = this.scene.findObject("new_exp_progress")
+    newProgressOb.setValue(this.curGoldValue)
+    sliderObj.setValue(this.curGoldValue)
 
-    updateSliderText()
-    updateExpTextPosition()
+    this.updateSliderText()
+    this.updateExpTextPosition()
   }
 
   function fillContent()
   {
-    scene.findObject("exp_slider_nest").show(currentState == windowState.research)
-    scene.findObject("available_exp_nest").show(currentState == windowState.research)
-    scene.findObject("cost_holder").show(currentState == windowState.research)
-    scene.findObject("unit_researched_nest").show(currentState == windowState.canBuy)
-    scene.findObject("unit_nest").show(currentState != windowState.noUnit)
+    this.scene.findObject("exp_slider_nest").show(this.currentState == windowState.research)
+    this.scene.findObject("available_exp_nest").show(this.currentState == windowState.research)
+    this.scene.findObject("cost_holder").show(this.currentState == windowState.research)
+    this.scene.findObject("unit_researched_nest").show(this.currentState == windowState.canBuy)
+    this.scene.findObject("unit_nest").show(this.currentState != windowState.noUnit)
 
-    let noUnitMsgObj = scene.findObject("no_unit_nest")
-    let needNoUnitText = currentState == windowState.noUnit
+    let noUnitMsgObj = this.scene.findObject("no_unit_nest")
+    let needNoUnitText = this.currentState == windowState.noUnit
     noUnitMsgObj.show(needNoUnitText)
     if (needNoUnitText)
-      noUnitMsgObj.setValue(::loc(getAvailableUnitForConversion() != null ? ::loc("pr_conversion/no_unit") : ::loc("pr_conversion/all_units_researched")))
+      noUnitMsgObj.setValue(loc(this.getAvailableUnitForConversion() != null ? loc("pr_conversion/no_unit") : loc("pr_conversion/all_units_researched")))
 
-    if (currentState == windowState.research)
+    if (this.currentState == windowState.research)
     {
-      if (availableExp > expPerGold)
+      if (this.availableExp > this.expPerGold)
       {
-        fillSlider()
-        fillFreeExp()
-        fillCostGold()
-        showConversionUnit()
+        this.fillSlider()
+        this.fillFreeExp()
+        this.fillCostGold()
+        this.showConversionUnit()
       }
       else
       {
-        goBack()
-        if (!isRefreshingAfterConvert)
-          showNoRPmsgbox()
+        this.goBack()
+        if (!this.isRefreshingAfterConvert)
+          this.showNoRPmsgbox()
       }
     }
-    else if (currentState == windowState.canBuy)
+    else if (this.currentState == windowState.canBuy)
     {
-      fillUnitResearchedContent()
-      showConversionUnit()
+      this.fillUnitResearchedContent()
+      this.showConversionUnit()
     }
   }
 
   function showNoRPmsgbox()
   {
-    if (!::checkObj(guiScene["no_rp_msgbox"]))
-      this.msgBox("no_rp_msgbox", ::loc("msgbox/no_rp"), [["ok", function () {}]], "ok", { cancel_fn = function() {}})
+    if (!checkObj(this.guiScene["no_rp_msgbox"]))
+      this.msgBox("no_rp_msgbox", loc("msgbox/no_rp"), [["ok", function () {}]], "ok", { cancel_fn = function() {}})
   }
 
   function updateSliderText()
   {
-    let sliderTextObj = scene.findObject("convert_slider_text")
-    let strGrantedExp = ::Cost().setRp(unitExpGranted).tostring()
-    let expToBuy = getCurExpValue()
+    let sliderTextObj = this.scene.findObject("convert_slider_text")
+    let strGrantedExp = ::Cost().setRp(this.unitExpGranted).tostring()
+    let expToBuy = this.getCurExpValue()
     let strWantToBuyExp = expToBuy > 0
                             ? format("<color=@activeTextColor> +%s</color>", ::Cost().setFrp(expToBuy).tostring())
                             : ""
-    let strRequiredExp = ::g_language.decimalFormat(::getUnitReqExp(unit))
-    let sliderText = format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, ::loc("ui/slash"), strRequiredExp)
+    let strRequiredExp = ::g_language.decimalFormat(::getUnitReqExp(this.unit))
+    let sliderText = format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, loc("ui/slash"), strRequiredExp)
     sliderTextObj.setValue(sliderText)
   }
 
   function fillCostGold()
   {
-    let costGoldObj = scene.findObject("convertion_cost")
-    costGoldObj.setValue(::g_language.decimalFormat(curGoldValue-minGoldValue))
+    let costGoldObj = this.scene.findObject("convertion_cost")
+    costGoldObj.setValue(::g_language.decimalFormat(this.curGoldValue-this.minGoldValue))
   }
 
   function updateButtons()
   {
-    let isMinSet = curGoldValue == minGoldValue
-    let isMaxSet = curGoldValue == maxGoldValue
+    let isMinSet = this.curGoldValue == this.minGoldValue
+    let isMaxSet = this.curGoldValue == this.maxGoldValue
 
-    this.showSceneBtn("btn_apply", currentState == windowState.research)
-    this.showSceneBtn("btn_buy_unit", currentState == windowState.canBuy)
-    scene.findObject("btn_apply").inactiveColor = curGoldValue != minGoldValue ? "no" : "yes"
+    this.showSceneBtn("btn_apply", this.currentState == windowState.research)
+    this.showSceneBtn("btn_buy_unit", this.currentState == windowState.canBuy)
+    this.scene.findObject("btn_apply").inactiveColor = this.curGoldValue != this.minGoldValue ? "no" : "yes"
 
-    scene.findObject("buttonDec").enable(!isMinSet)
-    scene.findObject("buttonInc").enable(!isMaxSet)
-    scene.findObject("btn_max").enable(!isMaxSet)
+    this.scene.findObject("buttonDec").enable(!isMinSet)
+    this.scene.findObject("buttonInc").enable(!isMaxSet)
+    this.scene.findObject("btn_max").enable(!isMaxSet)
   }
 
   function updateExpTextPosition()
   {
-    guiScene.setUpdatesEnabled(true, true)
-    let textObj     = scene.findObject("convert_slider_text")
-    let boxObj      = scene.findObject("exp_slider_nest")
-    let textNestObj = scene.findObject("slider_button")
+    this.guiScene.setUpdatesEnabled(true, true)
+    let textObj     = this.scene.findObject("convert_slider_text")
+    let boxObj      = this.scene.findObject("exp_slider_nest")
+    let textNestObj = this.scene.findObject("slider_button")
 
     let boxPosX      = boxObj.getPos()[0]
     let boxSizeX     = boxObj.getSize()[0]
@@ -419,31 +428,31 @@ enum windowState
 
   function updateObjects()
   {
-    updateSlider()
-    fillCostGold()
-    updateButtons()
+    this.updateSlider()
+    this.fillCostGold()
+    this.updateButtons()
   }
   //----END_VIEW----//
 
   //----CONTROLLER----//
   function onCountrySelect()
   {
-    let c = scene.findObject("countries_list").getValue()
+    let c = this.scene.findObject("countries_list").getValue()
     if (!(c in shopCountriesList))
       return
 
-    country = shopCountriesList[c]
+    this.country = shopCountriesList[c]
 
-    unit = getAvailableUnitForConversion()
+    this.unit = this.getAvailableUnitForConversion()
 
-    listType = ::get_es_unit_type(unit)
-    updateWindow()
+    this.listType = ::get_es_unit_type(this.unit)
+    this.updateWindow()
 
     //TODO: do this in updateWindow
-    loadUnitList(::get_es_unit_type(unit))
-    fillUnitList()
+    this.loadUnitList(::get_es_unit_type(this.unit))
+    this.fillUnitList()
 
-    ::showDiscount(scene.findObject("convert-discount"), "exp_to_gold_rate", country, null, true)
+    ::showDiscount(this.scene.findObject("convert-discount"), "exp_to_gold_rate", this.country, null, true)
   }
 
   function onSwitchUnitType(obj)
@@ -455,60 +464,60 @@ enum windowState
     let selObj = obj.getChild(value)
 
     let unitType = unitTypes.getByArmyId(selObj?.id)
-    updateUnitList(unitType.esUnitType)
+    this.updateUnitList(unitType.esUnitType)
   }
 
   function updateUnitList(unitType)
   {
-    listType = unitType
-    unit = getCountryResearchUnit(country, unitType)
-    loadUnitList(unitType)
-    fillUnitList()
-    updateWindow()
+    this.listType = unitType
+    this.unit = this.getCountryResearchUnit(this.country, unitType)
+    this.loadUnitList(unitType)
+    this.fillUnitList()
+    this.updateWindow()
   }
 
   function onUnitSelect(obj)
   {
-    let newUnit = unitList[obj.getValue()]
+    let newUnit = this.unitList[obj.getValue()]
     let isNewUnitInResearch = ::isUnitInResearch(newUnit)
     let isNewUnitResearched = ::isUnitResearched(newUnit)
-    let hasChangedUnit = !isEqual(newUnit, unit)
+    let hasChangedUnit = !isEqual(newUnit, this.unit)
     if (!hasChangedUnit && (isNewUnitInResearch || isNewUnitResearched))
       return
 
     if (hasChangedUnit && !::checkForResearch(newUnit))
     {
-      obj.setValue(unitList.indexof(unit))
+      obj.setValue(this.unitList.indexof(this.unit))
       return
     }
 
     let cb = function() {
-      unit = newUnit
-      updateWindow()
+      this.unit = newUnit
+      this.updateWindow()
     }
     if (isNewUnitInResearch || isNewUnitResearched) {
       cb()
       return
     }
 
-    research(newUnit, true, ::Callback(cb, this))
+    research(newUnit, true, Callback(cb, this))
   }
 
   function getAvailableUnitForConversion()
   {
     local newUnit = null
     //try to get unit of same type as previous unit is
-    if (isCountryHaveUnitType(country, ::get_es_unit_type(unit)))
-      newUnit = getCountryResearchUnit(country, ::get_es_unit_type(unit))
+    if (isCountryHaveUnitType(this.country, ::get_es_unit_type(this.unit)))
+      newUnit = this.getCountryResearchUnit(this.country, ::get_es_unit_type(this.unit))
     if (!newUnit)
     {
-      foreach (unitType in unitTypesList)
+      foreach (unitType in this.unitTypesList)
       {
         if (!unitType.canSpendGold())
           continue
 
-        if (unitType.haveAnyUnitInCountry(country))
-          newUnit = getCountryResearchUnit(country, unitType.esUnitType)
+        if (unitType.haveAnyUnitInCountry(this.country))
+          newUnit = this.getCountryResearchUnit(this.country, unitType.esUnitType)
 
         if (newUnit)
           break
@@ -520,54 +529,54 @@ enum windowState
   function onConvertChanged(obj)
   {
     let value = obj.getValue()
-    if (curGoldValue == value)
+    if (this.curGoldValue == value)
       return
-    curGoldValue = min(max(minGoldValue, value), maxGoldValue)
-    updateObjects()
+    this.curGoldValue = min(max(this.minGoldValue, value), this.maxGoldValue)
+    this.updateObjects()
   }
 
   function onButtonDec()
   {
-    let value = curGoldValue - 1
-    curGoldValue = min(max(minGoldValue, value), maxGoldValue)
-    updateObjects()
+    let value = this.curGoldValue - 1
+    this.curGoldValue = min(max(this.minGoldValue, value), this.maxGoldValue)
+    this.updateObjects()
   }
 
   function onButtonInc()
   {
-    let value = curGoldValue + 1
-    curGoldValue = min(max(minGoldValue, value), maxGoldValue)
-    updateObjects()
+    let value = this.curGoldValue + 1
+    this.curGoldValue = min(max(this.minGoldValue, value), this.maxGoldValue)
+    this.updateObjects()
   }
 
   function onMax()
   {
-    curGoldValue = maxGoldValue
-    updateObjects()
+    this.curGoldValue = this.maxGoldValue
+    this.updateObjects()
   }
 
   function onApply()
   {
     if (::get_gui_balance().gold <= 0)
-      return ::check_balance_msgBox(::Cost(0, curGoldValue), ::Callback(updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
+      return ::check_balance_msgBox(::Cost(0, this.curGoldValue), Callback(this.updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
 
-    let curGold = curGoldValue - minGoldValue
+    let curGold = this.curGoldValue - this.minGoldValue
     if (curGold == 0)
-      return ::showInfoMsgBox(::loc("exp/convert/noGold"), "no_exp_msgbox")
+      return ::showInfoMsgBox(loc("exp/convert/noGold"), "no_exp_msgbox")
 
-    if (availableExp < expPerGold)
-      return ::showInfoMsgBox(::loc("msgbox/no_rp"), "no_rp_msgbox")
+    if (this.availableExp < this.expPerGold)
+      return ::showInfoMsgBox(loc("msgbox/no_rp"), "no_rp_msgbox")
 
-    let curExp = getCurExpValue()
+    let curExp = this.getCurExpValue()
     let cost = ::Cost(0, curGold)
-    let msgText = warningIfGold(::loc("exp/convert/needMoneyQuestion",
+    let msgText = ::warningIfGold(loc("exp/convert/needMoneyQuestion",
         {exp = ::Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance()}),
       cost)
     this.msgBox("need_money", msgText,
       [
         ["yes", (@(cost, curExp) function() {
             if (::check_balance_msgBox(cost))
-              buyExp(curExp)
+              this.buyExp(curExp)
           })(cost, curExp) ],
         ["no", function() {} ]
       ], "yes", { cancel_fn = function() {}})
@@ -575,67 +584,67 @@ enum windowState
 
   function buyExp(amount)
   {
-    taskId = ::shop_convert_free_exp_for_unit(unit.name, amount)
-    if (taskId >= 0)
+    this.taskId = ::shop_convert_free_exp_for_unit(this.unit.name, amount)
+    if (this.taskId >= 0)
     {
-      ::set_char_cb(this, slotOpCb)
-      showTaskProgressBox()
-      afterSlotOp = function()
+      ::set_char_cb(this, this.slotOpCb)
+      this.showTaskProgressBox()
+      this.afterSlotOp = function()
       {
         ::update_gamercards()
-        ::broadcastEvent("ExpConvert", {unit = unit})
+        ::broadcastEvent("ExpConvert", {unit = this.unit})
       }
     }
   }
 
   function onBuyUnit()
   {
-    ::buyUnit(unit)
+    ::buyUnit(this.unit)
   }
 
-  function onEventExpConvert(params)
+  function onEventExpConvert(_params)
   {
-    isRefreshingAfterConvert = true
-    updateWindow()
-    isRefreshingAfterConvert = false
+    this.isRefreshingAfterConvert = true
+    this.updateWindow()
+    this.isRefreshingAfterConvert = false
   }
 
   function onEventUnitResearch(p)
   {
     let newUnit = ::getAircraftByName(p?.unitName)
-    if (newUnit == unit)
+    if (newUnit == this.unit)
       return
-    if (!newUnit || newUnit.shopCountry != country || ::get_es_unit_type(newUnit) != listType)
+    if (!newUnit || newUnit.shopCountry != this.country || ::get_es_unit_type(newUnit) != this.listType)
       return
 
-    unit = newUnit
-    updateWindow()
+    this.unit = newUnit
+    this.updateWindow()
   }
 
   function onEventUnitBought(params)
   {
-    let unitName = ::getTblValue("unitName", params)
-    if (!unitName || unit?.name != unitName)
+    let unitName = getTblValue("unitName", params)
+    if (!unitName || this.unit?.name != unitName)
       return
 
     let handler = this
     let config = {
-      unit = unit
-      unitObj = scene.findObject("unit_nest").findObject(unitName)
+      unit = this.unit
+      unitObj = this.scene.findObject("unit_nest").findObject(unitName)
       cellClass = "slotbarClone"
       isNewUnit = true
       afterCloseFunc = (@(handler, unit) function() {
           if (::handlersManager.isHandlerValid(handler))
             handler.updateUnitList(::get_es_unit_type(handler.getAvailableUnitForConversion() || unit))
-        })(handler, unit)
+        })(handler, this.unit)
     }
 
     ::gui_start_selecting_crew(config)
   }
 
-  function onEventOnlineShopPurchaseSuccessful(params)
+  function onEventOnlineShopPurchaseSuccessful(_params)
   {
-    doWhenActiveOnce("fillContent")
+    this.doWhenActiveOnce("fillContent")
   }
   //----END_CONTROLLER----//
 }

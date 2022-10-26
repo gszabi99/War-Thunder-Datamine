@@ -1,12 +1,21 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { get_time_msec } = require("dagor.time")
 
 global enum queueStates
 {
   ERROR,
   NOT_IN_QUEUE,
+  ACTUALIZE,
   JOINING_QUEUE,
   LEAVING_QUEUE,
   IN_QUEUE
@@ -41,7 +50,7 @@ foreach (fn in [
 
   ::queues.init()
   ::g_delayed_actions.add(
-    ::Callback(@()::queues.joinQueue(::queues.lastQueueReqParams), ::queues),
+    Callback(@()::queues.joinQueue(::queues.lastQueueReqParams), ::queues),
     5000 + ::math.rnd() % 5000)
 })
 
@@ -62,15 +71,15 @@ foreach (fn in [
 
   constructor()
   {
-    init()
+    this.init()
     ::g_script_reloader.registerPersistentData("QueueManager", this, ["queuesList", "lastId", "state"])
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
   function init()
   {
-    queuesList = []
-    lastId     = -1
+    this.queuesList = []
+    this.lastId     = -1
   }
 
   function createQueue(params, needModifyParamsByType = false)
@@ -80,7 +89,7 @@ foreach (fn in [
     if (needModifyParamsByType)
       params = queueType.prepareQueueParams(params)
 
-    local queue = findQueue(params)
+    local queue = this.findQueue(params)
     if (queue)
     {
       if (queue.addQueueByParams(params))
@@ -88,23 +97,23 @@ foreach (fn in [
       return queue
     }
 
-    queue = queueType.createQueue(lastId++, params)
-    queuesList.append(queue)
+    queue = queueType.createQueue(this.lastId++, params)
+    this.queuesList.append(queue)
 
     return queue
   }
 
   function removeQueue(queue)
   {
-    changeState(queue, queueStates.NOT_IN_QUEUE)
-    foreach(idx, q in queuesList)
+    this.changeState(queue, queueStates.NOT_IN_QUEUE)
+    foreach(idx, q in this.queuesList)
       if (q.id == queue.id)
-        return queuesList.remove(idx)
+        return this.queuesList.remove(idx)
   }
 
   function isEqual(params1, params2, null_is_equal = true)
   {
-    foreach(p in queue_diff_params)
+    foreach(p in this.queue_diff_params)
       if ((p in params1) != (p in params2))
       {
         if (!null_is_equal)
@@ -117,9 +126,9 @@ foreach (fn in [
 
   function findQueue(params, typeMask = -1, checkActive = true)
   {
-    foreach(q in queuesList)
-      if ((typeMask < 0 || (typeMask & q.typeBit)) && (!checkActive || isQueueActive(q)))
-          if (isEqual(params, q.params))
+    foreach(q in this.queuesList)
+      if ((typeMask < 0 || (typeMask & q.typeBit)) && (!checkActive || this.isQueueActive(q)))
+          if (this.isEqual(params, q.params))
             return q
     return null
   }
@@ -134,24 +143,24 @@ foreach (fn in [
   function findAllQueues(params, typeMask = -1)
   {
     let res = []
-    foreach(q in queuesList)
+    foreach(q in this.queuesList)
       if (typeMask < 0 || (typeMask & q.typeBit))
-        if (isEqual(params, q.params))
+        if (this.isEqual(params, q.params))
           res.append(q)
     return res
   }
 
   function findQueueByName(name, isActive = false)
   {
-    foreach(queue in queuesList)
-      if (queue.name == name && (!isActive || isQueueActive(queue)))
+    foreach(queue in this.queuesList)
+      if (queue.name == name && (!isActive || this.isQueueActive(queue)))
         return queue
     return null
   }
 
   function findQueueByQueueUid(queueUid)
   {
-    foreach(queue in queuesList)
+    foreach(queue in this.queuesList)
       if (queueUid in queue.queueUidsList)
         return queue
     return null
@@ -160,8 +169,8 @@ foreach (fn in [
   function getActiveQueueTypes()
   {
     let res = []
-    foreach(queue in queuesList)
-      if (isQueueActive(queue))
+    foreach(queue in this.queuesList)
+      if (this.isQueueActive(queue))
          ::u.appendOnce(queue.queueType, res)
 
     return res
@@ -169,8 +178,8 @@ foreach (fn in [
 
   function getActiveQueueWithType(typeBit)
   {
-    foreach(queue in queuesList)
-      if ((typeBit & queue.typeBit) && isQueueActive(queue))
+    foreach(queue in this.queuesList)
+      if ((typeBit & queue.typeBit) && this.isQueueActive(queue))
         return queue
 
     return null
@@ -178,27 +187,29 @@ foreach (fn in [
 
   function hasActiveQueueWithType(typeBit)
   {
-    return getActiveQueueWithType(typeBit) != null
+    return this.getActiveQueueWithType(typeBit) != null
   }
 
   function isQueueActive(queue)
   {
-    return queue != null && (queue.state == queueStates.IN_QUEUE || queue.state == queueStates.JOINING_QUEUE)
+    return queue != null && (queue.state == queueStates.IN_QUEUE
+      || queue.state == queueStates.ACTUALIZE
+      || queue.state == queueStates.JOINING_QUEUE)
   }
 
   function isAnyQueuesActive(typeMask = -1)
   {
-    foreach(q in queuesList)
+    foreach(q in this.queuesList)
       if (typeMask < 0 || (typeMask & q.typeBit))
-        if (isQueueActive(q))
+        if (this.isQueueActive(q))
           return true
     return false
   }
 
-  function getActiveQueueByName(id)
+  function getActiveQueueByName(_id)
   {
-    foreach(q in queuesList)
-      if (isQueueActive(q))
+    foreach(q in this.queuesList)
+      if (this.isQueueActive(q))
         return true
     return false
   }
@@ -206,11 +217,11 @@ foreach (fn in [
   function leaveQueueByType(typeBit = -1)
   {
     if (typeBit < 0)
-      return leaveAllQueues()
+      return this.leaveAllQueues()
 
-    foreach(queue in queuesList)
-      if ((typeBit & queue.typeBit) && isQueueActive(queue))
-        leaveQueue(queue)
+    foreach(queue in this.queuesList)
+      if ((typeBit & queue.typeBit) && this.isQueueActive(queue))
+        this.leaveQueue(queue)
   }
 
   function changeState(queue, queueState)
@@ -218,13 +229,13 @@ foreach (fn in [
     if (queue.state == queueState)
       return
 
-    let wasAnyActive = isAnyQueuesActive()
+    let wasAnyActive = this.isAnyQueuesActive()
 
     queue.state = queueState
-    queue.activateTime = isQueueActive(queue)? ::dagor.getCurTime() : -1
+    queue.activateTime = this.isQueueActive(queue)? get_time_msec() : -1
     ::broadcastEvent("QueueChangeState", { queue = queue })
 
-    if (wasAnyActive!=isAnyQueuesActive)
+    if (wasAnyActive!=this.isAnyQueuesActive)
       ::update_gamercards()
   }
 
@@ -235,11 +246,11 @@ foreach (fn in [
 
   function cantSquadQueueMsgBox(params = null, reasonText = "")
   {
-    ::dagor.debug("Error: cant join queue with squad. " + reasonText)
+    log("Error: cant join queue with squad. " + reasonText)
     if (params)
-      ::debugTableData(params)
+      debugTableData(params)
 
-    local msg = ::loc("squad/cant_join_queue")
+    local msg = loc("squad/cant_join_queue")
     if (reasonText)
       msg += "\n" + reasonText
     ::showInfoMsgBox(msg, "cant_join_queue")
@@ -247,14 +258,14 @@ foreach (fn in [
 
   function showProgressBox(show, text = "charServer/purchase0")
   {
-    if (::checkObj(progressBox))
+    if (checkObj(this.progressBox))
     {
-      progressBox.getScene().destroyElement(progressBox)
+      this.progressBox.getScene().destroyElement(this.progressBox)
       ::broadcastEvent("ModalWndDestroy")
-      progressBox = null
+      this.progressBox = null
     }
     if (show)
-      progressBox = ::scene_msg_box("queue_action", null, ::loc(text),
+      this.progressBox = ::scene_msg_box("queue_action", null, loc(text),
         [["cancel", function(){}]], "cancel",
         { waitAnim = true,
           delayedButtons = 30
@@ -263,9 +274,9 @@ foreach (fn in [
 
   function joinFriendsQueue(inGameEx, eventId)
   {
-    joinQueue({
+    this.joinQueue({
       mode = eventId
-      country = ::get_profile_country_sq()
+      country = profileCountrySq.value
       slots = getSelSlotsData().slots
       clusters = clustersModule.getCurrentClusters()
       queueSelfActivated = true
@@ -275,33 +286,43 @@ foreach (fn in [
     })
   }
 
+  function joinQueueImpl(queue) {
+    queue.join(
+      Callback(function(_response) {
+        this.afterJoinQueue(queue)
+        if (this.isLeaveDelayed)
+          this.leaveQueue(queue)
+      }, this),
+      Callback(function(_response) {
+        this.removeQueue(queue)
+      }, this)
+    )
+    this.changeState(queue, queueStates.JOINING_QUEUE)
+  }
+
   function joinQueue(params)
   {
     if (params == null)
-      return ::dagor.debug("Error: cancel join queue because params = null.")
-    if (findQueue(params))
-      return ::dagor.debug("Error: cancel join queue because already exist.")
+      return log("Error: cancel join queue because params = null.")
+    if (this.findQueue(params))
+      return log("Error: cancel join queue because already exist.")
 
-    isLeaveDelayed = false
-    lastQueueReqParams = clone params
+    this.isLeaveDelayed = false
+    this.lastQueueReqParams = clone params
     ::broadcastEvent("BeforeJoinQueue")
-    let queue = createQueue(params, true)
-    queue.join(
-      ::Callback(function(response) {
-        afterJoinQueue(queue)
-        if (isLeaveDelayed)
-          leaveQueue(queue)
-      }, this),
-      ::Callback(function(response) {
-        removeQueue(queue)
-      }, this)
-    )
-    changeState(queue, queueStates.JOINING_QUEUE)
+    let queue = this.createQueue(params, true)
+    if (queue.hasActualQueueData()) {
+      this.joinQueueImpl(queue)
+      return
+    }
+
+    this.changeState(queue, queueStates.ACTUALIZE)
+    queue.actualizeData()
   }
 
   function afterJoinQueue(queue)
   {
-    changeState(queue, queueStates.IN_QUEUE)
+    this.changeState(queue, queueStates.IN_QUEUE)
     ::set_presence_to_player("queue")
   }
 
@@ -309,30 +330,30 @@ foreach (fn in [
   {
     if (params)
     {
-      let list = findAllQueues(params)
+      let list = this.findAllQueues(params)
       foreach(q in list)
-        leaveQueue(q)
+        this.leaveQueue(q)
       return
     }
 
-    if (!isAnyQueuesActive())
+    if (!this.isAnyQueuesActive())
       return postAction && postAction()
 
-    showProgressBox(true, "wait/queueLeave")
+    this.showProgressBox(true, "wait/queueLeave")
 
-    let callback = _getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
-    foreach(queueType in getActiveQueueTypes())
+    let callback = this._getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
+    foreach(queueType in this.getActiveQueueTypes())
       queueType.leaveAllQueues(callback, callback, false)
 
-    foreach(q in queuesList)
+    foreach(q in this.queuesList)
       if (q.state != queueStates.NOT_IN_QUEUE)
-        changeState(q, queueStates.LEAVING_QUEUE)
+        this.changeState(q, queueStates.LEAVING_QUEUE)
   }
 
   function _getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
   {
-    return ::Callback(function(response) {
-      showProgressBox(false)
+    return Callback(function(response) {
+      this.showProgressBox(false)
       if (response.error == SERVER_ERROR_REQUEST_REJECTED)
       {
         // Error means that user is joining battle and can't leave the queue
@@ -344,7 +365,7 @@ foreach (fn in [
       {
         if ((response?.error_id ?? ::matching.error_string(response.error)) not in hiddenMatchingError)
           ::checkMatchingError(response, !silent)
-        afterLeaveQueues({})
+        this.afterLeaveQueues({})
 
         // This check is a workaround that fixes
         // player being able to perform some action
@@ -366,45 +387,45 @@ foreach (fn in [
 
   function leaveAllQueuesSilent()
   {
-    return leaveAllQueues(null, null, null, true)
+    return this.leaveAllQueues(null, null, null, true)
   }
 
   function leaveQueue(queue, params = {})
   {
     if (queue.state == queueStates.LEAVING_QUEUE)
       return
-    if (queue.state == queueStates.NOT_IN_QUEUE)
-      return removeQueue(queue)
+    if (queue.state == queueStates.NOT_IN_QUEUE || queue.state == queueStates.ACTUALIZE)
+      return this.removeQueue(queue)
     if (queue.state == queueStates.JOINING_QUEUE)
     {
-      isLeaveDelayed = true
-      showProgressBox(true, "wait/queueLeave")
+      this.isLeaveDelayed = true
+      this.showProgressBox(true, "wait/queueLeave")
       return
     }
 
-    lastQueueReqParams = null
-    showProgressBox(true, "wait/queueLeave")
+    this.lastQueueReqParams = null
+    this.showProgressBox(true, "wait/queueLeave")
 
     ::add_big_query_record("exit_waiting_for_battle_screen",
       ::save_to_json({ waitingTime = queue.getActiveTime()
         queueType = queue.queueType.typeName
-        eventId = getQueueMode(queue)
-        country = getQueueCountry(queue)
-        rank = getMyRankInQueue(queue)
+        eventId = this.getQueueMode(queue)
+        country = this.getQueueCountry(queue)
+        rank = this.getMyRankInQueue(queue)
         isCanceledByPlayer = params?.isCanceledByPlayer ?? false }))
 
     queue.leave(
-      getOnLeaveQueueSuccessCallback(queue),
-      getOnLeaveQueueErrorCallback(queue)
+      this.getOnLeaveQueueSuccessCallback(queue),
+      this.getOnLeaveQueueErrorCallback(queue)
     )
 
-    changeState(queue, queueStates.LEAVING_QUEUE)
+    this.changeState(queue, queueStates.LEAVING_QUEUE)
   }
 
   function getOnLeaveQueueErrorCallback(queue)
   {
-    return ::Callback(function(response) {
-      showProgressBox(false)
+    return Callback(function(response) {
+      this.showProgressBox(false)
       if (response.error == SERVER_ERROR_REQUEST_REJECTED)
       {
         // Error means that user is joining battle and can't leave the queue
@@ -414,31 +435,31 @@ foreach (fn in [
 
       if ((response?.error_id ?? ::matching.error_string(response.error)) not in hiddenMatchingError)
         ::checkMatchingError(response)
-      removeQueue(queue)
+      this.removeQueue(queue)
     }, this)
   }
 
-  function getOnLeaveQueueSuccessCallback(queue)
+  function getOnLeaveQueueSuccessCallback(_queue)
   {
-    return ::Callback(@(response) showProgressBox(false), this)
+    return Callback(@(_response) this.showProgressBox(false), this)
   }
 
   function afterLeaveQueue(queue, msg = null)
   {
-    removeQueue(queue)
-    if (msg && !::checkObj(::get_gui_scene()["leave_queue_msgbox"]))
+    this.removeQueue(queue)
+    if (msg && !checkObj(::get_gui_scene()["leave_queue_msgbox"]))
       ::showInfoMsgBox(msg, "leave_queue_msgbox")
   }
 
   //handles all queus, matches with @params
   function afterLeaveQueues(params)
   {
-    let list = findAllQueues(params)
+    let list = this.findAllQueues(params)
     foreach(q in list)
       if (q.removeQueueByParams(params))
       {
         if (!q.isActive())
-          removeQueue(q)
+          this.removeQueue(q)
         else
           ::broadcastEvent("QueueChanged", q)
       }
@@ -446,27 +467,27 @@ foreach (fn in [
 
   function leaveAllQueuesAndDo(action, cancelAction = null)
   {
-    leaveAllQueues(null, action, cancelAction)
+    this.leaveAllQueues(null, action, cancelAction)
   }
 
   function isCanModifyQueueParams(typeMask)
   {
-    return findQueue({}, typeMask) == null
+    return this.findQueue({}, typeMask) == null
   }
 
   function isCanNewflight(...)
   {
-    return !isAnyQueuesActive()
+    return !this.isAnyQueuesActive()
   }
 
   function isCanChangeCluster(...)
   {
-    return !isAnyQueuesActive()
+    return !this.isAnyQueuesActive()
   }
 
   function isCanUseOnlineShop(...)
   {
-    return !isAnyQueuesActive()
+    return !this.isAnyQueuesActive()
   }
 
   function isCanGoForward(...)
@@ -476,18 +497,18 @@ foreach (fn in [
 
   function isCanModifyCrew(...)
   {
-    return !isAnyQueuesActive()
+    return !this.isAnyQueuesActive()
   }
 
   function isCanAirChange(...)
   {
-    if (!isCanGoForward())
+    if (!this.isCanGoForward())
       return false
 
-    foreach(q in queuesList)
-      if (isQueueActive(q))
+    foreach(q in this.queuesList)
+      if (this.isQueueActive(q))
       {
-        let event = getQueueEvent(q)
+        let event = this.getQueueEvent(q)
         if (event && !::events.isEventMultiSlotEnabled(event))
           return false
       }
@@ -539,22 +560,22 @@ foreach (fn in [
 
   function getMyRankInQueue(queue)
   {
-    let event = getQueueEvent(queue)
+    let event = this.getQueueEvent(queue)
     if (!event)
       return -1
 
-    let country = getQueueCountry(queue)
+    let country = this.getQueueCountry(queue)
     return ::events.getSlotbarRank(event,
                                    country,
-                                   ::getTblValue(country, getQueueSlots(queue), 0)
+                                   getTblValue(country, this.getQueueSlots(queue), 0)
                                   )
   }
 
   function getQueuesInfoText()
   {
-    local text = ::loc("inQueueList/header")
-    foreach(queue in queuesList)
-      if (isQueueActive(queue))
+    local text = loc("inQueueList/header")
+    foreach(queue in this.queuesList)
+      if (this.isQueueActive(queue))
         text += "\n" + queue.getDescription()
 
     return text
@@ -576,13 +597,13 @@ foreach (fn in [
 
   function checkQueueType(queue, typeMask)
   {
-    return (::getTblValue("typeBit", queue, 0) & typeMask) != 0
+    return (getTblValue("typeBit", queue, 0) & typeMask) != 0
   }
 
   function getQueuePreferredViewClass(queue)
   {
     let defaultHandler = ::gui_handlers.QiHandlerByTeams
-    let event = getQueueEvent(queue)
+    let event = this.getQueueEvent(queue)
     if (!event)
       return defaultHandler
     if (!::events.isEventForClan(event) && ::events.isEventSymmetricTeams(event))
@@ -590,18 +611,18 @@ foreach (fn in [
     return defaultHandler
   }
 
-  function onEventClanInfoUpdate(params)
+  function onEventClanInfoUpdate(_params)
   {
     if (!::my_clan_info)
-      foreach(queue in queuesList)
-        if (isClanQueue(queue))
-          leaveQueue(queue)
+      foreach(queue in this.queuesList)
+        if (this.isClanQueue(queue))
+          this.leaveQueue(queue)
   }
 
   function applyQueueInfo(info, statsClass)
   {
-    let queue = ("queueId" in info) ? findQueueByQueueUid(info.queueId)
-                  : ("name" in info)  ? findQueueByName(info.name)
+    let queue = ("queueId" in info) ? this.findQueueByQueueUid(info.queueId)
+                  : ("name" in info)  ? this.findQueueByName(info.name)
                                       : null
     if (!queue)
       return false
@@ -615,33 +636,33 @@ foreach (fn in [
   function onEventQueueInfoRecived(params)
   {
     local haveChanges = false
-    let queueInfo = ::getTblValue("queue_info", params)
+    let queueInfo = getTblValue("queue_info", params)
 
     if (::u.isTable(queueInfo))
-      haveChanges = applyQueueInfo(queueInfo, ::queue_stats_versions.StatsVer2)
+      haveChanges = this.applyQueueInfo(queueInfo, ::queue_stats_versions.StatsVer2)
     else if (::u.isArray(queueInfo)) //queueInfo ver1
       foreach(qi in queueInfo)
-        if (applyQueueInfo(qi, ::queue_stats_versions.StatsVer1))
+        if (this.applyQueueInfo(qi, ::queue_stats_versions.StatsVer1))
           haveChanges = true
 
     if (haveChanges)
-      pushQueueInfoUpdatedEvent()
+      this.pushQueueInfoUpdatedEvent()
   }
 
   function pushQueueInfoUpdatedEvent()
   {
-    if (delayedInfoUpdateEventtTime > 0 && ::dagor.getCurTime() - delayedInfoUpdateEventtTime < 1000)
+    if (this.delayedInfoUpdateEventtTime > 0 && get_time_msec() - this.delayedInfoUpdateEventtTime < 1000)
       return
 
     let guiScene = ::get_gui_scene()
     if (!guiScene)
       return
 
-    delayedInfoUpdateEventtTime = ::dagor.getCurTime()
+    this.delayedInfoUpdateEventtTime = get_time_msec()
     guiScene.performDelayed(this, function()
      {
-       delayedInfoUpdateEventtTime = -1
-       if (isAnyQueuesActive())
+       this.delayedInfoUpdateEventtTime = -1
+       if (this.isAnyQueuesActive())
         ::broadcastEvent("QueueInfoUpdated")
      })
   }
@@ -655,14 +676,14 @@ foreach (fn in [
     )
   }
 
-  function onEventMatchingDisconnect(p)
+  function onEventMatchingDisconnect(_p)
   {
-    afterLeaveQueues({})
+    this.afterLeaveQueues({})
   }
 
-  function onEventMatchingConnect(p)
+  function onEventMatchingConnect(_p)
   {
-    afterLeaveQueues({})
+    this.afterLeaveQueues({})
   }
 
   function checkAndStart(onSuccess, onCancel, checkName, checkParams = null)
@@ -685,24 +706,24 @@ foreach (fn in [
 
     if (checkParams?.isSilentLeaveQueue)
     {
-      leaveAllQueuesAndDo(onSuccess, onCancel)
+      this.leaveAllQueuesAndDo(onSuccess, onCancel)
       return
     }
 
-    ::scene_msg_box("requeue_question", null, ::loc("msg/cancel_queue_question"),
-      [["ok", ::Callback(@() leaveAllQueuesAndDo(onSuccess, onCancel), this)], ["no", onCancel]],
+    ::scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
+      [["ok", Callback(@() this.leaveAllQueuesAndDo(onSuccess, onCancel), this)], ["no", onCancel]],
       "ok",
       { cancel_fn = onCancel ?? @()null, checkDuplicateId = true })
   }
 
-  function onEventLobbyStatusChange(p)
+  function onEventLobbyStatusChange(_p)
   {
     if (::SessionLobby.status == lobbyStates.IN_SESSION)
-      lastQueueReqParams = null
+      this.lastQueueReqParams = null
   }
 }
 
-::queues = QueueManager()
+::queues = ::QueueManager()
 
 ::checkIsInQueue <- function checkIsInQueue()
 {

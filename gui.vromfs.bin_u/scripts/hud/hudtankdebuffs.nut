@@ -1,3 +1,9 @@
+from "%scripts/dagui_library.nut" import *
+
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+
 let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
 ::g_hud_tank_debuffs <- {
@@ -20,16 +26,16 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
   function init(nest)
   {
-    if (!::has_feature("TankDetailedDamageIndicator"))
+    if (!hasFeature("TankDetailedDamageIndicator"))
       return
 
-    scene = nest.findObject("tank_debuffs")
+    this.scene = nest.findObject("tank_debuffs")
 
-    if (!scene && !::checkObj(scene))
+    if (!this.scene && !checkObj(this.scene))
       return
 
-    guiScene = scene.getScene()
-    let blk = ::handyman.renderCached("%gui/hud/HudTankDebuffs",
+    this.guiScene = this.scene.getScene()
+    let blk = ::handyman.renderCached("%gui/hud/hudTankDebuffs.tpl",
         {
           stabilizerValue = getConfigValueById("stabilizer"),
           lwsValue = getConfigValueById("lws"),
@@ -37,31 +43,31 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
           firstStageAmmoValue = getConfigValueById("first_stage_ammo")
         }
       )
-    guiScene.replaceContentFromText(scene, blk, blk.len(), this)
+    this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
 
     ::g_hud_event_manager.subscribe("TankDebafs:Fire",
       function (debuffs_data) {
-        scene.findObject("fire_status").show(debuffs_data.burns)
+        this.scene.findObject("fire_status").show(debuffs_data.burns)
       }, this)
 
     ::g_hud_event_manager.subscribe("TankDebafs:TurretDrive",
       function (debuffs_data) {
-        updateDebufSate(debuffs_data, scene.findObject("turret_drive_state"))
+        this.updateDebufSate(debuffs_data, this.scene.findObject("turret_drive_state"))
       }, this)
 
     ::g_hud_event_manager.subscribe("TankDebafs:Gun",
       function (debuffs_data) {
-        updateDebufSate(debuffs_data, scene.findObject("gun_state"))
+        this.updateDebufSate(debuffs_data, this.scene.findObject("gun_state"))
       }, this)
 
     ::g_hud_event_manager.subscribe("TankDebafs:Engine",
       function (debuffs_data) {
-        updateDebufSate(debuffs_data, scene.findObject("engine_state"))
+        this.updateDebufSate(debuffs_data, this.scene.findObject("engine_state"))
       }, this)
 
     ::g_hud_event_manager.subscribe("TankDebafs:Tracks",
       function (debuffs_data) {
-        updateDebufSate(debuffs_data, scene.findObject("tracks_state"))
+        this.updateDebufSate(debuffs_data, this.scene.findObject("tracks_state"))
       }, this)
 
     ::hud_request_hud_tank_debuffs_state()
@@ -74,7 +80,7 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
   function updateDebufSate(debuffs_data, obj)
   {
-    obj.tooltip = getTooltip(debuffs_data)
+    obj.tooltip = this.getTooltip(debuffs_data)
     foreach (on in debuffs_data)
       if (on)
       {
@@ -91,14 +97,14 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
     local res = ""
     foreach (debuffName, on in debuffs_data)
     {
-      if (on && debuffName in tooltips)
-        res += (res.len() ? "\n\n" : "") + ::loc(tooltips[debuffName])
+      if (on && debuffName in this.tooltips)
+        res += (res.len() ? "\n\n" : "") + loc(this.tooltips[debuffName])
     }
     return res
   }
 
   function isValid()
   {
-    return ::checkObj(scene)
+    return checkObj(this.scene)
   }
 }
