@@ -266,10 +266,10 @@ let sortChatUsers = @(a, b) a.name <=> b.name
   }
 
   function isChatAvailableInCurRoom() {
-    if (this.curRoom.hasCustomViewHandler)
+    if (this.curRoom == null || this.curRoom.hasCustomViewHandler)
       return false
 
-    if (this.curRoom?.type == ::g_chat_room_type.PRIVATE)
+    if (this.curRoom.type == ::g_chat_room_type.PRIVATE)
       return isChatEnableWithPlayer(this.curRoom.id)
 
     return isChatEnabled()

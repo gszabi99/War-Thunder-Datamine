@@ -725,13 +725,13 @@ return [
     value = function(_joyParams) {
       let gp = get_game_params()
       let minSens = gp?.minMouseJoystickSensitivity ?? 0.0
-      let maxSens = gp?.minMouseJoystickSensitivity ?? 1.0
+      let maxSens = gp?.maxMouseJoystickSensitivity  ?? 1.0
       return 100.0 * (::get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY) - minSens) / (maxSens - minSens)
     }
     setValue = function(_joyParams, objValue) {
       let gp = get_game_params()
       let minSens = gp?.minMouseJoystickSensitivity ?? 0.0
-      let maxSens = gp?.minMouseJoystickSensitivity ?? 1.0
+      let maxSens = gp?.maxMouseJoystickSensitivity  ?? 1.0
       ::set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY, minSens + (objValue / 100.0) * (maxSens - minSens))
     }
   }

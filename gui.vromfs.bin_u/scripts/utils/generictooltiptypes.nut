@@ -381,7 +381,7 @@ let exportTypes = addTooltipTypes({
 
       let tooltipParams = {
         groupName = loc("respawn/randomUnitsGroup/description",
-          {groupName = colorize("activeTextColor", missionRules.getRandomUnitsGroupLocName(this.groupName))})
+          {groupName = colorize("activeTextColor", missionRules.getRandomUnitsGroupLocName(groupName))})
         rankGroup = loc("shop/age") + loc("ui/colon") +
           colorize("activeTextColor", missionRules.getRandomUnitsGroupLocRank(groupName))
         battleRatingGroup = loc("shop/battle_rating") + loc("ui/colon") +

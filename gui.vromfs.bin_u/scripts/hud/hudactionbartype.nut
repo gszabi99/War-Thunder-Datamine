@@ -648,6 +648,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "support_plane_orbiting"
     _icon = "#ui/gameuiskin#uav_orbiting.png"
     _title = loc("hotkeys/ID_SUPPORT_PLANE_ORBITING")
+    isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_ORBITING"
   }
 
@@ -656,6 +657,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "support_plane_change"
     _icon = "#ui/gameuiskin#scout_streak.png"
     _title = loc("hotkeys/ID_SUPPORT_PLANE_CHANGE")
+    isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_CHANGE"
   }
 
@@ -664,6 +666,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "support_plane_change"
     _icon = "#ui/gameuiskin#artillery_fire.png"
     _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_ATTACK")
+    isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_ATTACK"
   }
 
@@ -672,6 +675,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "night_vision"
     _icon = "#ui/gameuiskin#supportPlane_night_vision.png"
     _title = loc("hotkeys/ID_PLANE_NIGHT_VISION")
+    isForWheelMenu = @() true
     getShortcut = @(_actionItem, hudUnitType = null)
       hudUnitType == HUD_UNIT_TYPE.HELICOPTER
         ? "ID_HELI_GUNNER_NIGHT_VISION"
@@ -683,6 +687,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "sight_stabilization"
     _icon = "#ui/gameuiskin#supportPlane_sight_stabilization.png"
     _title = loc("hotkeys/ID_LOCK_TARGETING")
+    isForWheelMenu = @() true
     getShortcut = @(_actionItem, hudUnitType = null)
       hudUnitType == HUD_UNIT_TYPE.HELICOPTER
         ? "ID_LOCK_TARGETING_AT_POINT_HELICOPTER"
