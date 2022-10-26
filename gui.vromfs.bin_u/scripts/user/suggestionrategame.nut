@@ -94,6 +94,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   }
 }
 
+/*
 let function tryOpenXboxRateReviewWnd() {
   if (isPlatformXboxOne && ::xbox_show_rate_and_review())
   {
@@ -101,6 +102,7 @@ let function tryOpenXboxRateReviewWnd() {
     ::add_big_query_record("rate", "xbox")
   }
 }
+*/
 
 let function tryOpenSteamRateReview(forceShow = false) {
   if (!forceShow && (!::steam_is_running() || !hasFeature("SteamRateGame")))
@@ -118,7 +120,7 @@ let function checkShowRateWnd() {
   if (!needShowRateWnd.value || ::load_local_account_settings(RATE_WND_SAVE_ID, false))
     return
 
-  tryOpenXboxRateReviewWnd()
+  // tryOpenXboxRateReviewWnd()
   tryOpenSteamRateReview()
 
   // in case of error, show in next launch.
