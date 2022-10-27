@@ -216,11 +216,11 @@ def evaluate_server_route(evt : ChangeServerRoute)
       if route_id == MAIN_HOST_ROUTE_ID
         rtt_estimation += add_rtt
 
-      if route_id == currentRoute
+      if route_id == currentRoute && !evt.currentIsUnresponsive // if unresponsive, estimation is RTT_MAX
         currentRttEstimation = rtt_estimation
 
+    let forceChange : bool = evt.currentIsUnresponsive
     var bestRoute : uint = currentRoute
-    var forceChange : bool = evt.currentIsUnresponsive
     var bestRttEstimation : uint = currentRttEstimation
     var maxDiffSum : int = diff_sum_min
 
@@ -239,10 +239,9 @@ def evaluate_server_route(evt : ChangeServerRoute)
       rtt_diff_sum = int(float(rtt_diff_sum) * PERCENT_DIFF_SUM_DECAY_FACTOR)
       rtt_diff_sum = clamp(rtt_diff_sum + rttDiff, diff_sum_min, PERCENT_DIFF_SUM_MAX)
       maxDiffSum = max(maxDiffSum, rtt_diff_sum)
-      if forceChange || rtt_diff_sum >= rtt_sum_threshold
+      if (forceChange && rtt_estimation < bestRttEstimation) || (!forceChange && rtt_diff_sum >= rtt_sum_threshold)
         bestRoute = route_id
         bestRttEstimation = rtt_estimation
-        forceChange = false
 
     print("Current server route #{int(currentRoute)} available={!evt.currentIsUnresponsive} "
         + "rtt estimation={int(currentRttEstimation)} best route #{int(bestRoute)} "

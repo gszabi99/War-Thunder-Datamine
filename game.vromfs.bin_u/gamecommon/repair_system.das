@@ -228,7 +228,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   if !active || !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)
     return
   let unit = get_unit(uid)
-  if unit == null || unit.isDelayed || unit.isImmortal
+  if unit == null || unit.isDelayed
     return
   let gm = unit |> as_gm()
   assume toolkit = gm.toolkit;
@@ -246,6 +246,10 @@ def repair_system_update_es(act : UpdateStageInfoAct;
     get_flag(repair_system_state, RepairState REPAIR_PENALTY_WITHOUT_TOOLKIT)
   )
   let repair_with_mods_available = is_repair_with_mods_availabile(repair_system_state)
+
+  // while immortal just update availability, no more work needed
+  if unit.isImmortal
+    return
 
   // if not suitable for repair - return
   if !active || !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)

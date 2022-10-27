@@ -2,6 +2,7 @@ require ecs
 require dm
 require Unit
 require app
+require DagorSystem
 require DagorRandom
 require DagorMath
 require DagorDataBlock
@@ -279,6 +280,14 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
     )
 
 
+// TODO: This is a temporary workaround for https://youtrack.gaijin.team/issue/1-103741/Crash-memcpy-void-das
+// In a dump ship_breaches_offender is somehow empty, while other lists are not. While this is not investigated fixed, this workaround should be present to prevent crashes
+def fixup_breaches_soa(var ship_breaches_id : IntList&; var ship_breaches_offender : BreachOffenderDataList&)
+  if length(ship_breaches_id) != length(ship_breaches_offender)
+    logerr("fixup_breaches_soa: length(ship_breaches_id)={length(ship_breaches_id)}, length(ship_breaches_offender)={length(ship_breaches_offender)}")
+    ship_breaches_offender |> resize(length(ship_breaches_id))
+
+
 [es]
 def ship_remove_breach_handle_es(evt : EventShipRemoveBreach;
                                  eid : EntityId;
@@ -293,10 +302,10 @@ def ship_remove_breach_handle_es(evt : EventShipRemoveBreach;
                                  var ship_breaches_cover_id : IntList&;
                                  var ship_breaches_leaked_amount : FloatList&;
                                  var ship_breaches_offender : BreachOffenderDataList&)
-  assert(length(ship_breaches_offender) == length(ship_breaches_id), "ship breaches SOA length missmatch on remove breach")
-  for i in range(0, length(ship_breaches_id))
+  fixup_breaches_soa(ship_breaches_id, ship_breaches_offender)
+  for i in iter_range(ship_breaches_id)
     if ship_breaches_id[i] == evt.breachId
-      sendEvent(eid, [[EventShipOnRemoveBreach localPos=ship_breaches_pos[i]]])
+      let local_pos = ship_breaches_pos[i]
       ship_breaches_id |> erase(i)
       ship_breaches_pos |> erase(i)
       ship_breaches_normal |> erase(i)
@@ -308,6 +317,7 @@ def ship_remove_breach_handle_es(evt : EventShipRemoveBreach;
       ship_breaches_cover_id |> erase(i)
       ship_breaches_leaked_amount |> erase(i)
       ship_breaches_offender |> erase(i)
+      sendEvent(eid, [[EventShipOnRemoveBreach localPos=local_pos]])
       break
 
 
@@ -337,7 +347,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
     return
 
   var cover_id = -1
-  for i in range(0, length(ship_cover_parts_part_id))
+  for i in iter_range(ship_cover_parts_part_id)
     if int(unpack_part_id(ship_cover_parts_part_id[i]).globalId) == evt.partId
       cover_id = i
       break
@@ -355,18 +365,17 @@ def add_breach_handle_es(evt : EventShipAddBreach;
 
   // TODO: probably we dont need to set max breach count
   let MAX_BREACHES_COUNT = 100
+  var breach_id_to_remove = -1
   if length(ship_breaches_id) >= MAX_BREACHES_COUNT
     var min_size = size
-    var min_size_id = -1
     for breach_id, breach_size in ship_breaches_id, ship_breaches_size
       if min_size >= breach_size
         min_size = breach_size
-        min_size_id = breach_id
-    if min_size_id != -1
-      sendEvent(eid, [[EventShipRemoveBreach breachId=min_size_id]])
-    else
+        breach_id_to_remove = breach_id
+    if breach_id_to_remove == -1
       return
 
+  fixup_breaches_soa(ship_breaches_id, ship_breaches_offender)
   ship_breaches_id |> push(evt.id)
   ship_breaches_pos |> push(pos)
   ship_breaches_normal |> push(evt.localNormal)
@@ -378,12 +387,14 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   ship_breaches_cover_id |> push(cover_id)
   ship_breaches_leaked_amount |> push(0.0f)
   ship_breaches_offender |> push(make_offender_data(evt.offenderUnitId, evt.offenderBulletId))
-  assert(length(ship_breaches_offender) == length(ship_breaches_id), "ship breaches SOA length missmatch on add breach")
 
   sendEvent(eid, [[EventShipOnGotBreach breachId=evt.id, localPos=evt.localPos, offenderUnitId=evt.offenderUnitId, offenderBulletId=evt.offenderBulletId]])
   if ship_unwatering_remaining_time > 0.0f || ship_damage_control_running
     ship_unwatering_remaining_time = -1.0f
     sendEvent(eid, [[EventShipRequestRepairBreaches repair=true]])
+
+  if breach_id_to_remove != -1
+    sendEvent(eid, [[EventShipRemoveBreach breachId=breach_id_to_remove]])
 
 
 def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
@@ -402,7 +413,7 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
     return
 
   let ship_props = ship.shipProps
-  for i in range(0, length(ship_cover_parts_part_id))
+  for i in iter_range(ship_cover_parts_part_id)
     if int(unpack_part_id(ship_cover_parts_part_id[i]).globalId) == evt.partId
       ship_breaches_fatal_part_id = i
       if unit.isAuthority
