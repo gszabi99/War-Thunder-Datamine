@@ -170,6 +170,8 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
     ship_damage_control_unwatering_speed_mult = unwatering_mult * unwatering_inv_penalty
 
   else
+    ship_damage_control_running = false
+
     repair_mult = repair_in_progress ? repair_mult : 0.0f
     extinguish_mult = extinguish_in_progress ? extinguish_mult : 0.0f
     unwatering_mult = unwatering_in_progress ? unwatering_mult : 0.0f

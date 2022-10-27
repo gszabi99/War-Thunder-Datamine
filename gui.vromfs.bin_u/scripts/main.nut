@@ -19,7 +19,7 @@ global const ARMY_GROUP = "army"
 global const UNIT_WEAPONS_ZERO    = 0
 global const UNIT_WEAPONS_WARNING = 1
 global const UNIT_WEAPONS_READY   = 2
-require("%scripts/worldwar/worldWarConst.nut")
+require("%scripts/worldWar/worldWarConst.nut")
 require("%globalScripts/ui_globals.nut")
 
 let sqdebugger = require_optional("sqdebugger")

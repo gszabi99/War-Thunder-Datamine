@@ -431,7 +431,7 @@ let function addUniqConditionsText(groupsList, condition) {
   }
 
   if (condType == "atLeastOneUnitsRankOnStartMission") {
-    let valuesTexts = condition.values?.map(@(_v) ::get_roman_numeral) ?? []
+    let valuesTexts = condition.values?.map(::get_roman_numeral) ?? []
     addValueToGroup(groupsList, condType, "-".join(valuesTexts, true))
     return true
   }
@@ -620,7 +620,7 @@ let function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, 
     }
   }
   else if (modeType == "maxUnitsRankOnStartMission") {
-    let valuesText = condition.values?.map(@(_v) ::get_roman_numeral) ?? []
+    let valuesText = condition.values?.map(::get_roman_numeral) ?? []
     progressText = "-".join(valuesText, true)
   }
   else if (modeType == "amountDamagesZone") {

@@ -2093,7 +2093,7 @@ let statTooltipColumnParamByType = {
     {
       for(local t = 0; t < 2; t++)
       {
-        let tbl = this.getMplayersListByTeam(t+1)
+        let tbl = this.getMplayersList(t+1)
         this.sortTable(tbl)
         this.playersTbl.append(tbl)
       }
@@ -2126,11 +2126,6 @@ let statTooltipColumnParamByType = {
       this.buildPlayersTable()
 
     this.updatePlayersTable(0.0)
-  }
-
-  function getMplayersListByTeam(teamNum)
-  {
-    return (this.debriefingResult?.mplayers_list ?? []).filter(@(player) player.team == teamNum)
   }
 
   function updatePlayersTable(dt)
@@ -3283,7 +3278,7 @@ let statTooltipColumnParamByType = {
   }
 
   getLocalTeam = @() ::get_local_team_for_mpstats(this.debriefingResult.localTeam)
-  getMplayersList = @(team) team == GET_MPLAYERS_LIST
+  getMplayersList = @(team = GET_MPLAYERS_LIST) team == GET_MPLAYERS_LIST
     ? this.debriefingResult.mplayers_list
     : this.debriefingResult.mplayers_list.filter(@(player) player.team == team)
   getOverrideCountryIconByTeam = @(team) this.debriefingResult.overrideCountryIconByTeam[team]

@@ -3,7 +3,7 @@
 #explicit-this
 
 from "%scripts/dagui_library.nut" import *
-let { setTimeout } = require("dagor.workcycle")
+let { setTimeout, resetTimeout } = require("dagor.workcycle")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestJwt } = require("%scripts/tasker.nut")
@@ -78,7 +78,7 @@ needActualize.subscribe(function(v) {
   if (!v)
     return
   if (queueProfileJwt.value == null)
-    setTimeout(0.1, actualizeQueueData)
+    resetTimeout(0.1, actualizeQueueData)
   else
     delayedActualize()
 })

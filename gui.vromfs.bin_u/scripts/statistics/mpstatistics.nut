@@ -404,43 +404,36 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!this.isTeamplay)
       {
-        let commonTbl = getMplayersList()
+        let commonTbl = this.getMplayersList()
         this.sortTable(commonTbl)
         if (commonTbl.len() > 0)
         {
           local lastRow = this.numMaxPlayers - 1
           if (objTbl.id == "table_kills_team2")
           {
-            minRow = commonTbl.len() <= this.numMaxPlayers ? 0 : this.numMaxPlayers
-            lastRow = commonTbl.len()
+            minRow = this.numMaxPlayers
+            lastRow = commonTbl.len() - 1
           }
 
           tbl = []
-          for(local i = lastRow; i >= minRow; --i)
-          {
-            if (!(i in commonTbl))
-              continue
+          for(local i = minRow; i <= lastRow; i++) {
+            if (i not in commonTbl)
+              break
 
-            let block = commonTbl.remove(i)
+            let block = commonTbl[i]
             block.place <- (i+1).tostring()
             tbl.append(block)
           }
-          tbl.reverse()
         }
       }
       else
-        tbl = getMplayersList(team)
+        tbl = this.getMplayersList(team)
     }
     else if (!this.isTeamplay && customTbl && objTbl.id == "table_kills_team2")
       minRow = this.numMaxPlayers
 
     if (objTbl.id == "table_kills_team2")
-    {
-      local shouldShow = true
-      if (this.isTeamplay)
-        shouldShow = tbl && tbl.len() > 0
-      this.showSceneBtn("team2-root", shouldShow)
-    }
+      this.showSceneBtn("team2-root", tbl && tbl.len() > 0)
 
     if (!this.isTeamplay && minRow >= 0)
     {
@@ -493,7 +486,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!this.isTeamplay)
     {
-      let tbl1 = getMplayersList()
+      let tbl1 = this.getMplayersList()
       this.sortTable(tbl1)
 
       let tbl2 = []
@@ -522,13 +515,13 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       if (this.showLocalTeamOnly)
       {
         let playerTeam = this.getLocalTeam()
-        let tbl = getMplayersList(playerTeam)
+        let tbl = this.getMplayersList(playerTeam)
         this.createKillsTbl(tblObj1, tbl, {showAircrafts = this.showAircrafts})
       }
       else
       {
-        let tbl1 = getMplayersList(::g_team.A.code)
-        let tbl2 = getMplayersList(::g_team.B.code)
+        let tbl1 = this.getMplayersList(::g_team.A.code)
+        let tbl2 = this.getMplayersList(::g_team.B.code)
         let showEnemyAircrafts = this.isShowEnemyAirs()
         let tblConfig1 = {tbl = tbl2, team = Team.A, showAircrafts = this.showAircrafts, invert = true}
         let tblConfig2 = {tbl = tbl1, team = Team.B, showAircrafts = showEnemyAircrafts}
@@ -548,7 +541,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     }
     else
     {
-      let tbl = getMplayersList()
+      let tbl = this.getMplayersList()
       this.createKillsTbl(tblObj2, tbl, {showAircrafts = this.showAircrafts})
 
       tblObj1.show(false)
@@ -987,7 +980,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   function getCountriesByTeam(team)
   {
     let countries = []
-    let players = getMplayersList(team)
+    let players = this.getMplayersList(team)
     foreach (player in players)
     {
       local country = getTblValue("country", player, null)
@@ -1097,6 +1090,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   getLocalTeam = @() ::get_local_team_for_mpstats()
   getOverrideCountryIconByTeam = @(team)
     ::g_mis_custom_state.getCurMissionRules().getOverrideCountryIconByTeam(team)
+  getMplayersList = @(t = GET_MPLAYERS_LIST) getMplayersList(t)
 }
 
 ::gui_handlers.MPStatistics <- MPStatistics

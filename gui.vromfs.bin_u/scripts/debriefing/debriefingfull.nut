@@ -17,6 +17,7 @@ let { money_type } = require("%scripts/money.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { is_replay_playing } = require("replays")
 let { subscribe } = require("eventbus")
+let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 
 global enum debrState {
   init
@@ -936,7 +937,7 @@ let function gatherDebriefingResult() {
     debriefingResult.benchmark <- ::stat_get_benchmark()
 
   debriefingResult.numberOfWinningPlaces <- ::get_race_winners_count()
-  debriefingResult.mplayers_list <- ::get_mplayers_list(GET_MPLAYERS_LIST, true)
+  debriefingResult.mplayers_list <- getMplayersList()
 
   //Fill Exp and WP table in correct format
   let exp = ::stat_get_exp() || {}

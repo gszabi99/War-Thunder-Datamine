@@ -256,7 +256,7 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
   let ship_props = ship.shipProps
 
   let was_repairing_breaches = ship_repair_breaches_remaining_time > 0.0f
-  if ship_repair_breaches_remaining_time > 0.0f || repair_system_remaining_repair_time > 0.0f
+  if ship_repair_breaches_remaining_time > 0.0f || repair_system_remaining_repair_time > 0.0f && ship_modern_damage_control
     var repair_speed_mult = ship_repair_crew_alive_mult * ship_props.breachRepairSpeed
     if ship_modern_damage_control
       repair_speed_mult *= ship_damage_control_repair_speed_mult
