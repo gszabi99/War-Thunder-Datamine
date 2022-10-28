@@ -29,13 +29,15 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
       if (!event)
         continue
 
-      if (!tourId)
-        continue
+      local finalAwardDate = null
+      local tournamenBlk = null
+      local rewards = {}
+      if (tourId != null) {
+        tournamenBlk = ::get_tournament_desk_blk(tourId)
+        finalAwardDate = tournamenBlk?.finalAwardDate
+      }
 
-      let tournamenBlk = ::get_tournament_desk_blk(tourId)
-      let finalAwardDate = tournamenBlk?.finalAwardDate
-      let rewards = getSortedRewardsByConditions(event, tournamenBlk?.awards)
-
+      rewards = getSortedRewardsByConditions(event, tournamenBlk?.awards)
       if (!rewards.len() && !getBaseVictoryReward(event))
         continue
 

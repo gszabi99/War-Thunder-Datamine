@@ -174,19 +174,20 @@ def extinguish_system_init_handle_es(evt : CmdInitComponent;
   extinguish_system_extinguisher_time_max = 0.0f
   gm.haveExtinguish = false;
 
-  *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(ship_dc_blk)
-    extinguish_system_penalty_without_mod = ship_dc_blk |> datablock_getBool("shipDamageControlEnabled", false)
-    ship_dc_blk |> datablock_get_block("defaultExtinguisher") <| $(blk)
-      load_extinguisher_mod_blk(blk,
-        unit,
-        extinguish_system_auto_extinguisher,
-        extinguish_system_extinguisher_count,
-        extinguish_system_extinguisher_count_max,
-        extinguish_system_cooldown,
-        extinguish_system_crew_busy_time,
-        extinguish_system_extinguisher_time_min,
-        extinguish_system_extinguisher_time_max,
-        extinguish_system_penalty_without_mod)
+  if unit.isShip
+    *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(ship_dc_blk)
+      extinguish_system_penalty_without_mod = ship_dc_blk |> datablock_getBool("shipDamageControlEnabled", false)
+      ship_dc_blk |> datablock_get_block("defaultExtinguisher") <| $(blk)
+        load_extinguisher_mod_blk(blk,
+          unit,
+          extinguish_system_auto_extinguisher,
+          extinguish_system_extinguisher_count,
+          extinguish_system_extinguisher_count_max,
+          extinguish_system_cooldown,
+          extinguish_system_crew_busy_time,
+          extinguish_system_extinguisher_time_min,
+          extinguish_system_extinguisher_time_max,
+          extinguish_system_penalty_without_mod)
 
 
 [es]
