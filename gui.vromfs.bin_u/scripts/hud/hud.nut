@@ -637,10 +637,11 @@ let function maybeOfferControlsHelp() {
 
   function updateTacticalMapVisibility()
   {
-    let needShowUavMiniMap = hasFeature("uavMiniMap")
-      && (::getAircraftByName(getOwnerUnitName())?.isTank() ?? false)
-    let isVisible = ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
-      && !is_replay_playing() && ((::get_game_type() & GT_RACE) || needShowUavMiniMap)
+    let shouldShowMapForAircraft = (::get_game_type() & GT_RACE) != 0 // Race mission
+      || (getPlayerCurUnit()?.tags ?? []).contains("type_strike_ucav") // Strike UCAV in Tanks mission
+      || (hasFeature("uavMiniMap") && (::getAircraftByName(getOwnerUnitName())?.isTank() ?? false)) // Scout UCAV in Tanks mission
+    let isVisible = shouldShowMapForAircraft && !is_replay_playing()
+      && ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
     this.showSceneBtn("hud_air_tactical_map", isVisible)
   }
 

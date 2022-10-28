@@ -287,6 +287,9 @@ def extinguish_system_activate_handle_es(evt : EventExtinguishSystemSetActive;
                                          var extinguish_system_extinguisher_count : int&;
                                          var fire_system_require_net_sync : bool&)
   let unit = get_unit(uid)
+  if unit == null
+    return
+
   let ship = unit |> as_ship()
   if ship == null || !ship.isVeryFewCrew
     if evt.active

@@ -15,7 +15,9 @@ let { is_keyboard_connected, is_mouse_connected } = require("controllerState")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
   EII_MEDICALKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET, EII_SMOKE_GRENADE,
-  EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT } = require_native("hudActionBarConst")
+  EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT,
+  EII_SUPPORT_PLANE_ORBITING, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION
+} = require("hudActionBarConst")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 
 let isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
@@ -423,6 +425,39 @@ enums.addTypes(result, {
         { start = "map_acoustic_contermeasures_label", end = "map_acoustic_contermeasures_point" }
       ]
     }
+  }
+  IMAGE_UCAV = {
+    subTabName = "#hotkeys/ID_UCAV_CONTROL_HEADER"
+    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
+    helpPattern = CONTROL_HELP_PATTERN.IMAGE
+    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
+    pageUnitTag = "ucav"
+    pageBlkName = "%gui/help/controlsUcav.blk"
+    imagePattern = "#ui/images/help/help_controls_ucav.jpg?P1"
+    linkLines = {
+      links = [
+        { start = "target_tracking_mode_label", end = "target_tracking_mode_point" }
+        { start = "permitted_launch_area_label", end = "permitted_launch_area_point" }
+        { start = "target_distance_label", end = "target_distance_point" }
+        { start = "allowed_distances_range_label", end = "allowed_distances_range_a_point" }
+        { start = "allowed_distances_range_a_point", end = "allowed_distances_range_z_point" }
+        { start = "ab_orbiting_label", end = "ab_orbiting_target_point" }
+        { start = "ab_night_vision_label", end = "ab_night_vision_target_point" }
+        { start = "ab_sight_stabilization_label", end = "ab_sight_stabilization_target_point" }
+      ]
+    }
+    actionBars = [
+      {
+        nest  = "action_bar_actions"
+        unitId = "ucav_wing_loong_i"
+        hudUnitType = HUD_UNIT_TYPE.AIRCRAFT
+        items = [
+          { type = EII_SUPPORT_PLANE_ORBITING, id = "ab_orbiting" }
+          { type = EII_NIGHT_VISION, id = "ab_night_vision" }
+          { type = EII_SIGHT_STABILIZATION, id = "ab_sight_stabilization" }
+        ]
+      }
+    ]
   }
   IMAGE_WARFARE2077 = {
     subTabName = "#event/war2077"

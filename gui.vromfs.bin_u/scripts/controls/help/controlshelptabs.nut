@@ -53,6 +53,12 @@ let tabGroups = [
     ]
   }
   {
+    title = "#hotkeys/ID_UCAV_CONTROL_HEADER"
+    list = [
+      helpTypes.IMAGE_UCAV
+    ]
+  }
+  {
     title = "#event/war2077"
     list = [
       helpTypes.IMAGE_WARFARE2077
@@ -96,7 +102,9 @@ let function getPrefferableType(contentSet)
     return helpTypes.MISSION_OBJECTIVES
 
   let unit = getPlayerCurUnit()
-  let unitTag = unit?.isSubmarine() ? "submarine" : null
+  let unitTag = unit?.isSubmarine() ? "submarine"
+    : (unit?.tags ?? []).contains("type_strike_ucav") ? "ucav"
+    : null
 
   foreach (pattern in [
     CONTROL_HELP_PATTERN.SPECIAL_EVENT,
