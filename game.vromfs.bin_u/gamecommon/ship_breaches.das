@@ -127,6 +127,8 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
                                     var ship_inner_parts_critical_water : FloatList&)
   let unit = get_unit(uid)
   assert(unit != null)
+  if unit == null
+    return
   *evt.modelBlk |> datablock_get_block("shipCover") <| $(blk)
     var weights_sum = load_cover_parts(
       blk, false, unit,
@@ -170,7 +172,7 @@ def ship_init_mod_handle_es(evt : CmdInitComponent;
                             var ship_water_mass_vel_mut : float&)
   let unit = get_unit(uid)
   assert(unit != null)
-  if unit.modBlk != null
+  if unit != null && unit.modBlk != null
     ship_water_mass_vel_mut = unit.modBlk |> datablock_getReal("waterMassVelMult", 1.0f)
 
 
@@ -188,6 +190,8 @@ def ship_init_repair_parts_info_handle_es(evt : CmdInitComponent;
                                           var ship_repair_parts_hp : FloatList&)
   let unit = get_unit(uid)
   assert(unit != null)
+  if unit == null
+    return
   assume dm = *unit.visual
 
   *evt.modelBlk |> datablock_get_block("partsToRepair") <| $(blk)

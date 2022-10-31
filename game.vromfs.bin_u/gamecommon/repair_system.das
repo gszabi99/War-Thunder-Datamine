@@ -123,6 +123,8 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
   var unit = get_unit(uid);
   var gm = unit |> as_gm();
   assert(unit != null)
+  if unit == null
+    return
 
   // init default values
   set_flag(repair_system_state, RepairState INITIALIZED, true)
@@ -134,7 +136,8 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
   repair_system_toolkit_count_max = -1
   repair_system_speed_multiplier_base = 1.0f
   repair_system_repair_hp_multiplier = 1.0f
-  gm.haveRepair = false;
+  if gm != null
+    gm.haveRepair = false;
 
   // load parts
   load_repair_parts(
@@ -191,6 +194,8 @@ def repair_system_init_mod_handle_es(evt : EventUnitInitModification;
 
   var unit = get_unit(uid)
   assert(unit != null)
+  if unit == null
+    return
 
   // load toolkit mod blk
   let has = load_toolkit_mod_blk(evt.blk,

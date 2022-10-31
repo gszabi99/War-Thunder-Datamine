@@ -164,6 +164,8 @@ def extinguish_system_init_handle_es(evt : CmdInitComponent;
   var unit = get_unit(uid)
   var gm = unit |> as_gm()
   assert(unit != null)
+  if unit == null
+    return
 
   extinguish_system_extinguisher_count = 0
   extinguish_system_penalty_without_mod = false
@@ -172,7 +174,8 @@ def extinguish_system_init_handle_es(evt : CmdInitComponent;
   extinguish_system_crew_busy_time = 5.0f
   extinguish_system_extinguisher_time_min = 0.0f
   extinguish_system_extinguisher_time_max = 0.0f
-  gm.haveExtinguish = false;
+  if gm != null
+    gm.haveExtinguish = false;
 
   if unit.isShip
     *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(ship_dc_blk)
@@ -207,6 +210,8 @@ def extinguish_system_init_mod_handle_es(evt : EventUnitInitModification;
   var unit = get_unit(uid)
   var gm = unit |> as_gm()
   assert(unit != null)
+  if unit == null
+    return
 
   extinguish_system_extinguisher_count_max = gm != null && gm.extinguisher.isAvailable ? (unit.isShip ? -1 : 0) : 0
 

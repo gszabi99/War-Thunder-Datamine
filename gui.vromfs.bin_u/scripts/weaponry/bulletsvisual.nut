@@ -322,6 +322,9 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   if (operatedDist)
     addProp(p, loc("firingRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(operatedDist))
 
+  if ("rangeMax" in bulletsData)
+    addProp(p, loc("launchRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.rangeMax))
+
   if ("guaranteedRange" in bulletsData)
     addProp(p, loc("guaranteedRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.guaranteedRange))
 
@@ -502,7 +505,7 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
       "machMax", "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1", "bandMaskToReject"])
       bulletsData[p] <- bullet_params?[p] ?? 0
 
-    foreach(p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange",
+    foreach(p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange", "rangeMax",
       "weaponBlkPath", "guidanceType", "visibilityType", "radarRange", "laserRange", "loadFactorMax"])
     {
       if(p in bullet_params)
