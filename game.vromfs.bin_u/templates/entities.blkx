@@ -89,6 +89,7 @@
     "setting__aiReloadMult": 1.0,
     "setting__speed": 0.0,
     "setting__routeName": "",
+    "setting__cannotMove": false,
     "setting__toGround": false,
     "setting__bullets:list<t>": {},
     "setting__bulletsCount:list<i>": {},
@@ -910,6 +911,7 @@
     "unitType": -1,
     "canChangeUnit": false,
     "missionUnitName": "",
+    "restricted_area_timer": -1.0,
     "_replicated": "uid",
     "_tracked": "playerNo"
   },
@@ -1723,5 +1725,43 @@
     "music__curHangarCountry_id": -1,
     "music__curForcedEvtName": "",
     "music__lockedHangar": false
+  },
+  "base_area": {
+    "_extends": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "area_name": ""
+  },
+  "base_restricted_area": {
+    "_extends": "base_area",
+    "restricted_area__away_time": 0.0
+  },
+  "box_restricted_area": {
+    "_extends": "base_restricted_area",
+    "box_area:tag": {}
+  },
+  "sphere_restricted_area": {
+    "_extends": "base_restricted_area",
+    "sphere_area:tag": {}
   }
 }

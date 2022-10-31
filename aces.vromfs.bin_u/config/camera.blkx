@@ -1076,6 +1076,142 @@
       "dist": 20.0
     }
   },
+  "tps_walker": {
+    "type": "TurretCamera",
+    "fov": 100.0,
+    "zoomFov": 80.0,
+    "gunFov": 5.0,
+    "targetOffset": [
+      [
+        500.0,
+        2.0,
+        0.0
+      ],
+      [
+        10.0,
+        4.0,
+        0.0
+      ]
+    ],
+    "cameraOffsetNeutral": [
+      -17.0,
+      2.0,
+      0.0
+    ],
+    "cameraUpNeutral": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "cameraOffsetSmoothing": 0.04,
+    "cameraUpSmoothing": 0.0,
+    "cameraFovSmoothing": 0.005,
+    "cameraOffsetElevatorUp": [
+      -14.0,
+      3.0,
+      0.0
+    ],
+    "cameraOffsetElevatorDown": [
+      -14.0,
+      3.0,
+      0.0
+    ],
+    "sensitivityElevatorDown": 1.0,
+    "sensitivityElevatorUp": 1.0,
+    "cameraOffsetRudderLeft": [
+      -14.0,
+      3.0,
+      -1.0
+    ],
+    "cameraOffsetRudderRight": [
+      -14.0,
+      3.0,
+      1.0
+    ],
+    "sensitivityRudder": 10.0,
+    "cameraUpAileronsLeft": [
+      0.0,
+      1.0,
+      0.7
+    ],
+    "cameraUpAileronsRight": [
+      0.0,
+      1.0,
+      -0.7
+    ],
+    "sensitivityAilerons": 0.3,
+    "cameraOffset": [
+      0.0,
+      3.0,
+      -8.0
+    ],
+    "cameraOffsetZoomed": [
+      1.5,
+      2.3,
+      -5.0
+    ],
+    "useOffset": true,
+    "clipType": "trace",
+    "zoomToGun": false,
+    "useCockpitOffsets": true,
+    "fovVertAnglesOffsetPart": -0.15,
+    "isMouseView": true,
+    "cameraControlViewRadius": 5.0,
+    "cameraUpOffset": 1.0,
+    "cameraFovAccelerationPositive": 1.0,
+    "cameraFovAccelerationNegative": 2.0,
+    "sensitivityAcceleration": 10.0,
+    "cameraTpsSmoothing": 0.001,
+    "maxCameraSlowAngle": 9.0,
+    "cameraTpsAngleAccelaration": 2.0,
+    "minimumDistanceMultiplier": 1.2,
+    "targOffsMult": 0.0,
+    "cameraShakeMultiplier": 0.1,
+    "cameraShakeMultiplierOnShooting": 1.0,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.0,
+    "viscosity": 0.14,
+    "trackGunDirection": true,
+    "tiltShakeMultiplierForTanks": 0.0,
+    "tiltShakeMultiplierForShips": 0.0,
+    "condition": {
+      "isWalker": {}
+    },
+    "up": {
+      "angle": [
+        0.0,
+        -90.0
+      ],
+      "dist": 20.0
+    },
+    "down": {
+      "angle": [
+        180.0,
+        0.0
+      ],
+      "dist": 40.0
+    },
+    "left": {
+      "angle": [
+        -110.0,
+        0.0
+      ],
+      "dist": 20.0
+    },
+    "right": {
+      "angle": [
+        110.0,
+        0.0
+      ],
+      "dist": 20.0
+    }
+  },
+  "human": {
+    "type": "HumanCamera",
+    "condition": {
+      "isHuman": {}
+    }
+  },
   "fps_suit": {
     "type": "FpsFlightCamera",
     "fov": 85.0,
@@ -3980,6 +4116,7 @@
     },
     "ground_model": {
       "camName": [
+        "tps_walker",
         "fps_suit",
         "tps_ground",
         "aim_ground",
@@ -4022,6 +4159,9 @@
         "gunner_fps",
         "target_turret"
       ]
+    },
+    "human": {
+      "camName": "human"
     }
   },
   "transitions": {

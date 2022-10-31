@@ -22,8 +22,42 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "air_spawn_init": {
+    "air_spawn_set_variables": {
       "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetBool": [
+          {
+            "value": false,
+            "var": "force_plane_airfield_spawn",
+            "fromDescriptor": "force_plane_airfield_spawn"
+          },
+          {
+            "value": false,
+            "var": "disableAirfields",
+            "fromDescriptor": "disableAirfields"
+          }
+        ],
+        "missionGetBalanceLevel": {
+          "input_var": "session_rank"
+        },
+        "triggerEnable": {
+          "target": "air_spawn_init"
+        }
+      },
+      "else_actions": {}
+    },
+    "air_spawn_init": {
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -45,45 +79,8 @@
         }
       },
       "else_actions": {
-        "comment": [
-          {
-            "value": "read the forced spawn on the airfield from descriptor"
-          },
-          {
-            "value": "check the parameter from the descriptor"
-          }
-        ],
-        "varSetBool": [
-          {
-            "value": false,
-            "var": "force_plane_airfield_spawn",
-            "fromDescriptor": "force_plane_airfield_spawn"
-          },
-          {
-            "value": true,
-            "var": "force_helicopter_pad_spawn",
-            "fromDescriptor": "force_helicopter_pad_spawn"
-          },
-          {
-            "value": false,
-            "var": "disableAirfields",
-            "fromDescriptor": "disableAirfields"
-          },
-          {
-            "value": false,
-            "var": "disableHelipads",
-            "fromDescriptor": "disableHelipads"
-          }
-        ],
-        "missionGetBalanceLevel": {
-          "input_var": "session_rank"
-        },
         "triggerEnable": {
-          "target": [
-            "air_spawn_force_check",
-            "helipad_start",
-            "ucav_spawn_init"
-          ]
+          "target": "air_spawn_force_check"
         }
       }
     },
@@ -1456,7 +1453,7 @@
       "isCategory": true,
       "is_enabled": true,
       "helipad_start": {
-        "is_enabled": false,
+        "is_enabled": true,
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1468,6 +1465,11 @@
         },
         "conditions": {},
         "actions": {
+          "varSetBool": {
+            "value": false,
+            "var": "disableHelipads",
+            "fromDescriptor": "disableHelipads"
+          },
           "varSetString": [
             {
               "value": "t1_helipad_farspawn",
@@ -1944,7 +1946,7 @@
       "isCategory": true,
       "is_enabled": true,
       "ucav_spawn_init": {
-        "is_enabled": false,
+        "is_enabled": true,
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
@@ -2249,7 +2251,6 @@
     "disableAirfields": false,
     "disableHelipads": false,
     "force_plane_airfield_spawn": false,
-    "force_helicopter_pad_spawn": true,
     "battlearea_name": "",
     "session_rank": 0,
     "ucav_spawn_name": "",

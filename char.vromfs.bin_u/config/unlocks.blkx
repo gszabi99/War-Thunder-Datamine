@@ -3408,6 +3408,11 @@
       "hideUntilUnlocked": true
     },
     {
+      "id": "cardicon_marcel_albert",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
       "id": "hardcoded_initial_warpoints",
       "type": "award",
       "amount_warpoints": 10000,
@@ -9209,6 +9214,138 @@
         "premium": true,
         "country": "country_ussr",
         "unitClass": "aircraft_only"
+      }
+    },
+    {
+      "id": "germ_sturmmorser_sturmtiger/green",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 280,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "germ_sturmmorser_sturmtiger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "germ_sturmmorser_sturmtiger/winter",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 320,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "germ_sturmmorser_sturmtiger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "germ_sturmmorser_sturmtiger/blots",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 360,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "germ_sturmmorser_sturmtiger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "germ_sturmmorser_sturmtiger/lines",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 400,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "germ_sturmmorser_sturmtiger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "germ_sturmmorser_sturmtiger/hinterhalt_daimler",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 460,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "germ_sturmmorser_sturmtiger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "germ_sturmmorser_sturmtiger/ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 520,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "germ_sturmmorser_sturmtiger"
+          }
+        ]
       }
     },
     {
@@ -98380,6 +98517,22 @@
       }
     },
     {
+      "id": "w_pilot_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "mode": {
+        "type": "char_resources",
+        "num": 5,
+        "resource": [
+          "winged_lions_decal",
+          "wind_of_change_decal",
+          "danger_zone_decal",
+          "drone_age_decal",
+          "fire_and_ice_decal"
+        ]
+      }
+    },
+    {
       "id": "title_cannon_fodder",
       "type": "title",
       "chapter": "title",
@@ -119577,6 +119730,62 @@
             "value": "common"
           }
         ]
+      }
+    },
+    {
+      "id": "player_is_out_of_air_newbie_coop",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "sessionsStarted",
+        "num": 1,
+        "condition": {
+          "type": "gameModeInfoString",
+          "name": "name",
+          "exactName": true,
+          "value": [
+            "air_arcade",
+            "air_realistic",
+            "air_simulation_timeDelay_battles"
+          ]
+        }
+      }
+    },
+    {
+      "id": "player_is_out_of_tank_newbie_coop",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "sessionsStarted",
+        "num": 1,
+        "condition": {
+          "type": "gameModeInfoString",
+          "name": "name",
+          "exactName": false,
+          "value": [
+            "tank_event_in_random_battles_arcade",
+            "tank_event_in_random_battles_historical",
+            "tank_random_battles_simulation"
+          ]
+        }
+      }
+    },
+    {
+      "id": "player_is_out_of_ship_newbie_coop",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "sessionsStarted",
+        "num": 1,
+        "condition": {
+          "type": "gameModeInfoString",
+          "name": "name",
+          "exactName": true,
+          "value": [
+            "ship_event_in_random_battles_arcade",
+            "ship_event_in_random_battles_realistic"
+          ]
+        }
       }
     },
     {

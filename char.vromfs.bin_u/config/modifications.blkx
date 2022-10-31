@@ -1,5 +1,13 @@
 {
   "modifications": {
+    "100mm_usa_fake_tphv": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "isReserve": true,
+      "group": "100mm_fake",
+      "effects": {
+        "additiveBulletMod": "100mm_usa_fake_tphv"
+      }
+    },
     "propeller": {
       "image": "",
       "valueMul": 1.0,
@@ -7979,6 +7987,14 @@
         "additiveBulletMod": "128mm_ger_HE"
       }
     },
+    "380mm_RW61_HE": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "isReserve": true,
+      "group": "380mm_HE",
+      "effects": {
+        "additiveBulletMod": "380mm_RW61_HE"
+      }
+    },
     "128mm_ger_naval_HE": {
       "image": "#ui/gameuiskin#tank_ammo.png",
       "isReserve": true,
@@ -13033,35 +13049,35 @@
           50.0,
           200.0,
           400.0,
-          1000.0
+          2000.0
         ],
         "distanceThresholdMax": [
           150.0,
           300.0,
           800.0,
-          1500.0
+          4000.0
         ],
         "distanceErrorRealistic": [
           3.0,
           50.0,
           100.0,
-          150.0
+          100.0
         ],
         "distanceThresholdMinRealistic": [
           50.0,
           100.0,
           500.0,
-          1000.0
+          2000.0
         ],
         "distanceThresholdMaxRealistic": [
           100.0,
           500.0,
-          1000.0,
-          2500.0
+          2000.0,
+          4000.0
         ],
         "timeMeasurementRange": [
-          4.0,
-          2.0
+          3.0,
+          1.0
         ],
         "rcostAddParam": 0.98
       }
@@ -18826,6 +18842,11 @@
       "image": "#ui/gameuiskin#night_vision_device.png",
       "modClass": "weapon",
       "deactivationIsAllowed": false
+    },
+    "cn_k_pzs_01": {
+      "image": "#ui/gameuiskin#thermal_sight.png",
+      "modClass": "weapon",
+      "invertEnableLogic": false
     },
     "uk_tiald": {
       "image": "#ui/gameuiskin#thermal_sight.png",

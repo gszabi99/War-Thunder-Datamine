@@ -516,6 +516,18 @@
     "sfxEvent": "parts_explosion",
     "soundEnableDistance": 5000.0
   },
+  "wrecked_pieces_fire": {
+    "fx": "smoke_wrecked_pieces_fire_cmps_fx",
+    "alphaHeightRange": [
+      50.0,
+      300.0
+    ],
+    "numInstances": 70,
+    "numReserved": 20,
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "plane_pieces",
+    "soundEnableDistance": 700.0
+  },
   "wrecked_pieces": {
     "fx": "smoke_wrecked_pieces_cmps_fx",
     "alphaHeightRange": [
@@ -6465,6 +6477,13 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "misc_christmas_cracker": {
+    "fx": "misc_christmas_cracker_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 50,
+    "soundEnableDistance": 100.0
+  },
   "repair_ground": {
     "fx": "misc_markers_repair_ground_cmps_fx",
     "group": "highres",
@@ -7884,5 +7903,16 @@
     "numInstances": 40,
     "numReserved": 10,
     "onePointNumber": 10
+  },
+  "impact_dust": {
+    "fx": "dust_ground_wave_dirt_small_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/effects",
+    "sfxEvent": "impact_dust"
   }
 }

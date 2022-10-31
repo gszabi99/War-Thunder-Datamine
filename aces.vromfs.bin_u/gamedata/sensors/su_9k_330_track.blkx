@@ -84,8 +84,8 @@
       "rollStabLimit": 30.0,
       "period": 0.025,
       "width": 7.5,
-      "barHeight": 0.5,
-      "barsCount": 30,
+      "barHeight": 1.0,
+      "barsCount": 15,
       "rowMajor": true,
       "preciseMinor": true
     },
@@ -107,7 +107,6 @@
       "barHeight": 2.0,
       "barsCount": 2,
       "rowMajor": false,
-      "preciseMinor": true,
       "indicate": true
     },
     "irstTrack": {
@@ -633,9 +632,6 @@
           "command": "typeSwitch",
           "stateTo": "irstTrack",
           "actions": {
-            "setScanPattern": {
-              "scanPattern": "irstTrack"
-            },
             "setModeName": {
               "name": "IRST track"
             },
@@ -647,9 +643,6 @@
           "command": "typeSwitch",
           "stateTo": "radarTrack",
           "actions": {
-            "setScanPattern": {
-              "scanPattern": "radarTrack"
-            },
             "setModeName": {
               "name": "track"
             },
@@ -723,14 +716,6 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "setDistGatePos": {
-              "source": "continuousScale",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
-              "source": "continuousScale",
-              "width": 0.0
-            },
             "detectTarget": {
               "ignoreOwnWeapon": true
             }
@@ -740,7 +725,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 20,
+              "limit": 4,
               "timeOut": 2.0,
               "radius": 1000.0,
               "blend": 0.5

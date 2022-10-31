@@ -66,6 +66,7 @@
   "voiceMessageEventsPath": "dialogs_crew_aircraft",
   "versusEventsPath": "dialogs_crew_aircraft/",
   "volumeVersion": 2,
+  "menuMusicVolumeVersion": 0,
   "banks": {
     "presets": {
       "master": {
@@ -534,7 +535,10 @@
       "defaultVol": 70.0
     },
     "menu_music": {
-      "name": "musicmenu",
+      "name": [
+        "musicmenu",
+        "sounds/outside/fx/ambient/event_music"
+      ],
       "defaultVol": 70.0
     },
     "radio": {
@@ -10935,6 +10939,52 @@
       }
     }
   },
+  "engine_goliath": {
+    "effects": {
+      "path": "ground/engines/goliath",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/goliath",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.5,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [
+        0.0,
+        0.1,
+        0.0
+      ]
+    },
+    "ai": {
+      "effects": {
+        "path": "ground/engines/ai/goliath",
+        "eventStart": "engine_start",
+        "eventStop": "engine_stop"
+      },
+      "outside": {
+        "path": "ground/engines/ai/goliath",
+        "eventBack": "engine",
+        "rpmSmooth": 1.0,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    }
+  },
   "engine_panzer3": {
     "effects": {
       "path": "ground/engines/panzer3",
@@ -17512,6 +17562,10 @@
     "ice": {
       "value": 6.0,
       "name": "ice"
+    },
+    "wood": {
+      "value": 7.0,
+      "name": "wood"
     }
   }
 }

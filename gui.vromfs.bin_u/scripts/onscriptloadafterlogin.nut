@@ -401,6 +401,7 @@ require("%scripts/slotbar/elems/unlockMarkerElem.nut")
 require("%scripts/items/trophyShowTime.nut")
 require("%scripts/dlcontent/dlContent.nut")
 require("%scripts/dynamic/mainMissionGenerator.nut")
+require("%scripts/mainmenu/hideMainMenuUi.nut")
 
 require("%scripts/debugTools/dbgCheckContent.nut")
 require("%scripts/debugTools/dbgUnlocks.nut")

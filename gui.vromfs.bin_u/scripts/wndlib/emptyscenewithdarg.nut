@@ -14,7 +14,7 @@ let class emptySceneWithDarg extends ::BaseGuiHandler {
     ::enableHangarControls(false, true)
   }
 
-  getWidgetsList = @() this.widgetId == null ? null : [{ widgetId = this.widgetId }]
+  getWidgetsList = @() this.widgetId == null ? [] : [{ widgetId = this.widgetId }]
 }
 
 ::gui_handlers.emptySceneWithDarg <- emptySceneWithDarg
