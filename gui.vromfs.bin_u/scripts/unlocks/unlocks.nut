@@ -278,8 +278,12 @@ let function setImageByUnlockType(config, unlockBlk) {
             config.maxVal = mode?.maxVal ?? 0
             config.multiplier <- getMultipliersTable(mode)
           }
-          else
-            config.maxVal = progress.maxVal
+          else {
+            if (mode?.chardType != null && mode?.num != null)
+              config.maxVal = (modeType == "totalMissionScore") ? (mode.num / 1000) /*PSEUDO_FLOAT_VALUE_MUL*/ : mode.num
+            else
+              config.maxVal = progress.maxVal
+          }
         }
         else if (blk?.__numToControl)
         {
