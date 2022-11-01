@@ -121,7 +121,7 @@ local shortcutsNotChangeByPreset = [
 ::apply_joy_preset_xchange <- function apply_joy_preset_xchange(preset, updateHelpersMode = true)
 {
   if (!preset)
-    preset = ::g_controls_manager.getCurPreset().getBasePresetFileName()
+    preset = ::get_controls_preset()
 
   if (!preset || preset == "")
     return

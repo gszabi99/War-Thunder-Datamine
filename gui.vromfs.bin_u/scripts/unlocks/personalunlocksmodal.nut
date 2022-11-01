@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getBattleTaskUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
@@ -64,7 +64,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
           unlocks = []
         })
       }
-      if (this.showAllUnlocks || ::is_unlock_visible(unlock))
+      if (this.showAllUnlocks || isUnlockVisible(unlock))
         this.unlocksConfigByChapter[chapter][groupIdx].unlocks.append(
           ::g_battle_tasks.generateUnlockConfigByTask(unlock))
     }

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
 const CHAPTER_NAME = "worldwar"
 
@@ -28,7 +29,7 @@ local function getWwUnlocksForCash() {
     if (newChapter != "")
       chapter = newChapter
 
-    if (chapter != CHAPTER_NAME || !::is_unlock_visible(unlock))
+    if (chapter != CHAPTER_NAME || !isUnlockVisible(unlock))
       continue
 
     if (!unlock?.needShowInWorldWarMenu)

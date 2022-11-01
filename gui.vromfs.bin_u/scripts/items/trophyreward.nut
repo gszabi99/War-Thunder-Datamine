@@ -170,6 +170,15 @@ let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
     image = this.getFullWPIcon(rewardValue)
   else if (rewardType == "warbonds")
     image = this.getFullWarbondsIcon()
+  else if (rewardType == "unlock") {
+    let rewardConfig = ::g_unlocks.getUnlockById(rewardValue)
+    let unlockConditions = ::build_conditions_config(rewardConfig)
+    let unlock = ::build_log_unlock_data(unlockConditions)
+    image = ::LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
+  }
+  else if (rewardType == "unlockAddProgress") {
+    image = ::LayersIcon.getIconData("", ::PrizesView.getPrizeTypeIcon(config))
+  }
 
   if (image == "")
     image = ::LayersIcon.getIconData(style)
@@ -182,7 +191,7 @@ let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
     return resultImage
 
   let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
-  return ::handyman.renderCached(("%gui/items/item.tpl"), {items = [tooltipConfig.__update({
+  return ::handyman.renderCached(("%gui/items/reward_item.tpl"), {items = [tooltipConfig.__update({
     layered_image = resultImage,
     hasFocusBorder = true })]})
 }

@@ -12,6 +12,7 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil } = require("math")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::gui_handlers.ChooseTitle <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
@@ -33,7 +34,7 @@ let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks
   {
     this.ownTitles = ::my_stats.getTitles()
     this.titlesList = ::g_unlocks.getAllUnlocksWithBlkOrder()
-      .filter(@(u) u?.type == "title" && ::is_unlock_visible(u))
+      .filter(@(u) u?.type == "title" && isUnlockVisible(u))
       .map(@(u) u.id)
     this.curTitle = ::my_stats.getStats().title
 

@@ -37,7 +37,7 @@ let {backgroundColor, isColorOrWhite, isDarkColor, styleText, styleLineForegroun
 let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 
-let { isInitializedMeasureUnits } = require("options/optionsMeasureUnits.nut")
+let { isInitializedMeasureUnits, measureUnitsNames } = require("options/optionsMeasureUnits.nut")
 
 let aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
 
@@ -224,9 +224,9 @@ let generateAgmBulletsTextFunction = function(count, seconds, timeToHit, _timeTo
   return "".join(txts)
 }
 
-let generateTemperatureTextFunction = function(temperature, state) {
+let generateTemperatureTextFunction = function(temperature, state, temperatureUnits) {
   if (state == TemperatureState.OVERHEAT)
-    return (temperature + cross_call.measureTypes.TEMPERATURE.getMeasureUnitsName())
+    return ("".concat(temperature, loc(temperatureUnits)))
   else if (state == TemperatureState.EMPTY_TANK)
     return (loc("HUD_TANK_IS_EMPTY"))
   else if (state == TemperatureState.FUEL_LEAK)
@@ -580,7 +580,7 @@ let textParamsMapMain = {
   },
   [AirParamsMain.IAS_HUD] = {
     titleComputed = Computed (@() loc("HUD/INDICATED_AIR_SPEED_SHORT"))
-    valueComputed = Computed (@()  !isInitializedMeasureUnits.value ? "" : " ".concat(Ias.value, cross_call.measureTypes.SPEED.getMeasureUnitsName()))
+    valueComputed = Computed (@()  !isInitializedMeasureUnits.value ? "" : " ".concat(Ias.value, loc(measureUnitsNames.value.speed)))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() CritIas.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
@@ -588,7 +588,7 @@ let textParamsMapMain = {
   },
   [AirParamsMain.SPEED] = {
     titleComputed = Computed (@() loc("HUD/REAL_SPEED_SHORT"))
-    valueComputed = Computed (@() !isInitializedMeasureUnits.value ? "" : " ".concat(Spd.value, cross_call.measureTypes.SPEED.getMeasureUnitsName()))
+    valueComputed = Computed (@() !isInitializedMeasureUnits.value ? "" : " ".concat(Spd.value, loc(measureUnitsNames.value.speed)))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
@@ -604,7 +604,7 @@ let textParamsMapMain = {
   },
   [AirParamsMain.ALTITUDE] = {
     titleComputed = Computed(@() loc("HUD/ALTITUDE_SHORT"))
-    valueComputed = Computed (@() !isInitializedMeasureUnits.value ? "" : " ".concat(floor(DistanceToGround.value), cross_call.measureTypes.ALTITUDE.getMeasureUnitsName()))
+    valueComputed = Computed (@() !isInitializedMeasureUnits.value ? "" : " ".concat(floor(DistanceToGround.value), loc(measureUnitsNames.value.alt)))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
@@ -771,7 +771,8 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   let oilAlertComputed = OilAlert[i]
   textParamsMapSecondary[AirParamsSecondary.OIL_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() loc($"HUD/OIL_TEMPERATURE_SHORT{indexStr}"))
-    valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value))
+    valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
+      : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value, measureUnitsNames.value.temperature))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() oilAlertComputed.value)
@@ -783,7 +784,8 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   let waterAlertComputed = WaterAlert[i]
   textParamsMapSecondary[AirParamsSecondary.WATER_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() loc($"HUD/WATER_TEMPERATURE_SHORT{indexStr}"))
-    valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value))
+    valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
+      : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value, measureUnitsNames.value.temperature))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() waterAlertComputed.value)
@@ -795,7 +797,8 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   let engineAlertComputed = EngineAlert[i]
   textParamsMapSecondary[AirParamsSecondary.ENGINE_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() loc($"HUD/ENGINE_TEMPERATURE_SHORT{indexStr}"))
-    valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value))
+    valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
+      : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value, measureUnitsNames.value.temperature))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() engineAlertComputed.value)

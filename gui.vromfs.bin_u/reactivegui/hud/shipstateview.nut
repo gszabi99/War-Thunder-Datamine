@@ -1,8 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
 
 let {speed, portSideMachine, sideboardSideMachine, stopping } = require("%rGui/shipState.nut")
-let { isInitializedMeasureUnits } = require("%rGui/options/optionsMeasureUnits.nut")
+let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 
 let machineDirectionLoc = [
   loc("HUD/ENGINE_REV_BACK_SHORT")
@@ -79,9 +78,9 @@ let function speedValue(params = {}) {
 let function speedUnits(params = {}) {
   let { fontSize = null, box = null, font = defFont } = params
   return function() {
-    let text = isInitializedMeasureUnits.value ? cross_call.measureTypes.SPEED.getMeasureUnitsName() : ""
+    let text = isInitializedMeasureUnits.value ? loc(measureUnitsNames.value.speed) : ""
     return {
-      watch = isInitializedMeasureUnits
+      watch = [isInitializedMeasureUnits, measureUnitsNames]
       rendObj = ROBJ_TEXT
       font
       fontSize = box ? fitTextToBox({text, box, fontSize, font}) : fontSize

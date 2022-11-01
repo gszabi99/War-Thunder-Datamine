@@ -17,6 +17,7 @@ let { getMainConditionListPrefix, isNestedUnlockMode, getHeaderCondition,
   isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues,
   getUnlockNameText, getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::g_battle_tasks <- null
 
@@ -676,7 +677,7 @@ let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues,
       }
       else {
         let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
-        if (!unlockBlk || !::is_unlock_visible(unlockBlk))
+        if (!unlockBlk || !isUnlockVisible(unlockBlk))
           continue
 
         let unlockConfig = ::build_conditions_config(unlockBlk)
@@ -702,7 +703,7 @@ let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues,
     {
       let unlockId = config.names[i]
       let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
-      if (!unlockBlk || !::is_unlock_visible(unlockBlk))
+      if (!unlockBlk || !isUnlockVisible(unlockBlk))
         continue
 
       let unlockConfig = ::build_conditions_config(unlockBlk)

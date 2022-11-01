@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { ceil } = require("math")
-let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
@@ -22,38 +21,30 @@ let time = require("%scripts/time.nut")
   types = []
 }
 
-::g_measure_type._getMeasureUnitsText <- function _getMeasureUnitsText(value, addMeasureUnits = true, forceMaxPrecise = false, isPresize = true)
-{
-  if (this.userOptCode != -1)
-    return optionsMeasureUnits.countMeasure(this.orderCode, value, " - ", addMeasureUnits, forceMaxPrecise, isPresize)
-  local result = stdMath.round_by_value(value, this.presize).tostring()
-  if (addMeasureUnits)
-    result += " " + this.getMeasureUnitsName()
-  return result
-}
-
-::g_measure_type._getMeasureUnitsName <- function _getMeasureUnitsName()
-{
-  let unitName = (this.userOptCode != -1) ? ::get_option_unit_type(this.orderCode) : this.name
-  return loc(format("measureUnits/%s", unitName))
-}
-
-::g_measure_type._isMetricSystem <- function _isMetricSystem()
-{
-  if (this.userOptCode != -1)
-    return optionsMeasureUnits.isMetricSystem(this.orderCode)
-  return true
-}
-
 ::g_measure_type.template <- {
   name = "" // Same as in measureUnits.blk.
   userOptCode = -1
   orderCode = -1 // Required if userOptCode != -1.
   presize = 0.01 //presize to round by
 
-  getMeasureUnitsText = ::g_measure_type._getMeasureUnitsText
-  getMeasureUnitsName = ::g_measure_type._getMeasureUnitsName
-  isMetricSystem      = ::g_measure_type._isMetricSystem
+  getMeasureUnitsName = @() loc(this.getMeasureUnitsLocKey())
+  getMeasureUnitsLocKey = @() this.userOptCode != -1
+    ? $"measureUnits/{::get_option_unit_type(this.orderCode)}"
+    : $"measureUnits/{this.name}"
+  isMetricSystem = @() this.userOptCode != -1
+    ? optionsMeasureUnits.isMetricSystem(this.orderCode)
+    : true
+
+  function getMeasureUnitsText(value, addMeasureUnits = true, forceMaxPrecise = false, isPresize = true) {
+    if (this.userOptCode != -1)
+      return optionsMeasureUnits
+        .countMeasure(this.orderCode, value, " - ", addMeasureUnits, forceMaxPrecise, isPresize)
+
+    let result = stdMath.round_by_value(value, this.presize).tostring()
+    return addMeasureUnits
+      ? $"{result} {this.getMeasureUnitsName()}"
+      : result
+  }
 }
 
 enums.addTypesByGlobalName("g_measure_type", {
@@ -79,10 +70,7 @@ enums.addTypesByGlobalName("g_measure_type", {
 
   SPEED_PER_SEC = { //only m/s atm
     name = "speed_per_sec"
-    getMeasureUnitsName = function ()
-    {
-      return loc("measureUnits/metersPerSecond_climbSpeed")
-    }
+    getMeasureUnitsLocKey = @() "measureUnits/metersPerSecond_climbSpeed"
   }
 
   ALTITUDE = {
@@ -135,7 +123,7 @@ enums.addTypesByGlobalName("g_measure_type", {
   GFORCE = {
     name = "gForce"
     presize = 0.1
-    getMeasureUnitsName = @() loc("HUD_CRIT_OVERLOAD_G")
+    getMeasureUnitsLocKey = @() "HUD_CRIT_OVERLOAD_G"
   }
 
   HOURS = {
@@ -146,10 +134,8 @@ enums.addTypesByGlobalName("g_measure_type", {
       return time.hoursToString(value, false)
     }
 
-    getMeasureUnitsName = function ()
-    {
-      return ""
-    }
+    getMeasureUnitsLocKey = @() ""
+    getMeasureUnitsName = @() ""
   }
 
   MM = {
@@ -179,10 +165,7 @@ enums.addTypesByGlobalName("g_measure_type", {
       return (100.0 * value + 0.5).tointeger() + (addMeasureUnits? this.getMeasureUnitsName() : "")
     }
 
-    getMeasureUnitsName = function()
-    {
-      return loc("measureUnits/percent")
-    }
+    getMeasureUnitsLocKey = @() "measureUnits/percent"
   }
 
   FILE_SIZE = {
@@ -207,10 +190,7 @@ enums.addTypesByGlobalName("g_measure_type", {
       return sizeInUnits + " " + loc("measureUnits/" + this.unitNamesList[usedUnitIdx])
     }
 
-    getMeasureUnitsName = function()
-    {
-      return loc("measureUnits/bytes")
-    }
+    getMeasureUnitsLocKey = @() "measureUnits/bytes"
   }
 })
 

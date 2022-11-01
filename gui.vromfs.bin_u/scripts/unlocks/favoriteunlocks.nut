@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { isUnlockVisibleOnCurPlatform } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisibleOnCurPlatform, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 
@@ -34,7 +34,7 @@ let function loadFavorites() {
   for (local i = 0; i < ids.paramCount(); ++i) {
     let unlockId = ids.getParamName(i)
     let unlock = ::g_unlocks.getUnlockById(unlockId)
-    if (::is_unlock_visible(unlock, false)) {
+    if (isUnlockVisible(unlock, false)) {
       if (!isUnlockVisibleOnCurPlatform(unlock))
         favoriteInvisibleUnlocks[unlockId] = true // unlock isn't avaliable on current platform
       else {

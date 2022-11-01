@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { regexp } = require("string")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
 /**
  * Functions to work with controls presets
@@ -168,10 +168,7 @@ let function _handleVersion(preset)
   /**
    * Returns current players preset in format { name, version, filename }.
    */
-  function getCurrentPresetInfo()
-  {
-    return this.parsePresetFileName(::g_controls_manager.getCurPreset().getBasePresetFileName() ?? "")
-  }
+  getCurrentPresetInfo = @() this.parsePresetFileName(::get_controls_preset())
 
   /**
    * Breaks preset file name string into table {version = @integer, name = @string }
@@ -227,14 +224,11 @@ let function _handleVersion(preset)
         ? blk[platform] % "preset"
         : blk % "preset"
     }
-    let result = (!isPlatformSony && !isPlatformXboxOne) ? ["custom"] : []
-    result.extend(this.presetsListCached)
-    let curPresetInfo = this.getCurrentPresetInfo()
-    if (curPresetInfo.id == "" || curPresetInfo.name == "empty"
-      || this.presetsListCached.indexof(curPresetInfo.id) != null)
-        return result
-
-    return result.append(curPresetInfo.id)
+    let result = [].extend(this.presetsListCached)
+    let curPresetId = this.getCurrentPresetInfo().id
+    if (curPresetId != "" && this.presetsListCached.indexof(curPresetId) == null)
+      result.append(curPresetId)
+    return result
   }
 
   /**

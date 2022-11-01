@@ -89,6 +89,7 @@ weaponry_item {
 
       tdiv {
         size:t='pw, fh'
+        max-height:t='2ph/3'
         css-hier-invalidate:t='yes'
         textareaNoTab {
           id:t='name'
@@ -222,8 +223,8 @@ weaponry_item {
         }
       }
       tdiv{
-        pos:t='pw-w, 0'
-        position:t='relative'
+        pos:t='pw-w-1@dp, ph-h-2@dp'
+        position:t='absolute'
         max-width:t='pw'
         css-hier-invalidate:t='yes'
         tdiv {

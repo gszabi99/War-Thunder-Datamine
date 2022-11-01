@@ -39,10 +39,11 @@ let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip
 } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText,
-  getUnlockMainCondDescByCfg, getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnlockMainCondDescByCfg,
+  getLocForBitValues, getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 
@@ -204,7 +205,7 @@ let selMedalIdx = {}
 
       if (!this.unlockTypesToShow.contains(unlockTypeId) && !this.unlocksPages.contains(unlockTypeId))
         continue
-      if (!::is_unlock_visible(cb))
+      if (!isUnlockVisible(cb))
         continue
 
       hasAnyUnlocks = true
@@ -315,7 +316,7 @@ let selMedalIdx = {}
     let categories = []
     let unlocks = ::g_unlocks.getUnlocksByType(uType)
     foreach(unlock in unlocks)
-      if (::is_unlock_visible(unlock))
+      if (isUnlockVisible(unlock))
         ::u.appendOnce(getCategoryFunc(unlock), categories, true)
 
     return categories
@@ -1031,7 +1032,7 @@ let selMedalIdx = {}
         continue
       if (isUnlockTree && cb?.isRevenueShare)
         continue
-      if (!::is_unlock_visible(cb))
+      if (!isUnlockVisible(cb))
         continue
       if (cb?.showAsBattleTask || ::BattleTasks.isBattleTask(cb))
         continue
@@ -1380,7 +1381,7 @@ let selMedalIdx = {}
     shopSearchWnd.open(null, Callback(@(u) this.showUnitInShop(u), this), getShopDiffCode, {
       units = allUnits
       wndTitle = loc("mainmenu/showVehiclesTitle", {
-        taskName = ::g_unlock_view.getUnlockTitle(unlockCfg)
+        taskName = getUnlockTitle(unlockCfg)
       })
     })
   }

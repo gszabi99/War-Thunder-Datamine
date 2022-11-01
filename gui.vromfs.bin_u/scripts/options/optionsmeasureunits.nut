@@ -6,6 +6,8 @@ from "%scripts/dagui_library.nut" import *
 let { pow } = require("math")
 let { subscribe, send } = require("eventbus")
 let { format } = require("string")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+
 let persistent = {
   unitsCfg = null
 }
@@ -26,6 +28,10 @@ let function isInitialized()
 {
   return (persistent.unitsCfg?.len() ?? 0) != 0
 }
+
+let getMeasureUnitsNames = @() isInitialized()
+  ? ::g_measure_type.types.reduce(@(acc, v) acc.__update({ [v.name] = v.getMeasureUnitsLocKey() }), {})
+  : null
 
 let function init()
 {
@@ -51,7 +57,7 @@ let function init()
     }
     persistent.unitsCfg.append(units)
   }
-  send("updateExtWatched", { isInitializedMeasureUnits = isInitialized()})
+  send("updateExtWatched", { measureUnitsNames = getMeasureUnitsNames() })
 }
 
 let function getOption(useroptId)
@@ -108,9 +114,13 @@ let function isMetricSystem(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 
-subscribe("updateIsInitializedMeasureUnits", @(_) send("updateExtWatched", {
-  isInitializedMeasureUnits = isInitialized()
+subscribe("updateMeasureUnitsNames", @(_) send("updateExtWatched", {
+  measureUnitsNames = getMeasureUnitsNames()
 }))
+
+addListenersWithoutEnv({
+  MeasureUnitsChanged = @(_) send("updateExtWatched", { measureUnitsNames = getMeasureUnitsNames() })
+})
 
 return {
   init = init

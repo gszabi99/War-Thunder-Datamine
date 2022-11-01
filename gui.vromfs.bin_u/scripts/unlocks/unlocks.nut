@@ -8,7 +8,6 @@ let { format, strip, split_by_chars } = require("string")
 let regexp2 = require("regexp2")
 let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
-let { hasFeatureBasic } = require("%scripts/user/features.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { statsTanks } = require("%scripts/user/userInfoStats.nut")
 let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
@@ -16,7 +15,6 @@ let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, g
   getUnlockNameText, getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions, getMainProgressCondition, getProgressBarData, loadMainProgressCondition,
   loadConditionsFromBlk, getMultipliersTable, isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isUnlockVisibleOnCurPlatform } = require("%scripts/unlocks/unlocksModule.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 let getEmptyConditionsConfig = @() {
@@ -401,42 +399,6 @@ let function setImageByUnlockType(config, unlockBlk) {
     return $"#ui/images/avatars/{unlockBlk.id}.png"
 
   return unlockBlk?.icon
-}
-
-::is_unlock_visible <- function is_unlock_visible(unlockBlk, needCheckVisibilityByPlatform = true)
-{
-  if (!unlockBlk)
-    return false
-  if (unlockBlk?.hidden)
-    return false
-
-  if (needCheckVisibilityByPlatform && !isUnlockVisibleOnCurPlatform(unlockBlk))
-    return false
-
-  let unlockId = unlockBlk?.id
-  let name = unlockId || ""
-  if (!::g_unlocks.isVisibleByTime(unlockId, true, !unlockBlk?.hideUntilUnlocked)
-    && !::is_unlocked_scripted(-1, name))
-    return false
-  if (unlockBlk?.showByEntitlement && !::has_entitlement(unlockBlk.showByEntitlement))
-    return false
-  if ((unlockBlk % "hideForLang").indexof(::g_language.getLanguageName()) != null)
-    return false
-  foreach (feature in unlockBlk % "reqFeature")
-    if (!hasFeature(feature))
-      return false
-  if (unlockBlk?.mode != null && unlockBlk.mode.blockCount() > 0)
-    foreach (cond in getUnlockConditions(unlockBlk.mode))
-      if (cond?.type == "playerHasFeature" && cond?.feature != null && !hasFeature(cond.feature))
-        return false
-  if (!hasFeatureBasic("Tanks") && ::is_unlock_tanks_related(unlockId, unlockBlk))
-    return false
-  if (!::g_unlocks.checkDependingUnlocks(unlockBlk))
-    return false
-  if (::g_unlocks.isHiddenByUnlockedUnlocks(unlockBlk))
-    return false
-
-  return true
 }
 
 ::tanks_related_unlocks <- {}
@@ -1386,18 +1348,6 @@ let function setImageByUnlockType(config, unlockBlk) {
   return this.getSkinNameBySkinId(id) == "default"
 }
 
-::g_unlocks.checkDependingUnlocks <- function checkDependingUnlocks(unlockBlk)
-{
-  if (!unlockBlk || !unlockBlk?.hideUntilPrevUnlocked)
-    return true
-
-  let prevUnlocksArray = split_by_chars(unlockBlk.hideUntilPrevUnlocked, "; ")
-  foreach (prevUnlockId in prevUnlocksArray)
-    if (!::is_unlocked_scripted(-1, prevUnlockId))
-      return false
-  return true
-}
-
 ::g_unlocks.onEventSignOut <- function onEventSignOut(_p)
 {
   this.invalidateUnlocksCache()
@@ -1491,37 +1441,6 @@ let function setImageByUnlockType(config, unlockBlk) {
   )
 }
 
-::g_unlocks.isVisibleByTime <- function isVisibleByTime(id, hasIncludTimeBefore = true, resWhenNoTimeLimit = true)
-{
-  let unlock = this.getUnlockById(id)
-  if (!unlock)
-    return false
-
-  local isVisibleUnlock = resWhenNoTimeLimit
-  if (::is_numeric(unlock?.visibleDays)
-    || ::is_numeric(unlock?.visibleDaysBefore)
-    || ::is_numeric(unlock?.visibleDaysAfter))
-  {
-    foreach (cond in getUnlockConditions(unlock?.mode))
-    {
-      if (!isInArray(cond.type, ::unlock_time_range_conditions))
-        continue
-
-      let startTime = getTimestampFromStringUtc(cond.beginDate) -
-        daysToSeconds(hasIncludTimeBefore
-        ? unlock?.visibleDaysBefore ?? unlock?.visibleDays ?? 0
-        : 0)
-      let endTime = getTimestampFromStringUtc(cond.endDate) +
-        daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0)
-      let currentTime = ::get_charserver_time_sec()
-
-      isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
-      break
-    }
-  }
-  return isVisibleUnlock
-}
-
 ::g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id)
 {
   let unlock = this.getUnlockById(id)
@@ -1556,24 +1475,5 @@ let function setImageByUnlockType(config, unlockBlk) {
   }
 }
 
-::g_unlocks.isHiddenByUnlockedUnlocks <- function isHiddenByUnlockedUnlocks(unlockBlk)
-{
-  if (::is_unlocked_scripted(-1, unlockBlk?.id))
-    return false
-
-  foreach (value in (unlockBlk % "hideWhenUnlocked"))
-  {
-    local unlockedCount = 0
-    let unlocksId = value.split("; ")
-    foreach (id in unlocksId)
-      if (::is_unlocked_scripted(-1, id))
-        unlockedCount ++
-
-    if (unlockedCount == unlocksId.len())
-      return true
-  }
-
-  return false
-}
 ::g_script_reloader.registerPersistentDataFromRoot("g_unlocks")
 ::subscribe_handler(::g_unlocks, ::g_listener_priority.CONFIG_VALIDATION)

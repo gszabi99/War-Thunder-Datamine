@@ -853,8 +853,6 @@ let function isSameMapping(lhs, rhs) {
   getBasePresetInfo = @(groupName = "default")
     ::g_controls_presets.parsePresetFileName(this.basePresetPaths?[groupName] ?? "")
 
-  getBasePresetFileName = @() this.getBasePresetInfo().fileName
-
   function getNumButtons()
   {
     local count = 0

@@ -22,12 +22,13 @@ imgButton > focus_border, mapNest > focus_border {
   alwaysVisible:yes;
 }
 
-itemDiv > focus_border, recipe > focus_border {
+itemDiv > focus_border, recipe > focus_border, rewardItemDiv > focus_border {
   alwaysVisible:yes;
   order-popup:yes;
 }
 
 [bringFocusBorderToFront=no] > itemDiv > focus_border,
+[bringFocusBorderToFront=no] > rewardItemDiv > focus_border,
 itemDiv[hasButton=yes] > focus_border {
   order-popup:no;
 }
@@ -142,7 +143,8 @@ invisSlider > focus_border, slider > focus_border {
 }
 
 itemDiv > focus_border, recipe > focus_border,
-mapNest > focus_border, imgButton > focus_border {
+mapNest > focus_border, imgButton > focus_border,
+rewardItemDiv > focus_border {
   pos: -3@dp, -3@dp;
   size: pw +6@dp, ph +6@dp;
 }

@@ -159,6 +159,11 @@ let joystick_params_template = {
     ::g_controls_manager.notifyPresetModified()
 }
 
+::get_controls_preset <- function get_controls_preset()
+{
+  return ""
+}
+
 ::restore_default_controls <- function restore_default_controls(_preset)
 {
   // Dummy. Preset loading performed by set_controls_preset later

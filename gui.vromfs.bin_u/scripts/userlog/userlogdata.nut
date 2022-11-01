@@ -20,6 +20,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
 } = require("%scripts/clans/clanFlushExpInfoModal.nut")
 let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { showEveryDayLoginAwardWnd, canShowEveryDayLoginAward } = require("%scripts/items/everyDayLoginAward.nut")
 
 ::shown_userlog_notifications <- []
@@ -167,7 +168,7 @@ local logNameByType = {
       continue
 
     let unlockId = blk?.body.unlockId
-    if (unlockId != null && !::is_unlock_visible(::g_unlocks.getUnlockById(unlockId)))
+    if (unlockId != null && !isUnlockVisible(::g_unlocks.getUnlockById(unlockId)))
     {
       ::disable_user_log_entry(i)
       continue
@@ -655,7 +656,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
         || (("unlocks" in filter) && !isInArray(blk.body.unlockType, filter.unlocks)))
 
     let unlock = ::g_unlocks.getUnlockById(getTblValue("unlockId", blk.body))
-    let hideUnlockById = unlock != null && !::is_unlock_visible(unlock)
+    let hideUnlockById = unlock != null && !isUnlockVisible(unlock)
 
     if (isUnlockTypeNotSuitable || (hideUnlockById && blk?.type != EULT_BUYING_UNLOCK))
       continue

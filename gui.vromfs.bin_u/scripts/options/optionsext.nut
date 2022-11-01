@@ -29,7 +29,7 @@ let { reloadDargUiScript } = require("reactiveGuiCommand")
 let {bombNbr} = require("%scripts/unit/unitStatus.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { has_forced_crosshair } = require_native("crosshair")
 //
@@ -52,6 +52,7 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -1023,7 +1024,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "bulletFallSoundShip"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      defaultValue = false
+      defaultValue = true
 
       let blk = ::dgs_get_game_params()
       let minCaliber  = blk?.shipsShootingTracking?.minCaliber ?? 0.1
@@ -1423,11 +1424,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = ::g_controls_presets.getControlsPresetsList()
       descr.trParams <- "optionWidthInc:t='double';"
 
-      let p = ::g_controls_manager.getCurPreset().getBasePresetInfo()
-        ?? (clone ::g_controls_presets.nullPreset)
+      if (!isPlatformSony && !isPlatformXboxOne)
+        descr.values.insert(0, "") //custom preset
+      let p = ::g_controls_manager.getCurPreset()?.getBasePresetInfo()
+        ?? ::g_controls_presets.getCurrentPresetInfo()
       for(local k = 0; k < descr.values.len(); k++)
       {
-        let name = descr.values[k]
+        local name = descr.values[k]
         local suffix = isPlatformSony ? "ps4/" : ""
         let vPresetData = ::g_controls_presets.parsePresetName(name)
         if (p.name == vPresetData.name && p.version == vPresetData.version)
@@ -1439,8 +1442,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           imageName = "preset_gamepad.svg"
         else if (name.indexof("default") != null || name.indexof("dualshock4") != null)
           imageName = "preset_ps4.svg"
-        else if (name == "custom")
+        else if (name == "")
         {
+          name = "custom"
           imageName = "preset_custom.png"
           suffix = ""
         }
@@ -3348,7 +3352,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       {
         let unlockId = icons[nc]
         let unlockItem = ::g_unlocks.getUnlockById(unlockId)
-        let isShown = ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId) || ::is_unlock_visible(unlockItem)
+        let isShown = ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId) || isUnlockVisible(unlockItem)
           || (unlockItem?.hideFeature != null && !hasFeature(unlockItem.hideFeature))
         let marketplaceItemdefId = unlockItem?.marketplaceItemdefId
         if (marketplaceItemdefId != null)

@@ -5,51 +5,20 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
 } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnlockLocName, getSubUnlockLocName, getUnlockMainCondDescByCfg, getUnlockMultDescByCfg,
-  getUnlockDesc, getUnlockCondsDescByCfg, getUnlockNameText,
-  getLocForBitValues, getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg,
+  getUnlockNameText, getLocForBitValues, getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { isUnlockVisible, isUnlockVisibleByTime } = require("%scripts/unlocks/unlocksModule.nut")
 let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N.png
 
 ::g_unlock_view <- {
-  function getUnlockTitle(unlockConfig) {
-    local name = unlockConfig.useSubUnlockName ? getSubUnlockLocName(unlockConfig)
-      : unlockConfig.locId != "" ? getUnlockLocName(unlockConfig)
-      : getUnlockNameText(unlockConfig.unlockType, unlockConfig.id)
-    if (name == "")
-      name = getUnlockTypeText(unlockConfig.unlockType, unlockConfig.id)
-
-    let hasStages = (unlockConfig.stages.len() ?? 0) > 0
-    let stage = (unlockConfig.needToAddCurStageToName && hasStages && (unlockConfig.curStage >= 0))
-      ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
-      : 0
-    return $"{name} {::roman_numerals[stage]}"
-  }
-
-  function getChapterAndGroupText(unlockBlk) {
-    let chapterAndGroupText = []
-    if ("chapter" in unlockBlk)
-      chapterAndGroupText.append(loc($"unlocks/chapter/{unlockBlk.chapter}"))
-    if ((unlockBlk?.group ?? "") != "") {
-      local locId = $"unlocks/group/{unlockBlk.group}"
-      let parentUnlock = ::g_unlocks.getUnlockById(unlockBlk.group)
-      if (parentUnlock?.chapter == unlockBlk?.chapter)
-        locId = $"{parentUnlock.id}/name"
-      chapterAndGroupText.append(loc(locId))
-    }
-    return chapterAndGroupText.len() > 0
-      ? $"({", ".join(chapterAndGroupText, true)})"
-      : ""
-  }
 
   function getSubunlocksView(cfg) {
     if (cfg.hideSubunlocks)
@@ -62,7 +31,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
     foreach (idx, title in titles) {
       let unlockId = cfg.names[idx]
       let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
-      if(!::is_unlock_visible(unlockBlk) && !(unlockBlk?.showInDesc ?? false))
+      if(!isUnlockVisible(unlockBlk) && !(unlockBlk?.showInDesc ?? false))
         continue
 
       let isUnlocked = isBitMode ? is_bit_set(cfg.curVal, idx) : ::is_unlocked_scripted(-1, unlockId)
@@ -73,7 +42,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
   }
 
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
-    let isShowUnlock = unlockBlk != null && ::is_unlock_visible(unlockBlk)
+    let isShowUnlock = unlockBlk != null && isUnlockVisible(unlockBlk)
     unlockObj.show(isShowUnlock)
     if(!isShowUnlock)
       return
@@ -167,129 +136,8 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       || unlockType == UNLOCKABLE_PILOT
   }
 
-  function getUnitActionButtonsView(unit) {
-    if ((unit.isInShop ?? false) == false)
-      return []
-
-    let gcb = globalCallbacks.UNIT_PREVIEW
-    return [{
-      image = "#ui/gameuiskin#btn_preview.svg"
-      tooltip = "#mainmenu/btnPreview"
-      funcName = gcb.cbName
-      actionParamsMarkup = gcb.getParamsMarkup({ unitId = unit.name })
-    }]
-  }
-
-  function getUnitViewDataItem(unlockConfig, params = {}) {
-    let unit = ::getAircraftByName(unlockConfig.id)
-    if (!unit)
-      return null
-
-    let ignoreAvailability = params?.ignoreAvailability
-    let isBought = ignoreAvailability ? false : unit.isBought()
-    let buttons = this.getUnitActionButtonsView(unit)
-    let receiveOnce = "mainmenu/receiveOnlyOnce"
-
-    let unitPlate = ::build_aircraft_item(unit.name, unit, {
-      hasActions = true,
-      status = ignoreAvailability ? "owned" : isBought ? "locked" : "canBuy",
-      isLocalState = !ignoreAvailability
-      showAsTrophyContent = true
-      tooltipParams = {
-        showLocalState = true
-      }
-    })
-
-    return {
-      shopItemType = getUnitRole(unit)
-      unitPlate = unitPlate
-      classIco = ::getUnitClassIco(unit)
-      commentText = isBought? colorize("badTextColor", loc(receiveOnce)) : null
-      buttons = buttons
-      buttonsCount = buttons.len()
-    }
-  }
-
   function getUnlockType(unlockConfig) {
     return unlockConfig?.unlockType ?? unlockConfig?.type ?? -1
-  }
-
-  function getDecoratorActionButtonsView(decorator, decoratorType) {
-    if (!decorator.canPreview())
-      return []
-
-    let gcb = globalCallbacks.DECORATOR_PREVIEW
-    return [{
-      image = "#ui/gameuiskin#btn_preview.svg"
-      tooltip = "#mainmenu/btnPreview"
-      funcName = gcb.cbName
-      actionParamsMarkup = gcb.getParamsMarkup({
-        resource = decorator.id,
-        resourceType = decoratorType.resourceType
-      })
-    }]
-  }
-
-  function getDecoratorViewDataItem(unlockConfig, params = {}) {
-    let unlockType = this.getUnlockType(unlockConfig)
-    let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
-    let decorator = ::g_decorator.getDecorator(unlockConfig.id, decoratorType)
-    if (!decorator)
-      return {}
-
-    let nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
-    let isHave = params?.ignoreAvailability ? false : decoratorType.isPlayerHaveDecorator(unlockConfig.id)
-    let buttons = this.getDecoratorActionButtonsView(decorator, decoratorType)
-    let locName = decoratorType.getLocName(unlockConfig.id, true)
-
-    return {
-      icon = decoratorType.prizeTypeIcon
-      title = colorize(nameColor, locName)
-      tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decoratorType.unlockedItemType)
-      commentText = isHave ? colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")) : null
-      buttons = buttons
-    }
-  }
-
-  function getPilotViewDataItem(unlockConfig) {
-    return {
-      title = loc("trophy/unlockables_names/gamerpic")
-      previewImage = "cardAvatar { value:t='" + unlockConfig.id +"'}"
-    }
-  }
-
-  function getViewDataItem(unlockConfig, params = {}) {
-    let unlockType = this.getUnlockType(unlockConfig)
-    if (unlockType == UNLOCKABLE_AIRCRAFT)
-      return this.getUnitViewDataItem(unlockConfig, params)
-
-    if (unlockType == UNLOCKABLE_DECAL
-      || unlockType == UNLOCKABLE_SKIN
-      || unlockType == UNLOCKABLE_ATTACHABLE)
-      return this.getDecoratorViewDataItem(unlockConfig, params)
-
-    if (unlockType == UNLOCKABLE_PILOT)
-      return this.getPilotViewDataItem(unlockConfig)
-
-    local icon = "#ui/gameuiskin#item_type_placeholder.svg"
-    local title = unlockConfig.name
-
-    if (unlockType == UNLOCKABLE_TITLE)
-    {
-      icon = "#ui/gameuiskin#item_type_unlock.svg"
-      title = format(loc("reward/title"), title)
-    }
-
-    return {
-      icon = icon
-      title = title
-    }
-  }
-
-  function getViewItem(unlockConfig, params = {}) {
-    let view = params
-    view.list <- [this.getViewDataItem(unlockConfig, params)]
-    return ::handyman.renderCached("%gui/items/trophyDesc.tpl", view)
   }
 }
 
@@ -314,7 +162,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
     for (local i = 0; i < names.len(); i++) {
       let unlockId = unlockConfig.names[i]
       let unlock = ::g_unlocks.getUnlockById(unlockId)
-      if(unlock && !::is_unlock_visible(unlock) && !(unlock?.showInDesc ?? false))
+      if(unlock && !isUnlockVisible(unlock) && !(unlock?.showInDesc ?? false))
         continue
 
       let isUnlocked = isBitMode? is_bit_set(unlockConfig.curVal, i) : ::is_unlocked_scripted(-1, unlockId)
@@ -434,7 +282,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
 
 ::g_unlock_view.fillUnlockTitle <- function fillUnlockTitle(unlockConfig, unlockObj)
 {
-  let title = this.getUnlockTitle(unlockConfig)
+  let title = getUnlockTitle(unlockConfig)
   unlockObj.findObject("achivment_title").setValue(title)
 }
 
@@ -480,7 +328,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
   let haveStages = getTblValue("stages", unlockData, []).len() > 1
   let cost = ::get_unlock_cost(unlockId)
   let canSpendGold = cost.gold == 0 || hasFeature("SpendGold")
-  let isPurchaseTime = ::g_unlocks.isVisibleByTime(unlockId, false)
+  let isPurchaseTime = isUnlockVisibleByTime(unlockId, false)
 
   let show = isPurchaseTime && canSpendGold && !haveStages && !isUnlocked && !cost.isZero()
   purchButtonObj.show(show)

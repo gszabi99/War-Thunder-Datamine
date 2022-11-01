@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -54,7 +55,7 @@ enum mislistTabsOrder {
     if (misBlk?.hideInSingleMissionList)
       continue
     let unlock = misBlk?.chapter? ::g_unlocks.getUnlockById(misBlk.chapter + "/" + missionId) : null
-    if (unlock && !::is_unlock_visible(unlock))
+    if (unlock && !isUnlockVisible(unlock))
       continue
     if (misBlk?.reqFeature && !hasFeature(misBlk.reqFeature))
       continue

@@ -7,6 +7,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
 let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
 let { AVATARS } = require("%scripts/utils/configs.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
 let DEFAULT_PILOT_ICON = "cardicon_default"
 
@@ -24,7 +25,7 @@ let function getAllowedIcons()
 {
   if (!allowedIcons)
     allowedIcons = getIcons().filter(@(unlockId) ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId)
-      && ::is_unlock_visible(::g_unlocks.getUnlockById(unlockId)))
+      && isUnlockVisible(::g_unlocks.getUnlockById(unlockId)))
   return allowedIcons
 }
 

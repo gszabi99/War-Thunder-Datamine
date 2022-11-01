@@ -9,6 +9,7 @@ battlePassStage {
   holderId:t='<<holderId>>'
   stage:t='<<stage>>'
   on_click:t='onReceiveRewards'
+  <<#isFree>>isFree:t='yes'<</isFree>>
 
   <<#isFree>>
   tdiv {

@@ -76,6 +76,10 @@ itemDiv {
   padding:1@itemPadding;
 }
 
+rewardItemDiv {
+  height:1@itemHeight;
+}
+
 itemDiv[enableBackground=yes] {
   background-image:#ui/gameuiskin#lr_frame_bg.png;
   background-color:@white;
@@ -127,7 +131,7 @@ itemDiv > wink {
   transp-cycled:yes;
 }
 
-awardItemDiv, itemDiv {
+rewardItemDiv, awardItemDiv, itemDiv {
   width:1@itemWidth;
 }
 
@@ -152,6 +156,7 @@ itemDiv[ticketBuyWindow=yes] {
 }
 
 [itemShopList=yes] > itemDiv,
+[itemShopList=yes] > rewardItemDiv,
 [itemShopList=yes] > iconLayer {
   margin:1@itemSpacing;
   pos:0,0;

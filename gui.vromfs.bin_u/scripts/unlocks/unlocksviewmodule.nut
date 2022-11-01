@@ -244,6 +244,36 @@ let function getUnlockNameText(unlockType, id) {
   return loc($"{id}/name")
 }
 
+let function getUnlockTitle(unlockConfig) {
+  local name = unlockConfig.useSubUnlockName ? getSubUnlockLocName(unlockConfig)
+    : unlockConfig.locId != "" ? getUnlockLocName(unlockConfig)
+    : getUnlockNameText(unlockConfig.unlockType, unlockConfig.id)
+  if (name == "")
+    name = getUnlockTypeText(unlockConfig.unlockType, unlockConfig.id)
+
+  let hasStages = (unlockConfig.stages.len() ?? 0) > 0
+  let stage = (unlockConfig.needToAddCurStageToName && hasStages && (unlockConfig.curStage >= 0))
+    ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
+    : 0
+  return $"{name} {::roman_numerals[stage]}"
+}
+
+let function getUnlockChapterAndGroupText(unlockBlk) {
+  let chapterAndGroupText = []
+  if ("chapter" in unlockBlk)
+    chapterAndGroupText.append(loc($"unlocks/chapter/{unlockBlk.chapter}"))
+  if ((unlockBlk?.group ?? "") != "") {
+    local locId = $"unlocks/group/{unlockBlk.group}"
+    let parentUnlock = ::g_unlocks.getUnlockById(unlockBlk.group)
+    if (parentUnlock?.chapter == unlockBlk?.chapter)
+      locId = $"{parentUnlock.id}/name"
+    chapterAndGroupText.append(loc(locId))
+  }
+  return chapterAndGroupText.len() > 0
+    ? $"({", ".join(chapterAndGroupText, true)})"
+    : ""
+}
+
 let function getLocForBitValues(modeType, values, hasCustomUnlockableList = false) {
   let valuesLoc = []
   if (hasCustomUnlockableList || isNestedUnlockMode(modeType))
@@ -827,6 +857,8 @@ return {
   getUnlockRewardsText
   getUnlockTypeText
   getUnlockLocName
+  getUnlockTitle
+  getUnlockChapterAndGroupText
   getSubUnlockLocName
   getUnlockNameText
   getLocForBitValues

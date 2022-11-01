@@ -18,8 +18,8 @@ let { fillItemDescr, fillDescTextAboutDiv,
   fillItemDescUnderTable } = require("%scripts/items/itemVisual.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
-let { getUnlockDesc, getUnlockCondsDescByCfg, getUnlockMultDescByCfg,
-  getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockDesc, getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockChapterAndGroupText,
+  getUnlockMainCondDescByCfg, getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 
@@ -104,11 +104,11 @@ let exportTypes = addTooltipTypes({
 
       obj.getScene().replaceContent(obj, "%gui/unlocks/shortTooltip.blk", handler)
 
-      let header = ::g_unlock_view.getUnlockTitle(config)
+      let header = getUnlockTitle(config)
       obj.findObject("header").setValue(header)
 
       if (params?.showChapter ?? false)
-        obj.findObject("chapter").setValue(::g_unlock_view.getChapterAndGroupText(unlock))
+        obj.findObject("chapter").setValue(getUnlockChapterAndGroupText(unlock))
 
       let mainCond = getUnlockMainCondDescByCfg(subunlockCfg ?? config)
       let conds = getUnlockCondsDescByCfg(subunlockCfg ?? config)

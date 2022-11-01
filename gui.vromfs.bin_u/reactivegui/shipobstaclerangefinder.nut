@@ -1,9 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
 
 let {obstacleIsNear, distanceToObstacle} = require("shipState.nut")
 let {alert} = require("style/colors.nut").hud.damageModule
 let {abs} = require("%sqstd/math.nut")
+let { measureUnitsNames } = require("options/optionsMeasureUnits.nut")
 
 let showCollideWarning = Computed(@() distanceToObstacle.value < 0)
 
@@ -36,13 +36,14 @@ return @(){
       text = abs(distanceToObstacle.value)
       color = alert
     }
-    {
+    @() {
+      watch = measureUnitsNames
       rendObj = ROBJ_TEXT
       font = Fonts.medium_text_hud
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = min(64, hdpx(64))
       fontFx = FFT_GLOW
-      text = cross_call.measureTypes.DEPTH.getMeasureUnitsName()
+      text = loc(measureUnitsNames.value?.meters_alt ?? "")
       color = alert
     }
   ]

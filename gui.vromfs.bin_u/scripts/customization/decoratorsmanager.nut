@@ -8,6 +8,7 @@ let skinLocations = require("%scripts/customization/skinLocations.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
 const DEFAULT_SKIN_NAME = "default"
 
@@ -393,7 +394,7 @@ const DEFAULT_SKIN_NAME = "default"
     let hasPrice = !cost.isZero()
     let isVisible = isDefault || isOwn || hasPrice || forceVisible
       || decorator.canBuyCouponOnMarketplace(unit)
-      || ::is_unlock_visible(decorator.unlockBlk)
+      || isUnlockVisible(decorator.unlockBlk)
     if (!isVisible && !::is_dev_version)
       continue
 

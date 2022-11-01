@@ -18,7 +18,7 @@ let { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
   leftSpecialTasksBoughtCountWatchObj, levelExpWatchObj, hasChallengesRewardWatchObj
 } = require("%scripts/battlePass/watchObjInfoConfig.nut")
 let { openBattlePassShopWnd } = require("%scripts/battlePass/progressShop.nut")
-let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
+let { userstatStats, isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
 let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
@@ -26,6 +26,7 @@ let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { unlockToFavorites } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { buildDateTimeStr } = require("%scripts/time.nut")
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 
 let watchObjInfoConfig = {
@@ -206,9 +207,12 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let { lastRewardedStage = null } = unlockProgress.value?[holderId]
+
     if (lastRewardedStage == null
-      || (lastRewardedStage + 1) != stage.tointeger())
-      return
+      || (lastRewardedStage + 1) != stage.tointeger()){
+        this.showLockedsMessage(obj?.isFree == "yes")
+        return
+      }
 
     receiveRewards(holderId)
   }
@@ -242,16 +246,23 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function initStageUpdater() {
+    let seasonEndDate = Computed(@() userstatStats.value?.stats.seasons["$endsAt"] ?? 0)
+    let seasonTitleParams = Computed(@() {
+      season = season.value
+      endDate = seasonEndDate.value
+    })
+
     this.scene.findObject("wnd_battlePass").setValue(stashBhvValueConfig([{
       watch = seasonStages
       updateFunc = Callback(@(obj, stagesList) this.updateStagePage(obj, stagesList), this)
     },
     {
-      watch = season
+      watch = seasonTitleParams
       updateFunc = @(obj, value)
-        obj.findObject("wnd_title").setValue(loc("battlePass/name", {
-          name = loc($"battlePass/seasonName/{value}")
-        }))
+        obj.findObject("wnd_title").setValue("{0} {1}".subst(
+          loc("battlePass/name", { name = loc($"battlePass/seasonName/{value.season}") }),
+          loc("battlePass/endDate", { time = buildDateTimeStr(value.endDate, false, false) })
+        ))
     },
     {
       watch = seasonMainPrizesData
@@ -518,7 +529,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onStatusIconClick(obj) {
-    let isFree = obj?.isFree == "yes"
+    this.showLockedsMessage(obj?.isFree == "yes")
+  }
+
+  function showLockedsMessage(isFree) {
     if (isFree || hasBattlePass.value) {
       let okBtnId = "#battlePass/msgbox/gotoPrize"
       this.msgBox("gotoPrize", loc("battlePass/msgbox/gotoPrizeTitle"), [

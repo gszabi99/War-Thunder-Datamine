@@ -405,7 +405,8 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
   function doYuplayPurchase(itemId, payMethod)
   {
     let guid = bundlesShopInfo.value?[itemId].guid ?? ""
-    assert(guid != "", $"Error: not found guid for {itemId}")
+    if (guid == "")
+      logerr($"Error: not found guid for {itemId}")
 
     let response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
     if (response != YU2_OK)
