@@ -1583,8 +1583,8 @@ let function isInArrayRecursive(v, arr) {
     if (presetValue in opdata.values)
     {
       this.presetSelected = opdata.values[presetValue]
-      this.showSceneBtn("btn_controlsWizard", this.presetSelected == "custom")
-      this.showSceneBtn("btn_selectPreset", this.presetSelected != "custom")
+      this.showSceneBtn("btn_controlsWizard", this.presetSelected == "")
+      this.showSceneBtn("btn_selectPreset", this.presetSelected != "")
     }
   }
 
