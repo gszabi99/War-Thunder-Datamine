@@ -82152,8 +82152,20 @@
       "chapter": "skins",
       "group": "aircraft_ussr",
       "mode": {
-        "type": "char_unit_exist",
-        "unit": "i_29"
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 3,
+        "mulHardcore": 6,
+        "num": 1,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "i_29"
+          }
+        ]
       }
     },
     {
@@ -84843,7 +84855,8 @@
             "type": "playerCountry",
             "country": [
               "country_germany",
-              "country_italy"
+              "country_italy",
+              "country_sweden"
             ]
           },
           {
