@@ -128,6 +128,7 @@ def damage_area_update_client_es(act : UpdateStageInfoAct;
                                  damage_area__pos2 : float3;
                                  damage_area__radius : float;
                                  damage_area__move : bool;
+                                 var damage_area__firstTick : bool&;
                                  damage_area__emitterCount : int;
                                  var damage_area__emitterVel : Point3List&;
                                  var damage_area__emitterPos : Point3List&;
@@ -139,7 +140,8 @@ def damage_area_update_client_es(act : UpdateStageInfoAct;
                                  var damage_area__burnFxCounts : IntList&;
                                  damage_area__debugCommonId, damage_area__debugTraceId : int;
                                  damage_area__debugEmitterColor, damage_area__debugTraceColor, damage_area__debugCombustColor : E3DCOLOR)
-  if (damage_area__move)
+  if (damage_area__move || damage_area__firstTick)
+    damage_area__firstTick = false
     let up = float3(1., 0., 0.)
     for i in range(damage_area__emitterCount)
       damage_area__emitterPosPrev[i] = damage_area__emitterPos[i]
@@ -161,7 +163,8 @@ def damage_area_update_client_es(act : UpdateStageInfoAct;
         let dir = normalize(damage_area__emitterPos[i] - damage_area__pos1)
         for j in range(damage_area__burnFxCounts[i], count)
           var fxPos = damage_area__pos1 + dir * (damage_area__burnFxSize * float(j))
-          fxPos.y = get_scene_height(fxPos, false);
+          if j > 0
+            fxPos.y = get_scene_height(fxPos, false);
           let burnFxId = damage_area_create_fx(damage_area__burnFxType, fxPos, up, true)
           damage_area__burnFxIds |> push(burnFxId)
         damage_area__burnFxCounts[i] = count
