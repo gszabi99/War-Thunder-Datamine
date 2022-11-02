@@ -38,6 +38,7 @@ global enum CtrlsInGui
   CTRL_IN_TACTICAL_MAP        = 0x00004000,
   CTRL_IN_FLIGHT_MENU         = 0x00008000,
   CTRL_IN_MULTIFUNC_MENU      = 0x00010000,
+  CTRL_IN_UNLIM_CTRL_MENU     = 0x00020000,
 
   //masks
   CTRL_ALLOW_NONE             = 0x00000000,

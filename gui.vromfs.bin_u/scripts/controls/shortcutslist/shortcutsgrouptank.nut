@@ -584,6 +584,11 @@ return [
 
 
 
+
+
+
+
+
   {
     id = "ID_TOGGLE_STEALTH"
     checkGroup = ctrlGroups.TANK

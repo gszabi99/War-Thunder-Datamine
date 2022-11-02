@@ -402,6 +402,7 @@ require("%scripts/items/trophyShowTime.nut")
 require("%scripts/dlcontent/dlContent.nut")
 require("%scripts/dynamic/mainMissionGenerator.nut")
 require("%scripts/mainmenu/hideMainMenuUi.nut")
+require("%scripts/wheelmenu/chooseVehicleWheelMenu.nut")
 
 require("%scripts/debugTools/dbgCheckContent.nut")
 require("%scripts/debugTools/dbgUnlocks.nut")

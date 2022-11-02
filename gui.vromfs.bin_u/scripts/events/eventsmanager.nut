@@ -2501,53 +2501,29 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (!membersTeams) //we are become squad member or gamemod data is missing
       return cancelFunc && cancelFunc()
 
-    let membersInfo = this.getMembersInfo(teams, membersTeams.teamsData)
-
+    let membersInfo = this.getMembersInfo(membersTeams.teamsData)
     if (membersTeams.haveRestrictions)
     {
-      let func = @() continueQueueFunc && continueQueueFunc(membersInfo.data)
+      let func = @() continueQueueFunc && continueQueueFunc(membersInfo)
       this.showCantFlyMembersMsgBox(membersTeams, func, cancelFunc)
-    }
-
-    if (membersInfo.delayed)
       return
-
-    if (!membersInfo.result)
-      return cancelFunc && cancelFunc()
+    }
 
     if (continueQueueFunc)
-      continueQueueFunc(membersInfo.data)
+      continueQueueFunc(membersInfo)
   }
 
-  function getMembersInfo(teams, membersTeams)
+  function getMembersInfo(membersTeams)
   {
-    local membersQuery = null
-    local team = null
+    if (membersTeams.len() == 0)
+      return null
 
-    if (!membersTeams && teams.len()) //not a squad leader
-      team = teams[::math.rnd() % teams.len()]
-    else if (membersTeams && membersTeams.len())
-    {
-      let membersData = membersTeams[::math.rnd() % membersTeams.len()]
-      team = membersData.team
-      membersQuery = this.prepareMembersForQueue(membersData)
-    }
-    else
-    {
-      return {
-        result = false
-        delayed = false
-        data = null
-        team = null
-      }
-    }
-
-    return {
-      result = true
-      delayed = membersTeams && ::u.search(membersTeams, @(member) member.haveRestrictions && member.canFlyout ) != null
-      data = membersQuery
-      team = team
-    }
+    let notRestrictionsTeamsData = membersTeams.filter(@(v) !v.haveRestrictions)
+    let membersData =notRestrictionsTeamsData.len() > 0
+      ? notRestrictionsTeamsData[::math.rnd() % notRestrictionsTeamsData.len()]
+      : membersTeams[::math.rnd() % membersTeams.len()]
+    let membersQuery = this.prepareMembersForQueue(membersData)
+    return membersQuery
   }
 
   function getEventsChapter(event)

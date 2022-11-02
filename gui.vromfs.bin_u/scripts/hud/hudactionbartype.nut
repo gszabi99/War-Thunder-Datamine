@@ -600,8 +600,8 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     }
     getIcon = function(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
       hudUnitType = hudUnitType ?? getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.TANK ? "#ui/gameuiskin#scout_streak.png"
-        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT ?  "#ui/gameuiskin#shipSupportPlane.png"
+      return hudUnitType == HUD_UNIT_TYPE.TANK && getUnit() == getOwnerUnit() ? "#ui/gameuiskin#scout_streak.png"
+        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && getUnit() == getOwnerUnit() ?  "#ui/gameuiskin#shipSupportPlane.png"
         : getOwnerUnit()?.isShipOrBoat() ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
         : "#ui/gameuiskin#supportPlane_to_tank_controls.png"
     }
@@ -747,6 +747,14 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   }
 
   //
+
+
+
+
+
+
+
+
 
 
 

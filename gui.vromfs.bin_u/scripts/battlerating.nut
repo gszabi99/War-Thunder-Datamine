@@ -116,7 +116,7 @@ let function getBestCountryData(event)
   if (!membersTeams)
     return null
 
-  return ::events.getMembersInfo(teams, membersTeams.teamsData).data
+  return ::events.getMembersInfo(membersTeams.teamsData)
 }
 
 let function getUserData() {
