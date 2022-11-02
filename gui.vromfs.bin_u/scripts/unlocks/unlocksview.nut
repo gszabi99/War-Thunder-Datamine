@@ -5,6 +5,8 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
@@ -136,8 +138,129 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       || unlockType == UNLOCKABLE_PILOT
   }
 
+  function getUnitActionButtonsView(unit) {
+    if ((unit.isInShop ?? false) == false)
+      return []
+
+    let gcb = globalCallbacks.UNIT_PREVIEW
+    return [{
+      image = "#ui/gameuiskin#btn_preview.svg"
+      tooltip = "#mainmenu/btnPreview"
+      funcName = gcb.cbName
+      actionParamsMarkup = gcb.getParamsMarkup({ unitId = unit.name })
+    }]
+  }
+
+  function getUnitViewDataItem(unlockConfig, params = {}) {
+    let unit = ::getAircraftByName(unlockConfig.id)
+    if (!unit)
+      return null
+
+    let ignoreAvailability = params?.ignoreAvailability
+    let isBought = ignoreAvailability ? false : unit.isBought()
+    let buttons = this.getUnitActionButtonsView(unit)
+    let receiveOnce = "mainmenu/receiveOnlyOnce"
+
+    let unitPlate = ::build_aircraft_item(unit.name, unit, {
+      hasActions = true,
+      status = ignoreAvailability ? "owned" : isBought ? "locked" : "canBuy",
+      isLocalState = !ignoreAvailability
+      showAsTrophyContent = true
+      tooltipParams = {
+        showLocalState = true
+      }
+    })
+
+    return {
+      shopItemType = getUnitRole(unit)
+      unitPlate = unitPlate
+      classIco = ::getUnitClassIco(unit)
+      commentText = isBought? colorize("badTextColor", loc(receiveOnce)) : null
+      buttons = buttons
+      buttonsCount = buttons.len()
+    }
+  }
+
   function getUnlockType(unlockConfig) {
     return unlockConfig?.unlockType ?? unlockConfig?.type ?? -1
+  }
+
+  function getDecoratorActionButtonsView(decorator, decoratorType) {
+    if (!decorator.canPreview())
+      return []
+
+    let gcb = globalCallbacks.DECORATOR_PREVIEW
+    return [{
+      image = "#ui/gameuiskin#btn_preview.svg"
+      tooltip = "#mainmenu/btnPreview"
+      funcName = gcb.cbName
+      actionParamsMarkup = gcb.getParamsMarkup({
+        resource = decorator.id,
+        resourceType = decoratorType.resourceType
+      })
+    }]
+  }
+
+  function getDecoratorViewDataItem(unlockConfig, params = {}) {
+    let unlockType = this.getUnlockType(unlockConfig)
+    let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
+    let decorator = ::g_decorator.getDecorator(unlockConfig.id, decoratorType)
+    if (!decorator)
+      return {}
+
+    let nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
+    let isHave = params?.ignoreAvailability ? false : decoratorType.isPlayerHaveDecorator(unlockConfig.id)
+    let buttons = this.getDecoratorActionButtonsView(decorator, decoratorType)
+    let locName = decoratorType.getLocName(unlockConfig.id, true)
+
+    return {
+      icon = decoratorType.prizeTypeIcon
+      title = colorize(nameColor, locName)
+      tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decoratorType.unlockedItemType)
+      commentText = isHave ? colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")) : null
+      buttons = buttons
+    }
+  }
+
+  function getPilotViewDataItem(unlockConfig) {
+    return {
+      title = loc("trophy/unlockables_names/gamerpic")
+      previewImage = "cardAvatar { value:t='" + unlockConfig.id +"'}"
+    }
+  }
+
+  function getViewDataItem(unlockConfig, params = {}) {
+    let unlockType = this.getUnlockType(unlockConfig)
+    if (unlockType == UNLOCKABLE_AIRCRAFT)
+      return this.getUnitViewDataItem(unlockConfig, params)
+
+    if (unlockType == UNLOCKABLE_DECAL
+      || unlockType == UNLOCKABLE_SKIN
+      || unlockType == UNLOCKABLE_ATTACHABLE)
+      return this.getDecoratorViewDataItem(unlockConfig, params)
+
+    if (unlockType == UNLOCKABLE_PILOT)
+      return this.getPilotViewDataItem(unlockConfig)
+
+    local icon = "#ui/gameuiskin#item_type_placeholder.svg"
+    local title = unlockConfig.name
+
+    if (unlockType == UNLOCKABLE_TITLE)
+    {
+      icon = "#ui/gameuiskin#item_type_unlock.svg"
+      title = format(loc("reward/title"), title)
+    }
+
+    return {
+      icon = icon
+      title = title
+    }
+  }
+
+  function getViewItem(unlockConfig, params = {}) {
+    let view = params
+    view.list <- [this.getViewDataItem(unlockConfig, params)]
+    return ::handyman.renderCached("%gui/items/trophyDesc.tpl", view)
   }
 }
 

@@ -27,17 +27,23 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
   cancelFunc = null
 
   processStartTime = -1
+  processStepName = ""
 
   constructor (v_event, v_room = null, v_onComplete = null, v_cancelFunc = null)
   {
     if (!v_event)
       return
 
-    if (activeEventJoinProcess.len())
-      if (get_time_msec() - activeEventJoinProcess[0].processStartTime < PROCESS_TIME_OUT)
+    if (activeEventJoinProcess.len()) {
+      let prevProcessStartTime = activeEventJoinProcess[0].processStartTime
+      if (get_time_msec() - prevProcessStartTime < PROCESS_TIME_OUT) {
+        let eventName = v_event.name // warning disable: -declared-never-used
+        let prevProcessStepName = activeEventJoinProcess[0].processStepName // warning disable: -declared-never-used
         return assert(false, "Error: trying to use 2 join event processes at once")
+      }
       else
         activeEventJoinProcess[0].remove()
+    }
 
     activeEventJoinProcess.append(this)
     this.processStartTime = get_time_msec()
@@ -68,6 +74,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
 
   function joinStep1_squadMember()
   {
+    this.processStepName = "joinStep1_squadMember"
     if (::g_squad_manager.isSquadMember())
     {
       //Don't allow to change ready status, leader don't know about members balance
@@ -93,6 +100,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
 
   function joinStep2_external()
   {
+    this.processStepName = "joinStep2_external"
     if (::events.getEventDiffCode(this.event) == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return this.remove()
@@ -124,6 +132,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
 
   function joinStep3_internal()
   {
+    this.processStepName = "joinStep3_internal"
     let mGameMode = ::events.getMGameMode(this.event, this.room)
     if (::events.isEventTanksCompatible(this.event.name) && !::check_tanks_available())
       return this.remove()
@@ -145,6 +154,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
 
   function joinStep4_cantJoinReason()
   {
+    this.processStepName = "joinStep4_cantJoinReason"
     let reasonData = ::events.getCantJoinReasonData(this.event, this.room,
                           { continueFunc = function() { if (this) this.joinStep5_repairInfo() }.bindenv(this)
                             isFullText = true
@@ -158,12 +168,14 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
 
   function joinStep5_repairInfo()
   {
+    this.processStepName = "joinStep5_repairInfo"
     let repairInfo = ::events.getCountryRepairInfo(this.event, this.room, profileCountrySq.value)
     ::checkBrokenAirsAndDo(repairInfo, this, this.joinStep6_membersForQueue, false, this.remove)
   }
 
   function joinStep6_membersForQueue()
   {
+    this.processStepName = "joinStep6_membersForQueue"
     ::events.checkMembersForQueue(this.event, this.room,
       Callback(@(membersData) this.joinStep7_joinQueue(membersData), this),
       Callback(this.remove, this)
@@ -172,6 +184,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
 
   function joinStep7_joinQueue(membersData = null)
   {
+    this.processStepName = "joinStep7_joinQueue"
     //join room
     if (this.room)
       ::SessionLobby.joinRoom(this.room.roomId)
