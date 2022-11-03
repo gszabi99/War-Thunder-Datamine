@@ -171,9 +171,12 @@ let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
   else if (rewardType == "warbonds")
     image = this.getFullWarbondsIcon()
   else if (rewardType == "unlock") {
+    local unlock = null
     let rewardConfig = ::g_unlocks.getUnlockById(rewardValue)
-    let unlockConditions = ::build_conditions_config(rewardConfig)
-    let unlock = ::build_log_unlock_data(unlockConditions)
+    if (rewardConfig != null) {
+      let unlockConditions = ::build_conditions_config(rewardConfig)
+      unlock = ::build_log_unlock_data(unlockConditions)
+    }
     image = ::LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
   }
   else if (rewardType == "unlockAddProgress") {
