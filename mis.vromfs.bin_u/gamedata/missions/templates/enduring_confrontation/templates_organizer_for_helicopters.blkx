@@ -152,17 +152,19 @@
             "value": "skipaem proverku predydushchego shablona"
           }
         ],
-        "varSetInt": {
-          "value": 0,
-          "var": "to_randomizer",
-          "input_var": "to_force_template_idx"
-        },
+        "varSetInt": [
+          {
+            "value": 0,
+            "var": "to_randomizer",
+            "input_var": "to_force_template_idx"
+          },
+          {
+            "value": 0,
+            "var": "to_force_template_idx"
+          }
+        ],
         "__comment": {
           "value": "obnulyaem forsirovanie"
-        },
-        "__varSetInt": {
-          "value": 0,
-          "var": "to_force_template_idx"
         },
         "triggerEnable": {
           "target": "to_template_fill_army"
@@ -412,7 +414,7 @@
             },
             {
               "var_value": "to_force_template_idx",
-              "value": 1,
+              "value": 0,
               "comparasion_func": "equal"
             }
           ],
