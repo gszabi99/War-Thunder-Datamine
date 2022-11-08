@@ -571,24 +571,22 @@ return [
     checkAssign = false
     showFunc = @() hasFeature("TankSupportPlane")
   }
-  //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  {
+    id = "ID_START_UGV"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+    showFunc = @() hasFeature("TankSupportPlane")
+  }
+  {
+    id = "ID_MINE_DETONATION"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+  }
+  {
+    id = "ID_UNLIMITED_CONTROL"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+  }
   {
     id = "ID_TOGGLE_STEALTH"
     checkGroup = ctrlGroups.TANK

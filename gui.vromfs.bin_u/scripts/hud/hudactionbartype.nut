@@ -22,10 +22,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
   AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
-  GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON
-  //
-
-
+  GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL
 } = require_native("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -746,51 +743,49 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_DIVING_LOCK"
   }
 
-  //
+  UNMANNED_GROUND_VEHICLE = {
+    code = EII_UGV
+    _name = "ugv"
+    _icon = "#ui/gameuiskin#ugv_streak.png"
+    _title = loc("hotkeys/ID_START_UGV")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_START_UGV"
+    getName = function(_actionItem, _killStreakTag = null) {
+      let ownerUnit = getOwnerUnit()
+      return getUnit() == ownerUnit ? this._name
+        : ownerUnit?.isShipOrBoat() ? "switch_to_ship"
+        : "switch_to_tank"
+    }
+    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let ownerUnit = getOwnerUnit()
+      return getUnit() == ownerUnit ? this._icon
+        : ownerUnit?.isShipOrBoat() ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
+        : "#ui/gameuiskin#supportPlane_to_tank_controls.png"
+    }
+    getTitle = function(_actionItem, _killStreakTag = null) {
+      let ownerUnit = getOwnerUnit()
+      return getUnit() == ownerUnit ? this._title
+        : ownerUnit?.isShipOrBoat() ? loc("actionBarItem/switch_to_ship")
+        : loc("actionBarItem/switch_to_tank")
+    }
+  }
 
+  MINE_DETONATION = {
+    code = EII_MINE_DETONATION
+    _name = "mine_detonation"
+    _title = loc("hotkeys/ID_MINE_DETONATION")
+    _icon = "#ui/gameuiskin#tracked_mine_detonation.png"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_MINE_DETONATION"
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  UNLIMITED_CONTROL = {
+    code = EII_UNLIMITED_CONTROL
+    _name = "unlimited_control"
+    _title = loc("hotkeys/ID_UNLIMITED_CONTROL")
+    _icon = "#ui/gameuiskin#change_controlled_unit.png"
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_UNLIMITED_CONTROL"
+  }
 })
 
 ::g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code) {

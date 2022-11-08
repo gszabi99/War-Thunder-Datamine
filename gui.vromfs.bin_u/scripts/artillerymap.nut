@@ -88,7 +88,7 @@ enum POINTING_DEVICE
       }
     }
 
-    this.watchAxis = ::joystickInterface.getAxisWatch(false, true)
+    this.watchAxis = ::joystickInterface.getArtilleryAxisWatch()
     this.isGamepadMouse = ::g_gamepad_cursor_controls.getValue()
     this.pointingDevice = useTouchscreen ? POINTING_DEVICE.TOUCHSCREEN
       : ::is_xinput_device() && !this.isGamepadMouse ? POINTING_DEVICE.GAMEPAD

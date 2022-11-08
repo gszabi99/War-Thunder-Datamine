@@ -211,8 +211,31 @@
                 "enemy_attackers_squad"
               ],
               "calmDetection": true
+            },
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "enemy_spaa_squad",
+              "accuracy": 0.7,
+              "airAccuracy": 0.7,
+              "maxDeviationAngle": 5.0,
+              "airEffShootingRate": 0.2,
+              "effShootingRateByPlayer": 0.8,
+              "adaptiveAccuracyTime": 5.0,
+              "fireRandom": true,
+              "targetChangeInterval": 10.0,
+              "targetChangeProb": 0.9,
+              "ChainfireTime": 4.0,
+              "DelayAfterShoot": 1.0
             }
           ],
+          "unitSetGunProperties": {
+            "target": "enemy_spaa_squad",
+            "aimMaxDist": 2500.0,
+            "attackMaxDist": 2000.0
+          },
           "unitMarkForEvent": [
             {
               "missionEventType": "unlimitedControl",
@@ -987,8 +1010,7 @@
             "attackAltRange": [
               0.0,
               1500.0
-            ],
-            "keepDeadUnitsInTargetList": true
+            ]
           }
         },
         "else_actions": {}
@@ -1134,8 +1156,7 @@
             "attackAltRange": [
               0.0,
               1500.0
-            ],
-            "keepDeadUnitsInTargetList": true
+            ]
           }
         },
         "else_actions": {}
@@ -1169,8 +1190,7 @@
             "playerAttracted": false,
             "object": "bg_aircraft_fighter_t2_squad",
             "attack_type": "attack_target",
-            "target": "sq_streak_aircrafts",
-            "keepDeadUnitsInTargetList": true
+            "target": "sq_streak_aircrafts"
           }
         },
         "else_actions": {}
@@ -2963,6 +2983,185 @@
         },
         "else_actions": {}
       }
+    },
+    "enemy_spaa": {
+      "isCategory": true,
+      "is_enabled": true,
+      "enemy_spaa_delay_killed": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isKilled",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "enemy_spaa_squad"
+          }
+        },
+        "actions": {
+          "unitPutToSleep": {
+            "target": "enemy_spaa_squad",
+            "useForTriggerFiltered": true,
+            "delayForObjects": [
+              7.0,
+              3.0
+            ]
+          }
+        },
+        "else_actions": {}
+      },
+      "enemy_spaa_respawn_if_needed": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": [
+            {
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "func": "less",
+              "value": 0,
+              "object": "enemy_spaa_squad",
+              "var": "enemy_spaa_num_max"
+            },
+            {
+              "object_type": "isOnline",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "func": "notMore",
+              "value": 0,
+              "object": "sq_streak_aircrafts"
+            }
+          ]
+        },
+        "actions": {
+          "varSetRandomInt": {
+            "var": "enemy_spaa_spawn_idx",
+            "from": 1,
+            "to_not_including": 5
+          },
+          "varSetString": {
+            "value": "enemy_spaa_spawn_",
+            "var": "enemy_spaa_spawn_name"
+          },
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "enemy_spaa_spawn_name",
+            "input_var": "enemy_spaa_spawn_idx"
+          },
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "enemy_spaa_squad",
+            "object_type": "isDelayed",
+            "target": "@enemy_spaa_spawn_name",
+            "randomObjectsCount": 1,
+            "randomSpawn": true,
+            "needStopOnRespawn": true
+          }
+        },
+        "else_actions": {}
+      },
+      "enemy_spaa_attack": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isOnline",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "notMore",
+            "value": 0,
+            "object": "sq_streak_aircrafts"
+          }
+        },
+        "actions": {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "enemy_spaa_squad",
+            "attack_type": "attack_target",
+            "target": "bg_aircraft_fighter_t1_squad"
+          }
+        },
+        "else_actions": {}
+      },
+      "enemy_spaa_attack_players": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isOnline",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "more",
+            "value": 0,
+            "object": "sq_streak_aircrafts"
+          }
+        },
+        "actions": {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "enemy_spaa_squad",
+            "attack_type": "attack_target",
+            "target": "sq_streak_aircrafts"
+          }
+        },
+        "else_actions": {}
+      }
     }
   },
   "mission_objectives": {
@@ -3016,7 +3215,10 @@
     "enemy_attackers_timer_max": 180,
     "enemy_attackers_timer_cur": 90,
     "enemy_attackers_spawn_idx": 0,
-    "enemy_attackers_spawn_name": ""
+    "enemy_attackers_spawn_name": "",
+    "enemy_spaa_num_max": 4,
+    "enemy_spaa_spawn_idx": 0,
+    "enemy_spaa_spawn_name": ""
   },
   "dialogs": {},
   "airfields": {},
@@ -4070,6 +4272,43 @@
             "enemy_attackers_18",
             "enemy_attackers_19",
             "enemy_attackers_20"
+          ]
+        }
+      },
+      {
+        "name": "enemy_spaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3084.65,
+            277.95,
+            92.9323
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "enemy_spaa_01",
+            "enemy_spaa_02",
+            "enemy_spaa_03",
+            "enemy_spaa_04",
+            "enemy_spaa_05",
+            "enemy_spaa_06",
+            "enemy_spaa_07",
+            "enemy_spaa_08"
           ]
         }
       }
@@ -10068,6 +10307,494 @@
         "props": {
           "army": 2,
           "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_spaa_01",
+        "tm": [
+          [
+            0.499999,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.499999
+          ],
+          [
+            3070.31,
+            277.95,
+            115.6
+          ]
+        ],
+        "unit_class": "us_halftrack_m16",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_halftrack_m16_default",
+        "bullets0": "12mm_usa_M2HB_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_spaa_02",
+        "tm": [
+          [
+            0.499999,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.499999
+          ],
+          [
+            3070.31,
+            277.95,
+            102.505
+          ]
+        ],
+        "unit_class": "us_halftrack_m16",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_halftrack_m16_default",
+        "bullets0": "12mm_usa_M2HB_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_spaa_03",
+        "tm": [
+          [
+            0.499999,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.499999
+          ],
+          [
+            3070.31,
+            277.95,
+            89.4098
+          ]
+        ],
+        "unit_class": "us_halftrack_m16",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_halftrack_m16_default",
+        "bullets0": "12mm_usa_M2HB_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_spaa_04",
+        "tm": [
+          [
+            0.499999,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.499999
+          ],
+          [
+            3070.31,
+            277.95,
+            76.3147
+          ]
+        ],
+        "unit_class": "us_halftrack_m16",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_halftrack_m16_default",
+        "bullets0": "12mm_usa_M2HB_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_spaa_05",
+        "tm": [
+          [
+            0.499999,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.499999
+          ],
+          [
+            3070.31,
+            277.95,
+            63.2197
+          ]
+        ],
+        "unit_class": "us_halftrack_m16",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_halftrack_m16_default",
+        "bullets0": "12mm_usa_M2HB_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_spaa_06",
+        "tm": [
+          [
+            0.499999,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.499999
+          ],
+          [
+            3070.31,
+            277.95,
+            50.1246
+          ]
+        ],
+        "unit_class": "us_halftrack_m16",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_halftrack_m16_default",
+        "bullets0": "12mm_usa_M2HB_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_spaa_07",
+        "tm": [
+          [
+            0.499999,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.499999
+          ],
+          [
+            3070.31,
+            277.95,
+            37.0295
+          ]
+        ],
+        "unit_class": "us_halftrack_m16",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_halftrack_m16_default",
+        "bullets0": "12mm_usa_M2HB_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "enemy_spaa_08",
+        "tm": [
+          [
+            0.499999,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.499999
+          ],
+          [
+            3070.31,
+            277.95,
+            23.9344
+          ]
+        ],
+        "unit_class": "us_halftrack_m16",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_halftrack_m16_default",
+        "bullets0": "12mm_usa_M2HB_AP",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [
@@ -31725,6 +32452,114 @@
           2934.9,
           270.133,
           2366.94
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_spaa_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.6456,
+          0.0,
+          52.1646
+        ],
+        [
+          0.0,
+          60.0,
+          0.0
+        ],
+        [
+          -52.1646,
+          0.0,
+          -29.6456
+        ],
+        [
+          3500.52,
+          317.1,
+          595.757
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_spaa_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          12.6675,
+          0.0,
+          58.6475
+        ],
+        [
+          0.0,
+          60.0,
+          0.0
+        ],
+        [
+          -58.6475,
+          0.0,
+          12.6675
+        ],
+        [
+          3098.31,
+          293.741,
+          581.069
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_spaa_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.366,
+          0.0,
+          58.7119
+        ],
+        [
+          0.0,
+          60.0,
+          0.0
+        ],
+        [
+          -58.7119,
+          0.0,
+          -12.366
+        ],
+        [
+          2683.27,
+          288.997,
+          507.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_spaa_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          19.3358,
+          0.0,
+          56.799
+        ],
+        [
+          0.0,
+          60.0,
+          0.0
+        ],
+        [
+          -56.799,
+          0.0,
+          19.3358
+        ],
+        [
+          1987.16,
+          292.324,
+          525.938
         ]
       ],
       "objLayer": 0,

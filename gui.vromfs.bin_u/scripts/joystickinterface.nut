@@ -5,26 +5,21 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { is_stereo_mode } = require_native("vr")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { sin, cos, pow, atan2, abs, sqrt } = require("math")
+
+let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
 
 ::joystickInterface <- {
   maxAbsoluteAxisValue = 1.0
   invertedByDefault = {}
 
-  function getAxisWatch(isForWheelmenu = false, isForArtillery = false)
-  {
-    let res = []
-    if (isForWheelmenu) {
-      if (::have_xinput_device() || is_stereo_mode())
-        res.append(getPlayerCurUnit()?.unitType.wheelmenuAxis ?? [])
-      else
-        res.append(["decal_move_x", "decal_move_y"], ["camx", "camy"])
+  getArtilleryAxisWatch = @() defaultAxisWatch
+  function getWheelMenuAxisWatch(unitType) {
+    if (::have_xinput_device() || is_stereo_mode()) {
+      if ((unitType?.wheelmenuAxis ?? []).len() > 0)
+        return [unitType.wheelmenuAxis]
     }
-    if (isForArtillery) {
-      res.append(["decal_move_x", "decal_move_y"])
-    }
-    return res
+    return [defaultAxisWatch, ["camx", "camy"]]
   }
 
   function getAxisStuck(watchAxis = [])

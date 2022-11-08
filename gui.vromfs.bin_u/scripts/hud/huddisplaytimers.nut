@@ -144,13 +144,11 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       icon = "#ui/gameuiskin#fire_indicator.svg"
       needTimeText = true
     },
-    //
-
-
-
-
-
-
+    {
+      id = "mine_detonation"
+      color = "@white"
+      icon = "#ui/gameuiskin#mine_detonation_indicator.svg"
+    },
   ]
 
   scene = null
@@ -182,9 +180,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_hud_event_manager.subscribe("TankDebuffs:MoveCooldown", this.onMoveCooldown, this)
     ::g_hud_event_manager.subscribe("TankDebuffs:Battery", this.onBattery, this)
     ::g_hud_event_manager.subscribe("TankDebuffs:ExtinguishAssist", this.onExtinguishAssist, this)
-    //
-
-
+    ::g_hud_event_manager.subscribe("TankDebuffs:MineDetonation", this.onMineDetonation, this)
     ::g_hud_event_manager.subscribe("ShipDebuffs:Rearm", this.onRearm, this)
     ::g_hud_event_manager.subscribe("ShipDebuffs:Repair", this.onRepair, this)
     ::g_hud_event_manager.subscribe("ShipDebuffs:Cooldown", this.onMoveCooldown, this)
@@ -531,29 +527,29 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     this.onCancelAction(debuffs_data, placeObj)
   }
-//
 
+  function onMineDetonation(debuffs_data)
+  {
+    let placeObj = this.scene.findObject("mine_detonation")
+    if (!checkObj(placeObj))
+      return
 
+    let showTimer = (debuffs_data?.timer ?? -1) >= 0.0
+    placeObj.animation = showTimer ? "show" : "hide"
 
+    let timebarObj = placeObj.findObject("timer")
 
+    if (!showTimer)
+    {
+      ::g_time_bar.setPeriod(timebarObj, 0)
+      ::g_time_bar.setCurrentTime(timebarObj, 0)
+      return
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    ::g_time_bar.setDirectionBackward(timebarObj)
+    ::g_time_bar.setPeriod(timebarObj, debuffs_data?.periodTime ?? 0, true)
+    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data?.timer ?? 0)
+  }
 
   function onExtinguish(debuffs_data)
   {

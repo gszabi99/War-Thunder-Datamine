@@ -120,10 +120,9 @@ const ITEMS_PER_PAGE = 8
     this.guiScene = this.scene.getScene()
     this.showScene(true)
     this.fill(true)
-    this.updateSelectShortcutImage()
     if (this.axisEnabled)
     {
-      this.watchAxis = ::joystickInterface.getAxisWatch(true)
+      this.watchAxis = ::joystickInterface.getWheelMenuAxisWatch(unitTypeByHudUnitType?[getHudUnitType()])
       this.stuckAxis = ::joystickInterface.getAxisStuck(this.watchAxis)
       this.joystickSelection = null
       this.isKbdShortcutDown = false
@@ -131,6 +130,7 @@ const ITEMS_PER_PAGE = 8
       this.scene.findObject("wheelmenu_axis_input_timer").setUserData(this)
       this.onWheelmenuAxisInputTimer()
     }
+    this.updateSelectShortcutImage()
     let wheelmenu = this.scene.findObject("wheelmenu")
     wheelmenu["total-input-transparent"] = this.mouseEnabled ? "no" : "yes"
     this.showSceneBtn("fast_shortcuts_block", false)
@@ -240,7 +240,7 @@ const ITEMS_PER_PAGE = 8
     local isShow = ::show_console_buttons && this.axisEnabled
     if (isShow)
     {
-      let shortcuts = unitTypeByHudUnitType?[getHudUnitType()].wheelmenuAxis ?? []
+      let shortcuts = this.watchAxis?[0]
       let shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
       isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
       let axesId = getComplexAxesId(shortcuts)

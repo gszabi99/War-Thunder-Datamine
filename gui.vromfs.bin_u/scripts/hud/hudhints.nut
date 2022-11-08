@@ -1711,15 +1711,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnWatchedHeroChanged = true
     shortcuts = "ID_SHIP_WEAPON_ALL"
   }
-//
 
-
-
-
-
-
-
-
+  CANT_SPAWN_UGV = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/cant_spawn_ugv"
+    showEvent = "hint:cant_spawn_ugv:show"
+    lifeTime = 3.0
+    isHideOnDeath = true
+  }
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()
