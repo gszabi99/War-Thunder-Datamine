@@ -2188,6 +2188,163 @@
       }
     ]
   },
+  "killStreaksArdennesDefenceEvent": {
+    "expClass": [
+      "exp_bomber",
+      "exp_fighter",
+      "exp_assault",
+      "exp_tank",
+      "exp_heavy_tank",
+      "exp_tank_destroyer",
+      "exp_SPAA",
+      "exp_helicopter"
+    ],
+    "countCombinedKillStreakEvents": 8,
+    "timeDelayBetweenKillStreakEvent": 0.0,
+    "bombFuseTimeForKillStreak": 0.0,
+    "ranks": [
+      0,
+      50
+    ],
+    "units": "killStreaksUnitsArdennesDefenceEvent",
+    "killStreak": [
+      {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 1,
+        "maxCountForMediumTank": 1,
+        "requiredKillsToGain": 3,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 8,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "attacker",
+        "canStartEvent": true,
+        "canJoinEvent": true,
+        "eventTimer": 45.0,
+        "maxSimultaneousUnits": 2,
+        "spawnPos": {
+          "ranks": [
+            0,
+            50
+          ],
+          "initiator": [
+            3000.0,
+            800.0
+          ],
+          "enemy_dist": [
+            1400.0,
+            1600.0
+          ],
+          "enemy_angles": [
+            45.0,
+            135.0
+          ],
+          "enemy_height": [
+            150.0,
+            250.0
+          ],
+          "ally_dist": [
+            1400.0,
+            1600.0
+          ],
+          "ally_angles": [
+            45.0,
+            135.0
+          ],
+          "ally_height": [
+            150.0,
+            250.0
+          ],
+          "extra_ally_dist": [
+            250.0,
+            400.0
+          ],
+          "speed": [
+            500.0,
+            500.0
+          ]
+        },
+        "clearProgress": {
+          "count": 8,
+          "tag": "fighter"
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 3,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "fighter",
+        "canStartEvent": true,
+        "canJoinEvent": true,
+        "eventTimer": 45.0,
+        "maxSimultaneousUnits": 2,
+        "spawnPos": {
+          "ranks": [
+            0,
+            50
+          ],
+          "initiator": [
+            2000.0,
+            800.0
+          ],
+          "enemy_dist": [
+            1200.0,
+            1400.0
+          ],
+          "enemy_angles": [
+            45.0,
+            135.0
+          ],
+          "enemy_height": [
+            150.0,
+            250.0
+          ],
+          "ally_dist": [
+            1200.0,
+            1400.0
+          ],
+          "ally_angles": [
+            45.0,
+            135.0
+          ],
+          "ally_height": [
+            150.0,
+            250.0
+          ],
+          "extra_ally_dist": [
+            250.0,
+            400.0
+          ],
+          "speed": [
+            800.0,
+            700.0
+          ]
+        },
+        "clearProgress": {
+          "count": 3,
+          "tag": "attacker"
+        }
+      }
+    ]
+  },
   "killStreaksUnits": {
     "bomber": [
       {
@@ -4911,6 +5068,60 @@
         "weap": "hkp9a_cb3_fc_ffv_uni_pod",
         "rankRange": [
           25,
+          50
+        ]
+      }
+    ]
+  },
+  "killStreaksUnitsArdennesDefenceEvent": {
+    "attacker": [
+      {
+        "name": "fw-190f-8",
+        "weap": "Fw-190F-8_SC250_4xSC50",
+        "rankRange": [
+          0,
+          50
+        ]
+      },
+      {
+        "name": "fw-190f-8",
+        "weap": "Fw-190F-8_8xSC50",
+        "rankRange": [
+          0,
+          50
+        ]
+      }
+    ],
+    "fighter": [
+      {
+        "name": "bf-109g-10",
+        "weap": "",
+        "rankRange": [
+          0,
+          50
+        ]
+      },
+      {
+        "name": "bf-109g-14",
+        "weap": "",
+        "rankRange": [
+          0,
+          50
+        ]
+      },
+      {
+        "name": "fw-190d-9",
+        "weap": "",
+        "rankRange": [
+          0,
+          50
+        ]
+      },
+      {
+        "name": "fw-190a-8",
+        "weap": "",
+        "rankRange": [
+          0,
           50
         ]
       }

@@ -290,11 +290,13 @@ foreach (fn in [
     queue.join(
       Callback(function(_response) {
         this.afterJoinQueue(queue)
-        if (this.isLeaveDelayed)
+        if (this.isLeaveDelayed || (this.findQueueByName(queue.name) == null))
           this.leaveQueue(queue)
       }, this),
       Callback(function(_response) {
         this.removeQueue(queue)
+        if (this.isLeaveDelayed)
+          this.showProgressBox(false)
       }, this)
     )
     this.changeState(queue, queueStates.JOINING_QUEUE)

@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { subscribe } = require("eventbus")
-let { emulateShortcut } = require("controls")
+let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 
 //--------------------------------------------------------------------------------------------------
 
@@ -31,16 +31,6 @@ let { emulateShortcut } = require("controls")
     objCaption.setValue(colorize("hudGreenTextColor", loc("HUD/CHOICE_OF_VEHICLE")))
   }
 
-  function toggleShortcut(shortcutId) {
-    if (::is_xinput_device())
-      this.switchControlsAllowMask(this.wndControlsAllowMaskWhenInactive)
-
-    emulateShortcut(shortcutId)
-
-    if (::is_xinput_device() && this.isActive)
-      this.switchControlsAllowMask(this.wndControlsAllowMaskWhenActive)
-  }
-
   function quit() {
     if (this.isActive)
       this.showScene(false)
@@ -52,7 +42,7 @@ let { emulateShortcut } = require("controls")
       return
     }
 
-    this.toggleShortcut(this.menu[idx].shortcutId)
+    toggleShortcut(this.menu[idx].shortcutId)
   }
 }
 

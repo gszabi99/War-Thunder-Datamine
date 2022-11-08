@@ -42,7 +42,10 @@ const ITEMS_PER_PAGE = 8
 
 ::close_cur_wheelmenu <- function close_cur_wheelmenu()
 {
-  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
+  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
+  if (handler && handler.isActive)
+    handler.showScene(false)
+  handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.chooseVehicleMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
 }

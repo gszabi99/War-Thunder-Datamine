@@ -401,12 +401,8 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
   function onEventSquadDataUpdated(_params)
   {
-    this.doWhenActiveOnce("updateWindow")
-  }
-
-  function onEventSquadStatusUpdated(_params)
-  {
-    this.doWhenActiveOnce("updateWindow")
+    if (this.gm == GM_SINGLE_MISSION)
+      this.doWhenActiveOnce("updateWindow")
   }
 
   function onEventUrlMissionChanged(_params)

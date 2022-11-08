@@ -28,6 +28,7 @@ profileCountrySq.subscribe(@(_) needRefresh(true))
 addListenersWithoutEnv({
   ProfileReceived            = @(_) needRefresh(true)
   CrewChanged                = @(_) needRefresh(true)
+  CrewsListInvalidate        = @(_) needRefresh(true)
   SignOut                    = @(_) successResultByCountry({})
 }, CONFIG_VALIDATION)
 

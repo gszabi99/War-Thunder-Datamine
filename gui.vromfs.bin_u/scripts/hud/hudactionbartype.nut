@@ -593,8 +593,8 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         : "ID_START_SUPPORT_PLANE_SHIP"
     getName = function(_actionItem, _killStreakTag = null) {
       let hudUnitType = getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.TANK ? this._name
-        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT ? "support_plane_ship"
+      return hudUnitType == HUD_UNIT_TYPE.TANK && getUnit() == getOwnerUnit() ? this._name
+        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && getUnit() == getOwnerUnit() ? "support_plane_ship"
         : getOwnerUnit()?.isShipOrBoat() ? "switch_to_ship"
         : "switch_to_tank"
     }
@@ -607,8 +607,8 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     }
     getTitle = function(_actionItem, _killStreakTag = null) {
       let hudUnitType = getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.TANK ? this._title
-        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT ? loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP")
+      return hudUnitType == HUD_UNIT_TYPE.TANK && getUnit() == getOwnerUnit() ? this._title
+        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && getUnit() == getOwnerUnit() ? loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP")
         : getOwnerUnit()?.isShipOrBoat() ? loc("actionBarItem/switch_to_ship")
         : loc("actionBarItem/switch_to_tank")
     }
@@ -747,6 +747,24 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   }
 
   //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
