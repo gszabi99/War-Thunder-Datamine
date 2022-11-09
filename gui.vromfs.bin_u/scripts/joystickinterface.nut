@@ -13,7 +13,7 @@ let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
   maxAbsoluteAxisValue = 1.0
   invertedByDefault = {}
 
-  getArtilleryAxisWatch = @() defaultAxisWatch
+  getArtilleryAxisWatch = @() [defaultAxisWatch]
   function getWheelMenuAxisWatch(unitType) {
     if (::have_xinput_device() || is_stereo_mode()) {
       if ((unitType?.wheelmenuAxis ?? []).len() > 0)
