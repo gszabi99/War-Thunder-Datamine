@@ -74,7 +74,6 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     this.initTable()
     this.fillMapsList()
     this.initModes()
-    this.initTopItems()
     this.updateButtons()
     this.fetchRewardsData()
     this.fetchRewardsTimeData()

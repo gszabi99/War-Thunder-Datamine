@@ -618,7 +618,8 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       return
     }
 
-    local isJoinBattleVisible = this.currViewMode != WW_BATTLE_VIEW_MODES.QUEUE_INFO
+    local isJoinBattleVisible = !::g_squad_manager.isSquadMember()
+      && this.currViewMode != WW_BATTLE_VIEW_MODES.QUEUE_INFO
     local isLeaveBattleVisible = this.currViewMode == WW_BATTLE_VIEW_MODES.QUEUE_INFO
     local isJoinBattleActive = true
     local isLeaveBattleActive = true
@@ -627,7 +628,7 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       : loc("mainmenu/btnCancel")
 
     let cantJoinReasonData = this.operationBattle.getCantJoinReasonData(this.getPlayerSide(),
-      ::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadLeader())
+      ::g_squad_manager.isSquadLeader())
     let joinWarningData = this.operationBattle.getWarningReasonData(this.getPlayerSide())
     local warningText = ""
     local fullWarningText = ""
@@ -1056,7 +1057,6 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
     let wwBattleName = ::g_squad_manager.getWwOperationBattle()
     let squadCountry = ::g_squad_manager.getWwOperationCountry()
     let selectedBattleName = this.curBattleInList.id
-    let prevCurrViewMode = this.currViewMode
     this.updateViewMode()
 
     if (wwBattleName)
@@ -1088,14 +1088,16 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
       this.updateDescription()
 
     this.updateButtons()
+  }
 
-    if (prevCurrViewMode == WW_BATTLE_VIEW_MODES.SQUAD_INFO &&
-        prevCurrViewMode != this.currViewMode &&
-        ::g_squad_manager.isSquadMember())
-    {
-      ::g_squad_manager.setCrewsReadyFlag(false)
-      ::showInfoMsgBox(loc("squad/message/cancel_fight"))
-    }
+  function onEventCancelBattlePrepare(_p) {
+    if (::queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+      || !::g_squad_manager.isSquadMember())
+      return
+
+    ::g_squad_manager.setCrewsReadyFlag(false)
+    this.msgBox("cancel_fight", loc("squad/message/cancel_fight"),
+      [ ["yes", Callback(@() this.goBack(), this)] ], "yes", { cancel_fn = null })
   }
 
   function onEventCrewTakeUnit(_params)

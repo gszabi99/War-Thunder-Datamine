@@ -113,7 +113,7 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
       if (this.isMeReady() && (!antiCheat.showMsgboxIfEacInactive(event) ||
                           !showMsgboxIfSoundModsNotAllowed(event)))
         this.setReadyFlag(false)
-      this.updateMyMemberData(getMyStateData())
+      this.updateMyMemberData()
     }
   }
 
@@ -147,15 +147,12 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
   return !this.isInSquad() && this.canStartStateChanging()
 }
 
-::g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null)
-{
+::g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null) {
   if (!this.isInSquad())
     return
 
-  if (data == null)
-    data = getMyStateData()
-
   let isWorldwarEnabled = ::is_worldwar_enabled()
+  data = data ?? getMyStateData()
   data.__update({
     isReady = this.isMeReady()
     isCrewsReady = this.isMyCrewsReady
@@ -236,7 +233,7 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 ::g_squad_manager.setPsnSessionId <- function setPsnSessionId(id = null)
 {
   this.squadData.psnSessionId <- id
-  this.updateSquadData()
+  this.setSquadData({ psnSessionId = id })
 }
 
 ::g_squad_manager.getPsnSessionId <- function getPsnSessionId()
@@ -440,7 +437,7 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
     return
 
   this.setMaxSquadSize(newSize)
-  this.updateSquadData()
+  this.setSquadData({properties = { maxMembers = newSize }})
   ::broadcastEvent(squadEvent.SIZE_CHANGED)
 }
 
@@ -491,8 +488,7 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
     return
 
   this.squadData.properties.isApplicationsEnabled = shouldEnable
-
-  this.updateSquadData()
+  this.setSquadData({ properties = { isApplicationsEnabled = shouldEnable }})
 }
 
 ::g_squad_manager.canChangeReceiveApplications <- function canChangeReceiveApplications(shouldCheckLeader = true)
@@ -646,7 +642,7 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
     return
 
   if (needUpdateMemberData)
-    this.updateMyMemberData(getMyStateData())
+    this.updateMyMemberData()
 }
 
 ::g_squad_manager.createSquad <- function createSquad(callback)
@@ -700,21 +696,23 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
   ::g_chat.joinSquadRoom(callback)
 }
 
-::g_squad_manager.updateSquadData <- function updateSquadData()
-{
-  let data = {}
-  data.chatInfo <- { name = this.getSquadRoomName(), password = this.getSquadRoomPassword() }
-  data.wwOperationInfo <- {
-    id = this.getWwOperationId()
-    country = this.getWwOperationCountry()
-    battle = this.getWwOperationBattle() }
-  data.properties <- clone this.squadData.properties
-  data.presence <- clone this.squadData.presence
-  data.psnSessionId <- this.squadData?.psnSessionId ?? ""
-  data.leaderBattleRating <- this.squadData?.leaderBattleRating ?? 0
-  data.leaderGameModeId <- this.squadData?.leaderGameModeId ?? ""
-
-  ::g_squad_manager.setSquadData(data)
+::g_squad_manager.updateSquadData <- function updateSquadData() {
+  ::g_squad_manager.setSquadData({
+    chatInfo = {
+      name = this.getSquadRoomName()
+      password = this.getSquadRoomPassword()
+    }
+    wwOperationInfo = {
+      id = this.getWwOperationId()
+      country = this.getWwOperationCountry()
+      battle = this.getWwOperationBattle()
+    }
+    properties = clone this.squadData.properties
+    presence = clone this.squadData.presence
+    psnSessionId = this.squadData?.psnSessionId ?? ""
+    leaderBattleRating = this.squadData?.leaderBattleRating ?? 0
+    leaderGameModeId = this.squadData?.leaderGameModeId ?? ""
+  })
 }
 
 ::g_squad_manager.disbandSquad <- function disbandSquad()
@@ -752,7 +750,7 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
                        if (::g_squad_manager.getSquadSize(true) == 1)
                          ::g_squad_manager.disbandSquad()
                        else
-                         ::g_squad_manager.updateMyMemberData(getMyStateData())
+                         ::g_squad_manager.updateMyMemberData()
 
                       ::broadcastEvent(squadEvent.STATUS_CHANGED)
                      }
@@ -1430,7 +1428,7 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
   }
 
   if (this.setState(squadState.IN_SQUAD)) {
-    this.updateMyMemberData(getMyStateData())
+    this.updateMyMemberData()
     if (this.isSquadLeader()) {
       this.updatePresenceSquad()
       this.updateSquadData()
@@ -1545,11 +1543,10 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 
   let presence = ::g_presence_type.getCurrent()
   let presenceParams = presence.getParams()
-  if (!::u.isEqual(this.squadData.presence, presenceParams))
-  {
+  if (!::u.isEqual(this.squadData.presence, presenceParams)) {
     this.squadData.presence = presenceParams
     if (shouldUpdateSquadData)
-      this.updateSquadData()
+      this.setSquadData({ presence = presenceParams })
   }
 }
 
@@ -1666,8 +1663,8 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 ::g_squad_manager.onEventWWLoadOperation <- function onEventWWLoadOperation(_params)
 {
   this.updateCurrentWWOperation()
+  this.setSquadData({ wwOperationInfo = this.squadData.wwOperationInfo })
   this.updatePresenceSquad()
-  this.updateSquadData()
 }
 
 ::g_squad_manager.updateCurrentWWOperation <- function updateCurrentWWOperation()
@@ -1700,13 +1697,14 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
   this.squadData.wwOperationInfo.id = ::ww_get_operation_id()
   this.squadData.wwOperationInfo.country = profileCountrySq.value
 
+  this.setSquadData({ wwOperationInfo = this.squadData.wwOperationInfo })
   this.updatePresenceSquad()
-  this.updateSquadData()
 }
 
 ::g_squad_manager.cancelWwBattlePrepare <- function cancelWwBattlePrepare()
 {
   this.startWWBattlePrepare() // cancel battle prepare if no args
+  ::request_matching("msquad.send_event", null, null, { eventName = "CancelBattlePrepare" })
 }
 
 ::g_squad_manager.onEventWWStopWorldWar <- function onEventWWStopWorldWar(_params)
@@ -1716,9 +1714,9 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 
   if (!this.isInSquad() || this.isSquadLeader()) {
     this.squadData.wwOperationInfo = { id = -1, country = "", battle = null }
+    this.setSquadData({ wwOperationInfo = this.squadData.wwOperationInfo })
   }
   this.updatePresenceSquad()
-  this.updateSquadData()
 }
 
 ::g_squad_manager.onEventLobbyStatusChange <- function onEventLobbyStatusChange(_params)

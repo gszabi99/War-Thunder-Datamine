@@ -114,7 +114,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     let needAddClanTag = row?.needAddClanTag ?? false
     let clanTag = row?.clanTag ?? ""
-    let playerName = platformModule.getPlayerName(row?.name ?? "")
+    let rowName = row?.name ?? ""
+    let playerName = this.isClanLb ? rowName : platformModule.getPlayerName(rowName)
     let rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")

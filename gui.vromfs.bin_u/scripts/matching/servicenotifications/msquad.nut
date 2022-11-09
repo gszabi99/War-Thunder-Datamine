@@ -182,6 +182,11 @@ foreach (notificationName, callback in
             ["msquad.notify_squad_created"] = function(_params)
               {
                 ::g_squad_manager.requestSquadData()
+              },
+
+            ["msquad.on_squad_event"] = function(p)
+              {
+                ::broadcastEvent(p.eventName, p)
               }
           }
         )

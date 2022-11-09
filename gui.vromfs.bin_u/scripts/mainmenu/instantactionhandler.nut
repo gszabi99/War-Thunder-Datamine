@@ -767,8 +767,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       if (::g_squad_manager.isSquadMember()) {
         let isReady = ::g_squad_manager.isMeReady()
         if (getLeaderOperationState() != LEADER_OPERATION_STATES.OUT) {
-          txt = ::g_ww_global_status_actions.getOperationById(
-            ::g_squad_manager.getWwOperationId())?.getNameText(false) ?? ""
+          let operationId = ::g_squad_manager.getWwOperationId()
+          txt = operationId >= 0 ? "".concat(loc("ui/number_sign"), operationId) : ""
           isCancel = false
         }
         else {

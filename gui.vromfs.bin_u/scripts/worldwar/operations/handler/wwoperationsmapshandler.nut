@@ -834,6 +834,12 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     let requestBlk = ::DataBlock()
     requestBlk.country = countryId
     requestBlk.clusters = this.clustersList
+    if (::g_squad_manager.isInSquad()) {
+      let leaderUid = ::g_squad_manager.getLeaderUid()
+      let members = [leaderUid].extend(
+        ::g_squad_manager.getMembers().keys().filter(@(v) v != leaderUid))
+      requestBlk.squadMembers = ";".join(members)
+    }
 
     log($"cln_ww_autoselect_operation(clusters={this.clustersList}; country={countryId})")
     ::g_tasker.charRequestJson("cln_ww_autoselect_operation", requestBlk, null,

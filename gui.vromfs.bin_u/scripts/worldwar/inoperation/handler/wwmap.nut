@@ -1196,7 +1196,10 @@ let { LEADER_OPERATION_STATES,
 
   function onEventSquadDataUpdated(_params) {
     if (::g_squad_manager.isSquadMember())
-      this.doWhenActiveOnce("updateToBattleButton")
+      if (::g_squad_manager.getWwOperationBattle() != null)
+        this.onStart()
+      else
+        this.doWhenActiveOnce("updateToBattleButton")
   }
 
   function onEventMyStatsUpdated(_params)

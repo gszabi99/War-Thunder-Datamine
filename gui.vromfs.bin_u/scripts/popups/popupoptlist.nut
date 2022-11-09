@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 const SELECTOR_OBJ = "selector_obj"
 const ACTION_BTN = "action_btn"
@@ -68,7 +69,7 @@ local popupOptList = class extends ::gui_handlers.BaseGuiHandlerWT {
   function updateSelectorView() {
     this.isForcedSelect = true
     foreach (idx, inst in this.stateList) {
-      let selectorItems = this.optionsList.findvalue(@(o) o.name == inst.name)?.items
+      let selectorItems = this.optionsList?[cutPrefix(idx, "cb_").tointeger()].items
       let valBySelector = !selectorItems ? 0 : selectorItems.findindex(@(i) i.name == inst.name)
       this.scene.findObject(idx)?.setValue(valBySelector)
     }
