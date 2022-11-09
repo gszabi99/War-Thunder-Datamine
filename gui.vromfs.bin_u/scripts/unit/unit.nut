@@ -200,7 +200,8 @@ local Unit = class
       initWeaponryUpgrades(this, uWpCost)
     }
 
-    let errorsTextArray = initUnitModifications(this.modifications, uWpCost?.modifications, this.esUnitType)
+    let errorsTextArray = initUnitModifications(this.modifications,
+      uWpCost?.modifications ?? ::get_full_unit_blk(this.name)?.modifications, this.esUnitType)
     if (uWpCost?.spare != null)
     {
       this.spare = {

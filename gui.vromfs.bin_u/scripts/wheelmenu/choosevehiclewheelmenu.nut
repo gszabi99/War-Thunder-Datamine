@@ -107,7 +107,8 @@ local function openMenu(cfg) {
 
 subscribe("showChooseVehicleMenu", function(params) {
   if (params.isShow) {
-    openMenu(params.cfg)
+    if ((params?.cfg ?? []).len() > 0)
+      openMenu(params.cfg)
     return
   }
   getMenuHandler()?.quit()

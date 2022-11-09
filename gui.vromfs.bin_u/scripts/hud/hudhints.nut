@@ -1719,6 +1719,13 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 3.0
     isHideOnDeath = true
   }
+  CANT_SPAWN_UNLIM_CTRL = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/cant_spawn_unlim_ctrl"
+    showEvent = "hint:cant_spawn_unlim_ctrl:show"
+    lifeTime = 3.0
+    isHideOnDeath = true
+  }
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()
