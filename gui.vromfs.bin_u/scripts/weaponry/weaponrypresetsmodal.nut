@@ -681,7 +681,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     if (pList.len() == 0 || !isFavorite || !isAvailable) {
       this.presets = this.weaponryByPresetInfo.presets
       // Get all presets if no rank choosen
-      pList = pList.len() == 0 ? this.presets : pList
+      pList = pList.len() == 0 ? (clone this.presets) : pList
     }
     if (isFavorite || isAvailable) {
       // Ignore filtering if stored filter has no result for current unit presets.

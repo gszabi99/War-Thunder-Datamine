@@ -74,7 +74,7 @@ from "%scripts/dagui_library.nut" import *
 
 ::g_ww_logs.requestNewLogs <- function requestNewLogs(loadAmount, useLogMark, handler = null)
 {
-  if (useLogMark && !::g_ww_logs.lastMark)
+  if (useLogMark && ::g_ww_logs.lastMark != "")
     return
 
   ::g_ww_logs.changeLogsLoadStatus(true)

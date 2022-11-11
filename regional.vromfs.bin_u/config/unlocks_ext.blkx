@@ -29775,6 +29775,87 @@
       }
     },
     {
+      "id": "2022_11_11_poland_day_decal",
+      "locDescId": "2022_11_11_poland_day_decal/desc",
+      "userLogId": "2022_11_11_poland_day_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "poland_day",
+      "costGold": 199,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_britain"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-11-11 12:00:00",
+            "endDate": "2022-11-14 07:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2022_11_11_plaaf_decal",
+      "locDescId": "2022_11_11_plaaf_decal/desc",
+      "userLogId": "2022_11_11_plaaf_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "plaaf_day",
+      "costGold": 199,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_china"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2022-11-11 09:00:00",
+            "endDate": "2022-11-14 07:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2022_11_04_italy_unity_day_decal",
       "locDescId": "2022_11_04_italy_unity_day_decal/desc",
       "userLogId": "2022_11_04_italy_unity_day_decal_trophy",
@@ -75365,6 +75446,35 @@
             "type": "timeRange",
             "beginDate": "2022-10-31 11:00:00",
             "endDate": "2022-11-02 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "germ_sturmmorser_sturmtiger_skin_trophy",
+      "icon": "https://static-ggc.gaijin.net/skins/germ_sturmmorser_sturmtiger_hinterhalt.png",
+      "locId": "item/germ_sturmmorser_sturmtiger_skin_trophy",
+      "locDescId": "germ_sturmmorser_sturmtiger_skin_trophy/desc",
+      "lockStyle": "lock",
+      "userLogId": "germ_sturmmorser_sturmtiger_skin_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "ardennes_defence_sturmtiger_event",
+      "hidden": false,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "customOnline"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "ardennes_defence_sturmtiger_event",
+            "locParamName": "multiplayer/eventMode",
+            "locValuePrefix": "unlocks/chapter/"
           }
         ]
       }

@@ -235,6 +235,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     {
       foreach (id, item in this.actionItems)
         if (item.id != prevActionItems[id].id
+          || item.type != prevActionItems[id].type
           || (item?.isStreakEx && item.count < 0 && prevActionItems[id].count >= 0)
           || ((item.type == EII_BULLET || item.type == EII_FORCED_GUN)
             && item?.modificationName != prevActionItems[id]?.modificationName)

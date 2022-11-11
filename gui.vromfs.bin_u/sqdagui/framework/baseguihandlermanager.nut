@@ -838,6 +838,12 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
       && (!this.delayedActionsGuiScene || !this.delayedActionsGuiScene.isEqual(::get_cur_gui_scene())))
       this.startActionsDelay()
   }
+
+  function onEventSignOut(_)
+  {
+    this.restoreDataOnLoadHandler.clear()
+    this.restoreDataByTriggerHandler.clear()
+  }
 }
 //=======================  global functions  ==============================
 

@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { saveClanUnitResearchChosen } = require("%scripts/unit/squadronUnitAction.nut")
 
-let function repairRequest(unit, price, onSuccessCb = null)
+let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null)
 {
   let blk = ::DataBlock()
   blk["name"] = unit.name
@@ -21,19 +21,23 @@ let function repairRequest(unit, price, onSuccessCb = null)
       onSuccessCb()
   }
 
-  ::g_tasker.addTask(taskId, progBox, onTaskSuccess)
+  ::g_tasker.addTask(taskId, progBox, onTaskSuccess, onErrorCb)
 }
 
-let function repair(unit, onSuccessCb = null)
+let function repair(unit, onSuccessCb = null, onErrorCb = null)
 {
-  if (!unit)
+  if (!unit) {
+    onErrorCb?()
     return
+  }
   let price = unit.getRepairCost()
   if (price.isZero())
     return onSuccessCb && onSuccessCb()
 
   if (::check_balance_msgBox(price))
-    repairRequest(unit, price, onSuccessCb)
+    repairRequest(unit, price, onSuccessCb, onErrorCb)
+  else
+    onErrorCb?()
 }
 
 let function repairWithMsgBox(unit, onSuccessCb = null)

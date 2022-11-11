@@ -148,7 +148,7 @@ let { get_gui_option } = require("guiOptions")
             function() {
               repairInfo.weaponWarning = false
               repairInfo.canFlyout = repairInfo.canFlyoutIfRefill
-              ::checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCountry)
+              ::checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCountry, cancelFunc)
             },
             price
           )

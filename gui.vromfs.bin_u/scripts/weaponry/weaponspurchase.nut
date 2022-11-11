@@ -182,7 +182,7 @@ local class WeaponsPurchaseProcess
     if (!canBuyItem(repairCost, this.unit, afterBalanceRefillFunc, this.silent))
       this.complete()
     else
-      unitActions.repair(this.unit, afterSuccessFunc)
+      unitActions.repair(this.unit, afterSuccessFunc, Callback(@() this.complete(), this))
   }
 
   function fillModItemSpecificParams(amount = 1)

@@ -459,7 +459,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     if (!checkObj(prevLogsNestObj))
       return
 
-    prevLogsNestObj.show(::g_ww_logs.lastMark || ::g_ww_logs.viewIndex > 0)
+    prevLogsNestObj.show(::g_ww_logs.lastMark != "" || ::g_ww_logs.viewIndex > 0)
     this.updatePrevLogsBtn(false)
   }
 
