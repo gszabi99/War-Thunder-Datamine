@@ -36,6 +36,7 @@ let time = require("%scripts/time.nut")
 let { LEADER_OPERATION_STATES,
   getLeaderOperationState } = require("%scripts/squads/leaderOperationStates.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
@@ -443,6 +444,9 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     if (!::g_squad_manager.isMeReady())
       ::game_mode_manager.setUserGameModeId(::game_mode_manager.getCurrentGameModeId())

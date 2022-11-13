@@ -10,6 +10,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 let { needProceedSquadInvitesAccept,
   isPlayerFromXboxSquadList } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::g_invites_classes.Squad <- class extends ::BaseInvite
 {
@@ -187,6 +188,9 @@ let { needProceedSquadInvitesAccept,
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     let acceptCallback = Callback(this._implAccept, this)
     let callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight")}

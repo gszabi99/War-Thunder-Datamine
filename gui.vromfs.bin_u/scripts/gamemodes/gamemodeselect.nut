@@ -13,6 +13,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::dagui_propid.add_name_id("modeId")
 
@@ -449,6 +450,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     if (gameMode?.diffCode == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))

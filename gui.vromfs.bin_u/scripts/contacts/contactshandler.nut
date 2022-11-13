@@ -16,6 +16,7 @@ let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -1031,6 +1032,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     if (this.curPlayer == null)
       return ::g_popups.add("", loc("msgbox/noChosenPlayer"))

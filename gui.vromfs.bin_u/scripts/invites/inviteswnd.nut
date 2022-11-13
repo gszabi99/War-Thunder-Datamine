@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::gui_start_invites <- function gui_start_invites()
 {
@@ -93,6 +94,10 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 
           if (!invite.isAvailableByCrossPlay() && !::xbox_try_show_crossnetwork_message()) {
             ::showInfoMsgBox(invite.getRestrictionText())
+
+          if (isShowGoldBalanceWarning())
+            return
+
             return
           }
         }

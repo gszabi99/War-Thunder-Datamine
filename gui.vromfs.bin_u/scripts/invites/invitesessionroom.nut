@@ -10,6 +10,7 @@ let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.n
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::g_invites_classes.SessionRoom <- class extends ::BaseInvite
 {
@@ -158,6 +159,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
     if (!::check_gamemode_pkg(::SessionLobby.getGameMode(room)))

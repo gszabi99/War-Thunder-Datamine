@@ -14,6 +14,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::match_search_gm <- -1
 
@@ -436,6 +437,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     let room = this.getCurRoom()
     if (!room)

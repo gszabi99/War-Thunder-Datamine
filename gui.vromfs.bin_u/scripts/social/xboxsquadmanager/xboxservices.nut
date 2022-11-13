@@ -18,6 +18,7 @@ let lastReceivedUsersCache = mkWatched(persist, "lastReceivedUsersCache", [])
 let currentUsersListCache = mkWatched(persist, "currentUsersListCache", [])
 let squadExistCheckArray = mkWatched(persist, "squadExistCheckArray", [])
 let suspendedData = mkWatched(persist, "suspendedData", null)
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 local needCheckSquadInvites = false
 local needCheckSquadInvitesOnContactsUpdate = false
@@ -45,7 +46,7 @@ let function checkAndDisplayInviteRestiction() {
 
   if (!isMultiplayerPrivilegeAvailable.value)
     checkAndShowMultiplayerPrivilegeWarning()
-  else
+  else if (!isShowGoldBalanceWarning())
     ::g_popups.add(loc("squad/name"), loc("squad/wait_until_battle_end"))
 
   return true

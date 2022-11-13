@@ -40,6 +40,8 @@ let { openESportListWnd } = require("%scripts/events/eSportModal.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { gui_do_debug_unlock, debug_open_url } = require("%scripts/debugTools/dbgUtils.nut")
+let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
+} = require("%scripts/user/balanceFeatures.nut")
 
 let template = {
   id = ""
@@ -81,6 +83,9 @@ let list = {
         return
       }
 
+      if (isShowGoldBalanceWarning())
+        return
+
       ::queues.checkAndStart(
         Callback(@() this.goForwardIfOnline(::gui_start_skirmish, false), handler),
         null,
@@ -91,8 +96,9 @@ let list = {
     isHidden = @(...) !::is_custom_battles_enabled()
     isInactiveInQueue = true
     isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
+      || hasMultiplayerRestritionByBalance()
     tooltip = function() {
-      if (!isMultiplayerPrivilegeAvailable.value)
+      if (!isMultiplayerPrivilegeAvailable.value || hasMultiplayerRestritionByBalance())
         return loc("xbox/noMultiplayer")
       return ""
     }
@@ -165,10 +171,14 @@ let list = {
         return
       }
 
+      if (isShowGoldBalanceWarning())
+        return
+
       openESportListWnd()
     }
     isHidden = @(...) !hasFeature("ESport")
     isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
+      || hasMultiplayerRestritionByBalance()
     isInactiveInQueue = true
   }
   BENCHMARK = {
@@ -258,7 +268,7 @@ let list = {
     onClickFunc = function(obj, _handler) {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrlByObj(obj)
-      else if (!isMultiplayerPrivilegeAvailable.value)
+      else if (!isShowGoldBalanceWarning() && !isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
       else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))

@@ -25,6 +25,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -47,6 +48,9 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     checkAndShowMultiplayerPrivilegeWarning()
     return
   }
+
+  if (isShowGoldBalanceWarning())
+    return
 
   local eventId = null
   local chapterId = getTblValue ("chapter", options, null)
@@ -212,6 +216,9 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     this.isQueueWasStartedWithRoomsList = ::events.isEventWithLobby(event)
     let configForStatistic = {

@@ -24,6 +24,8 @@ let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwSer
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
+} = require("%scripts/user/balanceFeatures.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -167,7 +169,8 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
 ::g_world_war.canPlayWorldwar <- function canPlayWorldwar()
 {
-  if (!isMultiplayerPrivilegeAvailable.value)
+  if (!isMultiplayerPrivilegeAvailable.value
+      || !hasMultiplayerRestritionByBalance())
     return false
 
   if (!isCrossPlayEnabled())
@@ -257,6 +260,8 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
     if (!::xbox_try_show_crossnetwork_message())
       ::showInfoMsgBox(this.getPlayWorldwarConditionText(true))
+    else if (!isShowGoldBalanceWarning())
+      return false
     return false
   }
   return true

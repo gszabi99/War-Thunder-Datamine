@@ -18,6 +18,7 @@ let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.n
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -211,6 +212,9 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"

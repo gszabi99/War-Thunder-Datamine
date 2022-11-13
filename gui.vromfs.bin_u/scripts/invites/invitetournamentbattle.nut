@@ -10,6 +10,7 @@ let { getTextWithCrossplayIcon,
 let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::g_invites_classes.TournamentBattle <- class extends ::BaseInvite
 {
@@ -136,6 +137,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
       checkAndShowMultiplayerPrivilegeWarning()
       return
     }
+
+    if (isShowGoldBalanceWarning())
+      return
 
     if (!this.isAvailableByCrossPlay())
       return ::g_popups.add(null, loc("xbox/crossPlayRequired"))

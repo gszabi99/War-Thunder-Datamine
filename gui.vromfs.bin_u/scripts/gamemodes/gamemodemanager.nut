@@ -13,6 +13,8 @@ let { isCrossPlayEnabled,
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
+} = require("%scripts/user/balanceFeatures.nut")
 
 ::featured_modes <- [
   {
@@ -63,7 +65,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     startFunction = function() {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrl(loc("url/tss_all_tournaments"), false, false)
-      else if (!isMultiplayerPrivilegeAvailable.value)
+      else if (!isShowGoldBalanceWarning() || !isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
       else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
@@ -75,7 +77,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())
-                      || !isMultiplayerPrivilegeAvailable.value
+      || !isMultiplayerPrivilegeAvailable.value || hasMultiplayerRestritionByBalance()
     crossPlayRestricted = @() needShowCrossPlayInfo()
                            && isMultiplayerPrivilegeAvailable.value
                            && !isCrossPlayEnabled()
@@ -141,6 +143,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
         return
       }
 
+      if (isShowGoldBalanceWarning())
+        return
+
       ::gui_start_skirmish()
     }
     text = function ()
@@ -161,6 +166,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
     hasNewIconWidget = false
     newIconWidgetId = ""
     inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
+      || hasMultiplayerRestritionByBalance()
     crossplayTooltip = function() {
       if (!isMultiplayerPrivilegeAvailable.value)
         return loc("xbox/noMultiplayer")

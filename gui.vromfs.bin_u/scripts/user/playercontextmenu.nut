@@ -16,6 +16,7 @@ let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManager
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { hasChat } = require("%scripts/user/matchingFeature.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 //-----------------------------
 // params keys:
@@ -238,7 +239,7 @@ let getActions = function(contact, params)
             checkAndShowMultiplayerPrivilegeWarning()
             return
           }
-          else if (!canInteractCrossPlatform) {
+          else if (!isShowGoldBalanceWarning() && !canInteractCrossPlatform) {
             if (!::xbox_try_show_crossnetwork_message())
               showCrossNetworkPlayRestrictionMsgBox()
             return

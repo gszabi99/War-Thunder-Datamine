@@ -27,6 +27,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTournamentInfoBlk } = require("%scripts/events/eventRewards.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -2269,7 +2270,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       data.actionFunc = function(reasonData) {
         if (!reasonData.checkXboxOverlayMessage)
           ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
-        else if (!isMultiplayerPrivilegeAvailable.value)
+        else if (!isShowGoldBalanceWarning() && !isMultiplayerPrivilegeAvailable.value)
           checkAndShowMultiplayerPrivilegeWarning()
         else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
           ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
