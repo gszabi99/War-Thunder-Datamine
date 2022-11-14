@@ -170,7 +170,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 ::g_world_war.canPlayWorldwar <- function canPlayWorldwar()
 {
   if (!isMultiplayerPrivilegeAvailable.value
-      || !hasMultiplayerRestritionByBalance())
+      || hasMultiplayerRestritionByBalance())
     return false
 
   if (!isCrossPlayEnabled())
