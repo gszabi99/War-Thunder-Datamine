@@ -102,11 +102,10 @@
   "additionalHangarCameraBias": 0.13,
   "fmGearsSpringsCoeffMul": 1.0,
   "modelVerticalShift": 0.0,
-  "hangarMission": "gameData/scenes/hangar_field_mission_10_years.blk",
+  "hangarMission": "gameData/scenes/hangar_field_mission.blk",
   "hangarSoundEngineMult": 0.4,
   "hangarSoundMult": 0.15,
   "buoyUnitName": "anchor_buoy",
-  "hasInteractiveUnits": true,
   "useHmapSubdiv": true,
   "modelRotation": 0.0,
   "modelPos": [
@@ -209,9 +208,9 @@
     {
       "hangarPlace": "ship",
       "modelPos": [
-        -1650.0,
+        -2663.0,
         1.0,
-        199.0
+        180.0
       ],
       "modelRotation": -152.0,
       "unitOffset": [
@@ -232,13 +231,13 @@
   ],
   "env": [
     {
-      "env": "7.27",
-      "weight": 1.0,
+      "env": "14.5",
+      "weight": 10.0,
       "compatibilityWeight": 1.0
     },
     {
       "env": "21.15",
-      "weight": 0.0,
+      "weight": 1.0,
       "compatibilityWeight": 0.0
     }
   ],
@@ -755,6 +754,17 @@
       ]
     },
     {
+      "unitName": "ah_64a_greece_usa",
+      "weapon": "ah_64a_greece_usa_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [
+        4,
+        7
+      ]
+    },
+    {
       "unitName": "he_112b_1",
       "weapon": "",
       "type": "plane",
@@ -768,6 +778,17 @@
     {
       "unitName": "ta_154a_1",
       "weapon": "",
+      "type": "plane",
+      "skin": "",
+      "country": "country_germany",
+      "rank": [
+        1,
+        3
+      ]
+    },
+    {
+      "unitName": "fw_190a_5_u14",
+      "weapon": "fw_190a_5_f5b_torpedo",
       "type": "plane",
       "skin": "",
       "country": "country_germany",
@@ -834,6 +855,17 @@
     {
       "unitName": "p-47d_ussr",
       "weapon": "P_47D_bombs",
+      "type": "plane",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [
+        1,
+        3
+      ]
+    },
+    {
+      "unitName": "a_20g_30_ussr",
+      "weapon": "a_20g_30_45_36_torpedo_x2",
       "type": "plane",
       "skin": "",
       "country": "country_ussr",
@@ -1125,6 +1157,17 @@
       "country": "country_japan",
       "rank": [
         4,
+        6
+      ]
+    },
+    {
+      "unitName": "t2_early",
+      "weapon": "t2_early_zuni_aim9e",
+      "type": "plane",
+      "skin": "",
+      "country": "country_japan",
+      "rank": [
+        5,
         7
       ]
     },
@@ -1592,6 +1635,18 @@
       "force": true
     },
     {
+      "unitName": "ussr_2s38",
+      "weapon": "ussr_2s38_default",
+      "type": "tank",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [
+        4,
+        7
+      ],
+      "force": true
+    },
+    {
       "unitName": "germ_t_34_747",
       "weapon": "germ_t_34_747_default",
       "type": "tank",
@@ -1688,7 +1743,8 @@
       "rank": [
         5,
         7
-      ]
+      ],
+      "force": true
     },
     {
       "unitName": "uk_crusader_mk_2_the_saint",
@@ -2153,15 +2209,16 @@
       ]
     },
     {
-      "unitName": "us_destroyer_mitscher_wilkinson",
-      "weapon": "us_destroyer_mitscher_wilkinson_default",
+      "unitName": "us_destroyer_gearing_frank_knox",
+      "weapon": "us_destroyer_gearing_frank_knox_default",
       "type": "ship",
       "skin": "",
       "country": "country_usa",
       "rank": [
         1,
         3
-      ]
+      ],
+      "force": true
     },
     {
       "unitName": "us_cruiser_brooklyn_class_helena",
@@ -2439,6 +2496,18 @@
       ]
     },
     {
+      "unitName": "it_gabbiano_class_c16",
+      "weapon": "it_gabbiano_class_c16_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_italy",
+      "rank": [
+        2,
+        4
+      ],
+      "force": true
+    },
+    {
       "unitName": "it_cruiser_zara_class_pola",
       "weapon": "it_cruiser_zara_class_default",
       "type": "ship",
@@ -2451,28 +2520,28 @@
     }
   ],
   "shootingTanks": {
-    "country_usa": "us_m1a1_aim_abrams",
-    "country_germany": "germ_leopard_1a5",
-    "country_ussr": "ussr_t_72b3_2011",
-    "country_britain": "uk_g6_spg",
-    "country_japan": "jp_type_10",
-    "country_china": "cn_ztz_99a",
-    "country_italy": "it_b1_centauro_romor",
-    "country_france": "fr_leclerc_sxxi",
-    "country_sweden": "sw_strv_122b_plss",
-    "country_israel": "il_magach_6c"
+    "country_usa": "us_m1a2_sep_abrams",
+    "country_germany": "germ_leopard_2a5",
+    "country_ussr": "ussr_t_80bvm",
+    "country_britain": "uk_challenger_2_bn",
+    "country_japan": "jp_tkx_prot",
+    "country_china": "cn_ztz_99_w",
+    "country_italy": "it_centauro_mgs_120",
+    "country_france": "fr_leclerc_s2",
+    "country_sweden": "sw_leopard_2a6nl",
+    "country_israel": "il_magach_6b_gal_batash"
   },
   "movingTanks": {
-    "country_usa": "us_m1128_mgs",
+    "country_usa": "us_hstv_l",
     "country_germany": "germ_schutzenpanzer_puma",
     "country_ussr": "ussr_btr_zd",
     "country_britain": "uk_ratel_20",
     "country_japan": "jp_type_16_mcv_prot",
     "country_china": "cn_hj_9",
     "country_italy": "it_vbc_pt2",
-    "country_france": "fr_vcac_mephisto",
+    "country_france": "fr_vab_santal",
     "country_sweden": "sw_pbv_302_bill",
-    "country_israel": "il_machbet"
+    "country_israel": "il_tcm_20"
   },
   "movingPlanes": {
     "country_usa": "a_10a_late",
@@ -2529,302 +2598,9 @@
       "n": "unit_hangar_technic_idle_"
     }
   },
-  "backgroundModel": [
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        368.283,
-        31.5326,
-        622.495
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        368.636,
-        31.5326,
-        621.955
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        369.238,
-        31.5326,
-        621.716
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        369.857,
-        31.5326,
-        621.887
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        370.652,
-        31.5326,
-        622.337
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        370.287,
-        31.5326,
-        623.041
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        369.919,
-        31.5326,
-        623.583
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        369.31,
-        31.5326,
-        623.814
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        368.719,
-        31.5326,
-        623.638
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        368.315,
-        31.5326,
-        623.131
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        32.0606,
-        47.0155,
-        -644.497
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        32.6292,
-        47.0155,
-        -643.945
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        33.0409,
-        47.0155,
-        -643.435
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        33.086,
-        47.0155,
-        -642.786
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        32.7467,
-        47.0155,
-        -642.271
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        32.1449,
-        47.0155,
-        -642.031
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        31.5269,
-        47.0155,
-        -642.184
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        31.1118,
-        47.0155,
-        -642.677
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        31.0569,
-        47.0155,
-        -643.324
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        31.4,
-        47.0155,
-        -643.867
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1580.57,
-        5.5,
-        166.73
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1580.95,
-        5.5,
-        166.216
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1581.57,
-        5.5,
-        166.036
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1582.18,
-        5.5,
-        166.248
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1582.55,
-        5.5,
-        166.771
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1582.54,
-        5.5,
-        167.419
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1582.18,
-        5.5,
-        167.919
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1581.55,
-        5.5,
-        168.109
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1580.93,
-        5.5,
-        167.906
-      ]
-    },
-    {
-      "effectName": "sparks_roman_candle",
-      "pos": [
-        -1580.21,
-        5.5,
-        167.572
-      ]
-    }
-  ],
   "hangarEffects": {
-    "checkHoliday": false,
+    "checkHoliday": true,
     "hangarEffect": [
-      {
-        "effect": "misc_christmas_cracker",
-        "areaMin": [
-          430.0,
-          30.0,
-          525.0
-        ],
-        "areaMax": [
-          460.0,
-          50.0,
-          555.0
-        ],
-        "delay": [
-          2.0,
-          4.0
-        ]
-      },
-      {
-        "effect": "misc_christmas_cracker",
-        "areaMin": [
-          -20.0,
-          45.0,
-          -620.0
-        ],
-        "areaMax": [
-          0.0,
-          65.0,
-          -610.0
-        ],
-        "delay": [
-          2.0,
-          4.0
-        ]
-      },
-      {
-        "effect": "misc_christmas_cracker",
-        "areaMin": [
-          -1770.0,
-          0.0,
-          180.0
-        ],
-        "areaMax": [
-          -1720.0,
-          30.0,
-          250.0
-        ],
-        "delay": [
-          2.0,
-          4.0
-        ]
-      },
       {
         "effect": "misc_firework",
         "areaMin": [
