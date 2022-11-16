@@ -2987,8 +2987,8 @@ let statTooltipColumnParamByType = {
     if (this.state != debrState.done)
       return
 
-    let isToBattleBtnVisible = this.isToBattleActionEnabled()
     let showWorldWarOperationBtn = this.needShowWorldWarOperationBtn()
+    let isToBattleBtnVisible = this.isToBattleActionEnabled() && !showWorldWarOperationBtn
 
     ::showBtnTable(this.scene, {
       btn_next = true

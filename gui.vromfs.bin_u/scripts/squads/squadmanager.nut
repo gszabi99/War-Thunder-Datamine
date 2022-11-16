@@ -57,6 +57,8 @@ let SQUAD_SIZE_FEATURES_CHECK = {
 }
 
 let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
+let DEFAULT_SQUAD_CHAT_INFO = { name = "", password = "" }
+let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
 ::g_squad_manager <- {
   [PERSISTENT_DATA_PARAMS] = ["squadData", "meReady", "isMyCrewsReady", "lastUpdateStatus", "state",
@@ -76,15 +78,8 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
     invitedPlayers = {}
     applications = {}
     platformInfo = []
-    chatInfo = {
-      name = ""
-      password = ""
-    }
-    wwOperationInfo = {
-      id = -1
-      country = ""
-      battle = null
-    }
+    chatInfo = clone DEFAULT_SQUAD_CHAT_INFO
+    wwOperationInfo = clone DEFAULT_SQUAD_WW_OPERATION_INFO
     properties = clone DEFAULT_SQUAD_PROPERTIES
     presence = clone DEFAULT_SQUAD_PRESENCE
     psnSessionId = ""
@@ -685,34 +680,15 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 
     this.roomCreateInProgress = true
     callback = function() {
-                 ::g_squad_manager.updateSquadData()
-                 ::g_squad_manager.roomCreateInProgress = false
-               }
+      ::g_squad_manager.setSquadData({ chatInfo = { name = name, password = password } })
+      ::g_squad_manager.roomCreateInProgress = false
+    }
   }
 
   if (::u.isEmpty(password))
     return
 
   ::g_chat.joinSquadRoom(callback)
-}
-
-::g_squad_manager.updateSquadData <- function updateSquadData() {
-  ::g_squad_manager.setSquadData({
-    chatInfo = {
-      name = this.getSquadRoomName()
-      password = this.getSquadRoomPassword()
-    }
-    wwOperationInfo = {
-      id = this.getWwOperationId()
-      country = this.getWwOperationCountry()
-      battle = this.getWwOperationBattle()
-    }
-    properties = clone this.squadData.properties
-    presence = clone this.squadData.presence
-    psnSessionId = this.squadData?.psnSessionId ?? ""
-    leaderBattleRating = this.squadData?.leaderBattleRating ?? 0
-    leaderGameModeId = this.squadData?.leaderGameModeId ?? ""
-  })
 }
 
 ::g_squad_manager.disbandSquad <- function disbandSquad()
@@ -1190,10 +1166,10 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
   this.squadData.invitedPlayers.clear()
   this.squadData.applications.clear()
   this.squadData.platformInfo.clear()
-  this.squadData.chatInfo = { name = "", password = "" }
-  this.squadData.wwOperationInfo = { id = -1, country = "", battle = null }
-  this.squadData.properties = clone DEFAULT_SQUAD_PROPERTIES
-  this.squadData.presence = clone DEFAULT_SQUAD_PRESENCE
+  this.squadData.chatInfo.__update(DEFAULT_SQUAD_CHAT_INFO)
+  this.squadData.wwOperationInfo.__update(DEFAULT_SQUAD_WW_OPERATION_INFO)
+  this.squadData.properties.__update(DEFAULT_SQUAD_PROPERTIES)
+  this.squadData.presence.__update(DEFAULT_SQUAD_PRESENCE)
   this.squadData.psnSessionId = ""
   this.squadData.leaderBattleRating = 0
   this.squadData.leaderGameModeId = ""
@@ -1431,8 +1407,8 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
     this.updateMyMemberData()
     if (this.isSquadLeader()) {
       this.updatePresenceSquad()
-      this.updateSquadData()
-      this.setLeaderData(true)
+      this.setSquadData(this.getLeaderData().__update({presence = this.squadData.presence}))
+      return
     }
     if (this.getPresence().isInBattle)
       ::g_popups.add(loc("squad/name"), loc("squad/wait_until_battle_end"))
@@ -1464,26 +1440,18 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 
 ::g_squad_manager._parseCustomSquadData <- function _parseCustomSquadData(data)
 {
-  let chatInfo = getTblValue("chatInfo", data, null)
-  if (chatInfo != null)
-    this.squadData.chatInfo = chatInfo
-  else
-    this.squadData.chatInfo = {name = "", password = ""}
+  this.squadData.chatInfo.__update(data?.chatInfo ?? DEFAULT_SQUAD_CHAT_INFO)
+  this.squadData.wwOperationInfo.__update(data?.wwOperationInfo ?? DEFAULT_SQUAD_WW_OPERATION_INFO)
 
-  let wwOperationInfo = getTblValue("wwOperationInfo", data, null)
-  if (wwOperationInfo != null)
-    this.squadData.wwOperationInfo = wwOperationInfo
-  else
-    this.squadData.wwOperationInfo = { id = -1, country = "", battle = null }
-
-  let properties = getTblValue("properties", data)
-  local property = null
+  let properties = data?.properties
   local isPropertyChange = false
+  if (!properties) {
+    this.squadData.properties.__update(DEFAULT_SQUAD_PROPERTIES)
+    isPropertyChange = true
+  }
   if (::u.isTable(properties))
-    foreach(key, value in properties)
-    {
-      property = this.squadData?.properties?[key]
-      if (::u.isEqual(property, value))
+    foreach(key, value in properties) {
+      if (::u.isEqual(this.squadData?.properties?[key], value))
         continue
 
       this.squadData.properties[key] <- value
@@ -1754,32 +1722,32 @@ let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 
 ::g_squad_manager.onEventBattleRatingChanged <- function onEventBattleRatingChanged(_params)
 {
-  this.setLeaderData()
+  this.setSquadData(this.getLeaderData())
 }
 
 ::g_squad_manager.onEventCurrentGameModeIdChanged <- function onEventCurrentGameModeIdChanged(_params)
 {
-  this.setLeaderData(false)
+  this.setSquadData(this.getLeaderData(false))
 }
 
 ::g_squad_manager.onEventEventsDataUpdated <- function onEventEventsDataUpdated(_params)
 {
-  this.setLeaderData(false)
+  this.setSquadData(this.getLeaderData(false))
 }
 
-::g_squad_manager.setLeaderData <- function setLeaderData(isActualBR = true)
+::g_squad_manager.getLeaderData <- function getLeaderData(isActualBR = true)
 {
   if (!this.isSquadLeader())
-    return
+    return {}
 
   let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
   if (!isActualBR && this.squadData.leaderGameModeId == currentGameModeId)
-    return
+    return {}
 
-  let data = clone this.squadData
-  data.leaderBattleRating = isActualBR ? battleRating.recentBR.value : 0
-  data.leaderGameModeId = isActualBR ? battleRating.recentBrGameModeId.value : currentGameModeId
-  this.setSquadData(data)
+  return {
+    leaderBattleRating = isActualBR ? battleRating.recentBR.value : 0
+    leaderGameModeId = isActualBR ? battleRating.recentBrGameModeId.value : currentGameModeId
+  }
 }
 
 ::g_squad_manager.getMembersNotAllowedInWorldWar <- function getMembersNotAllowedInWorldWar()

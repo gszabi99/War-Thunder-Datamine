@@ -117,9 +117,6 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "sec_weapons")
     {
-      if (hasSlotbarByUnitsGroups)
-        continue
-
       actionText = loc("options/secondary_weapons")
       icon       = "#ui/gameuiskin#slot_preset.svg"
       haveWarning = checkUnitSecondaryWeapons(unit) != UNIT_WEAPONS_READY
@@ -146,9 +143,6 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "weapons")
     {
-      if (hasSlotbarByUnitsGroups)
-        continue
-
       actionText = loc("mainmenu/btnWeapons")
       icon       = "#ui/gameuiskin#btn_weapons.svg"
       haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY

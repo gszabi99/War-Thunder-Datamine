@@ -1332,8 +1332,8 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   function getSlotbarActions()
   {
     if (this.hasSlotbarByUnitsGroups)
-      return [ "autorefill", "aircraft", "changeUnitsGroup", "weapons", "crew", "info", "repair" ]
+      return [ "autorefill", "aircraft", "changeUnitsGroup", "weapons", "sec_weapons", "crew", "info", "repair" ]
     else
-      return [ "autorefill", "aircraft", "weapons", "crew", "info", "repair" ]
+      return [ "autorefill", "aircraft", "weapons", "sec_weapons", "crew", "info", "repair" ]
   }
 }
