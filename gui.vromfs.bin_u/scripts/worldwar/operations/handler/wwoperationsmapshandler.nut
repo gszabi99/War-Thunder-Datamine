@@ -866,16 +866,17 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       && myClanOperation?.data.map == this.selMap?.name
     let myLastOperation = ::g_world_war.lastPlayedOperationId
       ? getOperationById(::g_world_war.lastPlayedOperationId) : null
+    let countryId = obj.countryId
     if (myLastOperation || isMyClanOperation)
       return ::scene_msg_box("disjoin_operation", null,
         loc("worldwar/disjoin_operation",
           {id = myLastOperation?.getNameText(false) ?? myClanOperation?.getNameText(false) ?? ""}),
         [
-          ["ok", Callback(@() this.findRandomOperationByCountry(obj.countryId), this)],
+          ["ok", Callback(@() this.findRandomOperationByCountry(countryId), this)],
           ["cancel", @() null]
         ], "ok")
 
-    this.findRandomOperationByCountry(obj.countryId)
+    this.findRandomOperationByCountry(countryId)
   }
 
   function onOperationListSwitch()
