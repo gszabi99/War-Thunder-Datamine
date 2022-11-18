@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { split_by_chars } = require("string")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
+let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
 ::ww_gui_bhv.worldWarMapControls <- class {
   eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_WHEEL | EV_PROCESS_SHORTCUTS | EV_TIMER | EV_MOUSE_MOVE
@@ -15,11 +16,13 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
   selectedArmiesID = "selectedArmies"
   objectsHoverEnabledID = ::dagui_propid.add_name_id("objectsHoverEnabled")
 
-  function onLMouse(obj, mx, my, is_up, _bits)
+  function onAttach(obj)
   {
-    if (is_up)
-      return RETCODE_NOTHING
+    markObjShortcutOnHover(obj, true)
+    return RETCODE_NOTHING
+  }
 
+  function selectInteractiveElements(obj, mx, my) {
     ::ww_event("ClearSelectFromLogArmy")
     ::ww_clear_outlined_zones()
     let mapPos = ::Point2(mx, my)
@@ -28,28 +31,35 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     if (curActionMode != null)
     {
       curActionMode.useAction(mapPos)
-      return RETCODE_PROCESSED
+      return
     }
 
     if (::ww_is_append_path_mode_active())
     {
       this.onMoveCommand(obj, mapPos, true)
-      return RETCODE_PROCESSED
+      return
     }
 
     local selectedObject = mapObjectSelect.NONE
     if (this.checkBattle(obj, mapPos))
       selectedObject = mapObjectSelect.BATTLE
     else if (this.checkArmy(obj, mapPos))
-      return RETCODE_PROCESSED
+      return
     else if (this.checkAirfield(obj, mapPos))
-      return RETCODE_PROCESSED
+      return
     else if (this.checkRearZone(obj, mapPos))
-      return RETCODE_PROCESSED
+      return
 
     this.setSelectedObject(obj, selectedObject)
     this.sendMapEvent("ClearSelection")
+  }
 
+  function onLMouse(obj, mx, my, is_up, _bits)
+  {
+    if (is_up)
+      return RETCODE_NOTHING
+
+    this.selectInteractiveElements(obj, mx, my)
     return RETCODE_PROCESSED
   }
 
@@ -495,6 +505,25 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
     battles.sort(sortFunc)
 
     return battles[0]
+  }
+
+  function onShortcutActivate(obj, is_down)
+  {
+    if (is_down)
+      return RETCODE_HALT
+
+    let mousePos = ::get_dagui_mouse_cursor_pos_RC()
+    this.selectInteractiveElements(obj, mousePos[0], mousePos[1])
+    return RETCODE_HALT
+  }
+
+  function onShortcutCancel(obj, is_down) {
+    if (is_down)
+      return RETCODE_HALT
+
+    this.setSelectedObject(obj, mapObjectSelect.NONE)
+    this.sendMapEvent("ClearSelection")
+    return RETCODE_HALT
   }
 }
 

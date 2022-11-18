@@ -533,6 +533,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
         onMapSideActionCb = this.onMapSideAction.bindenv(this)
         onToBattlesCb = this.onToBattles.bindenv(this)
         onBackOperationCb = this.onBackOperation.bindenv(this)
+        onBackOperationForSelectSideCb = this.onBackOperationForSelectSide.bindenv(this)
       } : null)
     this.descHandlerWeak = this.mapDescrObj.weakref()
     this.registerSubHandler(this.mapDescrObj)
@@ -1201,9 +1202,9 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     this.updateButtons()
   }
 
-  function getFocusedConflictSideObj() {
+  function getSelectedConflictSideObj() {
     let countriesContainerObj = this.scene.findObject("countries_container")
-    if (!checkObj(countriesContainerObj) || !countriesContainerObj.isFocused())
+    if (!checkObj(countriesContainerObj))
       return null
 
     let value = ::get_obj_valid_index(countriesContainerObj)
@@ -1214,15 +1215,23 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   }
 
   function onToBattles() {
-    let sideObj = this.getFocusedConflictSideObj()
+    let sideObj = this.getSelectedConflictSideObj()
     if (!checkObj(sideObj))
       return
 
     this.onFindOperationBtn(sideObj)
   }
 
+  function onBackOperationForSelectSide() {
+    let sideObj = this.getSelectedConflictSideObj()
+    if (!checkObj(sideObj))
+      return
+
+    this.onBackOperation(sideObj)
+  }
+
   function onMapSideAction() {
-    let sideObj = this.getFocusedConflictSideObj()
+    let sideObj = this.getSelectedConflictSideObj()
     if (!checkObj(sideObj))
       return
 

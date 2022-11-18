@@ -35,5 +35,9 @@ tdiv {
       btnName:t='Y'
       on_click:t='onMapSideAction'
     }
+    DummyButton {
+      btnName:t='LT'
+      on_click:t='onBackOperationForSelectSide'
+    }
   }
 }

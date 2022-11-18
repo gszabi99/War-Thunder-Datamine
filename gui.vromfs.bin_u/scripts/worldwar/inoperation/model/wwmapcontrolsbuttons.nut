@@ -10,12 +10,12 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
 
 global enum WW_MAP_CONSPLE_SHORTCUTS
 {
-  LMB_IMITATION = "RT"
-  MOVE = "A"
+  LMB_IMITATION = "A"
+  MOVE = "Y"
   ENTRENCH = "RB"
-  STOP = "Y"
+  STOP = "LT"
   PREPARE_FIRE = "LB"
-  TRANSPORT_LOAD = "LT"
+  TRANSPORT_LOAD = "L3"
   TRANSPORT_UNLOAD = "R3"
 }
 
@@ -72,7 +72,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     sortOrder = ORDER.ENTRENCH
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.ENTRENCH
     keyboardShortcut = "E"
-    style = "accessKey:'J:RB | E';"
+    style = $"accessKey:'J:{WW_MAP_CONSPLE_SHORTCUTS.ENTRENCH} | E';"
     getActionName = @() loc("worldWar/armyEntrench")
     isHidden = function () {
       let armiesNames = ::ww_get_selected_armies_names()
@@ -106,7 +106,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     sortOrder = ORDER.STOP
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.STOP
     keyboardShortcut = "S"
-    style = "accessKey:'J:Y | S';"
+    style = $"accessKey:'J:{WW_MAP_CONSPLE_SHORTCUTS.STOP} | S';"
     getActionName = @() loc("worldWar/armyStop")
     isHidden = @() ::ww_get_selected_armies_names().len() == 0
   }
@@ -117,7 +117,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     sortOrder = ORDER.PREPARE_FIRE
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.PREPARE_FIRE
     keyboardShortcut = "A"
-    style = "accessKey:'J:LB | A';"
+    style = $"accessKey:'J:{WW_MAP_CONSPLE_SHORTCUTS.PREPARE_FIRE} | A';"
     getActionName = @() actionModesManager.getCurActionModeId() == AUT_ArtilleryFire
       ? loc("worldWar/armyCancel")
       : loc("worldWar/armyFire")
@@ -143,7 +143,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     sortOrder = ORDER.TRANSPORT_LOAD
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.TRANSPORT_LOAD
     keyboardShortcut = "T"
-    style = "accessKey:'J:LT | T';"
+    style = $"accessKey:'J:L.Thumb | T';"
     getActionName = function() {
       if (actionModesManager.getCurActionModeId() == AUT_TransportLoad)
         return loc("worldWar/armyCancel")
@@ -183,7 +183,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     sortOrder = ORDER.TRANSPORT_UNLOAD
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.TRANSPORT_UNLOAD
     keyboardShortcut = "R"
-    style = "accessKey:'J:R3 | R';"
+    style = $"accessKey:'J:R.Thumb | R';"
     getActionName = function() {
       if (actionModesManager.getCurActionModeId() == AUT_TransportUnload)
         return loc("worldWar/armyCancel")

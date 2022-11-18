@@ -161,4 +161,5 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   onMapSideAction = @() this.descParams?.onMapSideActionCb()
   onToBattles = @() this.descParams?.onToBattlesCb()
   onBackOperation = @(obj) this.descParams?.onBackOperationCb(obj)
+  onBackOperationForSelectSide = @() this.descParams?.onBackOperationForSelectSideCb()
 }
