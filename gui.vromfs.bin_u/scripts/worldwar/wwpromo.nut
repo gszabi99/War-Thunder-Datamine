@@ -45,7 +45,7 @@ addPromoButtonConfig({
 
     ::g_promo.setButtonText(buttonObj, id, getWorldWarPromoText(isWwEnabled))
 
-    if (!::g_promo.isCollapsed(id))
+    if ((!::should_disable_menu() && !::g_login.isProfileReceived()) || !::g_promo.isCollapsed(id))
       return
 
     if (::g_world_war.hasNewNearestAvailableMapToBattle())

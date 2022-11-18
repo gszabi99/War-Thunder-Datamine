@@ -25,8 +25,8 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
-    ::script_net_assert_once("unsafe profile settings write",
-      "save_local_account_settings at login state {0}".subst(::g_login.getStateDebugStr()))
+    logerr("".concat("unsafe profile settings read: save_local_account_settings at login state ",
+      ::g_login.getStateDebugStr()))
     return
   }
 
@@ -39,8 +39,8 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
-    ::script_net_assert_once("unsafe profile settings read",
-      "load_local_account_settings at login state {0}".subst(::g_login.getStateDebugStr()))
+    logerr("".concat("unsafe profile settings read: load_local_account_settings at login state ",
+      ::g_login.getStateDebugStr()))
     return defValue
   }
 
@@ -128,8 +128,8 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
-    ::script_net_assert_once("unsafe profile settings read",
-      "loadLocalByAccount at login state {0}".subst(::g_login.getStateDebugStr()))
+    logerr("".concat("unsafe profile settings read: loadLocalByAccount at login state ",
+      ::g_login.getStateDebugStr()))
     return defValue
   }
 
@@ -157,8 +157,8 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
-    ::script_net_assert_once("unsafe profile settings read",
-      "saveLocalByAccount at login state {0}".subst(::g_login.getStateDebugStr()))
+    logerr("".concat("unsafe profile settings read: saveLocalByAccount at login state ",
+      ::g_login.getStateDebugStr()))
     return
   }
 
