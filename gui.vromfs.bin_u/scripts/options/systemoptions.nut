@@ -128,7 +128,6 @@ local mUiStruct = [
       "lastClipSize"
       "lenseFlares"
       "enableSuspensionAnimation"
-      "dynamicHoles"
       "alpha_to_coverage"
       "jpegShots"
       "compatibilityMode"
@@ -1012,8 +1011,6 @@ mSettings = {
     setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, (val ? 8192 : 4096)) }
   }
   lenseFlares = { widgetType="checkbox" def=false blk="graphics/lenseFlares" restart=false
-  }
-  dynamicHoles = { widgetType="checkbox" def=true blk="graphics/dynamicHoles" restart=true
   }
   jpegShots = { widgetType="checkbox" def=true blk="debug/screenshotAsJpeg" restart=false }
   compatibilityMode = { widgetType="checkbox" def=false blk="video/compatibilityMode" restart=true
