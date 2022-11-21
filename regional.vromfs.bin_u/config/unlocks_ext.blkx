@@ -15287,6 +15287,32 @@
       }
     },
     {
+      "id": "hidden_a_new_unlock",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "starter_variable_0",
+          "starter_variable_1"
+        ]
+      }
+    },
+    {
+      "id": "hidden_b_new_unlock",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "starter_variable_2",
+          "starter_variable_3"
+        ]
+      }
+    },
+    {
       "id": "04_03_20_test_newbies_hidden",
       "type": "achievement",
       "hidden": true
@@ -15595,44 +15621,25 @@
       "type": "challenge",
       "hidden": true,
       "popupInMenu": true,
-      "hideForLang": "Japanese",
       "reqFeature": "Starterpack",
       "mode": {
-        "type": "char_always_progress",
+        "type": "char_aircrafts_in_era",
+        "num": 1,
+        "era": 2,
         "condition": [
           {
             "type": "char_unlocked",
-            "unlock": "unit_in_2_era_1000_pack"
+            "unlock": "hidden_a_new_unlock"
           },
           {
-            "type": "char_unlocked",
-            "unlock": "hidden_b_test_unlock"
+            "type": "char_player_has_entitlement",
+            "entitlement": "DMMAccount",
+            "invertResult": true
           },
           {
-            "type": "char_unlocked",
-            "positive": false,
-            "unlock": [
-              "starter_pack_closed_gold_paid",
-              "starter_pack_PremiumAccountWeek",
-              "starter_pack_PremiumAccount15days",
-              "starter_pack_PremiumAccount30days",
-              "starter_pack_PremiumAccount365days",
-              "starter_pack_DMMAccount",
-              "starter_pack_Console",
-              "player_has_vehicles_in_era",
-              "hidden_a_test_unlock",
-              "hidden_c_test_unlock"
-            ]
-          },
-          {
-            "type": "playerFirstLogin",
-            "beginDate": "2019-10-10 00:00:00",
-            "endDate": "2022-01-01 15:00:00"
-          },
-          {
-            "type": "char_time_range",
-            "beginDate": "2020-04-07 00:00:00",
-            "endDate": "2022-01-01 15:00:00"
+            "type": "char_player_has_entitlement",
+            "entitlement": "customerAccount",
+            "invertResult": true
           },
           {
             "type": "playerPlatform",
@@ -15662,33 +15669,17 @@
           },
           {
             "type": "char_unlocked",
-            "unlock": "hidden_c_test_unlock"
+            "unlock": "hidden_b_new_unlock"
           },
           {
-            "type": "char_unlocked",
-            "positive": false,
-            "unlock": [
-              "starter_pack_closed_gold_paid",
-              "starter_pack_PremiumAccountWeek",
-              "starter_pack_PremiumAccount15days",
-              "starter_pack_PremiumAccount30days",
-              "starter_pack_PremiumAccount365days",
-              "starter_pack_DMMAccount",
-              "starter_pack_Console",
-              "player_has_vehicles_in_era",
-              "hidden_a_test_unlock",
-              "hidden_b_test_unlock"
-            ]
+            "type": "char_player_has_entitlement",
+            "entitlement": "DMMAccount",
+            "invertResult": true
           },
           {
-            "type": "playerFirstLogin",
-            "beginDate": "2019-10-10 00:00:00",
-            "endDate": "2022-01-01 15:00:00"
-          },
-          {
-            "type": "char_time_range",
-            "beginDate": "2020-04-07 00:00:00",
-            "endDate": "2022-01-01 15:00:00"
+            "type": "char_player_has_entitlement",
+            "entitlement": "customerAccount",
+            "invertResult": true
           },
           {
             "type": "playerPlatform",
