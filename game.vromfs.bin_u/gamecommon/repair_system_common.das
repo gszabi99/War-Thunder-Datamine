@@ -42,15 +42,16 @@ def is_repair_needed(unit : Unit?; repair_state : uint; speed_multiplier : float
                      with_mods : bool; without_mods : bool; with_help : bool) : bool
   if unit.isGroundModel && speed_multiplier > 0.0f
     assume dm = *unit.visual
+    let repair_with_mods_available = with_help || get_flag(repair_state, RepairState REPAIR_AVAILABLE) || get_flag(repair_state, RepairState REPAIR_ON_BASE)
     for part_id, part_state, part_hp in parts_id, parts_state, parts_hp
       if can_repair_part(dm, part_id, part_state, part_hp, repair_system_repair_hp_multiplier, true)
         if !get_flag(part_state, DmPartRepairState MOD_REQUIRED)
           if without_mods
             return true
         elif with_mods
-          if with_help || get_flag(repair_state, RepairState REPAIR_AVAILABLE) || get_flag(repair_state, RepairState REPAIR_ON_BASE)
+          if repair_with_mods_available
             return true
-    if with_mods && (with_help || get_flag(repair_state, RepairState REPAIR_AVAILABLE) || get_flag(repair_state, RepairState REPAIR_ON_BASE))
+    if with_mods && repair_with_mods_available
       var trailer = get_unit(unit.getTrailerId);
       if trailer != null && !trailer.isAlive
         return true

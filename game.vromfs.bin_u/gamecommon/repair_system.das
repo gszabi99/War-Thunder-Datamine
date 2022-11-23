@@ -230,7 +230,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                             repair_system_parts_speed_mult : FloatList;
                             var repair_system_parts_hp : Point4List&;        // x - hp, y - ph needed, z - repairHpVal, w - hpForRepair
                             var repair_system_parts_state : UInt32List&)
-  if !active || !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)
+  if !active
     return
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
