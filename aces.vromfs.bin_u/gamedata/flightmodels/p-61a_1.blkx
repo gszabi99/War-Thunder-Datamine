@@ -2621,10 +2621,22 @@
     }
   },
   "weapon_presets": {
-    "preset": {
-      "name": "default",
-      "blk": "gameData/FlightModels/weaponPresets/p_61a_1_default.blk"
-    }
+    "preset": [
+      {
+        "name": "default",
+        "blk": "gameData/FlightModels/weaponPresets/p_61a_1_default.blk"
+      },
+      {
+        "name": "p-61a_11_2_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p_61a_11_bomb_2_500lbs.blk",
+        "reqModification": "fmbc_mk1"
+      },
+      {
+        "name": "p-61c_11_2_1000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p_61a_11_bomb_2_1000lbs.blk",
+        "reqModification": "flbc_mk1"
+      }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -3214,6 +3226,15 @@
     "anm2_belt_pack": {},
     "anm2_new_gun": {
       "reqModification": "anm2_belt_pack"
+    },
+    "fmbc_mk1": {
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "flbc_mk1": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fmbc_mk1"
     },
     "air_extinguisher": {
       "image": "#ui/gameuiskin#engine_extinguisher.png",
