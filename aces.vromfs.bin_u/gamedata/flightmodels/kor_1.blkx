@@ -57,14 +57,6 @@
         "genericDamageMult": 0.3,
         "hp": 17.0
       },
-      "aileron2_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 20.3
-      },
-      "aileron2_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 20.3
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 14.1
@@ -76,17 +68,11 @@
       "fin_dm": {
         "hp": 15.5
       },
-      "flap1_l_dm": {
-        "hp": 9.8
+      "flap_l_dm": {
+        "hp": 15.5
       },
-      "flap1_r_dm": {
-        "hp": 9.8
-      },
-      "flap2_l_dm": {
-        "hp": 34.5
-      },
-      "flap2_r_dm": {
-        "hp": 34.5
+      "flap_r_dm": {
+        "hp": 15.5
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
@@ -120,21 +106,21 @@
       },
       "wing2_l_dm": {
         "genericDamageMult": 0.5,
-        "hp": 47.5
+        "hp": 53.3
       },
       "wing2_r_dm": {
         "genericDamageMult": 0.5,
-        "hp": 47.5
+        "hp": 53.3
       }
     },
     "c_dural7": {
       "wing_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 60.5
+        "hp": 69.5
       },
       "wing_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 60.5
+        "hp": 69.5
       }
     },
     "dural": {
@@ -258,88 +244,6 @@
       },
       {
         "name": "aileron1_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "aileron2_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "aileron2_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -547,7 +451,7 @@
         ]
       },
       {
-        "name": "flap1_l_dm",
+        "name": "flap_l_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -588,7 +492,7 @@
         ]
       },
       {
-        "name": "flap1_r_dm",
+        "name": "flap_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -621,88 +525,6 @@
             "damage": 20.0,
             "cut": 1.0,
             "nothing": 1.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "flap2_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "flap2_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
           },
           {
             "damage": 30.0,

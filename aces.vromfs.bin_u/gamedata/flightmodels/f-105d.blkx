@@ -40,7 +40,7 @@
         "hp": 40.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -736,10 +736,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -2504,9 +2512,8 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
-              "emitter": "pylon_l_in_b_mk84",
-              "bullets": 1
+              "blk": "gameData/Weapons/containers/mer_us_blu_27_x2_left_wing.blk",
+              "emitter": "mer_001"
             }
           }
         ]
@@ -2758,9 +2765,8 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
-              "emitter": "pylon_r_in_b_mk84",
-              "bullets": 1
+              "blk": "gameData/Weapons/containers/mer_us_blu_27_x2_right_wing.blk",
+              "emitter": "mer_003"
             }
           }
         ]
@@ -3140,6 +3146,12 @@
       "reqModification": "us_aim_9b",
       "tier": 3,
       "modClass": "weapon"
+    },
+    "air_extinguisher": {
+      "prevModification": "us_aim_9e",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
     },
     "us_blu27_b": {
       "modClass": "weapon",

@@ -49,7 +49,7 @@
         "hp": 15.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -59,10 +59,6 @@
         "hp": 30.5
       },
       "transmission1_dm": {
-        "genericDamageMult": 1.6,
-        "hp": 30.5
-      },
-      "transmission2_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
       }
@@ -647,35 +643,6 @@
         ]
       },
       {
-        "name": "transmission2_dm",
-        "onHit": [
-          {
-            "fire": 0.001,
-            "leak_oil": 0.8,
-            "cut": 0.0
-          },
-          {
-            "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
-            "cut": 0.0
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 25.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          },
-          {
-            "damage": 30.0,
-            "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        ]
-      },
-      {
         "name": "wing_l_dm",
         "defaultEffectPart": "spar_l_dm",
         "onHit": [
@@ -1048,11 +1015,6 @@
   "attach": {
     "pilot1": "pilot_us_500",
     "gunner1": "gunner_sit_us_500"
-  },
-  "spawn_count": {
-    "numSpawnsPerBattleSimulation": 1,
-    "numSpawnsPerBattleArcade": 2,
-    "numSpawnsPerBattleHistorical": 2
   },
   "propellers": {
     "stage1": {
@@ -2591,22 +2553,22 @@
     ]
   },
   "cutting": {
-    "emtr_break_wing0_l_from": [
+    "_emtr_break_wing0_l_from": [
       -0.221807,
       -0.0491976,
       0.843767
     ],
-    "emtr_break_wing0_l_to": [
+    "_emtr_break_wing0_l_to": [
       -0.221807,
       -0.0491976,
       1.03644
     ],
-    "emtr_break_wing0_r_from": [
+    "_emtr_break_wing0_r_from": [
       -0.221806,
       -0.0491993,
       -0.843768
     ],
-    "emtr_break_wing0_r_to": [
+    "_emtr_break_wing0_r_to": [
       -0.221806,
       -0.0491993,
       -1.03644

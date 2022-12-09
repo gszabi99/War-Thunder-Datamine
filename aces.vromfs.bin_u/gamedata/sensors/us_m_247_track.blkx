@@ -5,9 +5,9 @@
     "track": {
       "power": 90.0,
       "band": 9,
-      "rcs": 3.0,
-      "range": 10000.0,
-      "rangeMax": 15000.0,
+      "rcs": 1.0,
+      "range": 15000.0,
+      "rangeMax": 20000.0,
       "antenna": {
         "angleHalfSens": 1.5,
         "sideLobesSensitivity": -35.0
@@ -73,14 +73,15 @@
   "signals": {
     "track": {
       "groundClutter": false,
-      "angularAccuracy": 0.06,
+      "angularAccuracy": 0.05,
       "distanceAccuracy": 5.0,
       "absDopplerSpeed": true,
       "track": true,
       "distance": {
         "presents": true,
-        "minValue": 750.0,
-        "maxValue": 15000.0
+        "minValue": 500.0,
+        "maxValue": 20000.0,
+        "width": 60.0
       },
       "dopplerSpeed": {
         "presents": true,

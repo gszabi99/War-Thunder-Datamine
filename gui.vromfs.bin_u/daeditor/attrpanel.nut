@@ -39,15 +39,16 @@ let combobox = require("%daeditor/components/combobox.nut")
 
 let windowState = Watched({
   pos = [-fsh(1.1), fsh(5)]
-  size = [sw(29), SIZE_TO_CONTENT]
+  size = [sw(29), sh(80)]
 })
 
 
-let function onMoveResize(dx, dy, dw, _dh) {
+let function onMoveResize(dx, dy, dw, dh) {
   let w = windowState.value
   w.pos[0] = clamp(w.pos[0]+dx, -(sw(100)-w.size[0]), 0)
   w.pos[1] = max(w.pos[1]+dy, 0)
   w.size[0] = clamp(w.size[0]+dw, sw(14), sw(80))
+  w.size[1] = clamp(w.size[1]+dh, sh(20), sh(95))
   return w
 }
 
@@ -1008,7 +1009,7 @@ mkComp = function(eid, rawComponentName, rawObject, caption=null, onChange = nul
     comp_name_ext = caption
     obj = rawObject
   }
-  if (path == null && get_comp_type(eid, rawComponentName) != TYPE_STRING && typeof object == "string"){
+  if (path == null && get_comp_type(eid, rawComponentName) != TYPE_STRING && type(object) == "string"){
     return panelCompRow(params.__merge({comp_sq_type="null" comp_flags = get_comp_flags(eid, rawComponentName)}))
   }
   if (getCompSqTypePropEdit(comp_sq_type) != null) {
@@ -1190,7 +1191,6 @@ let function compPanel() {
           hplace = ALIGN_RIGHT
 
           behavior = Behaviors.MoveResize
-          moveResizeModes = MR_AREA | MR_L | MR_R
           onMoveResize
 
           moveResizeCursors = cursors.moveResizeCursors
@@ -1203,7 +1203,7 @@ let function compPanel() {
 
           children = [
             {
-              size = [flex(), sh(80)] // free some space for combo
+              size = [flex(), flex()] // free some space for combo
               rendObj = ROBJ_WORLD_BLUR
               color = Color(220,220,220,205)
               clipChildren = true

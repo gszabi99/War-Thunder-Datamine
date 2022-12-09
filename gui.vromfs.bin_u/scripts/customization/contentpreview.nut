@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let { hangar_is_model_loaded } = require("hangar")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
@@ -28,7 +29,7 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
     return "not_logged_in"
   if (!::is_in_hangar())
     return "not_in_hangar"
-  if (!::hangar_is_loaded())
+  if (!hangar_is_model_loaded())
     return "hangar_not_ready"
   if (!::isInMenu() || ::checkIsInQueue()
       || (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())

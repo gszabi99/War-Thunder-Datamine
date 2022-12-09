@@ -11,6 +11,7 @@ let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
 let { setGuiOptionsMode } = require_native("guiOptions")
 let { set_gui_option, get_gui_option } = require("guiOptions")
+let { is_benchmark_game_mode } = require("mission")
 
 ::back_from_briefing <- ::gui_start_mainmenu
 
@@ -169,7 +170,7 @@ let { set_gui_option, get_gui_option } = require("guiOptions")
 ::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk)
 {
   let optionItems = []
-  if (gm == GM_BENCHMARK || ::custom_miss_flight)
+  if (is_benchmark_game_mode() || ::custom_miss_flight)
     return optionItems
 
   if (::get_mission_types_from_meta_mission_info(missionBlk).len())
@@ -264,8 +265,8 @@ let { set_gui_option, get_gui_option } = require("guiOptions")
     {
       optionItems.append([::USEROPT_IS_BOTS_ALLOWED, "spinner"])
     }
-    if (canUseBots && isBotsAllowed != false && hasFeature("Tanks") &&
-      ::is_mission_for_unittype(missionBlk, ES_UNIT_TYPE_TANK))
+    if (canUseBots && isBotsAllowed != false
+        && ::is_mission_for_unittype(missionBlk, ES_UNIT_TYPE_TANK))
     {
       optionItems.append([::USEROPT_USE_TANK_BOTS, "spinner"])
       optionItems.append([::USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, "spinner"])
@@ -635,10 +636,10 @@ let function get_mission_desc_text(missionBlk)
     ::mission_settings.isBotsAllowed = isBotsAllowed
 
     if (isBotsAllowed)
-      misBlk.useTankBots = hasFeature("Tanks") && this.getOptValue(::USEROPT_USE_TANK_BOTS, false)
+      misBlk.useTankBots = this.getOptValue(::USEROPT_USE_TANK_BOTS, false)
 
     if (isBotsAllowed)
-      misBlk.useShipBots = hasFeature("Ships") && this.getOptValue(::USEROPT_USE_SHIP_BOTS, false)
+      misBlk.useShipBots = this.getOptValue(::USEROPT_USE_SHIP_BOTS, false)
 
     misBlk.keepDead = this.getOptValue(::USEROPT_KEEP_DEAD, true)
 

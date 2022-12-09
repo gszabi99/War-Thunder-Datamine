@@ -33,6 +33,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 let { getShortcutById } = require("%scripts/controls/shortcutsUtils.nut")
 let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { get_unit_option } = require("guiOptions")
+let { is_benchmark_game_mode } = require("mission")
 
 let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -1337,7 +1338,7 @@ local axisMappedOnMouse = {
         else
           currentHeader = null
       }
-      let isRequired = typeof(item.checkAssign) == "function" ? item.checkAssign() : item.checkAssign
+      let isRequired = type(item.checkAssign) == "function" ? item.checkAssign() : item.checkAssign
       if (!currentHeader || item.isHidden || !isRequired)
         continue
       if (this.filter == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim)
@@ -1712,7 +1713,7 @@ local axisMappedOnMouse = {
           curPreset.params[optionName] <- value
       }
     setGuiOptionsMode(mainOptionsMode)
-    ::set_current_controls(curPreset, ::g_controls_manager.getShortcutGroupMap())
+    ::set_current_controls(curPreset)
   }
 
   function onManageBackup()
@@ -2149,7 +2150,7 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
 ::getUnmappedControlsForCurrentMission <- function getUnmappedControlsForCurrentMission()
 {
   let gm = ::get_game_mode()
-  if (gm == GM_BENCHMARK)
+  if (is_benchmark_game_mode())
     return []
 
   let unit = getPlayerCurUnit()
@@ -2209,7 +2210,7 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
   let conditionsList = []
   foreach (trigger in missionBlk.triggers)
   {
-    if (typeof(trigger) != "instance")
+    if (type(trigger) != "instance")
       continue
 
     let condition = (trigger?.props.conditionsType != "ANY") ? "ALL" : "ANY"

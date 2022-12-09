@@ -796,8 +796,9 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/extinguish_fire"
     noKeyLocId = "hints/extinguish_fire_nokey"
-    getShortcuts = @(_data) getHudUnitType() == HUD_UNIT_TYPE.AIRCRAFT
-      ? "ID_TOGGLE_EXTINGUISHER"
+    getShortcuts = @(_data)
+        getHudUnitType() == HUD_UNIT_TYPE.AIRCRAFT ? "ID_TOGGLE_EXTINGUISHER"
+      : getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_TOGGLE_EXTINGUISHER_HELICOPTER"
       : ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
     showEvent = "hint:extinguish_fire:show"
     hideEvent = "hint:extinguish_fire:hide"

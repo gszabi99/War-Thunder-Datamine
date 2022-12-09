@@ -289,7 +289,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
     this.startFunc = start_func
 
-    if (typeof(entitlement) == "table")
+    if (type(entitlement) == "table")
       this.task = entitlement
     else
       this.task = {loc = entitlement, entitlement = entitlement}

@@ -3,7 +3,6 @@
   "fmFile": "fm/md_500_tow_late.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "viewDistKInSight": 4.0,
-  "haveCCIPForRocket": true,
   "haveCCRPForRocket": true,
   "enginesInfraRedBrightnessMult": 0.9,
   "gearSinkRangeLR": 0.001,
@@ -36,7 +35,7 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "DamageParts": {
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -773,12 +772,12 @@
     "lightRadius": 0.4,
     "devices": {
       "stick_ailerons": [
-        -1.0,
-        1.0
+        -2.0,
+        2.0
       ],
       "stick_elevator": [
-        -1.0,
-        1.0
+        -1.5,
+        1.5
       ],
       "pedals1": [
         -1.0,
@@ -789,6 +788,10 @@
         1.0
       ],
       "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle_1": [
         0.0,
         1.0
       ],
@@ -813,8 +816,24 @@
         77.1667
       ],
       "vario": [
-        -15.24,
-        15.24
+        -20.32,
+        20.32
+      ],
+      "aviahorizon_pitch": [
+        -90.0,
+        90.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
+      ],
+      "aviahorizon_pitch1": [
+        -90.0,
+        90.0
+      ],
+      "aviahorizon_roll1": [
+        -180.0,
+        180.0
       ],
       "altitude_10k": [
         0.0,
@@ -828,18 +847,46 @@
         0.0,
         1000.0
       ],
-      "altitude1_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude1_10k": [
-        0.0,
-        1500.0
-      ],
       "altitude_koef": 3.28,
       "compass": [
         0.0,
         360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "rpm": [
+        0.0,
+        7500.0
+      ],
+      "rpm_hour": [
+        0.0,
+        6500.0
+      ],
+      "rpm_min": [
+        0.0,
+        1000.0
+      ],
+      "prop_rpm": [
+        0.0,
+        40.0
+      ],
+      "water_temperature": [
+        0.0,
+        1200.0
+      ],
+      "oil_temperature": [
+        -70.0,
+        150.0
+      ],
+      "oil_pressure": [
+        0.0,
+        200.0
+      ],
+      "fuel": [
+        0.0,
+        520.0
       ]
     },
     "multifunctionDisplays": {

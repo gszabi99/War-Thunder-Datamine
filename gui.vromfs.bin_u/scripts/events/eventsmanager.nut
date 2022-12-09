@@ -22,7 +22,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTournamentInfoBlk } = require("%scripts/events/eventRewards.nut")
@@ -102,6 +102,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     "tournaments"
   ]
 
+  unallowedEventEconomicNames = []
+  unallowedEventEconomicNamesNeedUpdate = true
+
   constructor()
   {
     this.__game_events        = {}
@@ -144,6 +147,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     seenEvents.setDaysToUnseen(EVENTS_OUT_OF_DATE_DAYS)
     seenEvents.onListChanged()
     ::broadcastEvent("EventsDataUpdated")
+    this.unallowedEventEconomicNamesNeedUpdate = true
   }
 
   function isTankEventActive(eventPrefix)
@@ -532,16 +536,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function checkEventAccess(eventData)
   {
-    if (!hasFeature("Tanks") && this.isUnitTypeAvailable(eventData, ES_UNIT_TYPE_TANK))
-      return false
     if (useTouchscreen && eventData.diffWeight >= this.diffTable.hardcore)
       return false
 
     if (!("event_access" in eventData))
       return true
     if (isInArray("AccessTest", eventData.event_access) && !::has_entitlement("AccessTest"))
-      return false
-    if (isInArray("tankAccess", eventData.event_access) && !hasFeature("Tanks")) //temporary here while not everywhere used new types
       return false
     if (isInArray("ps4", eventData.event_access) && !isPlatformSony)
       return false
@@ -905,13 +905,19 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return result
   }
 
+  onEventInventoryUpdate = @(_p) this.unallowedEventEconomicNamesNeedUpdate = true
+
   function getUnallowedEventEconomicNames()
   {
-    let res = []
+    if(!this.unallowedEventEconomicNamesNeedUpdate)
+      return this.unallowedEventEconomicNames
+
+    this.unallowedEventEconomicNames.clear()
     foreach(event in this.__game_events)
       if (!this.isEventAllowed(event))
-        ::u.appendOnce(this.getEventEconomicName(event), res, true)
-    return res
+        ::u.appendOnce(this.getEventEconomicName(event), this.unallowedEventEconomicNames, true)
+    this.unallowedEventEconomicNamesNeedUpdate = false
+    return this.unallowedEventEconomicNames
   }
 
   function getCountries(teamData)
@@ -1712,11 +1718,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return ""
     let list = this.__game_events[eventId].mission_decl.missions_list
     if(list.len() == 1)
-      if (typeof(list) == "array" && typeof(list[0]) == "string")
+      if (type(list) == "array" && type(list[0]) == "string")
         return list[0]
-      else if (typeof(list) == "table")
+      else if (type(list) == "table")
         foreach(key, _value in list)
-          if (typeof(key) == "string")
+          if (type(key) == "string")
             return key
     return ""
   }
@@ -2270,10 +2276,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       data.actionFunc = function(reasonData) {
         if (!reasonData.checkXboxOverlayMessage)
           ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
-        else if (!isShowGoldBalanceWarning() && !isMultiplayerPrivilegeAvailable.value)
+        else if (!isMultiplayerPrivilegeAvailable.value)
           checkAndShowMultiplayerPrivilegeWarning()
-        else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
-          ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
+        else if (!isShowGoldBalanceWarning())
+          checkAndShowCrossplayWarning(
+            @() ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join"))
       }
     }
 
@@ -2313,8 +2320,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function sortEventsByDiff(a, b)
   {
-    let diffA = (typeof a == "string" ? this.__game_events[a] : a).diffWeight
-    let diffB = (typeof b == "string" ? this.__game_events[b] : b).diffWeight
+    let diffA = (type(a) == "string" ? this.__game_events[a] : a).diffWeight
+    let diffB = (type(b) == "string" ? this.__game_events[b] : b).diffWeight
     if(diffA > diffB)
       return 1
     else if(diffA < diffB)

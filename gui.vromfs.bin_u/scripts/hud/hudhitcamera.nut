@@ -442,7 +442,7 @@ let function onHitCameraImportantEvents(data) {
     if (events.len() == 0)
       continue
     let unitInfoEvents = unitInfo.importantEvents?[key] ?? []
-    if (typeof events == "table")
+    if (type(events) == "table")
       unitInfoEvents.append(events)
     else
       unitInfoEvents.extend(events)

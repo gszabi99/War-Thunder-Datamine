@@ -73,7 +73,7 @@
         "hp": 35.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 41.9
@@ -904,10 +904,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2122,10 +2130,10 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 3520.0,
-    "maxloadMassLeftConsoles": 1760.0,
-    "maxloadMassRightConsoles": 1760.0,
-    "maxDisbalance": 1300.0,
+    "maxloadMass": 3720.0,
+    "maxloadMassLeftConsoles": 1860.0,
+    "maxloadMassRightConsoles": 1860.0,
+    "maxDisbalance": 1500.0,
     "HideNodes": {
       "node": [
         "pylon_001",

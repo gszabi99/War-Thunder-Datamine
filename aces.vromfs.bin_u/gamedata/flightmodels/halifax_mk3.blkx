@@ -656,24 +656,10 @@
         ]
       },
       {
-        "name": "fin1_dm",
-        "onHit": {
-          "tailcontrol_dm": 0.001
-        },
-        "onKill": {
-          "tailcontrol_dm": 1.0,
-          "nothing": 9.0
-        }
+        "name": "fin1_dm"
       },
       {
-        "name": "fin2_dm",
-        "onHit": {
-          "tailcontrol_dm": 0.001
-        },
-        "onKill": {
-          "tailcontrol_dm": 1.0,
-          "nothing": 9.0
-        }
+        "name": "fin2_dm"
       },
       {
         "name": "flap1_l_dm",
@@ -1343,10 +1329,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",

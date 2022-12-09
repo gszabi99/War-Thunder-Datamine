@@ -5,11 +5,12 @@ let {IlsColor,  BombingMode, TargetPosValid, TargetPos, CannonMode,
         DistToSafety,  DistToTarget, BombCCIPMode, RocketMode,
         RadarTargetPosValid, RadarTargetPos, IlsLineScale,
         AimLockPos, AimLockValid, TimeBeforeBombRelease} = require("%rGui/planeState/planeToolsState.nut")
-let {mpsToKmh, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
+let {mpsToKmh, baseLineWidth} = require("ilsConstants.nut")
 let {compassWrap, generateCompassMarkASP} = require("ilsCompasses.nut")
-let {IlsTrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
+let {ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark} = require("commonElements.nut")
+let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
 let {DistanceMax, RadarModeNameId, IsRadarVisible, Irst, targets, HasDistanceScale,
-  HasAzimuthScale, TargetsTrigger, Azimuth, IsCScopeVisible} = require("%rGui/radarState.nut")
+  HasAzimuthScale, IsCScopeVisible} = require("%rGui/radarState.nut")
 let {mode} = require("%rGui/radarComponent.nut")
 let {cvt} = require("dagor.math")
 
@@ -36,32 +37,6 @@ let ASPAltitude = @() {
   fontSize = 45
   font = Fonts.ussr_ils
   text = ASPAltValue.value.tostring()
-}
-
-let ASPAirSymbol = @() {
-  size = [pw(70), ph(70)]
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * IlsLineScale.value
-  color = IlsColor.value
-  commands = [
-    [VECTOR_LINE, -100, 0, -30, 0],
-    [VECTOR_LINE, -40, 0, -40, 10],
-    [VECTOR_LINE, 100, 0, 30, 0],
-    [VECTOR_LINE, 40, 0, 40, 10],
-    [VECTOR_LINE, 0, -30, 0, -70],
-  ]
-}
-
-let ASPAirSymbolWrap = @() {
-  size = flex()
-  children = ASPAirSymbol
-  behavior = Behaviors.RtPropUpdate
-  update = @() {
-    transform = {
-      rotate = Roll.value
-      pivot = [0, 0]
-    }
-  }
 }
 
 let ASPRoll = @() {
@@ -102,7 +77,6 @@ let ASPCompassMark = @() {
 let DistToTargetBuc = Computed(@() cvt(TimeBeforeBombRelease.value, 0, 10.0, -90, 250).tointeger())
 let function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
   let watchVar = is_aam ? IlsTrackerVisible : (is_radar ? RadarTargetPosValid : TargetPosValid)
-  //local value = is_aam ? [IlsTrackerX.value, IlsTrackerY.value] : (is_radar ? RadarTargetPos : TargetPos)
   return @() {
     watch = watchVar
     size = flex()
@@ -209,6 +183,24 @@ let ASPRadarMode = @() {
   text = Irst.value ? "T" : mode(RadarModeNameId, IsRadarVisible)
 }
 
+let ASPRadarRoll = @() {
+  size = flex()
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
+  color = IlsColor.value
+  commands = [
+    [VECTOR_LINE, 25, 30, 42, 30],
+    [VECTOR_LINE, 58, 30, 75, 30]
+  ]
+  behavior = Behaviors.RtPropUpdate
+  update = @() {
+    transform = {
+      rotate = Roll.value
+      pivot = [0.5, 0.3]
+    }
+  }
+}
+
 let function createTargetDistASP23(index) {
   let target = targets[index]
   let dist = HasDistanceScale.value ? target.distanceRel : 0.9;
@@ -266,71 +258,6 @@ let function createTargetDistASP23(index) {
   }
 }
 
-let targetsComponent = function(createTargetDistFunc) {
-  let getTargets = function() {
-    let targetsRes = []
-    for(local i = 0; i < targets.len(); ++i) {
-      if (!targets[i])
-        continue
-      else if (targets[i].signalRel < 0.1)
-        continue
-      targetsRes.append(createTargetDistFunc(i))
-    }
-    return targetsRes
-  }
-
-  return @() {
-    size = flex()
-    children = Irst.value && RadarTargetPosValid.value ? null : getTargets()
-    watch = TargetsTrigger
-  }
-}
-
-let ASPRadarRoll = @() {
-  size = flex()
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
-  color = IlsColor.value
-  commands = [
-    [VECTOR_LINE, 25, 30, 42, 30],
-    [VECTOR_LINE, 58, 30, 75, 30]
-  ]
-  behavior = Behaviors.RtPropUpdate
-  update = @() {
-    transform = {
-      rotate = Roll.value
-      pivot = [0.5, 0.3]
-    }
-  }
-}
-
-let function ASPLaunchPermitted(is_ru, l_pos) {
-  return @() {
-    watch = GuidanceLockState
-    size = flex()
-    children = (GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ?
-      @() {
-        size = flex()
-        rendObj = ROBJ_TEXT
-        pos = [pw(l_pos), ph(80)]
-        color = IlsColor.value
-        fontSize = 40
-        font = Fonts.hud
-        text = is_ru ? "ПР" : "INRNG"
-      }
-      : null)
-  }
-}
-
-let ASPAzimuthMark = @() {
-  watch = Azimuth
-  size = [pw(5), baseLineWidth * 0.8 * IlsLineScale.value]
-  pos = [pw(Azimuth.value * 100 - 2.5), ph(95)]
-  rendObj = ROBJ_SOLID
-  color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
-}
-
 let function ASP23LongRange(width, height) {
   return @() {
     watch = Irst
@@ -351,7 +278,7 @@ let function ASP23LongRange(width, height) {
       ASPRadarMode,
       ASPRadarRoll,
       targetsComponent(createTargetDistASP23),
-      ASPLaunchPermitted(true, 48),
+      ASPLaunchPermitted(true, 48, 80),
       ASPAzimuthMark
     ]
   }
@@ -623,7 +550,7 @@ let function J7ERadar(width, height) {
     children = [
       ASPRadarMode,
       targetsComponent(createTargetDistJ7E),
-      ASPLaunchPermitted(false, 20),
+      ASPLaunchPermitted(false, 20, 80),
       ASPAzimuthMark,
       ASPRadarDist(false, -10)
     ]

@@ -40,7 +40,7 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 21.8
+        "hp": 30.5
       }
     },
     "c_dural3": {
@@ -52,20 +52,13 @@
         "genericDamageMult": 0.3,
         "hp": 15.1
       },
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 26.4
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 26.4
+        "hp": 14.5
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 26.4
-      },
-      "fin_dm": {
-        "hp": 25.5
+        "hp": 14.5
       },
       "flap_l_dm": {
         "hp": 19.8
@@ -75,16 +68,7 @@
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
-        "hp": 22.1
-      },
-      "stab_dm": {
-        "hp": 30.0
-      },
-      "stab2_dm": {
-        "hp": 30.0
-      },
-      "stab1_dm": {
-        "hp": 19.8
+        "hp": 21.5
       }
     },
     "c_dural7": {
@@ -99,23 +83,12 @@
         "hp": 88.4
       }
     },
+    "c_wood30": {
+      "fin_dm": {
+        "hp": 24.5
+      }
+    },
     "c_wood40": {
-      "wing1_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 46.4
-      },
-      "wing1_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 46.4
-      },
-      "wing2_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 40.5
-      },
-      "wing2_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 40.5
-      },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
         "hp": 80.5
@@ -123,6 +96,30 @@
       "wing_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 80.5
+      }
+    },
+    "c_wood50": {
+      "stab1_dm": {
+        "hp": 14.4
+      },
+      "stab2_dm": {
+        "hp": 14.4
+      },
+      "wing1_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
+      },
+      "wing1_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
+      },
+      "wing2_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
+      },
+      "wing2_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
       }
     },
     "dural": {
@@ -322,47 +319,6 @@
       },
       {
         "name": "cover4_dm"
-      },
-      {
-        "name": "elevator_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
       },
       {
         "name": "elevator0_dm",
@@ -889,40 +845,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
-      },
-      {
-        "name": "stab_dm",
-        "onHit": [
-          {
-            "damage": 30.0,
-            "cut": 0.6
-          },
-          {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        ]
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -1623,10 +1557,126 @@
         ]
       },
       {
-        "name": "wing_l_dm"
+        "name": "wing_l_dm",
+        "onHit": [
+          {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
+            "damage": 10.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damage": 20.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damage": 30.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damage": 50.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damage": 70.0,
+            "smoke": 0.8,
+            "flame": 0.8
+          }
+        ],
+        "onKill": [
+          {
+            "damage": 10.0,
+            "smoke": 0.2,
+            "flame": 0.2
+          },
+          {
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.2
+          },
+          {
+            "damage": 30.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damage": 50.0,
+            "smoke": 1.0,
+            "flame": 1.1
+          },
+          {
+            "damage": 70.0,
+            "smoke": 1.0,
+            "flame": 1.1
+          }
+        ]
       },
       {
-        "name": "wing_r_dm"
+        "name": "wing_r_dm",
+        "onHit": [
+          {
+            "smoke": 0.1,
+            "flame": 0.2
+          },
+          {
+            "damage": 10.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damage": 20.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damage": 30.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damage": 50.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damage": 70.0,
+            "smoke": 0.8,
+            "flame": 0.8
+          }
+        ],
+        "onKill": [
+          {
+            "damage": 10.0,
+            "smoke": 0.2,
+            "flame": 0.2
+          },
+          {
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.2
+          },
+          {
+            "damage": 30.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damage": 50.0,
+            "smoke": 1.0,
+            "flame": 1.1
+          },
+          {
+            "damage": 70.0,
+            "smoke": 1.0,
+            "flame": 1.1
+          }
+        ]
       },
       {
         "name": "wingcontrol_l_dm"

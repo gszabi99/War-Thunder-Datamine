@@ -360,6 +360,13 @@ let { LEADER_OPERATION_STATES,
       warningTextObj.show(!showAny)
   }
 
+  function showSelectHint(show = true) {
+    if (!::show_console_buttons || !::g_world_war.haveManagementAccessForAnyGroup())
+      return
+
+    ::showBtn("ww_army_select", show)
+  }
+
   function initToBattleButton()
   {
     let toBattleNest = this.showSceneBtn("gamercard_tobattle", true)
@@ -807,6 +814,7 @@ let { LEADER_OPERATION_STATES,
     }
 
     this.updateArmyActionButtons()
+    ::showBtn("ww_army_select", false)
   }
 
   function onSecondsUpdate(_obj, dt)
@@ -1303,9 +1311,9 @@ let { LEADER_OPERATION_STATES,
       }, this, false)
   }
 
-  function onEventWWArmyStatusChanged(_params)
-  {
+  function onEventWWArmyStatusChanged(_params) {
     this.updateArmyActionButtons()
+    this.showSelectHint(actionModesManager.getCurActionModeId() == AUT_ArtilleryFire)
   }
 
   function onEventWWNewLogsAdded(params)
@@ -1398,6 +1406,11 @@ let { LEADER_OPERATION_STATES,
     ::Timer(this.scene, 3, animationFunc, this)
   }
 
+  function onHelp()
+  {
+    ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
+  }
+
   function getWndHelpConfig()
   {
     let res = {
@@ -1487,4 +1500,23 @@ let { LEADER_OPERATION_STATES,
     actionModesManager.setActionMode()
     this.updateButtonsAfterSetMode(false)
   }
+
+  showSelectAirfieldHint = @(airfieldIndex)
+    actionModesManager.getCurActionModeId() != AUT_ArtilleryFire
+      ? this.showSelectHint(airfieldIndex >= 0 && airfieldIndex != ::ww_get_selected_airfield())
+      : null
+
+  showSelectArmyHint = @(armyName)
+    actionModesManager.getCurActionModeId() != AUT_ArtilleryFire
+      ? this.showSelectHint(armyName != null && armyName != ::ww_get_selected_armies_names()?[0])
+      : null
+
+  onEventWWHoverArmyItem = @(p) this.showSelectArmyHint(p.armyName)
+  onEventWWMapArmyHoverChanged = @(p) this.showSelectArmyHint(p.armyName)
+
+  onEventWWHoverAirfieldItem = @(p) this.showSelectAirfieldHint(p.airfieldIndex)
+  onEventWWMapAirfieldHoverChanged = @(p) this.showSelectAirfieldHint(p.airfieldIndex)
+
+  onEventWWHoverLostArmyItem = @(_) this.showSelectHint(false)
+  onEventWWHoverLostAirfieldItem = @(_) this.showSelectHint(false)
 }

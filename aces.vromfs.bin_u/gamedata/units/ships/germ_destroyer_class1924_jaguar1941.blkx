@@ -457,10 +457,22 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 24.0,
+            "damage": 8.0,
             "fHitCritical": false
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [
@@ -1835,6 +1847,53 @@
       "tankRearmOnCaptureZone": true
     }
   },
+  "skin": [
+    {
+      "name": "ger_camo_navy_gray",
+      "nameLocId": "skin/ger_camo_navy_gray",
+      "descLocId": "skin/ger_camo_navy_gray/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_navy_gray*"
+      }
+    },
+    {
+      "name": "ger_camo_blackgray_net",
+      "nameLocId": "skin/ger_camo_blackgray_net",
+      "descLocId": "skin/ger_camo_blackgray_net/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_blackgray_net*"
+      }
+    },
+    {
+      "name": "ger_camo_blackgreen_spots",
+      "nameLocId": "skin/ger_camo_blackgreen_spots",
+      "descLocId": "skin/ger_camo_blackgreen_spots/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_blackgreen_spots*"
+      }
+    },
+    {
+      "name": "geometrywave",
+      "set_tex": {
+        "from": "destroyer_class1924_leopard1932_c*",
+        "to": "destroyer_class1924_leopard1932_geometrywave_skin_c*",
+        "param": "camo_skin_tex"
+      },
+      "replace_tex": [
+        {
+          "from": "camo_black_a26f*",
+          "to": "camo_inside_white*"
+        },
+        {
+          "from": "camo_light_ghostgrey*",
+          "to": "camo_lower_hull_red*"
+        }
+      ]
+    }
+  ],
   "ikGunner": [
     {
       "model": "german_sailor_char",
@@ -2829,6 +2888,7 @@
       "armorThrough": 100.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 400.0
       },
       "radio_station_dm": {
@@ -2938,7 +2998,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.2,
@@ -4839,24 +4898,6 @@
         "deviation": 0.6,
         "rotation": 2.1,
         "collisionNode": "tt_02_dm"
-      }
-    ]
-  },
-  "skin": {
-    "name": "geometrywave",
-    "set_tex": {
-      "from": "destroyer_class1924_leopard1932_c*",
-      "to": "destroyer_class1924_leopard1932_geometrywave_skin_c*",
-      "param": "camo_skin_tex"
-    },
-    "replace_tex": [
-      {
-        "from": "camo_black_a26f*",
-        "to": "camo_inside_white*"
-      },
-      {
-        "from": "camo_light_ghostgrey*",
-        "to": "camo_lower_hull_red*"
       }
     ]
   },

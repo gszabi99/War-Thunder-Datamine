@@ -434,7 +434,7 @@ local leaderboardFilterArray = [
     this.isLastPage = true
     foreach(_name, rowBlk in clanLbBlk % "clan")
     {
-      if (typeof(rowBlk) != "instance")
+      if (type(rowBlk) != "instance")
         continue
 
       if (this.clanByRow.len() >= this.clansPerPage)
@@ -541,7 +541,7 @@ local leaderboardFilterArray = [
       if (this.isColForDisplay(item))
         rowData.append(this.getItemCell(item, rowBlk, rowName))
 
-    assert(typeof(rowBlk._id) == "string", "leaderboards receive _id type " + typeof(rowBlk._id) + ", instead of string on clan_request_page_of_leaderboard")
+    assert(type(rowBlk._id) == "string", "leaderboards receive _id type " + type(rowBlk._id) + ", instead of string on clan_request_page_of_leaderboard")
     return ::buildTableRow(rowName, rowData, rowIdx % 2 != 0, highlightRow ? "mainPlayer:t='yes';" : "")
   }
 
@@ -923,6 +923,11 @@ local leaderboardFilterArray = [
       return
     let diff = ::g_difficulty.getDifficultyByDiffCode(this.getCurDMode())
     ::show_clan_season_info(diff)
+  }
+
+  function onHelp()
+  {
+    ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig()

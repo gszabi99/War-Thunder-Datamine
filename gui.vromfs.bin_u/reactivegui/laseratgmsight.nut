@@ -111,7 +111,7 @@ let function Root(width, height) {
       crosshair,
       status,
       hints,
-      turretAngles(LaserAtgmSightColor, hdpx(150), hdpx(150), sw(50), sh(90), false)
+      turretAngles(LaserAtgmSightColor, hdpx(150), hdpx(150), sw(50), sh(90))
     ]
   }
 }

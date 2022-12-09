@@ -13,7 +13,7 @@ let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContac
 let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { hasChat } = require("%scripts/user/matchingFeature.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
@@ -46,7 +46,6 @@ let getPlayerCardInfoTable = function(uid, name)
 }
 
 let showLiveCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableLiveCommunications"))
-let showCrossNetworkPlayRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
 let showCrossNetworkCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkCommunications"))
 let showNotAvailableActionPopup = @() ::g_popups.add(null, loc("xbox/actionNotAvailableDiffPlatform"))
 let showBlockedPlayerPopup = @(playerName) ::g_popups.add(null, loc("chat/player_blocked", {playerName = platformModule.getPlayerName(playerName)}))
@@ -55,23 +54,16 @@ let showXboxPlayerMuted = @(playerName) ::g_popups.add(null, loc("popup/playerMu
 
 let notifyPlayerAboutRestriction = function(contact, isInvite = false)
 {
-  let isCrossNetworkMessagesAllowed = isCrossNetworkMessageAllowed(contact.name)
-  let isXBoxOnePlayer = platformModule.isPlayerFromXboxOne(contact.name)
   if (is_platform_xbox)
   {
     attemptShowOverlayMessage(contact.name, isInvite)
-    //There is no system level error message, added custom.
-    if (contact.getInteractionStatus() == XBOX_COMMUNICATIONS_BLOCKED && !contact.isInFriendGroup())
-      showLiveCommunicationsRestrictionMsgBox()
-    else if (!isXBoxOnePlayer && !isCrossNetworkMessagesAllowed) // It is not included in interactionStatus
-      showCrossNetworkCommunicationsRestrictionMsgBox()
     return
   }
 
   if (contact.isBlockedMe)
     return
 
-  if (!isCrossNetworkMessagesAllowed)
+  if (!isCrossNetworkMessageAllowed(contact.name))
     showCrossNetworkCommunicationsRestrictionMsgBox()
   else
     showLiveCommunicationsRestrictionMsgBox()
@@ -121,8 +113,7 @@ let getActions = function(contact, params)
       if (!canInteractCrossConsole)
         return showNotAvailableActionPopup()
       if (!canInteractCrossPlatform) {
-        if (!::xbox_try_show_crossnetwork_message())
-          showCrossNetworkPlayRestrictionMsgBox()
+        checkAndShowCrossplayWarning()
         return
       }
 
@@ -149,11 +140,8 @@ let getActions = function(contact, params)
         action = function() {
           if (!canInteractCrossConsole)
             showNotAvailableActionPopup()
-          else if (!canInteractCrossPlatform) {
-            if (!::xbox_try_show_crossnetwork_message())
-              showCrossNetworkPlayRestrictionMsgBox()
-            return
-          }
+          else if (!canInteractCrossPlatform)
+            checkAndShowCrossplayWarning()
           else
             ::queues.joinFriendsQueue(contact.inGameEx, eventId)
         }
@@ -235,15 +223,10 @@ let getActions = function(contact, params)
         action = function() {
           if (!canInteractCrossConsole)
             showNotAvailableActionPopup()
-          else if (!isMultiplayerPrivilegeAvailable.value) {
+          else if (!isMultiplayerPrivilegeAvailable.value)
             checkAndShowMultiplayerPrivilegeWarning()
-            return
-          }
-          else if (!isShowGoldBalanceWarning() && !canInteractCrossPlatform) {
-            if (!::xbox_try_show_crossnetwork_message())
-              showCrossNetworkPlayRestrictionMsgBox()
-            return
-          }
+          else if (!isShowGoldBalanceWarning() && !canInteractCrossPlatform)
+            checkAndShowCrossplayWarning()
           else if (!canInvite)
             notifyPlayerAboutRestriction(contact, true)
           else if (!canInviteDiffConsole)
@@ -266,11 +249,8 @@ let getActions = function(contact, params)
         action = function() {
           if (!canInteractCrossConsole)
             showNotAvailableActionPopup()
-          else if (!canInteractCrossPlatform) {
-            if (!::xbox_try_show_crossnetwork_message())
-              showCrossNetworkPlayRestrictionMsgBox()
-            return
-          }
+          else if (!canInteractCrossPlatform)
+            checkAndShowCrossplayWarning()
           else if (!canInvite)
             notifyPlayerAboutRestriction(contact, true)
           else if (!canInviteDiffConsole)

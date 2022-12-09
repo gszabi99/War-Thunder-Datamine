@@ -285,6 +285,7 @@
     "icon_enemy_marker": "chat_icon_attention",
     "icon_attack_enemy_marker": "chat_icon_attention",
     "icon_artillery_attack": "chat_icon_artillery_attack",
+    "icon_marker_from_uav": "chat_icon_target_uav",
     "respawnbase_select": "respawnbase_select.svg:44:54:K",
     "iconArtilleryAttackBlinkTime": 20.0,
     "iconArtilleryAttackDist": 150.0,
@@ -630,9 +631,6 @@
     "overheatReloadColor": "tLS08A==",
     "crosshairForestallDist": 750.0,
     "crosshairForestallDistForTanks": 2500.0,
-    "gyroscopicSightOmegaFilterTau": 0.2,
-    "gyroscopicSightDistanceDefault": 274.0,
-    "gyroscopicSightDistanceMax": 500.0,
     "colorShipGunReady": "mf+Z/w==",
     "crosshairDifferentDistanceAlpha": 255,
     "blinkingMouseAimScale": 1.1,
@@ -1266,6 +1264,8 @@
     "colorHitUnitIndicator": "yDII5g==",
     "colorSquadTargetIndicator": "+voI5g==",
     "colorSquadTargetIndicatorText": "+voI5g==",
+    "colorUavTargetIndicator": "CPr65g==",
+    "colorUavTargetIndicatorText": "CPr65g==",
     "iconOuterCaptureZone": "capturezone_big_ring.svg:132:168:K",
     "iconRepairInProgressOuter": "capturezone_big_ring.svg:132:168:K",
     "formatBasezoneBig": "basezone_big_mark_%c.svg:60:60:K",
@@ -1295,6 +1295,7 @@
     "iconWinch": "winch_icon.svg:50:50:K",
     "iconHitUnitIndicator": "hit_unit_icon.svg:19:28:K",
     "iconAttentionUnitIndicator": "attention_unit_icon.svg:19:28:K",
+    "iconUavTargetIndicator": "uav_target_icon.svg:19:28:K",
     "iconScoutingUnitIndicator": "scouting_unit_icon.svg:20:26:K",
     "iconWwUnitIndicator": "big_bomber_radar",
     "iconWwMissionTargetUnitIndicator": "target_unit_icon.svg:22:30:K",
@@ -1415,6 +1416,7 @@
     "tankHudIndicatorAlpha": 140,
     "squadTargetGroundIndicatorScale": 1.0,
     "squadTargetAirIndicatorScale": 1.0,
+    "uavTargetIndicatorScale": 1.0,
     "topPictureShift": 0.0,
     "airfieldIndicatorHeight": 50.0,
     "minCZIconHeightAboveGround": 35.0,
@@ -2546,6 +2548,9 @@
       },
       "unlimited_control": {
         "shortcutIdx": 44
+      },
+      "designate_target": {
+        "shortcutIdx": 45
       }
     },
     "wheelActions": {

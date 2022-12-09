@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let clanInfoView = require("%scripts/clans/clanInfoView.nut")
+let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
 let function isFitsRequirements(clanData) {
   let requirements = clanData?.membership_req
@@ -20,7 +21,7 @@ let function isFitsRequirements(clanData) {
 let clanTableFieldsByPage = {
   clans_search = [
     { id = "fits_requirements", icon = "#ui/gameuiskin#lb_fits_requirements.svg",
-      type = ::g_lb_data_type.TEXT, sort = false, byDifficulty = false
+      type = lbDataType.TEXT, sort = false, byDifficulty = false
       getCellImage = @(clanData) isFitsRequirements(clanData) ? "#ui/gameuiskin#favorite.png"
         : "#ui/gameuiskin#icon_primary_fail.svg"
       getCellTooltipText = function(clanData) {
@@ -36,7 +37,7 @@ let clanTableFieldsByPage = {
     { id = ::ranked_column_prefix + "_hist", icon = "#ui/gameuiskin#lb_elo_rating.svg",
       tooltip = "#clan/dr_era/desc", byDifficulty = false, diffCode = DIFFICULTY_REALISTIC }
     { id = "slogan", icon = "", tooltip = "", text = "#clan/clan_slogan", byDifficulty = false, sort = false,
-      type = ::g_lb_data_type.TEXT, width = "0.4@sf", autoScrollText = "hoverOrSelect" }
+      type = lbDataType.TEXT, width = "0.4@sf", autoScrollText = "hoverOrSelect" }
   ]
   clans_leaderboards = [
     { id = ::ranked_column_prefix, tooltip = "#clan/dr_era/desc"
@@ -45,14 +46,14 @@ let clanTableFieldsByPage = {
     { id = "air_kills", field = "akills", sort = false }
     { id = "ground_kills", field = "gkills", sort = false }
     { id = "deaths", sort = false }
-    { id = "time_pvp_played", type = ::g_lb_data_type.TIME_MIN, field = "ftime", sort = false }
+    { id = "time_pvp_played", type = lbDataType.TIME_MIN, field = "ftime", sort = false }
   ]
 }
 
 foreach (page in clanTableFieldsByPage)
   foreach (category in page) {
     if (!("type" in category))
-      category.type <- ::g_lb_data_type.NUM
+      category.type <- lbDataType.NUM
     if (!("sort" in category))
       category.sort <- true
     if (!("byDifficulty" in category))

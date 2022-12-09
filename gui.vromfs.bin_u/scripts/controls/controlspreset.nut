@@ -135,7 +135,7 @@ let function isSameMapping(lhs, rhs) {
       this.loadFromPreset(data, presetChain)
     else if (::u.isDataBlock(data))
       this.loadFromBlk(data, presetChain)
-    else if ((typeof data == "instance") && (data instanceof ::ControlsPreset))
+    else if ((type(data) == "instance") && (data instanceof ::ControlsPreset))
     {
       this.basePresetPaths = ::u.copy(data.basePresetPaths)
       this.hotkeys         = ::u.copy(data.hotkeys)

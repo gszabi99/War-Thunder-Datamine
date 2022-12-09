@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let { abs, round, sin, PI } = require("math")
+let { hangar_get_current_unit_name } = require("hangar")
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -24,6 +25,8 @@ let { fileName } = require("%sqstd/path.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 
 
 /*
@@ -48,8 +51,22 @@ local compareWeaponFunc = @(w1, w2) ::u.isEqual(w1?.trigger ?? "", w2?.trigger ?
 
 const AFTERBURNER_CHAMBER = 3
 
+const MAX_VIEW_MODE_TUTOR_SHOWS = 2
+
 ::on_check_protection <- function(params) { // called from client
   ::broadcastEvent("ProtectionAnalysisResult", params)
+}
+
+let function isViewModeTutorAvailableForUser() {
+  if (!::my_stats.isStatsLoaded())
+    return false
+
+  local res = ::load_local_account_settings("tutor/dmViewer/isAvailable")
+  if (res == null) {
+    res = ::my_stats.isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP)
+    ::save_local_account_settings("tutor/dmViewer/isAvailable", res)
+  }
+  return res
 }
 
 ::dmViewer <- {
@@ -169,7 +186,7 @@ const AFTERBURNER_CHAMBER = 3
 
   function canUse()
   {
-    let hangarUnitName = ::hangar_get_current_unit_name()
+    let hangarUnitName = hangar_get_current_unit_name()
     let hangarUnit = ::getAircraftByName(hangarUnitName)
     return hasFeature("DamageModelViewer") && hangarUnit
   }
@@ -185,7 +202,7 @@ const AFTERBURNER_CHAMBER = 3
 
   function updateUnitInfo(fircedUnitId = null)
   {
-    let unitId = fircedUnitId || ::hangar_get_current_unit_name()
+    let unitId = fircedUnitId || hangar_get_current_unit_name()
     if (this.unit && unitId == this.unit.name)
       return
     this.unit = ::getAircraftByName(unitId)
@@ -337,7 +354,64 @@ const AFTERBURNER_CHAMBER = 3
   }
 
   function needShowExtHints() {
-    return ::load_local_account_settings("dmViewver/needShowExtHints", true)
+    return ::load_local_account_settings("dmViewer/needShowExtHints", true)
+  }
+
+  function checkShowViewModeTutor(modeId) {
+    if (this.view_mode == modeId)
+      return
+
+    if (!this.unit?.isShipOrBoat())
+      return
+
+    if (::handlersManager.isAnyModalHandlerActive())
+      return
+
+    if (!::g_login.isProfileReceived())
+      return
+
+    if (!isViewModeTutorAvailableForUser())
+      return
+
+    let modeName = this.modes[modeId]
+    let dmTutorData = ::load_local_account_settings("tutor/dmViewer")
+    let numShows = dmTutorData?.numShows[modeName] ?? 0
+    if (numShows >= MAX_VIEW_MODE_TUTOR_SHOWS)
+      return
+
+    let lastSeen = dmTutorData?.lastSeen ?? 0
+    if (lastSeen + TIME_DAY_IN_SECONDS > ::get_charserver_time_sec())
+      return
+
+    if (!::my_stats.isStatsLoaded() || ::my_stats.isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP))
+      return
+
+    let needHasArmor = modeId == DM_VIEWER_ARMOR
+    if (needHasArmor) {
+      let hasArmor = ::get_unittags_blk()?[this.unit.name].Shop.armorThicknessCitadel != null
+      if (!hasArmor)
+        return
+    }
+
+    let handler = ::handlersManager.getActiveBaseHandler()
+    if (!handler?.scene.isValid())
+      return
+
+    let listObj = handler.scene.findObject("air_info_dmviewer_listbox")
+    if (!listObj?.isValid())
+      return
+
+    ::save_local_account_settings($"tutor/dmViewer/numShows/{modeName}", numShows + 1)
+    ::save_local_account_settings("tutor/dmViewer/lastSeen", ::get_charserver_time_sec())
+
+    let steps = [{
+      obj = listObj.getChild(modeId)
+      text = loc($"dm_viewer/tutor/{modeName}")
+      actionType = tutorAction.OBJ_CLICK
+      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      cb = @() listObj?.isValid() && listObj.setValue(modeId)
+    }]
+    ::gui_modal_tutor(steps, handler, true)
   }
 
   function repaint()
@@ -351,7 +425,6 @@ const AFTERBURNER_CHAMBER = 3
       return
 
     obj.setValue(this.view_mode)
-    obj.enable(this.active)
 
     // Protection analysis button
     if (hasFeature("DmViewerProtectionAnalysis"))
@@ -1236,9 +1309,10 @@ const AFTERBURNER_CHAMBER = 3
             for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++)
             {
               let transiverBlk = transiversBlk.getBlock(t)
-              if (transiverBlk?.visibilityType == "infraRed")
+              let targetSignatureType = transiverBlk?.targetSignatureType != null ? transiverBlk?.targetSignatureType : transiverBlk?.visibilityType
+              if (targetSignatureType == "infraRed")
                 isIrst = true
-              else if (transiverBlk?.visibilityType == "optic")
+              else if (targetSignatureType == "optic")
                 isTv = true
               else
                 isRadar = true
@@ -1315,9 +1389,10 @@ const AFTERBURNER_CHAMBER = 3
               let transiverBlk = transiversBlk.getBlock(t)
               let range = transiverBlk.getReal("range", 0.0)
               rangeMax = max(rangeMax, range)
-              if (transiverBlk?.visibilityType == "infraRed")
+              let targetSignatureType = transiverBlk?.targetSignatureType != null ? transiverBlk?.targetSignatureType : transiverBlk?.visibilityType
+              if (targetSignatureType == "infraRed")
                 isIrst = true
-              else if ( transiverBlk?.visibilityType == "optic")
+              else if (targetSignatureType == "optic")
                 isTv = true
               else
               {
@@ -1344,21 +1419,36 @@ const AFTERBURNER_CHAMBER = 3
 
             local anglesFinder = false
             local iff = false
-            local lookDown = false
+            local lookUp = false
+            local lookDownHeadOn = false
+            local lookDownAllAspects = false
             let signalsBlk = sensorPropsBlk.getBlockByName("signals")
             for (local s = 0; s < (signalsBlk?.blockCount() ?? 0); s++)
             {
               let signalBlk = signalsBlk.getBlock(s)
               anglesFinder = anglesFinder || signalBlk.getBool("anglesFinder", true)
               iff = iff || signalBlk.getBool("friendFoeId", false)
+              let groundClutter = signalBlk.getBool("groundClutter", false)
+              let distanceBlk = signalBlk.getBlockByName("distance")
               let dopplerSpeedBlk = signalBlk.getBlockByName("dopplerSpeed")
-              if (dopplerSpeedBlk)
+              if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false))
               {
-                if (dopplerSpeedBlk.getBool("presents", false))
-                  lookDown = true
+                let dopplerSpeedMin = dopplerSpeedBlk.getReal("minValue", 0.0)
+                let dopplerSpeedMax = dopplerSpeedBlk.getReal("maxValue", 0.0)
+                if (signalBlk.getBool("mainBeamDopplerSpeed", false) &&
+                    !signalBlk.getBool("absDopplerSpeed", false) &&
+                    dopplerSpeedMax > 0.0 && (dopplerSpeedMin > 0.0 || dopplerSpeedMax > -dopplerSpeedMin * 0.25))
+                  lookDownHeadOn = true
+                else if (groundClutter)
+                  lookDownHeadOn = true
+                else
+                  lookDownAllAspects = true
               }
+              else if (distanceBlk && distanceBlk.getBool("presents", false))
+                lookUp = true
             }
             let isSearchRadar = this.findBlockByName(sensorPropsBlk, "addTarget")
+            let hasTws = this.findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
             let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
 
             local radarType = ""
@@ -1435,11 +1525,21 @@ const AFTERBURNER_CHAMBER = 3
               desc.append("".concat(loc("radar_search_zone_max"), loc("ui/colon"),
                 round(searchZoneAzimuthWidth), loc("measureUnits/deg"), loc("ui/multiply"),
                 round(searchZoneElevationWidth), loc("measureUnits/deg")))
-            if (lookDown)
-              desc.append(loc("radar_ld"))
+            if (lookDownHeadOn)
+              desc.append(loc("radar_ld_head_on"))
+            if (lookDownAllAspects)
+            {
+              if (this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat()))
+                desc.append(loc("radar_ld"))
+              else
+                desc.append(loc("radar_ld_all_aspects"))
+            }
+            if ((lookDownHeadOn || lookDownAllAspects) && lookUp)
+              desc.append(loc("radar_lu"))
             if (iff)
               desc.append(loc("radar_iff"))
-
+            if (isSearchRadar && hasTws)
+              desc.append(loc("radar_tws"))
             if (isTrackRadar)
             {
               let hasBVR = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")

@@ -12,7 +12,7 @@ let activeProtectionSystem = require("%rGui/hud/activeProtectionSystem.nut")
 let { isVisibleDmgIndicator, dmgIndicatorStates } = require("%rGui/hudState.nut")
 let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
-let { bw, bh, rw, rh } = require("style/screenState.nut")
+let { bw, bh } = require("style/screenState.nut")
 //
 
 
@@ -26,7 +26,7 @@ let styleAamAim = {
   lineWidth = hdpx(2.0)
 }
 
-let radarPosComputed = Computed(@() [bw.value + 0.06 * rw.value, bh.value + 0.03 * rh.value])
+let radarPosComputed = Computed(@() [bw.value, bh.value])
 
 let function Root() {
   let colorWacthed = Watched(greenColor)
@@ -40,8 +40,8 @@ let function Root() {
     size = [sw(100), sh(100)]
     children = [
       mkRadar(radarPosComputed)
-      aamAim(colorWacthed, colorAlertWatched, false)
-      agmAim(colorWacthed, false)
+      aamAim(colorWacthed, colorAlertWatched)
+      agmAim(colorWacthed)
       isTankGunsAmmoVisible ? tankGunsAmmo : null
       IndicatorsVisible.value
         ? @() {

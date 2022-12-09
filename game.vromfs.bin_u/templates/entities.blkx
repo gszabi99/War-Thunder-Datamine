@@ -91,6 +91,7 @@
     "setting__routeName": "",
     "setting__cannotMove": false,
     "setting__toGround": false,
+    "setting__loadSound": true,
     "setting__bullets:list<t>": {},
     "setting__bulletsCount:list<i>": {},
     "setting__unit_target_list:list<t>": {}
@@ -225,12 +226,6 @@
         -1.0,
         -1.0
       ],
-      "ri_gpu_object__material_indexes": [
-        -1.0,
-        -1.0,
-        -1.0,
-        -1.0
-      ],
       "ri_gpu_object__is_using_normal": false,
       "ri_gpu_object__incline_delta": 0.0,
       "ri_gpu_object__rotate_range": [
@@ -248,21 +243,15 @@
       ],
       "ri_gpu_object__color_from": "f39/fw==",
       "ri_gpu_object__color_to": "f39/fw==",
-      "ri_gpu_object__on_ri_density": 10.0,
-      "ri_gpu_object__on_ri_noise_gamma": 0.0,
-      "ri_gpu_object__on_ri_noise_tile": 1.0,
-      "ri_gpu_object__on_ri_noise_threshold": 0.5,
-      "ri_gpu_object__on_ri_placer_lod": -1,
-      "ri_gpu_object__max_placed_on_ri": 0,
       "ri_gpu_object__slope_factor": [
         1.0,
         0.0
       ],
       "ri_gpu_object__hardness": 1.0,
-      "ri_gpu_object__shader_graph": "",
       "ri_gpu_object__sparse_weight": 0.0,
       "ri_gpu_object__decal": false,
       "ri_gpu_object__transparent": false,
+      "ri_gpu_object__distorsion": false,
       "ri_gpu_object__place_on_water": false,
       "ri_gpu_object__enable_displacement": true,
       "ri_gpu_object__render_into_shadows": false,
@@ -271,12 +260,8 @@
         -1.0
       ],
       "ri_gpu_object__face_coast": false,
-      "ri_gpu_object__ri_placer_list:array": {},
       "ri_gpu_object__biome_params:array": {},
-      "ri_gpu_object__multiple_objects:array": {},
-      "ri_gpu_object__node_based_shader_preload": {
-        "_tags": "render"
-      }
+      "ri_gpu_object__multiple_objects:array": {}
     },
     "ri_preload:GpuObjectRiResourcePreload": {
       "_tags": "render"
@@ -924,7 +909,7 @@
   },
   "expendable_mod": {
     "_extends": "replicating",
-    "mod__enabled_without_mod": true,
+    "mod__enabled_without_mod": false,
     "mod__count_effects_mod": false,
     "mod__send_economic_spend": true,
     "mod__ownerEid:eid": {},
@@ -937,35 +922,32 @@
   "toolkit_ecs": {
     "_extends": "expendable_mod",
     "mod__name": "tank_tool_kit_expendable",
-    "mod__type_name": "toolkit",
-    "mod__enabled_without_mod": false
+    "mod__type_name": "toolkit"
   },
   "ship_toolkit_ecs": {
     "_extends": "expendable_mod",
     "mod__name": "ship_tool_kit",
-    "mod__type_name": "toolkit",
-    "mod__send_economic_spend": false
+    "mod__type_name": "toolkit"
   },
   "extinguisher_ecs": {
     "_extends": "expendable_mod",
     "mod__name": "manual_extinguisher_expendable",
-    "mod__type_name": "extinguisher"
+    "mod__type_name": "extinguisher",
+    "mod__enabled_without_mod": true,
+    "mod__count_effects_mod": true
   },
   "ship_extinguisher_ecs": {
-    "_extends": "extinguisher_ecs",
-    "mod__enabled_without_mod": false
+    "_extends": "extinguisher_ecs"
   },
   "medicalkit_ecs": {
     "_extends": "expendable_mod",
     "mod__name": "tank_medical_kit_expendable",
     "mod__type_name": "medicalkit",
-    "mod__enabled_without_mod": false,
     "mod__count_effects_mod": true
   },
   "smokescreen_ecs": {
     "_extends": "expendable_mod",
     "mod__type_name": "smokeScreen",
-    "mod__enabled_without_mod": false,
     "mod__send_economic_spend": false
   },
   "tank_smokescreen_ecs": {
@@ -1160,7 +1142,8 @@
     "ship_damage_control_repair_speed_mult": 1.0,
     "ship_damage_control_extinguish_speed_mult": 1.0,
     "ship_damage_control_unwatering_speed_mult": 1.0,
-    "ship_damage_control_priorities:u32": {}
+    "ship_damage_control_priorities:u32": {},
+    "ship_damage_control_presets:u32": {}
   },
   "ship": {
     "_extends": [
@@ -1392,7 +1375,7 @@
         0.0
       ],
       "smoke__radius": 0.0,
-      "smoke__visibility_type_flags": 0,
+      "smoke__target_signature_type_flags": 0,
       "smoke__transparent_for_thermal": false,
       "smoke__fx_id": -1
     },

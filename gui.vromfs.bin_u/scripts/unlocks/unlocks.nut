@@ -9,12 +9,12 @@ let regexp2 = require("regexp2")
 let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { statsTanks } = require("%scripts/user/userInfoStats.nut")
 let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
   getUnlockMultDescByCfg, getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getUnlockMultDesc,
   getUnlockNameText, getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions, getMainProgressCondition, getProgressBarData, loadMainProgressCondition,
-  loadConditionsFromBlk, getMultipliersTable, isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
+  loadConditionsFromBlk, getMultipliersTable, isBitModeType,
+  isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 let getEmptyConditionsConfig = @() {
@@ -54,24 +54,6 @@ let getEmptyConditionsConfig = @() {
   }
 }
 
-let unlockConditionUnitclasses = {
-  aircraft          = ES_UNIT_TYPE_AIRCRAFT
-  tank              = ES_UNIT_TYPE_TANK
-  typeLightTank     = ES_UNIT_TYPE_TANK
-  typeMediumTank    = ES_UNIT_TYPE_TANK
-  typeHeavyTank     = ES_UNIT_TYPE_TANK
-  typeSPG           = ES_UNIT_TYPE_TANK
-  typeSPAA          = ES_UNIT_TYPE_TANK
-  typeTankDestroyer = ES_UNIT_TYPE_TANK
-  typeFighter       = ES_UNIT_TYPE_AIRCRAFT
-  typeDiveBomber    = ES_UNIT_TYPE_AIRCRAFT
-  typeBomber        = ES_UNIT_TYPE_AIRCRAFT
-  typeAssault       = ES_UNIT_TYPE_AIRCRAFT
-  typeStormovik     = ES_UNIT_TYPE_AIRCRAFT
-  typeTransport     = ES_UNIT_TYPE_AIRCRAFT
-  typeStrikeFighter = ES_UNIT_TYPE_AIRCRAFT
-}
-
 let showNextAwardModeTypes = { // modeTypeName = localizationId
   char_versus_battles_end_count_and_rank_test = "battle_participate_award"
   char_login_count                            = "day_login_award"
@@ -106,9 +88,9 @@ let function checkAwardsAmountPeerSession(res, config, streak, name) {
 
 let function getRewardCostFromBlk(blk) {
   let res = ::Cost()
-  res.wp = typeof(blk?.amount_warpoints) == "instance" ? blk?.amount_warpoints.x.tointeger() : blk.getInt("amount_warpoints", 0)
-  res.gold = typeof(blk?.amount_gold) == "instance" ? blk?.amount_gold.x.tointeger() : blk.getInt("amount_gold", 0)
-  res.frp = typeof(blk?.amount_exp) == "instance" ? blk?.amount_exp.x.tointeger() : blk.getInt("amount_exp", 0)
+  res.wp = type(blk?.amount_warpoints) == "instance" ? blk?.amount_warpoints.x.tointeger() : blk.getInt("amount_warpoints", 0)
+  res.gold = type(blk?.amount_gold) == "instance" ? blk?.amount_gold.x.tointeger() : blk.getInt("amount_gold", 0)
+  res.frp = type(blk?.amount_exp) == "instance" ? blk?.amount_exp.x.tointeger() : blk.getInt("amount_exp", 0)
   return res
 }
 
@@ -153,8 +135,6 @@ let function setImageByUnlockType(config, unlockBlk) {
 }
 
 ::unlocks_punctuation_without_space <- ","
-
-::unlock_time_range_conditions <- ["timeRange", "char_time_range"]
 
 ::is_unlocked_scripted <- function is_unlocked_scripted(unlockType, id)
 {
@@ -304,7 +284,7 @@ let function setImageByUnlockType(config, unlockBlk) {
 
   if (!unlocked)
   {
-    let cond = config.conditions.findvalue(@(c) ::unlock_time_range_conditions.contains(c.type))
+    let cond = config.conditions.findvalue(@(c) isTimeRangeCondition(c.type))
     if (cond)
       config.isExpired = ::get_charserver_time_sec() >= cond.endTime
   }
@@ -399,61 +379,6 @@ let function setImageByUnlockType(config, unlockBlk) {
     return $"#ui/images/avatars/{unlockBlk.id}.png"
 
   return unlockBlk?.icon
-}
-
-::tanks_related_unlocks <- {}
-
-::is_unlock_tanks_related <- function is_unlock_tanks_related(unlockId = null, unlockBlk = null)
-{
-  unlockId = unlockId ?? unlockBlk?.id
-  if (!unlockId)
-    return false
-  if (unlockId in ::tanks_related_unlocks)
-    return ::tanks_related_unlocks[unlockId]
-  let res = ::tanks_related_unlocks_parser(unlockBlk || ::g_unlocks.getUnlockById(unlockId))
-  ::tanks_related_unlocks[unlockId] <- res
-  return res
-}
-
-::tanks_related_unlocks_parser <- function tanks_related_unlocks_parser(unlockBlk)
-{
-  if (!unlockBlk)
-    return false
-
-  foreach (mode in unlockBlk % "mode")
-  {
-    if (mode.unitClass)
-      return mode.unitClass == "tank" || getTblValue(mode.unitClass, ::mapWpUnitClassToWpUnitType, "") == "Tank"
-
-    if (mode.type == "char_unit_exist")
-      return ::getAircraftByName(mode.unit)?.isTank()
-    else if (mode.type == "char_unlocks")
-    {
-      foreach (unlockId in mode % "unlock")
-        if (::is_unlock_tanks_related(unlockId))
-          return true
-    }
-
-    foreach (condition in getUnlockConditions(mode))
-    {
-      if (condition.type == "playerType")
-      {
-        foreach (unitType in condition % "unitType")
-          if (isInArray(unitType, statsTanks))
-            return true
-        foreach (unitClass in condition % "unitClass")
-          if ((unlockConditionUnitclasses?[unitClass] ?? ES_UNIT_TYPE_INVALID) == ES_UNIT_TYPE_TANK)
-            return true
-      }
-      else if (condition.type == "playerUnit")
-      {
-        foreach (unitId in condition % "class")
-          if (::getAircraftByName(unitId)?.isTank())
-            return true
-      }
-    }
-  }
-  return false
 }
 
 ::get_unlock_cost <- function get_unlock_cost(id)
@@ -984,11 +909,11 @@ let function setImageByUnlockType(config, unlockBlk) {
       foreach( nameInConfig, nameInBlk in rewards)
       {
         res[nameInConfig] = rBlock?[nameInBlk] ?? 0
-        if (typeof(res[nameInConfig]) == "instance")
+        if (type(res[nameInConfig]) == "instance")
           res[nameInConfig] = res[nameInConfig].x
       }
       if (rBlock?.amount_exp)
-        res.frp = (typeof(rBlock.amount_exp) == "instance") ? rBlock.amount_exp.x : rBlock.amount_exp
+        res.frp = (type(rBlock.amount_exp) == "instance") ? rBlock.amount_exp.x : rBlock.amount_exp
     }
 
     let popupImage = ::g_language.getLocTextFromConfig(rBlock, "popupImage", "")
@@ -1167,7 +1092,7 @@ let function setImageByUnlockType(config, unlockBlk) {
 
   function getTimeCondition(unlockBlk) {
     let conds = getUnlockConditions(unlockBlk?.mode)
-    return conds.findvalue(@(c) ::unlock_time_range_conditions.contains(c.type))
+    return conds.findvalue(@(c) isTimeRangeCondition(c.type))
   }
 
   function canDo(unlockBlk) {
@@ -1198,13 +1123,13 @@ let function setImageByUnlockType(config, unlockBlk) {
     if (!unlock)
       return ::Cost()
 
-    let wpReward = typeof(unlock?.amount_warpoints) == "instance"
+    let wpReward = type(unlock?.amount_warpoints) == "instance"
       ? unlock.amount_warpoints.x.tointeger()
       : unlock.getInt("amount_warpoints", 0)
-    let goldReward = typeof(unlock?.amount_gold) == "instance"
+    let goldReward = type(unlock?.amount_gold) == "instance"
       ? unlock.amount_gold.x.tointeger()
       : unlock.getInt("amount_gold", 0)
-    let xpReward = typeof(unlock?.amount_exp) == "instance"
+    let xpReward = type(unlock?.amount_exp) == "instance"
       ? unlock.amount_exp.x.tointeger()
       : unlock.getInt("amount_exp", 0)
     let reward = ::Cost(wpReward, goldReward, xpReward)
@@ -1453,7 +1378,7 @@ let function setImageByUnlockType(config, unlockBlk) {
   {
     foreach (cond in getUnlockConditions(unlock.mode))
     {
-      if (!isInArray(cond?.type, ::unlock_time_range_conditions))
+      if (!isTimeRangeCondition(cond?.type))
         continue
 
       let startTime = getTimestampFromStringUtc(cond.beginDate) -

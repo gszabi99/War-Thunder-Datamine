@@ -645,7 +645,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     this.filterStates = this.myFilters ? this.myFilters % "array" : []
     this.filterTypes = {}
     foreach(idx, key in FILTER_OPTIONS) {
-      let isRank = typeof(key) != "string"
+      let isRank = type(key) != "string"
       if ((isRank && !this.presetsByRanks?[key]))
         continue
 

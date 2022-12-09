@@ -1,12 +1,9 @@
-//warning disable: -file:egyptian-braces
-
 // Note:
 // This enums is shared between squirrel and C++ code
 // any change requires version.nut update.
 // Also do not reorder mouse axes order in order to
 // keep compatibility with old controls presets.
-global enum MouseAxis
-{
+global enum MouseAxis {
   MOUSE_X,
   MOUSE_Y,
   MOUSE_SCROLL,
@@ -17,8 +14,7 @@ global enum MouseAxis
   NUM_MOUSE_AXIS_TOTAL
 };
 
-global enum CtrlsInGui
-{
+global enum CtrlsInGui {
   CTRL_ALLOW_VEHICLE_KEYBOARD = 0x00000001,
   CTRL_ALLOW_VEHICLE_XINPUT   = 0x00000002,
   CTRL_ALLOW_VEHICLE_JOY      = 0x00000004,
@@ -48,8 +44,7 @@ global enum CtrlsInGui
   CTRL_ALLOW_VEHICLE_FULL     = 0x0000000F
 };
 
-global enum AxisInvertOption
-{
+global enum AxisInvertOption {
   INVERT_Y,
   INVERT_GUNNER_Y,
   INVERT_THROTTLE,
@@ -62,8 +57,7 @@ global enum AxisInvertOption
   INVERT_SUBMARINE_Y,
 };
 
-global enum DargWidgets
-{
+global enum DargWidgets {
    NONE = 0
   ,HUD
   ,SHIP_OBSTACLE_RF
@@ -73,8 +67,7 @@ global enum DargWidgets
   ,HUD_TOUCH
 };
 
-global enum AirParamsMain
-{
+global enum AirParamsMain {
   RPM =               0,
   THROTTLE_1 =        1,
   THROTTLE_2 =        2,
@@ -106,8 +99,7 @@ global enum AirParamsMain
   RATE_OF_FIRE =      28
 };
 
-global enum AirParamsSecondary
-{
+global enum AirParamsSecondary {
   OIL_1 =          0,
   WATER_1 =        1,
   ENGINE_1 =       2,
@@ -137,8 +129,7 @@ global enum AirParamsSecondary
   INSTRUCTOR =     26
 };
 
-global enum TemperatureState
-{
+global enum TemperatureState {
   DEFAULT_TEMPERATURE = 0,
   OVERHEAT = 1,
   EMPTY_TANK = 2,
@@ -147,8 +138,7 @@ global enum TemperatureState
   BLANK = 5
 };
 
-global enum AirThrottleMode
-{
+global enum AirThrottleMode {
   DEFAULT_MODE = 0,
   BRAKE = 1,
   CLIMB = 2,
@@ -158,21 +148,18 @@ global enum AirThrottleMode
   AIRCRAFT_WEP = 6
 };
 
-global enum RadarViewMode
-{
+global enum RadarViewMode {
   B_SCOPE_ROUND = 0,
   B_SCOPE_SQUARE = 1,
   MODE_COUNT = 2
 };
 
-global enum CountermeasureMode
-{
+global enum CountermeasureMode {
   PERIODIC_COUNTERMEASURE    = 1,
   MLWS_SLAVED_COUNTERMEASURE = 2
 };
 
-global enum WeaponMode
-{
+global enum WeaponMode {
   CCIP_MODE = 1,
   CCRP_MODE = 2,
   BOMB_BAY_OPEN = 3,
@@ -181,15 +168,13 @@ global enum WeaponMode
   BOMB_BAY_CLOSING = 6
 };
 
-global enum IRCMMode
-{
+global enum IRCMMode {
   IRCM_ENABLED = 1,
   IRCM_DAMAGED = 2,
   IRCM_DISABLED = 3
 };
 
-global enum HudColorState
-{
+global enum HudColorState {
   ACTIV            = 0,
   PASSIV           = 1,
   LOW_ALERT        = 2,
@@ -198,8 +183,7 @@ global enum HudColorState
 };
 
 //Need recalculate wpCost if change values of mask for exist weapons
-global enum WeaponMask
-{
+global enum WeaponMask {
   MACHINE_GUN_MASK      = 0x000001,
   CANNON_MASK           = 0x000002,
   GUNNER_MASK           = 0x000004,

@@ -98,14 +98,22 @@ def is_relative_equal_float(a, b : float; max_diff : float = 1e-5; max_rel_diff 
   return diff <= (absA < absB ? absB : absA) * max_rel_diff
 
 // das implementation of C++ function from dag_mathBase.h
+// if you need are_approximately_equal, use this one instead
 [generic]
 def is_equal_float(a, b : float; eps : float = 1e-5f)
   return is_relative_equal_float(a, b, eps, FLT_EPSILON)
 
-// das implementation of C++ function from dag_mathBase.h
 [generic]
-def are_approximately_equal(a, b : float; epsilon : float = 8.0 * FLT_EPSILON) // Three bits precision by default.
-  return is_relative_equal_float(a, b, epsilon, epsilon)
+def is_equal_float(a, b : float2; eps : float = 1e-5f)
+  return is_equal_float(a.x, b.x, eps) && is_equal_float(a.y, b.y, eps)
+
+[generic]
+def is_equal_float(a, b : float3; eps : float = 1e-5f)
+  return is_equal_float(a.x, b.x, eps) && is_equal_float(a.y, b.y, eps) && is_equal_float(a.z, b.z, eps)
+
+[generic]
+def is_equal_float(a, b : float4; eps : float = 1e-5f)
+  return is_equal_float(a.x, b.x, eps) && is_equal_float(a.y, b.y, eps) && is_equal_float(a.z, b.z, eps) && is_equal_float(a.w, b.w, eps)
 
 // returns signed magnitude of the vector that would result from a regular 3D cross product of the input vectors
 [generic]
@@ -126,6 +134,14 @@ def is_nan(a : float2)
 
 
 [generic]
+def scale_tm(scale : float3) : float3x4
+  var scaleTm : float3x4
+  scaleTm[0] = float3(scale.x, 0.0, 0.0)
+  scaleTm[1] = float3(0.0, scale.y, 0.0)
+  scaleTm[2] = float3(0.0, 0.0, scale.z)
+  return <- scaleTm
+
+[generic]
 def scale_tm(scale : float) : float3x4
   var scaleTm : float3x4
   scaleTm[0] = float3(scale, 0.0, 0.0)
@@ -134,7 +150,7 @@ def scale_tm(scale : float) : float3x4
   return <- scaleTm
 
 [generic]
-def scale_tm(tm : float3x4; scale : float) : float3x4
+def scale_tm(tm : float3x4; scale) : float3x4
   return <- tm * scale_tm(scale)
 
 [generic]
@@ -164,3 +180,15 @@ def x0z(f)
 [generic]
 def xVz(f; v)
   return float3(f.x, v, f.z)
+
+[generic]
+def fsel(a, b, c : float)
+  return a >= 0. ? b : c
+
+[generic]
+def max(a, b, c)
+  return max(max(a, b), c)
+
+[generic]
+def min(a, b, c)
+  return min(min(a, b), c)

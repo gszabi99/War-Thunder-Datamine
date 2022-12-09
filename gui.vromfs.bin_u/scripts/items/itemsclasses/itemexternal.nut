@@ -95,6 +95,7 @@ local ItemExternal = class extends ::BaseItem
     this.requirement = itemDefDesc?.tags.showWithFeature
     this.lottieAnimation = itemDefDesc?.tags.lottieAnimation
     this.allowToBuyAmount = itemDefDesc?.tags.allowToBuyAmount.tointeger() ?? -1
+    this.forceShowRewardReceiving = itemDefDesc?.tags.forceShowRewardReceiving ?? false
     this.updateSubstitutionItemDataOnce()
 
     this.aditionalConfirmationMsg = {}

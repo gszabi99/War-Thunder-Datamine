@@ -17,10 +17,10 @@ let function Root(width, height) {
   return {
     size = [width, height]
     children = [
-      turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), false, 0.22)
-      sight(HudColor, sw(50), sh(50), hdpx(500), false)
+      turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), 0.22)
+      sight(HudColor, sw(50), sh(50), hdpx(500))
       targetSize(HudColor, sw(100), sh(100))
-      launchDistanceMax(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), false)
+      launchDistanceMax(HudColor, hdpx(150), hdpx(150), sw(50), sh(90))
       aircraftParamsTable(false)
     ]
   }

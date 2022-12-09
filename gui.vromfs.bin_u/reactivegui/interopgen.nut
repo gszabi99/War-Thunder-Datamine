@@ -9,14 +9,12 @@ let function makeSlotName(original_name, prefix, postfix) {
   return str(slotName, postfix)
 }
 
-let makeUpdateState = @(state_object) function (new_value) { state_object.update(new_value) }
-
 let function generate(options) {
   let prefix = options?.prefix ?? ""
   let postfix = options?.postfix ?? ""
 
   foreach (stateName, stateObject in options.stateTable) {
-    interop[ makeSlotName(stateName, prefix, postfix) ] <- makeUpdateState(stateObject)
+    interop[ makeSlotName(stateName, prefix, postfix) ] <- stateObject
   }
 }
 

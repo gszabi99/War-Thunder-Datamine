@@ -294,7 +294,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 {
   for(local i=0; i < arr.len(); i++)
   {
-    if (typeof(arr[i]) == "string")
+    if (type(arr[i]) == "string")
       arr[i] = { id=arr[i] }
     if (!("type" in arr[i]))
       arr[i].type <- CONTROL_TYPE.SHORTCUT
@@ -323,7 +323,7 @@ let function isInArrayRecursive(v, arr) {
     if (v==i)
       return true
     else
-      if (typeof(i)=="array" && isInArrayRecursive(v, i))
+      if (type(i)=="array" && isInArrayRecursive(v, i))
         return true
   }
   return false
@@ -935,12 +935,12 @@ let function isInArrayRecursive(v, arr) {
 
   function doBind(devs, btns, shortcutId)
   {
-    if (typeof(shortcutId)=="array")
+    if (type(shortcutId)=="array")
     {
       foreach(id in shortcutId)
         this.doBind(devs, btns, id)
     } else
-    if (typeof(shortcutId)=="integer" && devs.len() > 0)
+    if (type(shortcutId)=="integer" && devs.len() > 0)
     {
       let isKbd = this.isKbdOrMouse(devs)
       if (isKbd==null)
@@ -998,7 +998,7 @@ let function isInArrayRecursive(v, arr) {
 
   function findButtons(devs, btns, shortcutId)
   {
-    let firstSc = (typeof(shortcutId)=="integer")? shortcutId : shortcutId[0]
+    let firstSc = (type(shortcutId)=="integer")? shortcutId : shortcutId[0]
     let scItem = this.shortcutItems[firstSc]
     if (firstSc>this.maxCheckSc)
       this.maxCheckSc = firstSc
@@ -1007,7 +1007,7 @@ let function isInArrayRecursive(v, arr) {
 
     for(local i = 0; i<this.maxCheckSc; i++)
     {
-      if (firstSc==i || ((typeof(shortcutId)=="array") && isInArray(i, shortcutId)))
+      if (firstSc==i || ((type(shortcutId)=="array") && isInArray(i, shortcutId)))
         continue
       let item = this.shortcutItems[i]
       if (item==scItem && (item.type!= CONTROL_TYPE.AXIS || i==scItem.modifiersId[this.axisMaxChoosen? "rangeMin" : "rangeMax"]))
@@ -1514,7 +1514,7 @@ let function isInArrayRecursive(v, arr) {
       if (("skipAllBefore" in this.curItem) && (value in this.curItem.skipAllBefore))
         this.skipAllBefore = this.curItem.skipAllBefore[value]
       if (("skip" in this.curItem) && (value in this.curItem.skip) && this.curItem.skip[value])
-        if (typeof(this.curItem.skip[value]) == "array")
+        if (type(this.curItem.skip[value]) == "array")
           this.skipList.extend(this.curItem.skip[value])
         else
           this.skipList.append(this.curItem.skip[value])

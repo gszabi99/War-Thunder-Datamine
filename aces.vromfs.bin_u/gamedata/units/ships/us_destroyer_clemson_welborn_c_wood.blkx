@@ -1196,6 +1196,7 @@
       "armorThrough": 100.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 500.0
       },
       "radio_station_dm": {
@@ -1347,7 +1348,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.2,
@@ -2147,10 +2147,22 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 24.0,
+            "damage": 8.0,
             "fHitCritical": false
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [
@@ -4146,6 +4158,35 @@
       }
     ]
   },
+  "skin": [
+    {
+      "name": "usa_camo_navy_blue",
+      "nameLocId": "skin/usa_camo_navy_blue",
+      "descLocId": "skin/usa_camo_navy_blue/desc",
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "usa_camo_navy_blue*"
+      }
+    },
+    {
+      "name": "usa_camo_blue_spots",
+      "nameLocId": "skin/usa_camo_blue_spots",
+      "descLocId": "skin/usa_camo_blue_spots/desc",
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "usa_camo_blue_spots*"
+      }
+    },
+    {
+      "name": "usa_camo_blackgray_spots",
+      "nameLocId": "skin/usa_camo_blackgray_spots",
+      "descLocId": "skin/usa_camo_blackgray_spots/desc",
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "usa_camo_blackgray_spots*"
+      }
+    }
+  ],
   "commonWeapons": {
     "animatedBones": {
       "node": "rangefinder_01"
@@ -4676,6 +4717,10 @@
       "from": "destroyer_clemson_litchfield_c*",
       "to": "destroyer_clemson_welborn_c_wood_skin_c*",
       "param": "camo_skin_tex"
+    },
+    "replace_tex": {
+      "from": "camo_navygrey_5*",
+      "to": "camo_design20l*"
     }
   },
   "user_skin": {
@@ -4689,6 +4734,11 @@
       },
       {
         "from": "camo_design20l*"
+      },
+      {
+        "from": "camo_navygrey_5*",
+        "to": "camo_design20l*",
+        "param": "camo_skin_tex"
       }
     ],
     "set_tex": [

@@ -32,7 +32,7 @@ let getTextNoWeapons = @(unit, isPrimary) isPrimary ? loc("weapon/noPrimaryWeapo
 local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
 {
   local text = ""
-  unit = typeof(unit) == "string" ? ::getAircraftByName(unit) : unit
+  unit = type(unit) == "string" ? ::getAircraftByName(unit) : unit
   if (!unit)
     return text
 
@@ -264,10 +264,10 @@ local function getWeaponShortType(_unit, weapon)
 
 local function getWeaponShortTypeFromWpName(wpName, unit = null)
 {
-  if (!wpName || typeof(wpName) != "string")
+  if (!wpName || type(wpName) != "string")
     return ""
 
-  if (typeof(unit) == "string")
+  if (type(unit) == "string")
     unit = ::getAircraftByName(unit)
 
   if (!unit)

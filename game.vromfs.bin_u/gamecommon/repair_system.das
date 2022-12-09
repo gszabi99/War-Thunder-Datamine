@@ -67,6 +67,10 @@ def load_toolkit_mod_blk(blk : DataBlock&;
                          var repair_system_speed_multiplier_base : float&;
                          var repair_system_repair_hp_multiplier : float&;
                          is_default_toolkit : bool)
+  var gm = unit |> as_gm()
+  if gm != null && repair_system_toolkit_count_max == 0
+    repair_system_toolkit_count_max = gm.toolkit.count
+
   repair_system_toolkit_count_max = blk |> datablock_getInt("toolkitActivationCount", repair_system_toolkit_count_max)
   let available_without_toolkit = blk |> datablock_getBool("repairAvailable", false) || is_default_toolkit
   set_flag(repair_system_state, RepairState REPAIR_AVAILABLE_WITHOUT_TOOLKIT,
@@ -85,10 +89,8 @@ def load_toolkit_mod_blk(blk : DataBlock&;
       if param_name_id == repair_hp_mult_name_id
         repair_hp_multiplier *= blk |> datablock_getReal(int(i))
 
-  var gm = unit |> as_gm()
-  let toolkit = gm.toolkit
-  if toolkit != null
-    repair_system_toolkit_count = min(toolkit.count, repair_system_toolkit_count_max)
+  if gm != null
+    repair_system_toolkit_count = min(gm.toolkit.count, repair_system_toolkit_count_max)
   if repair_system_toolkit_count_max < 0
     repair_system_toolkit_count = 0
 
@@ -198,7 +200,7 @@ def repair_system_init_mod_handle_es(evt : EventUnitInitModification;
     return
 
   // load toolkit mod blk
-  let has = load_toolkit_mod_blk(evt.blk,
+  let has = load_toolkit_mod_blk(*evt.blk,
     unit,
     repair_system_state,
     repair_system_toolkit_count,
@@ -486,7 +488,7 @@ def repair_system_spend_toolkit_handle_es(evt : EventRepairSystemSpendToolkit;
     return
   let gm = unit |> as_gm()
   if gm != null
-    gm.toolkit |> spend_expandable_modification()
+    gm.toolkit |> spend_expendable_modification()
 
 
 [es]

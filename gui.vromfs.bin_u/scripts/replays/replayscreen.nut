@@ -13,6 +13,7 @@ let replayMetadata = require("%scripts/replays/replayMetadata.nut")
 let { is_replay_turned_on, is_replay_saved, get_replays_dir,
   get_new_replay_filename, on_save_replay, on_view_replay, get_replays_list,
   on_del_replay, on_open_replays_folder, get_replay_info } = require("replays")
+let { is_benchmark_game_mode } = require("mission")
 
 const REPLAY_SESSION_ID_MIN_LENGHT = 16
 
@@ -84,7 +85,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     return;
   if (!::get_option_autosave_replays())
     return;
-  if (::get_game_mode() == GM_BENCHMARK)
+  if (is_benchmark_game_mode())
     return;
 
   let replays = get_replays_list();

@@ -28,7 +28,7 @@ let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isHaveNonApprovedClanUnitResearches } = require("%scripts/unit/squadronUnitAction.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
@@ -505,8 +505,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
     if (!this.isCrossPlayEventAvailable(event))
     {
-      if (!::xbox_try_show_crossnetwork_message())
-        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
+      checkAndShowCrossplayWarning(@() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
       return
     }
 
@@ -725,12 +724,6 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   function onCountryApply()
   {
-    if (::tanksDriveGamemodeRestrictionMsgBox("TanksInRandomBattles",
-                                              this.getCurCountry(),
-                                              null,
-                                              "cbt_tanks/forbidden/instant_action"))
-      return
-
     let multiSlotEnabled = this.isCurrentGameModeMultiSlotEnabled()
     if (!this.testCrewsForMode(this.getCurCountry()))
       return this.showNoSuitableVehiclesMsgBox()

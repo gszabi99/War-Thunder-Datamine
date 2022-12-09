@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {interop} = require("%rGui/globals/interop.nut")
 let {get_mission_time} = require("%rGui/globals/mission.nut")
 let interopGet = require("interopGen.nut")
+let { subscribe } = require("eventbus")
 
 let hudLog = Watched([])
 
@@ -33,22 +33,27 @@ let hudChatState = persist("hudChatState", @() {
   }
 })
 
-let {inputEnable, hasEnableChatMode} = hudChatState
+let { inputEnable, hasEnableChatMode } = hudChatState
 let canWriteToChat = Computed(@() inputEnable.value && hasEnableChatMode.value)
 hudChatState.canWriteToChat <- canWriteToChat
 
-interop.mpChatPushMessage <- function (message) {
+let function mpChatPushMessage(message) {
   hudChatState.hudLog.value.append(message)
   hudChatState.hudLog.trigger()
 }
 
-interop.mpChatClear <- function () {
-  hudChatState.hudLog([])
-}
+let mpChatClear = @() hudChatState.hudLog([])
 
-interop.mpChatInputChanged <- function (_new_chat_input_text) {
+let function mpChatInputChanged(_) {
   hudChatState.lastInputTime(get_mission_time())
 }
+
+subscribe("setHasEnableChatMode", @(v) hasEnableChatMode(v.hasEnableChatMode))
+subscribe("setInputEnable", @(v) inputEnable(v.value))
+subscribe("hudChatModeIdUpdate", @(v) hudChatState.modeId(v.modeId))
+subscribe("mpChatPushMessage", mpChatPushMessage)
+subscribe("mpChatInputChanged", mpChatInputChanged)
+subscribe("mpChatClear", @(_) mpChatClear())
 
 interopGet({
   stateTable = hudChatState

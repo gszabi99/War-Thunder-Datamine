@@ -291,58 +291,23 @@ enums.addTypes(effectsType, [
   { id = "medicalkitAdditionalCount", preset = "COLORED_PLURAL_VALUE" }
 
   /****************************** SHIP EFFECTS ***********************************************/
-  { id = "waterMassVelTime",       measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "mainSpeedYawK",          preset = "PERCENT_FLOAT"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "mainSpeedPitchK",        preset = "PERCENT_FLOAT"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "auxSpeedYawK",           preset = "PERCENT_FLOAT"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "auxSpeedPitchK",         preset = "PERCENT_FLOAT"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "aaSpeedYawK",            preset = "PERCENT_FLOAT"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "aaSpeedPitchK",          preset = "PERCENT_FLOAT"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "shipDistancePrecision",  measureType = "percent"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-    validateValue = @(value) -100.0 * value
-  }
-  { id = "turnRadius",             preset = "PERCENT_FLOAT", isInverted = true
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "turnTime",               preset = "PERCENT_FLOAT", isInverted = true
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "distToLiveTorpedo",      measureType = "meters_alt"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "maxSpeedInWaterTorpedo", measureType = "metersPerSecond_climbSpeed"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "diveDepthTorpedo",       measureType = "meters_alt", shouldColorByValue = false
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "speedShip",              preset = "SPEED"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "reverseSpeed",           preset = "SPEED"
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "timeToMaxSpeed",         measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
-  { id = "timeToMaxReverseSpeed",  measureType = "seconds", isInverted = true, presize = 0.1
-    canShowForUnit = @(_unit) hasFeature("Ships")
-  }
+  { id = "waterMassVelTime",       measureType = "seconds", isInverted = true, presize = 0.1 }
+  { id = "mainSpeedYawK",          preset = "PERCENT_FLOAT" }
+  { id = "mainSpeedPitchK",        preset = "PERCENT_FLOAT" }
+  { id = "auxSpeedYawK",           preset = "PERCENT_FLOAT" }
+  { id = "auxSpeedPitchK",         preset = "PERCENT_FLOAT" }
+  { id = "aaSpeedYawK",            preset = "PERCENT_FLOAT" }
+  { id = "aaSpeedPitchK",          preset = "PERCENT_FLOAT" }
+  { id = "shipDistancePrecision",  measureType = "percent", validateValue = @(value) -100.0 * value }
+  { id = "turnRadius",             preset = "PERCENT_FLOAT", isInverted = true }
+  { id = "turnTime",               preset = "PERCENT_FLOAT", isInverted = true }
+  { id = "distToLiveTorpedo",      measureType = "meters_alt" }
+  { id = "maxSpeedInWaterTorpedo", measureType = "metersPerSecond_climbSpeed" }
+  { id = "diveDepthTorpedo",       measureType = "meters_alt", shouldColorByValue = false }
+  { id = "speedShip",              preset = "SPEED" }
+  { id = "reverseSpeed",           preset = "SPEED" }
+  { id = "timeToMaxSpeed",         measureType = "seconds", isInverted = true, presize = 0.1 }
+  { id = "timeToMaxReverseSpeed",  measureType = "seconds", isInverted = true, presize = 0.1 }
 ],
 effectTypeConstructor)
 

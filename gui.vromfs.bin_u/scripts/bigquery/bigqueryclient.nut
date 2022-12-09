@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 #strict
 #allow-root-table
-
+let ww_leaderboard = require("ww_leaderboard")
 let { get_local_unixtime   } = require("dagor.time")
 let { grnd                 } = require("dagor.random")
 let { format               } = require("string")
@@ -21,7 +21,7 @@ let function get_distr()
   let config = ::get_settings_blk()
   distr = config?.distr ?? config?.originalConfigBlk.distr
 
-  return (typeof distr == "string" && distr.len() > 0) ? distr : ""
+  return (type(distr) == "string" && distr.len() > 0) ? distr : ""
 }
 
 
@@ -46,8 +46,8 @@ let function add_sysinfo(table)
   if (sysinfo?.is64bitClient == false)
     table.game32 <- true
 
-  assert(target_platform.len() > 0)
-  table.os <- target_platform
+  assert(platformId.len() > 0)
+  table.os <- platformId
 }
 
 
@@ -96,7 +96,7 @@ let function bq_client_noa(event, uniqueId, table)
     data = {}
   }
 
-  ::ww_leaderboard.request(request, function(_response){})  // cloud-server
+  ww_leaderboard.request(request, function(_response){})  // cloud-server
   log($"BQ CLIENT_NOA {event} {params} [{uniqueId}]")
 }
 
@@ -108,13 +108,13 @@ let function bqSendStart()  // NOTE: call after 'reset PlayerProfile' in log
 
   local blk = ::get_common_local_settings_blk()
 
-  if ("uniqueId" not in blk || typeof blk.uniqueId != "string" || blk.uniqueId.len() < 16)
+  if ("uniqueId" not in blk || type(blk.uniqueId) != "string" || blk.uniqueId.len() < 16)
   {
     blk.uniqueId <- format("%.8X%.8X", get_local_unixtime(), grnd()*grnd())
     assert(blk.uniqueId.len() == 16)
   }
 
-  if ("runCount" not in blk || typeof blk.runCount != "integer" || blk.runCount < 0)
+  if ("runCount" not in blk || type(blk.runCount) != "integer" || blk.runCount < 0)
   {
     blk.runCount <- 0;
   }

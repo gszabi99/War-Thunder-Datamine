@@ -29,7 +29,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     setBreadcrumbGoBackParams(this)
     this.options = [
       [::USEROPT_INVERTY, "spinner"],
-      [::USEROPT_INVERTY_TANK, "spinner", hasFeature("Tanks")],
+      [::USEROPT_INVERTY_TANK, "spinner"],
       [::USEROPT_INVERTCAMERAY, "spinner"],
       [::USEROPT_MOUSE_AIM_SENSE, "slider"],
       [::USEROPT_ZOOM_SENSE,"slider"],

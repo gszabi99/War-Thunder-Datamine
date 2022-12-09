@@ -61,7 +61,7 @@
         "hp": 40.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -1067,10 +1067,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2587,7 +2595,23 @@
       {
         "name": "il_28sh_upk_23_250",
         "blk": "gameData/FlightModels/weaponPresets/il_28sh_upk_23_250.blk",
-        "reqModification": "il_28sh_upk23_gunpod"
+        "reqModification": "il_28sh_upk23_gunpod",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
+            "amountPerTier": 1.0,
+            "tier": [
+              {
+                "idx": 5,
+                "iconType": "doublebarreled_box"
+              },
+              {
+                "idx": 7,
+                "iconType": "doublebarreled_box"
+              }
+            ]
+          }
+        }
       },
       {
         "name": "il_28sh_s_24",
@@ -4496,6 +4520,11 @@
   },
   "modifications": {
     "cd_98": {},
+    "air_extinguisher": {
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
+    },
     "CdMin_Fuse": {},
     "new_cover": {},
     "structure_str": {},

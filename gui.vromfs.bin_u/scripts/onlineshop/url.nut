@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { split_by_chars } = require("string")
+let { shell_launch, get_authenticated_url_sso } = require("url")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let base64 = require("base64")
 
@@ -55,7 +56,7 @@ let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) 
 
     let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
     let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
-    let authData = ::get_authenticated_url_sso(autoLoginUrl, ssoService)
+    let authData = get_authenticated_url_sso(autoLoginUrl, ssoService)
 
     if (authData.yuplayResult == YU2_OK)
       url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
@@ -110,7 +111,7 @@ let function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false) 
   //shell_launch can be long sync function so call it delayed to avoid broke current call.
   ::get_gui_scene().performDelayed(getroottable(), function() {
     // External browser
-    let response = ::shell_launch(url)
+    let response = shell_launch(url)
     if (response > 0)
     {
       let errorText = ::get_yu2_error_text(response)

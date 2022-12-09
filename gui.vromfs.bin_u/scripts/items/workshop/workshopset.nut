@@ -151,7 +151,7 @@ local WorkshopSet = class {
     for (local i = 0; i < itemsBlk.paramCount(); i++)
     {
       let itemdef = itemsBlk.getParamValue(i)
-      if (typeof(itemdef) != "integer")
+      if (type(itemdef) != "integer")
         continue
 
       if (itemsBlk.getParamName(i) == "alwaysVisibleItem")

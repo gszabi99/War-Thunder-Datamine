@@ -142,7 +142,7 @@ let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).
 })
 
 local function getEntitlementView(entitlement, params = {}) {
-  if (typeof entitlement == "string")
+  if (type(entitlement) == "string")
     entitlement = getEntitlementConfig(entitlement)
 
   if (!entitlement)
@@ -196,7 +196,7 @@ let getUnitLayeredIcon = @(unitArray) (unitArray ?? []).map(function(unitId) {
 })
 
 local function getEntitlementLayerIcons(entitlement) {
-  if (typeof entitlement == "string")
+  if (type(entitlement) == "string")
     entitlement = getEntitlementConfig(entitlement)
 
   if (!entitlement)

@@ -2,9 +2,10 @@ from "%rGui/globals/ui_library.nut" import *
 
 let interopGen = require("interopGen.nut")
 
-let {interop} = require("%rGui/globals/interop.nut")
-let modeNames =
-[
+let { interop } = require("%rGui/globals/interop.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
+
+let modeNames = [
   "hud/standby",
   "hud/search",
   "hud/acquisition",
@@ -28,6 +29,14 @@ let modeNames =
   "hud/PD VSL",
   "hud/PD track",
 
+  "hud/PD HDN standby",
+  "hud/PD HDN search",
+  "hud/PD HDN acquisition",
+  "hud/PD HDN ACM",
+  "hud/PD HDN BST",
+  "hud/PD HDN VSL",
+  "hud/PD HDN track",
+
   "hud/LD standby",
   "hud/LD search",
   "hud/LD acquisition",
@@ -47,6 +56,14 @@ let modeNames =
   "hud/TWS BST",
   "hud/TWS VSL",
   "hud/TWS track",
+
+  "hud/TWS HDN standby",
+  "hud/TWS HDN search",
+  "hud/TWS HDN acquisition",
+  "hud/TWS HDN ACM",
+  "hud/TWS HDN BST",
+  "hud/TWS HDN VSL",
+  "hud/TWS HDN track",
 
   "hud/IRST standby",
   "hud/IRST search",
@@ -240,15 +257,18 @@ interop.updateTarget <- function (index,
                                     azimuth_width_rel, elevation_width_rel, distance_width_rel,
                                     los_hor_speed, los_ver_speed, los_speed,
                                     age_rel, is_selected, is_detected, is_enemy, signal_rel) {
-  if (index >= targets.len())
+  local needUpdate = false
+  if (index >= targets.len()) {
     targets.resize(index + 1)
+    needUpdate = true
+  }
 
   let cvt = @(val, vmin, vmax, omin, omax) omin + ((omax - omin) * (val - vmin)) / (vmax - vmin)
 
   let signalRel = signal_rel < 0.05
     ? 0.0
     : cvt(signal_rel, 0.05, 1.0, 0.3, 1.0)
-
+  let old_tgt = targets[index]
   targets[index] = {
     azimuthRel = azimuth_rel
     azimuthWidthRel = max(azimuth_width_rel, 0.02)
@@ -265,18 +285,24 @@ interop.updateTarget <- function (index,
     isEnemy = is_enemy
     signalRel = signalRel
   }
+  needUpdate = needUpdate || !isEqual(old_tgt, targets[index])
 
-  TargetsTrigger.trigger()
+  if (needUpdate)
+    TargetsTrigger.trigger()
 }
 
 const targetLifeTime = 5.0
 
 interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_speed, los_speed, rad_speed, is_detected, is_tracked) {
-  if (!screenTargets)
+  local needUpdate = false
+  if (!screenTargets) {
     screenTargets = {}
+    needUpdate = true
+  }
 
   radarState.targetAspectEnabled(true)
   if (!screenTargets?[id]) {
+    needUpdate = true
     screenTargets[id] <- {
       x = x
       y = y
@@ -291,20 +317,21 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
     }
   }
   else {
-    local screenTarget = screenTargets[id]
-    screenTarget.x = x
-    screenTarget.y = y
-    screenTarget.dist = dist
-    screenTarget.losHorSpeed = los_hor_speed
-    screenTarget.losVerSpeed = los_ver_speed
-    screenTarget.losSpeed = los_speed
-    screenTarget.radSpeed = rad_speed
-    screenTarget.isDetected = is_detected
-    screenTarget.isTracked = is_tracked
-    screenTarget.isUpdated = true
+    let screenTarget = screenTargets[id]
+    let new_tgt = screenTarget.__merge({x,y,dist,
+      losHorSpeed = los_hor_speed
+      losVerSpeed = los_ver_speed
+      losSpeed = los_speed
+      radSpeed = rad_speed
+      isDetected = is_detected
+      isTracked = is_tracked
+      isUpdated = true
+    })
+    needUpdate = needUpdate || !isEqual(screenTarget, new_tgt)
+    screenTarget.__update(new_tgt)
   }
-
-  ScreenTargetsTrigger.trigger()
+  if (needUpdate)
+    ScreenTargetsTrigger.trigger()
 }
 
 interop.updateAzimuthMarker <- function(id, target_time, age, azimuth_world_deg, is_selected, is_detected, is_enemy) {
@@ -323,13 +350,14 @@ interop.updateAzimuthMarker <- function(id, target_time, age, azimuth_world_deg,
     }
   }
   else if (target_time > azimuthMarkers[id].targetTime) {
-    azimuthMarkers[id].azimuthWorldDeg = azimuth_world_deg
-    azimuthMarkers[id].isSelected = is_selected
-    azimuthMarkers[id].targetTime = target_time
-    azimuthMarkers[id].age = age
-    azimuthMarkers[id].isDetected = is_detected
-    azimuthMarkers[id].isEnemy = is_enemy
-    azimuthMarkers[id].isUpdated = true
+    let marker = azimuthMarkers[id]
+    marker.azimuthWorldDeg = azimuth_world_deg
+    marker.isSelected = is_selected
+    marker.targetTime = target_time
+    marker.age = age
+    marker.isDetected = is_detected
+    marker.isEnemy = is_enemy
+    marker.isUpdated = true
   }
   else
     return
@@ -382,17 +410,26 @@ interop.updateSelectedTarget <- function(x, y) {
 }
 
 interop.updateScanZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
-  ScanZoneWatched({x0, y0, x1, y1, x2, y2, x3, y3})
+  let curVal = ScanZoneWatched.value
+  if ( curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
+    || curVal.x2 != x2 || curVal.y2 != y2 || curVal.x3 != x3 || curVal.y3 != y3) {
+    ScanZoneWatched({x0, y0, x1, y1, x2, y2, x3, y3})
+  }
 }
 
 interop.updateLockZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
-  LockZoneWatched({x0, x1, x2, x3, y0, y1, y2, y3})
+  let curVal = LockZoneWatched.value
+  if ( curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
+    || curVal.x2 != x2 || curVal.y2 != y2 || curVal.x3 != x3 || curVal.y3 != y3) {
+    LockZoneWatched({x0, x1, x2, x3, y0, y1, y2, y3})
+  }
 }
 
-interop.updateLockZoneRotated <- function(_x0, _y0, _x1, _y1, _x2, _y2, _x3, _y3) {}
 
 interop.updateRadarPosSize <- function(x, y, w, h) {
-  radarPosSize({x, y, w, h})
+  let curVal = radarPosSize.value
+  if (curVal.x != x || curVal.y != y || curVal.w != w || curVal.h != h)
+    radarPosSize({x, y, w, h})
 }
 
 interopGen({

@@ -362,7 +362,7 @@ let function getTourActiveTicket(eName, tourId) {
 let function getEventMission(curEvent) {
   let list = curEvent?.mission_decl.missions_list ?? {}
   foreach(key, _val in list)
-    if (typeof(key) == "string")
+    if (type(key) == "string")
       return key
 
   return ""

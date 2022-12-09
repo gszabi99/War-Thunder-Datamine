@@ -22,7 +22,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
   AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
-  GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL
+  GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET
 } = require_native("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -785,6 +785,15 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#change_controlled_unit.png"
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_UNLIMITED_CONTROL"
+  }
+
+  DESIGNATE_TARGET = {
+    code = EII_DESIGNATE_TARGET
+    _name = "designate_target"
+    _title = loc("hotkeys/ID_DESIGNATE_TARGET")
+    _icon = "#ui/gameuiskin#designate_target.png"
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_DESIGNATE_TARGET"
   }
 })
 

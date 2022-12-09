@@ -7,6 +7,11 @@ from "%scripts/dagui_library.nut" import *
 
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { register_command } = require("console")
+
+local debug_mm = null
+
+register_command(function(enable) {debug_mm = enable}, "matchmacking.set_debug_mm")
 
 ::notify_clusters_changed <- function notify_clusters_changed(params)
 {
@@ -107,6 +112,8 @@ subscriptions.addListenersWithoutEnv({
 
   if (!crossplayModule.isCrossPlayEnabled())
     params["crossplay_restricted"] <- true
+  if (debug_mm != null)
+    params["debug_mm"] <- debug_mm
 
   ::matching_api_func("match.enqueue", cb, params)
 }

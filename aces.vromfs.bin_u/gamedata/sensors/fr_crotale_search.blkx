@@ -5,18 +5,24 @@
     "search": {
       "power": 300.0,
       "band": 4,
-      "rcs": 5.0,
-      "range": 17000.0,
+      "rcs": 1.0,
+      "range": 18500.0,
       "rangeMax": 20000.0,
       "antenna": {
-        "angleHalfSens": 2.0,
-        "sideLobesSensitivity": -35.0
+        "azimuth": {
+          "angleHalfSens": 3.6,
+          "sideLobesSensitivity": -35.0
+        },
+        "elevation": {
+          "angleHalfSens": 10.0,
+          "sideLobesSensitivity": -35.0
+        }
       }
     }
   },
   "scanPatterns": {
     "search": {
-      "type": "pyramide",
+      "type": "cylinder",
       "azimuthLimits": [
         -180.0,
         180.0
@@ -28,11 +34,11 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
-      "period": 2.0,
-      "width": 17.5,
-      "barHeight": 2.0,
-      "barsCount": 180,
-      "rowMajor": false
+      "period": 3.0,
+      "barHeight": 9.0,
+      "barsCount": 3,
+      "rowMajor": true,
+      "centerElevation": 13.5
     }
   },
   "signals": {
@@ -44,7 +50,7 @@
         "presents": true,
         "minValue": 1000.0,
         "maxValue": 20000.0,
-        "width": 300.0
+        "width": 800.0
       },
       "dopplerSpeed": {
         "presents": true,
@@ -81,17 +87,17 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 17.5
+            "value": 0.0
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
               -15.0,
               15.0
             ],
-            "azimuthWidth": 4.0,
+            "azimuthWidth": 5.0,
             "distanceRange": [
               0.0,
-              20000.0
+              16000.0
             ]
           }
         },

@@ -13,6 +13,9 @@ require("%rGui/ctrlsState.nut")
 
 require("consoleCmd.nut")
 
+let registerScriptProfiler = require("%sqstd/regScriptProfiler.nut")
+registerScriptProfiler("hud")
+
 let widgets = require("%rGui/widgets.nut")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 

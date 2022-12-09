@@ -1,13 +1,5 @@
 {
   "modifications": {
-    "100mm_usa_fake_tphv": {
-      "image": "#ui/gameuiskin#tank_ammo.png",
-      "isReserve": true,
-      "group": "100mm_fake",
-      "effects": {
-        "additiveBulletMod": "100mm_usa_fake_tphv"
-      }
-    },
     "propeller": {
       "image": "",
       "valueMul": 1.0,
@@ -1274,6 +1266,53 @@
       "tier": 3,
       "caliber": 30.0,
       "deactivationIsAllowed": false
+    },
+    "bk_27_ground_targets": {
+      "reqModification": "bk_27_belt_pack",
+      "group": "bk_27",
+      "effects": {
+        "bulletMod": "bk_27_ground_targets"
+      }
+    },
+    "bk_27_armor_targets": {
+      "reqModification": "bk_27_belt_pack",
+      "group": "bk_27",
+      "effects": {
+        "bulletMod": "bk_27_ground_targets"
+      }
+    },
+    "bk_27_air_targets": {
+      "reqModification": "bk_27_belt_pack",
+      "group": "bk_27",
+      "effects": {
+        "bulletMod": "bk_27_air_targets"
+      }
+    },
+    "bk_27_stealth": {
+      "reqModification": "bk_27_belt_pack",
+      "group": "bk_27",
+      "effects": {
+        "bulletMod": "bk_27_stealth"
+      }
+    },
+    "bk_27_belt_pack": {
+      "image": "#ui/gameuiskin#ammo.png",
+      "modClass": "weapon",
+      "tier": 1,
+      "caliber": 27.0,
+      "deactivationIsAllowed": false
+    },
+    "bk_27_new_gun": {
+      "image": "#ui/gameuiskin#weapon.png",
+      "tier": 3,
+      "modClass": "weapon",
+      "invertEnableLogic": true,
+      "caliber": 27.0,
+      "modOverdriveType": "new_gun",
+      "modUpgradeType": "new_gun",
+      "effects": {
+        "weaponMod": "bk_27_new_gun"
+      }
     },
     "aden_ground_targets": {
       "reqModification": "aden_belt_pack",
@@ -4514,6 +4553,42 @@
       "deactivationIsAllowed": false,
       "modClass": "firepower"
     },
+    "23mm_2a14_naval_universal": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "isReserve": true,
+      "group": "23mm_HE",
+      "effects": {
+        "additiveBulletMod": "23mm_2a14_naval_universal"
+      }
+    },
+    "23mm_2a14_naval_hei": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "reqModification": "23mm_2a14_naval_hei_ammo_pack",
+      "group": "23mm_HE",
+      "effects": {
+        "additiveBulletMod": "23mm_2a14_naval_hei"
+      }
+    },
+    "23mm_2a14_naval_hei_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "23mm_2a14_naval_apit": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "reqModification": "23mm_2a14_naval_apit_ammo_pack",
+      "group": "23mm_AP",
+      "effects": {
+        "additiveBulletMod": "23mm_2a14_naval_apit"
+      }
+    },
+    "23mm_2a14_naval_apit_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "20mm_ussr_TNSh_HE": {
       "image": "#ui/gameuiskin#tank_ammo.png",
       "reqModification": "20mm_ussr_TNSh_HE_ammo_pack",
@@ -5413,6 +5488,14 @@
         "additiveBulletMod": "100mm_ussr_3BK25"
       }
     },
+    "100mm_ussr_M1000": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "reqModification": "100mm_M1000_ammo_pack",
+      "group": "100mm_AP",
+      "effects": {
+        "additiveBulletMod": "100mm_ussr_M1000"
+      }
+    },
     "100mm_ussr_3BK17M": {
       "image": "#ui/gameuiskin#tank_ammo.png",
       "reqModification": "100mm_3BK17M_ammo_pack",
@@ -5506,6 +5589,12 @@
       "deactivationIsAllowed": false
     },
     "100mm_3BK25_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "100mm_M1000_ammo_pack": {
       "image": "#ui/gameuiskin#tank_ammo.png",
       "tier": 2,
       "modClass": "firepower",
@@ -5947,6 +6036,14 @@
       "tier": 1,
       "modClass": "firepower",
       "deactivationIsAllowed": false
+    },
+    "120mm_ussr_50cal_Bofors_he": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "isReserve": true,
+      "group": "120mm_HE",
+      "effects": {
+        "additiveBulletMod": "120mm_ussr_50cal_Bofors_he"
+      }
     },
     "130mm_ussr_HE": {
       "image": "#ui/gameuiskin#tank_ammo.png",
@@ -8040,6 +8137,42 @@
       }
     },
     "128mm_ger_he_naval_dist_fuze_ammo_pack": {
+      "image": "#ui/gameuiskin#he_frag_dist_fuse_ship.png",
+      "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "128mm_ger_c41_naval_HE": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "isReserve": true,
+      "group": "128mm_HE",
+      "effects": {
+        "additiveBulletMod": "128mm_ger_c41_naval_HE"
+      }
+    },
+    "128mm_ger_c41_naval_HE_base_fuze": {
+      "image": "#ui/gameuiskin#he_frag_base_fuse_tank.png",
+      "reqModification": "128mm_ger_c41_naval_HE_base_fuze_ammo_pack",
+      "group": "128mm_HE",
+      "effects": {
+        "additiveBulletMod": "128mm_ger_c41_naval_HE_base_fuze"
+      }
+    },
+    "128mm_ger_c41_naval_HE_base_fuze_ammo_pack": {
+      "image": "#ui/gameuiskin#he_frag_base_fuse_tank.png",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "128mm_ger_c41_naval_HE_dist_fuze": {
+      "image": "#ui/gameuiskin#he_frag_dist_fuse_ship.png",
+      "reqModification": "128mm_ger_c41_naval_HE_dist_fuze_ammo_pack",
+      "group": "128mm_HE",
+      "effects": {
+        "additiveBulletMod": "128mm_ger_c41_naval_HE_dist_fuze"
+      }
+    },
+    "128mm_ger_c41_naval_HE_dist_fuze_ammo_pack": {
       "image": "#ui/gameuiskin#he_frag_dist_fuse_ship.png",
       "tier": 2,
       "modClass": "firepower",
@@ -11301,6 +11434,14 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "120mm_9m37m_aam": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "isReserve": true,
+      "group": "120mm_AP",
+      "effects": {
+        "additiveBulletMod": "120mm_9m37m_aam"
+      }
+    },
     "70mm_stinger_block1_aam": {
       "image": "#ui/gameuiskin#tank_ammo.png",
       "isReserve": true,
@@ -12094,6 +12235,14 @@
       "tier": 1,
       "deactivationIsAllowed": false,
       "modClass": "firepower"
+    },
+    "165mm_us_HESH": {
+      "image": "#ui/gameuiskin#tank_ammo.png",
+      "isReserve": true,
+      "group": "165mm_us_HESH",
+      "effects": {
+        "additiveBulletMod": "165mm_us_HESH"
+      }
     },
     "165mm_britain_HESH": {
       "image": "#ui/gameuiskin#tank_ammo.png",
@@ -14133,19 +14282,23 @@
     },
     "la-5fn_armorplate_10": {
       "image": "#ui/gameuiskin#armor_back.png",
-      "modClass": "armor"
+      "modClass": "armor",
+      "requiresModelReload": true
     },
     "la-5fn_rear_armorglass_75": {
       "image": "#ui/gameuiskin#armor_glas.png",
-      "modClass": "armor"
+      "modClass": "armor",
+      "requiresModelReload": true
     },
     "la-7_armorplate_10": {
       "image": "#ui/gameuiskin#armor_back.png",
-      "modClass": "armor"
+      "modClass": "armor",
+      "requiresModelReload": true
     },
     "la-7_rear_armorglass_75": {
       "image": "#ui/gameuiskin#armor_glas.png",
-      "modClass": "armor"
+      "modClass": "armor",
+      "requiresModelReload": true
     },
     "la-7_dz-40": {
       "image": "#ui/gameuiskin#pilon_bomb.png",
@@ -14639,7 +14792,8 @@
     },
     "us_mine_mk13_mod0": {
       "image": "#ui/gameuiskin#air_naval_mine.png",
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
     },
     "wirraway_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb.png",
@@ -18850,7 +19004,8 @@
     },
     "uk_tiald": {
       "image": "#ui/gameuiskin#thermal_sight.png",
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
     },
     "uk_tiald_pod": {
       "image": "#ui/gameuiskin#thermal_sight.png",
@@ -18932,6 +19087,16 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "mig_29_r_27": {
+      "image": "#ui/gameuiskin#air_to_air_missile.png",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "mig_29_r_73": {
+      "image": "#ui/gameuiskin#air_to_air_missile.png",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "stinger_aam": {
       "image": "#ui/gameuiskin#air_to_air_missile.png",
       "modClass": "weapon",
@@ -18963,6 +19128,11 @@
       "deactivationIsAllowed": false
     },
     "j_7_pl5b": {
+      "image": "#ui/gameuiskin#air_to_air_missile.png",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "j_7_pl7": {
       "image": "#ui/gameuiskin#air_to_air_missile.png",
       "modClass": "weapon",
       "deactivationIsAllowed": false
@@ -19464,6 +19634,15 @@
       "requiresModelReload": true,
       "tier": 2,
       "group": "NVS",
+      "modClass": "protection",
+      "effects": {
+        "fakeParam": 1.01
+      }
+    },
+    "m1128_protection_improvement": {
+      "image": "#ui/gameuiskin#tank_additional_armor.png",
+      "requiresModelReload": true,
+      "tier": 4,
       "modClass": "protection",
       "effects": {
         "fakeParam": 1.01
@@ -20762,6 +20941,45 @@
       "group": "2A42",
       "effects": {
         "bulletMod": "2A42_ground_targets"
+      }
+    },
+    "GSh_301_universal": {
+      "reqModification": "GSh_301_belt_pack",
+      "group": "GSh_301",
+      "effects": {
+        "bulletMod": "GSh_301_universal"
+      }
+    },
+    "GSh_301_air_targets": {
+      "reqModification": "GSh_301_belt_pack",
+      "group": "GSh_301",
+      "effects": {
+        "bulletMod": "GSh_301_air_targets"
+      }
+    },
+    "GSh_301_ground_targets": {
+      "reqModification": "GSh_301_belt_pack",
+      "group": "GSh_301",
+      "effects": {
+        "bulletMod": "GSh_301_ground_targets"
+      }
+    },
+    "GSh_301_belt_pack": {
+      "image": "#ui/gameuiskin#ammo.png",
+      "modClass": "weapon",
+      "tier": 1,
+      "caliber": 30.0,
+      "deactivationIsAllowed": false
+    },
+    "GSh_301_new_gun": {
+      "image": "#ui/gameuiskin#weapon.png",
+      "invertEnableLogic": true,
+      "modClass": "weapon",
+      "caliber": 30.0,
+      "modOverdriveType": "new_gun",
+      "modUpgradeType": "new_gun",
+      "effects": {
+        "weaponMod": "GSh_301_new_gun"
       }
     },
     "GAU_8A_ground_targets": {

@@ -1,0 +1,545 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 761.0,
+      "temperature": 18.0
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/enduring_confrontation/at_assaults_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/plane_sets_assaults/at_t1_usa_rank_01.blk",
+        "rankRange": [
+          0,
+          3
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/plane_sets_assaults/at_t1_usa_rank_02.blk",
+        "rankRange": [
+          4,
+          7
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/plane_sets_assaults/at_t1_usa_rank_03.blk",
+        "rankRange": [
+          8,
+          11
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/plane_sets_assaults/at_t1_usa_rank_04.blk",
+        "rankRange": [
+          12,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/plane_sets_assaults/at_t2_usa_rank_01.blk",
+        "rankRange": [
+          0,
+          3
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/plane_sets_assaults/at_t2_usa_rank_02.blk",
+        "rankRange": [
+          4,
+          7
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/plane_sets_assaults/at_t2_usa_rank_03.blk",
+        "rankRange": [
+          8,
+          11
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/plane_sets_assaults/at_t2_usa_rank_04.blk",
+        "rankRange": [
+          12,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "at_startup": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "comment": {
+          "value": "setting pve mode on"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "at_assaults_pve_mode"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "zones_captured_by_t2": 0,
+    "mp_change": 0
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {
+    "at_assaults_t1_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.94719,
+          0.0,
+          -0.320672
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.320672,
+          0.0,
+          -0.94719
+        ],
+        [
+          6144.0,
+          3340.55,
+          5174.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t1_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.945215,
+          0.0,
+          0.326448
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.326448,
+          0.0,
+          -0.945215
+        ],
+        [
+          6144.0,
+          3340.55,
+          904.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t1_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.918931,
+          0.0,
+          0.394418
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.394418,
+          0.0,
+          -0.918931
+        ],
+        [
+          6144.0,
+          3340.55,
+          -9096.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t2_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.970636,
+          0.0,
+          0.240551
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.240551,
+          0.0,
+          0.970636
+        ],
+        [
+          -15336.0,
+          3340.55,
+          5174.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t2_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.999414,
+          0.0,
+          -0.0342155
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0342155,
+          0.0,
+          0.999414
+        ],
+        [
+          -15336.0,
+          3340.55,
+          904.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t2_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.985473,
+          0.0,
+          0.16983
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.16983,
+          0.0,
+          0.985473
+        ],
+        [
+          -15336.0,
+          3340.55,
+          -9096.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t1_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.918931,
+          0.0,
+          0.394418
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.394418,
+          0.0,
+          -0.918931
+        ],
+        [
+          6144.0,
+          3340.55,
+          -12826.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t2_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [
+          0.985473,
+          0.0,
+          0.16983
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.16983,
+          0.0,
+          0.985473
+        ],
+        [
+          -15336.0,
+          3340.55,
+          -12826.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t2_retreat_point": {
+      "type": "Point",
+      "tm": [
+        [
+          0.985473,
+          0.0,
+          0.16983
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.16983,
+          0.0,
+          0.985473
+        ],
+        [
+          -17384.0,
+          3340.55,
+          -4096.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_assaults_t1_retreat_point": {
+      "type": "Point",
+      "tm": [
+        [
+          0.985473,
+          0.0,
+          0.16983
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.16983,
+          0.0,
+          0.985473
+        ],
+        [
+          9192.0,
+          3340.55,
+          -4096.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "at_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          28672.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          28672.0
+        ],
+        [
+          -4096.0,
+          2555.05,
+          -4096.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -107,16 +107,27 @@
           ]
         },
         "navRight": {
-          "Button_text": {
-            "id": "btn_exit",
-            "display": "show",
-            "text": "#mainmenu/finish",
-            "_on_click": "goBack",
-            "btnName": "B",
-            "visualStyle": "secondary",
-            "buttonWink": {},
-            "ButtonImg": {}
-          }
+          "Button_text": [
+            {
+              "id": "btn_damage_control",
+              "display": "hide",
+              "text": "#ship/damage_control",
+              "_on_click": "onShowDamageControl",
+              "visualStyle": "secondary",
+              "buttonWink": {},
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_exit",
+              "display": "show",
+              "text": "#mainmenu/finish",
+              "_on_click": "goBack",
+              "btnName": "B",
+              "visualStyle": "secondary",
+              "buttonWink": {},
+              "ButtonImg": {}
+            }
+          ]
         }
       },
       "Button_close": {

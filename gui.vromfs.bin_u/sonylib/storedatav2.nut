@@ -104,7 +104,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([categ
     statsd.send_counter("sq.ingame_store.v2.request", 1,
       {status = "success", request = "category_full_links_list", category = category})
 
-    if (typeof response != "array") //Inconsistent response, can be table
+    if (type(response) != "array") //Inconsistent response, can be table
       response = [response]
 
     fillBlock("links", categoriesData[category], response[0].children)

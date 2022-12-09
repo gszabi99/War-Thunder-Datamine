@@ -6,6 +6,7 @@ const mpsToFpm = 196.8504
 const mpsToKmh = 3.6
 const metrToMile = 0.000621371
 const metrToNavMile = 0.000539957
+let radToDeg = 180.0 / 3.14159
 let baseLineWidth = hdpx(4 * LINE_WIDTH)
 
 enum GuidanceLockResult {
@@ -26,4 +27,5 @@ return {
   GuidanceLockResult
   metrToMile
   metrToNavMile
+  radToDeg
 }

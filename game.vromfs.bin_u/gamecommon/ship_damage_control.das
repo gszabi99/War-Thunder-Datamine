@@ -14,10 +14,9 @@ require %game.repair_system_events
 require %game.extinguish_system_events
 
 
-let PROCESS_NONE = 0u
-let PROCESS_REPAIR = 1u
-let PROCESS_EXTINGUISH = 2u
-let PROCESS_UNWATERING = 3u
+let PROCESS_REPAIR = 0u
+let PROCESS_EXTINGUISH = 1u
+let PROCESS_UNWATERING = 2u
 let PROCESS_MASK = 3u
 let MAX_PROCESSES = 3u
 
@@ -27,24 +26,6 @@ def is_process_present(processes : uint; process : uint) : bool
     if ((processes >> i * 2u) & PROCESS_MASK) == process
       return true
   return false
-
-
-def add_process(var processes : uint&; process : uint) : void
-  for i in 0u..MAX_PROCESSES
-    if ((processes >> i * 2u) & PROCESS_MASK) == PROCESS_NONE
-      processes |= process << i * 2u
-      return
-
-
-def remove_process(var processes : uint&; process : uint) : void
-  var new_processes = 0u
-  var i = 0u
-  var j = 0u
-  while j < MAX_PROCESSES
-    let p = (processes >> i++ * 2u) & PROCESS_MASK
-    if p != process
-      new_processes |= p << j++ * 2u
-  processes = new_processes
 
 
 def get_process_penalty(processes : uint; process : uint; penatlies : float3) : float
@@ -87,11 +68,7 @@ def ship_damage_control_init_es(evt : CmdInitComponent;
   ship_modern_damage_control = false
   *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(blk)
     ship_modern_damage_control = blk |> datablock_getBool("shipDamageControlEnabled", false)
-
   ship_damage_control_priorities = 0u
-  add_process(ship_damage_control_priorities, PROCESS_REPAIR)
-  add_process(ship_damage_control_priorities, PROCESS_EXTINGUISH)
-  add_process(ship_damage_control_priorities, PROCESS_UNWATERING)
 
 
 [es(no_order)]

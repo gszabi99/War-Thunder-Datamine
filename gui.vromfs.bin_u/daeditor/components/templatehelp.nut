@@ -397,8 +397,8 @@ let function mkTemplateTooltip(templName) {
         }
         if (compValue == null)
           compValue = "???"
-        if (typeof compValue != "bool" && typeof compValue != "string"
-         && typeof compValue != "integer" && typeof compValue != "float")
+        let valType = type(compValue)
+        if (valType != "bool" && valType != "string" && valType != "integer" && valType != "float")
           compValue = "( ... )"
         descNames.append(txt($"  {desc.name}  ", paramValueStyle))
         descTexts.append(txt($"{compValue}", paramValueStyle))

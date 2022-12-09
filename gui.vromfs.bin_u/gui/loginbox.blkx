@@ -432,13 +432,14 @@
               "id": "secondary_auth_block",
               "margin-top": "1@blockInterval",
               "width": "pw",
-              "padding": "1@framePadding",
+              "padding-bottom": "0",
               "class": "authorization",
               "flow": "vertical",
               "Button_text": [
                 {
                   "id": "steam_login_action_button",
                   "text": "#mainmenu/loginWithSteam",
+                  "margin-bottom": "1@blockInterval",
                   "css-hier-invalidate": "yes",
                   "btnName": "LB",
                   "focusBtnName": "A",
@@ -450,6 +451,7 @@
                 {
                   "id": "sso_login_action_button",
                   "text": "#mainmenu/loginWithSso",
+                  "margin-bottom": "1@blockInterval",
                   "css-hier-invalidate": "yes",
                   "btnName": "RB",
                   "focusBtnName": "A",
@@ -462,6 +464,17 @@
                     "text": "#mainmenu/loginWithSso",
                     "underline": {}
                   }
+                },
+                {
+                  "id": "guest_login_action_button",
+                  "text": "#mainmenu/loginWithGuest",
+                  "margin-bottom": "1@blockInterval",
+                  "css-hier-invalidate": "yes",
+                  "btnName": "LT",
+                  "focusBtnName": "A",
+                  "_on_click": "onGuestAuthorization",
+                  "buttonWink": {},
+                  "ButtonImg": {}
                 }
               ]
             },

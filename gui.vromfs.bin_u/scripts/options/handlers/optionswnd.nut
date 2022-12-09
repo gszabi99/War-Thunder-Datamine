@@ -15,7 +15,7 @@ let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onR
 let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsData.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
@@ -409,7 +409,7 @@ let function openOptionsWnd(group = null) {
 
     this.guiScene.replaceContent(this.scene.findObject("optionslist"), "%gui/options/voicechatOptions.blk", this)
 
-    let needShowOptions = isCrossNetworkChatEnabled()
+    let needShowOptions = isCrossNetworkChatEnabled() || isPlatformXboxOne
     this.showSceneBtn("voice_disable_warning", !needShowOptions)
 
     this.showSceneBtn("voice_options_block", needShowOptions)

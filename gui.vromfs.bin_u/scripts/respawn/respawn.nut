@@ -8,8 +8,8 @@ let { get_time_msec } = require("dagor.time")
 let { get_gui_option } = require("guiOptions")
 let { ceil } = require("math")
 let { format } = require("string")
-let { is_has_multiplayer = @() ::is_has_multiplayer() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
+let { is_has_multiplayer } = require("multiplayer")
+let { get_current_mission_name } = require("mission")
 let { fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
   setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
   selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer } = require("guiRespawn")
@@ -727,7 +727,7 @@ enum ESwitchSpectatorTarget
     if (newMask != this.slotReadyAtHostMask)
     {
       log("Error: is_crew_slot_was_ready_at_host or is_crew_available_in_session have changed without cb. force reload slots")
-      statsd.send_counter("sq.errors.change_disabled_slots", 1, {mission = ::get_current_mission_name()})
+      statsd.send_counter("sq.errors.change_disabled_slots", 1, {mission = get_current_mission_name()})
       needReinitSlotbar = true
     }
 
@@ -735,7 +735,7 @@ enum ESwitchSpectatorTarget
     if (newSlotsCostSum != this.slotsCostSum)
     {
       log("Error: slots spawn cost have changed without cb. force reload slots")
-      statsd.send_counter("sq.errors.changed_slots_spawn_cost", 1, {mission = ::get_current_mission_name()})
+      statsd.send_counter("sq.errors.changed_slots_spawn_cost", 1, {mission = get_current_mission_name()})
       needReinitSlotbar = true
     }
 

@@ -47,14 +47,12 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
   {
     id = "lightTank_part2"
     tutorial = "tutorial_tank_basics_arcade_part2"
-    requiresFeature = "Tanks"
     suitableForUnit = @(unit) unit?.isTank() ?? false
   }
   {
     id = "boat"
     tutorial = "tutorial_boat_basic_arcade"
     canSkipByFeature = "AllowedToSkipBaseTutorials"
-    requiresFeature = "Ships"
     suitableForUnit = @(unit) unit?.isBoat() ?? false
     isNeedAskInMainmenu = true
   }
@@ -62,9 +60,15 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
     id = "ship"
     tutorial = "tutorial_destroyer_basics_arcade"
     canSkipByFeature = "AllowedToSkipBaseTutorials"
-    requiresFeature = "Ships"
     suitableForUnit = @(unit) unit?.isShip() ?? false
     isNeedAskInMainmenu = true
+  }
+  {
+    id = "fighter"
+    tutorial = "tutorialB_takeoff_and_landing"
+    canSkipByFeature = "AllowedToSkipBaseTutorials"
+    suitableForUnit = @(unit) (unit?.isAir() ?? false) || (unit?.isHelicopter() ?? false)
+    isNeedAskInMainmenu = false
   }
 ]
 

@@ -64,7 +64,7 @@
         "hp": 40.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -1070,10 +1070,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2691,6 +2699,11 @@
   },
   "modifications": {
     "cd_98": {},
+    "air_extinguisher": {
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
+    },
     "CdMin_Fuse": {},
     "new_cover": {},
     "structure_str": {},

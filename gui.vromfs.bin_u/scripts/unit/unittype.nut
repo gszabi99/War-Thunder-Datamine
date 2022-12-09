@@ -20,13 +20,6 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   return unitTypes.getByName(typeName, caseSensitive).esUnitType
 }
 
-::get_unit_class_icon_by_unit <- function get_unit_class_icon_by_unit(unit, iconName)
-{
-  let esUnitType = ::get_es_unit_type(unit)
-  let t = unitTypes.getByEsUnitType(esUnitType)
-  return $"{t.uiClassSkin}{iconName}.svg"
-}
-
 ::get_unit_icon_by_unit <- function get_unit_icon_by_unit(unit, iconName)
 {
   let esUnitType = ::get_es_unit_type(unit)

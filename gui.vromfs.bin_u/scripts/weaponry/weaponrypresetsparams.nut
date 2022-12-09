@@ -430,8 +430,8 @@ let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons
       let w = presetView.weaponsByTypes[tType].weaponBlocks
       foreach (weaponName, weapon in t.weaponBlocks) {
         w[weaponName] <- (weapon.__merge({name = weaponName, purposeType = presetView.purposeType}))
-        presetView.totalItemsAmount += weapon.num / (weapon.amountPerTier ?? 1)
-        presetView.totalMass += weapon.num * weapon.massKg
+        presetView.totalItemsAmount += weapon.ammo / (weapon.amountPerTier ?? 1)
+        presetView.totalMass += weapon.ammo * weapon.massKg
         presetView.tiers.__update(weapon.tiers)
         foreach (dependentWeaponName, dependentWeapons in weapon.dependentWeaponPreset) {
           let curDependentWeapons = presetView.dependentWeaponPreset?[dependentWeaponName] ?? []

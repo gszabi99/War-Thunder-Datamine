@@ -52,18 +52,18 @@
         "hp": 40.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
       }
     },
     "c_dural3": {
-      "aileron_l_dm": {
+      "aileron_interceptor_l_dm": {
         "genericDamageMult": 0.3,
         "hp": 25.7
       },
-      "aileron_r_dm": {
+      "aileron_interceptor_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 25.7
       },
@@ -240,7 +240,7 @@
   "DamageEffects": {
     "part": [
       {
-        "name": "aileron_l_dm",
+        "name": "aileron_interceptor_l_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -281,7 +281,7 @@
         ]
       },
       {
-        "name": "aileron_r_dm",
+        "name": "aileron_interceptor_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -938,10 +938,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2238,51 +2246,9 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAN_M3.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 190,
-        "light": true,
-        "spread": 1.2
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAN_M3.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 190,
-        "light": false,
-        "spread": 1.4
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAN_M3.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon3_dm",
-        "bullets": 190,
-        "light": true,
-        "spread": 1.6
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAN_M3.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon4_dm",
-        "bullets": 190,
-        "light": true,
-        "spread": 1.8
-      }
-    ],
-    "hideDmParts": {
-      "node": "armor4_dm"
+    "Weapon": {
+      "slot": 0,
+      "preset": "an_am3_common"
     }
   },
   "weapon_presets": {
@@ -2292,23 +2258,525 @@
         "blk": "gameData/FlightModels/weaponPresets/f9f_8_default.blk"
       },
       {
-        "name": "f9f_8_default_aim_9",
-        "blk": "gameData/FlightModels/weaponPresets/f9f_8_default_aim_9.blk"
+        "name": "f9f_8_aim_9",
+        "blk": "gameData/FlightModels/weaponPresets/f9f_8_aim_9.blk"
+      },
+      {
+        "name": "f9f_8_aero6_x6",
+        "blk": "gameData/FlightModels/weaponPresets/f9f_8_aero6_x6.blk"
+      },
+      {
+        "name": "f9f_8_aero7_x6",
+        "blk": "gameData/FlightModels/weaponPresets/f9f_8_aero7_x6.blk"
       },
       {
         "name": "f9f_8_4x500lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/f9f_8_4x500lb_bombs.blk",
-        "reqModification": "flbc_mk2"
+        "blk": "gameData/FlightModels/weaponPresets/f9f_8_4x500lb_bombs.blk"
       },
       {
         "name": "f9f_8_2x1000lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/f9f_8_2x1000lb_bombs.blk",
-        "reqModification": "flbc_mk2"
+        "blk": "gameData/FlightModels/weaponPresets/f9f_8_2x1000lb_bombs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1360.0,
+    "maxloadMassLeftConsoles": 680.0,
+    "maxloadMassRightConsoles": 680.0,
+    "maxDisbalance": 450.0,
+    "HideNodes": {
+      "node": [
+        "aero_3b_001",
+        "aero_3b_002",
+        "aero_3b_003",
+        "aero_3b_004",
+        "aero_15a_pylon_l",
+        "aero_15a_pylon_lb",
+        "aero_15a_pylon_r",
+        "aero_15a_pylon_rb",
+        "aero_15a_pylon1_l",
+        "aero_15a_pylon1_lb",
+        "aero_15a_pylon1_r",
+        "aero_15a_pylon1_rb",
+        "aero_65a_pylon_l",
+        "aero_65a_pylon_r"
+      ]
+    },
+    "HideDmParts": {
+      "node": "armor4_dm"
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "an_am3_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAN_M3.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 190,
+              "light": true,
+              "spread": 1.2
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAN_M3.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 190,
+              "light": false,
+              "spread": 1.4
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAN_M3.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon3_dm",
+              "bullets": 190,
+              "light": true,
+              "spread": 1.6
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAN_M3.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "bullets": 190,
+              "light": true,
+              "spread": 1.8
+            }
+          ]
+        }
       },
       {
-        "name": "f9f_8_aim_9",
-        "blk": "gameData/FlightModels/weaponPresets/f9f_8_aim_9.blk",
-        "reqModification": "us_aim_9b"
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim9b",
+            "reqModification": "us_aim_9b",
+            "ShowNodes": {
+              "node": [
+                "aero_3b_001",
+                "aero_15a_pylon1_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "us_aim_9e_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "aero6",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon1_l",
+                "aero_15a_pylon1_lb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_6a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_6_b_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "aero7",
+            "reqModification": "us_2_75_in_ffar",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon1_l",
+                "aero_15a_pylon1_lb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon1_l",
+                "aero_15a_pylon1_lb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_500lb_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim9b",
+            "reqModification": "us_aim_9b",
+            "ShowNodes": {
+              "node": [
+                "aero_3b_002",
+                "aero_15a_pylon_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "us_aim_9e_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "aero6",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon_l",
+                "aero_15a_pylon_lb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_6a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_6_b_003",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "aero7",
+            "reqModification": "us_2_75_in_ffar",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon_l",
+                "aero_15a_pylon_lb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_003",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon_l",
+                "aero_15a_pylon_lb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_500lb_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_small",
+            "name": "aero6",
+            "ShowNodes": {
+              "node": "aero_65a_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_6a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_6_b_005",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "aero7",
+            "reqModification": "us_2_75_in_ffar",
+            "ShowNodes": {
+              "node": "aero_65a_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_005",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "flbc_mk2",
+            "ShowNodes": {
+              "node": "aero_65a_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "bomb_1000lb_1",
+              "bullets": 1,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_small",
+            "name": "aero6",
+            "ShowNodes": {
+              "node": "aero_65a_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_6a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_6_b_006",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "aero7",
+            "reqModification": "us_2_75_in_ffar",
+            "ShowNodes": {
+              "node": "aero_65a_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_006",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "flbc_mk2",
+            "ShowNodes": {
+              "node": "aero_65a_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "bomb_1000lb_2",
+              "bullets": 1,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim9b",
+            "reqModification": "us_aim_9b",
+            "ShowNodes": {
+              "node": [
+                "aero_3b_003",
+                "aero_15a_pylon_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "us_aim_9e_003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "aero6",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon_r",
+                "aero_15a_pylon_rb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_6a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_6_b_004",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "aero7",
+            "reqModification": "us_2_75_in_ffar",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon_r",
+                "aero_15a_pylon_rb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_004",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon_r",
+                "aero_15a_pylon_rb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_500lb_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim9b",
+            "reqModification": "us_aim_9b",
+            "ShowNodes": {
+              "node": [
+                "aero_3b_004",
+                "aero_15a_pylon1_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "us_aim_9e_004",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "aero6",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon1_r",
+                "aero_15a_pylon1_rb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_6a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_6_b_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "aero7",
+            "reqModification": "us_2_75_in_ffar",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon1_r",
+                "aero_15a_pylon1_rb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_7_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": [
+                "aero_15a_pylon1_r",
+                "aero_15a_pylon1_rb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_500lb_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
       }
     ]
   },
@@ -4245,13 +4713,21 @@
       "tier": 3,
       "reqModification": "anm3_belt_pack"
     },
+    "fmbc_mk1": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "flbc_mk2": {
-      "reqModLevel": 8.0,
+      "reqModification": "fmbc_mk1",
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "us_2_75_in_ffar": {
       "tier": 2,
       "modClass": "weapon"
     },
     "us_aim_9b": {
-      "reqModification": "flbc_mk2",
+      "reqModification": "us_2_75_in_ffar",
       "tier": 4,
       "modClass": "weapon"
     }

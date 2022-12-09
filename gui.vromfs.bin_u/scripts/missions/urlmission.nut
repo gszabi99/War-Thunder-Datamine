@@ -35,7 +35,7 @@ from "%scripts/dagui_library.nut" import *
   function loadFromBlk(blk)
   {
     foreach(key in this.saveParamsList)
-      if (typeof blk?[key] == typeof this[key])
+      if (type(blk?[key]) == type(this[key]))
         this[key] = blk[key]
   }
 

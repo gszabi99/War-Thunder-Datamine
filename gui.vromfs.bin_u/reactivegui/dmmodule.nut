@@ -11,7 +11,7 @@ let images = {
 
 
 let moduleIconConstructor = function (params) {
-  let icon = typeof params.icon == "function"
+  let icon = type(params.icon) == "function"
                ? @() params.icon(params.iconWatch.value)
                : @() params.icon
   return @(color) @() {

@@ -42,17 +42,6 @@ div {
         btnName:t='A'
       }
     }
-
-    img {
-      size:t='@cIco, @cIco'
-      position:t='absolute'
-      pos:t='pw - w -  @countryChoiceInterval, @countryChoiceInterval'
-
-      background-image:t='#ui/gameuiskin#btn_help.svg'
-      background-svg-size:t='@cIco, @cIco'
-      tooltip:t='<<desription>>'
-      hide_when_tooltip_empty:t='yes'
-    }
   }
   <</unitTypeItems>>
 }

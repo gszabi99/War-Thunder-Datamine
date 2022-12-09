@@ -27,6 +27,17 @@ tdiv {
       text:t=''
     }
 
+    textareaNoTab {
+      id:t='armies_limit_text'
+      width:t='pw'
+      background-color:t='@objectiveHeaderBackground'
+      padding:t='0, 1@framePadding'
+      margin-bottom:t='1@dp'
+      smallFont:t='yes'
+      text-align:t='center'
+      text:t=''
+    }
+
     tdiv {
       size:t='pw, 1@mIco+2@framePadding'
       margin-bottom:t='1@dp'

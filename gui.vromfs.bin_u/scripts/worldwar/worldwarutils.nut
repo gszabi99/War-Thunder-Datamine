@@ -21,7 +21,7 @@ let { getNearestMapToBattleShort,
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
@@ -253,15 +253,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   if (!this.canPlayWorldwar())
   {
-    if (!isMultiplayerPrivilegeAvailable.value) {
+    if (!isMultiplayerPrivilegeAvailable.value)
       checkAndShowMultiplayerPrivilegeWarning()
-      return false
-    }
-
-    if (!::xbox_try_show_crossnetwork_message())
-      ::showInfoMsgBox(this.getPlayWorldwarConditionText(true))
     else if (!isShowGoldBalanceWarning())
-      return false
+      checkAndShowCrossplayWarning(@()
+        ::showInfoMsgBox(::g_world_war.getPlayWorldwarConditionText(true)))
     return false
   }
   return true

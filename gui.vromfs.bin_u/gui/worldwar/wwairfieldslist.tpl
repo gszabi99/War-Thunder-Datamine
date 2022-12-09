@@ -5,7 +5,11 @@ imageButton {
   <<#selected>>
     selected:t='yes'
   <</selected>>
+  focusBtnName:t='A'
+  showConsoleImage:t='no'
   on_click:t='onAirfieldClick'
+  on_hover:t='onHoverAirfieldItem'
+  on_unhover:t='onHoverLostAirfieldItem'
   size:t='40, 40'
   margin:t='0.01@scrn_tgt'
 

@@ -179,6 +179,9 @@ class ReplaceIndexAndFieldsVisitor : AstVisitor
     it_prefix = prefix
     fields <- fields_
 
+  [unused_argument(expr)] def override canVisitWithAliasSubexpression(expr : smart_ptr<ExprAssume>) : bool
+    return true
+
   def override visitExprField(expr : smart_ptr<ExprField>) : ExpressionPtr
     if expr.value is ExprAt
       assume at = expr.value as ExprAt

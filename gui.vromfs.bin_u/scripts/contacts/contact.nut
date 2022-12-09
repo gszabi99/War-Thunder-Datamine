@@ -284,8 +284,11 @@ subscribe("playerProfileDialogClosed", function(r) {
       )
       return false
 
-    if (isCrossNetworkMessageAllowed(this.name))
-      return true
+    if (!isCrossNetworkMessageAllowed(this.name)) {
+      if (needShowSystemMessage)
+        this.getInteractionStatus(needShowSystemMessage) //just to show overlay message
+      return false
+    }
 
     let intSt = this.getInteractionStatus(needShowSystemMessage)
     return intSt == XBOX_COMMUNICATIONS_ALLOWED

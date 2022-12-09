@@ -1322,6 +1322,7 @@
       "genericDamageMult": 0.2,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 760.0
       },
       "radio_station_dm": {
@@ -1339,7 +1340,7 @@
         "hp": 2900.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 2300.0
+        "hp": 2900.0
       }
     },
     "ammo_storages_charges": {
@@ -1364,7 +1365,7 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 100.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 1500.0
+        "hp": 1200.0
       },
       "ammunition_storage_aux_02_dm": {
         "hp": 1500.0
@@ -1690,16 +1691,15 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_engine_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 16.0,
       "armorThrough": 500.0,
       "explosionDamageMult": 1.5,
       "transmission_01_dm": {
-        "hp": 4082.0
+        "hp": 4083.0
       },
       "transmission_02_dm": {
-        "hp": 4082.0
+        "hp": 4083.0
       },
       "transmission_03_dm": {
         "hp": 3838.0
@@ -1918,7 +1918,7 @@
         "hp": 10000.0
       },
       "armor_cit_06_dm": {
-        "armorThickness": 38.1,
+        "armorThickness": 25.4,
         "hp": 10000.0
       },
       "armor_cit_07_dm": {
@@ -2161,11 +2161,11 @@
       "armorClass": "ship_RGA",
       "armorThickness": 15.0,
       "turret_01_front_dm": {
-        "armorThickness": 228.6,
+        "armorThickness": 330.2,
         "hp": 10000.0
       },
       "turret_01_side_dm": {
-        "armorThickness": 177.8,
+        "armorThickness": 228.6,
         "hp": 10000.0
       },
       "turret_01_top_dm": {
@@ -2183,11 +2183,11 @@
         "hp": 10000.0
       },
       "turret_10_front_dm": {
-        "armorThickness": 228.6,
+        "armorThickness": 330.2,
         "hp": 10000.0
       },
       "turret_10_side_dm": {
-        "armorThickness": 177.8,
+        "armorThickness": 228.6,
         "hp": 10000.0
       },
       "turret_10_top_dm": {
@@ -2345,7 +2345,49 @@
       "armorClass": "ships_oil_fuel_tank",
       "armorThickness": 10.0,
       "stopChanceOnDeadPart": 0.5,
-      "ignoreDeadWithSplash": true
+      "ignoreDeadWithSplash": true,
+      "fuel_tank_01_dm": {
+        "hp": 10000.0
+      },
+      "fuel_tank_02_dm": {
+        "hp": 10000.0
+      },
+      "fuel_tank_03_dm": {
+        "hp": 6796.0
+      },
+      "fuel_tank_04_dm": {
+        "hp": 6796.0
+      },
+      "fuel_tank_05_dm": {
+        "hp": 8318.0
+      },
+      "fuel_tank_06_dm": {
+        "hp": 8318.0
+      },
+      "fuel_tank_07_dm": {
+        "hp": 8430.0
+      },
+      "fuel_tank_08_dm": {
+        "hp": 8430.0
+      },
+      "fuel_tank_09_dm": {
+        "hp": 8609.0
+      },
+      "fuel_tank_10_dm": {
+        "hp": 8609.0
+      },
+      "fuel_tank_11_dm": {
+        "hp": 9466.0
+      },
+      "fuel_tank_12_dm": {
+        "hp": 9466.0
+      },
+      "fuel_tank_13_dm": {
+        "hp": 10000.0
+      },
+      "fuel_tank_14_dm": {
+        "hp": 10000.0
+      }
     },
     "coal_bunkers": {
       "armorThickness": 3.0,
@@ -2353,49 +2395,7 @@
       "stopChanceOnDeadPart": 0.0,
       "variableThickness": true,
       "kineticProtectionEquivalentPerMeter": 27.3,
-      "hidableInXrayViewer": true,
-      "coal_bunker_01_dm": {
-        "hp": 6066.0
-      },
-      "coal_bunker_02_dm": {
-        "hp": 6066.0
-      },
-      "coal_bunker_03_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_04_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_05_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_06_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_07_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_08_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_09_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_10_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_11_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_12_dm": {
-        "hp": 5000.0
-      },
-      "coal_bunker_13_dm": {
-        "hp": 5406.0
-      },
-      "coal_bunker_14_dm": {
-        "hp": 5406.0
-      }
+      "hidableInXrayViewer": true
     },
     "gun_masks": {
       "armorClass": "ship_RHA",
@@ -2425,7 +2425,7 @@
     "sailor2": {
       "dmPart": "radio_station_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 9
     },
     "sailor3": {
       "dmPart": "compartment_01_dm",
@@ -2450,7 +2450,7 @@
     "sailor7": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 64
+      "crew": 65
     },
     "sailor8": {
       "dmPart": "compartment_06_dm",
@@ -2778,6 +2778,18 @@
             "damage": 350.0
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [

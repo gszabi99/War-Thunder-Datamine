@@ -845,10 +845,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2339,7 +2347,15 @@
   "modifications": {
     "cd_98": {},
     "CdMin_Fuse": {},
-    "new_cover": {},
+    "new_cover": {
+      "effects": {
+        "damageReceivedMult": 1.05,
+        "mulMass": 1.03,
+        "mulCdminFusel": 1.015,
+        "mulCdminTail": 1.015,
+        "mulCdmin": 1.015
+      }
+    },
     "structure_str": {},
     "hp_105": {},
     "new_radiator": {},

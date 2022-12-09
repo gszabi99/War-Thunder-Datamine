@@ -336,7 +336,7 @@ local Identity
 Identity = class extends Monad {
   _value = null
   constructor(v){
-    _value = v
+    this._value = v
   }
   map = @(fn) Identity.of(fn(this._value))
 

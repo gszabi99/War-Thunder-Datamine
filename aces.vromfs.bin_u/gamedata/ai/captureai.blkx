@@ -1161,32 +1161,52 @@
     {
       "name": "shipBot",
       "selectStrategy": "ordered",
-      "selector": {
-        "selectStrategy": "ordered",
-        "selectOnSuccess": true,
-        "sequencer": [
-          {
-            "findShipLeader": {},
-            "followShipLeader": {}
-          },
-          {
-            "doesntHaveLeader": {},
-            "selector": {
-              "selectStrategy": "ordered",
-              "selectOnSuccess": true,
-              "transferLeader": {},
-              "findNextShipWaypoint": {},
-              "checkIfShipHasDestination": {},
-              "recalculatePathToTarget": {},
-              "findCapturePointToSail": {
-                "canCapture": true
-              }
+      "parallel": {
+        "selector": {
+          "selectStrategy": "ordered",
+          "selectOnSuccess": true,
+          "sequencer": [
+            {
+              "findShipLeader": {},
+              "followShipLeader": {}
             },
-            "shipSail": {}
-          }
-        ]
+            {
+              "doesntHaveLeader": {},
+              "selector": {
+                "selectStrategy": "ordered",
+                "selectOnSuccess": true,
+                "transferLeader": {},
+                "findNextShipWaypoint": {},
+                "checkIfShipHasDestination": {},
+                "recalculatePathToTarget": {},
+                "findCapturePointToSail": {
+                  "canCapture": true
+                }
+              },
+              "shipSail": {}
+            }
+          ]
+        },
+        "sendSupportAircraft": {
+          "timeOutRange": [
+            10.0,
+            30.0
+          ],
+          "attackersPerTargetMax": 1,
+          "attacksMax": 3
+        }
       },
-      "stopShipEngine": {}
+      "sequencer": {
+        "stopShipEngine": {},
+        "sendSupportAircraft": {
+          "timeOutRange": [
+            10.0,
+            30.0
+          ],
+          "attackersPerTargetMax": 1,
+          "attacksMax": 3
+        }
+      }
     }
   ]
 }

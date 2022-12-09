@@ -2038,8 +2038,28 @@
     },
     "tracks": {
       "animationMultiplier": 0.68,
-      "height": 0.02,
-      "width": 0.26
+      "height": [
+        0.02,
+        0.035
+      ],
+      "width": [
+        0.26,
+        0.26
+      ],
+      "tracksTensionK": [
+        8.0,
+        10.0,
+        6.0
+      ],
+      "trackMesh": "ussr_010_07_100_phys_track_line",
+      "trackLen": 0.098,
+      "trackCount": 107,
+      "trackFadeTime": 0.5,
+      "trackCntPeriod": 2,
+      "trackMaxHeight": 1.1,
+      "trackMaxSinking": 0.1,
+      "trackStartOffset": 0.14,
+      "trackEmitSparks": true
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2079,7 +2099,9 @@
         45000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_r_drive": 0.24,
+      "wheel_l_drive": 0.24
     }
   },
   "PhysSys": {

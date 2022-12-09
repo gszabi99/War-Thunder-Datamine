@@ -6,6 +6,7 @@ let {MlwsLwsForMfd, RwrForMfd} = require("airState.nut");
 let {isColorOrWhite} = require("style/airHudStyle.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
+const RADAR_LINES_OPACITY = 0.42
 
 let indicatorRadius = 70.0
 let trackRadarsRadius = 0.04
@@ -18,7 +19,7 @@ let styleLineBackground = {
 
 let targetsCommonOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * min(RwrSignalHoldTimeInv.value, MlwsLwsSignalHoldTimeInv.value), 1.0)))
 
-let function centeredAircraftIcon(colorWatched) {
+let aircraftVectorImageCommands = (function() {
   let tailW = 25
   let tailH = 10
   let tailOffset1 = 10
@@ -32,6 +33,35 @@ let function centeredAircraftIcon(colorWatched) {
   let wingOffset3 = 30
   let noseOffset = 5
 
+  return [
+    [VECTOR_POLY,
+      // tail left
+      50, 100 - tailOffset1,
+      50 - tailW, 100 - tailOffset2,
+      50 - tailW, 100 - tailOffset2 - tailH,
+      50 - fuselageWHalf, 100 - tailOffset3,
+      // wing left
+      50 - fuselageWHalf, 100 - wingOffset1,
+      50 - fuselageWHalf - wingW, 100 - wingOffset2,
+      50 - fuselageWHalf - wingW, 100 - wingOffset2 - wingH,
+      50 - fuselageWHalf, wingOffset3,
+      // nose
+      50, noseOffset,
+      // wing rigth
+      50 + fuselageWHalf, wingOffset3,
+      50 + fuselageWHalf + wingW, 100 - wingOffset2 - wingH,
+      50 + fuselageWHalf + wingW, 100 - wingOffset2,
+      50 + fuselageWHalf, 100 - wingOffset1,
+      // tail right
+      50 + fuselageWHalf, 100 - tailOffset3,
+      50 + tailW, 100 - tailOffset2 - tailH,
+      50 + tailW, 100 - tailOffset2
+    ]
+  ]
+}())
+
+
+let function centeredAircraftIcon(colorWatched) {
 
   let aircraftIcon = @() styleLineBackground.__merge({
     watch = colorWatched
@@ -43,32 +73,8 @@ let function centeredAircraftIcon(colorWatched) {
     hplace = ALIGN_CENTER
     size = [pw(33), ph(33)]
     pos = [0, 0]
-    opacity = 0.42
-    commands = [
-      [VECTOR_POLY,
-        // tail left
-        50, 100 - tailOffset1,
-        50 - tailW, 100 - tailOffset2,
-        50 - tailW, 100 - tailOffset2 - tailH,
-        50 - fuselageWHalf, 100 - tailOffset3,
-        // wing left
-        50 - fuselageWHalf, 100 - wingOffset1,
-        50 - fuselageWHalf - wingW, 100 - wingOffset2,
-        50 - fuselageWHalf - wingW, 100 - wingOffset2 - wingH,
-        50 - fuselageWHalf, wingOffset3,
-        // nose
-        50, noseOffset,
-        // wing rigth
-        50 + fuselageWHalf, wingOffset3,
-        50 + fuselageWHalf + wingW, 100 - wingOffset2 - wingH,
-        50 + fuselageWHalf + wingW, 100 - wingOffset2,
-        50 + fuselageWHalf, 100 - wingOffset1,
-        // tail right
-        50 + fuselageWHalf, 100 - tailOffset3,
-        50 + tailW, 100 - tailOffset2 - tailH,
-        50 + tailW, 100 - tailOffset2
-      ]
-    ]
+    opacity = RADAR_LINES_OPACITY
+    commands = aircraftVectorImageCommands
   })
 
   return {
@@ -132,7 +138,7 @@ let function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false){
     fillColor = Color(0, 0, 0, 0)
     size = flex()
     color = colorWatch.value
-    opacity = !isForTank ? 0.42 : targetsOpacity.value * 0.42
+    opacity = !isForTank ? RADAR_LINES_OPACITY : targetsOpacity.value * RADAR_LINES_OPACITY
     commands = azimuthMarksCommands
   })
 }
@@ -242,6 +248,26 @@ let function createMlwsTarget(index, colorWatch) {
   }
 }
 
+let cmdsLwsTargetTank = freeze([
+  [VECTOR_LINE, 15, 0, 0, 50],
+  [VECTOR_LINE, -15, 0, 0, 50],
+  [VECTOR_LINE, 15, 0, -15, 0],
+])
+
+let cmdsLwsTargetNonTank = freeze([
+  [VECTOR_LINE, 0, -25, 0, 5],
+  [VECTOR_LINE, 0, 13, 0, 27],
+  [VECTOR_LINE, 5, 13, 11, 22],
+  [VECTOR_LINE, -5, 13, -11, 22],
+  [VECTOR_LINE, -6, 10, -15, 10],
+  [VECTOR_LINE, 6, 10, 15, 10]
+])
+
+let lswTargetTransform = {
+  pivot = [0.0, 0.0]
+  rotate = 135.0 //toward center
+}
+
 let function createLwsTarget(index, colorWatched, isForTank = false) {
   let target = lwsTargets[index]
   let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
@@ -254,26 +280,9 @@ let function createLwsTarget(index, colorWatched, isForTank = false) {
     opacity = targetOpacity.value
     size = [pw(50), ph(50)]
     pos = [pw(100), ph(100)]
-    commands = isForTank ?
-      [
-        [VECTOR_LINE, 15, 0, 0, 50],
-        [VECTOR_LINE, -15, 0, 0, 50],
-        [VECTOR_LINE, 15, 0, -15, 0],
-      ]
-      :
-      [
-        [VECTOR_LINE, 0, -25, 0, 5],
-        [VECTOR_LINE, 0, 13, 0, 27],
-        [VECTOR_LINE, 5, 13, 11, 22],
-        [VECTOR_LINE, -5, 13, -11, 22],
-        [VECTOR_LINE, -6, 10, -15, 10],
-        [VECTOR_LINE, 6, 10, 15, 10]
-      ]
+    commands = isForTank ? cmdsLwsTargetTank : cmdsLwsTargetNonTank
 
-    transform = {
-      pivot = [0.0, 0.0]
-      rotate = 135.0 //toward center
-    }
+    transform = lswTargetTransform
 
     children = target.enemy ? null
       : {
@@ -299,6 +308,17 @@ let function createLwsTarget(index, colorWatched, isForTank = false) {
     ]
   }
 }
+
+let rwrTargetTransform = {
+  pivot = [0.0, 0.0]
+  rotate = 45.0 //toward center
+}
+
+let cmdsRwrTarget = [
+  [VECTOR_SECTOR, -0, -0, 35, 25, -230, 230],
+  [VECTOR_SECTOR, -0, -0, 45, 35, -240, 240],
+  [VECTOR_SECTOR, -0, -0, 55, 45, -250, 250]
+]
 
 let function createRwrTarget(index, colorWatched) {
   let target = rwrTargets[index]
@@ -330,16 +350,8 @@ let function createRwrTarget(index, colorWatched) {
     opacity = targetOpacityRwr.value
     size = [pw(50), ph(50)]
     pos = [pw(85), ph(85)]
-    commands = [
-      [VECTOR_SECTOR, -0, -0, 35, 25, -230, 230],
-      [VECTOR_SECTOR, -0, -0, 45, 35, -240, 240],
-      [VECTOR_SECTOR, -0, -0, 55, 45, -250, 250]
-    ]
-
-    transform = {
-      pivot = [0.0, 0.0]
-      rotate = 45.0 //toward center
-    }
+    commands = cmdsRwrTarget
+    transform = rwrTargetTransform
 
     children = target.enemy ? null
       : {

@@ -1253,6 +1253,7 @@
       "armorThrough": 15.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 300.0
       },
       "radio_station_dm": {
@@ -1353,7 +1354,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.2,
@@ -2143,10 +2143,22 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 24.0,
+            "damage": 8.0,
             "fHitCritical": false
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [
@@ -5478,5 +5490,34 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "ger_camo_navy_gray",
+      "nameLocId": "skin/ger_camo_navy_gray",
+      "descLocId": "skin/ger_camo_navy_gray/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_navy_gray*"
+      }
+    },
+    {
+      "name": "ger_camo_blackgray_net",
+      "nameLocId": "skin/ger_camo_blackgray_net",
+      "descLocId": "skin/ger_camo_blackgray_net/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_blackgray_net*"
+      }
+    },
+    {
+      "name": "ger_camo_blackgreen_spots",
+      "nameLocId": "skin/ger_camo_blackgreen_spots",
+      "descLocId": "skin/ger_camo_blackgreen_spots/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_blackgreen_spots*"
+      }
+    }
+  ]
 }

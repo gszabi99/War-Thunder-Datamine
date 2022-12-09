@@ -21,6 +21,9 @@ let F14 = require("planeIlses/ilsF14Tomcat.nut")
 let mig17 = require("planeIlses/ilsMig17pf.nut")
 let TCSFVE130 = require("planeIlses/ilsTcsfVE130.nut")
 let SU145 = require("planeIlses/ilsSu145.nut")
+let Ils31 = require("planeIlses/ils31.nut")
+let MarconiAvionics = require("planeIlses/ilsMarconiAvionics.nut")
+let Tornado = require("planeIlses/ilsTornado.nut")
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -44,6 +47,9 @@ let ilsSetting = Computed(function() {
     isMig17pf = false
     isTcsfVe130 = false
     isSu145 = false
+    isIls31 = false
+    isMarconi = false
+    isTornado = false
   }
   if (BlkFileName.value == "")
     return res
@@ -72,6 +78,9 @@ let ilsSetting = Computed(function() {
     isMig17pf = blk.getBool("ilsMig17pf", false)
     isTcsfVe130 = blk.getBool("ilsTCSFVE130", false)
     isSu145 = blk.getBool("ilsSU145", false)
+    isIls31 = blk.getBool("ils31", false)
+    isMarconi = blk.getBool("ilsMarconiAvionics", false)
+    isTornado = blk.getBool("ilsTornado", false)
   }
 })
 
@@ -81,7 +90,8 @@ let planeIls = @(width, height) function() {
 
   let {isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
-    isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145} = ilsSetting.value
+    isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
+    isMarconi, isTornado } = ilsSetting.value
   return {
     watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
     children = [
@@ -109,7 +119,10 @@ let planeIls = @(width, height) function() {
       (isF14 ? F14(width, height) : null),
       (isMig17pf ? mig17(width, height) : null),
       (isTcsfVe130 ? TCSFVE130(width, height) : null),
-      (isSu145 ? SU145(width, height) : null)
+      (isSu145 ? SU145(width, height) : null),
+      (isIls31 ? Ils31(width, height) : null),
+      (isMarconi ? MarconiAvionics(width, height) : null),
+      (isTornado ? Tornado(width, height) : null)
     ]
   }
 }

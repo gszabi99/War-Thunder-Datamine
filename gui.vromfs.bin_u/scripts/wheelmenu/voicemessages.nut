@@ -40,6 +40,7 @@ let voiceMessageNames = [
 
   {category = HIDDEN_CATEGORY_NAME, name = "voice_message_attention_to_point", blinkTime = 5, haveTarget = false, showPlace = true,
                                     icon = "icon_attention_to_point", iconBlinkTime = 8, iconTarget = "sender", attentionToPoint = true},
+  {category = HIDDEN_CATEGORY_NAME, name = "voice_message_designate_target_from_uav", blinkTime = 5, haveTarget = false, showPlace = true, isUavDesignation = true},
 ]
 
 let function initVoiceMessageList() {

@@ -11,7 +11,7 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isCrossPlayEnabled,
   needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
@@ -35,27 +35,13 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() !::g_world_war.canPlayWorldwar()
     crossPlayRestricted = @() isMultiplayerPrivilegeAvailable.value && !isCrossPlayEnabled()
-    crossplayTooltip = function() {
-      if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
-        return null
-
-      if (!isMultiplayerPrivilegeAvailable.value)
-        return loc("xbox/noMultiplayer")
-
-      //Always send to other platform if enabled
-      //Need to notify about it
-      if (isCrossPlayEnabled())
-        return loc("xbox/crossPlayEnabled")
-
-      //Notify that crossplay is strongly required
-      return loc("xbox/crossPlayRequired")
-    }
     hasNewIconWidget = true
     updateByTimeFunc = function(scene, objId) {
       let descObj = scene.findObject(objId + "_text_description")
       if (checkObj(descObj))
         descObj.setValue(::g_world_war.getPlayedOperationText())
     }
+    getTooltipText = @() ::is_worldwar_enabled() ? ::g_world_war.getCantPlayWorldwarReasonText() : ""
   }
   {
     /*TSS*/
@@ -65,10 +51,10 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     startFunction = function() {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrl(loc("url/tss_all_tournaments"), false, false)
-      else if (!isShowGoldBalanceWarning() || !isMultiplayerPrivilegeAvailable.value)
+      else if (!isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
-      else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
-        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
+      else if (!isShowGoldBalanceWarning())
+        checkAndShowCrossplayWarning(@() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
     }
     isWide = false
     image = @() "#ui/images/game_modes_tiles/tss_" + (this.isWide ? "wide" : "thin") + ".jpg?P1"

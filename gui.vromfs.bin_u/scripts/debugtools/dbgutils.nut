@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let userstat = require("userstat")
 let { format, split_by_chars } = require("string")
 let { send } = require("eventbus")
 // warning disable: -file:forbidden-function

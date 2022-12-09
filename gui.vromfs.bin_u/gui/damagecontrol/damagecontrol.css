@@ -1,0 +1,44 @@
+@const damageControlIconSize: 60@sf/@pf;
+@const damageControlShortcutPadding: 4*@sf/@pf;
+
+actionsNest {
+  background-position:1;
+  background-color:@frameHeaderColor;
+  css-hier-invalidate:yes;
+}
+
+fixedPreset {
+  background-color:@bgrPresetColor;
+  css-hier-invalidate:yes;
+}
+
+fixedPreset[selected=yes] {
+  background-position:1;
+  background-color:@selectedPresetBorderColor;
+}
+
+fixedPreset[chosen=yes] {
+  background-position:1;
+  background-color:@chosenPresetColor;
+}
+
+damageControlPresetShortcut > activeText {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:20*@scrn_tgt/100.0;
+  move-sleep-time:2000;
+  move-delay-time:2000;
+  text-align:center;
+  pos:0, ph/2-h/2;
+  min-width:pw;
+}
+
+damageControlPresetShortcut {
+  re-type:9rect;
+  background-color:@white;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#block_bg_rounded_gray.png;
+  background-position:4, 4, 4, 4;
+  color-factor:192;
+  overflow:hidden;
+  padding:@damageControlShortcutPadding;
+}

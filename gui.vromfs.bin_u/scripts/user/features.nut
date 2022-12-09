@@ -5,9 +5,10 @@
 let { Watched } = require("frp")
 let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let target_platform = ::get_platform()
-let is_platform_windows = ["win32", "win64"].contains(target_platform)
+let { platformId } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
+
+let is_platform_windows = ["win32", "win64"].contains(platformId)
 
 let defaults = Watched({  //def value when feature not found in game_settings.blk
              // not in this list are false
@@ -42,16 +43,8 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   ChatThreadCategories = false
   ChatThreadCreate = true
 
-  Ships = ::disable_network()
-  ShipsVisibleInShop = ::disable_network()
   BoatsFirstChoice = false
   ShipsFirstChoice = false
-  SpendGoldForShips = false
-  Tanks = true
-  TanksPs4 = true
-  TanksInCustomBattles = false
-  TanksInRandomBattles = false
-  SpendGoldForTanks = false
 
   UsaAircraftsInFirstCountryChoice      = true
   UsaTanksInFirstCountryChoice          = true
@@ -288,6 +281,8 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   replayRewind = false
 
   MachineGunsAmmoIndicator = false
+
+  DamageControl = false
 })
 
 let override = Watched({})
@@ -361,7 +356,6 @@ return {
   defaults
   override
 
-  hasFeatureBasic
   getFeaturePack
   hasFeature
   hasAllFeatures

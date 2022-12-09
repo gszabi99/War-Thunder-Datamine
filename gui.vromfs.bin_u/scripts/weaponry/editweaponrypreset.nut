@@ -92,7 +92,7 @@ let function openEditPresetName(name, okFunc) {
       })
       let nameText = loc($"weapons/{weapon.id}")
       let dubIdx = res.findindex(@(v) v.presetId == weapon.presetId)
-      if (dubIdx) {
+      if (dubIdx != null) {
         res[dubIdx].name = "".concat(res[dubIdx].name, loc("ui/comma"),
           this.getPopupItemName(weapon.ammo, nameText))
         continue

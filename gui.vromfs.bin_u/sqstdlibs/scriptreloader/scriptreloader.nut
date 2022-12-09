@@ -80,9 +80,9 @@ foreach(scriptPath in ::g_script_reloader.USED_SCRIPTS)
   this.saveAllDataToStorages()
   this.loadedScripts.clear()
 
-  if (typeof(scriptPathOrStartFunc) == "function")
+  if (type(scriptPathOrStartFunc) == "function")
     scriptPathOrStartFunc()
-  else if (typeof(scriptPathOrStartFunc) == "string")
+  else if (type(scriptPathOrStartFunc) == "string")
     this.loadOnce(scriptPathOrStartFunc)
   else
     assert(false, $"Scripts reloader: bad reload param type {scriptPathOrStartFunc}")

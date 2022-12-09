@@ -46,7 +46,7 @@
         "hp": 35.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -60,6 +60,10 @@
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 19.8
+      },
+      "elevator_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 23.0
       },
       "fin1_dm": {
         "hp": 14.5
@@ -89,12 +93,6 @@
       },
       "stab_dm": {
         "hp": 25.7
-      }
-    },
-    "c_dural5": {
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 39.5
       }
     },
     "c_dural7": {
@@ -882,10 +880,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab_dm"

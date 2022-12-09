@@ -14,7 +14,7 @@ let class ItemLifetimeModifier {
 
   constructor(formulaStr)
   {
-    if (typeof formulaStr != "string" || ::u.isEmpty(formulaStr))
+    if (type(formulaStr) != "string" || ::u.isEmpty(formulaStr))
       return
 
     // for compatibility

@@ -4,10 +4,10 @@ let activeOrder = require("activeOrder.nut")
 let shipStateModule = require("shipStateModule.nut")
 let hudLogs = require("hudLogs.nut")
 let voiceChat = require("chat/voiceChat.nut")
-let { safeAreaSizeHud, bw, bh, rw, rh } = require("style/screenState.nut")
-let { mkRadar} = require("radarComponent.nut")
+let { safeAreaSizeHud } = require("style/screenState.nut")
 let fireControl = require("shipFireControl.nut")
 let { dmgIndicatorStates } = require("%rGui/hudState.nut")
+let { radarComponent } = require("shipHudComponents.nut")
 
 
 let shipHud = @(){
@@ -27,13 +27,11 @@ let shipHud = @(){
   ]
 }
 
-let radarPosComputed = Computed(@() [bw.value + 0.055 * rw.value, bh.value + 0.25 * rh.value])
-
 return {
   size = flex()
   children = [
     shipHud
     fireControl
-    mkRadar(radarPosComputed)
+    radarComponent
   ]
 }

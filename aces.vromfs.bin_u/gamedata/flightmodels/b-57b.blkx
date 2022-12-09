@@ -8,6 +8,7 @@
   ],
   "harmonizationSuffix": "_tomoe",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "haveCCIPForGun": true,
   "type": "typeBomber",
   "paratrooper": "usa_para",
   "bombingDelay": 2.2,
@@ -207,6 +208,14 @@
         "hp": 60.0
       }
     },
+    "steel_cooling_sys": {
+      "oil1_dm": {
+        "hp": 17.5
+      },
+      "oil2_dm": {
+        "hp": 17.5
+      }
+    },
     "steel_pilot": {
       "gunner1_dm": {
         "hp": 20.0
@@ -224,19 +233,16 @@
         "hp": 120.5
       },
       "tank3_dm": {
-        "hp": 120.5
+        "hp": 111.1
       },
       "tank4_dm": {
-        "hp": 120.5
+        "hp": 111.1
       },
       "tank5_dm": {
         "hp": 120.5
       },
       "tank6_dm": {
-        "hp": 111.1
-      },
-      "tank7_dm": {
-        "hp": 111.1
+        "hp": 120.5
       }
     }
   },
@@ -1004,6 +1010,24 @@
         "name": "mgun8_dm"
       },
       {
+        "name": "oil1_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
+      },
+      {
+        "name": "oil2_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
+      },
+      {
         "name": "pilot_dm"
       },
       {
@@ -1076,10 +1100,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -1402,47 +1434,6 @@
       },
       {
         "name": "tank6_dm",
-        "onHit": [
-          {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.01,
-            "leak": 0.9
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 0.01,
-            "leak": 9.99
-          },
-          {
-            "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 10.0
-          }
-        ]
-      },
-      {
-        "name": "tank7_dm",
         "onHit": [
           {
             "fire": 0.0001,
@@ -2275,8 +2266,8 @@
     },
     "hideDmParts": {
       "node": [
-        "tank4_dm",
-        "tank5_dm"
+        "tank5_dm",
+        "tank6_dm"
       ]
     },
     "Weapon": [

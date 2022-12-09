@@ -12,14 +12,11 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let defValue  = 1.0
 let values    = [1.0, 0.95, 0.9, 0.85]
 let items     = ["100%", "95%", "90%", "85%"]
-if (is_platform_xbox)
-{
-  //::xbox_get_safe_area() returns max of it's size is 0.89
+if (is_platform_xbox) {
+  const XBOX_SAFE_AREA = 0.89
   // so remove all below of it to fit in.
-  for (local i = values.len() - 1; i >= 0; i--)
-  {
-    if (values[i] < ::xbox_get_safe_area())
-    {
+  for (local i = values.len() - 1; i >= 0; i--) {
+    if (values[i] < XBOX_SAFE_AREA) {
       values.remove(i)
       items.remove(i)
     }

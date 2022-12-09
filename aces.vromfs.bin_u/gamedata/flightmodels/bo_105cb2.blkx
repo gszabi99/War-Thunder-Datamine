@@ -30,7 +30,7 @@
   "fireParamsPreset": "200kph",
   "fightAiBehaviour": "helicopter",
   "DamageParts": {
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -845,7 +845,6 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
       1.25,
       0.48,
@@ -871,21 +870,133 @@
     "sightOutFov": -1.0,
     "sightFov": 5.5,
     "devices": {
-      "speed": [
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons1": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
         0.0,
-        257.222
+        1.0
+      ],
+      "throttle_1": [
+        0.0,
+        1.0
+      ],
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "aviahorizon_pitch": [
+        -60.0,
+        60.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
       ],
       "bank": [
         -8.0,
         8.0
       ],
-      "turn": [
-        -0.23562,
-        0.23562
+      "fuel": [
+        2.5,
+        350.0
+      ],
+      "fuel1": [
+        0.0,
+        75.0
+      ],
+      "speed": [
+        0.0,
+        82.311
       ],
       "vario": [
-        -30.0,
-        30.0
+        -30.48,
+        30.48
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
+      ],
+      "water_temperature": [
+        0.0,
+        1100.0
+      ],
+      "water_temperature1": [
+        0.0,
+        1100.0
+      ],
+      "oil_temperature": [
+        -70.0,
+        150.0
+      ],
+      "oil_temperature1": [
+        -70.0,
+        150.0
+      ],
+      "oil_pressure": [
+        0.0,
+        120.0
+      ],
+      "oil_pressure1": [
+        0.0,
+        120.0
+      ],
+      "rpm": [
+        0.0,
+        8500.0
+      ],
+      "rpm1": [
+        0.0,
+        8500.0
+      ],
+      "rpm_hour": [
+        0.0,
+        6000.0
+      ],
+      "rpm_min": [
+        0.0,
+        1000.0
+      ],
+      "rpm1_hour": [
+        0.0,
+        6000.0
+      ],
+      "rpm1_min": [
+        0.0,
+        1000.0
+      ],
+      "prop_rpm": [
+        0.0,
+        50.0
       ],
       "altitude_10k": [
         0.0,
@@ -897,133 +1008,26 @@
       ],
       "altitude_min": [
         0.0,
-        1000.0
+        100.0
       ],
-      "altitude_koef": 3.28,
-      "aviahorizon_pitch": [
-        -60.0,
-        60.0
-      ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "compass": [
-        0.0,
-        360.0
-      ],
-      "fuel": [
-        0.0,
-        1277.625
-      ],
-      "rpm": [
-        0.0,
-        4500.0
-      ],
-      "rpm1": [
-        0.0,
-        4500.0
-      ],
-      "rpm2": [
-        0.0,
-        4500.0
-      ],
-      "rpm3": [
-        0.0,
-        4500.0
-      ],
-      "rpm_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm_min": [
+      "altitude_min1": [
         0.0,
         1000.0
       ],
-      "water_temperature": [
-        0.0,
-        1000.0
-      ],
-      "manifold_pressure": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure1": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure2": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure3": [
-        0.334,
-        2.507
-      ],
-      "head_temperature": [
-        0.0,
-        300.0
-      ],
-      "head_temperature1": [
-        0.0,
-        300.0
-      ],
-      "head_temperature2": [
-        0.0,
-        300.0
-      ],
-      "head_temperature3": [
-        0.0,
-        300.0
-      ],
-      "oil_temperature": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature1": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature2": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature3": [
-        -50.0,
-        150.0
-      ],
-      "fuel_pressure": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure1": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure2": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure3": [
-        0.0,
-        15.0
-      ],
-      "oil_pressure": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure1": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure2": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure3": [
-        0.0,
-        150.0
-      ]
+      "altitude_koef": 3.28
+    },
+    "multifunctionDisplays": {
+      "display": {
+        "textureArea": [
+          0.0,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "page": {
+          "type": "rwr"
+        }
+      }
     },
     "parts_holes_dmg": {
       "part": "fuse"

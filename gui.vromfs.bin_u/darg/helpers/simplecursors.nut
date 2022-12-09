@@ -25,7 +25,7 @@ let tooltipCmp = @(){
   behavior = Behaviors.BoundToArea
   safeAreaMargin = [sh(1), sh(1)]
   transform = {}
-  children = typeof(getTooltip()) == "string"
+  children = type(getTooltip()) == "string"
   ? tooltipBox({
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea

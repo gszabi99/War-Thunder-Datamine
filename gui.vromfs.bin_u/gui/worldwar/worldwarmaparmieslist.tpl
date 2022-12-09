@@ -32,7 +32,7 @@ tdiv {
     <</armiesByState>>
   }
 
-  ReinforcementsRadioButtonsList {
+  tdiv {
     id:t='armies_tab_content'
     size:t='pw, fh'
     margin:t='1@framePadding'

@@ -158,7 +158,7 @@ Context = class {
       this.cache[name] <- value
     }
 
-    if (typeof value == "function") {
+    if (type(value) == "function") {
       value = value.call(context.view)
     }
 
@@ -220,7 +220,7 @@ local Writer = class {
    */
   function render(template, view, partials = null) {
     local tokens = this.parse(template)
-    local context = (typeof view == "instance" && view instanceof Context) ? view : Context(view)
+    local context = (type(view) == "instance" && view instanceof Context) ? view : Context(view)
     return this.renderTokens(tokens, context, partials, template)
   }
 
@@ -253,17 +253,17 @@ local Writer = class {
         value = context.lookup(token[1])
         if (!value)
           continue
-        if (typeof value == "array") {
+        if (type(value) == "array") {
           for (local j = 0; j < value.len(); ++j) {
             buffer.append(this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate))
           }
         }
-        else if (typeof value == "table" || typeof value == "instance" || typeof value == "string") { // !!!!
+        else if (type(value) == "table" || type(value) == "instance" || type(value) == "string") { // !!!!
 
           buffer.append(this.renderTokens(token[4], context.push(value), partials, originalTemplate))
         }
-        else if (typeof value == "function") {
-          if (typeof originalTemplate != "string") {
+        else if (type(value) == "function") {
+          if (type(originalTemplate) != "string") {
             assert(false, "Cannot use higher-order sections without the original template")
             return "".join(buffer)
           }
@@ -271,7 +271,7 @@ local Writer = class {
           // Extract the portion of the original template that the section contains.
           value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender)
 
-          if (typeof value == "string")
+          if (type(value) == "string")
             buffer.append(value)
         }
         else {
@@ -281,7 +281,7 @@ local Writer = class {
       else if (token[0] == "^"){
         value = context.lookup(token[1])
 
-        if (!value || ((typeof value == "array") && value.len() == 0)) {
+        if (!value || ((type(value) == "array") && value.len() == 0)) {
           buffer.append(this.renderTokens(token[4], context, partials, originalTemplate))
         }
       }
@@ -289,7 +289,7 @@ local Writer = class {
         if (!partials)
           continue
 
-        if (typeof partials == "function")
+        if (type(partials) == "function")
           value = partials(token[1])
         else if (token[1] in partials)
           value = partials[token[1]]
@@ -317,7 +317,7 @@ local Writer = class {
       else if(token[0] == "name") {
         value = context.lookup(token[1])
         if (value != null)
-          if (typeof value == "string")
+          if (type(value) == "string")
             buffer.append(g_string.stripTags(value))
           else
             buffer.append(value.tostring())
@@ -359,7 +359,7 @@ local Writer = class {
   }
 
   function escapeTags(tags) { //warning disable: -ident-hides-ident
-    if (!(typeof tags == "array") || tags.len() != 2) {
+    if (!(type(tags) == "array") || tags.len() != 2) {
       assert(false, $"Invalid tags: {tags}")
     }
 
@@ -373,7 +373,7 @@ local Writer = class {
     local tags = tags_ || this.tags //warning disable: -ident-hides-ident
     template = template || ""
 
-    if (typeof tags == "string")
+    if (type(tags) == "string")
      tags = g_string.split(tags, this.spaceRe)
 
     local tagRes  = this.escapeTags(tags)
@@ -612,7 +612,7 @@ handyman = {
         this.updateCache(partialPath)
     local tokens = this.tokensByTemplatePath[templatePath]
     local template = this.tokensByTemplatePath[templatePath]
-    local context = (typeof view == "instance" && view instanceof Context) ? view : Context(view)
+    local context = (type(view) == "instance" && view instanceof Context) ? view : Context(view)
     return this.defaultWriter.renderTokens(tokens, context, partials, template)
   }
 

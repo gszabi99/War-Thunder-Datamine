@@ -119,6 +119,7 @@ local expireTypes = {
   isToStringForDebug = true
 
   shouldAutoConsume = false //if true, should to have "consume" function
+  forceShowRewardReceiving = false //in case, like autoConsume, when we need to notify player
   craftedFrom = ""
 
   maxAmount = -1 // -1 means no max item amount

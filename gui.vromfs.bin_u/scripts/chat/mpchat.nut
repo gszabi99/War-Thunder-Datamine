@@ -13,6 +13,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { is_replay_playing } = require("replays")
+let { send } = require("eventbus")
 
 ::game_chat_handler <- null
 
@@ -138,7 +139,7 @@ local MP_CHAT_PARAMS = {
     this.updatePrompt(sceneData)
     this.scenes.append(sceneData)
     this.validateCurMode()
-    ::call_darg("hudChatHasEnableChatModeUpdate", this.hasEnableChatMode)
+    send("setHasEnableChatMode", { hasEnableChatMode = this.hasEnableChatMode })
     ::handlersManager.updateControlsAllowMask()
     return sceneData
   }
@@ -360,7 +361,7 @@ local MP_CHAT_PARAMS = {
         sceneData.handler.onChatEntered()
     }
     this.enableChatInput(false)
-    ::call_darg("hudChatInputEnableUpdate", false)
+    send("setInputEnable", { value = false })
   }
 
   function onChatCancel(obj)
@@ -369,7 +370,7 @@ local MP_CHAT_PARAMS = {
     if (sceneData && sceneData.handler && ("onChatCancel" in sceneData.handler))
       sceneData.handler.onChatCancel()
     this.enableChatInput(false)
-    ::call_darg("hudChatInputEnableUpdate", false)
+    send("setInputEnable", { value = false })
   }
 
   function onChatEndEdit() {

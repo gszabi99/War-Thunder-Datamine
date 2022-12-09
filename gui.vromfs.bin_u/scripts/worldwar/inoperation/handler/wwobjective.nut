@@ -179,19 +179,30 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function onEventWWAFKTimerStop(_params)
   {
-    this.setTopPosition(this.getShowMaxObjectivesCount())
+    this.recalculateTopPosition()
   }
 
   function onEventWWAFKTimerStart(params)
   {
-    this.setTopPosition(this.getShowMaxObjectivesCount(), params?.needResize ? 1 : 0)
+    if(params?.needResize ?? false)
+      this.setTopPosition(0)
+    else
+      this.recalculateTopPosition()
   }
 
-  function setTopPosition(objectivesCount, addRow = 0)
+  function setTopPosition(value)
+  {
+    if (!this.restrictShownObjectives)
+      return
+    this.scene.getScene()["content_block_1"].top = value
+  }
+
+  function recalculateTopPosition()
   {
     if (!this.restrictShownObjectives)
       return
 
+    let objectivesCount = this.getShowMaxObjectivesCount()
     let guiScene = this.scene.getScene()
     let content1BlockHeight = guiScene["ww-right-panel"].getSize()[1]
       - guiScene.calcString("1@content2BlockHeight + 1@content3BlockHeight + 2@framePadding", null)
@@ -205,17 +216,15 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     let reservedHeight = guiScene.calcString("1@frameHeaderHeight + "
       + headers + "@objectiveBlockHeaderHeight", null)
     let objectivesHeight = guiScene.calcString(
-      (objectivesCount.x + objectivesCount.y + addRow) + "@objectiveHeight", null)
+      (objectivesCount.x + objectivesCount.y) + "@objectiveHeight", null)
 
-    let panelObj = guiScene["content_block_1"]
-    panelObj.top = content1BlockHeight - busyHeight - reservedHeight - objectivesHeight
+    this.setTopPosition(content1BlockHeight - busyHeight - reservedHeight - objectivesHeight)
   }
 
   function getObjectiveBlocksArray()
   {
+    this.recalculateTopPosition()
     let availableObjectiveSlots = this.getShowMaxObjectivesCount()
-    this.setTopPosition(availableObjectiveSlots)
-
     let objectivesList = this.getObjectivesList(availableObjectiveSlots)
 
     local countryIcon = ""

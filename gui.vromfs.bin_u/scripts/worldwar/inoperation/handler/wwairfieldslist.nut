@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 
 ::gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler
@@ -22,6 +23,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   ownedAirfieldsNumber = -1
   updateTimer = null
   updateDelay = 1
+  selectedGroupAirArmiesNumber = { cur = 0 max = 0 }
 
   function getSceneTplView()
   {
@@ -218,6 +220,48 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return cooldownFormations.len() > 0
   }
 
+  function calcGroupAirArmiesNumber(index)
+  {
+    let airfield = ::g_world_war.getAirfieldByIndex(index)
+    if (!airfield.isValid())
+      return
+
+    this.selectedGroupAirArmiesNumber.cur = this.calcSelectedGroupAirArmiesNumber(airfield)
+    this.selectedGroupAirArmiesNumber.max = ::g_operations.getCurrentOperation().getGroupAirArmiesLimit(airfield.airfieldType.name)
+  }
+
+  function fillArmyLimitDescription(index)
+  {
+    let textObj = this.scene.findObject("armies_limit_text")
+    if (!checkObj(textObj))
+      return
+
+    let airfield = ::g_world_war.getAirfieldByIndex(index)
+    let isAirfielValid = airfield.isValid()
+    if (!isAirfielValid)
+      return
+
+    textObj.setValue(
+      loc($"worldwar/group_{airfield.airfieldType.locId}_armies_limit",
+        { cur = this.selectedGroupAirArmiesNumber.cur,
+          max = this.selectedGroupAirArmiesNumber.max }))
+  }
+
+  function calcSelectedGroupAirArmiesNumber(airfield)
+  {
+    let availableArmiesArray = airfield.getAvailableFormations()
+    let selectedGroupIdx = availableArmiesArray?[0].getArmyGroupIdx() ?? 0
+    local armyCount = ::g_operations.getAirArmiesNumberByGroupIdx(selectedGroupIdx,
+      airfield.airfieldType.overrideUnitType)
+    for (local idx = 0; idx < ::g_world_war.getAirfieldsCount(); idx++)
+    {
+      let af = ::g_world_war.getAirfieldByIndex(idx)
+      if (airfield.airfieldType == af.airfieldType)
+        armyCount += af.getCooldownArmiesNumberByGroupIdx(selectedGroupIdx)
+    }
+    return armyCount
+  }
+
   function updateAirfieldDescription(index = -1)
   {
     let airfieldBlockObj = this.scene.findObject("airfield_block")
@@ -280,8 +324,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     formationTextObj.setValue(text)
 
     let hasEnoughToFly = airfield.hasEnoughUnitsToFly()
-    this.showSceneBtn("control_help", hasEnoughToFly)
-    this.showSceneBtn("alert_text", !hasEnoughToFly)
+    let limitReached = this.selectedGroupAirArmiesNumber.cur == this.selectedGroupAirArmiesNumber.max
+
+    this.showSceneBtn("control_help", hasEnoughToFly && !limitReached)
+    let isVisibleAlertText = limitReached || !hasEnoughToFly
+    let alertObj = this.showSceneBtn("alert_text", isVisibleAlertText)
+    if (isVisibleAlertText && alertObj != null)
+      alertObj.setValue(limitReached ? loc($"worldwar/reached_{airfield.airfieldType.locId}_armies_limit")
+      : loc("worldwar/airfield/not_enough_units_to_send"))
 
     if (!hasFormationUnits && !hasCooldownUnits)
       ::ww_event("MapClearSelection", {})
@@ -333,6 +383,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       ::ww_gui_bhv.worldWarMapControls, mapObj, {airfieldIdx = index})
   }
 
+  onHoverAirfieldItem = @(obj)
+    ::ww_event("HoverAirfieldItem",
+      {airfieldIndex = cutPrefix(obj.id, this.airfieldIdPrefix).tointeger()})
+
+  onHoverLostAirfieldItem = @(_obj) ::ww_event("HoverLostAirfieldItem", {airfieldIndex = -1})
+
   function selectDefaultFormation()
   {
     let placeObj = this.scene.findObject("free_formations")
@@ -352,6 +408,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
     this.updateAirfieldFormation(selectedAirfield)
     this.updateAirfieldCooldownList(selectedAirfield)
+    this.calcGroupAirArmiesNumber(selectedAirfield)
+    this.fillArmyLimitDescription(selectedAirfield)
     this.updateAirfieldDescription(selectedAirfield)
     this.selectDefaultFormation()
   }

@@ -50,7 +50,7 @@ global enum bulletsAmountState {
 
   function setUnit(v_unit)
   {
-    if (typeof(v_unit) == "string")
+    if (type(v_unit) == "string")
       v_unit = ::getAircraftByName(v_unit)
     if (this.unit == v_unit)
       return

@@ -6,6 +6,8 @@ armyBlock {
   selected:t='no'
   isForceHovered:t='no'
   on_click:t = 'onClickArmy'
+  focusBtnName:t='A'
+  showConsoleImage:t='no'
   on_hover:t='onHoverArmyItem'
   on_unhover:t='onHoverLostArmyItem'
 

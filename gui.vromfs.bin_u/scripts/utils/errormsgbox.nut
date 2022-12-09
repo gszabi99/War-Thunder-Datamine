@@ -82,7 +82,7 @@ let function get_error_data(header, error_code)
     errCode = null
     text = null
   }
-  if (typeof error_code != "string")
+  if (type(error_code) != "string")
   {
     error_code = error_code & 0xFFFFFFFF // Temporary fix for 1.67.2.X
 

@@ -124,7 +124,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
 
   function checkBulletsRows()
   {
-    if (typeof(::aircraft_for_weapons) != "string")
+    if (type(::aircraft_for_weapons) != "string")
       return
     let air = ::getAircraftByName(::aircraft_for_weapons)
     if (!air)

@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { ActionGroup } = require("controls")
 
 return [
   {
@@ -27,7 +28,7 @@ return [
     id = "ID_SHIP_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
     type = CONTROL_TYPE.BUTTON
     onClick = @() controlsOperations.swapGamepadSticks(
-      ctrlGroups.SHIP,
+      ActionGroup.SHIP,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
     showFunc = @() ::have_xinput_device()
@@ -35,7 +36,7 @@ return [
   {
     id = "ID_SHIP_SWAP_GAMEPAD_STICKS"
     type = CONTROL_TYPE.BUTTON,
-    onClick = @() controlsOperations.swapGamepadSticks(ctrlGroups.SHIP)
+    onClick = @() controlsOperations.swapGamepadSticks(ActionGroup.SHIP)
     showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
@@ -52,7 +53,6 @@ return [
   {
     id = "ship_main_engine"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_SEPERATED_ENGINE_CONTROL_SHIP, false)
     axisDirection = AxisDirection.Y
     needShowInHelp = true
@@ -60,27 +60,23 @@ return [
   {
     id = "ship_port_engine"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_SEPERATED_ENGINE_CONTROL_SHIP, true)
     checkAssign = false
   }
   {
     id = "ship_star_engine"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_SEPERATED_ENGINE_CONTROL_SHIP, true)
     checkAssign = false
   }
   {
     id = "ship_steering"
     type = CONTROL_TYPE.AXIS,
-    checkGroup = ctrlGroups.SHIP,
     axisDirection = AxisDirection.X
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_FULL_STOP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
 //-------------------------------------------------------
@@ -90,7 +86,6 @@ return [
   }
   {
     id = "ID_SHIP_WEAPON_ALL"
-    checkGroup = ctrlGroups.SHIP
     needShowInHelp = true
   }
   {
@@ -102,32 +97,27 @@ return [
   }
   {
     id = "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_WHEEL_CONTROL_SHIP, true)
       && (::is_xinput_device() || isPlatformSony || isPlatformXboxOne)
   }
   {
     id = "ID_SHIP_WEAPON_PRIMARY"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_WEAPON_SECONDARY"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_WEAPON_MACHINEGUN"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SINGLE_SHOT_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
@@ -142,75 +132,62 @@ return [
   }
   {
     id = "ID_SHIP_WEAPON_TORPEDOES"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_WEAPON_DEPTH_CHARGE"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_WEAPON_MINE"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_WEAPON_MORTAR"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_WEAPON_ROCKETS"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_SMOKE_GRENADE"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_SMOKE_SCREEN_GENERATOR"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_TORPEDO_SIGHT"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_TOGGLE_GUNNERS"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SHIP_SELECT_TARGET_AI_PRIM"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SHIP_SELECT_TARGET_AI_SEC"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SHIP_SELECT_TARGET_AI_MGUN"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SHIP_NEXT_BULLET_TYPE"
-     checkGroup = ctrlGroups.SHIP
      checkAssign = false
   }
 //-------------------------------------------------------
@@ -220,100 +197,83 @@ return [
   }
   {
     id = "ID_TOGGLE_VIEW_SHIP"
-    checkGroup = ctrlGroups.SHIP
     needShowInHelp = true
   }
   {
     id = "ID_TARGETING_HOLD_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_LOCK_TARGETING_AT_POINT_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SENSOR_SWITCH_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
 /*
   {
     id = "ID_SENSOR_TYPE_SWITCH_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SENSOR_MODE_SWITCH_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SENSOR_ACM_SWITCH_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SENSOR_SCAN_PATTERN_SWITCH_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
 */
   {
     id = "ID_SENSOR_RANGE_SWITCH_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_SENSOR_TARGET_SWITCH_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SENSOR_TARGET_LOCK_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ship_sensor_cue_x"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ship_sensor_cue_y"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ship_sensor_cue_z"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     showFunc = @() hasFeature("RadarElevationControl")
   }
   {
     id = "ship_zoom"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ship_camx"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     reqInMouseAim = false
     axisDirection = AxisDirection.X
   }
   {
     id = "ship_camy"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     reqInMouseAim = false
     axisDirection = AxisDirection.Y
   }
@@ -325,7 +285,6 @@ return [
   {
     id = "ship_mouse_aim_x"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     reqInMouseAim = false
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     axisDirection = AxisDirection.X
@@ -333,7 +292,6 @@ return [
   {
     id = "ship_mouse_aim_y"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SHIP
     reqInMouseAim = false
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     axisDirection = AxisDirection.Y
@@ -358,14 +316,14 @@ return [
     axis_num = MouseAxis.MOUSE_SCROLL_SHIP
     values = ["none", "ship_sight_distance", "ship_main_engine", "ship_zoom"]
     onChangeValue = "onMouseWheel"
-    showFunc = @() hasFeature("EnableMouse") && hasFeature("Ships")
+    showFunc = @() hasFeature("EnableMouse")
   }
   {
     id = "mouse_z_mult_ship"
     type = CONTROL_TYPE.SLIDER
     value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT)
     setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT, objValue / 100.0)
-    showFunc = @() hasFeature("EnableMouse") && hasFeature("Ships")
+    showFunc = @() hasFeature("EnableMouse")
   }
 //-------------------------------------------------------
   {
@@ -374,68 +332,55 @@ return [
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_1"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_2"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_3"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_4"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_5"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_KILLSTREAK_WHEEL_MENU"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     showFunc = ::have_xinput_device
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_6"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_11"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_REPAIR_BREACHES"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_10"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
     needShowInHelp = true
   }
   //
-
-
-
 
 
 
@@ -454,28 +399,24 @@ return [
 
   {
     id = "ID_SHIP_LOCK_SHOOT_DISTANCE"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ship_sight_distance"
     type = CONTROL_TYPE.AXIS
     isAbsOnlyWhenRealAxis = true
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ship_shoot_direction"
     type = CONTROL_TYPE.AXIS
     isAbsOnlyWhenRealAxis = true
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ship_wheelmenu_x"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X
-    checkGroup = ctrlGroups.SHIP
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     showFunc = ::have_xinput_device
     checkAssign = @() ::is_xinput_device()
@@ -484,19 +425,16 @@ return [
     id = "ship_wheelmenu_y"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.Y
-    checkGroup = ctrlGroups.SHIP
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     showFunc = ::have_xinput_device
     checkAssign = @() ::is_xinput_device()
   }
   {
     id = "ID_EVENT_ACTION"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   {
     id = "ID_START_SUPPORT_PLANE_SHIP"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
   //
@@ -513,12 +451,8 @@ return [
 
 
 
-
-
-
   {
     id = "ID_CANCEL_SUPPORT_PLANE_FUSE"
-    checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
 ]

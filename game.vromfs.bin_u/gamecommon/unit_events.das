@@ -10,7 +10,7 @@ struct CmdInitComponent
 struct EventUnitInitModification
   modEid : EntityId
   modType : string
-  blk : DataBlock
+  blk : DataBlock? // not null
 
 [cpp_event(unicast, with_scheme)]
 struct EventUnitRespawn

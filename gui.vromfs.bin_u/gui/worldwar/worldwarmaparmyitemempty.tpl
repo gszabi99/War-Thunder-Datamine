@@ -9,6 +9,8 @@
     clanId:t=''
     canBeHovered:t='yes'
     on_click:t='onClickArmy'
+    focusBtnName:t='A'
+    showConsoleImage:t='no'
     on_hover:t='onHoverArmyItem'
     on_unhover:t='onHoverLostArmyItem'
 

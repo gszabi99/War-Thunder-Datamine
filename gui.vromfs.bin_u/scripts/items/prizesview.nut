@@ -726,7 +726,7 @@ let prizeViewConfig = {
   if (prize?.unlock || prize?.unlockType)
   {
     local unlockType = prize?.unlockType || ::get_unlock_type_by_id(prize?.unlock)
-    if (typeof(unlockType) == "string")
+    if (type(unlockType) == "string")
       unlockType = ::get_unlock_type(unlockType)
     return ::g_decorator_type.getTypeByUnlockedItemType(unlockType).prizeTypeIcon
   }

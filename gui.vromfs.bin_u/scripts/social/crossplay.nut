@@ -23,7 +23,7 @@ let updateCrossNetworkPlayStatus = function(needOverrideValue = false)
     return
 
   if (isPlatformXboxOne)
-    crossNetworkPlayStatus(::check_crossnetwork_play_privilege())
+    crossNetworkPlayStatus(::get_crossnetwork_play_privilege())
   else if (isPlatformSony && hasFeature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     crossNetworkPlayStatus(::load_local_account_settings(PS4_CROSSPLAY_OPT_ID, true))
   else
@@ -118,13 +118,14 @@ let function reinitCrossNetworkStatus() {
 
 subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) invalidateCache()
-  ProfileReceived = @(_p) reinitCrossNetworkStatus()
-  XboxMultiplayerPrivilegeUpdated = @(_p) reinitCrossNetworkStatus()
+  LoginComplete = @(_p) reinitCrossNetworkStatus()
+  XboxMultiplayerPrivilegeUpdated = @(_) reinitCrossNetworkStatus()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {
   isCrossPlayEnabled = isCrossNetworkPlayEnabled
   setCrossPlayStatus = setCrossNetworkPlayStatus
+  crossNetworkPlayStatus
   needShowCrossPlayInfo = @() isPlatformXboxOne
 
   getCrossNetworkChatStatus = getCrossNetworkChatStatus

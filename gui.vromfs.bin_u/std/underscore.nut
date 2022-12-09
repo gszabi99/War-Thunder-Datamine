@@ -12,10 +12,10 @@
   make common iteratee function
 */
 
-let isTable = @(v) typeof(v)=="table"
-let isArray = @(v) typeof(v)=="array"
-let isString = @(v) typeof(v)=="string"
-let isFunction = @(v) typeof(v)=="function"
+let isTable = @(v) type(v)=="table"
+let isArray = @(v) type(v)=="array"
+let isString = @(v) type(v)=="string"
+let isFunction = @(v) type(v)=="function"
 let function isDataBlock(obj) {
   //prefer this as it can handle any DataBlock binding and implementation
   if (obj?.paramCount!=null && obj?.blockCount != null)

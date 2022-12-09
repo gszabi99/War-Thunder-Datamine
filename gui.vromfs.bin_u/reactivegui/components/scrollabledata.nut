@@ -10,7 +10,7 @@ let function make(log_state) {
     data = function (container_ctor, message_component) {
       let container = container_ctor()
       return function () {
-        let result = (typeof container == "function") ? container() : container
+        let result = (type(container) == "function") ? container() : container
         let messages = log_state.value.map(message_component)
         result.flow <- FLOW_VERTICAL
         result.children <- messages

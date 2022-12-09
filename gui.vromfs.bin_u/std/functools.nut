@@ -61,7 +61,7 @@ let function kwarg(func){
       mandatoryparams.append(arg)
     }
   }
-  return function(params=kfuncargs, strict_mode=null) {
+  return function kwarged(params = kfuncargs, strict_mode = null) {
     if (type(params) not in allowedKwargTypes)
       assert(false, @() $"param of function can be only hashable (table, class, instance), found:'{type(params)}'")
     let nonManP = mandatoryparams.filter(@(p) p not in params)
@@ -223,7 +223,8 @@ let function setValInCacheVargved(path, value, cache) {
       curTbl[pathPart] <- {}
     curTbl = curTbl[pathPart]
   }
-  return curTbl[Leaf] <- value
+  curTbl[Leaf] <- value
+  return value
 }
 
 let function getValInCacheVargved(path, cache) {
@@ -243,8 +244,10 @@ let function setValInCache(path, value, cache) {
   let n = path.len()-1
   foreach (idx, p in path){
     local pathPart = p ?? NullKey
-    if (idx == n)
-      return curTbl[pathPart] <- value
+    if (idx == n) {
+      curTbl[pathPart] <- value
+      return value
+    }
     if (pathPart not in curTbl)
       curTbl[pathPart] <- {}
     curTbl = curTbl[pathPart]
@@ -284,7 +287,9 @@ let function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_
       cacheValues+=1
       if (cacheValues > maxCacheNum)
         cache.clear()
-      return cache[hashKey] <- func.acall(args)
+      let res = func.acall(args)
+      cache[hashKey] <- res
+      return res
 //      try { return cache[hashKey] }
 //      catch(e) { return cache[hashKey] <- func.acall(args) }
     }
@@ -296,7 +301,9 @@ let function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_
       cacheValues+=1
       if (cacheValues > maxCacheNum)
         cache.clear()
-      return cache[k] <- func(v)
+      let res = func(v)
+      cache[k] <- res
+      return res
 //      try { return cache[v ?? NullKey] }
 //      catch(e) { return cache[v ?? NullKey] <- func(v) }
     }
@@ -310,7 +317,9 @@ let function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_
         cacheValues+=1
         if (cacheValues > maxCacheNum)
           cache.clear()
-        return cache[key] <- func.acall([null].extend(vargv))
+        let res = func.acall([null].extend(vargv))
+        cache[key] <- res
+        return res
       }
       if (simpleCacheUsed)
         return simpleCache

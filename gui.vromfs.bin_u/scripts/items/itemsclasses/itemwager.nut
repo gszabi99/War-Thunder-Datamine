@@ -217,7 +217,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     {
       let rewardDataTypeName = rewardDataType.name
       let p3 = getTblValue(rewardDataTypeName, blk, null)
-      if (typeof(p3) != "instance" || !(p3 instanceof ::Point3))
+      if (type(p3) != "instance" || !(p3 instanceof ::Point3))
         continue
       if (p3.x == 0 && p3.y == 0 && p3.z == 0)
         continue

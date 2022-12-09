@@ -38,7 +38,7 @@
         "hp": 15.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -1134,7 +1134,23 @@
       {
         "name": "a_109_eoa2_fn_m3p",
         "blk": "gameData/flightModels/weaponPresets/a_109_eoa2_fn_m3p.blk",
-        "reqModification": "fn_hmp400"
+        "reqModification": "fn_hmp400",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/gunFN_M3P.blk",
+            "amountPerTier": 1.0,
+            "tier": [
+              {
+                "idx": 5,
+                "iconType": "machine_gun"
+              },
+              {
+                "idx": 7,
+                "iconType": "machine_gun"
+              }
+            ]
+          }
+        }
       },
       {
         "name": "a_109_eoa2_gun_fn_m3p_hvar",

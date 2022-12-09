@@ -37,7 +37,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { openESportListWnd } = require("%scripts/events/eSportModal.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { gui_do_debug_unlock, debug_open_url } = require("%scripts/debugTools/dbgUtils.nut")
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
@@ -268,10 +268,10 @@ let list = {
     onClickFunc = function(obj, _handler) {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrlByObj(obj)
-      else if (!isShowGoldBalanceWarning() && !isMultiplayerPrivilegeAvailable.value)
+      else if (!isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
-      else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
-        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
+      else if (!isShowGoldBalanceWarning())
+        checkAndShowCrossplayWarning(@() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
     }
     isDelayed = false
     link = "#url/tss"

@@ -693,7 +693,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   function createHeaderRow(tableObj, hdr, markupData, teamNum)
   {
     if (!markupData
-        || typeof markupData != "table"
+        || type(markupData) != "table"
         || !("columns" in markupData)
         || !markupData.columns.len()
         || !checkObj(tableObj))
@@ -708,7 +708,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     foreach(name in tblData)
     {
       let value = markupData.columns?[name]
-      if (!value || typeof value != "table")
+      if (!value || type(value) != "table")
         continue
 
       view.cells.append({
@@ -1034,7 +1034,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         return
 
       let val = gameEndsObj.getValue()
-      if (typeof val == "string" && val.len() > 0)
+      if (type(val) == "string" && val.len() > 0)
         gameEndsObj.setValue("")
     }
     else

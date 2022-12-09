@@ -117,10 +117,6 @@
       "turret_04_top_dm": {
         "armorThickness": 80.0
       },
-      "turret_04_back_dm": {
-        "armorThickness": 30.0,
-        "hidableInViewer": true
-      },
       "turret_01_side_dm": {
         "armorThickness": 10.0
       }
@@ -198,6 +194,13 @@
       },
       "turret_11_top_dm": {
         "armorThickness": 5.0
+      },
+      "turret_04_back_dm": {
+        "armorThickness": 30.0
+      },
+      "turret_10_side_dm": {
+        "armorThickness": 5.0,
+        "armorClass": "RHA_tank_modern"
       }
     },
     "turret": {
@@ -207,9 +210,6 @@
       },
       "turret_08_top_dm": {
         "armorThickness": 45.0
-      },
-      "turret_05_bottom_dm": {
-        "armorThickness": 10.0
       },
       "turret_02_bottom_dm": {
         "armorThickness": 45.0
@@ -338,6 +338,18 @@
       },
       "ex_armor_r_09_dm": {
         "hidableInViewer": true
+      },
+      "ex_armor_11_dm": {
+        "hidableInViewer": true
+      },
+      "ex_armor_12_dm": {
+        "hidableInViewer": true
+      },
+      "ex_armor_13_dm": {
+        "hidableInViewer": true
+      },
+      "ex_armor_14_dm": {
+        "hidableInViewer": true
       }
     },
     "era_hull_front": {
@@ -432,11 +444,7 @@
       "ex_era_turret_10_dm": {},
       "ex_era_turret_11_dm": {},
       "ex_era_turret_12_dm": {},
-      "ex_era_turret_13_dm": {},
-      "ex_armor_11_dm": {},
-      "ex_armor_12_dm": {},
-      "ex_armor_13_dm": {},
-      "ex_armor_14_dm": {}
+      "ex_era_turret_13_dm": {}
     },
     "body_side_screens": {
       "armorClass": "t_90_rubber_fabric_screens",
@@ -474,6 +482,7 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
+      "turret_05_bottom_dm": {},
       "ex_armor_body_01_dm": {},
       "ex_armor_body_02_dm": {},
       "ex_armor_body_04_dm": {},
@@ -483,7 +492,6 @@
       "ex_armor_body_l_10_dm": {},
       "ex_armor_body_r_09_dm": {},
       "ex_armor_body_l_09_dm": {},
-      "turret_10_side_dm": {},
       "timber": {
         "armorClass": "ship_wood",
         "armorThickness": 100.0,
@@ -887,6 +895,10 @@
       "ammo_body_54_dm": {},
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
+      "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -2300,20 +2312,20 @@
     "mechanics": {
       "maxBrakeForce": 170000.0,
       "driveGearRadius": 0.292,
-      "mainGearRatio": 0.795,
-      "sideGearRatio": 6.25,
+      "mainGearRatio": 4.95,
+      "sideGearRatio": 1.0,
       "gearRatios": {
         "ratio": [
           -6.36,
+          -9.78,
           0.0,
+          6.73,
           4.38,
-          3.5,
+          3.32,
+          2.24,
           2.16,
-          1.86,
+          1.54,
           1.46,
-          1.3,
-          1.2,
-          1.1,
           1.0
         ]
       }

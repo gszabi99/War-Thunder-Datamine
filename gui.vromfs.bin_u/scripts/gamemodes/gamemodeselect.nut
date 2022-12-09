@@ -11,7 +11,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
@@ -248,6 +248,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
         crossPlayRestricted = mode?.crossPlayRestricted ?? @() false
         crossplayTooltip = mode?.crossplayTooltip
         isCrossPlayRequired = mode?.isCrossPlayRequired ?? @() false
+        tooltip = mode?.getTooltipText ?? @() ""
       })
       if (mode?.updateByTimeFunc)
         this.gameModesWithTimer[id] <- mode.updateByTimeFunc
@@ -461,8 +462,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     let event = ::game_mode_manager.getGameModeEvent(gameMode)
     if (event && !this.isCrossPlayEventAvailable(event))
     {
-      if (!::xbox_try_show_crossnetwork_message())
-        ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay"))
+      checkAndShowCrossplayWarning(@() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
       return
     }
 

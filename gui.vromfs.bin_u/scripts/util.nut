@@ -646,7 +646,7 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
 {
   if (!(elementKey in table))
     table[elementKey] <- elementValue
-  else if (typeof(table[elementKey]) == "array")
+  else if (type(table[elementKey]) == "array")
     table[elementKey].append(elementValue)
   else
     table[elementKey] <- [table[elementKey], elementValue]
@@ -664,7 +664,7 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
 
   foreach(idx, cell in rowData)
   {
-    let haveParams = typeof cell == "table"
+    let haveParams = type(cell) == "table"
     let config = (haveParams ? cell : {}).__merge({
       params = haveParams
       display = (cell?.show ?? true) ? "show" : "hide"
@@ -696,7 +696,7 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
     invokeCallback(currentArray)
     return
   }
-  if (typeof(multiArray[currentIndex]) == "array")
+  if (type(multiArray[currentIndex]) == "array")
   {
     foreach (name in multiArray[currentIndex])
     {
@@ -757,7 +757,7 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
   if (!obj) return
 
   local exp, wp = 1.0
-  if (typeof(airName)=="string")
+  if (type(airName)=="string")
   {
     exp = showExp? ::wp_shop_get_aircraft_xp_rate(airName) : 1.0
     wp = showWp? ::wp_shop_get_aircraft_wp_rate(airName) : 1.0
@@ -791,7 +791,7 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
   let image = ::getBonusImage(imgType, multiplier, airName==""? "country": "air")
 
   local tooltipText = ""
-  let locEnd = (typeof(airName)=="string")? "/tooltip" : "/group/tooltip"
+  let locEnd = (type(airName)=="string")? "/tooltip" : "/group/tooltip"
   if(imgColor != "")
   {
     tooltipText += exp <= 1.0? "" : format(loc("bonus/" + (imgColor=="wp_exp"? "exp" : imgColor) + imgType + placeType + "Mul" + locEnd), "x" + exp)
@@ -1387,7 +1387,7 @@ local server_message_end_time = 0
 
 ::is_numeric <- function is_numeric(value)
 {
-  local t = typeof value
+  local t = type(value)
   return t == "integer" || t == "float" || t == "int64"
 }
 

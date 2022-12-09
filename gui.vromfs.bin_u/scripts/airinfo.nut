@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
+let { hangar_get_current_unit_name, hangar_get_loaded_unit_name } = require("hangar")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -667,7 +668,7 @@ let isEventUnit = @(unit) unit.event != null
   if (!air)
     return
 
-  if (air.name == ::hangar_get_current_unit_name() && modName)
+  if (air.name == hangar_get_current_unit_name() && modName)
   {
     let modsList = modName == "" ? air.modifications : [ getModificationByName(air, modName) ]
     foreach (mod in modsList)
@@ -1152,7 +1153,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     local erCompare = params?.economicRankCompare
     if (erCompare != null)
     {
-      if (typeof(erCompare) == "table")
+      if (type(erCompare) == "table")
         erCompare = erCompare?[air.shopCountry] ?? 0.0
       let text = getChanceToMeetText(battleRating, ::calc_battle_rating_from_rank(erCompare))
       meetObj.findObject("aircraft-chance_to_met").setValue(text)
@@ -1974,7 +1975,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
 ::is_loaded_model_high_quality <- function is_loaded_model_high_quality(def = true)
 {
-  if (::hangar_get_loaded_unit_name() == "")
+  if (hangar_get_loaded_unit_name() == "")
     return def
   return ::hangar_is_high_quality()
 }

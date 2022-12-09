@@ -1,15 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
+let { subscribe } = require("eventbus")
 
-let interopGen = require("interopGen.nut")
+let isMultiplayer = persist("isMultiplayer", @() Watched(false))
 
-let state = persist("networkState", @(){
-  isMultiplayer = Watched(false)
-})
+subscribe("setIsMultiplayerState", @(v) isMultiplayer(v.isMultiplayer))
 
-interopGen({
-  stateTable = state
-  prefix = "network"
-  postfix = "Update"
-})
-
-return state
+return {
+  isMultiplayer
+}

@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
+let { get_current_mission_name } = require("mission")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { search, isEmpty, isTMatrix } = require("%sqStdLibs/helpers/u.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
@@ -296,9 +297,9 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     for(local i=0; i<shortcutsList.len(); i++)
     {
       let item = shortcutsList[i]
-      let name = (typeof(item)=="table")? item.id : item
-      let isAxis = typeof(item)=="table" && item.type == CONTROL_TYPE.AXIS
-      let isHeader = typeof(item)=="table" && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
+      let name = (type(item)=="table")? item.id : item
+      let isAxis = type(item)=="table" && item.type == CONTROL_TYPE.AXIS
+      let isHeader = type(item)=="table" && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
       let shortcutNames = []
       let axisModifyerButtons = []
       local scText = ""
@@ -701,7 +702,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       local altitudeBottom = 0
       local altitudeTop = 0
 
-      let misInfoBlk = ::get_mission_meta_info(::get_current_mission_name())
+      let misInfoBlk = ::get_mission_meta_info(get_current_mission_name())
       let misBlk = misInfoBlk?.mis_file ? blkFromPath(misInfoBlk.mis_file) : null
       let areasBlk = misBlk?.areas
       if (areasBlk)

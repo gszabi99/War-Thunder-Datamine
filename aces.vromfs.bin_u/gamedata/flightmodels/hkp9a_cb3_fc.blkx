@@ -38,7 +38,7 @@
         "hp": 15.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -395,6 +395,9 @@
         "name": "pilot_dm"
       },
       {
+        "name": "propeller_shaft1_dm"
+      },
+      {
         "name": "propeller_shaft2_dm"
       },
       {
@@ -510,9 +513,6 @@
       },
       {
         "name": "tailcontrol_dm"
-      },
-      {
-        "name": "propeller_shaft1_dm"
       },
       {
         "name": "tank1_dm",
@@ -1148,7 +1148,24 @@
       {
         "name": "hkp9a_cb3_fc_ffv_uni_pod",
         "blk": "gameData/flightModels/weaponPresets/hkp9a_cb3_fc_ffv_uni_pod.blk",
-        "reqModification": "ffv_uni_pod"
+        "reqModification": "ffv_uni_pod",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/gunFN_M3P.blk",
+            "tier": [
+              {
+                "idx": 7,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              },
+              {
+                "idx": 5,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              }
+            ]
+          }
+        }
       }
     ]
   },

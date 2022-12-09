@@ -62,7 +62,7 @@
         "hp": 35.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -832,10 +832,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -1996,6 +2004,11 @@
         }
       },
       {
+        "name": "f_86_750lb_bombs",
+        "blk": "gameData/flightModels/weaponPresets/f_86_750lb_bombs.blk",
+        "reqModification": "us_750lb_m117"
+      },
+      {
         "name": "f_86_1000lb_bombs",
         "blk": "gameData/flightModels/weaponPresets/f_86_1000lb_bombs.blk",
         "reqModification": "flbc_mk2"
@@ -2226,11 +2239,16 @@
       "tier": 2,
       "modClass": "weapon"
     },
+    "us_750lb_m117": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "frc_mk2"
+    },
     "flbc_mk2": {
       "reqModLevel": 8.0,
       "tier": 4,
       "modClass": "weapon",
-      "reqModification": "frc_mk2"
+      "reqModification": "us_750lb_m117"
     }
   },
   "user_skin": {

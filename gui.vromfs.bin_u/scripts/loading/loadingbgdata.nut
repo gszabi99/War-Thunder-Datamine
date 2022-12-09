@@ -123,10 +123,10 @@ let function applyBlkByLang(langBlk, curLang) {
   let platformInclude = langBlk?.platformInclude
   let platformExclude = langBlk?.platformExclude
   if (::u.isDataBlock(platformInclude)
-      && !isInArray(target_platform, platformInclude % "platform"))
+      && !isInArray(platformId, platformInclude % "platform"))
     return
   if (::u.isDataBlock(platformExclude)
-      && isInArray(target_platform, platformExclude % "platform"))
+      && isInArray(platformId, platformExclude % "platform"))
     return
 
   assert(!!(langsExclude || langsInclude || platformInclude || platformExclude),

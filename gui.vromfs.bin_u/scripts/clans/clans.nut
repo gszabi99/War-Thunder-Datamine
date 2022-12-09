@@ -13,6 +13,7 @@ let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { getPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
+let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -848,8 +849,8 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 }
 
 ::clan_candidate_list <- [
-  { id = "nick", type = ::g_lb_data_type.NICK }
-  { id = "date", type = ::g_lb_data_type.DATE }
+  { id = "nick", type = lbDataType.NICK }
+  { id = "date", type = lbDataType.DATE }
 ];
 
 ::empty_rating <- {

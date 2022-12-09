@@ -37,7 +37,7 @@
         "hp": 15.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -191,30 +191,30 @@
         "hp": 20.0
       }
     },
-    "steel_tank_armor": {
+    "steel_tank_s": {
       "tank1_dm": {
-        "hp": 39.5
+        "hp": 42.8
       },
       "tank2_dm": {
-        "hp": 39.5
+        "hp": 45.8
       },
       "tank3_dm": {
-        "hp": 39.5
+        "hp": 42.8
       },
       "tank4_dm": {
-        "hp": 39.5
+        "hp": 45.8
       },
       "tank5_dm": {
-        "hp": 90.6
+        "hp": 70.5
       },
       "tank6_dm": {
-        "hp": 90.8
+        "hp": 70.5
       },
       "tank7_dm": {
-        "hp": 72.9
+        "hp": 70.5
       },
       "tank8_dm": {
-        "hp": 82.8
+        "hp": 70.5
       }
     }
   },
@@ -825,10 +825,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",

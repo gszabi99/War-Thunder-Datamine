@@ -742,6 +742,7 @@
       "armorThrough": 15.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 397.0
       },
       "radio_station_dm": {
@@ -836,7 +837,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.2,
@@ -1534,10 +1534,22 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 24.0,
+            "damage": 8.0,
             "fHitCritical": false
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [
@@ -3644,5 +3656,41 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "camo_flatgullgrey*",
+      "to": "camo_g20*"
+    }
+  },
+  "skin": [
+    {
+      "name": "uk_camo_navy_lightblue",
+      "nameLocId": "skin/uk_camo_navy_lightblue",
+      "descLocId": "skin/uk_camo_navy_lightblue/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_navy_lightblue*"
+      }
+    },
+    {
+      "name": "uk_camo_nordgeometry",
+      "nameLocId": "skin/uk_camo_nordgeometry",
+      "descLocId": "skin/uk_camo_nordgeometry/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_nordgeometry*"
+      }
+    },
+    {
+      "name": "uk_camo_lightbeige_blots",
+      "nameLocId": "skin/uk_camo_lightbeige_blots",
+      "descLocId": "skin/uk_camo_lightbeige_blots/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_lightbeige_blots*"
+      }
+    }
+  ]
 }

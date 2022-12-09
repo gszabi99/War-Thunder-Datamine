@@ -34,13 +34,13 @@ local function filter(list, predicate) {
  * transformation function (iteratee(value, key, list)).
  */
 local function mapAdvanced(list, iteratee) {
-  if (typeof(list) == "array") {
+  if (type(list) == "array") {
     local res = []
     for (local i = 0; i < list.len(); ++i)
       res.append(iteratee(list[i], i, list))
     return res
   }
-  if (typeof(list) == "table" || isDataBlock(list)) {
+  if (type(list) == "table" || isDataBlock(list)) {
     local res = {}
     foreach (key, val in list)
       res[key] <- iteratee(val, key, list)
@@ -59,7 +59,7 @@ local function map(list, func) {
  * keys return an array of keys of specified table
  */
 local function keys(data) {
-  if (typeof data == "array"){
+  if (type(data) == "array"){
     local res = array(data.len())
     foreach (i, _k in res)
       res[i]=i
@@ -72,7 +72,7 @@ local function keys(data) {
  * Return all of the values of the table's properties.
  */
 local function values(data) {
-  if (typeof data == "array")
+  if (type(data) == "array")
     return clone data
   return data.values()
 }
@@ -99,10 +99,10 @@ local function isEmpty(val) {
   if (!val)
     return true
 
-  if (["string", "table", "array"].indexof(typeof val) != null)
+  if (["string", "table", "array"].indexof(type(val)) != null)
     return val.len() == 0
 
-  if (typeof(val)=="instance") {
+  if (type(val)=="instance") {
     foreach(classRef, func in customIsEmpty)
       if (val instanceof classRef)
         return func(val)
@@ -206,9 +206,10 @@ local function extend(destination, ... /*sources*/) {
       if (isArray(val) || isTable(val))
         v = extend(isArray(val) ? [] : {}, val)
 
-      isArray(destination)
-        ? destination.append(v) // warning disable: -unwanted-modification
-        : destination[key] <- v
+      if (isArray(destination))
+        destination.append(v) // warning disable: -unwanted-modification
+      else
+        destination[key] <- v
     }
 
   return destination
@@ -294,7 +295,7 @@ local function getMax(arr, iteratee = null) {
     return result
 
   if (!iteratee)
-    iteratee = @(val) (typeof(val) == "integer" || typeof(val) == "float") ? val : null
+    iteratee = @(val) (type(val) == "integer" || type(val) == "float") ? val : null
 
   local lastMaxValue = null
   foreach (data in arr) {
@@ -312,7 +313,7 @@ local function getMax(arr, iteratee = null) {
 local function getMin(arr, iteratee = null) {
   local newIteratee = null
   if (!iteratee)
-    newIteratee = @(val) (typeof(val) == "integer" || typeof(val) == "float") ? -val : null
+    newIteratee = @(val) (type(val) == "integer" || type(val) == "float") ? -val : null
   else {
     newIteratee = function(val) {
       local value = iteratee(val)
@@ -436,7 +437,7 @@ local internalTypes = ["integer", "int64", "float", "null",
                       "userdata", "thread", "weakref"]
 foreach (typeName in internalTypes) {
   local funcName = $"is{typeName.slice(0, 1).toupper()}{typeName.slice(1)}"
-  export[funcName] <- (@(val) @(arg) typeof arg == val)(typeName)
+  export[funcName] <- (@(val) @(arg) type(arg) == val)(typeName)
 }
 
 foreach (className, config in dagorClasses)

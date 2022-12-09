@@ -1132,12 +1132,12 @@ ButtonImg[btnName=Dpad] { background-image:@control_dirpad; bigButton:yes; }
 [swap_ab=yes] [focusBtnName=A]:hover:pushed > ButtonImg { background-image:@control_button_b_pressed; }
 
 
-[target_platform=ps5] [btnName=start] > ButtonImg,
-[target_platform=ps5] [btnName=ww_menu] > ButtonImg
+[platformId=ps5] [btnName=start] > ButtonImg,
+[platformId=ps5] [btnName=ww_menu] > ButtonImg
   { background-image:#ui/gameuiskin#slot_menu.svg; }
 
-[target_platform=ps5] [btnName=start]:pushed > ButtonImg,
-[target_platform=ps5] [btnName=ww_menu]:pushed > ButtonImg
+[platformId=ps5] [btnName=start]:pushed > ButtonImg,
+[platformId=ps5] [btnName=ww_menu]:pushed > ButtonImg
   { background-color: @gray; }
 
 

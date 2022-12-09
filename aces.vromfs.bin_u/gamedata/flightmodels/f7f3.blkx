@@ -1132,10 +1132,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2563,14 +2571,29 @@
         "blk": "gameData/FlightModels/weaponPresets/f7f1_2x500_1xmine_mk13_mod0.blk",
         "reqModification": "us_mine_mk13_mod0",
         "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
-            "amountPerTier": 1.0,
-            "iconType": "air_mines",
-            "tier": {
-              "idx": 6
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+              "amountPerTier": 1.0,
+              "iconType": "air_mines",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_middle",
+              "tier": [
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                }
+              ]
             }
-          }
+          ]
         }
       },
       {
@@ -2620,14 +2643,47 @@
         "blk": "gameData/FlightModels/weaponPresets/f7f3-8_hvar_mine_mk13_mod0.blk",
         "reqModification": "us_mine_mk13_mod0",
         "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
-            "amountPerTier": 1.0,
-            "iconType": "air_mines",
-            "tier": {
-              "idx": 6
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+              "amountPerTier": 1.0,
+              "iconType": "air_mines",
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+              "amountPerTier": 1.0,
+              "iconType": "rockets_he_small",
+              "tier": [
+                {
+                  "idx": 2
+                },
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                },
+                {
+                  "idx": 9
+                },
+                {
+                  "idx": 10
+                }
+              ]
             }
-          }
+          ]
         }
       }
     ]

@@ -3,11 +3,27 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { getCountryCode } = require("auth_wt")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
 const MAX_FETCH_RETRIES = 5
+
+local defaultClusters = null
+
+let function cacheDefaultClustersOnce() {
+  if (defaultClusters != null)
+    return
+
+  defaultClusters = (::get_network_block()?[::get_cur_circuit_name()]
+    .defaultClusters[getCountryCode()] ?? loc("default_cluster", "EU"))
+    .split_by_chars(";", true)
+}
+
+let function isClusterDefault(clusterName) {
+  cacheDefaultClustersOnce()
+  return defaultClusters.contains(clusterName)
+}
 
 local unstableClusters = null
 
@@ -15,7 +31,7 @@ let function cacheUnstableClustersOnce() {
   if (unstableClusters != null)
     return
   unstableClusters = []
-  let blk = ::get_network_block()?[::get_cur_circuit_name()].unstableClusters[::get_country_code()]
+  let blk = ::get_network_block()?[::get_cur_circuit_name()].unstableClusters[getCountryCode()]
   if (isDataBlock(blk))
     eachParam(blk, @(v, k) v ? unstableClusters.append(k) : null)
 }
@@ -169,6 +185,7 @@ let mkCluster = @(name) {
   }
 
   isClusterUnstable
+  isClusterDefault
 }
 
 ::subscribe_handler(::g_clusters)

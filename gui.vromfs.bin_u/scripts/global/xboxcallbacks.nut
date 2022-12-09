@@ -20,8 +20,7 @@ let function onLogout() {
 
 addListenersWithoutEnv({
   SignOut = @(_) onLogout()
-  XboxSystemUIReturn = @(_p) updateMultiplayerPrivilege()
-  LoginComplete = @(_p) updateMultiplayerPrivilege()
-})
+  LoginComplete = @(_) updateMultiplayerPrivilege()
+} ::g_listener_priority.CONFIG_VALIDATION)
 
 ::xbox_on_start_logout <- startLogout

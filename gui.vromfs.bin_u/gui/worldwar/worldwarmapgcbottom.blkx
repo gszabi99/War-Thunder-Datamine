@@ -2,14 +2,35 @@
   "tdiv": {
     "id": "ww_army_controls_nest",
     "height": "ph",
-    "tdiv": {
-      "id": "ww_army_controls_place",
-      "height": "ph"
-    },
+    "tdiv": [
+      {
+        "id": "ww_army_controls_place",
+        "height": "ph"
+      },
+      {
+        "id": "ww_army_select",
+        "pos": "1@blockInterval, 0.5ph-0.5h",
+        "position": "relative",
+        "display": "hide",
+        "textareaNoTab": {
+          "top": "0.5ph-0.5h",
+          "position": "relative",
+          "text": "#mainmenu/btnSelect",
+          "smallFont": "yes",
+          "overlayTextColor": "disabled"
+        },
+        "ButtonImg": {
+          "size": "@cIco, @cIco",
+          "left": "1@blockInterval",
+          "position": "relative",
+          "btnName": "A"
+        }
+      }
+    ],
     "textareaNoTab": {
       "id": "ww_no_army_to_controls",
       "position": "relative",
-      "top": "0.5(ph-h)",
+      "top": "0.5ph-0.5h",
       "margin": "1@blockInterval, 0",
       "text": "#worldwar/object_not_selected",
       "smallFont": "yes",

@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtonsConfigs.nut")
-let { getOperationById,
+let { getOperationById, hasAvailableMapToBattle,
         getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let template = {
@@ -87,11 +87,14 @@ let list = {
   WW_ACHIEVEMENTS = {
     text = "#mainmenu/btnUnlockAchievement"
     onClickFunc = @(_obj, handler) handler?.onOpenAchievements()
+    isHidden = @(...) ::g_unlocks.getUnlocksByType("achievement").findindex(
+      @(u) u?.chapter && u.chapter == "worldwar") == null
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_SCENARIO_DESCR = {
     text = "#worldwar/scenarioDescription"
     onClickFunc = @(_obj, handler) handler?.openOperationsListModal()
+    isHidden = @(...) !hasAvailableMapToBattle()
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_OPERATION_LIST = {

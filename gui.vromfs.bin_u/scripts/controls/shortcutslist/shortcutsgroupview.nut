@@ -15,12 +15,10 @@ return [
   }
   {
     id = "ID_ZOOM_TOGGLE"
-    checkGroup = ctrlGroups.COMMON
     needShowInHelp = true
   }
   {
     id = "ID_CAMERA_NEUTRAL"
-    checkGroup = ctrlGroups.NO_GROUP
     checkAssign = false
     showFunc = @() hasFeature("EnableMouse")
     needShowInHelp = true
@@ -84,19 +82,16 @@ return [
   {
     id = "hangar_camera_x"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.HANGAR
     checkAssign = false
   }
   {
     id = "hangar_camera_y"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.HANGAR
     checkAssign = false
   }
   {
     id = "hangar_camera_zoom"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.HANGAR
     checkAssign = false
   }
 ]

@@ -700,6 +700,12 @@
       },
       "tank3_dm": {
         "hp": 39.5
+      },
+      "tank4_dm": {
+        "hp": 39.5
+      },
+      "tank5_dm": {
+        "hp": 39.5
       }
     }
   },
@@ -1323,10 +1329,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -1518,6 +1532,80 @@
       },
       {
         "name": "tank3_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 10.0,
+            "fire": 0.7,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 15.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank4_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 10.0,
+            "fire": 0.7,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 15.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank5_dm",
         "onHit": [
           {
             "fire": 0.05,
@@ -2199,13 +2287,7 @@
         "bullets": 125,
         "spread": 2.0
       }
-    ],
-    "hideNodes": {
-      "node": "drop_fueltank"
-    },
-    "hideDmParts": {
-      "node": "tank4_dm"
-    }
+    ]
   },
   "weapon_presets": {
     "preset": [

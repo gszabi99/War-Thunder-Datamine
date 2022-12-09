@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let inventory = require("inventory")
 
 let keys = [
 @"
@@ -25,14 +26,8 @@ let function initPublicKeys()
     return false
   }
 
-  if (::inventory?.addContentPublicKey == null)
-  {
-    log("Content signature verification is not supported")
-    return false
-  }
-
   foreach (key in keys)
-    ::inventory.addContentPublicKey(key)
+    inventory.addContentPublicKey(key)
 
   return true
 }

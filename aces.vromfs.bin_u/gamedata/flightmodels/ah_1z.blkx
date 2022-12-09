@@ -60,7 +60,7 @@
         "hp": 40.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -94,14 +94,14 @@
       }
     },
     "c_dural15": {
+      "fin_dm": {
+        "hp": 84.5
+      },
       "fuse_dm": {
         "hp": 125.5
       }
     },
     "c_dural3": {
-      "fin_dm": {
-        "hp": 41.2
-      },
       "stab1_dm": {
         "hp": 29.5
       },
@@ -250,7 +250,70 @@
         ]
       },
       {
-        "name": "fin_dm"
+        "name": "fin_dm",
+        "onHit": [
+          {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
+            "damage": 50.0,
+            "tail_dm": 0.6
+          },
+          {
+            "damage": 70.0,
+            "tail_dm": 0.8
+          },
+          {
+            "damage": 100.0,
+            "tail_dm": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "tail_dm": 1.0,
+            "nothing": 12.0
+          },
+          {
+            "damage": 3.0,
+            "tail_dm": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 7.0,
+            "tail_dm": 1.0,
+            "nothing": 8.0
+          },
+          {
+            "damage": 10.0,
+            "tail_dm": 1.0,
+            "nothing": 7.0
+          },
+          {
+            "damage": 20.0,
+            "tail_dm": 1.0,
+            "nothing": 6.0
+          },
+          {
+            "damage": 30.0,
+            "tail_dm": 1.0,
+            "nothing": 5.0
+          },
+          {
+            "damage": 50.0,
+            "tail_dm": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 70.0,
+            "tail_dm": 1.0,
+            "nothing": 3.0
+          },
+          {
+            "damage": 100.0,
+            "tail_dm": 1.0
+          }
+        ]
       },
       {
         "name": "fuse_dm",
@@ -4226,22 +4289,22 @@
     }
   },
   "cutting": {
-    "emtr_break_wing0_l_from": [
+    "_emtr_break_wing0_l_from": [
       0.654589,
       -0.679247,
       1.05
     ],
-    "emtr_break_wing0_l_to": [
+    "_emtr_break_wing0_l_to": [
       0.654589,
       -0.679247,
       1.205443
     ],
-    "emtr_break_wing0_r_from": [
+    "_emtr_break_wing0_r_from": [
       0.654589,
       -0.679247,
       -1.05
     ],
-    "emtr_break_wing0_r_to": [
+    "_emtr_break_wing0_r_to": [
       0.654589,
       -0.679247,
       -1.205443

@@ -8,7 +8,6 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 ::g_script_reloader.loadOnce("%scripts/controls/controlsGlobals.nut")
 ::g_script_reloader.loadOnce("%scripts/controls/controlsCompatibility.nut")
 
-let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
@@ -124,32 +123,6 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       ::broadcastEvent("ControlsPresetChanged")
   }
 
-  cachedShortcutGroupMap = null
-
-  function getShortcutGroupMap()
-  {
-    if (!this.cachedShortcutGroupMap)
-    {
-      if (!("shortcutsList" in getroottable()))
-        return {}
-
-      let axisShortcutSuffixesList = []
-      foreach (axisShortcut in shortcutsAxisListModule.types)
-        if (axisShortcut.type == CONTROL_TYPE.AXIS_SHORTCUT)
-          axisShortcutSuffixesList.append(axisShortcut.id)
-
-      this.cachedShortcutGroupMap = {}
-      foreach (shortcut in ::shortcutsList)
-      {
-        if (shortcut.type == CONTROL_TYPE.SHORTCUT || shortcut.type == CONTROL_TYPE.AXIS)
-          this.cachedShortcutGroupMap[shortcut.id] <- shortcut.checkGroup
-        if (shortcut.type == CONTROL_TYPE.AXIS)
-          foreach (suffix in axisShortcutSuffixesList)
-            this.cachedShortcutGroupMap[shortcut.id + "_" + suffix] <- shortcut.checkGroup
-      }
-    }
-    return this.cachedShortcutGroupMap
-  }
 
   /* Commit controls to game client */
   function commitControls(fixMappingIfRequired = true)
@@ -168,7 +141,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::broadcastEvent("BeforeControlsCommit")
 
     // Send controls to C++ client
-    ::set_current_controls(this.curPreset, ::g_controls_manager.getShortcutGroupMap())
+    ::set_current_controls(this.curPreset)
 
     this.clearGuiOptions()
 

@@ -27,6 +27,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   objContainer = null
 
+  static function openHelp(handler)
+  {
+    ::gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
+  }
+
   static function open(wndInfoConfig, wndScene)
   {
     if (!wndInfoConfig)

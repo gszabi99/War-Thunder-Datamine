@@ -205,7 +205,7 @@ let chatLogToString = function(chatLog)
 
   function initScreen()
   {
-    if (!this.scene || !this.pInfo || typeof(this.pInfo) != "table")
+    if (!this.scene || !this.pInfo || type(this.pInfo) != "table")
       return this.goBack()
 
     let gameMode = "GameMode = " + loc(format("multiplayer/%sMode", ::get_game_mode_name(::get_game_mode())))

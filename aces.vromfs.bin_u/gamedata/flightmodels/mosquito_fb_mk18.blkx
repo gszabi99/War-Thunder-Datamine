@@ -812,6 +812,10 @@
       }
     },
     "steel_pilot": {
+      "pilot1_dm": {
+        "fireProtectionHp": 20.0,
+        "hp": 20.0
+      },
       "pilot_dm": {
         "fireProtectionHp": 20.0,
         "hp": 20.0
@@ -1600,6 +1604,9 @@
         }
       },
       {
+        "name": "pilot1_dm"
+      },
+      {
         "name": "pilot_dm"
       },
       {
@@ -1655,10 +1662,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",

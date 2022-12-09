@@ -10,7 +10,6 @@ let MAX_VOICE_MESSAGE_BUTTONS = 8
 let function getIdVoiceMessageOption(index) {
   return {
     id = "ID_VOICE_MESSAGE_" + index
-    checkGroup = ctrlGroups.VOICE
     checkAssign = false
   }
 }
@@ -22,13 +21,11 @@ let groupList = [
   }
   {
     id = "ID_SHOW_VOICE_MESSAGE_LIST"
-    checkGroup = ctrlGroups.COMMON
     checkAssign = is_platform_pc
     needShowInHelp = true
   }
   {
     id = "ID_SHOW_VOICE_MESSAGE_LIST_SQUAD"
-    checkGroup = ctrlGroups.COMMON
     checkAssign = is_platform_pc
     needShowInHelp = true
   }
@@ -76,7 +73,6 @@ let function getFavoriteVoiceMessageOption(index) {
 let function getFastVoiceMessageOption(index) {
   return {
     id = "ID_FAST_VOICE_MESSAGE_" + index
-    checkGroup = ctrlGroups.VOICE
     checkAssign = false
   }
 }

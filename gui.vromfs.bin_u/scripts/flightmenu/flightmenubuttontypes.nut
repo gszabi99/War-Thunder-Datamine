@@ -8,6 +8,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { is_replay_playing } = require("replays")
+let { is_benchmark_game_mode } = require("mission")
 
 let buttons = {
   types = []
@@ -42,12 +43,12 @@ enums.addTypes(buttons, {
   OPTIONS = {
     idx = idx++
     name = "Options"
-    isAvailableInMission = @() ::get_game_mode() != GM_BENCHMARK
+    isAvailableInMission = @() !is_benchmark_game_mode()
   }
   CONTROLS = {
     idx = idx++
     name = "Controls"
-    isAvailableInMission = @() ::get_game_mode() != GM_BENCHMARK && hasFeature("ControlsAdvancedSettings")
+    isAvailableInMission = @() !is_benchmark_game_mode() && hasFeature("ControlsAdvancedSettings")
   }
   STATS = {
     idx = idx++
@@ -57,7 +58,7 @@ enums.addTypes(buttons, {
   CONTROLS_HELP = {
     idx = idx++
     name = "ControlsHelp"
-    isAvailableInMission = @() ::get_game_mode() != GM_BENCHMARK && hasFeature("ControlsHelp")
+    isAvailableInMission = @() !is_benchmark_game_mode() && hasFeature("ControlsHelp")
   }
   RESTART = {
     idx = idx++

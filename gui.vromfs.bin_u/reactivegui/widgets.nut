@@ -78,9 +78,9 @@ let widgets = @() {
     globalState.isInFlight
     hudState.unitType
     hudState.isPlayingReplay
-    widgetsState.widgets
+    widgetsState
   ]
-  children = widgetsState.widgets.value.map(@(widget) {
+  children = widgetsState.value.map(@(widget) {
     size = widget?.transform?.size ?? [sw(100), sh(100)]
     pos = widget?.transform?.pos ?? [0, 0]
     children = widgetsMap?[widget.widgetId]()

@@ -18,6 +18,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { is_replay_playing } = require("replays")
 let { subscribe } = require("eventbus")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
+let { is_benchmark_game_mode } = require("mission")
 
 global enum debrState {
   init
@@ -425,7 +426,7 @@ debriefingRows = [
 //fill all rows by default params
 foreach(idx, row in debriefingRows)
 {
-  if (typeof(row) != "table")
+  if (type(row) != "table")
     debriefingRows[idx] = { id = row }
   foreach(param, value in debriefingRowDefault)
     if (!(param in debriefingRows[idx]))
@@ -626,7 +627,7 @@ let function getDebriefingActiveBoosters() {
   foreach (logObj in logs)
   {
     local boosters = logObj?.affectedBoosters.activeBooster ?? []
-    if (typeof(boosters) != "array")
+    if (type(boosters) != "array")
       boosters = [boosters]
     if (boosters.len() > 0)
       return boosters
@@ -659,12 +660,12 @@ let function getDebriefingActiveWager() {
     if (wagerIds != null)
       break
   }
-  if (wagerIds == null || (typeof(wagerIds) == "array" && wagerIds.len() == 0)) // Nothing found.
+  if (wagerIds == null || (type(wagerIds) == "array" && wagerIds.len() == 0)) // Nothing found.
     return null
 
   let data = {
     wagerInventoryId = null
-    wagerShopId = typeof(wagerIds) == "array" ? wagerIds[0] : wagerIds // See buildTableFromBlk.
+    wagerShopId = type(wagerIds) == "array" ? wagerIds[0] : wagerIds // See buildTableFromBlk.
     wagerResult = null
     wagerWpEarned = 0
     wagerGoldEarned = 0
@@ -878,7 +879,7 @@ let function getDebriefingGiftItemsInfo(skipItemId = null) {
   foreach (logObj in logs)
     foreach (data in logObj)
     {
-      if (typeof(data) != "table" || !("itemDefId" in data))
+      if (type(data) != "table" || !("itemDefId" in data))
         continue
 
       res.append({
@@ -933,7 +934,7 @@ let function gatherDebriefingResult() {
   debriefingResult.missionObjectives <- ::g_mission_type.getCurrentObjectives()
 
 
-  if (gm == GM_BENCHMARK)
+  if (is_benchmark_game_mode())
     debriefingResult.benchmark <- ::stat_get_benchmark()
 
   debriefingResult.numberOfWinningPlaces <- ::get_race_winners_count()

@@ -8,7 +8,7 @@ let {format} = require("string")
 local toString //forward declaration
 
 let function tableKeyToString(k) {
-  if (typeof(k) != "string")
+  if (type(k) != "string")
     return $"[ {toString(k) }]"
   if (g_string.isStringInteger(k) || g_string.isStringFloat(k) ||
     [ "true", "false", "null" ].contains(k))
@@ -53,10 +53,10 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
         local val = info.getParamValue(i)
         local vType = " "
         if (val == null) { val = "null" }
-        else if (typeof(val)=="integer") vType = ":i"
-        else if (typeof(val)=="float") { vType = ":r"; val = val.tostring() + ((val % 1) ? "" : ".0") }
-        else if (typeof(val)=="bool") vType = ":b"
-        else if (typeof(val)=="string") { vType = ":t"; val = "'" + val + "'" }
+        else if (type(val)=="integer") vType = ":i"
+        else if (type(val)=="float") { vType = ":r"; val = val.tostring() + ((val % 1) ? "" : ".0") }
+        else if (type(val)=="bool") vType = ":b"
+        else if (type(val)=="string") { vType = ":t"; val = "'" + val + "'" }
         else if (u.isPoint2(val)) { vType = ":p2"; val = format("%s, %s", val.x.tostring(), val.y.tostring()) }
         else if (u.isPoint3(val)) { vType = ":p3"; val = format("%s, %s, %s", val.x.tostring(), val.y.tostring(), val.z.tostring()) }
         else if (u.isColor4(val)) { vType = ":c";  val = format("%d, %d, %d, %d", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a) }
@@ -78,12 +78,12 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
       if (showBlockBrackets)
         printFn(prefix+addStr+"}")
     }
-    else if (typeof(info)=="array" || typeof(info)=="table" || (typeof(info)=="instance" && needUnfoldInstances)) {
+    else if (type(info)=="array" || type(info)=="table" || (type(info)=="instance" && needUnfoldInstances)) {
       if (showBlockBrackets)
-        printFn(prefix + addStr + (typeof(info) == "array" ? "[" : "{"))
+        printFn(prefix + addStr + (type(info) == "array" ? "[" : "{"))
       let addStr2 = addStr + (showBlockBrackets? "  " : "")
       foreach(id, data in info) {
-        let dType = typeof(data)
+        let dType = type(data)
         let isDataBlockType = isDataBlock(data)
         let idText = tableKeyToString(id)
         if (isDataBlockType || dType=="array" || dType=="table" || (dType=="instance" && needUnfoldInstances)) {
@@ -115,12 +115,12 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
           printFn(prefix+addStr2+idText+" = " + data)
       }
       if (showBlockBrackets)
-        printFn(prefix + addStr + (typeof(info) == "array" ? "]" : "}"))
+        printFn(prefix + addStr + (type(info) == "array" ? "]" : "}"))
     }
-    else if (typeof(info)=="instance")
+    else if (type(info)=="instance")
       printFn(prefix + addStr + toString(info, min(1, recursionLevel), addStr)) //not decrease recursion because it current instance
     else {
-      let iType = typeof(info)
+      let iType = type(info)
       if (iType == "string")
         printFn(prefix + addStr + "\"" + info + "\"")
       else if (iType == "float")
@@ -174,7 +174,7 @@ toString = function (val, recursion = 1, addStr = "") {
           //!!FIX ME: better to not use \n in toString()
           //and make different view ways for debugTabledata and toString
           //or it make harder to read debugtableData result in log, also arrays in one string generate too long strings
-          if (typeof(v) != "function") {
+          if (type(v) != "function") {
             let index = [ "float", "null" ].contains(type(idx)) ? toString(idx) : idx
             ret += "\n" + addStr + "  " + index + " = " + toString(v, recursion - 1, addStr + "  ")
           }

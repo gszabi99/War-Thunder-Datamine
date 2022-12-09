@@ -101,11 +101,11 @@
     "c_dural3": {
       "aileron_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 26.3
+        "hp": 30.9
       },
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 26.2
+        "hp": 30.8
       },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
@@ -132,7 +132,7 @@
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
-        "hp": 28.7
+        "hp": 33.7
       },
       "stab1_dm": {
         "hp": 29.5
@@ -252,36 +252,19 @@
         "name": "aileron_l_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
+            "damage": 50.0,
             "cut": 0.7
           },
           {
-            "damage": 50.0,
+            "damage": 70.0,
             "cut": 1.0
           }
         ],
         "onKill": [
           {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
             "damage": 30.0,
             "cut": 1.0,
-            "nothing": 1.0
+            "nothing": 2.0
           },
           {
             "damage": 50.0,
@@ -293,36 +276,19 @@
         "name": "aileron_r_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
+            "damage": 50.0,
             "cut": 0.7
           },
           {
-            "damage": 50.0,
+            "damage": 70.0,
             "cut": 1.0
           }
         ],
         "onKill": [
           {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
             "damage": 30.0,
             "cut": 1.0,
-            "nothing": 1.0
+            "nothing": 2.0
           },
           {
             "damage": 50.0,
@@ -923,36 +889,19 @@
         "name": "rudder_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
+            "damage": 50.0,
             "cut": 0.7
           },
           {
-            "damage": 50.0,
+            "damage": 70.0,
             "cut": 1.0
           }
         ],
         "onKill": [
           {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
             "damage": 30.0,
             "cut": 1.0,
-            "nothing": 1.0
+            "nothing": 2.0
           },
           {
             "damage": 50.0,
@@ -989,10 +938,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",

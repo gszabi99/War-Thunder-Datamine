@@ -370,13 +370,6 @@ let needCheckForVictory = Watched(false)
   return loc("missions/" + missionId)
 }
 
-::get_current_mission_name <- function get_current_mission_name()
-{
-  let misBlk = ::DataBlock()
-  ::get_current_mission_desc(misBlk)
-  return misBlk.name
-}
-
 ::loc_current_mission_name <- function loc_current_mission_name(needComment = true)
 {
   let misBlk = ::DataBlock()

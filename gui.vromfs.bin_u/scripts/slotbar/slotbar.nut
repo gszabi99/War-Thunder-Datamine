@@ -1163,26 +1163,3 @@ if need - put commented in array above
     ::broadcastEvent("UnlockedCountriesUpdate")
   return haveUnlocked
 }
-
-::gotTanksInSlots <- function gotTanksInSlots(checkCountryId=null, checkUnitId=null)
-{
-  foreach(country in ::g_crews_list.get())
-    if (::isCountryAvailable(country.country) && (!checkCountryId || checkCountryId == country.country))
-      foreach(crew in country.crews)
-        if ((crew?.aircraft ?? "") != ""
-            && (!checkUnitId || checkUnitId == crew.aircraft)
-            && ::getAircraftByName(crew.aircraft)?.isTank())
-          return true
-  return false
-}
-
-::tanksDriveGamemodeRestrictionMsgBox <- function tanksDriveGamemodeRestrictionMsgBox(featureName, curCountry=null, curUnit=null, msg=null)
-{
-  if (hasFeature(featureName) || !::gotTanksInSlots(curCountry, curUnit))
-    return false
-
-  msg = msg || "cbt_tanks/forbidden/tank_access"
-  msg = loc(msg) + "\n" + loc("cbt_tanks/supported_game_modes") + "\n" + loc("cbt_tanks/temporary_restriction_release")
-  ::showInfoMsgBox(msg, "cbt_tanks_forbidden")
-  return true
-}

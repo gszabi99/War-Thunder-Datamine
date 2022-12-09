@@ -28,6 +28,11 @@
         "hp": 15.0
       }
     },
+    "armor8_5": {
+      "armor1_dm": {
+        "hp": 40.0
+      }
+    },
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
@@ -285,6 +290,9 @@
             "cut": 1.0
           }
         ]
+      },
+      {
+        "name": "armor1_dm"
       },
       {
         "name": "cover1_dm"
@@ -913,10 +921,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",

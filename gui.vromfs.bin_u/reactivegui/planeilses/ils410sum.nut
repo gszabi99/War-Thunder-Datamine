@@ -1,14 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let string = require("string")
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
        AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety} = require("%rGui/planeState/planeToolsState.nut")
-let {Speed, Roll, Aoa, ClimbSpeed, Altitude, Tangage} = require("%rGui/planeState/planeFlyState.nut");
-let {mpsToKnots, mpsToFpm, metrToFeet, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
+let {Speed, Roll, Aoa, ClimbSpeed, Tangage} = require("%rGui/planeState/planeFlyState.nut");
+let {mpsToKnots, mpsToFpm, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
 let {GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
 let {cvt} = require("dagor.math")
 let {compassWrap, generateCompassMarkSUM} = require("ilsCompasses.nut")
-let {yawIndicator, angleTxt, bombFallingLine} = require("commonElements.nut")
+let {yawIndicator, angleTxt, bombFallingLine, SUMAltitude} = require("commonElements.nut")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
@@ -69,26 +68,6 @@ let flyDirectionSUM = @() {
     [VECTOR_LINE, -50, 0, -20, 0],
     [VECTOR_LINE, 20, 0, 50, 0]
   ]
-}
-
-let SUMAltValue = Computed(@() clamp(Altitude.value * metrToFeet, 0, 4995).tointeger())
-let SUNAltThousands = Computed(@() SUMAltValue.value > 1000 ? $"{SUMAltValue.value / 1000}" : "")
-let SUMAltVis = Computed(@() Altitude.value * metrToFeet < 4995)
-let SUMAltitude = @() {
-  watch = SUMAltVis
-  size = flex()
-  pos = [pw(60), ph(25)]
-  children = SUMAltVis.value ? [
-    @() {
-      watch = SUMAltValue
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
-      color = IlsColor.value
-      fontSize = 60
-      font = Fonts.hud
-      text = string.format("R%s.%03d", SUNAltThousands.value, SUMAltValue.value % 1000)
-    }
-  ] : null
 }
 
 let SUMSpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
@@ -208,7 +187,7 @@ let function basic410SUM(width, height) {
       pitchSum(height),
       (!CCIPMode.value ? flyDirectionSUM : null),
       SUMVerticalSpeed,
-      SUMAltitude,
+      SUMAltitude(60),
       SUMSpeed,
       yawIndicator
     ]

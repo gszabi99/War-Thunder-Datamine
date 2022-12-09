@@ -255,7 +255,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
     this.seenTasks.clear()
     let blk = ::loadLocalByAccount(this.PLAYER_CONFIG_PATH)
-    if (typeof(blk) == "instance" && (blk instanceof ::DataBlock))
+    if (type(blk) == "instance" && (blk instanceof ::DataBlock))
       for (local i = 0; i < blk.paramCount(); i++)
       {
         let id = blk.getParamName(i)

@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData)
 {
@@ -92,7 +93,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     {
       let option = this.scene.findObject("role_"+idx)
       option.findObject("text").setValue(loc("clan/"+role.name))
-      option.tooltip = (role.current? (loc("clan/currentRole")+"\n\n") : "") + ::g_lb_data_type.ROLE.getPrimaryTooltipText(role.id)
+      option.tooltip = (role.current? (loc("clan/currentRole")+"\n\n") : "") + lbDataType.ROLE.getPrimaryTooltipText(role.id)
     }
     roleListObj.setValue(curIdx)
     ::move_mouse_on_child(roleListObj, curIdx)

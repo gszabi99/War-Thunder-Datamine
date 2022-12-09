@@ -32,7 +32,7 @@
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
   "DamageParts": {
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 32.9
@@ -819,10 +819,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -2522,6 +2530,20 @@
             }
           },
           {
+            "iconType": "bombs_middle_group_x6",
+            "name": "540lbs_mer",
+            "ShowNodes": {
+              "node": "late_pylon1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_uk_540lb_x6.blk",
+              "emitter": "mer_001"
+            }
+          },
+          {
             "iconType": "bombs_large_group",
             "name": "1000lbs_ter",
             "reqModification": "uk_mk_10_1000lb",
@@ -2742,6 +2764,20 @@
             }
           },
           {
+            "iconType": "bombs_middle_group_x6",
+            "name": "540lbs_mer",
+            "ShowNodes": {
+              "node": "late_pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_uk_540lb_x6.blk",
+              "emitter": "mer_002"
+            }
+          },
+          {
             "iconType": "bombs_large_group",
             "name": "1000lbs_ter",
             "reqModification": "uk_mk_10_1000lb",
@@ -2838,6 +2874,40 @@
                 "trigger": "bombs",
                 "separate": true,
                 "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "1000_lb_uk_gp_bomb4",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group_x4",
+            "name": "540lbs_fuse",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+                "emitter": "1000_lb_uk_gp_bomb1",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+                "emitter": "1000_lb_uk_gp_bomb2",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+                "emitter": "1000_lb_uk_gp_bomb3",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "separate": true,
+                "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
                 "emitter": "1000_lb_uk_gp_bomb4",
                 "bullets": 1
               }
@@ -2950,6 +3020,20 @@
             }
           },
           {
+            "iconType": "bombs_middle_group_x6",
+            "name": "540lbs_mer",
+            "ShowNodes": {
+              "node": "late_pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_uk_540lb_x6.blk",
+              "emitter": "mer_003"
+            }
+          },
+          {
             "iconType": "bombs_large_group",
             "name": "1000lbs_ter",
             "reqModification": "uk_mk_10_1000lb",
@@ -3027,6 +3111,20 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/mer_uk_500lb_he_mc_x6.blk",
+              "emitter": "mer_004"
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x6",
+            "name": "540lbs_mer",
+            "ShowNodes": {
+              "node": "late_pylon4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_uk_540lb_x6.blk",
               "emitter": "mer_004"
             }
           },

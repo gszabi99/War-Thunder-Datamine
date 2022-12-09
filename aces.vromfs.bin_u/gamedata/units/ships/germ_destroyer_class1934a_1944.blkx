@@ -2156,10 +2156,11 @@
       "armorThrough": 100.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 500.0
       },
       "radio_station_dm": {
-        "hp": 400.0
+        "hp": 500.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
@@ -2311,7 +2312,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.2,
@@ -2357,12 +2357,9 @@
       "ignoreDeadWithSplash": true,
       "shatterArmorQuality": 1.5,
       "fuel_tank_01_dm": {
-        "hp": 1597.0
-      },
-      "fuel_tank_02_dm": {
         "hp": 2000.0
       },
-      "fuel_tank_03_dm": {
+      "fuel_tank_02_dm": {
         "hp": 1500.0
       }
     },
@@ -2864,7 +2861,7 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 36
+      "crew": 35
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
@@ -2914,7 +2911,7 @@
     "sailor12": {
       "dmPart": "radio_station_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 5
     },
     "sailor13": {
       "dmPart": "ammunition_storage_shells_01_dm",
@@ -3232,10 +3229,22 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 24.0,
+            "damage": 8.0,
             "fHitCritical": false
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [
@@ -8141,5 +8150,34 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "ger_camo_navy_gray",
+      "nameLocId": "skin/ger_camo_navy_gray",
+      "descLocId": "skin/ger_camo_navy_gray/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_navy_gray*"
+      }
+    },
+    {
+      "name": "ger_camo_blackgray_net",
+      "nameLocId": "skin/ger_camo_blackgray_net",
+      "descLocId": "skin/ger_camo_blackgray_net/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_blackgray_net*"
+      }
+    },
+    {
+      "name": "ger_camo_blackgreen_spots",
+      "nameLocId": "skin/ger_camo_blackgreen_spots",
+      "descLocId": "skin/ger_camo_blackgreen_spots/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_blackgreen_spots*"
+      }
+    }
+  ]
 }

@@ -5,17 +5,6 @@ let {paramsTable, horSpeed, vertSpeed, rocketAim, taTarget} = require("airHudEle
 let compass = require("compass.nut")
 let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 
-let styleLineBackground = {
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = max( LINE_WIDTH + 1.5, hdpx(LINE_WIDTH + 1.5))
-  font = Fonts.hud
-  fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
-  fontFx = FFT_GLOW
-  fontSize = hudFontHgt*2
-}
-
-
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = max(hdpx(LINE_WIDTH), LINE_WIDTH)
@@ -47,7 +36,7 @@ let function compassComponent(style, size, pos) {
   }
 }
 
-let function ilsHud(elemStyle, isBackground) {
+let function ilsHud(elemStyle) {
   let ilsStyle = elemStyle.__merge({
     lineWidth = LINE_WIDTH * 3
     color = MfdColor.value
@@ -57,16 +46,16 @@ let function ilsHud(elemStyle, isBackground) {
     pos = [IlsPosSize[0], IlsPosSize[1]]
     children = IsIlsEnabled.value ?
     [
-      mfdPilotParamsTable(isBackground, false, ilsStyle)
-      vertSpeed(pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), MfdColor.value, isBackground, ilsStyle)
-      horSpeed(MfdColor.value, isBackground, pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
+      mfdPilotParamsTable(false, ilsStyle)
+      vertSpeed(pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), MfdColor.value, ilsStyle)
+      horSpeed(MfdColor.value, pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
       compassComponent(ilsStyle, [pilotSw(100), pilotSh(13)], [pilotSw(50) - 0.5 * pilotSw(100), pilotSh(15)])
     ]
     : null
   }
 }
 
-let function ilsMovingMarks(style, isBackground) {
+let function ilsMovingMarks(style) {
   let ilsStyle = style.__merge({
     lineWidth = LINE_WIDTH * 3
     color = MfdColor.value
@@ -75,23 +64,22 @@ let function ilsMovingMarks(style, isBackground) {
     watch = [IsIlsEnabled, MfdColor]
     children = IsIlsEnabled.value ?
     [
-      rocketAim(pilotSw(4), pilotSh(8), MfdColor.value, isBackground, ilsStyle)
-      taTarget(pilotSw(25), pilotSh(25), isBackground)
+      rocketAim(pilotSw(4), pilotSh(8), MfdColor.value, ilsStyle)
+      taTarget(pilotSw(25), pilotSh(25))
     ]
     : null
   }
 }
 
-let function ilsHUD(style, isBackground) {
+let function ilsHUD(style) {
   return [
-    ilsHud(style, isBackground)
-    ilsMovingMarks(style, isBackground)
+    ilsHud(style)
+    ilsMovingMarks(style)
   ]
 }
 
 let function Root() {
-  let children = ilsHUD(styleLineBackground, true)
-  children.extend(ilsHUD(styleLineForeground, false))
+  let children = ilsHUD(styleLineForeground)
 
   return {
     watch = [

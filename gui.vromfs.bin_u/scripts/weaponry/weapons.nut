@@ -47,6 +47,8 @@ let { setDoubleTextToButton, placePriceTextToButton
 } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { MODIFICATION_DELAYED_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
+let { showDamageControl } = require("%scripts/damageControl/damageControlWnd.nut")
+let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -671,6 +673,8 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       if (this.isOwn)
         checkboxObj.setValue(::get_auto_buy_modifications())
     }
+
+    this.showSceneBtn("btn_damage_control", this.air.isShipOrBoat() && hasFeature("DamageControl") && isShipDamageControlEnabled(this.air));
   }
 
   function updateUnitItem(item, itemObj)
@@ -722,9 +726,9 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   function collectBranchItems(branch, resItems)
   {
     foreach(_idx, item in branch)
-      if (typeof(item)=="table") //modification
+      if (type(item)=="table") //modification
         resItems.append(item)
-      else if (typeof(item)=="array") //branch
+      else if (type(item)=="array") //branch
         this.collectBranchItems(item, resItems)
     return resItems
   }
@@ -1675,6 +1679,10 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
         ::save_to_json({ unit = unit.name
           modifications = this.purchasedModifications }))
     this.purchasedModifications.clear()
+  }
+
+  function onShowDamageControl() {
+    showDamageControl(this.air)
   }
 }
 

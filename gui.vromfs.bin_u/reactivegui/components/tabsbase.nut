@@ -63,7 +63,7 @@ let function tabs(holder = defHolder, tab = defTab) {
       return tab(item, item.id == params.currentTab, @() params.onChange(item))
     })
 
-    let result = (typeof holder == "function") ? holder(params) : holder
+    let result = (type(holder) == "function") ? holder(params) : holder
     result.children <- children
     return result
   }

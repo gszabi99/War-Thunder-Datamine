@@ -13,6 +13,7 @@ let utf8 = require("utf8")
 let isInArray = @(v, arr) arr.contains(v)
 let {Callback} = require("%sqStdLibs/helpers/callback.nut")
 let {hasFeature} = require("%scripts/user/features.nut")
+let {platformId}  = require("%sqstd/platform.nut")
 
 let checkObj = @(obj) obj != null && obj?.isValid()
 
@@ -31,14 +32,13 @@ let function to_pixels(value) {
   return ::g_dagui_utils.toPixels(::get_cur_gui_scene(), value)
 }
 
-let target_platform = ::get_platform()
-let is_platform_pc = ["win32", "win64", "macosx", "linux64"].contains(target_platform)
-let is_platform_windows = ["win32", "win64"].contains(target_platform)
-let is_platform_android = target_platform == "android"
-let is_platform_xbox = target_platform == "xboxOne" || target_platform == "xboxScarlett"
+let is_platform_pc = ["win32", "win64", "macosx", "linux64"].contains(platformId)
+let is_platform_windows = ["win32", "win64"].contains(platformId)
+let is_platform_android = platformId == "android"
+let is_platform_xbox = platformId == "xboxOne" || platformId == "xboxScarlett"
 
 return log.__merge({
-  target_platform
+  platformId
   is_platform_pc
   is_platform_windows
   is_platform_android

@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { split_by_chars } = require("string")
 let stdMath = require("%sqstd/math.nut")
+let { register_command } = require("console")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { get_default_lang } = require("platform")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -219,7 +220,7 @@ let function checkInitList() {
   for (local l = 0; l < inventoryBlk.paramCount(); ++l)
   {
     let param = inventoryBlk.getParamValue(l)
-    if (typeof(param) != "string")
+    if (type(param) != "string")
       continue
 
     let abbrevName = inventoryBlk.getParamName(l)
@@ -347,7 +348,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
   else
     res = config?[id] ?? res
 
-  if (typeof(res) != "string")
+  if (type(res) != "string")
     return defaultValue || id
 
   if (res.len() > 1 && res.slice(0, 1) == "#")
@@ -415,6 +416,8 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
 ::cross_call_api.language <- ::g_language
 
 ::subscribe_handler(::g_language, ::g_listener_priority.DEFAULT_HANDLER)
+
+register_command(@() ::g_language.reload(), "ui.language_reload")
 
 return {
   currentLanguageW

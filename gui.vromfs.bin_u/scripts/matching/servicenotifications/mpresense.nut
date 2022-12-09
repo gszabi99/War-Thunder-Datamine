@@ -17,7 +17,7 @@ let function on_presences_update(params)
       uid = p?.userId
       name = p?.nick
     }
-    if (typeof(player.uid) != "string")
+    if (type(player.uid) != "string")
     {
       let errText = "on_presences_update cant update presence of player:\n" + toString(p)
       ::script_net_assert_once(toString(player), errText)

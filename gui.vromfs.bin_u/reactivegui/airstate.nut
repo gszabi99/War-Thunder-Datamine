@@ -98,6 +98,7 @@ let CannonSelectedArray = Watched(array(NUM_CANNONS_MAX, false))
 let CannonSelected = Watched(false)
 let IsCannonEmpty = Watched(array(NUM_CANNONS_MAX, false))
 let isAllCannonsEmpty = Computed(@() !IsCannonEmpty.value.contains(false))
+let isCannonJamed = Watched(array(NUM_CANNONS_MAX, false))
 let CannonMode = Watched(0)
 
 let InstructorState = Watched(0)
@@ -198,6 +199,8 @@ let WaterState = []
 let EngineState = []
 let TransmissionOilState = []
 let Fuel = Watched(-1)
+let HasExternalFuel = Watched(false)
+let ExternalFuel = Watched(-1)
 let FuelState = Watched(0)
 
 let OilAlert = []
@@ -323,6 +326,7 @@ let helicopterState = {
   CannonCount = CannonState.map(@(c) Computed(@() c.value.count)),
   CannonReloadTime = CannonState.map(@(c) Computed(@() c.value.seconds)),
   IsCannonEmpty,
+  isCannonJamed,
   CannonMode,
   CannonSelectedArray,
   CannonSelected,
@@ -436,6 +440,8 @@ let helicopterState = {
   EngineState,
   TransmissionOilState,
   Fuel,
+  HasExternalFuel,
+  ExternalFuel,
   FuelState,
 
   OilAlert,
@@ -503,15 +509,24 @@ interop.updateIsCannonEmpty <- function(index, is_empty) {
     IsCannonEmpty.mutate(@(v) v[index] = is_empty)
 }
 
+interop.updateisCannonJamed <- function(index, is_jamed) {
+  if (is_jamed != isCannonJamed.value[index])
+    isCannonJamed.mutate(@(v) v[index] = is_jamed)
+}
+
 interop.updateCannonsArray <- function(index, count, seconds, selected, _time, _endTime) {
-  CannonState[index]({count, seconds, selected})
+  let curVal = CannonState[index].value
+  if (curVal.count != count || curVal.seconds != seconds || curVal.selected != selected)
+    CannonState[index]({count, seconds, selected})
 
   if (selected != CannonSelectedArray.value[index])
     CannonSelectedArray.mutate(@(v) v[index] = selected)
 }
 
 interop.updateMachineGunsArray <- function(index, count, seconds, selected, _time, _endTime) {
-  MachineGunState[index]({count, seconds, selected})
+  let curVal = MachineGunState[index].value
+  if (curVal.count != count || curVal.seconds!=seconds || curVal.selected!=selected)
+    MachineGunState[index]({count, seconds, selected})
 
   if (selected != MachineGunsSelectedArray.value[index])
     MachineGunsSelectedArray.mutate(@(v) v[index] = selected)
@@ -526,7 +541,11 @@ interop.updateRockets <- @(count, seconds, mode, selected, salvo, name, actualCo
 interop.updateTorpedoes <- @(count, seconds, mode, selected, salvo, name, actualCount, _time, _endTime)
   TorpedoesState({count, seconds, mode, selected, salvo, name, actualCount})
 
-interop.updateRwrPosSize <- @(x, y, w, h = null) RwrPosSize([x, y, w, h ?? w])
+interop.updateRwrPosSize <- function(x, y, w, h) {
+  let cur = RwrPosSize.value
+  if (x!=cur[0] || y!=cur[1] || w!=cur[2] || h!=cur[3])
+    RwrPosSize([x, y, w, h])
+}
 
 interop.updateMfdSightPosSize <- function(x, y, w, h) {
   MfdSightPosSize[0] = x
@@ -548,27 +567,43 @@ interop.updateIsMachineGunsEmpty <- function(index, is_empty) {
 }
 
 interop.updateAdditionalCannons <- function(count, seconds, mode, selected) {
-  AdditionalCannonsState({count, seconds, mode, selected})
+  let curVal = AdditionalCannonsState.value
+  if (curVal.count != count || curVal.seconds != seconds || curVal.mode != mode || curVal.selected != selected)
+    AdditionalCannonsState({count, seconds, mode, selected})
 }
 
 interop.updateAgm <- function(count, seconds, timeToHit, timeToWarning, selected, name, actualCount) {
-  AgmState({count, seconds, timeToHit, timeToWarning, selected, name, actualCount})
+  let curVal = AgmState.value
+  if (curVal.count != count || curVal.seconds != seconds || curVal.timeToHit != timeToHit
+    || curVal.timeToWarning != timeToWarning || curVal.selected != selected || curVal.name != name
+    || curVal.actualCount != actualCount)
+    AgmState({count, seconds, timeToHit, timeToWarning, selected, name, actualCount})
 }
 
 interop.updateAam <- function(count, seconds, selected, name, actualCount) {
-  AamState({count, seconds, selected, name, actualCount})
+  let curVal = AamState.value
+  if (curVal.count != count || curVal.seconds != seconds || curVal.selected != selected
+    || curVal.name != name || curVal.actualCount != actualCount)
+    AamState({count, seconds, selected, name, actualCount})
 }
 
 interop.updateGuidedBombs <- function(count, seconds,  mode, selected, name, actualCount) {
-  GuidedBombsState({count, seconds,  mode, selected, name, actualCount})
+  let curVal = GuidedBombsState.value
+  if (curVal.count != count || curVal.seconds != seconds || curVal.mode != mode ||
+    curVal.name != name || curVal.actualCount != actualCount)
+    GuidedBombsState({count, seconds,  mode, selected, name, actualCount})
 }
 
 interop.updateFlares <- function(count, mode, seconds) {
-  FlaresState({count, mode, seconds})
+  let curVal = FlaresState.value
+  if (curVal.count != count || curVal.mode != mode || curVal.seconds != seconds)
+    FlaresState({count, mode, seconds})
 }
 
 interop.updateChaffs <- function(count, mode, seconds) {
-  ChaffsState({count, mode, seconds})
+  let curVal = ChaffsState.value
+  if (curVal.count != count || curVal.mode != mode || curVal.seconds != seconds)
+    ChaffsState({count, mode, seconds})
 }
 
 for (local i = 0; i < NUM_ENGINES_MAX; ++i) {

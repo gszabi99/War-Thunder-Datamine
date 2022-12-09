@@ -1,29 +1,171 @@
-from "%scripts/dagui_library.nut" import *
-
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
+from "%scripts/dagui_library.nut" import *
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
+let { getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let { register_command } = require("console")
 
-::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.trophyRewardWnd {
+register_command(
+  function () {
+    let unlocksRewards = {
+      hidden_tank_5_rank_purchased_britain = true
+      cardicon_ger_modern_01 = true
+      title_faithful_warrior = true
+      title_the_old_guard = true
+      title_combat_proven = true
+      title_brother_in_arms = true
+      simple_01 = true
+    }
+    ::handlersManager.loadHandler(::gui_handlers.UnlockRewardWnd, { unlocksRewards })
+    return
+  },
+  "ui.debug_unlocks_reward")
+
+::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+{
   wndType = handlerType.MODAL
+  sceneBlkName = "%gui/items/trophyReward.blk"
+  unlocksRewards = null
+  unlocks = []
+  shrinkedUnlocks = []
+  animFinished = false
+  opened = false
+  decorator = null
+  decoratorUnit = null
+  decoratorSlot = -1
+  unit = null
 
-  unlockConfig = null
-  unlockConditions = null
-  unlockData = null
+  function initScreen()
+  {
+    this.processConfigsArray()
+    this.checkConfigsArray()
+    this.setTitle()
+    this.updateWnd()
+    this.startOpening()
+    this.scene.findObject("update_timer").setUserData(this)
+  }
 
-  chestDefaultImg = "every_day_award_trophy_big"
-  itemContainerLayer = "trophy_reward_place"
+  function getTitle() {
+    if(this.unlocks.len() == 1)
+      return getUnlockTypeText(this.unlocks[0].type, this.unlocks[0].id)
 
-  prepareParams = @() null
-  getTitle = @() getUnlockTypeText(this.unlockData.type, this.unlockData.id)
-  isRouletteStarted = @() false
+    return loc("unlocks/achievement")
+  }
 
-  viewParams = null
+  function processConfigsArray() {
+    this.unlocks.clear()
+    this.shrinkedUnlocks.clear()
+    foreach(unlockId, _ in this.unlocksRewards) {
+      let config = ::g_unlocks.getUnlockById(unlockId)
+      if (!config)
+        continue
+      let unlockConditions = ::build_conditions_config(config)
+      let unlock = ::build_log_unlock_data(unlockConditions)
+      this.unlocks.append(unlock)
 
-  function openChest() {
+      let shrinkedUnlock = {}
+      foreach(key, value in unlock) {
+        if(key == "id")
+          shrinkedUnlock["unlock"] <- value
+        else if(key == "amount")
+          shrinkedUnlock["count"] <- value
+      }
+      this.shrinkedUnlocks.append(shrinkedUnlock)
+    }
+  }
+
+  function checkConfigsArray() {
+    let units = []
+    let decors = []
+
+    foreach(unlock in this.unlocks) {
+      let unlockType = ::g_unlock_view.getUnlockType(unlock)
+      if (unlockType == UNLOCKABLE_AIRCRAFT)
+        units.append(::getAircraftByName(unlock.id))
+      else if (unlockType == UNLOCKABLE_DECAL
+        || unlockType == UNLOCKABLE_SKIN
+        || unlockType == UNLOCKABLE_ATTACHABLE)
+        decors.append({unlockId = unlock.id unlockType = unlockType})
+    }
+
+    if(units.len() > 1)
+      return
+    if(units.len() == 0 && decors.len() != 1)
+      return
+    if(units.len() == 1 && units[0].isUsable() && !::isUnitInSlotbar(units[0])) {
+      this.unit = units[0]
+      this.showSceneBtn("btn_take_air", true)
+    }
+    else if(units.len() == 0 && decors.len() == 1) {
+      this.updateResourceData(decors[0].unlockId, decors[0].unlockType)
+    }
+  }
+
+  function updateResourceData(resource, resourceType) {
+    let decorData = getDecoratorDataToUse(resource, resourceType)
+    if (decorData.decorator == null)
+      return
+
+    this.decorator = decorData.decorator
+    this.decoratorUnit = decorData.decoratorUnit
+    this.decoratorSlot = decorData.decoratorSlot
+    let obj = this.scene.findObject("btn_use_decorator")
+    if (obj?.isValid()) {
+      obj.setValue(loc($"decorator/use/{this.decorator.decoratorType.resourceType}"))
+      this.showSceneBtn("btn_use_decorator", true)
+    }
+  }
+
+  function onTakeNavBar()
+  {
+    if (!this.unit)
+      return
+
+    this.onTake(this.unit)
+  }
+
+  function onTake(unitToTake)
+  {
+    base.onTake(unitToTake, {
+      cellClass = "slotbarClone"
+      isNewUnit = true
+      afterSuccessFunc = Callback(@() this.goBack(), this)
+    })
+  }
+
+  function setTitle()
+  {
+    let title = this.getTitle()
+
+    let titleObj = this.scene.findObject("reward_title")
+    titleObj.setValue(title)
+    if (daguiFonts.getStringWidthPx(title, "fontMedium", this.guiScene) >
+      to_pixels("1@trophyWndWidth - 1@buttonCloseHeight"))
+      titleObj.caption = "no"
+  }
+
+  function startOpening()
+  {
+    ::showBtn("reward_roullete", false, this.scene)
+    let animObj = this.scene.findObject("open_chest_animation")
+    if (checkObj(animObj))
+    {
+      animObj.animation = "show"
+      this.guiScene.playSound("chest_open")
+      let delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
+      ::Timer(animObj, 0.001 * delay, this.openChest, this)
+      ::Timer(animObj, 1.0, this.onOpenAnimFinish, this)
+    }
+    else
+      this.openChest()
+  }
+
+  function openChest()
+  {
     if (this.opened)
       return false
 
@@ -32,34 +174,44 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return true
   }
 
-  function checkConfigsArray() {
-    let unlockType = ::g_unlock_view.getUnlockType(this.unlockData)
-    if (unlockType == UNLOCKABLE_AIRCRAFT)
-      this.unit = ::getAircraftByName(this.unlockData.id)
-    else if (unlockType == UNLOCKABLE_DECAL
-      || unlockType == UNLOCKABLE_SKIN
-      || unlockType == UNLOCKABLE_ATTACHABLE)
-      {
-        this.updateResourceData(this.unlockData.id, unlockType)
-      }
+  function updateWnd()
+  {
+    this.updateUnlockImages()
+    this.updateRewardText()
+    this.updateRewardPostscript()
+    this.updateButtons()
   }
 
-  function getIconData() {
+  function updateUnlockImages() {
+    let imageObjPlace = this.scene.findObject("reward_image_place")
+    if (!checkObj(imageObjPlace))
+      return
+
+    imageObjPlace.show(true)
+
+    let layersData = this.getRewardImage()
+    this.guiScene.replaceContentFromText(imageObjPlace, layersData, layersData.len(), this)
+  }
+
+  function updateRewardPostscript()
+  {
     if (!this.opened)
-      return ""
+      return
 
-    let imgConfig = ::g_unlock_view.getUnlockImageConfig(this.unlockData)
+    let countNotVisibleItems = this.shrinkedUnlocks.len() - ::trophyReward.maxRewardsShow
 
-    return "{0}{1}".subst(
-      ::LayersIcon.getIconData($"{this.chestDefaultImg}_opened"),
-      ::LayersIcon.genDataFromLayer(
-        ::LayersIcon.findLayerCfg(this.itemContainerLayer),
-        ::LayersIcon.getIconData(imgConfig.style, imgConfig.image, imgConfig.ratio, null, imgConfig.params)
-      )
-    )
+    if (countNotVisibleItems < 1)
+      return
+
+    let obj = this.scene.findObject("reward_postscript")
+    if (!checkObj(obj))
+      return
+
+    obj.setValue(loc("trophy/moreRewards", {num = countNotVisibleItems}))
   }
 
-  function updateRewardText() {
+  function updateRewardText()
+  {
     if (!this.opened)
       return
 
@@ -67,36 +219,79 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!checkObj(obj))
       return
 
-    let data = ::g_unlock_view.getViewItem(this.unlockData, (this.viewParams ?? {}).__merge({
-      header = loc("mainmenu/you_received")
-      multiAwardHeader = true
-      widthByParentParent = true
-    }))
-
+    let data = ::trophyReward.getRewardsListViewData(this.shrinkedUnlocks,
+      { multiAwardHeader = true
+        widthByParentParent = true
+        header = loc("mainmenu/you_received")
+      })
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
-  checkSkipAnim = @() false
-  notifyTrophyVisible = @() null
-  updateRewardPostscript = @() null
-  updateRewardItem = @() null
+  function getRewardImage()
+  {
+    local layersData = ""
+    let show_count = min(::trophyReward.maxRewardsShow, this.unlocks.len())
+    for (local i = 0; i < show_count; i++)
+      layersData += this.getImageLayer(this.unlocks[i], this.shrinkedUnlocks[i])
+
+    if (layersData == "")
+      return ""
+
+    let layerCfg = ::LayersIcon.findLayerCfg("item_place_container")
+    let res = ::LayersIcon.genDataFromLayer(layerCfg, layersData)
+    return res
+  }
+
+  function updateButtons()
+  {
+    if (!checkObj(this.scene))
+      return
+    ::show_facebook_screenshot_button(this.scene, this.opened)
+    let isShowRewardListBtn = this.opened && (this.unlocks.len() > 1) && this.animFinished
+    local btnObj = this.showSceneBtn("btn_rewards_list", isShowRewardListBtn)
+    if (isShowRewardListBtn)
+      btnObj.setValue(loc("mainmenu/rewardsList"))
+    this.showSceneBtn("open_chest_animation", !this.animFinished)
+    this.showSceneBtn("btn_ok", this.animFinished)
+    this.showSceneBtn("btn_back", this.animFinished)
+  }
+
+  function onViewRewards() {
+    if (this.unlocks.len() <= 1)
+      return
+    ::gui_start_open_trophy_rewards_list({ rewardsArray = this.shrinkedUnlocks,
+      titleLocId = "mainmenu/rewardsList"})
+  }
+
+  function onOpenAnimFinish()
+  {
+    this.animFinished = true
+    if (!this.openChest())
+      this.updateButtons()
+  }
+
+  onTimer = @(_obj, _dt) this.updateButtons()
+  onUseDecorator = @() useDecorator(this.decorator, this.decoratorUnit, this.decoratorSlot)
+  onPreloaderSettings = @() null
+  onReUseItem = @() null
+  onRunCustomMission = @() null
+  onGoToItem = @() null
+
+  function getImageLayer(unlock, config)
+  {
+    let imageLayer = ::LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
+    let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
+
+    return ::handyman.renderCached(("%gui/items/item.tpl"), {items = [tooltipConfig.__update({
+      layered_image = imageLayer,
+      hasFocusBorder = true })]})
+  }
 }
 
 return {
-  showUnlock = function(unlockId, viewParams = {}) {
-    let config = ::g_unlocks.getUnlockById(unlockId)
-    if (!config)
-    {
-      logerr($"Unlock Reward: Could not find unlock config {unlockId}")
+  showUnlocks = function(unlocksRewards) {
+    if(unlocksRewards.len() == 0)
       return
-    }
-
-    let unlockConditions = ::build_conditions_config(config)
-    ::handlersManager.loadHandler(::gui_handlers.UnlockRewardWnd, {
-      unlockConfig = config
-      unlockConditions = unlockConditions
-      unlockData = ::build_log_unlock_data(unlockConditions)
-      viewParams = viewParams
-    })
+    ::handlersManager.loadHandler(::gui_handlers.UnlockRewardWnd, { unlocksRewards })
   }
 }

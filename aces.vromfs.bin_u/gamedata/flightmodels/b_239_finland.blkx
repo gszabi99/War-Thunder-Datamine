@@ -31,6 +31,11 @@
         "hp": 15.0
       }
     },
+    "armor8_5": {
+      "armor1_dm": {
+        "hp": 40.0
+      }
+    },
     "armor_engine_light": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
@@ -87,7 +92,7 @@
       },
       "wing1_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 59.3
+        "hp": 59.2
       },
       "wing1_r_dm": {
         "genericDamageMult": 0.3,
@@ -103,11 +108,11 @@
       },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 76.7
+        "hp": 76.5
       },
       "wing_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 76.7
+        "hp": 76.5
       }
     },
     "dural": {
@@ -160,10 +165,10 @@
         "hp": 39.5
       },
       "gear_l_dm": {
-        "hp": 60.5
+        "hp": 56.7
       },
       "gear_r_dm": {
-        "hp": 60.5
+        "hp": 56.7
       }
     },
     "steel_cooling_sys": {
@@ -182,10 +187,10 @@
     },
     "steel_tank_s": {
       "tank1_dm": {
-        "hp": 46.8
+        "hp": 45.8
       },
       "tank2_dm": {
-        "hp": 46.7
+        "hp": 45.9
       }
     }
   },
@@ -272,6 +277,9 @@
             "cut": 1.0
           }
         ]
+      },
+      {
+        "name": "armor1_dm"
       },
       {
         "name": "cover1_dm"
@@ -812,10 +820,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",

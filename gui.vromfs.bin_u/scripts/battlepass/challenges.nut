@@ -8,7 +8,8 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
 let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
-let { getUnlockConditions, getHeaderCondition } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockConditions, getHeaderCondition,
+  isTimeRangeCondition} = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
@@ -105,7 +106,7 @@ let function getConditionInTitleConfig(unlockBlk) {
       }
   }
 
-  let timeCond = condition.findvalue(@(cond) ::unlock_time_range_conditions.contains(cond.type))
+  let timeCond = condition.findvalue(@(cond) isTimeRangeCondition(cond.type))
   if (timeCond != null) {
     let beginTime = getTimestampFromStringUtc(timeCond.beginDate)
     if (beginTime > ::get_charserver_time_sec())

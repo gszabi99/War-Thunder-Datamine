@@ -54,7 +54,7 @@ let getDiscountByPath = function(path)
     return 0
 
   let method = getMethodByCategory?[path[0]]
-  if (typeof(method) == "function")
+  if (type(method) == "function")
     return method(path)
   return 0
 }

@@ -23,7 +23,7 @@ let TV_ICON = "⋇"
 local NBSP = " " // Non-breaking space character
 
 return function(name) {
-  if (typeof name != "string" || name == "")
+  if (type(name) != "string" || name == "")
     return ""
 
   let isXboxPrefix = xboxPrefixNameRegexp.match(name)

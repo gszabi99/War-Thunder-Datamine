@@ -2617,17 +2617,41 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": "drive_turret_v_dm",
           "horDriveDm": "drive_turret_h_dm",
-          "linkedAnimPart": {
-            "verNode": "bone_camera_gunner",
-            "verLimits": [
-              -180.0,
-              180.0
-            ],
-            "verOriginLimits": [
-              -180.0,
-              180.0
-            ]
-          }
+          "linkedAnimPart": [
+            {
+              "verNode": "bone_camera_gunner",
+              "verLimits": [
+                -180.0,
+                180.0
+              ],
+              "verOriginLimits": [
+                -180.0,
+                180.0
+              ]
+            },
+            {
+              "verNode": "bone_roll_01",
+              "verLimits": [
+                5.0,
+                32.0
+              ],
+              "verOriginLimits": [
+                -50.0,
+                50.0
+              ]
+            },
+            {
+              "verNode": "bone_roll_02",
+              "verLimits": [
+                5.0,
+                35.0
+              ],
+              "verOriginLimits": [
+                -50.0,
+                50.0
+              ]
+            }
+          ]
         },
         "limits": {
           "yaw": [

@@ -26,7 +26,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::dagui_propid.add_name_id("has_ime")
-::dagui_propid.add_name_id("target_platform")
+::dagui_propid.add_name_id("platformId")
 
 ::handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSceneBgBlurred")
 
@@ -295,7 +295,7 @@ let function getHandlerControlsAllowMask(handler) {
   {
     ::set_dagui_post_include_css_str(cssStringPost)
     let forcedColors = ::g_login.isLoggedIn() ? ::get_team_colors() : {}
-    ::call_darg("recalculateTeamColors", forcedColors)
+    send("recalculateTeamColors", { forcedColors })
     haveChanges = true
   }
 
@@ -313,7 +313,7 @@ let function getHandlerControlsAllowMask(handler) {
   //Check for special hints, because IME is called with special action, and need to show text about it
   let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || ::is_steam_big_picture()
   rootObj["has_ime"] = hasIME? "yes" : "no"
-  rootObj["target_platform"] = targetPlatform
+  rootObj["platformId"] = targetPlatform
 }
 
 
@@ -375,7 +375,7 @@ let function getHandlerControlsAllowMask(handler) {
       }
 
   setSceneActive(hasActiveDargScene)
-  ::call_darg("updateWidgets", widgetsList)
+  send("updateWidgets", { widgetsList })
 }
 
 ::handlersManager.calcCurrentSceneBgBlur <- function calcCurrentSceneBgBlur()

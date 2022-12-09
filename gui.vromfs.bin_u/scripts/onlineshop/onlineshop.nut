@@ -14,6 +14,8 @@ let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
   isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat,
   getEntitlementAmount, getFirstPurchaseAdditionalAmount,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
+let { showGuestEmailRegistration, needShowGuestEmailRegistration
+} = require("%scripts/user/suggestionEmailRegistration.nut")
 
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) ::broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
@@ -360,6 +362,11 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
   function onOnlinePurchase(itemId)
   {
+    if (needShowGuestEmailRegistration()) {
+      showGuestEmailRegistration()
+      return
+    }
+
     let payMethods = ::yuplay2_get_payment_methods()
     if (!payMethods || ::steam_is_running() || !hasFeature("PaymentMethods"))
       return ::OnlineShopModel.doBrowserPurchase(itemId)

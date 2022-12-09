@@ -38,7 +38,7 @@ local function init(langSources) {
       foreach (_i, vSrc in (source?[varName] ?? []))
       {
         local v
-        switch (typeof vSrc)
+        switch (type(vSrc))
         {
           case "string":
             v = regexp2(vSrc)

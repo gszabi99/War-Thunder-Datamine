@@ -326,6 +326,10 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     this.doWhenActiveOnce("updateButtonsStatus")
   }
 
+  function onEventCrossPlayOptionChanged(_p) {
+    this.doWhenActiveOnce("updateButtonsStatus")
+  }
+
   function onEventActiveHandlersChanged(_p)
   {
     if (!this.isSceneActiveNoModals())

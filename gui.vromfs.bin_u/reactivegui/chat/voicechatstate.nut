@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {interop} = require("%rGui/globals/interop.nut")
+let { subscribe } = require("eventbus")
 
 let VOICE_CHAT_MEMBER_PARAMS = {
   id = ""
@@ -61,12 +61,14 @@ let function hideVoiceChatMember(config) {
     }
 }
 
-interop.updateVoiceChatStatus <- function(config) {
+let function updateVoiceChatStatus(config) {
   if (config.isTalking)
     showVoiceChatMember(config)
   else
     hideVoiceChatMember(config)
 }
+
+subscribe("updateVoiceChatStatus", updateVoiceChatStatus)
 
 return {
   voiceChatMembers = voiceChatMembers

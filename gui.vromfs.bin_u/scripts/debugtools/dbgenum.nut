@@ -7,7 +7,7 @@ let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 
 let function getEnumValName(strEnumName, value, skipSynonyms=false) {
-  assert(typeof(strEnumName) == "string", "strEnumName must be enum name as a string")
+  assert(type(strEnumName) == "string", "strEnumName must be enum name as a string")
   let constants = getconsttable()
   let enumTable = (strEnumName in constants) ? constants[strEnumName] : {}
   local name = ""
@@ -21,7 +21,7 @@ let function getEnumValName(strEnumName, value, skipSynonyms=false) {
 }
 
 let function bitMaskToSstring(strEnumName, mask) {
-  assert(typeof(strEnumName) == "string", "strEnumName must be enum name as a string")
+  assert(type(strEnumName) == "string", "strEnumName must be enum name as a string")
   let enumTable = getconsttable()?[strEnumName] ?? {}
   local res = ""
   foreach (constName, constVal in enumTable)

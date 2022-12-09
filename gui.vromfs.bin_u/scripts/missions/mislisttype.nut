@@ -47,8 +47,6 @@ enum mislistTabsOrder {
     let missionId = misBlk?.name ?? ""
     if (!checkFunc(misBlk))
       continue
-    if (!hasFeature("Tanks") && ::is_mission_for_unittype(misBlk, ES_UNIT_TYPE_TANK))
-      continue
     if ((gm == GM_SINGLE_MISSION) && ::g_squad_manager.isNotAloneOnline())
       if (!misBlk.getBool("gt_cooperative", false) || ::is_user_mission(misBlk))
         continue

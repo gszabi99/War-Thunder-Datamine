@@ -3,7 +3,7 @@ from "frp" import Computed, Watched
 let function watchedTable2TableOfWatched(state, fieldsList = null) {
   assert(state instanceof Watched, "state has to be Watched")
   let list = fieldsList ?? state.value
-  assert(typeof list == "table", "fieldsList should be provided as table")
+  assert(type(list) == "table", "fieldsList should be provided as table")
   return list.map(@(_, key) Computed(@() state.value[key]))
 }
 
@@ -42,7 +42,7 @@ let DeleteKey = class{
 
 let function mkLatestByTriggerStream(triggerObservable) {
   return function mkLatestStream(defValue = null, name = null){
-    let isTable = (typeof defValue) == "table"
+    let isTable = type(defValue) == "table"
     local valsToSet = []
     let res = Watched(defValue)
     let function updateFunc(_) {
@@ -65,7 +65,7 @@ let function mkLatestByTriggerStream(triggerObservable) {
       }
       triggerObservable.unsubscribe(updateFunc)
       valsToSet.clear()
-      let resType = typeof newResVal
+      let resType = type(newResVal)
       let needToTrigger = newResVal == res.value && (resType == "table" || resType == "array")
       res(newResVal)
       if (needToTrigger)

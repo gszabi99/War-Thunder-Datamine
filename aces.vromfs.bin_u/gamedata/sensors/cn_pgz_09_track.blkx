@@ -121,8 +121,8 @@
   "signals": {
     "radarTrack": {
       "groundClutter": false,
-      "angularAccuracy": 0.06,
-      "distanceAccuracy": 5.0,
+      "angularAccuracy": 0.12,
+      "distanceAccuracy": 2.0,
       "absDopplerSpeed": true,
       "track": true,
       "distance": {
@@ -628,6 +628,9 @@
           "command": "typeSwitch",
           "stateTo": "irstTrack",
           "actions": {
+            "setScanPattern": {
+              "scanPattern": "irstTrack"
+            },
             "setModeName": {
               "name": "IRST track"
             },
@@ -639,6 +642,9 @@
           "command": "typeSwitch",
           "stateTo": "radarTrack",
           "actions": {
+            "setScanPattern": {
+              "scanPattern": "radarTrack"
+            },
             "setModeName": {
               "name": "track"
             },

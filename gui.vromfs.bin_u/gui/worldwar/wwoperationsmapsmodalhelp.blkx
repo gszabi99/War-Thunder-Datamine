@@ -1,33 +1,36 @@
 {
   "tdiv": [
     {
-      "pos": "0.25@rw, 1@helpInterval",
-      "position": "relative",
-      "flow": "vertical",
+      "left": "1@topMenuButtonWidth+1@helpInterval",
+      "position": "absolute",
       "controlsHelpTextArea": {
-        "id": "hint_to_battle_button",
+        "id": "hint_topmenu_ww_menu_btn",
         "width": "1@shopWidthMax",
-        "text": "#worldwar/help/main/battles"
+        "text": "#worldwar/help/map/menu_btn"
       }
     },
     {
-      "pos": "0.5@rw -0.5@shopWidthMax, 0.4@rh",
+      "left": "0.5@rw-0.5@shopWidthMax",
+      "position": "relative",
+      "controlsHelpTextArea": {
+        "id": "hint_operation_name",
+        "width": "1@shopWidthMax",
+        "text": "#worldwar/help/main/scenario_name"
+      }
+    },
+    {
+      "pos": "0.5pw+0.5@WWOperationDescriptionWidth, 1@maxWindowHeightNoSrh-h-1@wwRewardItemHeight",
       "position": "absolute",
       "flow": "vertical",
       "controlsHelpTextArea": [
         {
-          "id": "hint_item_desc",
-          "width": "1@shopWidthMax",
-          "text": "#worldwar/help/main/map_desc"
-        },
-        {
-          "id": "hint_maps_list",
+          "id": "hint_item_status_text",
           "width": "1@shopWidthMax",
           "margin-top": "1@helpInterval",
-          "text": "#worldwar/help/main/maps_list"
+          "text": "#worldwar/help/main/status_text"
         },
         {
-          "id": "trophy_list_list",
+          "id": "hint_rewards_panel",
           "width": "1@shopWidthMax",
           "margin-top": "1@helpInterval",
           "text": "#worldwar/help/main/trophy_list"
@@ -35,21 +38,49 @@
       ]
     },
     {
-      "pos": "0.5@rw -0.5@shopWidthMax, ph-h-1@helpInterval",
+      "pos": "0.5pw-1@shopWidthMax-0.5@WWOperationDescriptionWidth, h+1@minYposWindow+0.15@WWOperationDescriptionWidth",
+      "position": "absolute",
+      "controlsHelpTextArea": {
+        "id": "hint_country",
+        "width": "1@shopWidthMax",
+        "text": "#worldwar/help/main/conflict_parties"
+      }
+    },
+    {
+      "pos": "0.5pw-1@shopWidthMax-0.5@WWOperationDescriptionWidth, 1@minYposWindow+0.3@WWOperationDescriptionWidth",
       "position": "absolute",
       "flow": "vertical",
       "controlsHelpTextArea": [
         {
-          "id": "hint_btn_clans_queue",
+          "id": "hint_btn_find_operation",
           "width": "1@shopWidthMax",
-          "text": "#worldwar/help/main/goto_join_mode"
+          "text": "#worldwar/help/main/operation_search"
+        },
+        {
+          "id": "hint_btn_back_operation",
+          "width": "1@shopWidthMax",
+          "text": "#worldwar/help/main/back_operation"
         },
         {
           "id": "hint_btn_join_queue",
           "width": "1@shopWidthMax",
           "text": "#worldwar/help/main/create_operation"
+        },
+        {
+          "id": "hint_btn_join_clan_operation",
+          "width": "1@shopWidthMax",
+          "text": "#worldwar/help/main/join_clan_operation"
         }
       ]
+    },
+    {
+      "pos": "2@buttonWidth+4@buttonMargin+1@helpInterval, ph-h-1@navBarBattleButtonHeight-2@buttonMargin",
+      "position": "absolute",
+      "controlsHelpTextArea": {
+        "id": "hint_btn_cluster",
+        "width": "1@shopWidthMax",
+        "text": "#worldwar/help/main/cluster_select"
+      }
     }
   ]
 }

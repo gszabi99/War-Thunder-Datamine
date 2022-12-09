@@ -213,11 +213,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onHoverArmyItem(obj)
   {
     ::ww_update_hover_army_name(obj.armyName)
+    ::ww_event("HoverArmyItem", {armyName = obj.armyName})
   }
 
   function onHoverLostArmyItem(_obj)
   {
     ::ww_update_hover_army_name("")
+    ::ww_event("HoverLostArmyItem", {armyName = null})
   }
 
   function onClickArmy(obj)

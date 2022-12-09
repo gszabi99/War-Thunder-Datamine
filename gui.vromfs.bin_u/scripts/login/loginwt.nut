@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let statsd = require("statsd")
+let { get_authenticated_url_sso } = require("url")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -42,7 +43,7 @@ let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
 {
   bqSendStart()
 
-  log("target_platform is '" + target_platform + "'")
+  log($"platformId is '{platformId }'")
   ::pause_game(false);
 
   if (::disable_network())
@@ -74,7 +75,7 @@ let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
 let function go_to_account_web_page(bqKey = "")
 {
   let urlBase = format("/user.php?skin_lang=%s", ::g_language.getShortName())
-  openUrl(::get_authenticated_url_sso(urlBase).url, false, false, bqKey)
+  openUrl(get_authenticated_url_sso(urlBase).url, false, false, bqKey)
 }
 
 ::g_login.loadLoginHandler <- function loadLoginHandler()
@@ -192,15 +193,13 @@ let function go_to_account_web_page(bqKey = "")
     function()
     {
       // FIXME: it is better to get string from NDA text!
-      let versions = ["nda_version", "nda_version_tanks", "eula_version"]
+      let versions = ["nda_version", "eula_version"]
       foreach (sver in versions)
       {
         let l = loc(sver, "-1")
         try { getroottable()[sver] = l.tointeger() }
         catch(e) { assert(0, "can't convert '"+l+"' to version "+sver) }
       }
-
-      ::nda_version = hasFeature("Tanks") ? ::nda_version_tanks : ::nda_version
 
       if (::should_agree_eula(::nda_version, ::TEXT_NDA))
         ::gui_start_eula(::TEXT_NDA)
@@ -455,7 +454,7 @@ let function needAutoStartBattle() {
     for (local i = 0; i < cdb.paramCount(); i++)
     {
       let skin = cdb.getParamValue(i)
-      if ((typeof(skin) == "string") && (skin != "") && (skin.indexof("template")==null))
+      if ((type(skin) == "string") && (skin != "") && (skin.indexof("template")==null))
       {
         anyUG = true
         statsd.send_counter("sq.ug.useus", 1)

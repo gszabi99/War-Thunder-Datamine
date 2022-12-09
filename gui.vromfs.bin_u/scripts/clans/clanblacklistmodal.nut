@@ -5,11 +5,12 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
 local clanBlackList = [
-  { id = "nick", type = ::g_lb_data_type.NICK },
-  { id = "initiator_nick", type = ::g_lb_data_type.NICK },
-  { id = "date", type = ::g_lb_data_type.DATE }]
+  { id = "nick", type = lbDataType.NICK },
+  { id = "initiator_nick", type = lbDataType.NICK },
+  { id = "date", type = lbDataType.DATE }]
 
 ::gui_start_clan_blacklist <- function gui_start_clan_blacklist(clanData = null)
 {
@@ -27,7 +28,7 @@ local clanBlackList = [
 
   myRights = []
   curCandidate = null
-  blacklistRow = ["nick", "initiator_nick", { id="date", type = ::g_lb_data_type.DATE }]
+  blacklistRow = ["nick", "initiator_nick", { id="date", type = lbDataType.DATE }]
 
   clanData = null
   blacklistData = null
@@ -60,7 +61,7 @@ local clanBlackList = [
     let headerRow = []
     foreach(item in this.blacklistRow)
     {
-      let itemName = (typeof(item) != "table")? item : item.id
+      let itemName = (type(item) != "table")? item : item.id
       let name = "#clan/"+(itemName == "date"? "bannedDate" : itemName)
       headerRow.append({
         id = itemName,
@@ -80,7 +81,7 @@ local clanBlackList = [
 
       foreach(item in this.blacklistRow)
       {
-         let itemName = (typeof(item) != "table")? item : item.id
+         let itemName = (type(item) != "table")? item : item.id
          rowData.append({
           id = itemName,
           text = "",

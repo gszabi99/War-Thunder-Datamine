@@ -12,6 +12,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
 let { get_time_msec } = require("dagor.time")
+let { send } = require("eventbus")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
@@ -385,7 +386,7 @@ const AUTO_ACTIVATE_TIME = 60
   visibleScoreTableTexts = visibleScoreTableTexts.len() > this.maxRowsInScoreTable
     ? visibleScoreTableTexts.resize(this.maxRowsInScoreTable, null)
     : visibleScoreTableTexts
-  ::call_darg("orderStateUpdate", {
+  send("orderStateUpdate", {
     statusText = this.getStatusText()
     statusTextBottom = this.getStatusTextBottom()
     showOrder = this.hasActiveOrder || (this.cooldownTimeleft > 0 && this.prevActiveOrder != null)

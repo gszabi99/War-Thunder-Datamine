@@ -45,7 +45,7 @@
         "hp": 15.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -853,10 +853,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -2683,10 +2691,11 @@
       "tier": 1
     },
     "hydravlic_power": {
+      "invertEnableLogic": true,
       "prevModification": "new_compressor_jet",
       "tier": 2,
       "effects": {
-        "aileronBooster": 0.6,
+        "aileronBooster": 1.0,
         "elevatorBooster": 0.9
       }
     },

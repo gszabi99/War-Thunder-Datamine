@@ -36,7 +36,6 @@ local unitTypes = {
     bitCrewType = 0 //crewUnitType bit for it mask
     visualSortOrder = -1
     uiSkin = "!#ui/unitskin#"
-    uiClassSkin = "#ui/gameuiskin#"
     fontIcon = ""
     testFlightIcon = ""
     testFlightName = ""

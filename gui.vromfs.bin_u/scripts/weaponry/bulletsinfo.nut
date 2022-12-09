@@ -3,11 +3,9 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { ceil } = require("math")
-let { get_unit_option, set_unit_option } = require("guiOptions")
 let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let stdMath = require("%sqstd/math.nut")
+let { ceil, change_bit } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
   getLastPrimaryWeapon, getPrimaryWeaponsList } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
@@ -19,6 +17,9 @@ let { getGuiOptionsMode } = require_native("guiOptions")
 let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { eachParam } = require("%sqstd/datablock.nut")
+let DataBlock = require("DataBlock")
+let { get_unit_option, set_unit_option } = require("guiOptions")
 
 let BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -44,6 +45,25 @@ let BULLETS_LIST_PARAMS = {
 }
 
 const BULLETS_CALIBER_QUANTITY = 4
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let function isBullets(item)
 {
@@ -409,7 +429,7 @@ let function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBullet
       foreach(idx, modName in modsList)
         if (wBlk?[getModificationBulletsEffect(modName)])
         {
-          res = stdMath.change_bit(res, idx, 1)
+          res = change_bit(res, idx, 1)
           break
         }
     }
@@ -614,7 +634,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
   limitedName = false, obj = null, itemDescrRewriteFunc = null)
 {
   let res = {desc = "", delayed = false}
-  if (typeof(air) == "string")
+  if (type(air) == "string")
     air = ::getAircraftByName(air)
   if (!air)
     return res
@@ -735,7 +755,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
 
   if (ammo_pack_len)
   {
-    if ("bulletNames" in set && typeof(set.bulletNames) == "array"
+    if ("bulletNames" in set && type(set.bulletNames) == "array"
       && set.bulletNames.len())
         shortDescr = format(loc(set.isBulletBelt
           ? "modification/ammo_pack_belt/desc" : "modification/ammo_pack/desc"), shortDescr)
@@ -1111,6 +1131,9 @@ let function getModifIconItem(unit, item)
 
 return {
   BULLET_TYPE
+  //
+
+
   isFakeBullet
   setUnitLastBullets
   getBulletsItemsList

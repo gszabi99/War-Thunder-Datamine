@@ -18,20 +18,20 @@
 <<#isMode>>
 gameModeBlock {
   <<#isWide>>
-    wide:t='yes';
+    wide:t='yes'
   <</isWide>>
   <<^isWide>>
     <<#isNarrow>>
-      narrow:t='yes';
+      narrow:t='yes'
     <</isNarrow>>
   <</isWide>>
   <<#hasContent>>
-  id:t='<<id>>';
+  id:t='<<id>>'
   tooltip:t='<<#crossplayTooltip>><<crossplayTooltip>>\n<</crossplayTooltip>><<tooltip>>'
   modeId:t='<<modeId>>'
 
   <<#isFeatured>>
-  featured:t='yes';
+  featured:t='yes'
   <</isFeatured>>
 
   <<#inactiveColor>>
@@ -44,7 +44,7 @@ gameModeBlock {
   <</onHover>>
 
   <<#isCurrentGameMode>>
-    current_mode:t='yes';
+    current_mode:t='yes'
   <</isCurrentGameMode>>
   <<^isConsoleBtn>>
     behavior:t='posNavigator'
@@ -52,15 +52,15 @@ gameModeBlock {
     move-only-hover:t='yes'
   <</isConsoleBtn>>
   behavior:t='button'
-  background-color:t='@white';
-  background-repeat:t='expand';
-  background-image:t='#ui/gameuiskin#item.png';
-  background-position:t='3, 4, 3, 5';
-  re-type:t='9rect';
+  background-color:t='@white'
+  background-repeat:t='expand'
+  background-image:t='#ui/gameuiskin#item.png'
+  background-position:t='3, 4, 3, 5'
+  re-type:t='9rect'
 
   img {
-    background-image:t='<<image>>';
-    background-repeat:t='repeat-y';
+    background-image:t='<<image>>'
+    background-repeat:t='repeat-y'
   }
 
   <<#videoPreview>>
@@ -74,33 +74,37 @@ gameModeBlock {
   glow{}
 
   <<#inactiveColor>>
-  pattern { type:t='dark_diag_lines' }
+  pattern {
+    position:t='absolute'
+    type:t='dark_diag_lines'
+  }
   <</inactiveColor>>
 
   title {
-    css-hier-invalidate:t='yes';
+    css-hier-invalidate:t='yes'
     enable:t='no'
     tdiv {
-      css-hier-invalidate:t='yes';
-      flow:t='vertical';
+      css-hier-invalidate:t='yes'
+      flow:t='vertical'
 
       textarea {
-        game_mode_textarea:t='yes';
-        text:t='<<#isCrossPlayRequired>><<?icon/cross_play>> <</isCrossPlayRequired>><<text>>';
+        game_mode_textarea:t='yes'
+        text:t='<<#isCrossPlayRequired>><<?icon/cross_play>> <</isCrossPlayRequired>><<text>>'
         <<#crossPlayRestricted>>
           overlayTextColor:t='warning'
         <</crossPlayRestricted>>
       }
       textarea {
         id:t='<<id>>_text_description'
-        game_mode_textarea:t='yes';
-        text:t='<<textDescription>>';
+        game_mode_textarea:t='yes'
+        text:t='<<textDescription>>'
       }
     }
     <<#newIconWidgetContent>>
     div {
       id:t='<<newIconWidgetId>>'
-      pos:t='0, ph-h'; position:t='relative'
+      pos:t='0, ph-h'
+      position:t='relative'
       <<@newIconWidgetContent>>
     }
     <</newIconWidgetContent>>
@@ -113,7 +117,8 @@ gameModeBlock {
     enable:t='no'
 
     textareaNoTab {
-      pos:t='0, 50%(ph-h)'; position:t='relative'
+      pos:t='0, 50%(ph-h)'
+      position:t='relative'
       text:t="#reward/everyDay"
       <<^inactiveColor>>
         <<#isTrophyRecieved>>
@@ -126,7 +131,8 @@ gameModeBlock {
     }
 
     tdiv {
-      pos:t='0, 50%(ph-h)'; position:t='relative'
+      pos:t='0, 50%(ph-h)'
+      position:t='relative'
       <<@eventTrophyImage>>
 
       <<#isTrophyRecieved>>
@@ -192,14 +198,14 @@ gameModeBlock {
 
   <<#hasCountries>>
   tdiv {
-    css-hier-invalidate:t='yes';
+    css-hier-invalidate:t='yes'
     enable:t='no'
     <<#countries>>
     img {
-      size:t='@cIco, @cIco';
-      background-image:t='<<img>>';
+      size:t='@cIco, @cIco'
+      background-image:t='<<img>>'
       background-svg-size:t='@cIco, @cIco'
-      margin-left:t='0.01@sf';
+      margin-left:t='0.01@sf'
     }
     <</countries>>
   }
@@ -213,7 +219,7 @@ gameModeBlock {
   <</linkIcon>>
   <</hasContent>>
   <<^hasContent>>
-  enable:t='no';
+  enable:t='no'
   <</hasContent>>
 }
 <</isMode>>

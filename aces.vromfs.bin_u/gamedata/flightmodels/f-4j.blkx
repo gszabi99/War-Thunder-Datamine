@@ -17,6 +17,7 @@
   "ilsLCOSS": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
+  "hasHelmetDesignator": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -39,7 +40,7 @@
         "hp": 15.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -1013,10 +1014,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "tail_dm",
@@ -2563,7 +2572,8 @@
         "pylon_l_out",
         "pylon_r_in",
         "pylon_r_out",
-        "pylon_centr"
+        "pylon_centr",
+        "flare_open"
       ]
     },
     "HideDmParts": {
@@ -2578,19 +2588,31 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "name": "ltc_common",
-          "ShowNodes": {
-            "node": [
-              "pylon_l_ltc_in",
-              "pylon_r_ltc_in"
-            ]
+          "HideNodes": {
+            "node": "flare_cap"
           },
+          "ShowNodes": [
+            {
+              "node": "flare_open"
+            },
+            {
+              "node": [
+                "gear_l18",
+                "gear_l19",
+                "gear_l20",
+                "gear_r20",
+                "gear_r19",
+                "gear_r18"
+              ]
+            }
+          ],
           "Weapon": [
             {
               "trigger": "countermeasures",
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare3",
-              "bullets": 45,
+              "emitter": "emtr_flare1",
+              "bullets": 30,
               "external": true,
               "separate": false
             },
@@ -2598,8 +2620,8 @@
               "trigger": "countermeasures",
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare4",
-              "bullets": 45,
+              "emitter": "emtr_flare2",
+              "bullets": 30,
               "external": true,
               "separate": false
             }

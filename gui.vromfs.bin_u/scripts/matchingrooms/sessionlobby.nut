@@ -32,6 +32,7 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
 let { debug_dump_stack } = require("dagor.debug")
 let { get_cd_preset } = require("guiOptions")
 let checkReconnect = require("%scripts/matchingRooms/checkReconnect.nut")
+let { send } = require("eventbus")
 
 /*
 SessionLobby API
@@ -418,7 +419,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     if (key == "mission")
       continue
     local value = this.findParam(key, missionSettings, mission)
-    if (typeof(v) == "array" && typeof(value) != "array")
+    if (type(v) == "array" && type(value) != "array")
       value = [value]
     _settings[key] <- value //value == null will clear param on server
   }
@@ -533,7 +534,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 ::SessionLobby.setSettings <- function setSettings(v_settings, notify = false, checkEqual = true)
 {
-  if (typeof v_settings == "array")
+  if (type(v_settings) == "array")
   {
     log("v_settings param, public info, is array, instead of table")
     debug_dump_stack()
@@ -999,7 +1000,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   this.updateMyState()
 
   ::broadcastEvent("LobbyStatusChange")
-  ::call_darg("networkIsMultiplayerUpdate", this.isInRoom())
+  send("setIsMultiplayerState", { isMultiplayer = this.isInRoom() })
   if (wasInRoom != this.isInRoom())
     ::broadcastEvent("LobbyIsInRoomChanged", { wasSessionInLobby })
 }
@@ -1036,7 +1037,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 ::SessionLobby.changePassword <- function changePassword(v_password)
 {
-  if (typeof(v_password)!="string" || this.password==v_password)
+  if (type(v_password)!="string" || this.password==v_password)
     return
 
   if (this.isRoomOwner && this.status != lobbyStates.NOT_IN_ROOM && this.status != lobbyStates.CREATING_ROOM)
@@ -1224,7 +1225,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
       {
         if (this._syncedMyInfo[key] == value)
           continue
-        if (typeof(value)=="array" || typeof(value)=="table")
+        if (type(value)=="array" || type(value)=="table")
           if (::u.isEqual(this._syncedMyInfo[key], value))
             continue
       }
@@ -1564,10 +1565,6 @@ let allowed_mission_settings = { //only this settings are allowed in room
   if (this.spectator)
     return true
 
-  let curCountry = getTblValue("country", this.countryData)
-  if (::tanksDriveGamemodeRestrictionMsgBox("TanksInCustomBattles", curCountry, null, "cbt_tanks/forbidden/skirmish"))
-    return false
-
   let availTeam = this.getAvailableTeam()
   if (availTeam == Team.none)
   {
@@ -1576,6 +1573,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     return false
   }
 
+  let curCountry = this.countryData?.country
   let checkUnitsResult = this.checkUnitsInSlotbar(curCountry, availTeam)
   let res = checkUnitsResult.isAvailable
   if (!res && !silent)
@@ -2119,7 +2117,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 ::SessionLobby.hostCb <- function hostCb(res)
 {
-  if ((typeof(res)=="table") && ("errCode" in res))
+  if ((type(res)=="table") && ("errCode" in res))
   {
     local errorCode;
     if (res.errCode == 0)
@@ -2597,7 +2595,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   if (!::is_online_available())
     return "client not ready"
   let battleId = params.battleId
-  if (typeof (battleId) != "string")
+  if (type(battleId) != "string")
     return "bad battleId type"
   if (::g_squad_manager.getSquadSize() > 1)
     return "player is in squad"

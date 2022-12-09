@@ -37,7 +37,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   if (!blk)
     return
   let texBlk = blk?.texture_presets
-  if (!texBlk || typeof(texBlk)!="instance" || !(texBlk instanceof ::DataBlock))
+  if (!texBlk || type(texBlk)!="instance" || !(texBlk instanceof ::DataBlock))
   {
     ::script_net_assert_once("flags_presets", "Error: not texture_presets block in gui.blk")
     return
@@ -53,11 +53,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
   foreach(blockName in presetsList)
   {
     let block = texBlk?[blockName]
-    if (!block || typeof(block)!="instance" || !(block instanceof ::DataBlock))
+    if (!block || type(block)!="instance" || !(block instanceof ::DataBlock))
       continue
 
     eachParam(block, function(value, name) {
-      if (!(name in ::country_flags_preset) && typeof(value) == "string")
+      if (!(name in ::country_flags_preset) && type(value) == "string")
         ::country_flags_preset[name] <- value
     })
   }

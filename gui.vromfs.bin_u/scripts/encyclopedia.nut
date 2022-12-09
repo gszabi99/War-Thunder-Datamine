@@ -36,8 +36,8 @@ let initEncyclopediaData = function()
       let showPlatform = blkArticle.getStr("showPlatform", "")
       let hidePlatform = blkArticle.getStr("hidePlatform", "")
 
-      if ((showPlatform.len() > 0 && showPlatform != target_platform)
-          || hidePlatform == target_platform)
+      if ((showPlatform.len() > 0 && showPlatform != platformId)
+          || hidePlatform == platformId)
         continue
 
       let articleDesc = {}

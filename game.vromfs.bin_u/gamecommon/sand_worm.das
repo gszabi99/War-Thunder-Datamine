@@ -226,7 +226,7 @@ def sky_laser_update(weaponIdx, uid : int;
   let unit = get_unit(uid)
   if unit != null
     var weapon = unit.weap.Weapons |> get_weapon(weaponIdx)
-    var gun = Gun_cast(weapon)
+    var gun = as_gun(weapon)
     if gun != null
       var tm = identity3x4()
       let time = float(get_total_time())
@@ -268,7 +268,7 @@ def sky_laser_destroy_es(evt : Event;
   let unit = get_unit(sky_laser__uid)
   if unit != null
     var weapon = unit.weap.Weapons |> get_weapon(sky_laser__weaponIdx)
-    var gun = Gun_cast(weapon)
+    var gun = as_gun(weapon)
     if gun != null
       *gun |> stopBeam()
 

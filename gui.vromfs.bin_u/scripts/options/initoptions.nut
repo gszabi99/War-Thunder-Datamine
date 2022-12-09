@@ -136,7 +136,7 @@ local usageAmountCounted = false
     foreach(name in ["bullets_locId_by_caliber", "modifications_locId_by_caliber"])
       getroottable()[name] = blk?[name] ? (blk[name] % "ending") : []
 
-    if (typeof blk?.unlocks_punctuation_without_space == "string")
+    if (type(blk?.unlocks_punctuation_without_space) == "string")
       ::unlocks_punctuation_without_space = blk.unlocks_punctuation_without_space
 
     ::LayersIcon.initConfigOnce(blk)

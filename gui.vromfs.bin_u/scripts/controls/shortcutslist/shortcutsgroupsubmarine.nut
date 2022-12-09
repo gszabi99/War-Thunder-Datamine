@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { ActionGroup } = require("controls")
 
 return [
   {
@@ -26,7 +27,7 @@ return [
     id = "ID_SUBMARINE_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
     type = CONTROL_TYPE.BUTTON
     onClick = @() controlsOperations.swapGamepadSticks(
-      ctrlGroups.SUBMARINE,
+      ActionGroup.SUBMARINE,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
     showFunc = @() ::have_xinput_device()
@@ -35,7 +36,7 @@ return [
     id = "ID_SUBMARINE_SWAP_GAMEPAD_STICKS"
     type = CONTROL_TYPE.BUTTON
     onClick = @() controlsOperations.swapGamepadSticks(
-      ctrlGroups.SUBMARINE
+      ActionGroup.SUBMARINE
     )
     showFunc = @() ::have_xinput_device()
   }
@@ -47,7 +48,6 @@ return [
   {
     id = "submarine_main_engine"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SUBMARINE
     axisDirection = AxisDirection.Y
     checkAssign = false
     needShowInHelp = true
@@ -55,7 +55,6 @@ return [
   {
     id = "submarine_steering"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SUBMARINE
     axisDirection = AxisDirection.X
     checkAssign = false
     needShowInHelp = true
@@ -63,13 +62,11 @@ return [
   {
     id = "submarine_depth"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SUBMARINE_FULL_STOP"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
@@ -81,31 +78,26 @@ return [
   }
   {
     id = "ID_TOGGLE_VIEW_SUBMARINE"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SUBMARINE_WEAPON_TORPEDOES"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SUBMARINE_SWITCH_ACTIVE_SONAR"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SUBMARINE_WEAPON_TOGGLE_ACTIVE_SENSOR"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SUBMARINE_WEAPON_TOGGLE_SELF_HOMMING"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
@@ -117,20 +109,17 @@ return [
   {
     id = "submarine_zoom"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
   }
   {
     id = "submarine_camx"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SUBMARINE
     reqInMouseAim = false
     axisDirection = AxisDirection.X
   }
   {
     id = "submarine_camy"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SUBMARINE
     reqInMouseAim = false
     axisDirection = AxisDirection.Y
   }
@@ -142,7 +131,6 @@ return [
   {
     id = "submarine_mouse_aim_x"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SUBMARINE
     reqInMouseAim = false
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     axisDirection = AxisDirection.X
@@ -150,7 +138,6 @@ return [
   {
     id = "submarine_mouse_aim_y"
     type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.SUBMARINE
     reqInMouseAim = false
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     axisDirection = AxisDirection.Y
@@ -191,25 +178,21 @@ return [
   }
   {
     id = "ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
-    checkGroup = ctrlGroups.SUBMARINE
     showFunc = ::have_xinput_device
     checkAssign = false
   }
   {
     id = "ID_SUBMARINE_ACTION_BAR_ITEM_11"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SUBMARINE_REPAIR_BREACHES"
-    checkGroup = ctrlGroups.SUBMARINE
     checkAssign = false
     needShowInHelp = true
   }

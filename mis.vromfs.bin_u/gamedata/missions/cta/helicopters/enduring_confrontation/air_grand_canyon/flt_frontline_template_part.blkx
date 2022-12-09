@@ -1,0 +1,289 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "flt_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/enduring_confrontation/flt_frontline_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/helicopters/enduring_confrontation/air_grand_canyon/frontline/flt_frontline_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "flt_parts_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetInt": [
+          {
+            "value": 5,
+            "var": "flt_big_aaa_weight"
+          },
+          {
+            "value": 10,
+            "var": "flt_small_aaa_weight"
+          },
+          {
+            "value": 20,
+            "var": "flt_art_weight"
+          },
+          {
+            "value": 50,
+            "var": "flt_tank_weight"
+          },
+          {
+            "value": 0,
+            "var": "flt_start_cell"
+          },
+          {
+            "value": 0,
+            "var": "flt_offset"
+          },
+          {
+            "value": 7,
+            "var": "flt_zones_in_row"
+          },
+          {
+            "value": 7,
+            "var": "flt_zones_in_col"
+          },
+          {
+            "value": 0,
+            "var": "flt_total_zones"
+          },
+          {
+            "value": 1,
+            "var": "flt_army_A_width"
+          }
+        ],
+        "comment": [
+          {
+            "value": "nastrojki frontlajna"
+          },
+          {
+            "value": "obshchee kolichestvo zon"
+          },
+          {
+            "value": "vyschityvaem kolichestvo zon pokazyvayushchih glubinu fronta"
+          },
+          {
+            "value": "indeks zon, yavlyayushchihsya liniej fronta"
+          },
+          {
+            "value": "pomechaem zony morskimi"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": "pomechaem zony komand (v cikle po algoritmu)"
+          },
+          {
+            "value": "zadaem ne ispol'zuemye kvadraty"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": "risuem liniyu fronta"
+          }
+        ],
+        "varModify": [
+          {
+            "operator": "add",
+            "value": 0.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "mul",
+            "value": 3.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_col"
+          }
+        ],
+        "__varSetRandomInt": [
+          {
+            "var": "flt_frontline_zone_idx_01",
+            "from": 10,
+            "to_not_including": 12
+          },
+          {
+            "var": "flt_frontline_zone_idx_02",
+            "from": 17,
+            "to_not_including": 19
+          },
+          {
+            "var": "flt_frontline_zone_idx_03",
+            "from": 24,
+            "to_not_including": 26
+          },
+          {
+            "var": "flt_frontline_zone_idx_04",
+            "from": 31,
+            "to_not_including": 33
+          },
+          {
+            "var": "flt_frontline_zone_idx_05",
+            "from": 38,
+            "to_not_including": 40
+          }
+        ],
+        "__varSetInt": [
+          {
+            "value": 0,
+            "var": [
+              "flt_area_32_state",
+              "flt_area_36_state",
+              "flt_area_37_state",
+              "flt_area_40_state",
+              "flt_area_41_state",
+              "flt_area_43_state",
+              "flt_area_44_state",
+              "flt_area_45_state",
+              "flt_area_46_state",
+              "flt_area_47_state"
+            ]
+          },
+          {
+            "value": 0,
+            "var": [
+              "flt_area_07_state",
+              "flt_area_14_state",
+              "flt_area_21_state"
+            ]
+          }
+        ],
+        "__varSetString": {
+          "value": "sea",
+          "var": [
+            "flt_area_32_type",
+            "flt_area_36_type",
+            "flt_area_37_type",
+            "flt_area_40_type",
+            "flt_area_41_type",
+            "flt_area_43_type",
+            "flt_area_44_type",
+            "flt_area_45_type",
+            "flt_area_46_type",
+            "flt_area_47_type"
+          ]
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "flt_mirrior_start"
+        },
+        "triggerEnable": [
+          {
+            "target": "flt_army_state_start"
+          },
+          {
+            "target": "flt_draw_frontline"
+          }
+        ],
+        "missionBattleArea": {
+          "air": true,
+          "ground": false,
+          "mapArea": false,
+          "airMapArea": true,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": "flt_battle_area",
+          "newGridHorizontalCellCount": 7,
+          "gridCellCountVar": "flt_zones_in_row"
+        },
+        "varSetString": {
+          "value": "pve",
+          "var": [
+            "flt_game_mode",
+            "lbt_game_mode"
+          ]
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

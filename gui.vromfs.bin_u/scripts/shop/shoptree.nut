@@ -11,7 +11,7 @@ let { fatal } = require("dagor.debug")
 let function getReqAirPosInArray(reqName, arr) {
   foreach(r, row in arr)
     foreach(c, item in row)
-      if (item && typeof item != "integer" && reqName == item.name)
+      if (item && type(item) != "integer" && reqName == item.name)
         return [r, c]
   return null
 }
@@ -312,7 +312,7 @@ let function getReqAirs(page)
     {
       if(page.tree[i][j] == null)
         continue
-      if(typeof(page.tree[i][j]) == "integer")
+      if(type(page.tree[i][j]) == "integer")
         page.tree[i][j] = null
       else
       {
@@ -345,7 +345,7 @@ let function fillLinesInPage(page)
     {
       if(page.tree[i][j] == null)
         continue
-      if(typeof(page.tree[i][j]) == "integer") {
+      if(type(page.tree[i][j]) == "integer") {
         page.tree[i][j] = null
         continue
       }
@@ -532,7 +532,7 @@ let function generateTreeData(page)
       if (item==null)
         testText+=" "
       else
-      if (typeof(item)=="integer") testText += "."
+      if (type(item)=="integer") testText += "."
       else testText += "A"
     }
   log(testText + "\n done.")

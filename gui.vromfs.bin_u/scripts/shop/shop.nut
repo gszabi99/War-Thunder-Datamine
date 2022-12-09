@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
 let { abs, ceil, floor } = require("math")
+let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let shopTree = require("%scripts/shop/shopTree.nut")
@@ -116,7 +117,7 @@ shopData = [
     if (!this.curAirName.len())
     {
       this.curCountry = profileCountrySq.value
-      let unit = ::getAircraftByName(::hangar_get_current_unit_name())
+      let unit = ::getAircraftByName(hangar_get_current_unit_name())
       if (unit && unit.shopCountry == this.curCountry)
         this.curAirName = unit.name
     }

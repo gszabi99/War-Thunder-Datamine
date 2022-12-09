@@ -31,7 +31,7 @@ local function getCachedType(propName, propValue, cacheTable, enumTable, default
     else {
       assertOnce("bad propValue type",
         "".concat("enums: Bad value type for getCachedType with no caseSensitive:\n",
-            $"propName = {propName}, propValue = {propValue}, propValueType = {(typeof propValue)}"))
+            $"propName = {propName}, propValue = {propValue}, propValueType = {(type(propValue))}"))
       return defaultVal
     }
   }
@@ -65,7 +65,7 @@ local function getCachedType(propName, propValue, cacheTable, enumTable, default
       else {
         assertOnce("bad value type",
           "".concat("enums: Bad value in type for no caseSensitive cache:\n",
-          $"propName = {propName}, propValue = {value}, propValueType = {(typeof value)}"))
+          $"propName = {propName}, propValue = {value}, propValueType = {(type(value))}"))
         continue
       }
 

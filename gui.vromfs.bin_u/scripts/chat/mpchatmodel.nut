@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getRealName } = require("%scripts/user/nameMapping.nut")
+let { send } = require("eventbus")
 
 let mpChatState = {
   log = [],
@@ -91,7 +92,7 @@ local mpChatModel = {
     mpChatState.log.append(message)
 
     ::broadcastEvent("MpChatLogUpdated")
-    ::call_darg("mpChatPushMessage", message)
+    send("mpChatPushMessage", message)
     return true
   }
 
@@ -117,20 +118,20 @@ local mpChatModel = {
     }
 
     mpChatState.currentModeId = modeId
-    ::call_darg("hudChatModeIdUpdate", modeId)
+    send("hudChatModeIdUpdate", { modeId })
     ::broadcastEvent("MpChatModeChanged", { modeId = mpChatState.currentModeId})
   }
 
 
   function onInputChanged(str) {
-    ::call_darg("mpChatInputChanged", str)
+    send("mpChatInputChanged", { str })
     ::broadcastEvent("MpChatInputChanged", {str = str})
   }
 
 
   function onChatClear() {
     mpChatState.log.clear()
-    ::call_darg("mpChatClear")
+    send("mpChatClear", {})
   }
 
 

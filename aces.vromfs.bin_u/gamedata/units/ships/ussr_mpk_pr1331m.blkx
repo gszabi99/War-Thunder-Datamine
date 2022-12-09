@@ -138,7 +138,7 @@
     ]
   },
   "ikGunner": {
-    "model": "ussr_officer_char",
+    "model": "ussr_officer_modern_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -201,7 +201,7 @@
     ]
   },
   "attach": {
-    "Bip01 Pelvis_1": "ussr_officer_standing"
+    "Bip01 Pelvis_1": "ussr_officer_modern_standing"
   },
   "controlDevices": {
     "device": [
@@ -516,10 +516,22 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 24.0,
+            "damage": 8.0,
             "fHitCritical": false
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [
@@ -858,6 +870,7 @@
       "armorThrough": 15.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 300.0
       },
       "radio_station_dm": {
@@ -965,7 +978,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.2,

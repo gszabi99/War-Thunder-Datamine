@@ -37,6 +37,8 @@
         on_click:t = '<<#customCbName>><<customCbName>><</customCbName>><<^customCbName>>onClickArmy<</customCbName>>'
       <</addArmyClickCb>>
     <</addArmySelectCb>>
+    focusBtnName:t='A'
+    showConsoleImage:t='no'
     <<#isGroupItem>>
       on_hover:t='onHoverArmyItem'
       on_unhover:t='onHoverLostArmyItem'

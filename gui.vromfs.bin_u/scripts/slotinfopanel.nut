@@ -210,7 +210,7 @@ let function getSkillCategoryView(crewData, unit) {
   }
 
   function onShowExtendedHintsChange(obj) {
-    ::save_local_account_settings("dmViewver/needShowExtHints", obj.getValue())
+    ::save_local_account_settings("dmViewer/needShowExtHints", obj.getValue())
     ::dmViewer.resetXrayCache()
   }
 

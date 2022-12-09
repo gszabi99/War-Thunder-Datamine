@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let userstat = require("userstat")
 let { get_time_msec } = require("dagor.time")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
@@ -10,10 +10,6 @@ let { APP_ID } = require("app")
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
-
-let function doRequest(request, cb) {
-  ::userstat.request(request, @(result) cb(result))
-}
 
 let alwaysForceRefreshEvents = {
   LoginComplete = true
@@ -89,7 +85,7 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
 }
 
 let descListUpdatable = makeUpdatable("GetUserStatDescList",
-  @(cb) doRequest({
+  @(cb) userstat.request({
     add_token = true
     headers = {
       appid = APP_ID,
@@ -101,7 +97,7 @@ let descListUpdatable = makeUpdatable("GetUserStatDescList",
   { GameLocalizationChanged = true})
 
 let statsUpdatable = makeUpdatable("GetStats",
-  @(cb) doRequest({
+  @(cb) userstat.request({
       add_token = true
       headers = { appid = APP_ID }
       action = "GetStats"
@@ -109,7 +105,7 @@ let statsUpdatable = makeUpdatable("GetStats",
   {})
 
 let unlocksUpdatable = makeUpdatable("GetUnlocks",
-  @(cb) doRequest({
+  @(cb) userstat.request({
       add_token = true
       headers = { appid = APP_ID }
       action = "GetUnlocks"

@@ -32,7 +32,7 @@ def validate_template(name : string; comps : table<string; uint>; cb : block<(su
   for compName, compType in keys(comps), values(comps)
     let compNameHash = ecs_hash(compName)
     if !templateHasComponent(tmpl, compName, compNameHash)
-      logwarn("ecs_verify: comp '{compName}'' wasn't found inside '{name}'' template")
+      logwarn("ecs_verify: comp '{compName}' wasn't found inside '{name}' template")
       res = false
       break
     let typeIdx = compTypes |> component_types_findType(compType)
@@ -68,7 +68,7 @@ def validate_template(name : string; comps : table<string; uint>; cb : block<(su
 
 def find_template(comps : table<string; uint>; cb : block<(name : string implicit; tmpl : ecs::Template#) : bool>) : bool
   var res = false
-  find_templateDB() <| $ [unused_argument(name)] (tmplName; tmpl)
+  getTemplateDB() |> find_templateDB() <| $ [unused_argument(name)] (tmplName; tmpl)
     let compTypes & = getComponentTypes()
     let dataComps & = getDataComponents()
 
@@ -180,7 +180,7 @@ def find_event_handler(filter : ReqSystemFilter; cb : block<(name : string impli
 def req_unique_event_handler(event_name : string) : bool
   var filter : ReqSystemFilter
   filter.allEvents |> insert(ecs_hash(event_name))
-  let res = find_event_handler(filter) <| $ [unused_argument(_)] (sys_name, system)
+  let res = find_event_handler(filter) <| $(sys_name, system)
     print("ecs_verify: system '{sys_name}' listen event '{event_name}'")
     dump_system(sys_name, system)
     return true
@@ -192,7 +192,7 @@ def req_unique_event_handler(event_name : string) : bool
 def req_event_handler(event_name : string) : bool
   var filter : ReqSystemFilter
   filter.anyEvents |> insert(ecs_hash(event_name))
-  let res = find_event_handler(filter) <| $ [unused_argument(_)] (sys_name, system)
+  let res = find_event_handler(filter) <| $(sys_name, system)
     print("ecs_verify: system '{sys_name}' listen event '{event_name}'")
     dump_system(sys_name, system)
     return true

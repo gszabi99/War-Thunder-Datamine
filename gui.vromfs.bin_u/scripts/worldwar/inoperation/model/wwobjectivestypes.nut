@@ -35,7 +35,7 @@ let { round, round_by_value } = require("%sqstd/math.nut")
   needStopTimer = function(_statusBlk, _tm) { return true }
   isDefender = function(blk, side)
   {
-    if (blk?.defenderSide && typeof side != typeof blk.defenderSide)
+    if (blk?.defenderSide && type(side) != type(blk.defenderSide))
       ::script_net_assert_once("invalid operation objective data", "Func isDefender: " + blk.defenderSide + " never be equal " + side)
 
     return blk?.defenderSide == side
@@ -123,7 +123,7 @@ let { round, round_by_value } = require("%sqstd/math.nut")
     unitCount = @(value, blk)
       value + ::g_ww_unit_type.getUnitTypeByTextCode(blk?.unitType).fontIcon
     advantage = @(value, _blk)
-      loc("wwar_obj/params/advantage/value", {advantageFactor = round_by_value(value, 2)})
+      loc("wwar_obj/params/advantage/value", {advantageFactor = round_by_value(value, 0.01)})
   }
 
   isParamVisible = {

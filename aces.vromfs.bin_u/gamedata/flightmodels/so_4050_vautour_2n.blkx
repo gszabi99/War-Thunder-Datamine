@@ -63,7 +63,7 @@
         "hp": 35.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 47.1
@@ -942,10 +942,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2388,6 +2396,10 @@
         "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra_t10.blk"
       },
       {
+        "name": "so_4050_vautour_2n_rockets_151",
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_rockets_151.blk"
+      },
+      {
         "name": "so_4050_vautour_2n_fr_rockets_matra116",
         "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2n_fr_rockets_matra116.blk"
       },
@@ -2632,6 +2644,70 @@
             ]
           },
           {
+            "iconType": "rockets_ap_small_group",
+            "name": "t10_151",
+            "reqModification": "fr_matra_type61",
+            "ShowNodes": {
+              "node": "pylon_rocket1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_1",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_3",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_5",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_1",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_3",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_5",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
             "iconType": "bombs_middle",
             "name": "fr_250kg_type_25c",
             "reqModification": "fr_250kg_type_25c",
@@ -2808,6 +2884,70 @@
                 "external": true,
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "head_121_a_11",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_small_group",
+            "name": "t10_151",
+            "reqModification": "fr_matra_type61",
+            "ShowNodes": {
+              "node": "pylon_rocket2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_7",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_9",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_11",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_7",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_9",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "head_121_a_11",
                 "bullets": 1,
                 "blockedByGroupId": 0
@@ -4379,6 +4519,70 @@
             ]
           },
           {
+            "iconType": "rockets_ap_small_group",
+            "name": "t10_151",
+            "reqModification": "fr_matra_type61",
+            "ShowNodes": {
+              "node": "pylon_rocket3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_12",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_10",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_8",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_12",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_10",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_8",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
             "iconType": "bombs_middle",
             "name": "fr_250kg_type_25c",
             "reqModification": "fr_250kg_type_25c",
@@ -4539,6 +4743,70 @@
                 "external": true,
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "head_121_a_2",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_small_group",
+            "name": "t10_151",
+            "reqModification": "fr_matra_type61",
+            "ShowNodes": {
+              "node": "pylon_rocket4"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_6",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_4",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "head_121_b_2",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_6",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "head_121_a_4",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "head_121_a_2",
                 "bullets": 1,
                 "blockedByGroupId": 0

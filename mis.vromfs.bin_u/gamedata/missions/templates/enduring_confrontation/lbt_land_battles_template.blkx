@@ -12,10 +12,7 @@
       "level": "levels/water.bin",
       "type": "singleMission",
       "environment": "Day",
-      "weather": "hazy",
-      "scoreLimit": 30000,
-      "restoreType": "attempts",
-      "optionalTakeOff": false
+      "weather": "hazy"
     }
   },
   "imports": {},
@@ -98,7 +95,7 @@
       },
       "else_actions": {}
     },
-    "lbt_matching": {
+    "lbt_matching_distance": {
       "isCategory": true,
       "is_enabled": true,
       "lbt_activity_init": {
@@ -127,42 +124,21 @@
           "missionGetBalanceLevel": {
             "input_var": "lbt_balance_level"
           },
-          "triggerActivate": [
-            {
-              "target": "lbt_matchning_distance_0_3",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "lbt_matchning_distance_4_7",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "lbt_matchning_distance_8_11",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "lbt_matchning_distance_12_16",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "lbt_matchning_distance_17_20",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            }
-          ]
+          "triggerEnable": {
+            "target": [
+              "lbt_m_distance_0_4",
+              "lbt_m_distance_5_8",
+              "lbt_m_distance_9_13",
+              "lbt_m_distance_14_19",
+              "lbt_m_distance_20_24",
+              "lbt_m_distance_25_28",
+              "lbt_m_distance_29_50"
+            ]
+          }
         },
         "else_actions": {}
       },
-      "lbt_matchning_distance_0_3": {
+      "lbt_m_distance_0_4": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -178,11 +154,21 @@
         "conditions": {
           "varCompareInt": {
             "var_value": "lbt_matching_rank",
-            "value": 4,
+            "value": 5,
             "comparasion_func": "less"
           }
         },
         "actions": {
+          "triggerDisable": {
+            "target": [
+              "lbt_m_distance_5_8",
+              "lbt_m_distance_9_13",
+              "lbt_m_distance_14_19",
+              "lbt_m_distance_20_24",
+              "lbt_m_distance_25_28",
+              "lbt_m_distance_29_50"
+            ]
+          },
           "varSetReal": {
             "value": 3000.0,
             "var": "lbt_activity_distance"
@@ -190,7 +176,7 @@
         },
         "else_actions": {}
       },
-      "lbt_matchning_distance_4_7": {
+      "lbt_m_distance_5_8": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -207,17 +193,72 @@
           "varCompareInt": [
             {
               "var_value": "lbt_matching_rank",
-              "value": 3,
+              "value": 4,
               "comparasion_func": "more"
             },
             {
               "var_value": "lbt_matching_rank",
-              "value": 8,
+              "value": 9,
               "comparasion_func": "less"
             }
           ]
         },
         "actions": {
+          "triggerDisable": {
+            "target": [
+              "lbt_m_distance_0_4",
+              "lbt_m_distance_9_13",
+              "lbt_m_distance_14_19",
+              "lbt_m_distance_20_24",
+              "lbt_m_distance_25_28",
+              "lbt_m_distance_29_50"
+            ]
+          },
+          "varSetReal": {
+            "value": 3500.0,
+            "var": "lbt_activity_distance"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_m_distance_9_13": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_matching_rank",
+              "value": 8,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "lbt_matching_rank",
+              "value": 14,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "lbt_m_distance_0_4",
+              "lbt_m_distance_5_8",
+              "lbt_m_distance_14_19",
+              "lbt_m_distance_20_24",
+              "lbt_m_distance_25_28",
+              "lbt_m_distance_29_50"
+            ]
+          },
           "varSetReal": {
             "value": 4500.0,
             "var": "lbt_activity_distance"
@@ -225,7 +266,7 @@
         },
         "else_actions": {}
       },
-      "lbt_matchning_distance_8_11": {
+      "lbt_m_distance_14_19": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -242,17 +283,27 @@
           "varCompareInt": [
             {
               "var_value": "lbt_matching_rank",
-              "value": 7,
+              "value": 13,
               "comparasion_func": "more"
             },
             {
               "var_value": "lbt_matching_rank",
-              "value": 12,
+              "value": 20,
               "comparasion_func": "less"
             }
           ]
         },
         "actions": {
+          "triggerDisable": {
+            "target": [
+              "lbt_m_distance_0_4",
+              "lbt_m_distance_5_8",
+              "lbt_m_distance_9_13",
+              "lbt_m_distance_20_24",
+              "lbt_m_distance_25_28",
+              "lbt_m_distance_29_50"
+            ]
+          },
           "varSetReal": {
             "value": 6000.0,
             "var": "lbt_activity_distance"
@@ -260,7 +311,7 @@
         },
         "else_actions": {}
       },
-      "lbt_matchning_distance_12_16": {
+      "lbt_m_distance_20_24": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -277,17 +328,27 @@
           "varCompareInt": [
             {
               "var_value": "lbt_matching_rank",
-              "value": 11,
+              "value": 19,
               "comparasion_func": "more"
             },
             {
               "var_value": "lbt_matching_rank",
-              "value": 17,
+              "value": 25,
               "comparasion_func": "less"
             }
           ]
         },
         "actions": {
+          "triggerDisable": {
+            "target": [
+              "lbt_m_distance_0_4",
+              "lbt_m_distance_5_8",
+              "lbt_m_distance_9_13",
+              "lbt_m_distance_14_19",
+              "lbt_m_distance_25_28",
+              "lbt_m_distance_29_50"
+            ]
+          },
           "varSetReal": {
             "value": 7500.0,
             "var": "lbt_activity_distance"
@@ -295,7 +356,7 @@
         },
         "else_actions": {}
       },
-      "lbt_matchning_distance_17_20": {
+      "lbt_m_distance_25_28": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -312,7 +373,52 @@
           "varCompareInt": [
             {
               "var_value": "lbt_matching_rank",
-              "value": 16,
+              "value": 24,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "lbt_matching_rank",
+              "value": 29,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "lbt_m_distance_0_4",
+              "lbt_m_distance_5_8",
+              "lbt_m_distance_9_13",
+              "lbt_m_distance_14_19",
+              "lbt_m_distance_20_24",
+              "lbt_m_distance_29_50"
+            ]
+          },
+          "varSetReal": {
+            "value": 9000.0,
+            "var": "lbt_activity_distance"
+          }
+        },
+        "else_actions": {}
+      },
+      "lbt_m_distance_29_50": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_matching_rank",
+              "value": 28,
               "comparasion_func": "more"
             },
             {
@@ -323,6 +429,16 @@
           ]
         },
         "actions": {
+          "triggerDisable": {
+            "target": [
+              "lbt_m_distance_0_4",
+              "lbt_m_distance_5_8",
+              "lbt_m_distance_9_13",
+              "lbt_m_distance_14_19",
+              "lbt_m_distance_20_24",
+              "lbt_m_distance_25_28"
+            ]
+          },
           "varSetReal": {
             "value": 9000.0,
             "var": "lbt_activity_distance"
@@ -924,6 +1040,12 @@
                 "value": "starting spawns"
               },
               {
+                "value": "creating central area name"
+              },
+              {
+                "value": "destroying redienctences"
+              },
+              {
                 "value": "waiting 10 seconds and strt battle"
               }
             ],
@@ -951,6 +1073,10 @@
               {
                 "value": "flt_area_",
                 "var": "lbt_battle_heat_var_name"
+              },
+              {
+                "value": "lbt_battle_area_",
+                "var": "lbt_battle_central_area_name"
               }
             ],
             "varAddString": [
@@ -973,6 +1099,11 @@
                 "value": "_heat",
                 "digits": 0,
                 "var": "lbt_battle_heat_var_name"
+              },
+              {
+                "value": "@lbt_battle_frontline_idx",
+                "digits": 2,
+                "var": "lbt_battle_central_area_name"
               }
             ],
             "varSetInt": {
@@ -997,6 +1128,14 @@
                 "target": "lbt_battle_start"
               }
             ],
+            "missionDestroyArea": {
+              "target_type": "ALL",
+              "area": [
+                "@lbt_battle_t1_spawn_name",
+                "@lbt_battle_t2_spawn_name",
+                "@lbt_battle_central_area_name"
+              ]
+            },
             "wait": {
               "time": 10.0
             }
@@ -2238,7 +2377,7 @@
                   "@lbt_battle_t1_acar_name"
                 ],
                 "target_type": "isActive",
-                "speed": 5.0,
+                "speed": 3.0,
                 "follow_radius": 150.0,
                 "delayForObjects": [
                   5.0,
@@ -2326,31 +2465,43 @@
             },
             "triggerActivate": [
               {
-                "target": "lbt_aaa_pvp_matching_0_3",
+                "target": "lbt_aaa_pvp_matching_0_4",
                 "activate_type": "checkConidtions",
                 "check_trigger_status": false,
                 "after_activation": "disable"
               },
               {
-                "target": "lbt_aaa_pvp_matching_4_7",
+                "target": "lbt_aaa_pvp_matching_5_8",
                 "activate_type": "checkConidtions",
                 "check_trigger_status": false,
                 "after_activation": "disable"
               },
               {
-                "target": "lbt_aaa_pvp_matching_8_11",
+                "target": "lbt_aaa_pvp_matching_9_13",
                 "activate_type": "checkConidtions",
                 "check_trigger_status": false,
                 "after_activation": "disable"
               },
               {
-                "target": "lbt_aaa_pvp_matching_12_16",
+                "target": "lbt_aaa_pvp_matching_14_19",
                 "activate_type": "checkConidtions",
                 "check_trigger_status": false,
                 "after_activation": "disable"
               },
               {
-                "target": "lbt_aaa_pvp_matching_17_50",
+                "target": "lbt_aaa_pvp_matching_20_24",
+                "activate_type": "checkConidtions",
+                "check_trigger_status": false,
+                "after_activation": "disable"
+              },
+              {
+                "target": "lbt_aaa_pvp_matching_25_28",
+                "activate_type": "checkConidtions",
+                "check_trigger_status": false,
+                "after_activation": "disable"
+              },
+              {
+                "target": "lbt_aaa_pvp_matching_29_50",
                 "activate_type": "checkConidtions",
                 "check_trigger_status": false,
                 "after_activation": "disable"
@@ -2383,7 +2534,7 @@
             ]
           }
         },
-        "lbt_aaa_pvp_matching_0_3": {
+        "lbt_aaa_pvp_matching_0_4": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -2399,7 +2550,7 @@
           "conditions": {
             "varCompareInt": {
               "var_value": "lbt_matching_rank",
-              "value": 4,
+              "value": 5,
               "comparasion_func": "less"
             }
           },
@@ -2428,13 +2579,13 @@
               "fireRandom": true,
               "targetChangeInterval": 6.0,
               "targetChangeProb": 0.25,
-              "ChainfireTime": 2.0,
+              "ChainfireTime": 1.0,
               "DelayAfterShoot": 2.0
             }
           },
           "else_actions": {}
         },
-        "lbt_aaa_pvp_matching_4_7": {
+        "lbt_aaa_pvp_matching_5_8": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -2451,12 +2602,12 @@
             "varCompareInt": [
               {
                 "var_value": "lbt_matching_rank",
-                "value": 3,
+                "value": 4,
                 "comparasion_func": "more"
               },
               {
                 "var_value": "lbt_matching_rank",
-                "value": 8,
+                "value": 9,
                 "comparasion_func": "less"
               }
             ]
@@ -2486,13 +2637,13 @@
               "fireRandom": true,
               "targetChangeInterval": 6.0,
               "targetChangeProb": 0.25,
-              "ChainfireTime": 2.0,
+              "ChainfireTime": 1.5,
               "DelayAfterShoot": 2.0
             }
           },
           "else_actions": {}
         },
-        "lbt_aaa_pvp_matching_8_11": {
+        "lbt_aaa_pvp_matching_9_13": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -2509,12 +2660,12 @@
             "varCompareInt": [
               {
                 "var_value": "lbt_matching_rank",
-                "value": 7,
+                "value": 8,
                 "comparasion_func": "more"
               },
               {
                 "var_value": "lbt_matching_rank",
-                "value": 12,
+                "value": 14,
                 "comparasion_func": "less"
               }
             ]
@@ -2550,7 +2701,7 @@
           },
           "else_actions": {}
         },
-        "lbt_aaa_pvp_matching_12_16": {
+        "lbt_aaa_pvp_matching_14_19": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -2567,12 +2718,12 @@
             "varCompareInt": [
               {
                 "var_value": "lbt_matching_rank",
-                "value": 11,
+                "value": 13,
                 "comparasion_func": "more"
               },
               {
                 "var_value": "lbt_matching_rank",
-                "value": 17,
+                "value": 20,
                 "comparasion_func": "less"
               }
             ]
@@ -2602,13 +2753,13 @@
               "fireRandom": true,
               "targetChangeInterval": 5.0,
               "targetChangeProb": 0.25,
-              "ChainfireTime": 2.0,
+              "ChainfireTime": 1.5,
               "DelayAfterShoot": 2.0
             }
           },
           "else_actions": {}
         },
-        "lbt_aaa_pvp_matching_17_50": {
+        "lbt_aaa_pvp_matching_20_24": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -2625,7 +2776,123 @@
             "varCompareInt": [
               {
                 "var_value": "lbt_matching_rank",
-                "value": 16,
+                "value": 19,
+                "comparasion_func": "more"
+              },
+              {
+                "var_value": "lbt_matching_rank",
+                "value": 25,
+                "comparasion_func": "less"
+              }
+            ]
+          },
+          "actions": {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "aaa",
+              "object_var_comp_op": "equal",
+              "object_var_value": 1,
+              "object": [
+                "@lbt_battle_t1_army_squad_name",
+                "@lbt_battle_t2_army_squad_name"
+              ],
+              "object_type": "isUnitVar",
+              "stealthRadius": 128000.0,
+              "attack_type": "fire_at_will",
+              "targetAir": true,
+              "targetGnd": false,
+              "accuracy": 0.5,
+              "airAccuracy": 0.5,
+              "maxDeviationAngle": 12.0,
+              "checkVisibilityTarget": true,
+              "visibilityTreeTransparencyThreshold": 0.1,
+              "airEffShootingRate": 0.3,
+              "adaptiveAccuracyTime": 10.0,
+              "fireRandom": true,
+              "targetChangeInterval": 5.0,
+              "targetChangeProb": 0.25,
+              "ChainfireTime": 1.5,
+              "DelayAfterShoot": 2.0
+            }
+          },
+          "else_actions": {}
+        },
+        "lbt_aaa_pvp_matching_25_28": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 30.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "lbt_matching_rank",
+                "value": 24,
+                "comparasion_func": "more"
+              },
+              {
+                "var_value": "lbt_matching_rank",
+                "value": 27,
+                "comparasion_func": "less"
+              }
+            ]
+          },
+          "actions": {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "aaa",
+              "object_var_comp_op": "equal",
+              "object_var_value": 1,
+              "object": [
+                "@lbt_battle_t1_army_squad_name",
+                "@lbt_battle_t2_army_squad_name"
+              ],
+              "object_type": "isUnitVar",
+              "stealthRadius": 128000.0,
+              "attack_type": "fire_at_will",
+              "targetAir": true,
+              "targetGnd": false,
+              "accuracy": 0.5,
+              "airAccuracy": 0.5,
+              "maxDeviationAngle": 12.0,
+              "checkVisibilityTarget": true,
+              "visibilityTreeTransparencyThreshold": 0.1,
+              "airEffShootingRate": 0.3,
+              "adaptiveAccuracyTime": 10.0,
+              "fireRandom": true,
+              "targetChangeInterval": 5.0,
+              "targetChangeProb": 0.25,
+              "ChainfireTime": 1.5,
+              "DelayAfterShoot": 2.0
+            }
+          },
+          "else_actions": {}
+        },
+        "lbt_aaa_pvp_matching_29_50": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 30.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": [
+              {
+                "var_value": "lbt_matching_rank",
+                "value": 28,
                 "comparasion_func": "more"
               },
               {
@@ -2660,7 +2927,7 @@
               "fireRandom": true,
               "targetChangeInterval": 5.0,
               "targetChangeProb": 0.25,
-              "ChainfireTime": 2.0,
+              "ChainfireTime": 1.5,
               "DelayAfterShoot": 2.0
             }
           },
@@ -2711,7 +2978,7 @@
               "fireRandom": true,
               "targetChangeInterval": 9.0,
               "targetChangeProb": 0.25,
-              "ChainfireTime": 2.0,
+              "ChainfireTime": 1.5,
               "DelayAfterShoot": 2.0
             }
           },
@@ -3141,7 +3408,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 5.0
+            "time": 10.0
           }
         },
         "conditions": {},
@@ -3190,7 +3457,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -3355,7 +3622,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -3424,7 +3691,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -3470,7 +3737,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -3516,7 +3783,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -3556,6 +3823,12 @@
               "value": "poluchaem imya peremennoj, gde hranitsya armiya"
             },
             {
+              "value": "right border check idx"
+            },
+            {
+              "value": "left border check idx"
+            },
+            {
               "value": "proveryaem levuyu zonu"
             }
           ],
@@ -3579,6 +3852,16 @@
               "value": 0,
               "var": "lbt_heat_bottom_idx",
               "input_var": "lbt_heat_cur_idx"
+            },
+            {
+              "value": 0,
+              "var": "lbt_heat_right_border_check_idx",
+              "input_var": "lbt_heat_col_idx"
+            },
+            {
+              "value": 0,
+              "var": "lbt_heat_left_border_check_idx",
+              "input_var": "lbt_heat_col_idx"
             }
           ],
           "varModify": [
@@ -3605,6 +3888,30 @@
               "var": "lbt_heat_bottom_idx",
               "use_variable": true,
               "var_value": "flt_zones_in_col"
+            },
+            {
+              "operator": "add",
+              "value": -1.0,
+              "var": "lbt_heat_right_border_check_idx"
+            },
+            {
+              "operator": "mul",
+              "value": 1.0,
+              "var": "lbt_heat_right_border_check_idx",
+              "use_variable": true,
+              "var_value": "flt_zones_in_col"
+            },
+            {
+              "operator": "mul",
+              "value": 1.0,
+              "var": "lbt_heat_left_border_check_idx",
+              "use_variable": true,
+              "var_value": "flt_zones_in_col"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_heat_right_border_check_idx"
             }
           ],
           "varSetString": [
@@ -3731,16 +4038,24 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
-          "varCompareInt": {
-            "var_value": "lbt_heat_left_idx",
-            "value": 0,
-            "comparasion_func": "notLess",
-            "var_value_other": "lbt_heat_min_idx"
-          },
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "notLess",
+              "var_value_other": "lbt_heat_min_idx"
+            },
+            {
+              "var_value": "lbt_heat_left_idx",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "lbt_heat_left_border_check_idx"
+            }
+          ],
           "objectExists": {
             "target": "@lbt_heat_left_name",
             "type": "area"
@@ -3758,6 +4073,9 @@
               "value": "poluchaem armiyu levoj yachejki"
             },
             {
+              "value": ""
+            },
+            {
               "value": "sravnivaem armii"
             }
           ],
@@ -3766,6 +4084,22 @@
             "var": "lbt_heat_left_army",
             "input_var": "@lbt_heat_army_left_var_name"
           },
+          "varSetString": {
+            "value": "flt_area_",
+            "var": "lbt_heat_left_heat_var_name"
+          },
+          "varAddString": [
+            {
+              "value": "@lbt_heat_left_idx",
+              "digits": 2,
+              "var": "lbt_heat_left_heat_var_name"
+            },
+            {
+              "value": "_heat",
+              "digits": 0,
+              "var": "lbt_heat_left_heat_var_name"
+            }
+          ],
           "triggerEnable": {
             "target": "lbt_heat_zone_left_army_check"
           }
@@ -3789,7 +4123,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -3804,6 +4138,11 @@
               "value": 0,
               "comparasion_func": "notEqual",
               "var_value_other": "lbt_heat_left_army"
+            },
+            {
+              "var_value": "@lbt_heat_left_heat_var_name",
+              "value": -10000,
+              "comparasion_func": "notEqual"
             }
           ]
         },
@@ -3839,7 +4178,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -3909,16 +4248,24 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
-          "varCompareInt": {
-            "var_value": "lbt_heat_right_idx",
-            "value": 0,
-            "comparasion_func": "notMore",
-            "var_value_other": "lbt_heat_max_idx"
-          },
+          "varCompareInt": [
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "notMore",
+              "var_value_other": "lbt_heat_max_idx"
+            },
+            {
+              "var_value": "lbt_heat_right_idx",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "lbt_heat_right_border_check_idx"
+            }
+          ],
           "objectExists": {
             "target": "@lbt_heat_right_name",
             "type": "area"
@@ -3936,6 +4283,9 @@
               "value": "poluchaem armiyu levoj yachejki"
             },
             {
+              "value": ""
+            },
+            {
               "value": "sravnivaem armii"
             }
           ],
@@ -3944,6 +4294,22 @@
             "var": "lbt_heat_right_army",
             "input_var": "@lbt_heat_army_right_var_name"
           },
+          "varSetString": {
+            "value": "flt_area_",
+            "var": "lbt_heat_right_heat_var_name"
+          },
+          "varAddString": [
+            {
+              "value": "@lbt_heat_right_idx",
+              "digits": 2,
+              "var": "lbt_heat_right_heat_var_name"
+            },
+            {
+              "value": "_heat",
+              "digits": 0,
+              "var": "lbt_heat_right_heat_var_name"
+            }
+          ],
           "triggerEnable": {
             "target": "lbt_heat_zone_right_army_check"
           }
@@ -3967,7 +4333,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -3982,6 +4348,11 @@
               "value": 0,
               "comparasion_func": "notEqual",
               "var_value_other": "lbt_heat_right_army"
+            },
+            {
+              "var_value": "@lbt_heat_right_heat_var_name",
+              "value": -10000,
+              "comparasion_func": "notEqual"
             }
           ]
         },
@@ -4017,7 +4388,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4087,7 +4458,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4105,6 +4476,9 @@
               "value": "poluchaem armiyu verhnej yachejki"
             },
             {
+              "value": ""
+            },
+            {
               "value": "sravnivaem armii"
             }
           ],
@@ -4113,6 +4487,22 @@
             "var": "lbt_heat_upper_army",
             "input_var": "@lbt_heat_army_upper_var_name"
           },
+          "varSetString": {
+            "value": "flt_area_",
+            "var": "lbt_heat_upper_heat_var_name"
+          },
+          "varAddString": [
+            {
+              "value": "@lbt_heat_upper_idx",
+              "digits": 2,
+              "var": "lbt_heat_upper_heat_var_name"
+            },
+            {
+              "value": "_heat",
+              "digits": 0,
+              "var": "lbt_heat_upper_heat_var_name"
+            }
+          ],
           "triggerEnable": {
             "target": "lbt_heat_zone_upper_army_check"
           }
@@ -4136,7 +4526,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4151,6 +4541,11 @@
               "var_value": "lbt_heat_upper_army",
               "value": 0,
               "comparasion_func": "more"
+            },
+            {
+              "var_value": "@lbt_heat_upper_heat_var_name",
+              "value": -10000,
+              "comparasion_func": "notEqual"
             }
           ]
         },
@@ -4189,7 +4584,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4259,7 +4654,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4277,6 +4672,9 @@
               "value": "poluchaem armiyu nizhnej yachejki"
             },
             {
+              "value": ""
+            },
+            {
               "value": "sravnivaem armii"
             }
           ],
@@ -4285,6 +4683,22 @@
             "var": "lbt_heat_bottom_army",
             "input_var": "@lbt_heat_army_bottom_var_name"
           },
+          "varSetString": {
+            "value": "flt_area_",
+            "var": "lbt_heat_bottom_heat_var_name"
+          },
+          "varAddString": [
+            {
+              "value": "@lbt_heat_bottom_idx",
+              "digits": 2,
+              "var": "lbt_heat_bottom_heat_var_name"
+            },
+            {
+              "value": "_heat",
+              "digits": 0,
+              "var": "lbt_heat_bottom_heat_var_name"
+            }
+          ],
           "triggerEnable": {
             "target": "lbt_heat_zone_bottom_army_check"
           }
@@ -4308,7 +4722,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4329,6 +4743,11 @@
               "value": 0,
               "comparasion_func": "notEqual",
               "var_value_other": "lbt_heat_bottom_army"
+            },
+            {
+              "var_value": "@lbt_heat_bottom_heat_var_name",
+              "value": -10000,
+              "comparasion_func": "notEqual"
             }
           ]
         },
@@ -4364,7 +4783,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4434,7 +4853,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {},
@@ -4475,7 +4894,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {},
@@ -4508,7 +4927,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4591,7 +5010,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {
@@ -4649,7 +5068,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.5
+            "time": 0.1
           }
         },
         "conditions": {},
@@ -5387,6 +5806,9 @@
               "value": "gaining number of active units for team B"
             },
             {
+              "value": "disable aaa shooting"
+            },
+            {
               "value": "vklyuchaem proverku kto vyigral"
             }
           ],
@@ -5478,17 +5900,33 @@
               "@lbt_end_t2_battle_squad_name"
             ]
           },
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": [
-              "@lbt_end_t1_battle_squad_name",
-              "@lbt_end_t2_battle_squad_name"
-            ],
-            "stealthRadius": 2500.0
-          },
+          "unitSetProperties": [
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": [
+                "@lbt_end_t1_battle_squad_name",
+                "@lbt_end_t2_battle_squad_name"
+              ],
+              "stealthRadius": 4500.0
+            },
+            {
+              "object_marking": 0,
+              "object_var_name": "aaa",
+              "object_var_comp_op": "equal",
+              "object_var_value": 1,
+              "object": [
+                "@lbt_end_t1_battle_squad_name",
+                "@lbt_end_t2_battle_squad_name"
+              ],
+              "object_type": "isUnitVar",
+              "attack_type": "hold_fire",
+              "targetAir": false,
+              "targetGnd": false
+            }
+          ],
           "varSetInt": [
             {
               "value": 0,
@@ -6960,7 +7398,14 @@
     "lbt_battle_t1_spawn_in_progress": false,
     "lbt_battle_t2_spawn_in_progress": false,
     "lbt_t1_counter_attack_zone_idx": 0,
-    "lbt_t2_counter_attack_zone_idx": 0
+    "lbt_t2_counter_attack_zone_idx": 0,
+    "lbt_battle_central_area_name": "",
+    "lbt_heat_left_heat_var_name": "",
+    "lbt_heat_right_heat_var_name": "",
+    "lbt_heat_upper_heat_var_name": "",
+    "lbt_heat_bottom_heat_var_name": "",
+    "lbt_heat_right_border_check_idx": 0,
+    "lbt_heat_left_border_check_idx": 0
   },
   "dialogs": {},
   "airfields": {},

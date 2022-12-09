@@ -239,10 +239,11 @@
   "newDamageTimer": 100.0,
   "friendlyFireImmortalOnLandTime": 30.0,
   "readyToDieRepairTimeMult": 3.0,
+  "bailoutEnabled": true,
   "bailoutReadyToDieTime": 15.0,
-  "airfieldRepairDamageLimit": 0.5,
   "bailoutHoldTime": 3.0,
   "bailoutHoldTimeAtExitZone": 1.5,
+  "airfieldRepairDamageLimit": 0.65,
   "enableHeicopterTargetLock3dPerson": true,
   "aimCorrectionAngleMax": 5.0,
   "rocketShakeCamera": 1.0,
@@ -349,6 +350,10 @@
     20.0
   ],
   "ticksBetweenBulletsTraceShoots": 3,
+  "gyroSightOmegaFilterTau": 0.2,
+  "gyroSightDistanceDefault": 275.0,
+  "gyroSightBulletDrag": false,
+  "gyroSightBulletGravity": true,
   "secondaryWeaponSwitchOnOutOfAmmoTimeOut": 1.0,
   "enableBotTorpedoShooting": true,
   "torpedoShootByBotMaxDistance": 7500.0,
@@ -6495,6 +6500,10 @@
       "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
       "staticCascadeDualPass": false,
+      "staticCascadeTransition": true,
+      "staticCascadeStopRenderingAfterRegionSplit": true,
+      "staticCascadeDepthBias": 0.007,
+      "staticCascadeDepthSlopeBias": 0.02,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4,
@@ -6526,7 +6535,10 @@
       "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
       "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.001,
+      "staticCascadeTransition": true,
+      "staticCascadeStopRenderingAfterRegionSplit": true,
+      "staticCascadeDepthBias": 0.007,
+      "staticCascadeDepthSlopeBias": 0.02,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4,
@@ -6536,30 +6548,37 @@
     "medium": {
       "cascadeWidth": 768,
       "splitsW": 2,
-      "splitsH": 2,
+      "splitsH": 1,
       "cascadeDepth24bit": false,
-      "tpsShadowDist": 340.0,
-      "tpsPowWeight": 0.92,
-      "cockpitShadowDist": 300.0,
-      "cockpitPowWeight": 0.992,
-      "tanksShadowDist": 125.0,
-      "tanksPowWeight": 0.8,
-      "shipsShadowDist": 80.0,
-      "shipsPowWeight": 0.78,
-      "bigShipsShadowDist": 120.0,
-      "bigShipsPowWeight": 0.66,
-      "fadeOut": 30.0,
+      "tpsShadowDist": 60.0,
+      "tpsPowWeight": 0.3,
+      "cockpitShadowDist": 120.0,
+      "cockpitPowWeight": 0.95,
+      "tanksShadowDist": 40.0,
+      "tanksPowWeight": 0.4,
+      "shipsShadowDist": 60.0,
+      "shipsPowWeight": 0.25,
+      "bigShipsShadowDist": 160.0,
+      "bigShipsPowWeight": 0.4,
+      "fadeOut": 10.0,
       "rotationMargin": 0.1,
       "staticCascadeCount": 1,
-      "staticCascadeRegMul": 5.0,
+      "staticCascadeRegMul": 1.0,
       "staticCascadeTexWidth": 1024,
-      "staticCascadeRegWidth": 150.0,
+      "staticCascadeRegWidth": 500.0,
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 3.0,
-      "staticCascadeUseRiSecLayer": false,
-      "staticCascadeDualPass": true,
+      "staticCascadeUseRiSecLayer": true,
+      "staticCascadeDualPass": false,
+      "staticCascadeTransition": true,
+      "staticCascadeStopRenderingAfterRegionSplit": true,
       "staticCascadeDepthBias": 0.007,
-      "useOcclusion": true
+      "staticCascadeDepthSlopeBias": 0.02,
+      "useOcclusion": true,
+      "hangarShadowDist": 80.0,
+      "hangarPowWeight": 0.4,
+      "hangarShipsShadowDist": 80.0,
+      "hangarShipsPowWeight": 0.4
     }
   },
   "shadows": {
@@ -14121,6 +14140,38 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "bosvark_spaag"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "m1128_wolfpack"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "m1128_wolfpack"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "m1128_wolfpack"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "m1128_wolfpack"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "m1128_wolfpack"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "m1128_wolfpack"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "m1128_wolfpack"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "m1128_wolfpack"
         }
       ]
     },
@@ -15050,7 +15101,11 @@
         "helipad_light_a",
         "helipad_light_b",
         "dynaf_platform_light_a",
-        "dynaf_platform_light_b"
+        "dynaf_platform_light_b",
+        "airfield_flight_light_blue",
+        "airfield_flight_light_red",
+        "airfield_flight_light_green",
+        "airfield_flight_light_yellow"
       ]
     },
     "hideForMode0re": {
@@ -15166,7 +15221,11 @@
         "helipad_light_a",
         "helipad_light_b",
         "dynaf_platform_light_a",
-        "dynaf_platform_light_b"
+        "dynaf_platform_light_b",
+        "airfield_flight_light_blue",
+        "airfield_flight_light_red",
+        "airfield_flight_light_green",
+        "airfield_flight_light_yellow"
       ]
     },
     "hideForMode1": {
@@ -15539,7 +15598,11 @@
         "modern_townhouse_2_floors_d",
         "modern_townhouse_2_floors_e",
         "suspencion_bridge_a",
-        "oil_platform_a"
+        "oil_platform_a",
+        "airfield_flight_light_blue",
+        "airfield_flight_light_red",
+        "airfield_flight_light_green",
+        "airfield_flight_light_yellow"
       ]
     },
     "badLod1ForStaticShadow": {
@@ -16671,7 +16734,9 @@
       0.01,
       0.01,
       0.8
-    ]
+    ],
+    "useProjectedDecalsForSplashDecals": true,
+    "useExplosionPatch": true
   },
   "cutting": {
     "diffMarksTex": "dyn_decals_atlas_a",
@@ -17128,6 +17193,49 @@
     }
   },
   "prefetchEffects": {
-    "name": "explosion_ship_big"
+    "name": [
+      "explosion_ship_big",
+      "tank_exhaust",
+      "ship_exhaust",
+      "ad_metal",
+      "ad_metal_small",
+      "ad_wood_small",
+      "ad_dust_stucco",
+      "ad_dust_bollard",
+      "ad_dust_red_bricks",
+      "ad_fence_wood_small",
+      "ad_shlagbaum",
+      "tank_smoke_small",
+      "tank_explosion",
+      "ground_model_expl",
+      "smoke_exhaust_air",
+      "tracers_destroyed_small_red",
+      "ad_paper_splash_medium",
+      "smoke_after_hit_big",
+      "fire_after_hit_big",
+      "land_crash_fire_time_limit",
+      "minor_fuel_fire",
+      "hit_smoke",
+      "hit_flame",
+      "ad_sand",
+      "major_fuel_fire_ground",
+      "tracers_destroyed_small_green",
+      "tracers_destroyed_med_white",
+      "tracers_ricocheted_small_green",
+      "tracers_ricocheted_small_red",
+      "fire_trails_dstr_smal",
+      "fire_trails_explosion_smal",
+      "fire_trails_dstr_med",
+      "smoke_after_hit_tiny",
+      "smoke_after_hit_med",
+      "fire_after_hit_tiny",
+      "fire_after_hit_small",
+      "tracers_destroyed_big_red",
+      "location_smoke_city",
+      "location_lighthouse_50_fx",
+      "location_ground_leaves",
+      "location_ground_papers",
+      "dust_pieces"
+    ]
   }
 }

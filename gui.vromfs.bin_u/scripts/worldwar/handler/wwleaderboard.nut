@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let userstat = require("userstat")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -115,7 +115,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
       }
     }, this)
 
-    ::userstat.request(userstatRequestData, @(userstatTbl) callback(userstatTbl))
+    userstat.request(userstatRequestData, @(userstatTbl) callback(userstatTbl))
   }
 
   function fillMapsList()

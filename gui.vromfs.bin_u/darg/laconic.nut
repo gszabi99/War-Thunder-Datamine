@@ -39,11 +39,11 @@ let Style = class { //to be able distinguish style elements from components
     //I do not know the way to return instance of the same class if it is passed here
     let val = {}
     foreach(v in vargv){
-      if (typeof v == "instance" && "value" in v) { //to create Style from Styles
+      if (type(v) == "instance" && "value" in v) { //to create Style from Styles
         val.__update(v.value)
       }
       else {
-        assert(typeof v == "table")
+        assert(type(v) == "table")
         val.__update(v)
       }
     }
@@ -52,7 +52,7 @@ let Style = class { //to be able distinguish style elements from components
 }
 
 let extendable = ["watch", "behavior"]
-let toArray = @(v) typeof(v) == "array" ? v : [v]
+let toArray = @(v) type(v) == "array" ? v : [v]
 
 let function comp(...) {
   local [styles, children] = partition(flatten(vargv), @(v) v instanceof Style)
@@ -118,7 +118,7 @@ let Button = Style({behavior = Behaviors.Button})
 let function Size(...) {
   assert(vargv.len()<3)
   local size = vargv
-  if (size.len()==1 && typeof size?[0] != "array")
+  if (size.len()==1 && type(size?[0]) != "array")
     size = [size[0], size[0]]
   else if (size.len()==0)
     size = null
@@ -132,7 +132,7 @@ let YOfs = @(y) Style({pos=[0,y]})
 let XOfs = @(x) Style({pos=[0,x]})
 
 let function updateWithStyle(obj, style){
-  if (typeof style == "table"){
+  if (type(style) == "table") {
     foreach (k in style)
       assert(k not in obj)
     obj.__update(style)
@@ -149,14 +149,14 @@ let function updateWithStyle(obj, style){
 }
 
 let function txt(text, style = null) {
-  let obj = (typeof text == "table")
+  let obj = (type(text) == "table")
     ? text.__merge({rendObj = ROBJ_TEXT})
     : {rendObj = ROBJ_TEXT text}
   return updateWithStyle(obj, style)
 }
 
 let function img(image, style = null) {
-  let obj = (typeof image == "table") ? image.__merge({rendObj = ROBJ_IMAGE}) : {rendObj = ROBJ_IMAGE image}
+  let obj = (type(image) == "table") ? image.__merge({rendObj = ROBJ_IMAGE}) : {rendObj = ROBJ_IMAGE image}
   return updateWithStyle(obj, style)
 }
 

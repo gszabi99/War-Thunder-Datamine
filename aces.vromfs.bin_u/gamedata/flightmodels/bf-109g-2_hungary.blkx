@@ -30,6 +30,12 @@
       "cannon1_dm": {
         "hp": 15.0
       },
+      "cannon2_dm": {
+        "hp": 15.0
+      },
+      "cannon3_dm": {
+        "hp": 15.0
+      },
       "mgun1_dm": {
         "hp": 15.0
       },
@@ -160,6 +166,12 @@
         "hp": 19.5
       },
       "cover4_dm": {
+        "hp": 19.5
+      },
+      "cover5_dm": {
+        "hp": 19.5
+      },
+      "cover6_dm": {
         "hp": 19.5
       }
     },
@@ -348,6 +360,12 @@
         "name": "cannon1_dm"
       },
       {
+        "name": "cannon2_dm"
+      },
+      {
+        "name": "cannon3_dm"
+      },
+      {
         "name": "cover1_dm"
       },
       {
@@ -358,6 +376,12 @@
       },
       {
         "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
+      },
+      {
+        "name": "cover6_dm"
       },
       {
         "name": "elevator0_dm",
@@ -1044,10 +1068,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2081,7 +2113,24 @@
       {
         "name": "Bf-109G-2_R6",
         "blk": "gameData/FlightModels/weaponPresets/bf-109G-2_R6.blk",
-        "reqModification": "Bf-109G-2_R6"
+        "reqModification": "Bf-109G-2_R6",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
+            "tier": [
+              {
+                "idx": 5,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              },
+              {
+                "idx": 7,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              }
+            ]
+          }
+        }
       }
     ]
   },

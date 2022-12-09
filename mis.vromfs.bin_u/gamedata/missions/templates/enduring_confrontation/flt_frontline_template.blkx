@@ -2515,12 +2515,20 @@
           }
         },
         "else_actions": {
-          "comment": {
-            "value": "vyshli za predely massiva. vystavlyaem flag okonchaniya"
-          },
+          "comment": [
+            {
+              "value": "vyshli za predely massiva. vystavlyaem flag okonchaniya"
+            },
+            {
+              "value": "launching starting battles"
+            }
+          ],
           "varSetBool": {
             "value": false,
             "var": "flt_state_in_progress"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_start"
           }
         }
       },
@@ -2858,12 +2866,20 @@
           }
         },
         "else_actions": {
-          "comment": {
-            "value": "vyshli za predely massiva. vystavlyaem flag okonchaniya"
-          },
+          "comment": [
+            {
+              "value": "vyshli za predely massiva. vystavlyaem flag okonchaniya"
+            },
+            {
+              "value": "launching starting battles"
+            }
+          ],
           "varSetBool": {
             "value": false,
             "var": "flt_state_in_progress"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_start"
           }
         }
       },
@@ -3003,7 +3019,7 @@
               "value": "govorim, chto state - armiya"
             },
             {
-              "value": "checking random battle chance"
+              "value": "going by col rotator"
             }
           ],
           "varSetInt": {
@@ -3015,7 +3031,7 @@
             "var": "@flt_state_type_var"
           },
           "triggerEnable": {
-            "target": "flt_random_battles_t1_start"
+            "target": "flt_state_mirror_check_col"
           }
         },
         "else_actions": {
@@ -3067,7 +3083,7 @@
               "value": "govorim, chto state - armiya"
             },
             {
-              "value": "checking random battle chance"
+              "value": "going by col rotator"
             }
           ],
           "varSetInt": {
@@ -3079,12 +3095,12 @@
             "var": "@flt_state_type_var"
           },
           "triggerEnable": {
-            "target": "flt_random_battles_t2_start"
+            "target": "flt_state_mirror_check_col"
           }
         },
         "else_actions": {
           "comment": {
-            "value": "dal'she po ciklu"
+            "value": "going by col rotator"
           },
           "triggerEnable": {
             "target": "flt_state_mirror_check_col"
@@ -3095,6 +3111,682 @@
     "flt_random_battles_at_start": {
       "isCategory": true,
       "is_enabled": true,
+      "flt_random_battles_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 10.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": [
+                "flt_random_battles_cur_row",
+                "flt_random_battles_cur_col"
+              ]
+            },
+            {
+              "value": 0,
+              "var": "flt_random_battles_cur_cell",
+              "input_var": "flt_start_cell"
+            }
+          ],
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_rotator"
+          }
+        },
+        "else_actions": {}
+      },
+      "flt_random_battles_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "flt_random_battles_cur_row",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "flt_zones_in_row_real"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "proverili chto ne  vyshli za predely"
+            },
+            {
+              "value": "postavili schetchik vnutri stroki v 0"
+            },
+            {
+              "value": "proveryaem stroki"
+            }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "flt_random_battles_cur_row"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_random_battles_cur_col"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_check_col"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "flt_random_battles_restart_check"
+          }
+        }
+      },
+      "flt_random_battles_check_col": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "flt_random_battles_cur_col",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "flt_zones_in_col_real"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "v predelah stroki"
+            },
+            {
+              "value": "poluchaem nomer yachejki"
+            },
+            {
+              "value": "sozdaem imya peremennoj, hranyashchej sostoyanie yachejki"
+            },
+            {
+              "value": "getting max cells num"
+            },
+            {
+              "value": "get left idx for team A"
+            },
+            {
+              "value": "get right idx for team B"
+            },
+            {
+              "value": ""
+            }
+          ],
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "flt_random_battles_cur_col"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "flt_random_battles_cur_cell"
+            },
+            {
+              "operator": "mul",
+              "value": 1.0,
+              "var": "flt_max_cells",
+              "use_variable": true,
+              "var_value": "flt_zones_in_col"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "flt_random_battles_left_cel_idx"
+            },
+            {
+              "operator": "add",
+              "value": -1.0,
+              "var": "flt_random_battles_right_cel_idx"
+            }
+          ],
+          "varSetString": {
+            "value": "flt_area_",
+            "var": "flt_random_battles_cell_name"
+          },
+          "varAddString": [
+            {
+              "value": "@flt_random_battles_cur_cell",
+              "digits": 2,
+              "var": "flt_random_battles_cell_name"
+            },
+            {
+              "value": "_state",
+              "digits": 0,
+              "var": "flt_random_battles_cell_name"
+            }
+          ],
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "flt_max_cells",
+              "input_var": "flt_zones_in_row"
+            },
+            {
+              "value": 0,
+              "var": "flt_random_battles_left_cel_idx",
+              "input_var": "flt_random_battles_cur_cell"
+            },
+            {
+              "value": 0,
+              "var": "flt_random_battles_right_cel_idx",
+              "input_var": "flt_random_battles_cur_cell"
+            }
+          ],
+          "triggerEnable": {
+            "target": "flt_random_battles_check_max"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "vyshli za predely stroki. prodolzhaem cikl"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_rotator"
+          }
+        }
+      },
+      "flt_random_battles_check_max": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "flt_random_battles_left_cel_idx",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "flt_max_cells"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "check min value"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_check_min"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_random_battles_left_cel_idx",
+            "input_var": "flt_max_cells"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_check_min"
+          }
+        }
+      },
+      "flt_random_battles_check_min": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "flt_random_battles_right_cel_idx",
+            "value": 1,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "fill names for areas"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_fill_check_zones"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            }
+          ],
+          "varSetInt": {
+            "value": 1,
+            "var": "flt_random_battles_right_cel_idx"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_fill_check_zones"
+          }
+        }
+      },
+      "flt_random_battles_fill_check_zones": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": "getting left zone name for team A"
+            },
+            {
+              "value": "getting right zone name for team B"
+            },
+            {
+              "value": "proveryaem armiyu A"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "flt_area_",
+              "var": "flt_random_battles_left_cel_name"
+            },
+            {
+              "value": "flt_area_",
+              "var": "flt_random_battles_right_cel_name"
+            }
+          ],
+          "varAddString": [
+            {
+              "value": "@flt_random_battles_left_cel_idx",
+              "digits": 2,
+              "var": "flt_random_battles_left_cel_name"
+            },
+            {
+              "value": "@flt_random_battles_right_cel_idx",
+              "digits": 2,
+              "var": "flt_random_battles_right_cel_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "flt_random_battles_check_army_A"
+          }
+        },
+        "else_actions": {}
+      },
+      "flt_random_battles_check_army_A": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "flt_random_battles_cur_col",
+              "value": 4,
+              "comparasion_func": "notMore",
+              "var_value_other": "flt_army_A_width"
+            },
+            {
+              "var_value": "@flt_random_battles_cell_name",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "yachejka bezuslovno prinadlezhit komande A"
+            },
+            {
+              "value": "area name"
+            },
+            {
+              "value": "heat var name"
+            },
+            {
+              "value": "checking airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "flt_area_",
+              "var": "flt_random_battle_t1_cur_area"
+            },
+            {
+              "value": "flt_area_",
+              "var": "flt_random_battle_t1_heat_var_name"
+            }
+          ],
+          "varAddString": [
+            {
+              "value": "@flt_random_battles_cur_cell",
+              "digits": 2,
+              "var": "flt_random_battle_t1_cur_area"
+            },
+            {
+              "value": "@flt_random_battles_cur_cell",
+              "digits": 2,
+              "var": "flt_random_battle_t1_heat_var_name"
+            },
+            {
+              "value": "_heat",
+              "digits": 0,
+              "var": "flt_random_battle_t1_heat_var_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "flt_random_battles_t1_field_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "vne diapazona. proveryaem armiyu B"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_check_army_B"
+          }
+        }
+      },
+      "flt_random_battles_check_army_B": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "flt_random_battles_cur_col",
+              "value": 4,
+              "comparasion_func": "more",
+              "var_value_other": "flt_army_A_width"
+            },
+            {
+              "var_value": "flt_random_battles_cur_col",
+              "value": 4,
+              "comparasion_func": "notMore",
+              "var_value_other": "flt_army_B_width"
+            },
+            {
+              "var_value": "@flt_random_battles_cell_name",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "yachejka bezuslovno prinadlezhit komande B"
+            },
+            {
+              "value": "area name"
+            },
+            {
+              "value": "heat var name"
+            },
+            {
+              "value": "checking airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "flt_area_",
+              "var": "flt_random_battle_t2_cur_area"
+            },
+            {
+              "value": "flt_area_",
+              "var": "flt_random_battle_t2_heat_var_name"
+            }
+          ],
+          "varAddString": [
+            {
+              "value": "@flt_random_battles_cur_cell",
+              "digits": 2,
+              "var": "flt_random_battle_t2_cur_area"
+            },
+            {
+              "value": "@flt_random_battles_cur_cell",
+              "digits": 2,
+              "var": "flt_random_battle_t2_heat_var_name"
+            },
+            {
+              "value": "_heat",
+              "digits": 0,
+              "var": "flt_random_battle_t2_heat_var_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "flt_random_battles_t2_field_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "going by col rotator"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_check_col"
+          }
+        }
+      },
+      "flt_random_battles_t1_field_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectGroupWhenInArea": [
+            {
+              "object_type": "isActive",
+              "check_objects": "any",
+              "object": [
+                "@flt_t1_helipads_squad",
+                "@flt_t2_helipads_squad",
+                "@flt_t1_airfields_squad",
+                "@flt_t2_airfields_squad"
+              ],
+              "target": "@flt_random_battle_t1_cur_area"
+            },
+            {
+              "object_type": "isActive",
+              "check_objects": "any",
+              "object": [
+                "@flt_t1_helipads_squad",
+                "@flt_t2_helipads_squad",
+                "@flt_t1_airfields_squad",
+                "@flt_t2_airfields_squad"
+              ],
+              "target": "@flt_random_battles_left_cel_name"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "there is airfield."
+            },
+            {
+              "value": "increase chance for next attempt"
+            },
+            {
+              "value": ""
+            }
+          ],
+          "varSetInt": {
+            "value": -10000,
+            "var": "@flt_random_battle_t1_heat_var_name"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 10.0,
+            "var": "flt_random_battle_t1_cur_chance"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_check_col"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "no airfield"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_t1_start"
+          }
+        }
+      },
+      "flt_random_battles_t2_field_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectGroupWhenInArea": [
+            {
+              "object_type": "isActive",
+              "check_objects": "any",
+              "object": [
+                "@flt_t1_helipads_squad",
+                "@flt_t2_helipads_squad",
+                "@flt_t1_airfields_squad",
+                "@flt_t2_airfields_squad"
+              ],
+              "target": "@flt_random_battle_t2_cur_area"
+            },
+            {
+              "object_type": "isActive",
+              "check_objects": "any",
+              "object": [
+                "@flt_t1_helipads_squad",
+                "@flt_t2_helipads_squad",
+                "@flt_t1_airfields_squad",
+                "@flt_t2_airfields_squad"
+              ],
+              "target": "@flt_random_battles_right_cel_name"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "there is airfield."
+            },
+            {
+              "value": "increase chance for next attempt"
+            },
+            {
+              "value": ""
+            }
+          ],
+          "varSetInt": {
+            "value": -10000,
+            "var": "@flt_random_battle_t2_heat_var_name"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 10.0,
+            "var": "flt_random_battle_t2_cur_chance"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_check_col"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "no airfield"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_t2_start"
+          }
+        }
+      },
       "flt_random_battles_t1_start": {
         "is_enabled": false,
         "comments": "",
@@ -3115,7 +3807,7 @@
             "comparasion_func": "equal"
           },
           "varCompareInt": {
-            "var_value": "flt_state_cur_col",
+            "var_value": "flt_random_battles_cur_col",
             "value": 4,
             "comparasion_func": "equal",
             "var_value_other": "flt_army_A_width"
@@ -3136,10 +3828,10 @@
         },
         "else_actions": {
           "comment": {
-            "value": "going by rotation"
+            "value": "going by col rotator"
           },
           "triggerEnable": {
-            "target": "flt_state_mirror_check_col"
+            "target": "flt_random_battles_check_col"
           }
         }
       },
@@ -3163,7 +3855,7 @@
             "comparasion_func": "equal"
           },
           "varCompareInt": {
-            "var_value": "flt_state_cur_col",
+            "var_value": "flt_random_battles_cur_col",
             "value": 4,
             "comparasion_func": "equal",
             "var_value_other": "flt_army_B_width"
@@ -3184,10 +3876,10 @@
         },
         "else_actions": {
           "comment": {
-            "value": "going by rotation"
+            "value": "going by col rotator"
           },
           "triggerEnable": {
-            "target": "flt_state_mirror_check_col"
+            "target": "flt_random_battles_check_col"
           }
         }
       },
@@ -3227,22 +3919,6 @@
               "value": ""
             }
           ],
-          "varSetString": {
-            "value": "flt_area_",
-            "var": "flt_random_battle_t1_heat_var_name"
-          },
-          "varAddString": [
-            {
-              "value": "@flt_state_cur_cell",
-              "digits": 2,
-              "var": "flt_random_battle_t1_heat_var_name"
-            },
-            {
-              "value": "_heat",
-              "digits": 0,
-              "var": "flt_random_battle_t1_heat_var_name"
-            }
-          ],
           "varSetInt": {
             "value": 10000,
             "var": "@flt_random_battle_t1_heat_var_name"
@@ -3252,7 +3928,7 @@
             "var": "flt_random_battle_t1_assigned"
           },
           "triggerEnable": {
-            "target": "flt_state_mirror_check_col"
+            "target": "flt_random_battles_check_col"
           }
         },
         "else_actions": {
@@ -3270,7 +3946,7 @@
             "var": "flt_random_battle_t1_cur_chance"
           },
           "triggerEnable": {
-            "target": "flt_state_mirror_check_col"
+            "target": "flt_random_battles_check_col"
           }
         }
       },
@@ -3310,22 +3986,6 @@
               "value": ""
             }
           ],
-          "varSetString": {
-            "value": "flt_area_",
-            "var": "flt_random_battle_t2_heat_var_name"
-          },
-          "varAddString": [
-            {
-              "value": "@flt_state_cur_cell",
-              "digits": 2,
-              "var": "flt_random_battle_t2_heat_var_name"
-            },
-            {
-              "value": "_heat",
-              "digits": 0,
-              "var": "flt_random_battle_t2_heat_var_name"
-            }
-          ],
           "varSetInt": {
             "value": 20000,
             "var": "@flt_random_battle_t2_heat_var_name"
@@ -3335,7 +3995,7 @@
             "var": "flt_random_battle_t2_assigned"
           },
           "triggerEnable": {
-            "target": "flt_state_mirror_check_col"
+            "target": "flt_random_battles_check_col"
           }
         },
         "else_actions": {
@@ -3353,7 +4013,51 @@
             "var": "flt_random_battle_t2_cur_chance"
           },
           "triggerEnable": {
-            "target": "flt_state_mirror_check_col"
+            "target": "flt_random_battles_check_col"
+          }
+        }
+      },
+      "flt_random_battles_restart_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": [
+            {
+              "var_value": "flt_random_battle_t1_assigned",
+              "value": false,
+              "comparasion_func": "equal"
+            },
+            {
+              "var_value": "flt_random_battle_t2_assigned",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "no succedd battle"
+          },
+          "triggerEnable": {
+            "target": "flt_random_battles_start"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "there is succed battle no need to another attempt"
+          },
+          "triggerDisable": {
+            "target": "flt_random_battles_restart_check"
           }
         }
       }
@@ -3764,7 +4468,23 @@
     "flt_t1_tanks_squad_name": "",
     "flt_t2_tanks_squad_name": "",
     "flt_t1_forces_squad_name": "",
-    "flt_t2_forces_squad_name": ""
+    "flt_t2_forces_squad_name": "",
+    "flt_t1_helipads_squad": "afp_t1_squad",
+    "flt_t2_helipads_squad": "afp_t1_squad",
+    "flt_t1_airfields_squad": "ft_t1_airfields_squad",
+    "flt_t2_airfields_squad": "ft_t2_airfields_squad",
+    "flt_random_battle_t1_cur_area": "",
+    "flt_random_battle_t2_cur_area": "",
+    "flt_random_battles_cur_row": 0,
+    "flt_random_battles_cur_col": 0,
+    "flt_random_battles_cur_cell": 0,
+    "flt_random_battles_cell_name": "",
+    "flt_random_battles_rotator_cur_col": 0,
+    "flt_random_battles_left_cel_idx": 0,
+    "flt_random_battles_left_cel_name": "",
+    "flt_random_battles_right_cel_idx": 0,
+    "flt_random_battles_right_cel_name": "",
+    "flt_max_cells": 0
   },
   "dialogs": {},
   "airfields": {},

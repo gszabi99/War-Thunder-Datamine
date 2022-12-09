@@ -145,7 +145,7 @@
   },
   "ikGunner": [
     {
-      "model": "italy_officer_navy_char",
+      "model": "italy_officer_navy_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -208,7 +208,7 @@
       ]
     },
     {
-      "model": "italy_sailor_navy_char",
+      "model": "italy_sailor_navy_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -271,7 +271,7 @@
       ]
     },
     {
-      "model": "italy_sailor_navy_char",
+      "model": "italy_sailor_navy_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -334,7 +334,7 @@
       ]
     },
     {
-      "model": "italy_sailor_navy_char",
+      "model": "italy_sailor_navy_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -397,7 +397,7 @@
       ]
     },
     {
-      "model": "italy_sailor_navy_char",
+      "model": "italy_sailor_navy_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -461,11 +461,11 @@
     }
   ],
   "attach": {
-    "Bip01 Pelvis_1": "italy_officer_navy_standing",
-    "Bip01 Pelvis_2": "italy_sailor_navy_standing",
-    "Bip01 Pelvis_3": "italy_sailor_navy_standing",
-    "Bip01 Pelvis_4": "italy_sailor_navy_sit",
-    "Bip01 Pelvis_5": "italy_sailor_navy_sit"
+    "Bip01 Pelvis_1": "italy_officer_navy_modern_standing",
+    "Bip01 Pelvis_2": "italy_sailor_navy_modern_standing",
+    "Bip01 Pelvis_3": "italy_sailor_navy_modern_standing",
+    "Bip01 Pelvis_4": "italy_sailor_navy_modern_sit",
+    "Bip01 Pelvis_5": "italy_sailor_navy_modern_sit"
   },
   "controlDevices": {
     "device": [
@@ -556,6 +556,7 @@
       "armorThrough": 15.0,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 300.0
       },
       "radio_station_dm": {
@@ -675,7 +676,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.2,
@@ -1499,10 +1499,22 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 24.0,
+            "damage": 8.0,
             "fHitCritical": false
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [

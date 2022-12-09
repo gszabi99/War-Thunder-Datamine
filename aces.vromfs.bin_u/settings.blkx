@@ -3,6 +3,7 @@
   "version-specific": "",
   "compatibilityHangarBlk": "config/hangar_airfield.blk",
   "nvidia_app_id": 10839111,
+  "gameId": "wt",
   "dasMain": "%appGame/main.das",
   "game_das_script_init": "%appGame/wt_init.das",
   "__allowedConfigOverrides": {
@@ -60,6 +61,7 @@
       "anisotropy": 0,
       "shadowDistanceScale": 0.0,
       "shadowQuality": "",
+      "waterEffectsQuality": "",
       "clipmapScale": 0.0,
       "rendinstDistMul": 0.0,
       "cloudLayersMul": 0.0,
@@ -312,6 +314,7 @@
       "Radeon RX 460",
       "Radeon RX 550",
       "Radeon RX 560",
+      "Radeon RX Vega",
       "Radeon RX Vega 10",
       "Radeon Vega 3",
       "Radeon Vega 6",
@@ -1020,5 +1023,25 @@
   "phys": {
     "fixedTimeStepHz": 30,
     "maxSubSteps": 1
+  },
+  "dx12": {
+    "gpuPreferences": {
+      "intel": {
+        "vendorId": 32902,
+        "preferedDeviceIds": [
+          22176,
+          22177,
+          22178,
+          22181,
+          22182,
+          22160,
+          22161,
+          22162,
+          22163,
+          22164
+        ],
+        "minDriver": "26.20.0.0"
+      }
+    }
   }
 }

@@ -93,7 +93,7 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
 
   //from can be as string - Player nick, and as table - player contact.
   //after getting type, and acting accordingly, name must be string and mean name of player
-  if (typeof(from) != "instance") {
+  if (type(from) != "instance") {
     if (from in ::clanUserTable)
       clanTag = ::clanUserTable[from]
   } else {

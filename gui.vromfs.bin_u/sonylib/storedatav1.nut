@@ -149,7 +149,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.commerce.listCategory(ca
     statsd.send_counter("sq.ingame_store.request", 1,
       {status = "success", request = "category_full_links_list", category = category})
 
-    if (typeof response != "array") //Inconsistent response, can be table
+    if (type(response) != "array") //Inconsistent response, can be table
       response = [response]
 
     fillBlock("links", categoriesData[category], response[0].links)

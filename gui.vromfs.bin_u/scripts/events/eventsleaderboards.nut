@@ -46,7 +46,7 @@ let { get_time_msec } = require("dagor.time")
    */
   function requestLeaderboard(requestData, id, callback, context)
   {
-    if (typeof id == "function")
+    if (type(id) == "function")
     {
       context  = callback
       callback = id
@@ -77,7 +77,7 @@ let { get_time_msec } = require("dagor.time")
    */
   function requestSelfRow(requestData, id, callback, context)
   {
-    if (typeof id == "function")
+    if (type(id) == "function")
     {
       context  = callback
       callback = id

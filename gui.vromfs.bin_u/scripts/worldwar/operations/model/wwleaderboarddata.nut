@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let ww_leaderboard = require("ww_leaderboard")
 let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
 let { round } = require("math")
 
@@ -89,7 +89,7 @@ let function requestWwLeaderboardData(modeName, dataParams, cb, headersParams = 
     }.__update(dataParams)
   }
 
-  ::ww_leaderboard.request(requestData, cb)
+  ww_leaderboard.request(requestData, cb)
 }
 
 let function requestWwLeaderboardModes(modeName, cb)
@@ -107,7 +107,7 @@ let function requestWwLeaderboardModes(modeName, cb)
     action = "cmn_get_global_leaderboard_modes_json"
   }
 
-  ::ww_leaderboard.request(requestData, cb)
+  ww_leaderboard.request(requestData, cb)
 }
 
 let function getSeasonDay(days)
@@ -149,7 +149,7 @@ let function convertWwLeaderboardData(result, applyLocalisationToName = false)
   let list = []
   foreach (rowId, rowData in result)
   {
-    if (typeof(rowData) != "table")
+    if (type(rowData) != "table")
       continue
 
     let lbData = {
@@ -162,7 +162,7 @@ let function convertWwLeaderboardData(result, applyLocalisationToName = false)
         continue
 
       let valueFactor = wwLeaderboardValueFactors?[columnId]
-      local value = typeof(columnData) == "table"
+      local value = type(columnData) == "table"
         ? columnData?.value_total
         : columnId == "name" && applyLocalisationToName
             ? loc(columnData)

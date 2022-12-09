@@ -1358,6 +1358,7 @@
       "dmPart": "gunner_dm",
       "role": "tank_gunner",
       "substitute": [
+        "machine_gunner",
         "commander",
         "loader",
         "loader1",
@@ -1368,6 +1369,7 @@
       "dmPart": "driver_dm",
       "role": "driver",
       "substitute": [
+        "machine_gunner",
         "commander",
         "loader",
         "loader1",
@@ -1378,6 +1380,7 @@
       "dmPart": "gunner_01_dm",
       "role": "tank_gunner",
       "substitute": [
+        "machine_gunner",
         "commander",
         "loader",
         "loader1"
@@ -1387,6 +1390,7 @@
       "dmPart": "loader_dm",
       "role": "loader",
       "substitute": [
+        "machine_gunner",
         "commander",
         "loader1"
       ]
@@ -1394,11 +1398,18 @@
     "loader1": {
       "dmPart": "loader_01_dm",
       "role": "loader",
-      "substitute": "commander"
+      "substitute": [
+        "machine_gunner",
+        "commander"
+      ]
     },
     "commander": {
       "dmPart": "commander_dm",
       "role": "commander"
+    },
+    "machine_gunner": {
+      "dmPart": "machine_gunner_dm",
+      "role": "radio_gunner"
     }
   },
   "MetaParts": {

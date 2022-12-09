@@ -19,15 +19,16 @@ let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let clanInfoView = require("%scripts/clans/clanInfoView.nut")
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
+let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
 let clan_member_list = [
-  {id = "onlineStatus", lbDataType = ::g_lb_data_type.TEXT, myClanOnly = true, iconStyle = true, needHeader = false}
-  {id = "nick", lbDataType = ::g_lb_data_type.NICK, align = "left"}
-  {id = ::ranked_column_prefix, lbDataType = ::g_lb_data_type.NUM, loc = "rating", byDifficulty = true
+  {id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false}
+  {id = "nick", lbDataType = lbDataType.NICK, align = "left"}
+  {id = ::ranked_column_prefix, lbDataType = lbDataType.NUM, loc = "rating", byDifficulty = true
     tooltip = "#clan/personal/dr_era/desc"}
   {
     id = "activity"
-    lbDataType = ::g_lb_data_type.NUM
+    lbDataType = lbDataType.NUM
     field = @() hasFeature("ClanVehicles") ? "totalPeriodActivity" : "totalActivity"
     showByFeature = "ClanActivity"
     getCellTooltipText = function(_data) { return loc("clan/personal/" + this.id + "/cell/desc") }
@@ -36,19 +37,19 @@ let clan_member_list = [
   }
   {
     id = "role",
-    lbDataType = ::g_lb_data_type.ROLE,
+    lbDataType = lbDataType.ROLE,
     sortId = "roleRank"
     sortPrepare = function(member) { member[this.sortId] <- ::clan_get_role_rank(member.role) }
     getCellTooltipText = function(data) { return this.lbDataType.getPrimaryTooltipText(getTblValue(this.id, data)) }
   }
-  {id = "date", lbDataType = ::g_lb_data_type.DATE }
+  {id = "date", lbDataType = lbDataType.DATE }
 ]
 
 let clan_data_list = [
-  {id = "air_kills", lbDataType = ::g_lb_data_type.NUM, field = "akills"}
-  {id = "ground_kills", lbDataType = ::g_lb_data_type.NUM, field = "gkills"}
-  {id = "deaths", lbDataType = ::g_lb_data_type.NUM, field = "deaths"}
-  {id = "time_pvp_played", lbDataType = ::g_lb_data_type.TIME_MIN, field = "ftime"}
+  {id = "air_kills", lbDataType = lbDataType.NUM, field = "akills"}
+  {id = "ground_kills", lbDataType = lbDataType.NUM, field = "gkills"}
+  {id = "deaths", lbDataType = lbDataType.NUM, field = "deaths"}
+  {id = "time_pvp_played", lbDataType = lbDataType.TIME_MIN, field = "ftime"}
 ]
 
 let default_clan_member_list = {
@@ -839,7 +840,7 @@ foreach(idx, item in clan_member_list)
 
   function sortMembers(members)
   {
-    if (typeof members != "array")
+    if (type(members) != "array")
       return
 
     let columnData = this.getColumnDataById(this.statsSortBy)

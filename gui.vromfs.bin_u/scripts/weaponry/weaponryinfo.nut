@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let { get_current_mission_name } = require("mission")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -16,6 +17,7 @@ let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsPara
 let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams
 } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getTntEquivalentText, getDestructionInfoTexts } = require("%scripts/weaponry/dmgModel.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -293,7 +295,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES]))
     { //not a turret
       currentTypeName = weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
-      if (weaponBlk?.bullet && typeof(weaponBlk?.bullet) == "instance"
+      if (weaponBlk?.bullet && type(weaponBlk?.bullet) == "instance"
           && isCaliberCannon(1000 * getTblValue("caliber", weaponBlk?.bullet, 0)))
         currentTypeName = WEAPON_TYPE.CANNON
     }
@@ -419,7 +421,9 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
           {
             if (itemBlk.guidance?.irSeeker != null)
             {
-              if (itemBlk.guidance.irSeeker?.visibilityType == "optic")
+              let targetSignatureType = itemBlk.guidance.irSeeker?.targetSignatureType != null ?
+                itemBlk.guidance.irSeeker?.targetSignatureType : itemBlk.guidance.irSeeker?.visibilityType
+              if (targetSignatureType == "optic")
                 item.guidanceType <- "tv"
               else
                 item.guidanceType <- "ir"
@@ -442,7 +446,9 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
             }
             else if (itemBlk.guidance?.opticalFlowSeeker != null)
             {
-              if (itemBlk.guidance.opticalFlowSeeker?.visibilityType == "optic")
+              let targetSignatureType = itemBlk.guidance?.opticalFlowSeeker != null ?
+                itemBlk.guidance?.opticalFlowSeeker?.targetSignatureType : itemBlk.guidance?.opticalFlowSeeker?.visibilityType
+              if (targetSignatureType == "optic")
                 item.guidanceType <- "tv"
               else
                 item.guidanceType <- "ir"
@@ -735,13 +741,13 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
       res.append("".concat(loc("bullet_properties/explosiveMass"), colon,
         measureType.getMeasureUnitsText(explosiveMass)))
       if (hasAdditionalExplosiveInfo) {
-        let tntEqText = ::g_dmg_model.getTntEquivalentText(explosiveType, explosiveMass)
+        let tntEqText = getTntEquivalentText(explosiveType, explosiveMass)
         if (tntEqText.len())
           res.append("".concat(loc("bullet_properties/explosiveMassInTNTEquivalent"), colon, tntEqText))
 
         if (weaponType == "bombs" && unit.unitType != unitTypes.SHIP)
         {
-          let destrTexts = ::g_dmg_model.getDestructionInfoTexts(explosiveType, explosiveMass, massKg)
+          let destrTexts = getDestructionInfoTexts(explosiveType, explosiveMass, massKg)
           foreach (key in ["maxArmorPenetration", "destroyRadiusArmored", "destroyRadiusNotArmored"])
           {
             let valueText = destrTexts[$"{key}Text"]
@@ -821,18 +827,18 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
   p = WEAPON_TEXT_PARAMS.__merge(p)
   local primaryMod = ""
   local weaponPresetIdx = -1
-  if ((typeof(p.weaponPreset) == "string") || p.weaponPreset < 0)
+  if ((type(p.weaponPreset) == "string") || p.weaponPreset < 0)
   {
     if (!p.isPrimary)
     {
-      let curWeap = (typeof(p.weaponPreset) == "string") ? p.weaponPreset : getLastWeapon(unit.name)
+      let curWeap = (type(p.weaponPreset) == "string") ? p.weaponPreset : getLastWeapon(unit.name)
       foreach(idx, w in unit.getWeapons())
         if (w.name == curWeap || (weaponPresetIdx < 0 && !isWeaponAux(w)))
           weaponPresetIdx = idx
       if (weaponPresetIdx < 0)
         return weapons
     }
-    if (p.isPrimary && typeof(p.weaponPreset)=="string")
+    if (p.isPrimary && type(p.weaponPreset)=="string")
       primaryMod = p.weaponPreset
     else
       primaryMod = getLastPrimaryWeapon(unit)
@@ -979,7 +985,7 @@ let function getOverrideBullets(unit)
 {
   if (!unit)
     return null
-  let missionName = ::get_current_mission_name()
+  let missionName = get_current_mission_name()
   if (missionName == "")
     return null
   let editSlotbarBlk = getMissionEditSlotbarBlk(missionName)

@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let regexp2 = require("regexp2")
+let { get_current_mission_name } = require("mission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { MISSION_GROUP } = require("%scripts/missions/missionsFilterData.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -241,7 +242,7 @@ enums.addTypesByGlobalName("g_mission_type", {
 }
 
 ::g_mission_type.getCurrent <- function getCurrent() {
-  return this.getTypeByMissionName(::get_current_mission_name())
+  return this.getTypeByMissionName(get_current_mission_name())
 }
 
 ::g_mission_type.getCurrentObjectives <- function getCurrentObjectives() {

@@ -93,9 +93,14 @@ let class Msg {
 }
 
 return {
-  create = @(uid, config) uid in msgList ? msgList[uid].increment(config) : msgList[uid] <- Msg(uid, config)
+  function create(uid, config) {
+    if (uid in msgList)
+      msgList[uid].increment(config)
+    else
+      msgList[uid] <- Msg(uid, config)
+  }
 
-  destroy = function(uid, shouldCheckCounter = false) {
+  function destroy(uid, shouldCheckCounter = false) {
     let msg = msgList?[uid]
     if (!msg)
       return

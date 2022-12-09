@@ -12,12 +12,12 @@ let { get_gui_option } = require("guiOptions")
 let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
 
 let checkArgument = function(id, arg, varType) {
-  if (typeof arg == varType)
+  if (type(arg) == varType)
     return true
 
   local msg = "[ERROR] Wrong argument type supplied for option item '" + id + ".\n"
   msg += "Value = " + toString(arg) + ".\n"
-  msg += "Expected '" + varType + "' found '" + typeof arg + "'."
+  msg += "Expected '" + varType + "' found '" + type(arg) + "'."
 
   ::script_net_assert_once(id, msg)
   return false

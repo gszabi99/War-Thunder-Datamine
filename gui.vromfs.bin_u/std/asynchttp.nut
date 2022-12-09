@@ -48,8 +48,8 @@ let RESOLVED = persist("RESOLVED", @() {})
 let REJECTED = persist("REJECTED", @() {})
 
 let function TaskHttpMultiGet(urls, rejectOne=@(x) x, resolveOne=@(x) x) {
-  assert(typeof urls == "array", @() $"expected urls as 'array' got '{typeof urls}'")
-  assert(typeof rejectOne == "function" && typeof resolveOne == "function", "incorrect type of arguments")
+  assert(type(urls) == "array", @() $"expected urls as 'array' got '{type(urls)}'")
+  assert(type(rejectOne) == "function" && type(resolveOne) == "function", "incorrect type of arguments")
   return Task(function(rejectFn, resolveFn) {
     let total = urls.len()
     let res = array(total)

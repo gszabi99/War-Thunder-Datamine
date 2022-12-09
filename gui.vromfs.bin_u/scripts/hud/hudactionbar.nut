@@ -221,7 +221,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function onUpdate(_obj = null, _dt = 0.0)
   {
-    let prevCount = typeof this.actionItems == "array" ? this.actionItems.len() : 0
+    let prevCount = type(this.actionItems) == "array" ? this.actionItems.len() : 0
     let prevKillStreaksActions = this.killStreaksActions
 
     let prevActionItems = this.actionItems

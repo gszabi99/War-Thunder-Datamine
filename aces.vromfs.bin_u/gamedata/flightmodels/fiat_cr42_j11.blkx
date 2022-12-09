@@ -27,9 +27,11 @@
       },
       "mgun2_dm": {
         "hp": 15.0
-      },
+      }
+    },
+    "armor5": {
       "armor1_dm": {
-        "hp": 15.0
+        "hp": 35.0
       }
     },
     "armor_engine_light": {
@@ -47,17 +49,13 @@
         "genericDamageMult": 0.3,
         "hp": 12.0
       },
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 20.5
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 20.5
+        "hp": 12.2
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 20.5
+        "hp": 12.2
       },
       "fin_dm": {
         "hp": 15.2
@@ -66,13 +64,10 @@
         "genericDamageMult": 0.3,
         "hp": 10.6
       },
-      "stab_dm": {
-        "hp": 30.0
+      "stab1_dm": {
+        "hp": 9.5
       },
       "stab2_dm": {
-        "hp": 30.0
-      },
-      "stab1_dm": {
         "hp": 9.5
       }
     },
@@ -81,7 +76,7 @@
         "hp": 36.6
       },
       "fuse_dm": {
-        "hp": 48.1
+        "hp": 48.2
       },
       "tail_dm": {
         "genericDamageMult": 0.7,
@@ -145,13 +140,13 @@
     },
     "protected_controls": {
       "tailcontrol_dm": {
-        "hp": 20.5
+        "hp": 60.5
       },
       "wingcontrol_l_dm": {
-        "hp": 20.5
+        "hp": 39.5
       },
       "wingcontrol_r_dm": {
-        "hp": 20.5
+        "hp": 39.5
       }
     },
     "steel": {
@@ -184,10 +179,10 @@
     },
     "steel_tank_light": {
       "tank1_dm": {
-        "hp": 51.8
+        "hp": 51.3
       },
       "tank2_dm": {
-        "hp": 29.0
+        "hp": 25.6
       }
     }
   },
@@ -286,47 +281,6 @@
       },
       {
         "name": "cover3_dm"
-      },
-      {
-        "name": "elevator_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
       },
       {
         "name": "elevator0_dm",
@@ -768,72 +722,47 @@
       {
         "name": "spar_l_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 3.0
+          "nothing": 100.0,
+          "cut": 0.001
         }
       },
       {
         "name": "spar_r_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 3.0
+          "nothing": 100.0,
+          "cut": 0.001
         }
-      },
-      {
-        "name": "stab_dm",
-        "onHit": [
-          {
-            "damage": 30.0,
-            "cut": 0.6
-          },
-          {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        ]
       },
       {
         "name": "stab1_dm",
         "onHit": [
           {
             "damage": 30.0,
-            "cut": 0.6
+            "cut": 0.8
           },
           {
-            "damage": 60.0,
+            "damage": 50.0,
             "cut": 1.0
           }
         ],
         "onKill": [
           {
-            "damage": 10.0,
+            "damage": 4.2,
             "cut": 1.0,
-            "nothing": 10.0
+            "nothing": 9.0
           },
           {
-            "damage": 30.0,
-            "cut": 2.0,
+            "damage": 10.0,
+            "cut": 1.0,
             "nothing": 5.0
           },
           {
-            "damage": 50.0,
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 40.0,
             "cut": 1.0,
             "nothing": 0.0
           }
@@ -2456,12 +2385,12 @@
     }
   },
   "cutting": {
-    "emtr_break_wing0_l_from": [
+    "_emtr_break_wing0_l_from": [
       -0.221239,
       -0.414935,
       0.991104
     ],
-    "emtr_break_wing0_l_to": [
+    "_emtr_break_wing0_l_to": [
       -0.221239,
       -0.414935,
       1.47758
@@ -2486,12 +2415,12 @@
       -0.414935,
       3.3866
     ],
-    "emtr_break_wing0_r_from": [
+    "_emtr_break_wing0_r_from": [
       -0.221239,
       -0.414935,
-      -0.991104
+      -0.991105
     ],
-    "emtr_break_wing0_r_to": [
+    "_emtr_break_wing0_r_to": [
       -0.221239,
       -0.414935,
       -1.47758
@@ -2517,7 +2446,7 @@
       -3.38824
     ],
     "emtr_break_wing_tail": [
-      -4.4422,
+      -2.74225,
       0.0,
       0.0
     ],
@@ -2530,22 +2459,22 @@
     "emtr_break_stab_l_from": [
       -4.83153,
       0.12581,
-      0.281535
+      0.40656
     ],
     "emtr_break_stab_l_to": [
       -4.83153,
       0.12581,
-      1.12614
+      1.1574
     ],
     "emtr_break_stab_r_from": [
       -4.83153,
       0.12581,
-      -0.281535
+      -0.40656
     ],
     "emtr_break_stab_r_to": [
       -4.83153,
       0.12581,
-      -1.12614
+      -1.1574
     ],
     "emtr_break_fin_from": [
       -4.80041,

@@ -513,7 +513,7 @@ cyber_cafe_boost.loadTables <- function loadTables() {
   let ws = ::get_warpoints_blk()
   local pveTrophyName = mis.pveTrophyName
 
-  if (pveTrophyName == null || typeof(pveTrophyName) != "string") {
+  if (pveTrophyName == null || type(pveTrophyName) != "string") {
     log("get_pve_trophy_name. PVE Trophy for this mission is missing or not a string.")
     return null
   }

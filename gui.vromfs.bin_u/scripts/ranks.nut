@@ -13,7 +13,7 @@ let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 ::max_player_rank <- 100
-::max_country_rank <- 7
+::max_country_rank <- 8
 
 ::discounts <- { //count from const in warpointsBlk by (name + "Mul")
 }

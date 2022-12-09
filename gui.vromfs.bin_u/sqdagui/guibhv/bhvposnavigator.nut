@@ -336,10 +336,15 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       this.onActivateUnpushed(obj)
   }
 
-  function onExtMouse(obj, mx, my, btn_id, is_up, _bits)
+  function onExtMouse(obj, mx, my, btn_id, is_up, bits)
   {
     if (btn_id != 2)  //right mouse button
       return RETCODE_NOTHING
+
+    let isOnObj = !(bits & (is_up ? BITS_MOUSE_OUTSIDE : BITS_MOUSE_NOT_ON_OBJ))
+    if (!isOnObj)
+      return RETCODE_NOTHING
+
     if (is_up)
     {
       if (this.findClickedObj(obj, mx, my))

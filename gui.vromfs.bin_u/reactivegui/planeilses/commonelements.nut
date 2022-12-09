@@ -2,9 +2,12 @@ from "%rGui/globals/ui_library.nut" import *
 
 let {IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety,
       TimeBeforeBombRelease, AimLocked, TargetPos, TargetPosValid,
-      RocketMode, CannonMode} = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth} = require("ilsConstants.nut")
-let {Aos, Tangage, Roll, BarAltitude} = require("%rGui/planeState/planeFlyState.nut")
+      RocketMode, CannonMode, RadarTargetPosValid} = require("%rGui/planeState/planeToolsState.nut")
+let {baseLineWidth, GuidanceLockResult, metrToFeet} = require("ilsConstants.nut")
+let {Aos, Tangage, Roll, BarAltitude, Altitude} = require("%rGui/planeState/planeFlyState.nut")
+let {GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
+let {Irst, targets, TargetsTrigger, Azimuth} = require("%rGui/radarState.nut")
+let string = require("string")
 
 let function flyDirection(width, height, isLockedFlyPath = false) {
   return @() {
@@ -208,6 +211,102 @@ let aimMark = @() {
   : null
 }
 
+let ASPAirSymbol = @() {
+  size = [pw(70), ph(70)]
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = baseLineWidth * IlsLineScale.value
+  color = IlsColor.value
+  commands = [
+    [VECTOR_LINE, -100, 0, -30, 0],
+    [VECTOR_LINE, -40, 0, -40, 10],
+    [VECTOR_LINE, 100, 0, 30, 0],
+    [VECTOR_LINE, 40, 0, 40, 10],
+    [VECTOR_LINE, 0, -30, 0, -70],
+  ]
+}
+
+let ASPAirSymbolWrap = {
+  size = flex()
+  children = ASPAirSymbol
+  behavior = Behaviors.RtPropUpdate
+  update = @() {
+    transform = {
+      rotate = Roll.value
+      pivot = [0, 0]
+    }
+  }
+}
+
+
+let targetsComponent = function(createTargetDistFunc) {
+  let getTargets = function() {
+    let targetsRes = []
+    for(local i = 0; i < targets.len(); ++i) {
+      if (!targets[i])
+        continue
+      else if (targets[i].signalRel < 0.1)
+        continue
+      targetsRes.append(createTargetDistFunc(i))
+    }
+    return targetsRes
+  }
+
+  return @() {
+    size = flex()
+    children = Irst.value && RadarTargetPosValid.value ? null : getTargets()
+    watch = TargetsTrigger
+  }
+}
+
+let function ASPLaunchPermitted(is_ru, l_pos, h_pos) {
+  return @() {
+    watch = GuidanceLockState
+    size = flex()
+    children = (GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ?
+      @() {
+        size = flex()
+        rendObj = ROBJ_TEXT
+        pos = [pw(l_pos), ph(h_pos)]
+        color = IlsColor.value
+        fontSize = 40
+        font = Fonts.hud
+        text = is_ru ? "ПР" : "INRNG"
+      }
+      : null)
+  }
+}
+
+let ASPAzimuthMark = @() {
+  watch = Azimuth
+  size = [pw(5), baseLineWidth * 0.8 * IlsLineScale.value]
+  pos = [pw(Azimuth.value * 100 - 2.5), ph(95)]
+  rendObj = ROBJ_SOLID
+  color = IlsColor.value
+  lineWidth = baseLineWidth * IlsLineScale.value
+}
+
+let SUMAltValue = Computed(@() clamp(Altitude.value * metrToFeet, 0, 4995).tointeger())
+let SUMAltThousands = Computed(@() SUMAltValue.value > 1000 ? $"{SUMAltValue.value / 1000}" : "")
+let SUMAltVis = Computed(@() Altitude.value * metrToFeet < 4995)
+let function SUMAltitude(font_size) {
+  return @() {
+    watch = SUMAltVis
+    size = flex()
+    pos = [pw(60), ph(25)]
+    children = SUMAltVis.value ? [
+      @() {
+        watch = SUMAltValue
+        size = SIZE_TO_CONTENT
+        rendObj = ROBJ_TEXT
+        color = IlsColor.value
+        fontSize = font_size
+        font = Fonts.hud
+        text = string.format("R%s.%03d", SUMAltThousands.value, SUMAltValue.value % 1000)
+      }
+    ] : null
+  }
+}
+
 return {
   flyDirection
   angleTxt,
@@ -218,5 +317,10 @@ return {
   shimadzuRoll,
   ShimadzuPitch,
   ShimadzuAlt,
-  aimMark
+  aimMark,
+  ASPAirSymbolWrap,
+  ASPLaunchPermitted,
+  targetsComponent,
+  ASPAzimuthMark,
+  SUMAltitude
 }

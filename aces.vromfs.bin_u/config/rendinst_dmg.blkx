@@ -10622,10 +10622,10 @@
     {
       "name": "ussr_fence_concrete_po2_4000_a",
       "destroyedModelName": "ussr_fence_concrete_po2_4000_a_destr_phobj",
+      "dmPreset": "hard_shoot_objects",
       "destructionImpulse": 40000.0,
       "fx": "ad_dust_stucco",
-      "fxScale": 2.0,
-      "stopsBullets": true
+      "fxScale": 2.0
     },
     {
       "name": "european_lamp_a",
@@ -22181,6 +22181,10 @@
       "stopsBullets": false
     },
     {
+      "name": "tree_ivy_white_a",
+      "immortal": true
+    },
+    {
       "name": "hedge_a_01m_045degrees",
       "immortal": true
     },
@@ -30620,7 +30624,7 @@
       "armorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 20.0,
+      "armorThrough": 200.0,
       "explosionDamageMult": 0.3,
       "genericDamageMult": 0.03,
       "cumulativeDamageMult": 0.03,
@@ -30630,7 +30634,7 @@
       "armorClass": "RHA_tank",
       "armorThickness": 1.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 20.0,
+      "armorThrough": 200.0,
       "explosionDamageMult": 0.14,
       "genericDamageMult": 0.03,
       "cumulativeDamageMult": 0.03,
@@ -30640,7 +30644,7 @@
       "armorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.0001,
-      "armorThrough": 20.0,
+      "armorThrough": 200.0,
       "explosionDamageMult": 0.3,
       "genericDamageMult": 0.001,
       "cumulativeDamageMult": 0.001,
@@ -30648,9 +30652,9 @@
     },
     "he_damaged_house": {
       "armorClass": "RHA_tank",
-      "armorThickness": 5.0,
+      "armorThickness": 10.0,
       "restrainDamage": 0.0001,
-      "armorThrough": 100.0,
+      "armorThrough": 600.0,
       "explosionDamageMult": 0.1,
       "genericDamageMult": 0.001,
       "cumulativeDamageMult": 0.001,
@@ -30670,7 +30674,7 @@
       "armorClass": "RHA_tank",
       "armorThickness": 3.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 20.0,
+      "armorThrough": 200.0,
       "explosionDamageMult": 0.3,
       "genericDamageMult": 0.03,
       "cumulativeDamageMult": 0.03,
@@ -30680,7 +30684,7 @@
       "armorClass": "RHA_tank",
       "armorThickness": 10.0,
       "restrainDamage": 0.0001,
-      "armorThrough": 30.0,
+      "armorThrough": 400.0,
       "explosionDamageMult": 0.2,
       "genericDamageMult": 0.1,
       "cumulativeDamageMult": 0.05,
@@ -30690,7 +30694,7 @@
       "armorClass": "RHA_tank",
       "armorThickness": 10.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 300.0,
+      "armorThrough": 600.0,
       "explosionDamageMult": 1.3,
       "genericDamageMult": 0.01,
       "cumulativeDamageMult": 0.01,
@@ -30700,7 +30704,7 @@
       "armorClass": "RHA_tank",
       "armorThickness": 8.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 30.0,
+      "armorThrough": 300.0,
       "explosionDamageMult": 0.35,
       "genericDamageMult": 0.025,
       "cumulativeDamageMult": 0.025,
@@ -41050,6 +41054,26 @@
       "fx": "ad_metal",
       "fxScale": 1.5
     },
+    "ussr_diesel_locomotive_te1": {
+      "nextRes": "ussr_diesel_locomotive_te1_dmg",
+      "physRes": "ussr_diesel_locomotive_te1_destr_phobj",
+      "hp": 180.0,
+      "impulseThreshold": 3.0,
+      "dmPreset": "oil_tanks_full",
+      "fx": "ad_car_wreck",
+      "fxScale": 1.4,
+      "material": "metal"
+    },
+    "ussr_diesel_locomotive_te1_snow": {
+      "nextRes": "ussr_diesel_locomotive_te1_dmg",
+      "physRes": "ussr_diesel_locomotive_te1_destr_phobj",
+      "hp": 180.0,
+      "impulseThreshold": 3.0,
+      "dmPreset": "oil_tanks_full",
+      "fx": "ad_car_wreck",
+      "fxScale": 1.4,
+      "material": "metal"
+    },
     "ussr_freight_car_1926": {
       "nextRes": "ussr_freight_car_1926_dmg",
       "physRes": "ussr_freight_car_1926_destr_phobj",
@@ -44672,14 +44696,14 @@
     "solar_panel_a_snow": {
       "nextRes": "solar_panel_a_b_snow_dmg",
       "physRes": "solar_panel_a_snow_destr_phobj",
-      "hp": 100.0,
-      "impulseThreshold": 5.0
+      "hp": 30.0,
+      "impulseThreshold": 3.0
     },
     "solar_panel_b_snow": {
       "nextRes": "solar_panel_a_b_snow_dmg",
       "physRes": "solar_panel_b_snow_destr_phobj",
-      "hp": 100.0,
-      "impulseThreshold": 5.0
+      "hp": 30.0,
+      "impulseThreshold": 3.0
     },
     "modern_intermodal_container_a": {
       "nextRes": "modern_intermodal_container_a_dmg",

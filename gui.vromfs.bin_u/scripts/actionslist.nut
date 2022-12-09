@@ -150,7 +150,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
       if (func == null)
         return
 
-      if (typeof func == "string")
+      if (type(func) == "string")
         this.params.handler[func].call(this.params.handler)
       else
         func.call(this.params.handler)

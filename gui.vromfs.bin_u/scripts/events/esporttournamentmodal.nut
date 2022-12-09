@@ -103,7 +103,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     for (local i = 0; i < daysNum ; i++) {
       let event = getEventByDay(this.tournament.id, i)
       let countries = event?.mission_decl.editSlotbar.map(@(v)
-        typeof(v) == "table" ? v : null).filter(@(v) v)
+        type(v) == "table" ? v : null).filter(@(v) v)
       if (countries == null)
         continue
 

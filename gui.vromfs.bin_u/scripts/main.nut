@@ -12,6 +12,7 @@ global const CLAN_SEASON_NUM_IN_YEAR_SHIFT = 1 // Because numInYear is zero-base
 global const EVENTS_SHORT_LB_VISIBLE_ROWS = 3
 global const EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW = 50
 global const USE_STEAM_LOGIN_AUTO_SETTING_ID = "useSteamLoginAuto"
+global const USE_GUEST_LOGIN_AUTO_SETTING_ID = "useGuestLoginAuto"
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
 global const SQUADS_VERSION = 2
@@ -38,8 +39,7 @@ let { get_local_unixtime } = require("dagor.time")
 if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
 
-::nda_version <- -1
-::nda_version_tanks <-5
+::nda_version <- 5
 ::eula_version <- 6
 
 ::TEXT_EULA <- 0
@@ -66,7 +66,7 @@ if (::disable_network())
 
 ::g_script_reloader.registerPersistentData("MainGlobals", getroottable(),
   [
-    "nda_version", "nda_version_tanks", "eula_version",
+    "nda_version", "eula_version",
     "is_debug_mode_enabled", "first_generation",
     "show_console_buttons", "is_dev_version"
   ])

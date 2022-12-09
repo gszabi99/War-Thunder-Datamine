@@ -1,84 +1,87 @@
-let {xbox2uid, uid2xbox, friendsUids} = require("%xboxLib/userIds.nut")
-let {track_user_chat_permissions, stop_tracking_user_chat_permissions,
-  register_chat_state_change_callback, CommunicationState} = require("%xboxLib/impl/crossnetwork.nut")
-let {communicationsPrivilege, voiceWithAnonUser} = require("%xboxLib/crossnetwork.nut")
-let {mutedXuids, bannedXuids} = require("%xboxLib/relationships.nut")
-let voiceState = require("%xboxLib/voiceState.nut")
+let voice = require("xbox.voice")
+let {subscribe} = require("eventbus")
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_VOICE] ")
 
+let voiceChatMembers = persist("voiceChatMembers", @() {})
 
-let function change_state_by_xuid(xuid, muted) {
-  if (xuid in xbox2uid.value) {
-    voiceState.set_member_state(xbox2uid.value[xuid], muted)
+
+let function _add_voice_chat_member(uid, is_friend) {
+  voiceChatMembers[uid] <- { is_friend = is_friend, is_muted = false }
+}
+
+
+let function _remove_voice_chat_member(uid) {
+  if (uid in voiceChatMembers) {
+    delete voiceChatMembers[uid]
   }
 }
 
 
-let function process_updated_permissions(permissions) {
-  foreach (permission in permissions) {
-    let muted = (permission.voice != CommunicationState.Allowed)
-    let xuid = permission.xuid
-    change_state_by_xuid(xuid, muted)
+let function _update_voice_chat_members_mute(results) {
+  foreach (state in results) {
+    let uid = state?.uid.tostring()
+    let muted = state.is_muted ?? false
+    if (uid in voiceChatMembers) {
+      voiceChatMembers[uid].is_muted = muted
+    }
   }
-  logX("Permissions between users changed, updating")
-  voiceState.update()
 }
 
 
-register_chat_state_change_callback(process_updated_permissions)
-
-
-let function add_member(uid) {
-  voiceState.add_member(uid)
-  if (uid in uid2xbox.value) {
-    track_user_chat_permissions(uid2xbox.value[uid])
-  }
-  logX("Member added, updating")
-  voiceState.update()
+let function subscribe_to_state_update(callback) {
+  subscribe(voice.status_update_event_name, function(result) {
+    let results = result.results ?? []
+    _update_voice_chat_members_mute(results)
+    callback?(results)
+  })
 }
 
 
-let function remove_member(uid) {
-  if (uid in uid2xbox.value) {
-    stop_tracking_user_chat_permissions(uid2xbox.value[uid])
-  }
-  voiceState.remove_member(uid)
-  logX("Member removed, updating")
-  voiceState.update()
+let function add_voice_chat_member(uid, xuid, is_friend) {
+  logX($"Add voice chat member. Uid: {uid}, XUID: {xuid}, isFriend: {is_friend}")
+  let uidstr = uid.tostring()
+  _add_voice_chat_member(uidstr, is_friend)
+  if (xuid != 0 && xuid != null)
+    voice.add_xbox_player(uidstr, xuid.tointeger(), is_friend)
+  else
+    voice.add_external_player(uidstr, is_friend)
 }
 
 
-communicationsPrivilege.subscribe(function(_) {
-  logX("Communication privilege changed, updating")
-  voiceState.update()
-})
+let function remove_voice_chat_member(uid) {
+  logX($"Remove voice chat member. {uid}")
+  let uidstr = uid.tostring()
+  _remove_voice_chat_member(uidstr)
+  voice.remove_player(uidstr)
+}
 
 
-voiceWithAnonUser.subscribe(function(_) {
-  logX("Voice chat permission changed, updating")
-  voiceState.update()
-})
+let function update_voice_chat_member_friendship(uid, is_friend) {
+  let uidstr = uid.tostring()
+  let updated = voiceChatMembers[uidstr].is_friend != is_friend
+  if (updated) {
+    voiceChatMembers[uidstr].is_friend = is_friend
+    voice.set_ingame_friend_status(uidstr, is_friend)
+  }
+}
 
 
-friendsUids.subscribe(function(_) {
-  logX("Friends uids list changed, updating")
-  voiceState.update()
-})
+let function is_voice_chat_member_muted(uid) {
+  let uidstr = uid.tostring()
+  if (uidstr in voiceChatMembers) {
+    return voiceChatMembers[uidstr].is_muted
+  }
+  return false
+}
 
 
-mutedXuids.subscribe(function(_) {
-  logX("Muted xuids list changed, updating")
-  voiceState.update()
-})
+return {
+  subscribe_to_state_update
 
+  add_voice_chat_member
+  remove_voice_chat_member
+  update_voice_chat_member_friendship
+  is_voice_chat_member_muted
 
-bannedXuids.subscribe(function(_) {
-  logX("Banned xuids list changed, updating")
-  voiceState.update()
-})
-
-
-return  {
-  add_member
-  remove_member
+  voiceChatMembers
 }

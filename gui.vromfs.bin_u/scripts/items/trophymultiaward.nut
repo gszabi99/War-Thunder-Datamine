@@ -210,7 +210,7 @@ let class TrophyMultiAward
     local text = loc("shop/age") + loc("ui/colon")
     ranks = ::u.map(ranks,
                         function(val) {
-                          if (typeof(val) != "instance" || !(val instanceof ::Point2))
+                          if (type(val) != "instance" || !(val instanceof ::Point2))
                             return ""
 
                           let res = colorize(this.condColor, ::get_roman_numeral(val.x))

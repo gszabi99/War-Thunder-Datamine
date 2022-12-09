@@ -5,9 +5,9 @@
     "search": {
       "power": 100.0,
       "band": 4,
-      "rcs": 5.0,
-      "range": 15000.0,
-      "rangeMax": 15000.0,
+      "rcs": 1.0,
+      "range": 16000.0,
+      "rangeMax": 20000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 6.3,
@@ -35,9 +35,10 @@
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 1.0,
-      "barHeight": 18.0,
+      "barHeight": 15.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 7.5
     }
   },
   "signals": {
@@ -48,12 +49,12 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 15000.0,
+        "maxValue": 20000.0,
         "maxUnambiguousValue": 80000.0
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 10.0,
+        "minValue": 15.0,
         "maxValue": 1000.0,
         "signalWidthMin": 5.0,
         "width": 0.0
@@ -62,7 +63,7 @@
   },
   "scopeRanges": {
     "range1": 10000.0,
-    "range2": 15000.0
+    "range2": 20000.0
   },
   "fsms": {
     "main": {
@@ -83,10 +84,6 @@
           },
           "setScanPattern": {
             "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 7.5
           },
           "setTargetDesignationRange": {
             "azimuthRange": [

@@ -87,11 +87,11 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
 {
   local res = null
   local obj = getTblValue("obj", objData) || objData
-  if (typeof(obj) == "string")
+  if (type(obj) == "string")
     obj = checkObj(scene) ? scene.findObject(obj) : null
-  else if (typeof(obj) == "function")
+  else if (type(obj) == "function")
     obj = obj()
-  if (typeof(obj) == "array")
+  if (type(obj) == "array")
   {
     for (local i = 0; i < obj.len(); i++)
     {
@@ -103,11 +103,11 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
       else
         res.box.addBox(block.box)
     }
-  } else if (typeof(obj) == "table")
+  } else if (type(obj) == "table")
   {
     if (("box" in obj) && obj.box)
       res = clone obj
-  } else if (typeof(obj) == "instance")
+  } else if (type(obj) == "instance")
     if (obj instanceof ::DaGuiObject)
     {
       if (checkObj(obj) && obj.isVisible())

@@ -9,6 +9,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let time = require("%scripts/time.nut")
 let { acos, PI } = require("math")
 let penalty = require("penalty")
+let { hangar_is_model_loaded, hangar_get_loaded_unit_name } = require("hangar")
 let decorLayoutPresets = require("%scripts/customization/decorLayoutPresetsWnd.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { showResource, canStartPreviewScene,
@@ -72,7 +73,7 @@ enum decalTwoSidedMode
 
   if (!showedUnit.value
       ||
-        ( ::hangar_get_loaded_unit_name() == showedUnit.value.name
+        ( hangar_get_loaded_unit_name() == showedUnit.value.name
         && !::is_loaded_model_high_quality()
         && !::check_package_and_ask_download("pkg_main"))
     )
@@ -342,7 +343,7 @@ enum decalTwoSidedMode
 
   function exportSampleUserSkin(_obj)
   {
-    if (!::hangar_is_loaded())
+    if (!hangar_is_model_loaded())
       return
 
     if (!::can_save_current_skin_template())
@@ -364,7 +365,7 @@ enum decalTwoSidedMode
 
   function refreshSkinsList(_obj)
   {
-    if (!::hangar_is_loaded())
+    if (!hangar_is_model_loaded())
       return
 
     this.updateUserSkinList()
@@ -392,7 +393,7 @@ enum decalTwoSidedMode
       this.switchUnit(modelName)
     else
       this.updateMainGuiElements()
-    if (::hangar_get_loaded_unit_name() == this.unit.name
+    if (hangar_get_loaded_unit_name() == this.unit.name
         && !::is_loaded_model_high_quality())
       ::check_package_and_ask_download("pkg_main", null, null, this, "air_in_hangar", this.goBack)
   }
@@ -881,7 +882,7 @@ enum decalTwoSidedMode
     if (needUpdateSlotDivs)
       this.updateSlotsDivsVisibility(decoratorType)
 
-    let isHangarLoaded = ::hangar_is_loaded()
+    let isHangarLoaded = hangar_is_model_loaded()
     ::enableBtnTable(this.scene, {
           decalslots_div     = isHangarLoaded
           slots_list         = isHangarLoaded
@@ -1040,7 +1041,7 @@ enum decalTwoSidedMode
 
   function onUpdate(_obj, _dt)
   {
-    this.showLoadingRot(!::hangar_is_loaded())
+    this.showLoadingRot(!hangar_is_model_loaded())
   }
 
   function getCurrentDecoratorSlot(decoratorType)
@@ -2204,7 +2205,7 @@ enum decalTwoSidedMode
   {
     if (!this.previewParams)
       return
-    if (::hangar_get_loaded_unit_name() == this.previewParams.unitName)
+    if (hangar_get_loaded_unit_name() == this.previewParams.unitName)
       this.removeAllDecorators(false)
     switch (this.previewMode)
     {

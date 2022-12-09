@@ -1,8 +1,10 @@
-let {dgs_get_settings} = require("dagor.system")
+let {dgs_get_settings, DBGLEVEL, get_arg_value_by_name} = require("dagor.system")
 let platform = require("platform")
 let {get_platform_string_id, get_console_model, get_console_model_revision} = platform
 
-let platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
+let systemPlatformId = get_platform_string_id()
+let settingsPlaformId = dgs_get_settings().getStr("platform", systemPlatformId)
+let platformId = DBGLEVEL > 0 ? (get_arg_value_by_name("platform") ?? settingsPlaformId) : settingsPlaformId
 let oneOf = @(...) vargv.contains(platformId)
 let consoleModel = get_console_model()
 let isModel = @(model) consoleModel == model

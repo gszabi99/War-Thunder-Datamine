@@ -20,6 +20,7 @@ let { isChatEnabled, isChatEnableWithPlayer,
   isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
 let { hasChat } = require("%scripts/user/matchingFeature.nut")
+let { send } = require("eventbus")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -1133,8 +1134,10 @@ let sortChatUsers = @(a, b) a.name <=> b.name
                                                     voiceChatStatus = voiceChatStatus
                                                    })
 
-        ::call_darg("updateVoiceChatStatus", { name = contact?.getName() ?? "",
-          isTalking = voiceChatStatus == voiceChatStats.talking})
+        send("updateVoiceChatStatus", {
+          name = contact?.getName() ?? "",
+          isTalking = voiceChatStatus == voiceChatStats.talking
+        })
       }
     }
     /* //!! For debug only!!
@@ -1143,7 +1146,7 @@ let sortChatUsers = @(a, b) a.name <=> b.name
     if (db)
     {
       foreach(name, param in db)
-        if (typeof(param) != "instance")
+        if (type(param) != "instance")
           msg += "\n" + name + " = " + param
         else
         if (name=="list")

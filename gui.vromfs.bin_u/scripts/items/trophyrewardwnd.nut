@@ -50,7 +50,7 @@ register_command(
   local localConfigsTable = clone configsTable;
 
   let params = {}
-  foreach (paramName in [ "rewardTitle", "rewardListLocId", "isDisassemble",
+  foreach (paramName in [ "rewardTitle", "rewardListLocId", "rewardIconStyle", "isDisassemble",
     "isHidePrizeActionBtn", "singleAnimationGuiSound", "rewardImage", "rewardImageRatio",
     "reUseRecipeUid" ])
   {
@@ -69,11 +69,15 @@ register_command(
   }
 
   let configsArray = localConfigsTable[tKey]
+  if (configsArray.len() == 0)
+    return
+
   delete localConfigsTable[tKey]
   configsArray.sort(::trophyReward.rewardsSortComparator)
 
   let itemId = configsArray?[0]?.itemDefId
     ?? configsArray?[0]?.trophyItemDefId
+    ?? configsArray?[0]?.displayId
     ?? configsArray?[0]?.id
     ?? ""
 
@@ -135,6 +139,7 @@ register_command(
   decoratorSlot = -1
   rewardTitle = null
   rewardListLocId = null
+  rewardIconStyle = null
   isHidePrizeActionBtn = false
   singleAnimationGuiSound = null
   rewardImage = null
@@ -145,7 +150,7 @@ register_command(
   function initScreen()
   {
     this.configsArray = this.configsArray ?? []
-    this.rewardTitle = this.configsArray?[0].rewardTitle ?? this.rewardTitle
+    this.rewardTitle = this.rewardTitle ?? this.configsArray?[0].rewardTitle
     this.rewardListLocId = this.configsArray?[0].rewardListLocId ?? this.rewardListLocId
 
     if (this.rewardImage != null)
@@ -264,6 +269,16 @@ register_command(
     return layersData
   }
 
+  function getForceStyleImage() {
+    if (!this.rewardIconStyle)
+      return null
+
+    let layerId = $"{this.rewardIconStyle}{this.opened ? "_opened" : ""}"
+    return ::LayersIcon.getIconData(::LayersIcon.findStyleCfg(layerId)
+      ? layerId
+      : "default_unlocked")
+  }
+
   function updateTrophyImage() {
     let imageObjPlace = this.scene.findObject("reward_image_place")
     if (!checkObj(imageObjPlace))
@@ -271,7 +286,7 @@ register_command(
 
     imageObjPlace.show(true)
 
-    let layersData = this.getIconData()
+    let layersData = this.getForceStyleImage() ?? this.getIconData()
     this.guiScene.replaceContentFromText(imageObjPlace, layersData, layersData.len(), this)
   }
 
@@ -459,7 +474,7 @@ register_command(
       return
 
     ::gui_start_open_trophy_rewards_list({ rewardsArray = this.shrinkedConfigsArray,
-      tittleLocId = this.getRewardsListLocId()})
+      titleLocId = this.getRewardsListLocId()})
   }
 
   function goBack()

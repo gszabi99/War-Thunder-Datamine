@@ -1,7 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {round, cos, sin, PI} = require("%sqstd/math.nut")
-
 local greenColor = Color(10, 202, 10, 250)
 local fontOutlineColor = Color(0, 0, 0, 255)
 local backgroundColor = Color(0, 0, 0, 75)
@@ -16,14 +14,14 @@ local redHex = 0xFF0000
 local alphaHex = 0xFF000000
 
 // some element doesn't appear clear in black => use white
-let function isDarkColor(color){
+let isDarkColor = memoize(function(color){
   let sumOfRGB = (color & blueHex) + ((color & greenHex) >> 8) + ((color & redHex) >> 16)
   return sumOfRGB < 100
-}
+})
 
-let function isColorOrWhite(color){
+let isColorOrWhite = memoize(function(color){
   return isDarkColor(color) ? Color(255,255,255, (color & alphaHex) >> 24) : color
-}
+})
 
 let function fadeColor(color, transparency) {
   return Color((color & redHex) >> 16, (color & greenHex) >> 8, color & blueHex, transparency)
@@ -38,29 +36,11 @@ local function mixColor(colorA, colorB, value) {
 }
 
 //used for aircraft turret Sight turret/fixedGun overheat/jam and fixed gun overheat / AAM tracker SNR
-let function relativCircle(percent, circleSize, dashCount = 36){
-
-  if (percent >= 0.99999999){
-    return [
-      [VECTOR_ELLIPSE, 0, 0, circleSize * 1.3, circleSize * 1.3]
-    ]
-  }
-
-  let commands = []
-  let angleDegree = 360 / dashCount
-  let angle = angleDegree * (PI / 180)
-  let startingAngleOffset = 120 * (PI / 180)
-  let dashAmmount = round((percent * 360) / angleDegree)
-  for(local i = 0; i < dashAmmount; ++i) {
-    commands.append([
-      VECTOR_LINE,
-      (cos(-startingAngleOffset + angle * (i-1)) - sin(-startingAngleOffset + angle * (i-1))) * circleSize,
-      (cos(-startingAngleOffset + angle * (i-1)) + sin(-startingAngleOffset + angle * (i-1))) * circleSize,
-      (cos(-startingAngleOffset + angle * i) -     sin(-startingAngleOffset + angle * i)) * circleSize,
-      (cos(-startingAngleOffset + angle * i) +     sin(-startingAngleOffset + angle * i)) * circleSize
-    ])
-  }
-  return commands
+let function relativCircle(percent, circleSize) {
+  if (percent >= 0.99999999)
+    return [ [VECTOR_ELLIPSE, 0, 0, circleSize * 1.3, circleSize * 1.3] ]
+  else
+    return [ [VECTOR_SECTOR, 0, 0, circleSize, circleSize, -90, -90+360*percent] ]
 }
 
 let styleText = {

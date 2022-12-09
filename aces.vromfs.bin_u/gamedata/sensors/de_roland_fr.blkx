@@ -5,9 +5,9 @@
     "radarTrack": {
       "power": 90.0,
       "band": 9,
-      "rcs": 3.0,
-      "range": 12000.0,
-      "rangeMax": 16000.0,
+      "rcs": 1.0,
+      "range": 16000.0,
+      "rangeMax": 20000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 2.2,
@@ -125,14 +125,14 @@
   "signals": {
     "radarTrack": {
       "groundClutter": false,
-      "angularAccuracy": 0.06,
+      "angularAccuracy": 0.03,
       "distanceAccuracy": 5.0,
       "absDopplerSpeed": true,
       "track": true,
       "distance": {
         "presents": true,
         "minValue": 750.0,
-        "maxValue": 16000.0,
+        "maxValue": 20000.0,
         "width": 60.0
       },
       "dopplerSpeed": {
@@ -632,6 +632,9 @@
           "command": "typeSwitch",
           "stateTo": "irstTrack",
           "actions": {
+            "setScanPattern": {
+              "scanPattern": "irstTrack"
+            },
             "setModeName": {
               "name": "IRST track"
             },
@@ -643,6 +646,9 @@
           "command": "typeSwitch",
           "stateTo": "radarTrack",
           "actions": {
+            "setScanPattern": {
+              "scanPattern": "radarTrack"
+            },
             "setModeName": {
               "name": "track"
             },

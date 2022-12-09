@@ -77,4 +77,20 @@ def _rnd_int(var seed : int&; a : int2)
 def get_random_point_in_triangle(a, b, c : float3)
   let r1 = gfrnd()
   let r2 = gfrnd()
-  return a * (1f - r1)  + b * r1 * (1f - r2) + c * r1 * r2
+  if r2 + r1 <= 1.0
+    return a + (b - a) * r1 + (c - a) * r2
+  else
+    return a + (b - a) * (1.0 - r1) + (c - a) * (1.0 - r2)
+
+def rnd_dir2()
+  var dir : float2
+  sincos(gfrnd() * 2. * PI, dir.y, dir.x)
+  return dir
+
+def rnd_dir3()
+  let phi = 2. * PI * gfrnd()
+  let theta = acos(rnd_float(-1.0, 1.0))
+  return float3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta))
+
+def rnd_sign()
+  return (grnd() & 1) == 0 ? 1.0 : -1.0

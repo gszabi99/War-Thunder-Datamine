@@ -147,7 +147,7 @@
   },
   "ikGunner": [
     {
-      "model": "uk_officer_char",
+      "model": "uk_officer_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -210,7 +210,7 @@
       ]
     },
     {
-      "model": "uk_officer_char",
+      "model": "uk_officer_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -369,6 +369,7 @@
       "napalmDamageMult": 1.0,
       "bridge_dm": {
         "napalmDamageMult": 1.0,
+        "fireParamsPreset": "ship_bridge",
         "hp": 580.0
       },
       "radio_station_dm": {
@@ -508,7 +509,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_engine_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
       "explosionDamageMult": 1.5,
@@ -1407,6 +1407,18 @@
             "damage": 350.0
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [

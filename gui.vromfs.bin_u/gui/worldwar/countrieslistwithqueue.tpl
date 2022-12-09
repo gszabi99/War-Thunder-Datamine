@@ -9,6 +9,7 @@ css-hier-invalidate:t='yes'
 total-input-transparent:t='yes'
 
 conflictCountry {
+  id:t='country_<<side>>'
   size:t='pw, 0.84pw'  /*0.16pw it is alfa canal on bottom of flag icon*/
   flow:t='vertical'
   css-hier-invalidate:t='yes'

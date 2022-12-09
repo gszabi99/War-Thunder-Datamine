@@ -10,14 +10,6 @@ let function register_state_change_callback(callback) {
 }
 
 
-let function register_chat_state_change_callback(callback) {
-  subscribe(cn.chat_state_changed_event_name, function(result) {
-    let permissions = result?.permissions
-    callback?(permissions)
-  })
-}
-
-
 let function subscribe_for_chat_permissions_event(eventName, callback) {
   subscribe_onehit(eventName, function(result) {
     let success = result?.success
@@ -53,9 +45,5 @@ return {
   retrieve_voice_chat_permissions
   retrieve_text_chat_permissions
 
-  track_user_chat_permissions = cn.track_user_chat_permissions
-  stop_tracking_user_chat_permissions = cn.stop_tracking_user_chat_permissions
-
   register_state_change_callback
-  register_chat_state_change_callback
 }

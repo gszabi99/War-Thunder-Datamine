@@ -31,7 +31,7 @@ global enum RCLICK_MENU_ORIENT
 
 ::gui_right_click_menu <- function gui_right_click_menu(config, owner, position = null, orientation = null, onClose = null)
 {
-  if (typeof config == "array")
+  if (type(config) == "array")
     config = { actions = config }
   ::handlersManager.loadHandler(::gui_handlers.RightClickMenu, {
     config
@@ -73,13 +73,13 @@ global enum RCLICK_MENU_ORIENT
 
     foreach(idx, item in this.config.actions)
     {
-      if ("show" in item && !((typeof(item.show) == "function") ? item.show.call(this.owner) : item.show))
+      if ("show" in item && !((type(item.show) == "function") ? item.show.call(this.owner) : item.show))
         continue
 
       local actionData = null //lineDiv
       local enabled = true
       if ("enabled" in item)
-        enabled = typeof(item.enabled) == "function"
+        enabled = type(item.enabled) == "function"
                   ? item.enabled.call(this.owner)
                   : item.enabled
 

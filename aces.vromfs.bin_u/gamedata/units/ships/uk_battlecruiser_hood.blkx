@@ -1723,6 +1723,7 @@
       "genericDamageMult": 0.2,
       "napalmDamageMult": 1.0,
       "bridge_dm": {
+        "fireParamsPreset": "ship_bridge",
         "hp": 760.0
       },
       "radio_station_dm": {
@@ -2125,7 +2126,6 @@
       }
     },
     "engine_rooms": {
-      "fireParamsPreset": "ship_engine_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 16.0,
       "armorThrough": 500.0,
@@ -3169,6 +3169,11 @@
         "armorThickness": 76.2,
         "hp": 10000.0
       },
+      "turret_05_bottom_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 50.8,
+        "hp": 10000.0
+      },
       "turret_02_front_dm": {
         "armorThickness": 381.0,
         "hp": 10000.0
@@ -3189,6 +3194,11 @@
       "turret_02_bottom_dm": {
         "armorClass": "ship_RHA",
         "armorThickness": 76.2,
+        "hp": 10000.0
+      },
+      "turret_06_bottom_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_03_front_dm": {
@@ -3213,6 +3223,11 @@
         "armorThickness": 76.2,
         "hp": 10000.0
       },
+      "turret_07_bottom_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 50.8,
+        "hp": 10000.0
+      },
       "turret_04_front_dm": {
         "armorThickness": 381.0,
         "hp": 10000.0
@@ -3233,6 +3248,11 @@
       "turret_04_bottom_dm": {
         "armorClass": "ship_RHA",
         "armorThickness": 76.2,
+        "hp": 10000.0
+      },
+      "turret_08_bottom_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_09_front_dm": {
@@ -3931,6 +3951,18 @@
             "damage": 350.0
           }
         ]
+      },
+      {
+        "name": [
+          "bridge_dm",
+          "bridge_01_dm",
+          "bridge_02_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
       },
       {
         "name": [

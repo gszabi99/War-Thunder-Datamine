@@ -218,7 +218,7 @@ local armyIdByMask = {
           text = "#mainmenu/btnSend"
           isToBattle = true
           titleButtonFont = false
-          shortcut = "A"
+          shortcut = "X"
           button = true
           type = "wwArmyFlyOut"
         },
@@ -392,7 +392,7 @@ local armyIdByMask = {
 
     local cantSendText = ""
     if (!canSendArmy)
-      cantSendText = loc("worldwar/reached_air_armies_limit")
+      cantSendText = loc($"worldwar/reached_{this.airfield.airfieldType.locId}_armies_limit")
     else if (this.hasUnitsToFly)
       cantSendText = isEnable ? this.getSelectedUnitsFlyTimeText(this.selectedGroupIdx) :
         loc("worldwar/airfield/army_not_equipped")

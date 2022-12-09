@@ -23,7 +23,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   sceneBlkName = "%gui/items/trophyRewardsList.blk"
 
   rewardsArray = []
-  tittleLocId = "mainmenu/rewardsList"
+  titleLocId = "mainmenu/rewardsList"
 
   infoHandler = null
 
@@ -37,7 +37,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let titleObj = this.scene.findObject("title")
     if (checkObj(titleObj))
-      titleObj.setValue(loc(this.tittleLocId))
+      titleObj.setValue(loc(this.titleLocId))
 
     this.fillList(listObj)
 

@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -11,7 +10,7 @@ let workshop = require("%scripts/items/workshop/workshop.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
 let { disableSeenUserlogs, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
-let { showUnlock } = require("%scripts/unlocks/unlockRewardWnd.nut")
+let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatRewardTitleLocId, userstatItemsListLocId
 } = require("%scripts/userstat/userstatItemsRewards.nut")
@@ -39,9 +38,9 @@ let function checkPopupUserLog(user_log_blk)
         continue
       let rewardType = user_log_blk?.body.rewardType
       let rewardTypeFilter = popupItem.rewardType
-      if (typeof(rewardTypeFilter) == "string" && rewardTypeFilter == rewardType)
+      if (type(rewardTypeFilter) == "string" && rewardTypeFilter == rewardType)
         return true
-      if (typeof(rewardTypeFilter) == "array" && isInArray(rewardType, rewardTypeFilter))
+      if (type(rewardTypeFilter) == "array" && isInArray(rewardType, rewardTypeFilter))
         return true
     }
     else if (popupItem == user_log_blk?.type)
@@ -216,6 +215,11 @@ local logNameByType = {
   let rentsTable = {}
   let specialOffers = {}
   let ignoreRentItems = []
+
+  //Inventory reward logs will not be received in the same time,
+  //so need to wait last reward and only then mark logs as seen
+  let inventoryRewards = {cache = {}}
+
   let total = ::get_user_logs_count()
   local unlocksNeedsPopupWnd = false
   let popupMask = ("getUserlogsMask" in handler) ? handler.getUserlogsMask() : USERLOG_POPUP.ALL
@@ -391,7 +395,6 @@ local logNameByType = {
       if (onStartAwards || !(popupMask & USERLOG_POPUP.OPEN_TROPHY))
         continue
 
-      let key = blk.body.id + "" + getTblValue("parentTrophyRandId", blk.body, "")
       let itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
       let item = ::ItemsManager.findItemById(itemId)
       let userstatItemRewardData = getUserstatItemRewardData(itemId)
@@ -407,10 +410,25 @@ local logNameByType = {
           })
           removeUserstatItemRewardToShow(item.id)
         }
+
+        let key = $"{blk.body.id}{blk.body?.parentTrophyRandId ?? ""}"
         if (!(key in trophyRewardsTable))
           trophyRewardsTable[key] <- []
         trophyRewardsTable[key].append(trophyRewardTable)
         markDisabled = true
+      }
+
+      //Check previously received bundle trophy
+      //and check only items from trophies
+      if (itemId in inventoryRewards && (
+        (blk.body?.fromInventory && blk.body?.trophy == null)
+        || blk?.body?.id == "@external_inventory_trophy")
+      ) {
+        local blkBody = ::buildTableFromBlk(blk.body)
+        let itemDefId = inventoryRewards[itemId]
+        inventoryRewards.cache[itemDefId].markSeenIds.append(blk.id)
+        inventoryRewards.cache[itemDefId].rewardsCount--
+        inventoryRewards.cache[itemDefId].rewardsData.append(blkBody)
       }
     }
     else if (blk?.type == EULT_CHARD_AWARD
@@ -427,38 +445,56 @@ local logNameByType = {
     }
     else if (blk?.type == EULT_INVENTORY_ADD_ITEM)
     {
-      let item = ::ItemsManager.getInventoryItemById(blk.body?.itemDefId)
-      if (item)
+      if (onStartAwards)
+        continue
+
+      let itemDefId = blk.body?.itemDefId
+      let item = ::ItemsManager.getInventoryItemById(itemDefId)
+      if (item && !item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false))
       {
-        if (!item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false))
-        {
-          let logTypeName = ::getLogNameByType(blk.type)
-          let locId = $"userlog/{logTypeName}"
-          let numItems = blk.body?.quantity ?? blk.body?.amount ?? 1
-          let name = loc(locId, {
-            numItemsColored = numItems
-            numItems = numItems
-            numItemsAdd = numItems
-            itemName = ""
-          })
+        let logTypeName = ::getLogNameByType(blk.type)
+        let locId = $"userlog/{logTypeName}"
+        let numItems = blk.body?.quantity ?? blk.body?.amount ?? 1
+        let name = loc(locId, {
+          numItemsColored = numItems
+          numItems = numItems
+          numItemsAdd = numItems
+          itemName = ""
+        })
 
-          local button = null
-          let wSet = workshop.getSetByItemId(item.id)
-          if (wSet)
-            button = [{
-              id = "workshop_button",
-              text = loc("items/workshop"),
-              func = @() wSet.needShowPreview() ? workshopPreview.open(wSet)
-                : ::gui_start_items_list(itemsTab.WORKSHOP, {
-                    curSheet = { id = wSet.getShopTabId() },
-                    initSubsetId = wSet.getSubsetIdByItemId(item.id)
-                  })
-            }]
+        local button = null
+        let wSet = workshop.getSetByItemId(item.id)
+        if (wSet)
+          button = [{
+            id = "workshop_button",
+            text = loc("items/workshop"),
+            func = @() wSet.needShowPreview() ? workshopPreview.open(wSet)
+              : ::gui_start_items_list(itemsTab.WORKSHOP, {
+                  curSheet = { id = wSet.getShopTabId() },
+                  initSubsetId = wSet.getSubsetIdByItemId(item.id)
+                })
+          }]
 
-          ::g_popups.add(name, item && item.getName() ? item.getName() : "",
-            null, button, null, logTypeName)
-        }
+        ::g_popups.add(name, item && item.getName() ? item.getName() : "",
+          null, button, null, logTypeName)
         markDisabled = true
+      }
+      else {
+        let receipeItem = ::ItemsManager.getItemOrRecipeBundleById(itemDefId)
+        if (receipeItem?.forceShowRewardReceiving) {
+          if (itemDefId not in inventoryRewards.cache) {
+            inventoryRewards.cache[itemDefId] <- {markSeenIds = [blk.id], rewardsCount = 0, rewardsData = []}
+            //markSeenIds - for disabling them if we will decide to show reward
+            //rewardsCount - for check is all rewards we've got
+          }
+          for (local j = 0; j < blk.body.blockCount(); j++) {
+            let rewardItemDefId = blk.body.getBlock(j)?.itemDefId
+            if (rewardItemDefId) {
+              inventoryRewards[rewardItemDefId] <- itemDefId //for fast search of original receipe
+              inventoryRewards.cache[itemDefId].rewardsCount++
+            }
+          }
+        }
       }
     }
     else if (blk?.type == EULT_TICKETS_REMINDER)
@@ -551,13 +587,28 @@ local logNameByType = {
   if (unlocksNeedsPopupWnd)
     handler.doWhenActive( (@(handler) function() { ::g_popup_msg.showPopupWndIfNeed(handler) })(handler))
 
+  foreach (inventoryItemId, invData in inventoryRewards.cache)
+    if (invData.rewardsCount <= 0) {
+      let itemId = inventoryItemId
+      let { markSeenIds, rewardsData } = invData
+      seenIdsArray.extend(markSeenIds)
+      handler.doWhenActive(@() ::gui_start_open_trophy({
+        [itemId] = rewardsData
+        rewardTitle = loc("mainmenu/you_received")
+        rewardIconStyle = "shop_trophy_test_gold"
+        isHidePrizeActionBtn = true
+      }))
+    }
+
   if (seenIdsArray.len())
     disableSeenUserlogs(seenIdsArray)
 
   ::gui_start_open_trophy(trophyRewardsTable)
 
   entitlementRewards.each(@(_key, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
-  unlocksRewards.each(@(_key, unlockId) handler.doWhenActive(@() showUnlock(unlockId, { ignoreAvailability = true })))
+
+  handler.doWhenActive(@() showUnlocks(unlocksRewards))
+
 
   rentsTable.each(function(config, key) {
     if (!isInArray(key, ignoreRentItems))
@@ -741,7 +792,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
       let curLog = logs[dubIdx]
       // Stack all trophy rewards
       if (curLog?.item && logObj?.item)
-        curLog.item = typeof(curLog.item) == "array" ? curLog.item.append(logObj.item)
+        curLog.item = type(curLog.item) == "array" ? curLog.item.append(logObj.item)
           : [curLog.item].append(logObj.item)
       // Stack all identical trophies
       if (!curLog?.item && !logObj?.item)

@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { getCountryCode } = require("auth_wt")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let legalRestrictionsChecked = persist("legalRestrictionsChecked", @() Watched(false))
@@ -20,7 +20,7 @@ let function hasLegalRestictions(restrictedInCountries)
   if (restrictedInCountries.len() == 0)
     return false
 
-  let userCountry = ::get_country_code()
+  let userCountry = getCountryCode()
   return restrictedInCountries.findindex(@(c) c == userCountry) != null
 }
 
@@ -73,7 +73,7 @@ let function checkLegalRestrictions(restrictedInCountries, onSuccessCb)
     onSuccessCb()
   }
 
-  let countryName = getCountryName(::get_country_code())
+  let countryName = getCountryName(getCountryCode())
   if (countryName == "")
     return onSuccessCb()
 

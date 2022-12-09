@@ -356,7 +356,7 @@ let { find_files } = require("dagor.fs")
         }
         favorites.append(disks)
       }
-      else if (target_platform == "macosx")
+      else if (platformId == "macosx")
       {
         favorites.append({
           name = "#filesystem/fsMountPoints"

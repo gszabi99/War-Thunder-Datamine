@@ -82,7 +82,7 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
     return
   let rootName = getRootSizeText()
   let cdb = ::get_local_custom_settings_blk()
-  if (cdb?[rootName] != null && typeof(cdb[rootName]) != "instance")
+  if (cdb?[rootName] != null && type(cdb[rootName]) != "instance")
     cdb[rootName] = null
   if (cdb?[rootName] == null)
     cdb[rootName] = ::DataBlock()

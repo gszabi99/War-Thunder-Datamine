@@ -22,6 +22,8 @@ let { debug_dump_stack } = require("dagor.debug")
   optionItems = [
     [::USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,  "spinner"],
     [::USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK, "spinner"],
+    [::USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK, "spinner"],
+    [::USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK, "spinner"],
     [::USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS, "switchbox"],
     [::USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, "spinner"],
     [::USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES,"spinner"],

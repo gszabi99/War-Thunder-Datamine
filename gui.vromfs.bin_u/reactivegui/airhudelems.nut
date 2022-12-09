@@ -6,7 +6,7 @@ let string = require("string")
 
 let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCount, IsCannonEmpty,
   OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
-  EngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, FuelState, IsCompassVisible,
+  EngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, HasExternalFuel, ExternalFuel, FuelState, IsCompassVisible,
   IsMachineGunsEmpty, MachineGunsSelectedArray, MachineGunsCount, MachineGunsReloadTime, MachineGunsMode,
   CannonsAdditionalCount, CannonsAdditionalSeconds, CannonsAdditionalMode, CannonsAdditionalSelected, IsCanAdditionalEmpty,
   AgmCount, AgmSeconds, AgmTimeToHit, AgmTimeToWarning, AgmActualCount, AgmName, AgmSelected, IsAgmEmpty,
@@ -29,10 +29,10 @@ let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCo
   RocketAimX, RocketAimY, TATargetVisible, IRCMState,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced,IsEnginesControled, ThrottleState, isEngineControled,
   DistanceToGround, IsMfdEnabled, VerticalSpeed, HudParamColor, MfdColor,
-  ParamTableShadowFactor, ParamTableShadowOpacity
+  ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
 
-let {backgroundColor, isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor} = require("style/airHudStyle.nut")
+let {isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor} = require("style/airHudStyle.nut")
 
 let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
@@ -62,7 +62,7 @@ enum GuidanceLockResult {
   RESULT_LOCK_AFTER_LAUNCH = 4
 }
 
-let verticalSpeedInd = function(height, _isBackground, style, color) {
+let verticalSpeedInd = function(height, style, color) {
   return style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     color
@@ -74,7 +74,7 @@ let verticalSpeedInd = function(height, _isBackground, style, color) {
   })
 }
 
-let verticalSpeedScale = function(width, height, _isBackground, style, color) {
+let verticalSpeedScale = function(width, height, style, color) {
   let part1_16 = 0.0625 * 100
   let lineStart = 70
 
@@ -105,7 +105,7 @@ let verticalSpeedScale = function(width, height, _isBackground, style, color) {
   })
 }
 
-let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBackground, elemStyle = styleText) {
+let function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = styleText) {
 
   let relativeHeight = Computed( @() clamp(DistanceToGround.value * 2.0, 0, 100))
 
@@ -113,7 +113,7 @@ let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBack
     pos = [posX, posY]
     children = [
       {
-        children = verticalSpeedScale(scaleWidth, height, isBackground, elemStyle, color)
+        children = verticalSpeedScale(scaleWidth, height, elemStyle, color)
       }
       {
         valign = ALIGN_BOTTOM
@@ -151,7 +151,7 @@ let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBack
           translate = [0, height * 0.01 * clamp(50 - VerticalSpeed.value * 5.0, 0, 100)]
         }
         children = [
-          verticalSpeedInd(hdpx(25), isBackground, elemStyle, color),
+          verticalSpeedInd(hdpx(25), elemStyle, color),
           {
             pos = [scaleWidth + hdpx(10), hdpx(-10)]
             children = @() elemStyle.__merge({
@@ -347,6 +347,21 @@ let function getModeCaption(mode) {
     texts.append(loc("HUD/WEAPON_MODE_CCIP"))
   else if (mode & (1 << WeaponMode.CCRP_MODE))
     texts.append(loc("HUD/WEAPON_MODE_CCRP"))
+
+  //check both ccip/rp and bombBay
+  let ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
+  if (ballisticModeBits > 0 && (mode ^ ballisticModeBits) > 0)
+    texts.append("  ")
+
+  if (mode & (1 << WeaponMode.BOMB_BAY_OPEN))
+    texts.append(loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
+  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSED))
+    texts.append(loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
+  if (mode & (1 << WeaponMode.BOMB_BAY_OPENING))
+    texts.append(loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
+  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
+    texts.append(loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
+
   return "".join(texts)
 }
 
@@ -370,40 +385,13 @@ let function getRocketCaption(mode){
 
 let function getBombCaption(mode){
   let texts = [loc("HUD/BOMBS_SHORT")," "]
-  if ((mode & (1 << WeaponMode.CCIP_MODE)) && (mode & (1 << WeaponMode.CCRP_MODE)))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP_CCRP"))
-  else if (mode & (1 << WeaponMode.CCIP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP"))
-  else if (mode & (1 << WeaponMode.CCRP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_CCRP"))
-
-  //check both ccip/rp and bombBay
-  let ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
-  if (ballisticModeBits > 0 && (mode ^ ballisticModeBits) > 0)
-    texts.append("  ")
-
-  if (mode & (1 << WeaponMode.BOMB_BAY_OPEN))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSED))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_OPENING))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
+  texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
 let function getTorpedoCaption(mode) {
   let texts = [loc("HUD/TORPEDOES_SHORT")," "]
-
-  if (mode & (1 << WeaponMode.BOMB_BAY_OPEN))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPEN_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSED))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSED_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_OPENING))
-    texts.append(loc("HUD/BAY_DOOR_IS_OPENING_INDICATION"))
-  if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
-    texts.append(loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
+  texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
@@ -440,14 +428,17 @@ let function getStaminaValue(stamina) {
   return string.format("%d %%", stamina)
 }
 
-let function getFuelState(fuel, fuelState){
+let function getFuelState(fuel, hasExternalFuel, externalFuel, fuelState){
   if (fuelState == TemperatureState.FUEL_LEAK)
     return loc("HUD_FUEL_LEAK")
   if (fuelState == TemperatureState.FUEL_SEALING)
     return loc("HUD_TANK_IS_SEALING")
   if (fuelState == TemperatureState.EMPTY_TANK)
     return loc("HUD_TANK_IS_EMPTY")
-  return string.format("%d:%02d", floor(fuel / 60), fuel % 60)
+  local val = string.format("%d:%02d", floor(fuel / 60), fuel % 60)
+  if (hasExternalFuel)
+    val = " ".concat(val, string.format(" / %d:%02d", floor(externalFuel / 60), externalFuel % 60))
+  return val
 }
 
 let function getFuelAlertState(fuelState){
@@ -456,7 +447,7 @@ let function getFuelAlertState(fuelState){
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
-let function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false) {
+let function createParam(param, width, height, style, needCaption = true, for_ils = false, isBomberView = false) {
   let {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
     additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed} = param
 
@@ -465,7 +456,6 @@ let function createParam(param, width, height, isBackground, style, needCaption 
       : (state == HudColorState.LOW_ALERT) ? lowAlertColor
       : (state == HudColorState.MEDIUM_ALERT) ? mediumAlertColor
       : (state == HudColorState.HIGH_ALERT) ? highAlertColor
-      : isBackground ? backgroundColor
       : isBomberView ? isColorOrWhite(activeColor)
       : activeColor
   }
@@ -513,8 +503,6 @@ let function createParam(param, width, height, isBackground, style, needCaption 
     opacity =  alertStateCaptionComputed.value >= HudColorState.LOW_ALERT ? 0.7 : 1.0
   })
 
-  let valueSizeX = @() calc_comp_size({rendObj = ROBJ_TEXT, size = SIZE_TO_CONTENT, text = valueComputed.value, watch = valueComputed})[0]
-
   let valueColor = Computed(@() for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value))
 
@@ -526,7 +514,8 @@ let function createParam(param, width, height, isBackground, style, needCaption 
     watch = [valueComputed, alertValueStateComputed, valueColor, colorFxValue, factorFxValue]
     color = fadeColor(valueColor.value, 255)
     rendObj = ROBJ_TEXT
-    size = [valueSizeX() + 0.075 * width, height]
+    size = [SIZE_TO_CONTENT, height]
+    padding = [0, 0.075 * width, 0, 0]
     text = valueComputed.value
     opacity =  alertValueStateComputed.value >= HudColorState.LOW_ALERT ? 0.7 : 1.0
     fontFxFactor = factorFxValue.value
@@ -535,8 +524,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
 
   let additionalComponent = @() style.__merge({
     watch = [additionalComputed, HudParamColor, ParamTableShadowFactor, ParamTableShadowOpacity]
-    color = isBackground ? backgroundColor
-      : fadeColor(HudParamColor.value, 255)
+    color = fadeColor(HudParamColor.value, 255)
     rendObj = ROBJ_TEXT
     size = [0.7 * width, height]
     text = additionalComputed.value
@@ -753,8 +741,8 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
     valueComputed = Computed(@() generateBulletsTextFunction(CannonAmmoCount.value, CannonAmmoReloadTime.value))
     selectedComputed = Computed(@() CannonSelectedArray.value?[idx] || CannonSelected.value? ">" : "")
     additionalComputed = Computed (@() "")
-    alertStateCaptionComputed = Computed(@() IsCannonEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
-    alertValueStateComputed = Computed(@() IsCannonEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    alertStateCaptionComputed = Computed(@() (IsCannonEmpty.value?[idx] || isCannonJamed.value?[idx]) ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    alertValueStateComputed = Computed(@() (IsCannonEmpty.value?[idx] || isCannonJamed.value?[idx]) ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     blinkComputed
     blinkTrigger
   }
@@ -823,7 +811,7 @@ for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
 
 textParamsMapSecondary[AirParamsSecondary.FUEL] <- {
   titleComputed = Computed(@() loc("HUD/FUEL_SHORT"))
-  valueComputed = Computed(@() getFuelState(Fuel.value, FuelState.value))
+  valueComputed = Computed(@() getFuelState(Fuel.value, HasExternalFuel.value, ExternalFuel.value, FuelState.value))
   selectedComputed = Computed (@() "")
   additionalComputed = Computed (@() "")
   alertStateCaptionComputed = Computed(@() getFuelAlertState(FuelState.value))
@@ -851,12 +839,12 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
 let fuelKeyId = AirParamsSecondary.FUEL
 
 let function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false) {
-  let function getChildren(isBackground, style, isBomberView = false) {
+  let function getChildren(style, isBomberView = false) {
     let children = []
 
     foreach(key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
-        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, style, needCaption, forIls, isBomberView))
       if (key == AirParamsMain.ALTITUDE && is_aircraft) {
         children.append(@() style.__merge({
           rendObj = ROBJ_TEXT
@@ -868,7 +856,7 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
     local secondaryMaskValue = secondaryMask.value
     if (is_aircraft) {
       if ((1 << fuelKeyId) & secondaryMaskValue) {
-        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, needCaption, forIls, isBomberView))
         secondaryMaskValue = secondaryMaskValue - (1 << fuelKeyId)
       }
     }
@@ -883,27 +871,29 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
 
     foreach(key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
-        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, style, needCaption, forIls, isBomberView))
     }
 
     return children
   }
 
-  return function(isBackground, isBomberView = false, style = styleText ) {
+  return function(isBomberView = false, style = styleText) {
+    let table = @() style.__merge({
+      watch = [mainMask, secondaryMask, posWatched]
+      pos = posWatched.value
+      size = [width, SIZE_TO_CONTENT]
+      flow = FLOW_VERTICAL
+      gap
+      children = getChildren(style, isBomberView)
+    })
+
     return {
-      children = @() style.__merge({
-        watch = [mainMask, secondaryMask, posWatched]
-        pos = posWatched.value
-        size = [width, SIZE_TO_CONTENT]
-        flow = FLOW_VERTICAL
-        gap = gap
-        children = getChildren(isBackground, style, isBomberView)
-      })
+      children = table
     }
   }
 }
 
-let function compassComponent(colorWatch, size, pos, _isBackground) {
+let function compassComponent(colorWatch, size, pos) {
   return @() {
     pos
     watch = [IsCompassVisible, colorWatch]
@@ -911,7 +901,7 @@ let function compassComponent(colorWatch, size, pos, _isBackground) {
   }
 }
 
-let airHorizonZeroLevel = function(elemStyle, height, _isBackground, color) {
+let airHorizonZeroLevel = function(elemStyle, height, color) {
   return elemStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     color
@@ -924,7 +914,7 @@ let airHorizonZeroLevel = function(elemStyle, height, _isBackground, color) {
 }
 
 
-let airHorizon = function(elemStyle, height, _isBackground, color) {
+let airHorizon = function(elemStyle, height, color) {
   return @() elemStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [4*height, height]
@@ -941,7 +931,7 @@ let airHorizon = function(elemStyle, height, _isBackground, color) {
 }
 
 
-let horizontalSpeedVector = function(elemStyle, color, height, _isBackground) {
+let function horizontalSpeedVector(elemStyle, color, height) {
   return elemStyle.__merge({
     rendObj = ROBJ_HELICOPTER_HORIZONTAL_SPEED
     size = [height, height]
@@ -951,18 +941,18 @@ let horizontalSpeedVector = function(elemStyle, color, height, _isBackground) {
   })
 }
 
-let HelicopterHorizontalSpeedComponent = function(color, isBackground, posX = sw(50), posY = sh(50), height = hdpx(40), elemStyle = styleLineForeground) {
+let function HelicopterHorizontalSpeedComponent(color, posX = sw(50), posY = sh(50), height = hdpx(40), elemStyle = styleLineForeground) {
   return function() {
     return {
       pos = [posX - 2* height, posY - height*0.5]
       size = [4*height, height]
       children = [
-        airHorizonZeroLevel(elemStyle, height, isBackground, color)
-        airHorizon(elemStyle, height, isBackground, color)
+        airHorizonZeroLevel(elemStyle, height, color)
+        airHorizon(elemStyle, height, color)
         {
           pos = [height, -0.5*height]
           children = [
-            horizontalSpeedVector(elemStyle, color, 2 * height, isBackground)
+            horizontalSpeedVector(elemStyle, color, 2 * height)
           ]
         }
       ]
@@ -1024,7 +1014,7 @@ let function getAgmLaunchDistanceRangeCommands(_visible, enabled, distMin, distM
 
 
 
-let function turretAngles(colorWatch, width, height, aspect, _isBackground, blinkDuration = 0.5) {
+let function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5) {
 
   let offset = 1.3
   let crossL = 2
@@ -1123,10 +1113,8 @@ let function turretAngles(colorWatch, width, height, aspect, _isBackground, blin
   })
 }
 
-let lockSightComponent = function(colorWatch, width, height, posX, posY, is_background) {
-  let color = Computed(@() !is_background && IsAgmEmpty.value ? AlertColorHigh.value
-    : is_background ? backgroundColor
-    : colorWatch.value)
+let lockSightComponent = function(colorWatch, width, height, posX, posY) {
+  let color = Computed(@() IsAgmEmpty.value ? AlertColorHigh.value : colorWatch.value)
   return lockSight(color, width, height, posX, posY)
 }
 
@@ -1165,7 +1153,7 @@ let function helicopterRocketSightMode(sightMode){
   ]
 }
 
-let helicopterRocketAim = @(width, height, color, _isBackground, style = styleLineForeground) function() {
+let helicopterRocketAim = @(width, height, color, style = styleLineForeground) function() {
 
   let lines = helicopterRocketSightMode(RocketSightMode.value)
 
@@ -1185,16 +1173,15 @@ let helicopterRocketAim = @(width, height, color, _isBackground, style = styleLi
 }
 
 let turretAnglesAspect = 2.0
-let turretAnglesComponent = function(colorWatch, width, height, posX, posY, isBackground, blinkDuration = 0.5) {
+let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blinkDuration = 0.5) {
   return {
     pos = [posX - turretAnglesAspect * width * 0.5, posY - height]
     size = SIZE_TO_CONTENT
-    children = turretAngles(colorWatch, width, height, turretAnglesAspect, isBackground, blinkDuration)
+    children = turretAngles(colorWatch, width, height, turretAnglesAspect, blinkDuration)
   }
 }
 
-let function agmLaunchZone(colorWatch, _w, _h, _isBackground)  {
-
+let function agmLaunchZone(colorWatch, _w, _h) {
   let function maxAngleBorder(){
     let px = TurretYaw.value
     let py = TurretPitch.value
@@ -1230,7 +1217,7 @@ let function agmLaunchZone(colorWatch, _w, _h, _isBackground)  {
   })
 }
 
-let sight = function(colorWatch, height, _isBackground) {
+let function sight(colorWatch, height) {
   let longL = 22
   let shortL = 10
   let dash = 0.8
@@ -1260,15 +1247,15 @@ let sight = function(colorWatch, height, _isBackground) {
   })
 }
 
-let sightComponent = function(colorWatch, centerX, centerY, height, isBackground) {
+let sightComponent = function(colorWatch, centerX, centerY, height) {
   return {
     pos = [centerX - height * 0.5, centerY - height * 0.5]
     size = SIZE_TO_CONTENT
-    children = sight(colorWatch, height, isBackground)
+    children = sight(colorWatch, height)
   }
 }
 
-let function launchDistanceMaxComponent(colorWatch, width, height, posX, posY, _isBackground) {
+let function launchDistanceMaxComponent(colorWatch, width, height, posX, posY) {
 
   let getAgmLaunchDistanceMax = function() {
     return IsAgmLaunchZoneVisible.value ?
@@ -1300,7 +1287,7 @@ let function launchDistanceMaxComponent(colorWatch, width, height, posX, posY, _
   return resCompoment
 }
 
-let function rangeFinderComponent(colorWatch, posX, posY, _isBackground) {
+let function rangeFinderComponent(colorWatch, posX, posY) {
   let rangefinder = @() styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
@@ -1322,7 +1309,7 @@ let function rangeFinderComponent(colorWatch, posX, posY, _isBackground) {
 
 let triggerTATarget = {}
 TargetAge.subscribe(@(v) v < 0.2 ? anim_request_stop(triggerTATarget) : anim_start(triggerTATarget))
-let HelicopterTATarget = @(w, h, _isBackground) function() {
+let HelicopterTATarget = @(w, h) function() {
 
   let res = {
     watch = [TATargetVisible, TargetX, TargetY, IsTargetTracked,
@@ -1378,7 +1365,7 @@ let targetSizeComponent = function(colorWatch, width, height) {
   }
 }
 
-let detectAllyComponent = @(posX, posY, _isBackground) function(){
+let detectAllyComponent = @(posX, posY) function(){
 
   let res = {watch = [DetectAllyProgress, DetectAllyState]}
   if (DetectAllyProgress.value < 1.0)

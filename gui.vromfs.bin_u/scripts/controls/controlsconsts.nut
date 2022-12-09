@@ -37,29 +37,6 @@ global enum AXIS_DEVICES {
   MOUSE,
   UNKNOWN
 }
-global enum ctrlGroups {
-  //base bit groups
-  DEFAULT       = 0x0001 //== AIR
-  AIR           = 0x0001
-  TANK          = 0x0002
-  SHIP          = 0x0004
-  HELICOPTER    = 0x0008
-  SUBMARINE     = 0x0010
-  //
-
-
-  ONLY_COMMON   = 0x0080
-
-  VOICE         = 0x0100
-  REPLAY        = 0x0200
-  ARTILLERY     = 0x0400
-
-  HANGAR        = 0x0800
-
-  //complex groups mask
-  NO_GROUP      = 0x0000
-  COMMON        = 0x00FF
-}
 
 global enum AXIS_MODIFIERS {
   NONE = 0x0,
