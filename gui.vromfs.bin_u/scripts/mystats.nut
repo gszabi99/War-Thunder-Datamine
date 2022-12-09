@@ -43,7 +43,7 @@ local summaryNameArray = [
 
   _newPlayersBattles = {}
 
-  newbie = false
+  newbie = null
   newbieByUnitType = {}
   newbieNextEvent = {}
   _needRecountNewbie = true
@@ -52,7 +52,7 @@ local summaryNameArray = [
 
   function getStats()
   {
-    this.updateMyPublicStatsData()
+    this.requestMyStats()
     return this._my_stats
   }
 
@@ -72,7 +72,7 @@ local summaryNameArray = [
     return titles
   }
 
-  function updateMyPublicStatsData()
+  function requestMyStats()
   {
     if (!::g_login.isLoggedIn())
       return
@@ -180,13 +180,35 @@ local summaryNameArray = [
     this.onEventInitConfigs(p)
   }
 
+  isNewbieInited = @() this.newbie != null
+
+  function loadLocalNewbieData() {
+    if (!::g_login.isProfileReceived())
+      return
+
+    let newbieEndByArmyId = ::load_local_account_settings("myStats/newbieEndedByArmyId", null)
+    if (!newbieEndByArmyId)
+      return
+
+    foreach (unitType in unitTypes.types) {
+      if (!unitType.isAvailable() || !unitType.isPresentOnMatching)
+        continue
+
+      let isNewbieEnded = newbieEndByArmyId?[unitType.armyId] ?? false
+      if (isNewbieEnded)
+        this.newbieByUnitType[unitType.esUnitType] <- false
+    }
+
+    this.newbie = this.__isNewbie()
+  }
+
   function checkRecountNewbie()
   {
     let statsLoaded = this.isStatsLoaded()  //when change newbie recount, dont forget about check stats loaded for newbie tutor
     if (!this._needRecountNewbie || !statsLoaded)
     {
-      if (!statsLoaded || this.newbie)
-        this.updateMyPublicStatsData()
+      if (!statsLoaded || (this.newbie ?? false))
+        this.requestMyStats()
       return
     }
     this._needRecountNewbie = false
@@ -425,12 +447,16 @@ local summaryNameArray = [
   function isMeNewbie() //used in code
   {
     this.checkRecountNewbie()
-    return this.newbie
+    if (this.newbie == null)
+      this.loadLocalNewbieData()
+    return this.newbie ?? false
   }
 
   function isMeNewbieOnUnitType(esUnitType)
   {
     this.checkRecountNewbie()
+    if (this.newbie == null)
+      this.loadLocalNewbieData()
     return this.newbieByUnitType?[esUnitType] ?? false
   }
 
@@ -520,7 +546,7 @@ local summaryNameArray = [
     this.clearStats()
     this._is_in_update = false
     this._resetStats = false
-    this.newbie = false
+    this.newbie = null
     this.newbieNextEvent.clear()
     this._needRecountNewbie = true
     this._maxUnitsUsedRank = null
@@ -530,6 +556,8 @@ local summaryNameArray = [
   {
     this.resetStatsParams()
   }
+
+  onEventLoginComplete = @(_) this.requestMyStats()
 }
 
 seenTitles.setListGetter(@() ::my_stats.getTitles())

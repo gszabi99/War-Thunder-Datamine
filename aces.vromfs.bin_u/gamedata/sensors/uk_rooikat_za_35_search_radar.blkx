@@ -33,7 +33,8 @@
       "barHeight": 4.0,
       "barsCount": 90,
       "rowMajor": false,
-      "isSmoothMajor": true
+      "isSmoothMajor": true,
+      "centerElevation": 22.5
     }
   },
   "signals": {
@@ -75,10 +76,6 @@
           "setScanPattern": {
             "scanPattern": "search"
           },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 22.5
-          },
           "setTargetDesignationRange": {
             "azimuthRange": [
               -5.0,
@@ -101,7 +98,11 @@
             "source": "constant",
             "value": 0.0
           },
-          "clearTargets": {}
+          "clearTargets": {},
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          }
         },
         "setSearchMode": {
           "setModeName": {

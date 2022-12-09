@@ -131,7 +131,7 @@ enums.addTypesByGlobalName("g_measure_type", {
 
     getMeasureUnitsText = function (value, ...)
     {
-      return time.hoursToString(value, false)
+      return time.hoursToString(value, true)
     }
 
     getMeasureUnitsLocKey = @() ""

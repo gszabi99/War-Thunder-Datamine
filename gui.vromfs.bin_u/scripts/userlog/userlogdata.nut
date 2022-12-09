@@ -21,7 +21,7 @@ let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
 } = require("%scripts/clans/clanFlushExpInfoModal.nut")
 let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { showEveryDayLoginAwardWnd, canShowEveryDayLoginAward } = require("%scripts/items/everyDayLoginAward.nut")
+let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -415,7 +415,8 @@ local logNameByType = {
     }
     else if (blk?.type == EULT_CHARD_AWARD
              && getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward"
-             && canShowEveryDayLoginAward() && !::isHandlerInScene(::gui_handlers.DebriefingModal))
+             && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()
+             && !::isHandlerInScene(::gui_handlers.DebriefingModal))
     {
       handler.doWhenActive((@(blk) function() {showEveryDayLoginAwardWnd(blk)})(blk))
     }
@@ -530,7 +531,8 @@ local logNameByType = {
         entitlementRewards[blk.body.entName] <- true
       markDisabled = true
     }
-    else if (blk?.type == EULT_CLAN_UNITS && blk.body?.optype == "flush") {
+    else if (blk?.type == EULT_CLAN_UNITS && blk.body?.optype == "flush"
+             && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()) {
       let needChoseResearch = (::getAircraftByName(blk.body.unit)?.isResearched() ?? false)
         && needChooseClanUnitResearch()
       if (!needChoseResearch && ::load_local_account_settings(SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, false))

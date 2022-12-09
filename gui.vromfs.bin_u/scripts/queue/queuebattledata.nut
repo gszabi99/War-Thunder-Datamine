@@ -3,7 +3,7 @@
 #explicit-this
 
 from "%scripts/dagui_library.nut" import *
-let { setTimeout, resetTimeout } = require("dagor.workcycle")
+let { resetTimeout } = require("dagor.workcycle")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestJwt } = require("%scripts/tasker.nut")
@@ -11,6 +11,7 @@ let { register_command } = require("console")
 let { decodeJwtAndHandleErrors } = require("%scripts/profileJwt/decodeJwt.nut")
 let DataBlock = require("DataBlock")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 const SILENT_ACTUALIZE_DELAY = 60
 
@@ -20,14 +21,13 @@ let needRefresh = persist("needRefresh", @() Watched(false))
 let isInRequestQueueData = persist("isInRequestQueueData", @() Watched(false))
 let queueProfileJwt = Computed(@() successResultByCountry.value?[profileCountrySq.value])
 let isQueueDataActual = Computed(@() !needRefresh.value && queueProfileJwt.value != null && !isInRequestQueueData.value)
-let needActualize = Computed(@() !isQueueDataActual.value && isProfileReceived.value)
+let needActualize = Computed(@() !isQueueDataActual.value && isProfileReceived.value && !isInBattleState.value)
 let needDebugNewResult = Watched(false)
 
 profileCountrySq.subscribe(@(_) needRefresh(true))
 
 addListenersWithoutEnv({
   ProfileReceived            = @(_) needRefresh(true)
-  CrewChanged                = @(_) needRefresh(true)
   CrewsListInvalidate        = @(_) needRefresh(true)
   SignOut                    = @(_) successResultByCountry({})
 }, CONFIG_VALIDATION)
@@ -65,14 +65,14 @@ let function actualizeQueueData(cb = null) {
     { showErrorMessageBox = false }, fullSuccessCb, fullErrorCb)
 }
 
-local timerId = -1
+let function actualizeQueueDataIfNeed() {
+  if (needActualize.value)
+    actualizeQueueData()
+}
+
 let function delayedActualize() {
-  if (needActualize.value && timerId == -1)
-    timerId = setTimeout(SILENT_ACTUALIZE_DELAY,
-      function() {
-        if (needActualize.value)
-          actualizeQueueData()
-      })
+  if (needActualize.value)
+    resetTimeout(SILENT_ACTUALIZE_DELAY, actualizeQueueDataIfNeed)
 }
 delayedActualize()
 needActualize.subscribe(function(v) {
@@ -102,6 +102,6 @@ register_command(function() {
 
 return {
   queueProfileJwt
-  isQueueDataActual
+  needActualizeQueueData = needActualize
   actualizeQueueData
 }

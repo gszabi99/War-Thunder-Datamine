@@ -19,7 +19,7 @@ let { getRealName } = require("%scripts/user/nameMapping.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 let { sendSystemInvite } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 let SquadMember = require("%scripts/squads/squadMember.nut")
-let { isQueueDataActual, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
+let { needActualizeQueueData, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
@@ -114,6 +114,20 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
   onEventPresetsByGroupsChanged = @(_params) this.updateMyMemberData()
   onEventBeforeProfileInvalidation = @(_p) this.reset()
+
+  function updateMyMemberDataAfterActualizeJwt(myMemberData = null) {
+    if (!this.isInSquad())
+      return
+
+    //no need force actualazie jwt profile data for leader or if not ready
+    //on set ready status jwt profile data force actualaze
+    if (!needActualizeQueueData.value || this.isSquadLeader() || !this.isMeReady()) {
+      this.updateMyMemberData(myMemberData)
+      return
+    }
+
+    actualizeQueueData(@(_) ::g_squad_manager.updateMyMemberData())
+  }
 }
 
 ::g_squad_manager.setState <- function setState(newState)
@@ -228,7 +242,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 ::g_squad_manager.setPsnSessionId <- function setPsnSessionId(id = null)
 {
   this.squadData.psnSessionId <- id
-  this.setSquadData({ psnSessionId = id })
+  this.setSquadData()
 }
 
 ::g_squad_manager.getPsnSessionId <- function getPsnSessionId()
@@ -432,7 +446,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     return
 
   this.setMaxSquadSize(newSize)
-  this.setSquadData({properties = { maxMembers = newSize }})
+  this.setSquadData()
   ::broadcastEvent(squadEvent.SIZE_CHANGED)
 }
 
@@ -483,7 +497,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     return
 
   this.squadData.properties.isApplicationsEnabled = shouldEnable
-  this.setSquadData({ properties = { isApplicationsEnabled = shouldEnable }})
+  this.setSquadData()
 }
 
 ::g_squad_manager.canChangeReceiveApplications <- function canChangeReceiveApplications(shouldCheckLeader = true)
@@ -613,12 +627,8 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   if (!this.meReady)
     this.isMyCrewsReady = false
 
-  if (needUpdateMemberData) {
-    if (isQueueDataActual.value)
-      this.updateMyMemberData()
-    else
-      actualizeQueueData(@(_) ::g_squad_manager.updateMyMemberData())
-  }
+  if (needUpdateMemberData)
+    this.updateMyMemberDataAfterActualizeJwt()
 
   ::broadcastEvent(squadEvent.SET_READY)
 }
@@ -680,7 +690,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
     this.roomCreateInProgress = true
     callback = function() {
-      ::g_squad_manager.setSquadData({ chatInfo = { name = name, password = password } })
+      ::g_squad_manager.setSquadData()
       ::g_squad_manager.roomCreateInProgress = false
     }
   }
@@ -701,12 +711,12 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 }
 
 //It function will be use in future: Chat with password
-::g_squad_manager.setSquadData <- function setSquadData(newSquadData)
+::g_squad_manager.setSquadData <- function setSquadData()
 {
   if (!this.isSquadLeader())
     return
 
-  ::msquad.setData(newSquadData)
+  ::msquad.setData(this.squadData)
 }
 
 ::g_squad_manager.checkForSquad <- function checkForSquad()
@@ -795,7 +805,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   )
 }
 
-::g_squad_manager.inviteToSquad <- function inviteToSquad(uid, name = null, cb = null)
+::g_squad_manager.inviteToSquad <- function inviteToSquad(uid, name = null)
 {
   if (this.isInSquad() && !this.isSquadLeader())
     return
@@ -828,8 +838,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     }
 
     sendSystemInvite(uid, name)
-
-    ::g_squad_manager.requestSquadData(cb)
+    ::g_squad_manager.requestSquadData()
   }
 
   ::msquad.invitePlayer(uid, callback.bindenv(this))
@@ -1406,14 +1415,16 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   if (this.setState(squadState.IN_SQUAD)) {
     this.updateMyMemberData()
     if (this.isSquadLeader()) {
+      this.updateCurrentWWOperation()
       this.updatePresenceSquad()
-      this.setSquadData(this.getLeaderData().__update({presence = this.squadData.presence}))
+      this.updateLeaderData()
+      this.setSquadData()
       return
     }
     if (this.getPresence().isInBattle)
       ::g_popups.add(loc("squad/name"), loc("squad/wait_until_battle_end"))
   }
-  this.updateCurrentWWOperation()
+
   this.joinSquadChatRoom()
 
   if (this.isSquadLeader() && !this.readyCheck())
@@ -1504,18 +1515,15 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   return getTblValue("sessionRoomId", this.getSquadLeaderData(), "")
 }
 
-::g_squad_manager.updatePresenceSquad <- function updatePresenceSquad(shouldUpdateSquadData = false)
+::g_squad_manager.updatePresenceSquad <- function updatePresenceSquad()
 {
   if (!this.isSquadLeader())
     return
 
   let presence = ::g_presence_type.getCurrent()
   let presenceParams = presence.getParams()
-  if (!::u.isEqual(this.squadData.presence, presenceParams)) {
+  if (!::u.isEqual(this.squadData.presence, presenceParams))
     this.squadData.presence = presenceParams
-    if (shouldUpdateSquadData)
-      this.setSquadData({ presence = presenceParams })
-  }
 }
 
 ::g_squad_manager.getPresence <- function getPresence()
@@ -1625,29 +1633,28 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   if (::is_in_flight())
     this.setReadyFlag(false)
 
-  this.updatePresenceSquad(true)
-}
-
-::g_squad_manager.onEventWWLoadOperation <- function onEventWWLoadOperation(_params)
-{
-  this.updateCurrentWWOperation()
-  this.setSquadData({ wwOperationInfo = this.squadData.wwOperationInfo })
   this.updatePresenceSquad()
+  this.setSquadData()
 }
 
-::g_squad_manager.updateCurrentWWOperation <- function updateCurrentWWOperation()
-{
+::g_squad_manager.onEventWWLoadOperation <- function onEventWWLoadOperation(_params) {
+  if (!this.isSquadLeader())
+    return
+
+  this.updatePresenceSquad()
+  this.updateCurrentWWOperation()
+  this.setSquadData()
+}
+
+::g_squad_manager.updateCurrentWWOperation <- function updateCurrentWWOperation() {
   if (!this.isSquadLeader() || !::is_worldwar_enabled())
     return
 
   let wwOperationId = ::ww_get_operation_id()
   local country = profileCountrySq.value
   if (wwOperationId > -1)
-  {
-    let wwOperation = ::g_ww_global_status_actions.getOperationById(wwOperationId)
-    if (wwOperation)
-      country = wwOperation.getMyAssignCountry() || country
-  }
+    country = ::g_ww_global_status_actions.getOperationById(wwOperationId)?.getMyAssignCountry()
+      ?? country
 
   this.squadData.wwOperationInfo.id = wwOperationId
   this.squadData.wwOperationInfo.country = country
@@ -1665,8 +1672,8 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   this.squadData.wwOperationInfo.id = ::ww_get_operation_id()
   this.squadData.wwOperationInfo.country = profileCountrySq.value
 
-  this.setSquadData({ wwOperationInfo = this.squadData.wwOperationInfo })
   this.updatePresenceSquad()
+  this.setSquadData()
 }
 
 ::g_squad_manager.cancelWwBattlePrepare <- function cancelWwBattlePrepare()
@@ -1680,11 +1687,11 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   if (this.getWwOperationId() == -1)
     return
 
-  if (!this.isInSquad() || this.isSquadLeader()) {
-    this.squadData.wwOperationInfo = { id = -1, country = "", battle = null }
-    this.setSquadData({ wwOperationInfo = this.squadData.wwOperationInfo })
-  }
+  if (!this.isInSquad() || this.isSquadLeader())
+    this.squadData.wwOperationInfo.__update(DEFAULT_SQUAD_WW_OPERATION_INFO)
+
   this.updatePresenceSquad()
+  this.setSquadData()
 }
 
 ::g_squad_manager.onEventLobbyStatusChange <- function onEventLobbyStatusChange(_params)
@@ -1693,7 +1700,8 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     this.setReadyFlag(false)
 
   this.updateMyMemberData()
-  this.updatePresenceSquad(true)
+  this.updatePresenceSquad()
+  this.setSquadData()
 }
 
 ::g_squad_manager.onEventQueueChangeState <- function onEventQueueChangeState(_params)
@@ -1701,7 +1709,8 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   if (!::queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE))
     this.setCrewsReadyFlag(false)
 
-  this.updatePresenceSquad(true)
+  this.updatePresenceSquad()
+  this.setSquadData()
 }
 
 ::g_squad_manager.isMemberDataVehicleChanged <- function isMemberDataVehicleChanged(currentData, receivedData)
@@ -1722,32 +1731,35 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
 ::g_squad_manager.onEventBattleRatingChanged <- function onEventBattleRatingChanged(_params)
 {
-  this.setSquadData(this.getLeaderData())
+  this.updateLeaderData()
+  this.setSquadData()
 }
 
 ::g_squad_manager.onEventCurrentGameModeIdChanged <- function onEventCurrentGameModeIdChanged(_params)
 {
-  this.setSquadData(this.getLeaderData(false))
+  this.updateLeaderData(false)
+  this.setSquadData()
 }
 
 ::g_squad_manager.onEventEventsDataUpdated <- function onEventEventsDataUpdated(_params)
 {
-  this.setSquadData(this.getLeaderData(false))
+  this.updateLeaderData(false)
+  this.setSquadData()
 }
 
-::g_squad_manager.getLeaderData <- function getLeaderData(isActualBR = true)
+::g_squad_manager.updateLeaderData <- function updateLeaderData(isActualBR = true)
 {
   if (!this.isSquadLeader())
-    return {}
+    return
 
   let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
   if (!isActualBR && this.squadData.leaderGameModeId == currentGameModeId)
-    return {}
+    return
 
-  return {
+  this.squadData.__update({
     leaderBattleRating = isActualBR ? battleRating.recentBR.value : 0
     leaderGameModeId = isActualBR ? battleRating.recentBrGameModeId.value : currentGameModeId
-  }
+  })
 }
 
 ::g_squad_manager.getMembersNotAllowedInWorldWar <- function getMembersNotAllowedInWorldWar()

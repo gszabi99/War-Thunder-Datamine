@@ -70,7 +70,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
             }
         })
         if (i < (shortcutsCount - 1))
-          slices.append({text = this.getSeparator()})
+          slices.append({text = {textValue = this.getSeparator()}})
       }
       return slices
     }

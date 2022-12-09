@@ -1081,6 +1081,7 @@
     "_extends": "simple_ground_unit"
   },
   "ship_cover_parts": {
+    "ship_water_next_net_sync": 0.0,
     "ship_cover_parts_part_id:list<u32>": {},
     "ship_cover_parts_compartment_id:list<i>": {},
     "ship_cover_parts_water:list<p3>": {},
@@ -1094,7 +1095,6 @@
   "ship_breaches": {
     "ship_breaches_next_id": 0,
     "ship_breaches_fatal_part_id": -1,
-    "_skipInitialReplication": "ship_breaches_id,ship_breaches_pos,ship_breaches_normal,ship_breaches_size,ship_breaches_amount_to_repair,ship_breaches_depth_scale,ship_breaches_next_check,ship_breaches_part_id,ship_breaches_cover_id,ship_breaches_leaked_amount,ship_breaches_offender",
     "ship_additional_water_left_side": 0.0,
     "ship_additional_water_right_side": 0.0,
     "ship_flood_step": 1,
@@ -1765,5 +1765,51 @@
   "sphere_restricted_area": {
     "_extends": "base_restricted_area",
     "sphere_area:tag": {}
+  },
+  "destroy_ri_sphere_area": {
+    "_extends": "replicating",
+    "_replicate": true,
+    "destroy_ri_sphere_area__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "destroy_ri_sphere_area__radius": 0.0
+  },
+  "destroy_ri_box_area": {
+    "_extends": "replicating",
+    "_replicate": true,
+    "destroy_ri_box_area__bbox__bmin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "destroy_ri_box_area__bbox__bmax": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "destroy_ri_box_area__itm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
   }
 }

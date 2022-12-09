@@ -91,11 +91,11 @@ def normalize_default(vec, default_vec)
 [generic]
 def is_relative_equal_float(a, b : float; max_diff : float = 1e-5; max_rel_diff : float = FLT_EPSILON)
   let diff = abs(a - b)
-  if diff < max_diff
+  if diff <= max_diff
     return true
   let absA = abs(a)
   let absB = abs(b)
-  return diff < (absA < absB ? absB : absA) * max_rel_diff
+  return diff <= (absA < absB ? absB : absA) * max_rel_diff
 
 // das implementation of C++ function from dag_mathBase.h
 [generic]

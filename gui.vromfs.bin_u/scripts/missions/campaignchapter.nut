@@ -71,8 +71,8 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.updateMouseMode()
     this.initMisListTypeSwitcher()
     this.updateFavorites()
-    this.updateWindow()
     this.initDescHandler()
+    this.updateWindow()
     ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 

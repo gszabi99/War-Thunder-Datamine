@@ -329,6 +329,11 @@ shopData = [
     ::broadcastEvent("ShopUnitTypeSwitched", { esUnitType = this.getCurPageEsUnitType() })
   }
 
+  function fullReloadAircraftsList() {
+    this.loadFullAircraftsTable()
+    this.fillAircraftsList()
+  }
+
   function onEventDiscountsDataUpdated(_params = {})
   {
     this.updateDiscountIconsOnTabs()
@@ -373,23 +378,22 @@ shopData = [
 
   function onEventOnlineShopPurchaseSuccessful(_params)
   {
-    this.doWhenActiveOnce("fillAircraftsList")
+    this.doWhenActiveOnce("fullReloadAircraftsList")
   }
 
   function onEventSlotbarPresetLoaded(_p)
   {
-    this.doWhenActiveOnce("fillAircraftsList")
+    this.doWhenActiveOnce("fullReloadAircraftsList")
   }
 
-  function onEventProfileUpdated(p)
+  function onEventProfileUpdated(_p)
   {
-    if (p.transactionType == EATT_UPDATE_ENTITLEMENTS || p.transactionType == EATT_BUY_ENTITLEMENT)
-      this.doWhenActiveOnce("fillAircraftsList")
+    this.doWhenActiveOnce("fullReloadAircraftsList")
   }
 
   function onEventItemsShopUpdate(_p)
   {
-    this.doWhenActiveOnce("fillAircraftsList")
+    this.doWhenActiveOnce("fullReloadAircraftsList")
   }
 
   function onUpdate(_obj, dt)
@@ -1738,8 +1742,7 @@ shopData = [
 
     if (getTblValue("receivedFromTrophy", params, false) && unit.isVisibleInShop())
     {
-      this.doWhenActiveOnce("loadFullAircraftsTable")
-      this.doWhenActiveOnce("fillAircraftsList")
+      this.doWhenActiveOnce("fullReloadAircraftsList")
       return
     }
 
@@ -1758,8 +1761,7 @@ shopData = [
 
   function onEventDebugUnlockEnabled(_params)
   {
-    this.doWhenActiveOnce("loadFullAircraftsTable")
-    this.doWhenActiveOnce("fillAircraftsList")
+    this.doWhenActiveOnce("fullReloadAircraftsList")
   }
 
   function onEventUnitRented(params)
@@ -1852,7 +1854,7 @@ shopData = [
 
   function onEventExpConvert(_params)
   {
-    this.doWhenActiveOnce("fillAircraftsList")
+    this.doWhenActiveOnce("fullReloadAircraftsList")
     this.fillGroupObj()
   }
 
@@ -2114,7 +2116,7 @@ shopData = [
 
   function onEventClanChanged(_params)
   {
-    this.doWhenActiveOnce("fillAircraftsList")
+    this.doWhenActiveOnce("fullReloadAircraftsList")
   }
 
   function onEventSquadronExpChanged(_params)

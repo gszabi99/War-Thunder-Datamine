@@ -192,7 +192,7 @@ let curPatchnoteIdx = Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value.id) ?? 0)
 let haveUnseenVersions = Computed(@() unseenPatchnote.value != null)
 let needShowChangelog = @() !isInBattleState.value && hasFeature("Changelog")
-  && haveNewVersions.value && !::my_stats.isMeNewbie()
+  && haveNewVersions.value && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()
 
 let function afterGetRequestedPatchnote(result){
   chosenPatchnoteContent({title = result?.title ?? "", text = result?.content ?? []})
@@ -273,16 +273,23 @@ let function openChangelog() {
   emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })
 }
 
+let canShowChangelog = @() ::handlersManager.findHandlerClassInScene(
+  ::gui_handlers.MainMenu)?.isSceneActiveNoModals() ?? false
+
+let function openChangelogInActiveMainMenuIfNeed() {
+  if (!needShowChangelog() || !canShowChangelog())
+    return
+
+  openChangelog()
+}
+
 chosenPatchnoteContent.subscribe(@(value) eventbus.send("updateChosenPatchnoteContent", { value }))
 versions.subscribe(@(value) eventbus.send("updateChangelogsVersions", { value }))
 curPatchnote.subscribe(@(value) eventbus.send("updateCurPatchnote", { value }))
 chosenPatchnoteLoaded.subscribe(function (value) {
-  clearTimer(openChangelog)
+  clearTimer(openChangelogInActiveMainMenuIfNeed)
   eventbus.send("updateChosenPatchnoteLoaded", { value })
-  if (!needShowChangelog())
-    return
-
-  setTimeout(0.1, openChangelog)
+  setTimeout(0.1, openChangelogInActiveMainMenuIfNeed)
 })
 patchnotesReceived.subscribe(function(value){
   eventbus.send("updatePatchnotesReceived", { value })
@@ -297,6 +304,7 @@ addListenersWithoutEnv({
     clearCache()
     requestAllPatchnotes()
   }
+  ActiveHandlersChanged = @(_) openChangelogInActiveMainMenuIfNeed()
 })
 
 loadSavedVersionInfoNum()

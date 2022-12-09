@@ -116,6 +116,7 @@ const MULTICLUSTER_NAME = "multi"
 
   function getPlayersCountOfMyRank(cluster = null)
   {
+    this.recountQueueOnce()
     let rankStr = this.myRankInQueue.tostring()
     if (this.isSymmetric)
       return getTblValue(rankStr, this.getQueueTableByTeam("teamA", cluster), 0)

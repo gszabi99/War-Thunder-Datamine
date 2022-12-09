@@ -664,7 +664,13 @@ mShared = {
     if (isListTruncated && is_platform_windows) {
       let resolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
         "1920 x 1080", "2520 x 1080", "2560 x 1440", "3840 x 1080", "3840 x 2160" ]
-      let psi = is_platform_windows ? get_primary_screen_info() : {}
+      local psi = {}
+      try{
+        psi = get_primary_screen_info()
+      }
+      catch(e){
+        log("get_primary_screen_info is not implemented?",e)
+      }
       let maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
       let maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
       ::u.appendOnce($"{maxW} x {maxH}", resolutions)

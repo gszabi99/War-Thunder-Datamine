@@ -759,10 +759,6 @@ let function hasEveryDayLoginAward() {
   return false
 }
 
-let function canShowEveryDayLoginAward() {
-  return ::my_stats.isStatsLoaded() && !::is_me_newbie()
-}
-
 let function debugEveryDayLoginAward(numAwardsToSkip = 0, launchWindow = true) {
   let total = ::get_user_logs_count()
   for (local i = total - 1; i > 0; i--) {
@@ -795,6 +791,5 @@ register_command(debugEveryDayLoginAward, "debug.everyDayLoginAward")
 
 return {
   showEveryDayLoginAwardWnd
-  canShowEveryDayLoginAward
   hasEveryDayLoginAward
 }

@@ -1,4 +1,5 @@
 require ecs
+require net
 require dm
 require Unit
 require app
@@ -129,6 +130,17 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
   assert(unit != null)
   if unit == null
     return
+
+  ship_cover_parts_part_id |> clear()
+  ship_cover_parts_water |> clear()
+  ship_cover_parts_pos |> clear()
+  ship_cover_parts_weight |> clear()
+  ship_cover_parts_compartment_id |> clear()
+  ship_cover_parts_inner_parts |> clear()
+  ship_compartments_cover_parts |> clear()
+  ship_inner_parts_ids |> clear()
+  ship_inner_parts_critical_water |> clear()
+
   *evt.modelBlk |> datablock_get_block("shipCover") <| $(blk)
     var weights_sum = load_cover_parts(
       blk, false, unit,
@@ -164,6 +176,11 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
       water.y = ship_props.additionalWaterCoverPartsThreshold * weight
       for i in range(inner_parts.x, inner_parts.y)
         ship_inner_parts_critical_water[i] *= water.y
+
+
+[es(tag=netClient, after=ship_init_cover_parts_handle_es)]
+def ship_request_net_sync_on_load_es(evt : CmdInitComponent; eid : EntityId)
+  send_net_event(eid, [[EventShipRequestNetSync]])
 
 
 [es]
@@ -284,11 +301,8 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
     )
 
 
-// TODO: This is a temporary workaround for https://youtrack.gaijin.team/issue/1-103741/Crash-memcpy-void-das
-// In a dump ship_breaches_offender is somehow empty, while other lists are not. While this is not investigated fixed, this workaround should be present to prevent crashes
 def fixup_breaches_soa(var ship_breaches_id : IntList&; var ship_breaches_offender : BreachOffenderDataList&)
   if length(ship_breaches_id) != length(ship_breaches_offender)
-    logerr("fixup_breaches_soa: length(ship_breaches_id)={length(ship_breaches_id)}, length(ship_breaches_offender)={length(ship_breaches_offender)}")
     ship_breaches_offender |> resize(length(ship_breaches_id))
 
 
@@ -719,3 +733,149 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
   ship_phys_water_leaking = avg_breach_weight > 0.0f
   if avg_breach_weight > 0.0f
     ship_phys_avg_breach_pos = avg_breach / avg_breach_weight
+
+
+[es(tag=server)]
+def ship_water_net_sync_es(info : UpdateStageInfoAct;
+                           eid : EntityId;
+                           ship_additional_water_left_side : float;
+                           ship_additional_water_right_side : float;
+                           ship_cover_parts_water : Point3List;
+                           var ship_water_next_net_sync : float&)
+  let current_time = float(get_app().usefulTotalTime)
+  if ship_water_next_net_sync < current_time
+    ship_water_next_net_sync = current_time + 5.0f
+    send_water_net_sync_event(eid,
+      ship_additional_water_left_side,
+      ship_additional_water_right_side,
+      ship_cover_parts_water)
+
+
+def send_water_net_sync_event(eid : EntityId;
+                              ship_additional_water_left_side : float;
+                              ship_additional_water_right_side : float;
+                              ship_cover_parts_water : Point3List)
+  using() <| $(var cover_parts_water : FloatList#)
+    cover_parts_water |> reserve(length(ship_cover_parts_water))
+    for part_water in ship_cover_parts_water
+      cover_parts_water |> push(part_water.x)
+    send_net_event(eid, [[EventShipWaterNetSync
+      waterLeftSide = ship_additional_water_left_side,
+      waterRightSide = ship_additional_water_right_side,
+      coverPartsWater = ecs_addr(cover_parts_water)
+    ]])
+
+
+[es(tag=netClient)]
+def ship_handle_water_net_sync_es(evt : EventShipWaterNetSync;
+                                  var ship_additional_water_left_side : float&;
+                                  var ship_additional_water_right_side : float&;
+                                  var ship_cover_parts_water : Point3List&)
+  ship_additional_water_left_side = evt.waterLeftSide
+  ship_additional_water_right_side = evt.waterRightSide
+  for part_water, cur_water in ship_cover_parts_water, *evt.coverPartsWater
+    part_water.x = cur_water
+
+
+def send_breaches_net_sync_event(eid : EntityId;
+                                 ship_breaches_id : IntList;
+                                 ship_breaches_pos : Point3List;
+                                 ship_breaches_size : FloatList;
+                                 ship_breaches_amount_to_repair : FloatList;
+                                 ship_breaches_depth_scale : FloatList;
+                                 ship_breaches_part_id : IntList;
+                                 ship_breaches_cover_id : IntList;
+                                 ship_breaches_leaked_amount : FloatList)
+  let len = ship_breaches_id |> length()
+  using() <| $(var breaches_ids : IntList#)
+    using() <| $(var breaches_pos_and_size : Point4List#)
+      using() <| $(var breaches_repair_progress : FloatList#)
+        breaches_ids |> reserve(len * 3)
+        breaches_repair_progress |> reserve(len * 3)
+        breaches_pos_and_size |> reserve(len)
+        for i in 0..len
+          breaches_ids |> push(ship_breaches_id[i])
+          breaches_ids |> push(ship_breaches_part_id[i])
+          breaches_ids |> push(ship_breaches_cover_id[i])
+          breaches_repair_progress |> push(ship_breaches_amount_to_repair[i])
+          breaches_repair_progress |> push(ship_breaches_leaked_amount[i])
+          breaches_repair_progress |> push(ship_breaches_depth_scale[i])
+          let pos = ship_breaches_pos[i]
+          breaches_pos_and_size |> push(float4(pos.x, pos.y, pos.z, ship_breaches_size[i]))
+        send_net_event(eid, [[EventShipBreachesNetSync
+          breachesIds = ecs_addr(breaches_ids),
+          breachesPosAndSize = ecs_addr(breaches_pos_and_size),
+          breachesRepairProgress = ecs_addr(breaches_repair_progress)
+        ]])
+
+
+[es(tag=netClient)]
+def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
+                                     var ship_breaches_id : IntList&;
+                                     var ship_breaches_pos : Point3List&;
+                                     var ship_breaches_normal : Point3List&;
+                                     var ship_breaches_size : FloatList&;
+                                     var ship_breaches_amount_to_repair : FloatList&;
+                                     var ship_breaches_depth_scale : FloatList&;
+                                     var ship_breaches_next_check : FloatList&;
+                                     var ship_breaches_part_id : IntList&;
+                                     var ship_breaches_cover_id : IntList&;
+                                     var ship_breaches_leaked_amount : FloatList&;
+                                     var ship_breaches_offender : BreachOffenderDataList&)
+  let len = *evt.breachesPosAndSize |> length()
+  ship_breaches_id |> resize(len)
+  ship_breaches_pos |> resize(len)
+  ship_breaches_normal |> resize(len)
+  ship_breaches_size |> resize(len)
+  ship_breaches_amount_to_repair |> resize(len)
+  ship_breaches_depth_scale |> resize(len)
+  ship_breaches_next_check |> resize(len)
+  ship_breaches_part_id |> resize(len)
+  ship_breaches_cover_id |> resize(len)
+  ship_breaches_leaked_amount |> resize(len)
+  ship_breaches_offender |> resize(len)
+
+  assume packed_ids = *evt.breachesIds
+  assume packed_pos_and_size = *evt.breachesPosAndSize
+  assume packed_repair_progress = *evt.breachesRepairProgress
+  for i in 0..len
+    let pos_and_size = packed_pos_and_size[i]
+    ship_breaches_pos[i] = float3(pos_and_size.x, pos_and_size.y, pos_and_size.z)
+    ship_breaches_size[i] = pos_and_size.w
+    ship_breaches_id[i] = packed_ids[i * 3]
+    ship_breaches_part_id[i] = packed_ids[i * 3 + 1]
+    ship_breaches_cover_id[i] = packed_ids[i * 3 + 2]
+    ship_breaches_amount_to_repair[i] = packed_repair_progress[i * 3]
+    ship_breaches_leaked_amount[i] = packed_repair_progress[i * 3 + 1]
+    ship_breaches_depth_scale[i] = packed_repair_progress[i * 3 + 2]
+    ship_breaches_normal[i] = float3(0, 1, 0)
+    ship_breaches_next_check[i] = 0.0f
+
+
+[es(tag=server)]
+def ship_handle_net_sync_request_es(evt : EventShipRequestNetSync;
+                                    eid : EntityId;
+                                    ship_additional_water_left_side : float;
+                                    ship_additional_water_right_side : float;
+                                    ship_cover_parts_water : Point3List;
+                                    ship_breaches_id : IntList;
+                                    ship_breaches_pos : Point3List;
+                                    ship_breaches_size : FloatList;
+                                    ship_breaches_amount_to_repair : FloatList;
+                                    ship_breaches_depth_scale : FloatList;
+                                    ship_breaches_part_id : IntList;
+                                    ship_breaches_cover_id : IntList;
+                                    ship_breaches_leaked_amount : FloatList)
+  send_breaches_net_sync_event(eid,
+    ship_breaches_id,
+    ship_breaches_pos,
+    ship_breaches_size,
+    ship_breaches_amount_to_repair,
+    ship_breaches_depth_scale,
+    ship_breaches_part_id,
+    ship_breaches_cover_id,
+    ship_breaches_leaked_amount)
+  send_water_net_sync_event(eid,
+    ship_additional_water_left_side,
+    ship_additional_water_right_side,
+    ship_cover_parts_water)

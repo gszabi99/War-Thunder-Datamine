@@ -224,7 +224,7 @@ systemMsg.registerLocTags(locTags)
 ::g_squad_utils.updateMyCountryData <- function updateMyCountryData(needUpdateSessionLobbyData = true)
 {
   let memberData = getMyStateData()
-  ::g_squad_manager.updateMyMemberData(memberData)
+  ::g_squad_manager.updateMyMemberDataAfterActualizeJwt(memberData)
 
   //Update Skirmish Lobby info
   if (needUpdateSessionLobbyData)
@@ -281,8 +281,10 @@ systemMsg.registerLocTags(locTags)
                                    || isInArray(memberData.country, teamData.countries)
     if (checkOnlyMemberCountry)
       mData.isSelfCountry = true
-    else
-      res.countriesChanged++
+    else {
+      mData.queueProfileJwt = "" //!!! FIX ME: When change member country, leader do not know jwt profile data.
+      res.countriesChanged++     // Need either do not change countries or get jwt  for all countries.
+    }
 
     let brokenUnits = []
     local haveNotBroken = false

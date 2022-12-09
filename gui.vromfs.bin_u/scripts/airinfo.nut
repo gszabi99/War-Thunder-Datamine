@@ -1637,7 +1637,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     {
       let hours = showLocalState || needCrewModificators ? ::shop_get_full_repair_time_by_mode(air.name, egdCode)
         : (air[$"repairTimeHrs{::get_name_by_gamemode(egdCode, true)}"] ?? 0)
-      let repairTimeText = time.hoursToString(hours, false)
+      let repairTimeText = time.hoursToString(hours, true)
       let label = loc((showLocalState || needCrewModificators) && crew ? "shop/full_repair_time_crew" : "shop/full_repair_time")
       holderObj.findObject("aircraft-full_repair_time_crew-tr").show(true)
       holderObj.findObject("aircraft-full_repair_time_crew-tr").tooltip = label

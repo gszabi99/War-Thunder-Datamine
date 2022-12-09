@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
-let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
+let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 
 ::queue_classes.Event <- class extends ::queue_classes.Base {
   shouldQueueCustomMode = false
@@ -186,6 +186,9 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
     qp.clusters <- this.params.clusters
 
     let prefParams =  mapPreferencesParams.getParams(::events.getEvent(this.name))
+    let members = this.params?.members
+    let needAddJwtProfile = queueProfileJwt.value != null
+      && (members == null || members.findvalue(@(m) (m?.queueProfileJwt ?? "") == "") == null)
     qp.players <- {
       [::my_user_id_str] = {
         country = ::queues.getQueueCountry(this)  //FIX ME: move it out of manager
@@ -195,9 +198,9 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
         fakeName = !::get_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY).value
       }
     }
-    if (queueProfileJwt.value != null)
+    if (needAddJwtProfile)
       qp.players[::my_user_id_str].profileJwt <- queueProfileJwt.value
-    let members = getTblValue("members", this.params)
+
     if (members)
       foreach(uid, m in members)
       {
@@ -209,7 +212,7 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
         }
         if ("slots" in m)
           qp.players[uid].slots <- m.slots
-        if ((m?.queueProfileJwt ?? "") != "")
+        if (needAddJwtProfile)
           qp.players[uid].profileJwt <- m.queueProfileJwt
       }
     qp.jip <- ::get_option_in_mode(::USEROPT_QUEUE_JIP, ::OPTIONS_MODE_GAMEPLAY).value
@@ -295,7 +298,7 @@ let { isQueueDataActual, queueProfileJwt, actualizeQueueData } = require("%scrip
       this.switchCustomMode(this.shouldQueueCustomMode, true)
   }
 
-  hasActualQueueData = @() isQueueDataActual.value
+  hasActualQueueData = @() !needActualizeQueueData.value
   function actualizeData() {
     let queue = this
     actualizeQueueData(function(_jwtData) {
