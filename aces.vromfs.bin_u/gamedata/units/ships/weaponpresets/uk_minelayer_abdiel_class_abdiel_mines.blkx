@@ -1,0 +1,50 @@
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_01",
+      "depth_charge_02",
+      "depth_charge_03",
+      "depth_charge_04",
+      "depth_charge_05",
+      "depth_charge_06",
+      "depth_charge_07",
+      "depth_charge_08"
+    ]
+  },
+  "Weapon": [
+    {
+      "trigger": "mines",
+      "triggerGroup": "mine",
+      "blk": "gameData/weapons/mines/uk_mine_type_m_mk1.blk",
+      "emitter": "mine_01",
+      "bullets": 20,
+      "external": true,
+      "dropSpeed": 5.0,
+      "emitterGenRange": [
+        1,
+        20
+      ],
+      "emitterGenFmt": "mine_%02d",
+      "ammoDpGenFmt": "mine_%02d_dm",
+      "feedSystem": true,
+      "sequentalFeed": true
+    },
+    {
+      "trigger": "mines",
+      "triggerGroup": "mine",
+      "blk": "gameData/weapons/mines/uk_mine_type_m_mk1.blk",
+      "emitter": "mine_21",
+      "bullets": 20,
+      "external": true,
+      "dropSpeed": 5.0,
+      "emitterGenRange": [
+        21,
+        40
+      ],
+      "emitterGenFmt": "mine_%02d",
+      "ammoDpGenFmt": "mine_%02d_dm",
+      "feedSystem": true,
+      "sequentalFeed": true
+    }
+  ]
+}

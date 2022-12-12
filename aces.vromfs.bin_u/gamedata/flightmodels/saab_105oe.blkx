@@ -2269,7 +2269,24 @@
     "preset": [
       {
         "name": "saab_105oe_default",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_akankapsel_30.blk"
+        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_akankapsel_30.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/cannonAkan_m55_underwing.blk",
+            "tier": [
+              {
+                "idx": 5,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              },
+              {
+                "idx": 7,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              }
+            ]
+          }
+        }
       },
       {
         "name": "saab_105oe_75mm_srak_m55",
@@ -2378,7 +2395,41 @@
       {
         "name": "saab_105oe_rb24_akankapsel_30",
         "blk": "gameData/FlightModels/weaponPresets/saab_105oe_rb24_akankapsel_30.blk",
-        "reqModification": "swe_rb24"
+        "reqModification": "swe_rb24",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/cannonAkan_m55_underwing.blk",
+              "tier": [
+                {
+                  "idx": 5,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                },
+                {
+                  "idx": 7,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "tier": [
+                {
+                  "idx": 4,
+                  "amountPerTier": 1.0,
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "idx": 8,
+                  "amountPerTier": 1.0,
+                  "iconType": "missile_air_to_air"
+                }
+              ]
+            }
+          ]
+        }
       }
     ]
   },

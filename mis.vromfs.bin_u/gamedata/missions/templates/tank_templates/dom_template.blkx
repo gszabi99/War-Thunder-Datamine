@@ -349,9 +349,6 @@
         ]
       },
       "actions": {
-        "comment": {
-          "value": "proveryaem est' li realistic ob'ekty v missiyah"
-        },
         "varAddString": [
           {
             "value": "_realistic",
@@ -383,9 +380,6 @@
         }
       },
       "else_actions": {
-        "comment": {
-          "value": "govorim yuzat' arkadu"
-        },
         "varAddString": [
           {
             "value": "_arcade",
@@ -440,6 +434,74 @@
             "value": "_hardcore",
             "digits": 0,
             "var": [
+              "temp_zone_01_name",
+              "temp_zone_02_name",
+              "temp_zone_03_name"
+            ]
+          },
+          {
+            "value": "_hardcore",
+            "digits": 0,
+            "var": [
+              "temp_t1_spawn_01_name",
+              "temp_t1_spawn_02_name",
+              "temp_t2_spawn_01_name",
+              "temp_t2_spawn_02_name"
+            ]
+          },
+          {
+            "value": "_hardcore",
+            "digits": 0,
+            "var": "temp_battle_area_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "dom_check_hardcore_exist"
+        }
+      },
+      "else_actions": {}
+    },
+    "dom_check_hardcore_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "@temp_zone_01_name",
+            "type": "area"
+          },
+          {
+            "target": "@temp_zone_02_name",
+            "type": "area"
+          },
+          {
+            "target": "@temp_zone_03_name",
+            "type": "area"
+          },
+          {
+            "target": "@temp_t1_spawn_01_name",
+            "type": "squad"
+          },
+          {
+            "target": "@temp_t2_spawn_01_name",
+            "type": "squad"
+          }
+        ]
+      },
+      "actions": {
+        "varAddString": [
+          {
+            "value": "_hardcore",
+            "digits": 0,
+            "var": [
               "zone_01_name",
               "zone_02_name",
               "zone_03_name"
@@ -465,7 +527,37 @@
           "target": "dom_check_random_spawn"
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "varAddString": [
+          {
+            "value": "_arcade",
+            "digits": 0,
+            "var": [
+              "zone_01_name",
+              "zone_02_name",
+              "zone_03_name"
+            ]
+          },
+          {
+            "value": "_arcade",
+            "digits": 0,
+            "var": [
+              "t1_spawn_01_name",
+              "t1_spawn_02_name",
+              "t2_spawn_01_name",
+              "t2_spawn_02_name"
+            ]
+          },
+          {
+            "value": "_arcade",
+            "digits": 0,
+            "var": "battle_area_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "dom_check_random_spawn"
+        }
+      }
     },
     "dom_check_random_spawn": {
       "is_enabled": false,
@@ -753,7 +845,8 @@
         "moAddMissionObjective": {
           "target": "avg_Dom_objective",
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "triggerEnable": {
           "target": [

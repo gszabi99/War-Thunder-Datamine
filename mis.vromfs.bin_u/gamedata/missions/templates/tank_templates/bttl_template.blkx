@@ -349,6 +349,71 @@
             "value": "_hardcore",
             "digits": 0,
             "var": [
+              "temp_t1_zone_name",
+              "temp_t2_zone_name"
+            ]
+          },
+          {
+            "value": "_hardcore",
+            "digits": 0,
+            "var": [
+              "temp_t1_spawn_01_name",
+              "temp_t1_spawn_02_name",
+              "temp_t1_spawn_03_name",
+              "temp_t2_spawn_01_name",
+              "temp_t2_spawn_02_name",
+              "temp_t2_spawn_03_name"
+            ]
+          },
+          {
+            "value": "_hardcore",
+            "digits": 0,
+            "var": "temp_battle_area_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "bttl_check_hardcore_exist"
+        }
+      },
+      "else_actions": {}
+    },
+    "bttl_check_hardcore_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "@temp_t1_zone_name",
+            "type": "area"
+          },
+          {
+            "target": "@temp_t2_zone_name",
+            "type": "area"
+          },
+          {
+            "target": "@temp_t1_spawn_01_name",
+            "type": "squad"
+          },
+          {
+            "target": "@temp_t2_spawn_01_name",
+            "type": "squad"
+          }
+        ]
+      },
+      "actions": {
+        "varAddString": [
+          {
+            "value": "_hardcore",
+            "digits": 0,
+            "var": [
               "t1_zone_name",
               "t2_zone_name"
             ]
@@ -375,7 +440,38 @@
           "target": "bttl_check_random_spawn"
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "varAddString": [
+          {
+            "value": "_arcade",
+            "digits": 0,
+            "var": [
+              "t1_zone_name",
+              "t2_zone_name"
+            ]
+          },
+          {
+            "value": "_arcade",
+            "digits": 0,
+            "var": [
+              "t1_spawn_01_name",
+              "t1_spawn_02_name",
+              "t1_spawn_03_name",
+              "t2_spawn_01_name",
+              "t2_spawn_02_name",
+              "t2_spawn_03_name"
+            ]
+          },
+          {
+            "value": "_arcade",
+            "digits": 0,
+            "var": "battle_area_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "bttl_check_random_spawn"
+        }
+      }
     },
     "bttl_check_random_spawn": {
       "is_enabled": false,
@@ -600,12 +696,14 @@
           {
             "target": "avg_Bttl_objective_01",
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           {
             "target": "avg_Bttl_objective_02",
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           }
         ],
         "triggerEnable": {

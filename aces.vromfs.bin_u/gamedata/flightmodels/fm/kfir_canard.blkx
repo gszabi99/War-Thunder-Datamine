@@ -323,7 +323,7 @@
       },
       "Arm": {
         "Arm": [
-          0.04,
+          0.051,
           0.5,
           1.45
         ],
@@ -407,10 +407,30 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
+        "ClToCmByMach0": [
+          0.2,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach1": [
+          0.4,
+          0.0,
+          0.0
+        ],
+        "ClToCmByMach2": [
+          0.8,
+          0.0,
+          0.0
+        ],
+        "ClToCmByMach3": [
+          1.8,
+          0.0,
+          0.0
+        ],
         "Cl0": 0.07,
-        "alphaCritHigh": 35.0,
+        "alphaCritHigh": 32.0,
         "alphaCritLow": -27.0,
-        "ClCritHigh": 1.18,
+        "ClCritHigh": 1.22,
         "ClCritLow": -0.7,
         "CdMin": 0.0072
       },
@@ -461,10 +481,30 @@
         "MultLineCoeff7": 0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
+        "ClToCmByMach0": [
+          0.2,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach1": [
+          0.4,
+          0.0,
+          0.0
+        ],
+        "ClToCmByMach2": [
+          0.8,
+          0.0,
+          0.0
+        ],
+        "ClToCmByMach3": [
+          1.8,
+          0.0,
+          0.0
+        ],
         "Cl0": 0.6,
-        "alphaCritHigh": 36.0,
+        "alphaCritHigh": 32.0,
         "alphaCritLow": -27.0,
-        "ClCritHigh": 1.42,
+        "ClCritHigh": 1.5,
         "ClCritLow": -0.35,
         "CdMin": 0.05
       },
@@ -1585,7 +1625,7 @@
     }
   },
   "Mass": {
-    "EmptyMass": 7270.0,
+    "EmptyMass": 7200.0,
     "MaxFuelMass0": 2572.0,
     "FuelAccumulatorCapacity0": 70.0,
     "MinimalLoadFactor0": -0.3,
@@ -2024,9 +2064,20 @@
       }
     },
     "Pitch": {
-      "RateMax": [
+      "RateMax0": [
+        800.0,
         -75.0,
         75.0
+      ],
+      "RateMax1": [
+        1100.0,
+        -65.0,
+        65.0
+      ],
+      "RateMax2": [
+        1300.0,
+        -65.0,
+        65.0
       ],
       "AngleMax": [
         -50.0,
@@ -2055,8 +2106,8 @@
         "Kd": 0.0,
         "dTau": 0.0208333,
         "Lim": [
-          -0.65,
-          0.65
+          -0.95,
+          0.95
         ]
       },
       "AnglePID": {

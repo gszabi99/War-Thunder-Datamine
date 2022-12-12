@@ -17220,6 +17220,13 @@
     "hitsCountInterval": 25.0
   },
   "speechSound": {
+    "gunsDmgCritThreshold": 0.7,
+    "gunsDmgSeriousThreshold": 0.3,
+    "crewDmgCritThreshold": 0.3,
+    "crewDmgSeriousThreshold": 0.5,
+    "breachesCritThreshold": 4.5,
+    "breachesSeriousThreshold": 3.5,
+    "aircraftDetectionRadius": 2000.0,
     "isAdSystemExtended": {
       "Russian": {
         "warShip": true
@@ -18029,7 +18036,7 @@
         "torpedoAway": {
           "event": "06_ship_activities/voice_message_sailor_ship_torpedo_away",
           "playerRole": "sailor",
-          "minSpeechInterval": 3.0,
+          "minSpeechInterval": 5.0,
           "player": -1
         },
         "acousticReport": {
@@ -18047,6 +18054,7 @@
         "radioReport": {
           "event": "07_environment/voice_message_officer_radio_room_report",
           "playerRole": "commander",
+          "eventsChancePlay": 0.5,
           "minSpeechInterval": 0.0,
           "player": -1
         },
@@ -18433,19 +18441,22 @@
           "event": "08_state_ship/voice_message_officer_got_serious_damage",
           "playerRole": "commander",
           "player": -1,
+          "delayTime": 10.0,
           "minSpeechInterval": 30.0
         },
         "shipCriticalDamage": {
           "event": "08_state_ship/voice_message_officer_got_critical_damage",
           "playerRole": "commander",
           "player": -1,
+          "delayTime": 15.0,
           "minSpeechInterval": 30.0
         },
         "shipGotDamage": {
           "event": "08_state_ship/voice_message_officer_got_damage",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 30.0
+          "delayTime": 20.0,
+          "minSpeechInterval": 60.0
         },
         "compartmentFlooded": {
           "event": "08_state_ship/voice_message_officer_compartment_flooded",

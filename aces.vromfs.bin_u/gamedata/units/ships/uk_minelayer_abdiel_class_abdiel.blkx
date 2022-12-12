@@ -50,6 +50,9 @@
     4.862,
     -1.47
   ],
+  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
+  "customImage": "!#ui/unitskin#image_in_progress",
+  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -4627,40 +4630,22 @@
     "binoculars": "navy_binoculars"
   },
   "sensors": {
-    "fireDirecting": [
-      {
-        "dmPartMain": "fire_control_room_01_dm",
-        "dmPart": [
-          "fire_director_01_dm",
-          "fire_director_02_dm"
-        ],
-        "measureAccuracy": 1.0,
-        "targetLockTime": 18.0,
-        "calcTime": 10.0,
-        "rotationSpeed": 6.0,
-        "triggerGroupUse": {
-          "primary": true,
-          "secondary": true,
-          "machinegun": false
-        }
-      },
-      {
-        "dmPartMain": "fire_control_room_01_dm",
-        "dmPart": [
-          "rangefinder_01_dm",
-          "rangefinder_02_dm"
-        ],
-        "measureAccuracy": 0.85,
-        "targetLockTime": 24.0,
-        "calcTime": 14.0,
-        "rotationSpeed": 20.0,
-        "triggerGroupUse": {
-          "primary": true,
-          "secondary": true,
-          "machinegun": false
-        }
+    "fireDirecting": {
+      "dmPartMain": "fire_control_room_01_dm",
+      "dmPart": [
+        "fire_director_01_dm",
+        "fire_director_02_dm"
+      ],
+      "measureAccuracy": 1.0,
+      "targetLockTime": 18.0,
+      "calcTime": 10.0,
+      "rotationSpeed": 6.0,
+      "triggerGroupUse": {
+        "primary": true,
+        "secondary": true,
+        "machinegun": false
       }
-    ]
+    }
   },
   "commonWeapons": {
     "animatedBones": {
@@ -4673,7 +4658,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/120mm_45_4_7in_mark12_cp19_mount_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -4697,13 +4682,13 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
+        "speedYaw": 7.0,
         "speedPitch": 10.0,
         "bullets": 200,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.06,
+        "salvoRndK": 0.015,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -4800,7 +4785,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/120mm_45_4_7in_mark12_cp19_mount_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -4824,13 +4809,13 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
+        "speedYaw": 7.0,
         "speedPitch": 10.0,
         "bullets": 200,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.06,
+        "salvoRndK": 0.015,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -4916,7 +4901,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/120mm_45_4_7in_mark12_cp19_mount_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -4940,13 +4925,13 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
+        "speedYaw": 7.0,
         "speedPitch": 10.0,
         "bullets": 200,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.06,
+        "salvoRndK": 0.015,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -5031,7 +5016,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/120mm_45_4_7in_mark12_cp19_mount_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -5055,13 +5040,13 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
+        "speedYaw": 7.0,
         "speedPitch": 10.0,
         "bullets": 200,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.06,
+        "salvoRndK": 0.015,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -5135,7 +5120,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/120mm_45_4_7in_mark12_cp19_mount_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_17",
         "flash": "emtr_gun_flame_17",
         "useEmitter": true,
@@ -5159,13 +5144,13 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
+        "speedYaw": 7.0,
         "speedPitch": 10.0,
         "bullets": 200,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.06,
+        "salvoRndK": 0.015,
         "turret": {
           "head": "main_caliber_turret_03",
           "gun": "main_caliber_gun_03",
@@ -5250,7 +5235,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/120mm_45_4_7in_mark12_cp19_mount_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_18",
         "flash": "emtr_gun_flame_18",
         "useEmitter": true,
@@ -5274,13 +5259,13 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
+        "speedYaw": 7.0,
         "speedPitch": 10.0,
         "bullets": 200,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.06,
+        "salvoRndK": 0.015,
         "turret": {
           "head": "main_caliber_turret_03",
           "gun": "main_caliber_gun_03",
@@ -5353,7 +5338,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/40mm_39_2pdr_qf_mk2c_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_13",
         "flash": "emtr_gun_flame_13",
@@ -5455,7 +5440,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/40mm_39_2pdr_qf_mk2c_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_14",
         "flash": "emtr_gun_flame_14",
@@ -5546,7 +5531,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/40mm_39_2pdr_qf_mk2c_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_15",
         "flash": "emtr_gun_flame_15",
@@ -5637,7 +5622,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/40mm_39_2pdr_qf_mk2c_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_16",
         "flash": "emtr_gun_flame_16",
@@ -5754,9 +5739,10 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 55.0,
+        "speedYaw": 50.0,
+        "speedPitch": 35.0,
         "bullets": 2000,
+        "fireConangle": 1.0,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_01",
@@ -5854,9 +5840,10 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 55.0,
+        "speedYaw": 50.0,
+        "speedPitch": 35.0,
         "bullets": 2000,
+        "fireConangle": 1.0,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_01",
@@ -5943,9 +5930,10 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 55.0,
+        "speedYaw": 50.0,
+        "speedPitch": 35.0,
         "bullets": 2000,
+        "fireConangle": 1.0,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_01",
@@ -6032,9 +6020,10 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 55.0,
+        "speedYaw": 50.0,
+        "speedPitch": 35.0,
         "bullets": 2000,
+        "fireConangle": 1.0,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_01",
@@ -6121,9 +6110,10 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 55.0,
+        "speedYaw": 50.0,
+        "speedPitch": 35.0,
         "bullets": 2000,
+        "fireConangle": 1.0,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_02",
@@ -6221,9 +6211,10 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 55.0,
+        "speedYaw": 50.0,
+        "speedPitch": 35.0,
         "bullets": 2000,
+        "fireConangle": 1.0,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_02",
@@ -6310,9 +6301,10 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 55.0,
+        "speedYaw": 50.0,
+        "speedPitch": 35.0,
         "bullets": 2000,
+        "fireConangle": 1.0,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_02",
@@ -6399,9 +6391,10 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 55.0,
+        "speedYaw": 50.0,
+        "speedPitch": 35.0,
         "bullets": 2000,
+        "fireConangle": 1.0,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_02",
@@ -6459,47 +6452,106 @@
             ]
           }
         }
-      },
-      {
-        "trigger": "mines",
-        "triggerGroup": "mine",
-        "blk": "gameData/weapons/mines/uk_mine_type_m_mk1.blk",
-        "emitter": "mine_01",
-        "bullets": 20,
-        "external": true,
-        "dropSpeed": 5.0,
-        "emitterGenRange": [
-          1,
-          20
-        ],
-        "emitterGenFmt": "mine_%02d",
-        "ammoDpGenFmt": "mine_%02d_dm",
-        "feedSystem": true,
-        "sequentalFeed": true
-      },
-      {
-        "trigger": "mines",
-        "triggerGroup": "mine",
-        "blk": "gameData/weapons/mines/uk_mine_type_m_mk1.blk",
-        "emitter": "mine_21",
-        "bullets": 20,
-        "external": true,
-        "dropSpeed": 5.0,
-        "emitterGenRange": [
-          21,
-          40
-        ],
-        "emitterGenFmt": "mine_%02d",
-        "ammoDpGenFmt": "mine_%02d_dm",
-        "feedSystem": true,
-        "sequentalFeed": true
       }
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "uk_minelayer_abdiel_class_abdiel_default",
-      "blk": "gameData/units/ships/weaponPresets/uk_minelayer_abdiel_class_abdiel_default.blk"
+    "preset": [
+      {
+        "name": "type_a_mk1_mines",
+        "blk": "gameData/units/ships/weaponPresets/uk_minelayer_abdiel_class_abdiel_mines.blk",
+        "reqModification": "ship_mines"
+      },
+      {
+        "name": "uk_minelayer_abdiel_class_abdiel_default",
+        "blk": "gameData/units/ships/weaponPresets/uk_minelayer_abdiel_class_abdiel_default.blk"
+      }
+    ]
+  },
+  "modifications": {
+    "new_ship_hull": {},
+    "new_ship_rudder": {
+      "prevModification": "new_ship_hull"
+    },
+    "new_ship_screw": {},
+    "new_ship_engine": {
+      "prevModification": "new_ship_screw"
+    },
+    "ship_tool_kit": {},
+    "manual_ship_extinguisher": {
+      "prevModification": "ship_tool_kit"
+    },
+    "ship_smoke_screen_system_mod": {},
+    "ship_anti_fragmentation_protection": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "shatterDamageMult": 0.7,
+            "secondaryShatterDamageMult": 0.8,
+            "compartment_01_dm": {},
+            "compartment_02_dm": {},
+            "compartment_03_dm": {},
+            "compartment_04_dm": {}
+          }
+        }
+      }
+    },
+    "ship_venting": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "fireDamageMult": 0.75,
+            "compartment_01_dm": {},
+            "compartment_02_dm": {},
+            "compartment_03_dm": {},
+            "compartment_04_dm": {}
+          }
+        }
+      }
+    },
+    "new_ship_pumps": {},
+    "ship_ammo_wetting": {
+      "effects": {
+        "damagePartsOverride": {
+          "ammo": {
+            "fireDamageMult": 0.75,
+            "ammunition_storage_shells_01_dm": {},
+            "ammunition_storage_shells_02_dm": {},
+            "ammunition_storage_shells_03_dm": {}
+          }
+        }
+      }
+    },
+    "102mm_uk_mkxvi_navy_HE": {},
+    "102mm_uk_mkxvi_navy_SAP": {},
+    "102mm_uk_mkxvi_navy_SAP_ammo_pack": {},
+    "102mm_uk_mkxvi_navy_he_dist_fuse": {},
+    "102mm_uk_mkxvi_navy_he_dist_fuse_ammo_pack": {
+      "prevModification": "102mm_uk_mkxvi_navy_SAP_ammo_pack"
+    },
+    "102mm_uk_mkxvi_navy_he_radio_fuse": {},
+    "102mm_uk_mkxvi_navy_he_radio_fuse_ammo_pack": {
+      "prevModification": "102mm_uk_mkxvi_navy_he_dist_fuse_ammo_pack"
+    },
+    "40mm_qf_mkxv_universal": {},
+    "40mm_qf_mkxv_he": {},
+    "40mm_qf_mkxv_he_ammo_pack": {},
+    "40mm_qf_mkxv_ap": {},
+    "40mm_qf_mkxv_ap_ammo_pack": {
+      "reqModification": "40mm_qf_mkxv_he_ammo_pack"
+    },
+    "ship_rangefinder": {
+      "prevModification": "102mm_uk_mkxvi_navy_he_dist_fuse_ammo_pack"
+    },
+    "new_aa_caliber_turrets": {},
+    "new_aux_caliber_turrets": {
+      "reqModification": "new_aa_caliber_turrets"
+    },
+    "new_main_caliber_turrets": {
+      "reqModification": "new_aux_caliber_turrets"
+    },
+    "ship_mines": {
+      "prevModification": "ship_rangefinder"
     }
   },
   "ammo": {
@@ -6510,6 +6562,594 @@
       100.0
     ],
     "explodeHitPower": 50.0
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "replenishmentDelay": 5.0,
+      "replenishmentTime": 2.0,
+      "removeLoadedAmmo": true,
+      "explosionEvent": "ammo_explosion_1",
+      "fireEvent": "ammo_fire_1",
+      "fireParamsPreset": "ship_ammo_fire_total",
+      "elevator": "elevator_01_dm",
+      "dstrElevatorDisablesShooting": false,
+      "splashRadiusConstraint": 8.0,
+      "splashDamageConstraint": 4000.0,
+      "shatterRadiusConstraint": 0.01,
+      "gunpowderMassToSplashParams": {
+        "gunpowderMassToInnerRadius": {
+          "p1": [
+            100.0,
+            1.0
+          ],
+          "p2": [
+            1000.0,
+            4.0
+          ],
+          "p3": [
+            10000.0,
+            6.0
+          ]
+        },
+        "gunpowderMassToOuterRadius": {
+          "p1": [
+            100.0,
+            2.0
+          ],
+          "p2": [
+            1000.0,
+            7.0
+          ],
+          "p3": [
+            10000.0,
+            10.0
+          ]
+        },
+        "gunpowderMassToPenetration": {
+          "p1": [
+            100.0,
+            5.0
+          ],
+          "p2": [
+            1000.0,
+            10.0
+          ],
+          "p3": [
+            5000.0,
+            18.0
+          ]
+        },
+        "gunpowderMassToDamage": {
+          "p1": [
+            100.0,
+            1.0
+          ],
+          "p2": [
+            1000.0,
+            1500.0
+          ],
+          "p3": [
+            5000.0,
+            2500.0
+          ],
+          "p4": [
+            10000.0,
+            4000.0
+          ]
+        }
+      },
+      "shells": {
+        "entityMunition": "fixed_ammo",
+        "reloadTimeMult": 1.33,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "damageEffect": "ammunition_storage_shells",
+        "ammunition_storage_shells_01_dm": {
+          "count": 500
+        }
+      }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner1",
+      "replenishmentDelay": 5.0,
+      "replenishmentTime": 2.0,
+      "removeLoadedAmmo": true,
+      "explosionEvent": "ammo_explosion_2",
+      "fireEvent": "ammo_fire_2",
+      "fireParamsPreset": "ship_ammo_fire_total",
+      "elevator": "elevator_02_dm",
+      "dstrElevatorDisablesShooting": false,
+      "splashRadiusConstraint": 8.0,
+      "splashDamageConstraint": 4000.0,
+      "shatterRadiusConstraint": 0.01,
+      "gunpowderMassToSplashParams": {
+        "gunpowderMassToInnerRadius": {
+          "p1": [
+            100.0,
+            1.0
+          ],
+          "p2": [
+            1000.0,
+            4.0
+          ],
+          "p3": [
+            10000.0,
+            6.0
+          ]
+        },
+        "gunpowderMassToOuterRadius": {
+          "p1": [
+            100.0,
+            2.0
+          ],
+          "p2": [
+            1000.0,
+            7.0
+          ],
+          "p3": [
+            10000.0,
+            10.0
+          ]
+        },
+        "gunpowderMassToPenetration": {
+          "p1": [
+            100.0,
+            5.0
+          ],
+          "p2": [
+            1000.0,
+            10.0
+          ],
+          "p3": [
+            5000.0,
+            18.0
+          ]
+        },
+        "gunpowderMassToDamage": {
+          "p1": [
+            100.0,
+            1.0
+          ],
+          "p2": [
+            1000.0,
+            1500.0
+          ],
+          "p3": [
+            5000.0,
+            2500.0
+          ],
+          "p4": [
+            10000.0,
+            4000.0
+          ]
+        }
+      },
+      "shells": {
+        "entityMunition": "fixed_ammo",
+        "reloadTimeMult": 1.33,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "damageEffect": "ammunition_storage_shells",
+        "ammunition_storage_shells_02_dm": {
+          "count": 500
+        }
+      }
+    },
+    "ammo3": {
+      "weaponTrigger": "gunner2",
+      "replenishmentDelay": 5.0,
+      "replenishmentTime": 2.0,
+      "removeLoadedAmmo": true,
+      "explosionEvent": "ammo_explosion_2",
+      "fireEvent": "ammo_fire_2",
+      "fireParamsPreset": "ship_ammo_fire_total",
+      "elevator": "elevator_03_dm",
+      "dstrElevatorDisablesShooting": false,
+      "splashRadiusConstraint": 8.0,
+      "splashDamageConstraint": 4000.0,
+      "shatterRadiusConstraint": 0.01,
+      "gunpowderMassToSplashParams": {
+        "gunpowderMassToInnerRadius": {
+          "p1": [
+            100.0,
+            1.0
+          ],
+          "p2": [
+            1000.0,
+            4.0
+          ],
+          "p3": [
+            10000.0,
+            6.0
+          ]
+        },
+        "gunpowderMassToOuterRadius": {
+          "p1": [
+            100.0,
+            2.0
+          ],
+          "p2": [
+            1000.0,
+            7.0
+          ],
+          "p3": [
+            10000.0,
+            10.0
+          ]
+        },
+        "gunpowderMassToPenetration": {
+          "p1": [
+            100.0,
+            5.0
+          ],
+          "p2": [
+            1000.0,
+            10.0
+          ],
+          "p3": [
+            5000.0,
+            18.0
+          ]
+        },
+        "gunpowderMassToDamage": {
+          "p1": [
+            100.0,
+            1.0
+          ],
+          "p2": [
+            1000.0,
+            1500.0
+          ],
+          "p3": [
+            5000.0,
+            2500.0
+          ],
+          "p4": [
+            10000.0,
+            4000.0
+          ]
+        }
+      },
+      "shells": {
+        "entityMunition": "fixed_ammo",
+        "reloadTimeMult": 1.33,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "damageEffect": "ammunition_storage_shells",
+        "ammunition_storage_shells_03_dm": {
+          "count": 500
+        }
+      }
+    },
+    "ammo4": {
+      "weaponTrigger": [
+        "gunner3",
+        "gunner4",
+        "gunner5"
+      ],
+      "entityMunition": "aux",
+      "fatalFire": false,
+      "fatalExplosion": false,
+      "explosionEvent": "ammo_aux_explosion_1",
+      "fireEvent": "ammo_aux_fire_1",
+      "fireParamsPreset": "ship_ammo_fire_aux",
+      "splashRadiusConstraint": 7.0,
+      "splashDamageConstraint": 2000.0,
+      "shatterRadiusConstraint": 0.1,
+      "gunpowderMassToSplashParams": {
+        "gunpowderMassToInnerRadius": {
+          "p1": [
+            100.0,
+            2.0
+          ],
+          "p2": [
+            10000.0,
+            4.0
+          ]
+        },
+        "gunpowderMassToOuterRadius": {
+          "p1": [
+            100.0,
+            4.0
+          ],
+          "p2": [
+            10000.0,
+            7.0
+          ]
+        },
+        "gunpowderMassToPenetration": {
+          "p1": [
+            100.0,
+            5.7
+          ],
+          "p2": [
+            500.0,
+            7.0
+          ],
+          "p3": [
+            2000.0,
+            8.5
+          ],
+          "p4": [
+            5000.0,
+            10.0
+          ]
+        },
+        "gunpowderMassToDamage": {
+          "p1": [
+            100.0,
+            700.0
+          ],
+          "p2": [
+            5000.0,
+            1000.0
+          ],
+          "p3": [
+            10000.0,
+            1500.0
+          ]
+        }
+      },
+      "shells": {
+        "damageEffect": "ammunition_storage_aux",
+        "ammunition_storage_aux_01_dm": {
+          "count": 24960
+        }
+      }
+    },
+    "ammo17": {
+      "weaponTrigger": "mines",
+      "entityMunition": "mines",
+      "removeLoadedAmmo": false,
+      "fatalFire": false,
+      "fatalExplosion": false,
+      "fireEvent": "torpedo_fire",
+      "explosionEvent": "torpedo_explosion",
+      "fireParamsPreset": "ship_torpedo_fire",
+      "shells": [
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_01_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_02_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_03_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_04_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_05_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_06_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_07_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_08_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_09_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_10_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_11_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_12_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_13_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_14_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_15_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_16_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_17_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_18_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_19_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_20_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_21_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_22_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_23_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_24_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_25_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_26_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_27_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_028_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_29_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_30_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_31_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_32_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_33_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_34_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_35_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_36_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_37_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_38_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_39_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_40_dm": {
+            "count": 1
+          }
+        }
+      ]
+    }
   },
   "unitFx": {
     "event": [

@@ -115,12 +115,12 @@
           ]
         },
         "triggerEnable": {
-          "target": "team_killareas_check_realistic_t1_exist"
+          "target": "team_killareas_check_realistic_exist"
         }
       },
       "else_actions": {}
     },
-    "team_killareas_check_realistic_t1_exist": {
+    "team_killareas_check_realistic_exist": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -140,36 +140,7 @@
           {
             "target": "@t1_killarea_temp",
             "type": "squad"
-          }
-        ]
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "team_killareas_check_realistic_t2_exist"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": [
-            "t1_detection_areas_init",
-            "t2_detection_areas_init"
-          ]
-        }
-      }
-    },
-    "team_killareas_check_realistic_t2_exist": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": [
+          },
           {
             "target": "@t2_killarea_temp",
             "type": "area"
@@ -227,18 +198,71 @@
           "value": "_hardcore",
           "digits": 0,
           "var": [
+            "t1_killarea_temp",
+            "t2_killarea_temp"
+          ]
+        },
+        "triggerEnable": {
+          "target": "team_killareas_check_hardcore_exist"
+        }
+      },
+      "else_actions": {}
+    },
+    "team_killareas_check_hardcore_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "@t1_killarea_temp",
+            "type": "area"
+          },
+          {
+            "target": "@t1_killarea_temp",
+            "type": "squad"
+          },
+          {
+            "target": "@t2_killarea_temp",
+            "type": "area"
+          },
+          {
+            "target": "@t2_killarea_temp",
+            "type": "squad"
+          }
+        ]
+      },
+      "actions": {
+        "varAddString": {
+          "value": "_hardcore",
+          "digits": 0,
+          "var": [
             "t1_killarea",
             "t2_killarea"
           ]
         },
         "triggerEnable": {
           "target": [
-            "t1_kill_areas_init",
-            "t2_kill_areas_init"
+            "t1_detection_areas_init",
+            "t2_detection_areas_init"
           ]
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "triggerEnable": {
+          "target": [
+            "t1_detection_areas_init",
+            "t2_detection_areas_init"
+          ]
+        }
+      }
     },
     "t1_detection_areas_init": {
       "is_enabled": false,
@@ -270,10 +294,10 @@
           "mapArea": false,
           "killArea": false,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": true,
           "airMapArea": false,
           "area": "@t1_killarea",
+          "newGridHorizontalCellCount": 0,
           "team": "B"
         },
         "triggerEnable": {
@@ -315,10 +339,10 @@
           "mapArea": false,
           "killArea": false,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": true,
           "airMapArea": false,
           "area": "@t2_killarea",
+          "newGridHorizontalCellCount": 0,
           "team": "A"
         },
         "triggerEnable": {
@@ -360,10 +384,10 @@
           "mapArea": false,
           "killArea": true,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": true,
           "airMapArea": false,
           "area": "@t1_killarea",
+          "newGridHorizontalCellCount": 0,
           "team": "B"
         },
         "triggerEnable": {
@@ -405,10 +429,10 @@
           "mapArea": false,
           "killArea": true,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": true,
           "airMapArea": false,
           "area": "@t2_killarea",
+          "newGridHorizontalCellCount": 0,
           "team": "A"
         },
         "triggerEnable": {
