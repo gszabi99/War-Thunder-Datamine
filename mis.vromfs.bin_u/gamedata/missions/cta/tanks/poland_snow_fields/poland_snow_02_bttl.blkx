@@ -1,0 +1,492 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17",
+        "t1_player18",
+        "t1_player19",
+        "t1_player20",
+        "t1_player21",
+        "t1_player22",
+        "t1_player23",
+        "t1_player24",
+        "t1_player25",
+        "t1_player26",
+        "t1_player27",
+        "t1_player28",
+        "t1_player29",
+        "t1_player30",
+        "t1_player31",
+        "t1_player32"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17",
+        "t2_player18",
+        "t2_player19",
+        "t2_player20",
+        "t2_player21",
+        "t2_player22",
+        "t2_player23",
+        "t2_player24",
+        "t2_player25",
+        "t2_player26",
+        "t2_player27",
+        "t2_player28",
+        "t2_player29",
+        "t2_player30",
+        "t2_player31",
+        "t2_player32",
+        "t2_player33"
+      ]
+    },
+    "mission": {
+      "level": "levels/avg_poland_snow.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/_Bttl;poland_02/name;missions/winter",
+      "locDesc": "missions/_Bttl/desc",
+      "scoreLimit": 10000,
+      "timeLimit": 25,
+      "deathPenaltyMul": 1.0,
+      "ctaCaptureZoneEqualPenaltyMul": 0.5,
+      "postfix": "_Bttl",
+      "useAlternativeMapCoord": false,
+      "allowedKillStreaks": true,
+      "randomSpawnTeams": false,
+      "remapAiTankModels": true,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "showTacticalMapCellSize": true,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": true,
+        "isHelicoptersAllowed": true,
+        "isShipsAllowed": false
+      },
+      "mission": [
+        {
+          "difficulty": "arcade",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 6000,
+          "randomSpawnTeams": false,
+          "remapAiTankModels": true
+        },
+        {
+          "difficulty": "realistic",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 6000,
+          "randomSpawnTeams": true,
+          "remapAiTankModels": true
+        },
+        {
+          "difficulty": "hardcore",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 6000,
+          "randomSpawnTeams": true,
+          "remapAiTankModels": true
+        }
+      ]
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_bttl_t1_spawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_bttl_t1_spawn_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_bttl_t2_spawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_bttl_t2_spawn_02"
+            },
+            {
+              "icontype": "basezone_A",
+              "side": "ally",
+              "target": "briefing_t1_captureZone"
+            },
+            {
+              "icontype": "basezone_B",
+              "side": "enemy",
+              "target": "briefing_t2_captureZone"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/poland_fields/template_poland_02_air_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/poland_fields/battleareas/template_poland_02_Bttl_battleareas.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/bttl_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1770.9,
+          15.35,
+          2845.0
+        ]
+      ],
+      "unit_class": "aaa_dummy",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "briefing_bttl_t1_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.976296,
+          0.0,
+          -0.21644
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.21644,
+          0.0,
+          0.976296
+        ],
+        [
+          3453.05,
+          13.1,
+          1213.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_bttl_t1_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3280.7,
+          15.3,
+          2964.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_bttl_t2_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.976296,
+          0.0,
+          -0.21644
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.21644,
+          0.0,
+          0.976296
+        ],
+        [
+          439.6,
+          11.7,
+          2933.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_bttl_t2_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.999222,
+          0.0,
+          0.039435
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.039435,
+          0.0,
+          0.999222
+        ],
+        [
+          339.65,
+          5.00374,
+          1069.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_captureZone": {
+      "type": "Point",
+      "tm": [
+        [
+          51.585,
+          0.0,
+          -47.318
+        ],
+        [
+          0.0,
+          51.09,
+          0.0
+        ],
+        [
+          47.318,
+          0.0,
+          51.585
+        ],
+        [
+          2709.93,
+          9.57971,
+          2017.63
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_captureZone": {
+      "type": "Point",
+      "tm": [
+        [
+          -69.7971,
+          0.0,
+          15.5115
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          -15.5115,
+          0.0,
+          -69.7971
+        ],
+        [
+          952.266,
+          6.05832,
+          1946.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}
