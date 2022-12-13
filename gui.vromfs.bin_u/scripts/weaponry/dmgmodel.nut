@@ -96,16 +96,14 @@ let function getRichochetPresetBlk(presetData) {
     return null
   // First cycle through all preset blocks searching
   // for block with "caliberToArmor:r = 1".
-  for (local i = 0; i < presetData.blockCount(); ++i)
-  {
+  for (local i = 0; i < presetData.blockCount(); ++i) {
     let presetBlock = presetData.getBlock(i)
     if (presetBlock?.caliberToArmor == 1)
       return presetBlock
   }
   // If no such block found then try to find block
   // without "caliberToArmor" property.
-  for (local i = 0; i < presetData.blockCount(); ++i)
-  {
+  for (local i = 0; i < presetData.blockCount(); ++i) {
     let presetBlock = presetData.getBlock(i)
     if (!("caliberToArmor" in presetBlock))
       return presetBlock
@@ -120,15 +118,12 @@ let function getRicochetDataByPreset(presetDataBlk) {
     angleProbabilityMap = []
   }
   let ricochetPresetBlk = getRichochetPresetBlk(presetDataBlk)
-  if (ricochetPresetBlk != null)
-  {
+  if (ricochetPresetBlk != null) {
     local addMaxProbability = false
-    for (local i = 0; i < RICOCHET_PROBABILITIES.len(); ++i)
-    {
+    for (local i = 0; i < RICOCHET_PROBABILITIES.len(); ++i) {
       let probability = RICOCHET_PROBABILITIES[i]
       let angle = getAngleByProbabilityFromP2blk(ricochetPresetBlk, probability)
-      if (angle != -1)
-      {
+      if (angle != -1) {
         res.angleProbabilityMap.append({
           probability = probability
           angle = 90.0 - angle
@@ -140,12 +135,10 @@ let function getRicochetDataByPreset(presetDataBlk) {
 
     // If, say, we didn't find angle with 100% ricochet chance,
     // then showing angle for max possible probability.
-    if (addMaxProbability)
-    {
+    if (addMaxProbability) {
       let maxProbability = getMaxProbabilityFromP2blk(ricochetPresetBlk)
       let angleAtMaxProbability = getAngleByProbabilityFromP2blk(ricochetPresetBlk, maxProbability)
-      if (maxProbability != -1 && angleAtMaxProbability != -1)
-      {
+      if (maxProbability != -1 && angleAtMaxProbability != -1) {
         res.angleProbabilityMap.append({
           probability = maxProbability
           angle = 90.0 - angleAtMaxProbability
@@ -166,14 +159,12 @@ let function initRicochetDataOnce() {
     return
 
   let ricBlk = blk?.ricochetPresets
-  if (!ricBlk)
-  {
+  if (!ricBlk) {
     assert(false, "ERROR: Can't load ricochetPresets from damageModel.blk")
     return
   }
 
-  for (local i = 0; i < ricBlk.blockCount(); i++)
-  {
+  for (local i = 0; i < ricBlk.blockCount(); i++) {
     let presetDataBlk = ricBlk.getBlock(i)
     let presetName = presetDataBlk.getBlockName()
     ricochetDataByPreset[presetName] <- getRicochetDataByPreset(presetDataBlk)
@@ -201,8 +192,7 @@ let function getRicochetData(presetName) {
 
 let function getMeasuredExplosionText(weightValue) {
   local typeName = "kg"
-  if (weightValue < 1.0)
-  {
+  if (weightValue < 1.0) {
     typeName = "gr"
     weightValue *= 1000
   }
@@ -238,8 +228,7 @@ let function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
   //armored vehicles data
   let explMassInTNT = explosiveMass * (explTypeBlk?.strengthEquivalent ?? 0)
   let splashParamsBlk = blk?.explosiveTypeToSplashParams
-  if (explMassInTNT && isDataBlock(splashParamsBlk))
-  {
+  if (explMassInTNT && isDataBlock(splashParamsBlk)) {
     let maxPenetration = getLinearValueFromP2blk(splashParamsBlk?.explosiveMassToPenetration, explMassInTNT)
     let innerRadius = getLinearValueFromP2blk(splashParamsBlk?.explosiveMassToInnerRadius, explMassInTNT)
     let outerRadius = getLinearValueFromP2blk(splashParamsBlk?.explosiveMassToOuterRadius, explMassInTNT)
@@ -247,8 +236,7 @@ let function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
 
     if (maxPenetration)
       res.maxArmorPenetrationText = ::g_measure_type.getTypeByName("mm", true).getMeasureUnitsText(maxPenetration)
-    if (maxPenetration >= armorToShowRadus)
-    {
+    if (maxPenetration >= armorToShowRadus) {
       let radius = innerRadius + (outerRadius - innerRadius) * (maxPenetration - armorToShowRadus) / maxPenetration
       res.destroyRadiusArmoredText = ::g_measure_type.getTypeByName("dist_short", true).getMeasureUnitsText(radius)
     }

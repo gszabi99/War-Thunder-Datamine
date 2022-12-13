@@ -11,12 +11,11 @@ let callback = require("%sqStdLibs/helpers/callback.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
-let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
+let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { get_time_msec } = require("dagor.time")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
-let { hasChat } = require("%scripts/user/matchingFeature.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -431,7 +430,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function switchChatWindow()
   {
-    if (::gchat_is_enabled() && hasChat.value)
+    if (::gchat_is_enabled() && hasMenuChat.value)
       ::switchMenuChatObj(::getChatDiv(this.scene))
   }
 

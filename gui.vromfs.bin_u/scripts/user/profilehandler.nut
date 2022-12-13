@@ -1720,7 +1720,6 @@ let selMedalIdx = {}
       [
         ["yes", function() {
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, null)
-          ::save_local_shared_settings(USE_GUEST_LOGIN_AUTO_SETTING_ID, null)
           startLogout()
         }],
         ["no", @() null ]

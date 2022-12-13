@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
@@ -75,7 +76,7 @@ let function getSingleWeaponDescTbl(unit, params) {
     })
   }
   if(TYPES_ARMOR_PIERCING.contains(tType)) {
-    let bulletsData = buildBulletsData(::calculate_tank_bullet_parameters(unit.name, blkPath, true, false))
+    let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blkPath, true, false))
     addArmorPiercingToDesc(bulletsData, res)
   }
   return res
@@ -122,7 +123,7 @@ let function getTierDescTbl(unit, params) {
   descArr[0] = header
   let res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b))}
   if(TYPES_ARMOR_PIERCING.contains(tType)) {
-    let bulletsData = buildBulletsData(::calculate_tank_bullet_parameters(unit.name, blk, true, false))
+    let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false))
     addArmorPiercingToDesc(bulletsData, res)
   }
 
@@ -209,7 +210,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
 
     if((item.rocket || item.bomb) && (params?.detail ?? INFO_DETAIL.EXTENDED) == INFO_DETAIL.EXTENDED)
     {
-      let bulletsData = buildBulletsData(::calculate_tank_bullet_parameters(unit.name, item.name, true, true))
+      let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, item.name, true, true))
       addArmorPiercingToDesc(bulletsData, res)
     }
 

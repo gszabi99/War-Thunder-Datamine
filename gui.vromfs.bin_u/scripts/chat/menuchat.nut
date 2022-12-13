@@ -16,10 +16,9 @@ let { getPlayerName,
         isPlatformSony } = require("%scripts/clientState/platform.nut")
 let {newRoom, newMessage, initChatMessageListOn} = require("%scripts/chat/menuChatRoom.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
-let { isChatEnabled, isChatEnableWithPlayer,
+let { isChatEnabled, isChatEnableWithPlayer, hasMenuChat,
   isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
-let { hasChat } = require("%scripts/user/matchingFeature.nut")
 let { send } = require("eventbus")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
@@ -2951,7 +2950,7 @@ if (::g_login.isLoggedIn())
 
 ::openChatScene <- function openChatScene(ownerHandler = null)
 {
-  if (!::gchat_is_enabled() || !hasChat.value)
+  if (!::gchat_is_enabled() || !hasMenuChat.value)
   {
     ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
     return false

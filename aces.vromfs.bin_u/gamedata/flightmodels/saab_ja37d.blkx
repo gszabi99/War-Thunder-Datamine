@@ -40,6 +40,9 @@
   "fireParamsPreset": "2000kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
+  "customImage": "!#ui/unitskin#image_in_progress",
+  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2131,28 +2134,28 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "saab_ja37_default",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_default.blk"
+        "name": "saab_ja37d_default",
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37d_default.blk"
       },
       {
-        "name": "saab_ja37_rockets_rb24j_default",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb24j_default.blk"
+        "name": "saab_ja37d_rockets_rb24j_default",
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37d_rockets_rb24j_default.blk"
       },
       {
-        "name": "saab_ja37_rockets_rb24",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb24.blk"
+        "name": "saab_ja37d_rockets_rb24j",
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37d_rockets_rb24j.blk"
       },
       {
-        "name": "saab_ja37_rockets_rb24j",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb24j.blk"
+        "name": "saab_ja37d_rockets_rb74",
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37d_rockets_rb74.blk"
       },
       {
-        "name": "saab_ja37_rockets_rb71",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rockets_rb71.blk"
+        "name": "saab_ja37d_rockets_rb71",
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37d_rockets_rb71.blk"
       },
       {
-        "name": "saab_ja37_rocket_135mm_psrak_m70",
-        "blk": "gameData/FlightModels/weaponPresets/saab_ja37_rocket_135mm_psrak_m70.blk"
+        "name": "saab_ja37d_rocket_135mm_psrak_m70",
+        "blk": "gameData/FlightModels/weaponPresets/saab_ja37d_rocket_135mm_psrak_m70.blk"
       }
     ]
   },
@@ -2165,15 +2168,21 @@
       "node": [
         "lavett_24_001",
         "lavett_24_001_bol_451",
+        "lavett_74_001_bol_451",
+        "lavett_74_002",
         "lavett_24_002",
         "lavett_71_001",
         "u95_container",
         "lavett_24_003",
+        "lavett_74_003",
         "lavett_24_004",
+        "lavett_74_004",
         "lavett_24_005",
+        "lavett_74_005",
         "lavett_71_002",
         "lavett_24_006",
         "lavett_24_006_bol_451",
+        "lavett_74_006_bol_451",
         "boy_401_container_l",
         "boy_401_container_r"
       ]
@@ -2246,6 +2255,71 @@
                 "separate": false
               }
             ]
+          },
+          {
+            "name": "akan_m75_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "lavett_74_001_bol_451",
+                "lavett_74_006_bol_451",
+                "boy_401_container_l",
+                "boy_401_container_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonAkan_m75.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "dm": "cannon1_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1,
+                "gearLimit": [
+                  0.0,
+                  0.1
+                ],
+                "gearName": "gear_c"
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 24,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 24,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 160,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 160,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       },
@@ -2258,28 +2332,28 @@
             "iconType": "missile_type_b_air_to_air",
             "name": "default_rb24j",
             "ShowNodes": {
-              "node": "lavett_24_001"
+              "node": "lavett_74_001_bol_451"
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/swd_rb24j_default.blk",
-              "emitter": "rb24_001",
+              "emitter": "rb74_001",
               "bullets": 1,
               "external": true,
               "separate": true
             }
           },
           {
-            "iconType": "missile_air_to_air",
-            "name": "rb24",
-            "reqModification": "swe_rb24",
+            "iconType": "missile_type_c_air_to_air",
+            "name": "rb74",
+            "reqModification": "swd_rb74",
             "ShowNodes": {
-              "node": "lavett_24_001"
+              "node": "lavett_74_001_bol_451"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
-              "emitter": "rb24_001",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb74.blk",
+              "emitter": "rb74_001",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2293,32 +2367,32 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "missile_air_to_air",
-            "name": "rb24",
-            "reqModification": "swe_rb24",
+            "iconType": "missile_type_b_air_to_air",
+            "name": "rb24j",
+            "reqModification": "swe_rb24j",
             "ShowNodes": {
-              "node": "lavett_24_002"
+              "node": "lavett_74_002"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
-              "emitter": "rb24_002",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rb74_002",
               "bullets": 1,
               "external": true,
               "separate": true
             }
           },
           {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "rb24j",
-            "reqModification": "swe_rb24j",
+            "iconType": "missile_type_c_air_to_air",
+            "name": "rb74",
+            "reqModification": "swd_rb74",
             "ShowNodes": {
-              "node": "lavett_24_002"
+              "node": "lavett_74_002"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
-              "emitter": "rb24_002",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb74.blk",
+              "emitter": "rb74_002",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2360,32 +2434,32 @@
         "order": 5,
         "WeaponPreset": [
           {
-            "iconType": "missile_air_to_air",
-            "name": "rb24",
-            "reqModification": "swe_rb24",
+            "iconType": "missile_type_b_air_to_air",
+            "name": "rb24j",
+            "reqModification": "swe_rb24j",
             "ShowNodes": {
-              "node": "lavett_24_003"
+              "node": "lavett_74_003"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
-              "emitter": "rb24_003",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rb74_003",
               "bullets": 1,
               "external": true,
               "separate": true
             }
           },
           {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "rb24j",
-            "reqModification": "swe_rb24j",
+            "iconType": "missile_type_c_air_to_air",
+            "name": "rb74",
+            "reqModification": "swd_rb74",
             "ShowNodes": {
-              "node": "lavett_24_003"
+              "node": "lavett_74_003"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
-              "emitter": "rb24_003",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb74.blk",
+              "emitter": "rb74_003",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2406,37 +2480,37 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 5,
         "order": 6,
         "WeaponPreset": [
           {
-            "iconType": "missile_air_to_air",
-            "name": "rb24",
-            "reqModification": "swe_rb24",
+            "iconType": "missile_type_b_air_to_air",
+            "name": "rb24j",
+            "reqModification": "swe_rb24j",
             "ShowNodes": {
-              "node": "lavett_24_004"
+              "node": "lavett_74_004"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
-              "emitter": "rb24_004",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rb74_004",
               "bullets": 1,
               "external": true,
               "separate": true
             }
           },
           {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "rb24j",
-            "reqModification": "swe_rb24j",
+            "iconType": "missile_type_c_air_to_air",
+            "name": "rb74",
+            "reqModification": "swd_rb74",
             "ShowNodes": {
-              "node": "lavett_24_004"
+              "node": "lavett_74_004"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
-              "emitter": "rb24_004",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb74.blk",
+              "emitter": "rb74_004",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2457,37 +2531,37 @@
         ]
       },
       {
-        "index": 5,
+        "index": 6,
         "tier": 4,
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "missile_air_to_air",
-            "name": "rb24",
-            "reqModification": "swe_rb24",
+            "iconType": "missile_type_b_air_to_air",
+            "name": "rb24j",
+            "reqModification": "swe_rb24j",
             "ShowNodes": {
-              "node": "lavett_24_005"
+              "node": "lavett_74_005"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
-              "emitter": "rb24_005",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rb74_005",
               "bullets": 1,
               "external": true,
               "separate": true
             }
           },
           {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "rb24j",
-            "reqModification": "swe_rb24j",
+            "iconType": "missile_type_c_air_to_air",
+            "name": "rb74",
+            "reqModification": "swd_rb74",
             "ShowNodes": {
-              "node": "lavett_24_005"
+              "node": "lavett_74_005"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
-              "emitter": "rb24_005",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb74.blk",
+              "emitter": "rb74_005",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2524,7 +2598,7 @@
         ]
       },
       {
-        "index": 6,
+        "index": 7,
         "tier": 3,
         "order": 2,
         "WeaponPreset": [
@@ -2532,28 +2606,28 @@
             "iconType": "missile_type_b_air_to_air",
             "name": "default_rb24j",
             "ShowNodes": {
-              "node": "lavett_24_006"
+              "node": "lavett_74_006_bol_451"
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/swd_rb24j_default.blk",
-              "emitter": "rb24_006",
+              "emitter": "rb74_006",
               "bullets": 1,
               "external": true,
               "separate": true
             }
           },
           {
-            "iconType": "missile_air_to_air",
-            "name": "rb24",
-            "reqModification": "swe_rb24",
+            "iconType": "missile_type_c_air_to_air",
+            "name": "rb74",
+            "reqModification": "swd_rb74",
             "ShowNodes": {
-              "node": "lavett_24_006"
+              "node": "lavett_74_006_bol_451"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
-              "emitter": "rb24_006",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb74.blk",
+              "emitter": "rb74_006",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2686,48 +2760,43 @@
     "turnTime": 28.1492
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
+    "new_compressor_jet": {
+      "tier": 1
+    },
     "hydravlic_power": {
+      "prevModification": "new_compressor_jet",
+      "tier": 2,
       "effects": {
-        "aileronBooster": 0.9,
+        "aileronBooster": 0.6,
         "elevatorBooster": 0.9
       }
     },
-    "hp_105_jet": {},
-    "g_suit": {},
-    "new_compressor_jet": {},
-    "akan_m75_ground_targets": {},
-    "akan_m75_air_targets": {},
-    "akan_m75_belt_pack": {
-      "tier": 1
-    },
-    "akan_m75_new_gun": {
-      "reqModification": "akan_m75_belt_pack",
+    "cd_98": {
+      "prevModification": "hydravlic_power",
       "tier": 3
     },
-    "swe_rb24": {
+    "hp_105_jet": {
+      "prevModification": "cd_98",
+      "tier": 4
+    },
+    "f_4c_CdMin_Fuse": {
       "tier": 1,
-      "modClass": "weapon"
+      "modClass": "lth"
     },
-    "swe_rb24j": {
+    "structure_str": {
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "new_cover": {
       "tier": 3,
-      "modClass": "weapon",
-      "reqModification": "swe_rb24"
-    },
-    "swe_rb71": {
-      "tier": 4,
-      "modClass": "weapon",
-      "reqModification": "swe_rb24j"
+      "modClass": "lth"
     },
     "countermeasures_launcher_chaff_only": {},
     "countermeasures_launcher_flare_only": {},
     "countermeasures_launcher_chaff_priority": {},
     "countermeasures_launcher_flare_priority": {},
     "countermeasures_belt_pack": {
-      "modClass": "weapon",
+      "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
@@ -2740,6 +2809,50 @@
           }
         }
       }
+    },
+    "swd_ltc_bol": {
+      "reqModification": "countermeasures_belt_pack",
+      "modClass": "armor",
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "countermeasures",
+      "tier": 2,
+      "effects": {
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "akan_m75_ltc_bol"
+          }
+        }
+      }
+    },
+    "f_4c_g_suit": {
+      "prevModification": "swd_ltc_bol",
+      "tier": 3,
+      "modClass": "armor"
+    },
+    "akan_m75_ground_targets": {},
+    "akan_m75_air_targets": {},
+    "akan_m75_belt_pack": {
+      "tier": 1
+    },
+    "akan_m75_new_gun": {
+      "reqModification": "akan_m75_belt_pack",
+      "tier": 3
+    },
+    "swe_rb24j": {
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "swd_rb74": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "swe_rb24j"
+    },
+    "swe_rb71": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "swd_rb74"
     },
     "swe_135mm_m70b": {
       "modClass": "weapon",

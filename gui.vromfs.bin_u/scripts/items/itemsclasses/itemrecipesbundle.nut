@@ -11,7 +11,13 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 ::items_classes.RecipesBundle <- class extends ::items_classes.Chest {
   static iType = itemType.RECIPES_BUNDLE
   static defaultLocId = "recipes_bundle"
-  static typeIcon = "#ui/gameuiskin#items_blueprint.png"
+  typeIcon = "#ui/gameuiskin#item_type_blueprints.svg"
+
+  constructor(itemDefDesc, itemDesc = null, slotData = null) {
+    base.constructor(itemDefDesc, itemDesc, slotData)
+    if (this.forceShowRewardReceiving)
+      this.typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
+  }
 
   isDisassemble         = @() this.itemDef?.tags?.isDisassemble == true
   updateNameLoc         = @(locName) this.isDisassemble() ? loc("item/disassemble_header", { name = locName })

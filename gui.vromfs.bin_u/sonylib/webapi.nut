@@ -345,13 +345,13 @@ let matches = {
 
 
 // ---------- Utility functions and wrappers
-let function is_http_success(code) { return code != null && code >= 200 && code < 300 }
+let function is_http_success(code) { return code >= 200 && code < 300 }
 
 let function send(action, onResponse=noOpCb) {
   let cb = function(r) {
     local err = r?.error
-    let httpErr = (!is_http_success(r?.httpStatus)) ? r.httpStatus : null
-    if (httpErr && err == null)
+    let httpErr = (!is_http_success(r?.httpStatus ?? 0)) ? (r?.httpStatus ?? 0) : null
+    if (httpErr != null && err == null)
       err = { }
     if (err && err?.code == null)
       err.code <- httpErr ? httpErr : "undefined";

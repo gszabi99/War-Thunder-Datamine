@@ -12,7 +12,6 @@ global const CLAN_SEASON_NUM_IN_YEAR_SHIFT = 1 // Because numInYear is zero-base
 global const EVENTS_SHORT_LB_VISIBLE_ROWS = 3
 global const EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW = 50
 global const USE_STEAM_LOGIN_AUTO_SETTING_ID = "useSteamLoginAuto"
-global const USE_GUEST_LOGIN_AUTO_SETTING_ID = "useGuestLoginAuto"
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
 global const SQUADS_VERSION = 2

@@ -9,22 +9,6 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
 const MAX_FETCH_RETRIES = 5
 
-local defaultClusters = null
-
-let function cacheDefaultClustersOnce() {
-  if (defaultClusters != null)
-    return
-
-  defaultClusters = (::get_network_block()?[::get_cur_circuit_name()]
-    .defaultClusters[getCountryCode()] ?? loc("default_cluster", "EU"))
-    .split_by_chars(";", true)
-}
-
-let function isClusterDefault(clusterName) {
-  cacheDefaultClustersOnce()
-  return defaultClusters.contains(clusterName)
-}
-
 local unstableClusters = null
 
 let function cacheUnstableClustersOnce() {
@@ -185,7 +169,6 @@ let mkCluster = @(name) {
   }
 
   isClusterUnstable
-  isClusterDefault
 }
 
 ::subscribe_handler(::g_clusters)

@@ -299,14 +299,14 @@ let overload = @() {
   text = string.format("%.1f", OverloadWatch.value / 10.0)
 }
 
-let agmLabel = @(){
+let armLabel = @(){
   watch = IlsColor
   size = flex()
   pos = [pw(22), ph(70)]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
   fontSize = 35
-  text = "AGM"
+  text = "ARM"
 }
 
 let MachWatch = Computed(@() (floor(Mach.value * 100)).tointeger())
@@ -596,7 +596,7 @@ let function MarconiAvionics(width, height) {
         rendObj = ROBJ_SOLID
         color = IlsColor.value
       },
-      agmLabel,
+      armLabel,
       mach,
       radarTargetDist,
       ilsMode,

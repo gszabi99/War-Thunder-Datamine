@@ -52,6 +52,9 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("%scr
 let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
 let lottie = require("%scripts/utils/lottie.nut")
 let { checkLegalRestrictions } = require("%scripts/items/itemRestrictions.nut")
+let { showGuestEmailRegistration, needShowGuestEmailRegistration
+} = require("%scripts/user/suggestionEmailRegistration.nut")
+
 
 const ITEM_SOON_EXPIRE_SEC = 14400
 const ITEM_VERY_SOON_EXPIRE_SEC = 3600
@@ -496,6 +499,10 @@ local expireTypes = {
   {
     if (!this.hasLink())
       return
+    if (needShowGuestEmailRegistration()) {
+      showGuestEmailRegistration()
+      return
+    }
     let validLink = validateLink(this.link)
     if (validLink)
       openUrl(validLink, this.forceExternalBrowser, false, this.linkBigQueryKey)

@@ -594,8 +594,10 @@ local logNameByType = {
       seenIdsArray.extend(markSeenIds)
       handler.doWhenActive(@() ::gui_start_open_trophy({
         [itemId] = rewardsData
-        rewardTitle = loc("mainmenu/you_received")
-        rewardIconStyle = "shop_trophy_test_gold"
+        rewardTitle = "{0} {1}".subst(
+          loc("mainmenu/you_received"),
+          ::ItemsManager.getItemOrRecipeBundleById(itemId)?.getName() ?? "")
+        rewardIcon = "small_gold_chest"
         isHidePrizeActionBtn = true
       }))
     }

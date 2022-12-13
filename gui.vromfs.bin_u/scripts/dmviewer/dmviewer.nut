@@ -1337,17 +1337,27 @@ let function isViewModeTutorAvailableForUser() {
         if (this.unitBlk.getBool("laserDesignator", false))
           desc.append(loc("avionics_aim_laser_designator"))
 
-        for (local b = 0; b < (this.unitBlk?.counterMeasures.blockCount() ?? 0); b++)
-        {
-          let counterMeasureBlk = this.unitBlk.counterMeasures.getBlock(b)
-          let counterMeasureFilePath = counterMeasureBlk.getStr("blk", "")
-          if (counterMeasureFilePath == "")
-            continue
-          let counterMeasurePropsBlk = ::DataBlock()
-          counterMeasurePropsBlk.load(counterMeasureFilePath)
-          let counterMeasureType = counterMeasurePropsBlk.getStr("type", "")
-          desc.append("".concat(loc($"avionics_countermeasure_{counterMeasureType}"), loc("ui/colon"),
-            this.getPartLocNameByBlkFile("counterMeasures", counterMeasureFilePath, counterMeasurePropsBlk)))
+        let slots = this.unitBlk?.WeaponSlots
+        if (slots) {
+          let commonSlot = (slots % "WeaponSlot")?[0]
+          if (commonSlot) {
+            let counterMeasures = (commonSlot % "WeaponPreset").findvalue(
+              @(v) v?.counterMeasures)?.counterMeasures
+
+            for (local b = 0; b < (counterMeasures?.blockCount() ?? 0); b++) {
+              let counterMeasureBlk = counterMeasures.getBlock(b)
+              let counterMeasureFilePath = counterMeasureBlk?.blk ?? ""
+              if (counterMeasureFilePath == "")
+                continue
+
+              let counterMeasurePropsBlk = blkOptFromPath(counterMeasureFilePath)
+              let counterMeasureType = counterMeasurePropsBlk?.type ?? ""
+              desc.append("".concat(loc($"avionics_countermeasure_{counterMeasureType}"),
+                loc("ui/colon"),
+                this.getPartLocNameByBlkFile("counterMeasures", counterMeasureFilePath,
+                  counterMeasurePropsBlk)))
+            }
+          }
         }
         break
 

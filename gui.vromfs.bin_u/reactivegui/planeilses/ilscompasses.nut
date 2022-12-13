@@ -356,6 +356,33 @@ let function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5
   }
 }
 
+let generateCompassMarkElbit = function(num, _elemWidth) {
+  return {
+    size = [pw(15), ph(100)]
+    flow = FLOW_VERTICAL
+    children = [
+      @() {
+        watch = IlsColor
+        size = [baseLineWidth * IlsLineScale.value, baseLineWidth * (num % 10 == 0 ? 5 : 2.5)]
+        rendObj = ROBJ_SOLID
+        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.value
+        hplace = ALIGN_CENTER
+      },
+      @() {
+        watch = IlsColor
+        rendObj = ROBJ_TEXT
+        color = IlsColor.value
+        hplace = ALIGN_CENTER
+        fontSize = 40
+        padding = [5, 0]
+        font = Fonts.hud
+        text = num % 10 == 0 ? (num / 10).tostring() : ""
+      }
+    ]
+  }
+}
+
 return {
   compassWrap
   generateCompassMarkASP
@@ -369,4 +396,5 @@ return {
   generateCompassMarkF14
   generateCompassMarkVE130
   generateCompassMarkSU145
+  generateCompassMarkElbit
 }

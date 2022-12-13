@@ -22,6 +22,8 @@ let CurWeaponName = Watched("")
 let GunBullets0 = Watched(0)
 let GunBullets1 = Watched(0)
 let BulletImpactPoints = Watched([])
+let BulletImpactPoints1 = Watched([])
+let BulletImpactPoints2 = Watched([])
 let BulletImpactLineEnable = Watched(false)
 
 let planeState = {
@@ -44,6 +46,8 @@ let planeState = {
   GunBullets0,
   GunBullets1,
   BulletImpactPoints,
+  BulletImpactPoints1,
+  BulletImpactPoints2,
   BulletImpactLineEnable
 }
 

@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let { WEAPON_TYPE,
@@ -292,7 +293,7 @@ options.addTypes({
 
           let searchName = getBulletsSearchName(unit, value)
           let useDefaultBullet = searchName != value
-          let bulletParameters = ::calculate_tank_bullet_parameters(unit.name,
+          let bulletParameters = calculate_tank_bullet_parameters(unit.name,
             (useDefaultBullet && weaponBlkName) || getModificationBulletsEffect(searchName),
             useDefaultBullet, false)
 
@@ -389,7 +390,7 @@ options.addTypes({
         this.values.append({
           bulletName = ""
           weaponBlkName = weaponBlkPath
-          bulletParams = ::calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
+          bulletParams = calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
           sortVal = bulletBlk?.caliber ?? 0
         })
 

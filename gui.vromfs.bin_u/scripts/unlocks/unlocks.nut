@@ -781,6 +781,17 @@ let function setImageByUnlockType(config, unlockBlk) {
       }
       break
 
+    case UNLOCKABLE_INVENTORY:
+      let item = ::ItemsManager.getItemOrRecipeBundleById(::to_integer_safe(id))
+      if (item)
+      {
+        res.title = getUnlockTypeText(uType, realId)
+        res.name = item.getName()
+        res.image = item.getSmallIconName()
+        res.desc = item.getDescription()
+      }
+      break
+
     case UNLOCKABLE_WARBOND:
       let wbAmount = config?.warbonds
       let wbStageName = config?.warbondStageName

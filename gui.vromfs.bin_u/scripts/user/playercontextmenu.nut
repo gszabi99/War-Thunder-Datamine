@@ -7,7 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isChatEnabled, attemptShowOverlayMessage,
+let { isChatEnabled, attemptShowOverlayMessage, hasMenuChat,
   isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
 let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
@@ -15,7 +15,6 @@ let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { hasChat } = require("%scripts/user/matchingFeature.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 //-----------------------------
@@ -154,7 +153,7 @@ let getActions = function(contact, params)
   actions.append(
     {
       text = loc("contacts/message")
-      show = !isMe && ::ps4_is_chat_enabled() && hasChat.value && !u.isEmpty(name)
+      show = !isMe && ::ps4_is_chat_enabled() && hasMenuChat.value && !u.isEmpty(name)
       isVisualDisabled = !canChat || isBlock || isProfileMuted
       action = function() {
         if (isBlock)
@@ -412,7 +411,7 @@ let getActions = function(contact, params)
 //---- </In Battle> -----------------
 
 //---- <Chat> -----------------------
-  if (hasChat.value)
+  if (hasMenuChat.value)
   {
     if (hasChatEnable && canInviteToChatRoom)
     {

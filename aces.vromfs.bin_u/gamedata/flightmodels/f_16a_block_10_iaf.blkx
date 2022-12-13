@@ -2237,6 +2237,7 @@
         "flare2",
         "pylon5",
         "pylon5_holder",
+        "pylon_ptb",
         "pylon6",
         "pylon6_holder",
         "pylon7",
@@ -2249,7 +2250,8 @@
     "HideDmParts": {
       "node": [
         "cannon2_dm",
-        "cover2_dm"
+        "cover2_dm",
+        "tank8_dm"
       ]
     },
     "WeaponSlot": [
@@ -2269,7 +2271,8 @@
                 "bullets": 512,
                 "light": false,
                 "spread": 1.2,
-                "traceOffset": 1
+                "traceOffset": 1,
+                "rotationAnimScale": "gun_rotate_01:CRS"
               },
               {
                 "dummy": true,
@@ -2313,7 +2316,8 @@
                 "bullets": 512,
                 "light": false,
                 "spread": 1.2,
-                "traceOffset": 1
+                "traceOffset": 1,
+                "rotationAnimScale": "gun_rotate_01:CRS"
               },
               {
                 "dummy": true,
@@ -2676,23 +2680,44 @@
         "tier": 6,
         "order": 9,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_middle",
-          "name": "mer_mk82_x1",
-          "reqModification": "us_500lb_mk82",
-          "ShowNodes": {
-            "node": "pylon_gpu_5a"
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "mer_mk82_x1",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_gpu_5a"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "us_500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-            "emitter": "us_500lb_mk_82_001",
-            "bullets": 1,
-            "external": true,
-            "separate": true,
-            "machLimit": 1.01
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_ptb"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_300_gal_fuse_f_16_blok_10.blk",
+              "emitter": "us_300gal_drop_tank",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 6,

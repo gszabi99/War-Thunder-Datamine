@@ -50,7 +50,7 @@ register_command(
   local localConfigsTable = clone configsTable;
 
   let params = {}
-  foreach (paramName in [ "rewardTitle", "rewardListLocId", "rewardIconStyle", "isDisassemble",
+  foreach (paramName in [ "rewardTitle", "rewardListLocId", "rewardIcon", "isDisassemble",
     "isHidePrizeActionBtn", "singleAnimationGuiSound", "rewardImage", "rewardImageRatio",
     "reUseRecipeUid" ])
   {
@@ -139,7 +139,7 @@ register_command(
   decoratorSlot = -1
   rewardTitle = null
   rewardListLocId = null
-  rewardIconStyle = null
+  rewardIcon = null
   isHidePrizeActionBtn = false
   singleAnimationGuiSound = null
   rewardImage = null
@@ -270,13 +270,15 @@ register_command(
   }
 
   function getForceStyleImage() {
-    if (!this.rewardIconStyle)
+    if (!this.rewardIcon)
       return null
 
-    let layerId = $"{this.rewardIconStyle}{this.opened ? "_opened" : ""}"
-    return ::LayersIcon.getIconData(::LayersIcon.findStyleCfg(layerId)
-      ? layerId
-      : "default_unlocked")
+    let trophyStyle = $"{this.rewardIcon}{this.opened ? "_opened" : ""}"
+    local layerCfg = ::LayersIcon.findLayerCfg(trophyStyle)
+    if (!layerCfg)
+      layerCfg = ::LayersIcon.findLayerCfg("default_unlocked")
+
+    return ::LayersIcon.genDataFromLayer(layerCfg)
   }
 
   function updateTrophyImage() {

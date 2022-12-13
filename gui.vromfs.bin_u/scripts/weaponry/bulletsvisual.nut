@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { file_exists } = require("dagor.fs")
+let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { floor, round_by_value, roundToDigits, round, pow } = require("%sqstd/math.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let {
@@ -640,7 +641,7 @@ let function addBulletsParamToDesc(descTbl, unit, item)
 
   let searchName = getBulletsSearchName(unit, modName)
   let useDefaultBullet = searchName != modName
-  let bullet_parameters = ::calculate_tank_bullet_parameters(unit.name,
+  let bullet_parameters = calculate_tank_bullet_parameters(unit.name,
     useDefaultBullet && "weaponBlkName" in bulletsSet ?
       bulletsSet.weaponBlkName :
       getModificationBulletsEffect(searchName),

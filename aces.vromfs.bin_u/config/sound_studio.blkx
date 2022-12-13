@@ -1217,9 +1217,9 @@
     "outside": {
       "path": "aircraft/engines",
       "eventFront": "",
-      "eventBack": "engine_ai",
+      "eventBack": "engine01_ai",
       "eventSurround": "",
-      "eventLod1": "engine_ai",
+      "eventLod1": "engine01_ai",
       "rpmScale": 0.88,
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
@@ -5247,9 +5247,9 @@
     "outside": {
       "path": "aircraft/engines",
       "eventFront": "",
-      "eventBack": "engine_bomber_ai",
+      "eventBack": "engine17_ai",
       "eventSurround": "",
-      "eventLod1": "engine_bomber_ai",
+      "eventLod1": "engine17_ai",
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5291,9 +5291,9 @@
     "outside": {
       "path": "aircraft/engines",
       "eventFront": "",
-      "eventBack": "engine_jet_ai",
+      "eventBack": "engine05_02_nene_N1_ai",
       "eventSurround": "",
-      "eventLod1": "engine_jet_ai",
+      "eventLod1": "engine05_02_nene_N1_ai",
       "rpmSmooth": 0.005,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5335,9 +5335,9 @@
     "outside": {
       "path": "aircraft/engines",
       "eventFront": "",
-      "eventBack": "engine_tvd_ai",
+      "eventBack": "engine20_ai",
       "eventSurround": "",
-      "eventLod1": "engine_tvd_ai",
+      "eventLod1": "engine20_ai",
       "rpmSmooth": 0.005,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -17224,6 +17224,7 @@
     "gunsDmgSeriousThreshold": 0.3,
     "crewDmgCritThreshold": 0.3,
     "crewDmgSeriousThreshold": 0.5,
+    "crewDmgAbandonedThreshold": 0.05,
     "breachesCritThreshold": 4.5,
     "breachesSeriousThreshold": 3.5,
     "aircraftDetectionRadius": 2000.0,
@@ -18025,6 +18026,7 @@
         "startSmoke": {
           "event": "06_ship_activities/voice_message_commander_ship_smokes",
           "playerRole": "commander",
+          "minSpeechInterval": 10.0,
           "player": -1
         },
         "torpedoesPrepare": {
@@ -18437,6 +18439,12 @@
           "player": -1,
           "minSpeechInterval": 30.0
         },
+        "shipAbandonedLifeBoat": {
+          "event": "08_state_ship/voice_message_commander_abandon_ship_lifeboat",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 60.0
+        },
         "shipSeriousDamage": {
           "event": "08_state_ship/voice_message_officer_got_serious_damage",
           "playerRole": "commander",
@@ -18625,6 +18633,13 @@
         },
         "dryCompartments": {
           "event": "09_survivability/voice_message_commander_drying_compartments",
+          "playerRole": "commander",
+          "player": -1,
+          "delayTime": 0.0,
+          "minSpeechInterval": 25.0
+        },
+        "straightenRoll": {
+          "event": "09_survivability/voice_message_commander_straighten_roll",
           "playerRole": "commander",
           "player": -1,
           "delayTime": 0.0,

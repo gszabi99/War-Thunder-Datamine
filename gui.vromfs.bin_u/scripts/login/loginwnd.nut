@@ -17,11 +17,13 @@ let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { getDistr } = require("auth_wt")
 let {dgs_get_settings} = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
+let regexp2 = require("regexp2")
 let { register_command } = require("console")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
+
+let validateNickRegexp = regexp2(@"[^_0-9a-zA-Z]")
 
 local dbgGuestLoginIdPrefix = ""
 
@@ -165,10 +167,6 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     }
 
     let disableAutoRelogin = getroottable()?.disable_autorelogin_once ?? false
-    if (!disableAutoRelogin && ::load_local_shared_settings(USE_GUEST_LOGIN_AUTO_SETTING_ID)) {
-      this.onGuestAuthorization()
-      return
-    }
     autoLogin = autoLogin && !disableAutoRelogin
     if (autoLogin)
     {
@@ -556,8 +554,6 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         else if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking"))
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
 
-        ::save_local_shared_settings(USE_GUEST_LOGIN_AUTO_SETTING_ID, this.isGuestLogin)
-
         this.continueLogin(no_dump_login)
         break
 
@@ -741,8 +737,9 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
     ::gui_modal_editbox_wnd({
       title = loc("mainmenu/chooseName")
+      label = loc("choose_nickname_req")
       maxLen = 16
-      validateFunc = @(nick) clearBorderSymbols(nick, [" "])
+      validateFunc = @(nick) validateNickRegexp.replace("", nick)
       canCancel = true
       owner = this
       okFunc = @(nick) this.guestProceedAuthorization(guestLoginId, nick)

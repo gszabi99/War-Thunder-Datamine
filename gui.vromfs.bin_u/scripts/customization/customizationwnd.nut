@@ -153,6 +153,7 @@ enum decalTwoSidedMode
   isDecoratorItemUsed = false
 
   isUnitTank = false
+  isUnitShipOrBoat = false
   isUnitOwn = false
 
   currentState = decoratorEditState.NONE
@@ -250,6 +251,7 @@ enum decalTwoSidedMode
   {
     this.isUnitOwn = this.unit.isUsable()
     this.isUnitTank = this.unit.isTank()
+    this.isUnitShipOrBoat = this.unit.isShipOrBoat()
 
     this.access_Decals      = !this.previewMode && this.isUnitOwn && ::g_decorator_type.DECALS.isAvailable(this.unit)
     this.access_Attachables = !this.previewMode && this.isUnitOwn && ::g_decorator_type.ATTACHABLES.isAvailable(this.unit)
@@ -516,7 +518,7 @@ enum decalTwoSidedMode
 
   function createSkinSliders()
   {
-    if (!this.isUnitOwn || !this.isUnitTank)
+    if (!this.isUnitOwn || (!this.isUnitTank && !this.isUnitShipOrBoat))
       return
 
     let options = [::USEROPT_TANK_CAMO_SCALE,
@@ -544,7 +546,7 @@ enum decalTwoSidedMode
 
   function updateSkinSliders()
   {
-    if (!this.isUnitOwn || !this.isUnitTank)
+    if (!this.isUnitOwn || (!this.isUnitTank && !this.isUnitShipOrBoat))
       return
 
     let skinIndex = this.skinList?.values.indexof(this.previewSkinId) ?? 0
@@ -851,7 +853,7 @@ enum decalTwoSidedMode
 
           skins_div = !isInEditMode && !this.decorMenu?.isOpened && this.access_Skins
           user_skins_block = !this.previewMode && this.access_UserSkins
-          tank_skin_settings = !this.previewMode && this.isUnitTank
+          tank_skin_settings = !this.previewMode && (this.isUnitTank || this.isUnitShipOrBoat)
 
           previewed_decorator_div  = !isInEditMode && this.decoratorPreview
           previewed_decorator_unit = !isInEditMode && this.decoratorPreview && this.initialUnitId && this.initialUnitId != this.unit?.name

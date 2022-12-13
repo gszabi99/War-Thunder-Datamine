@@ -54,6 +54,8 @@ return {
   platformAlias
   is_pc
   is_windows = oneOf("win32", "win64")
+  is_win32 = oneOf("win32")
+  is_win64 = oneOf("win64")
   is_ps4 = oneOf("ps4")
   is_ps5 = oneOf("ps5")
   is_sony

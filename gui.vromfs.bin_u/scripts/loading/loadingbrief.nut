@@ -18,7 +18,7 @@ let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let changeStartMission = require("%scripts/missions/changeStartMission.nut")
 let { setDoubleTextToButton, setHelpTextOnLoading } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { hasChat } = require("%scripts/user/matchingFeature.nut")
+let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -186,7 +186,7 @@ const MIN_SLIDE_TIME = 2.0
     if (this.partsList.len() == 0)
       this.finished = true
 
-    if (::gchat_is_enabled() && hasChat.value)
+    if (::gchat_is_enabled() && hasMenuChat.value)
       ::switchMenuChatObjIfVisible(::getChatDiv(this.scene))
 
     if (this.gt & GT_VERSUS)

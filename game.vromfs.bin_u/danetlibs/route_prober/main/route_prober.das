@@ -1,6 +1,6 @@
 require auth
 require ClientNet
-require CurrentCircuit
+require wtCircuit
 require DagorDataBlock
 require DagorMath
 require DagorRandom

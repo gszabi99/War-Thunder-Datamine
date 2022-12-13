@@ -53,11 +53,6 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
   if (!hasFeature("OnlineShopPacks"))
     return ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  if (needShowGuestEmailRegistration()) {
-    showGuestEmailRegistration()
-    return
-  }
-
   let customUrl = loc("url/custom_purchase/unit", { unitName }, "")
   if (customUrl.len())
     return this.openShopUrl(customUrl)
@@ -411,6 +406,11 @@ let function getEntitlementsByFeature(name)
 
 ::OnlineShopModel.openShopUrl <- function openShopUrl(baseUrl, isAlreadyAuthenticated = false)
 {
+  if (needShowGuestEmailRegistration()) {
+    showGuestEmailRegistration()
+    return
+  }
+
   openUrl(baseUrl, false, isAlreadyAuthenticated, "shop_window")
   this.startEntitlementsUpdater()
 }

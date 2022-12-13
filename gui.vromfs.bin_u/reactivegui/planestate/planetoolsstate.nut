@@ -29,6 +29,8 @@ let RadarTargetDistRate = Watched(0.0)
 let RadarTargetDist = Watched(0.0)
 let RadarTargetPosValid = Watched(false)
 let RadarTargetPos = [0, 0]
+let RadarTargetAngle = Watched(-1.0)
+let GunfireSolution = [-1, -1]
 let AamAccelLock = Watched(false)
 let MfdRadarWithNavVis = Watched(false)
 let MfdRadarNavPosSize = [0, 0, 0, 0]
@@ -68,6 +70,8 @@ let planeState = {
   RadarTargetPosValid,
   RadarTargetPos,
   RadarTargetDistRate,
+  RadarTargetAngle,
+  GunfireSolution,
   AamAccelLock,
   MfdRadarWithNavVis,
   MfdRadarNavPosSize,
@@ -117,6 +121,11 @@ interop.updateAimLockPos <- function(x, y) {
 interop.updateRadarTargetPos <- function(x, y) {
   RadarTargetPos[0] = x
   RadarTargetPos[1] = y
+}
+
+interop.updateGunfireSolution <- function(x, y) {
+  GunfireSolution[0] = x
+  GunfireSolution[1] = y
 }
 
 interop.updateIlsAtgmTargetPos <- function(x, y) {

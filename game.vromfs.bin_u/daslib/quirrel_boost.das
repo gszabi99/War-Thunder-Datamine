@@ -248,7 +248,7 @@ class QuirrelCallAnnotation : AstFunctionAnnotation
                 let mn = get_mangled_name(func)
                 let mnh = hash(mn)
                 sqdas_bind_func(*get_ptr(ctx), mnh, "{nameArg}", "{moduleArg}", paramsArg as tInt, "{paramsCheckArg}")
-                print("{ctx.name}: link quirrel binding '{nameArg}' with {paramsArg as tInt} params ({paramsCheckArg}) hash: {mnh}\n")
+                print("{ctx.name}: link quirrel binding '{moduleArg}.{nameArg}' with {paramsArg as tInt} params ({paramsCheckArg}) hash: {mnh}\n")
 
 
 [function_macro(name="quirrel_bind")]
@@ -349,14 +349,15 @@ class QuirrelBindAnnotation : AstFunctionAnnotation
             $b(funcBody)
 
         bindFn.flags |= FunctionFlags exports | FunctionFlags privateFunction
+        let moduleName = moduleArg ?as tString ?? "dasbind"
         bindFn |> append_annotation("quirrel_boost", "quirrel_wrapper", [{auto
             [[auto "name", [[RttiValue tString="{bindName}"]] ]];
-            [[auto "module_name", [[RttiValue tString=moduleArg ?as tString ?? "dasbind" ]] ]];
+            [[auto "module_name", [[RttiValue tString=moduleName ]] ]];
             [[auto "paramsCheck", [[RttiValue tString="{join(paramsCheck, "")}"]] ]];
             [[auto "params", [[RttiValue tInt=optionalArgsNum == 0 ? length(paramsCheck) : -length(paramsCheck)+optionalArgsNum]] ]]
         }])
         fn._module |> add_function(bindFn)
         if !(is_in_aot() || is_in_completion())
-            print("{describe(fn.at)}: bind 'def {fn.name}(...)' to quirrel {bindName}({join(argsLog, ", ")})\n")
+            print("{describe(fn.at)}: bind 'def {fn.name}(...)' to quirrel {moduleName}.{bindName}({join(argsLog, ", ")})\n")
 
         return true

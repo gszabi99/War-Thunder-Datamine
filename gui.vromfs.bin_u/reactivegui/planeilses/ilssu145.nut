@@ -11,7 +11,7 @@ let {cvt} = require("dagor.math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let {Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll} = require("%rGui/planeState/planeFlyState.nut")
-let { CurWeaponName, ShellCnt, GunBullets0 } = require("%rGui/planeState/planeWeaponState.nut")
+let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/planeState/planeWeaponState.nut")
 
 let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let speed = @() {
@@ -254,14 +254,14 @@ let aamReadyLabel = @() {
 }
 
 let shellCount = @() {
-  watch = [IlsColor, ShellCnt, GunMode, BombMode, isAAMMode, RocketMode]
+  watch = [IlsColor, ShellCnt, GunMode, BombMode, isAAMMode, RocketMode, GunBullets0, GunBullets1]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
   pos = [pw(80), ph(80)]
   color = IlsColor.value
   fontSize = 45
   font = Fonts.hud
-  text = BombMode.value ? "" : (GunMode.value ? string.format("%03d", ShellCnt.value) : (isAAMMode.value || RocketMode.value ? ShellCnt.value.tointeger() : ""))
+  text = BombMode.value ? "" : (GunMode.value ? string.format("%03d", GunBullets0.value + GunBullets1.value) : (isAAMMode.value || RocketMode.value ? ShellCnt.value.tointeger() : ""))
 }
 
 let flyDirHide = Computed(@() HasGndReticle.value && abs(TargetPos.value[0] - IlsPosSize[2] * 0.5) < IlsPosSize[2] * 0.05 && abs(TargetPos.value[1] - IlsPosSize[3] * 0.5) < IlsPosSize[3] * 0.05)
