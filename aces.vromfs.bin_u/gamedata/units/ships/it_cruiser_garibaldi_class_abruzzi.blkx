@@ -50,9 +50,6 @@
     6.01,
     -1.8
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -2669,7 +2666,7 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 100.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 2232.0
+        "hp": 2300.0
       },
       "ammunition_storage_charges_02_dm": {
         "hp": 2300.0
@@ -2689,25 +2686,25 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 100.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 900.0
+        "hp": 1100.0
       },
       "ammunition_storage_aux_02_dm": {
-        "hp": 900.0
+        "hp": 1083.0
       },
       "ammunition_storage_aux_03_dm": {
-        "hp": 900.0
+        "hp": 1100.0
       },
       "ammunition_storage_aux_04_dm": {
-        "hp": 900.0
+        "hp": 1083.0
       },
       "ammunition_storage_aux_05_dm": {
-        "hp": 1022.0
+        "hp": 1100.0
       },
       "ammunition_storage_aux_06_dm": {
         "hp": 1078.0
       },
       "ammunition_storage_aux_07_dm": {
-        "hp": 995.0
+        "hp": 1100.0
       },
       "ammunition_storage_aux_08_dm": {
         "hp": 1042.0
@@ -2858,7 +2855,10 @@
       "armorThickness": 5.0,
       "dmgState": 0.0,
       "napalmDamageMult": 1.0,
-      "radar_01_dm": {
+      "antenna_target_location_01_dm": {
+        "hp": 350.0
+      },
+      "antenna_target_location_02_dm": {
         "hp": 350.0
       }
     },
@@ -2902,27 +2902,27 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 58
+      "crew": 60
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 58
+      "crew": 60
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 58
+      "crew": 60
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 58
+      "crew": 60
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 56
+      "crew": 59
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -2947,17 +2947,17 @@
     "sailor11": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 9
+      "crew": 5
     },
     "sailor12": {
       "dmPart": "auxiliary_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 9
+      "crew": 5
     },
     "sailor13": {
       "dmPart": "auxiliary_caliber_turret_03_dm",
       "role": "sailor",
-      "crew": 9
+      "crew": 5
     },
     "sailor14": {
       "dmPart": "auxiliary_caliber_turret_04_dm",
@@ -3042,42 +3042,42 @@
     "sailor30": {
       "dmPart": "elevator_01_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 10
     },
     "sailor31": {
       "dmPart": "elevator_02_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 10
     },
     "sailor32": {
       "dmPart": "elevator_03_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 10
     },
     "sailor33": {
       "dmPart": "elevator_04_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 10
     },
     "sailor34": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 35
+      "crew": 30
     },
     "sailor35": {
       "dmPart": "engine_room_02_dm",
       "role": "sailor",
-      "crew": 35
+      "crew": 30
     },
     "sailor36": {
       "dmPart": "engine_room_03_dm",
       "role": "sailor",
-      "crew": 35
+      "crew": 30
     },
     "sailor37": {
       "dmPart": "engine_room_04_dm",
       "role": "sailor",
-      "crew": 35
+      "crew": 30
     },
     "sailor38": {
       "dmPart": "transmission_01_dm",
@@ -3087,7 +3087,7 @@
     "sailor39": {
       "dmPart": "transmission_02_dm",
       "role": "sailor",
-      "crew": 30
+      "crew": 45
     },
     "sailor40": {
       "dmPart": "fire_control_room_01_dm",
@@ -3097,7 +3097,7 @@
     "sailor41": {
       "dmPart": "fire_director_01_dm",
       "role": "sailor",
-      "crew": 7
+      "crew": 5
     },
     "sailor42": {
       "dmPart": "fire_director_02_dm",
@@ -3859,6 +3859,15 @@
     "binoculars": "navy_binoculars"
   },
   "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/naval/su_foot_n_search.blk",
+      "designationFromBody": true,
+      "designationTurretIndex": 1,
+      "dmPart": [
+        "antenna_target_location_01_dm",
+        "antenna_target_location_02_dm"
+      ]
+    },
     "fireDirecting": [
       {
         "dmPartMain": "fire_control_room_01_dm",
@@ -9884,6 +9893,46 @@
         "deviation": 0.6,
         "rotation": 2.1,
         "collisionNode": "fire_director_03_dm"
+      }
+    ]
+  },
+  "user_skin": {
+    "name": "cruiser_garibaldi_class_abruzzi",
+    "replace_tex": {
+      "from": "camo_warshipgray*"
+    },
+    "set_tex": [
+      {
+        "from": "tt_533mm_triple_soldati_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "tt_533mm_triple_soldati_shield_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_100mm_mod1924_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_152mm_mod34_triple_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_20mm_breda_mod65_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_20mm_twin_breda_1940_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_37mm_twin_breda_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "cruiser_garibaldi_class_abruzzi_c*",
+        "param": "camo_skin_tex"
       }
     ]
   }

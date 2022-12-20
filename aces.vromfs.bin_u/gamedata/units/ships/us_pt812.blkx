@@ -40,9 +40,6 @@
   "canReloadNonGuns": true,
   "supportsCombinedPriSecTriggers": true,
   "perfectRangefinder": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -3477,44 +3474,44 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "weaponTrigger": "gunner0",
+      "weaponTrigger": [
+        "gunner0",
+        "gunner2",
+        "gunner3"
+      ],
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
         "ammunition_storage_01_dm": {
-          "count": 2000
+          "count": 5650
         }
       }
     },
     "ammo2": {
-      "weaponTrigger": "gunner1",
-      "shells": {
-        "fatalFire": true,
-        "fatalExplosion": true,
-        "fireEvent": "ammo_fire_2",
-        "explosionEvent": "ammo_explosion_2",
-        "ammunition_storage_02_dm": {
-          "count": 2000
-        }
-      }
-    },
-    "ammo3": {
       "weaponTrigger": [
-        "gunner2",
-        "gunner3",
+        "gunner1",
         "gunner4"
       ],
-      "shells": {
-        "fatalFire": true,
-        "fatalExplosion": true,
-        "fireEvent": "ammo_fire_2",
-        "explosionEvent": "ammo_explosion_2",
-        "ammunition_storage_03_dm": {
-          "count": 7250
+      "fireEvent": "ammo_fire_2",
+      "explosionEvent": "ammo_explosion_2",
+      "shells": [
+        {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "ammunition_storage_02_dm": {
+            "count": 2000
+          }
+        },
+        {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "ammunition_storage_03_dm": {
+            "count": 3600
+          }
         }
-      }
+      ]
     }
   },
   "winch": {
@@ -3571,6 +3568,31 @@
         "deviation": 0.6,
         "rotation": 2.1,
         "collisionNode": "radar_01_dm"
+      }
+    ]
+  },
+  "user_skin": {
+    "name": "pt812",
+    "replace_tex": [
+      {
+        "from": "camo_darkgrey_5d*"
+      },
+      {
+        "from": "camo_navygrey_5*"
+      }
+    ],
+    "set_tex": [
+      {
+        "from": "turret_40mm_bofors_mk3_mod4_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_mk24_oerlikon_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "pt812_c*",
+        "param": "camo_skin_tex"
       }
     ]
   }

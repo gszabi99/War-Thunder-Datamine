@@ -5,7 +5,8 @@ let {IlsColor, IlsLineScale, TvvMark, IlsAtgmTrackerVisible,
       IlsAtgmTargetPos, IlsAtgmLocked, AtgmTargetDist, TargetPosValid,
       TargetPos, RocketMode, CannonMode, BombCCIPMode, DistToTarget,
       BombingMode } = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, metrToFeet, mpsToKnots, metrToMile, GuidanceLockResult} = require("ilsConstants.nut")
+let {baseLineWidth, metrToFeet, mpsToKnots, metrToMile} = require("ilsConstants.nut")
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
 let {compassWrap, generateCompassMarkShim} = require("ilsCompasses.nut")
 let {Tangage, BarAltitude, Altitude, Speed, Roll} = require("%rGui/planeState/planeFlyState.nut");
 let {round, cos, sin, PI} = require("%sqstd/math.nut")

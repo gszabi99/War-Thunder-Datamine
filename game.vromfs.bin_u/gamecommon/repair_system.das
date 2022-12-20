@@ -379,8 +379,9 @@ def repair_system_update_es(act : UpdateStageInfoAct;
           for part_state, part_id, part_hp, part_mult in repair_system_parts_state, repair_system_parts_id, repair_system_parts_hp, repair_system_parts_speed_mult
             let part_hp_for_repair = part_hp.w
             // if part can be repaired
+            let partId = dm |> dm_get_remap(part_id)
             if (get_flag(part_state, DmPartRepairState ALLOW_REPAIR) && (!get_flag(part_state, DmPartRepairState MOD_REQUIRED) || repair_with_mods_available) &&
-               (dm |> dm_is_dmg_part_active(part_id) && dm |> dm_get_rel_hp(part_id) <= part_hp_for_repair))
+               (partId |> dm_part_id_valid() && dm |> dm_get_rel_hp(part_id) <= part_hp_for_repair))
               // serially repair only one part
               if get_flag(part_state, DmPartRepairState SERIALLY_REPAIR)
                 if serially_repaired
@@ -469,7 +470,8 @@ def repair_system_stop_repair_handle_es(evt : EventRepairSystemStopRepair;
 
   for part_state, part_id, part_hp in repair_system_parts_state, repair_system_parts_id, repair_system_parts_hp
     set_flag(part_state, DmPartRepairState IN_PROGRESS, false)
-    if dm |> dm_is_dmg_part_active(part_id) && dm |> dm_is_dmg_part_dead(part_id)
+    let partId = dm |> dm_get_remap(part_id)
+    if partId |> dm_part_id_valid() && dm |> dm_is_dmg_part_dead(part_id)
       if !get_flag(part_state, DmPartRepairState COMPLETELY_REPAIR) && (
           get_flag(repair_system_state, RepairState REPAIR_AVAILABLE) || !get_flag(part_state, DmPartRepairState MOD_REQUIRED))
         let hp = safediv(dm |> get_part_current_hp(part_id, part_state, part_hp), dm |> dm_get_part_hp_prop(part_id))

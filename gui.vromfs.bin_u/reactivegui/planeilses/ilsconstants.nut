@@ -10,22 +10,12 @@ const feetToNavMile = 0.000164579
 let radToDeg = 180.0 / 3.14159
 let baseLineWidth = hdpx(4 * LINE_WIDTH)
 
-enum GuidanceLockResult {
-  RESULT_INVALID = -1
-  RESULT_STANDBY = 0
-  RESULT_WARMING_UP = 1
-  RESULT_LOCKING = 2
-  RESULT_TRACKING = 3
-  RESULT_LOCK_AFTER_LAUNCH = 4
-}
-
 return {
   mpsToKnots
   metrToFeet
   mpsToFpm
   mpsToKmh
   baseLineWidth
-  GuidanceLockResult
   metrToMile
   metrToNavMile
   radToDeg

@@ -106,7 +106,7 @@ def fn_patch(var fn : smart_ptr<Function>; var astChanged : bool&)
   var i = length(fn.arguments)
   while --i >= 0
     assume arg = fn.arguments[i]
-    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init
+    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init && ends_with("{arg._aka}", "_SOA")
       astChanged = true
       removeArgs |> emplace([[auto "arg", [[RttiValue tInt=i]] ]])
 
@@ -122,7 +122,7 @@ def block_patch(var blk : ExprBlock?; var astChanged : bool&)
   var i = length(blk.arguments)
   while --i >= 0
     assume arg = blk.arguments[i]
-    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init
+    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init && ends_with("{arg._aka}", "_SOA")
       blk.arguments |> erase(i)
       astChanged = true
       indexes |> push(i)

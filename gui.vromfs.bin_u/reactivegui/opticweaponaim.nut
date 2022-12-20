@@ -1,8 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-enum GuidanceLockResult {
-  RESULT_TRACKING = 3
-}
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
 
 let opticWeaponAim = @(tracker_size, tracker_x, tracker_y, guidance_lock_state, tracker_visible, color_watched) function() {
   let tSize = tracker_size.value

@@ -49,9 +49,6 @@
     6.07,
     -1.94
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -2296,10 +2293,10 @@
         "hp": 1500.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 1200.0
+        "hp": 1491.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1200.0
+        "hp": 1500.0
       }
     },
     "ammo_storages_charges": {
@@ -2312,7 +2309,7 @@
         "hp": 2000.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 1779.0
+        "hp": 2000.0
       },
       "ammunition_storage_charges_03_dm": {
         "hp": 1779.0
@@ -3205,12 +3202,6 @@
     ],
     "open_mounts": {
       "part": [
-        "main_caliber_turret_01_dm",
-        "main_caliber_turret_02_dm",
-        "main_caliber_turret_03_dm",
-        "main_caliber_turret_04_dm",
-        "main_caliber_turret_05_dm",
-        "main_caliber_turret_06_dm",
         "auxiliary_caliber_turret_01_dm",
         "auxiliary_caliber_turret_02_dm",
         "auxiliary_caliber_turret_03_dm",
@@ -3493,8 +3484,8 @@
         },
         "limits": {
           "yaw": [
-            -145.0,
-            145.0
+            -147.0,
+            147.0
           ],
           "pitch": [
             -10.0,
@@ -3503,7 +3494,7 @@
         },
         "limitsTable": {
           "lim1": [
-            -145.0,
+            -147.0,
             -23.0,
             -10.0,
             55.0
@@ -3516,7 +3507,7 @@
           ],
           "lim3": [
             23.0,
-            145.0,
+            147.0,
             -10.0,
             55.0
           ]
@@ -3585,8 +3576,8 @@
         },
         "limits": {
           "yaw": [
-            -145.0,
-            145.0
+            -147.0,
+            147.0
           ],
           "pitch": [
             -10.0,
@@ -3595,7 +3586,7 @@
         },
         "limitsTable": {
           "lim1": [
-            -145.0,
+            -147.0,
             -23.0,
             -10.0,
             55.0
@@ -3608,7 +3599,7 @@
           ],
           "lim3": [
             23.0,
-            145.0,
+            147.0,
             -10.0,
             55.0
           ]
@@ -8901,5 +8892,50 @@
         "param": "camo_skin_tex"
       }
     }
-  ]
+  ],
+  "user_skin": {
+    "name": "destroyer_class1936c_z47",
+    "replace_tex": [
+      {
+        "from": "camo_hellgrau_50*"
+      },
+      {
+        "from": "camo_black_a26f*"
+      }
+    ],
+    "set_tex": [
+      {
+        "from": "destroyer_class1936c_z47_deckhouse_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "tt_533mm_qudruple_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "tt_533mm_qudruple_shield_late_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_128mm_twin_lc41_skc41_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_flak_m42_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_vierlingslafette_c38_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_zwillingslafette_c38_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "destroyer_class1936c_z47_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
+  }
 }

@@ -45,9 +45,6 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "controlDevices": {
     "device": [
       {
@@ -830,6 +827,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -850,6 +851,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -1492,6 +1497,16 @@
       ]
     }
   },
+  "fuelTanks": {
+    "r1": {
+      "part": "fuel_tank_exterior_r_01_dm",
+      "external": true
+    },
+    "l1": {
+      "part": "fuel_tank_exterior_l_01_dm",
+      "external": true
+    }
+  },
   "xray_viewer_data": {
     "armorArrayHull": [
       {
@@ -1960,7 +1975,7 @@
             -30.0,
             40.0,
             -5.0,
-            18.0
+            15.0
           ],
           "lim4": [
             40.0,
@@ -2159,9 +2174,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 23000.0,
-      "Fuel": 404.0,
-      "TakeOff": 23404.0,
+      "Empty": 18000.0,
+      "Fuel": 700.0,
+      "TakeOff": 18700.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -2994,6 +3009,12 @@
     ],
     "detectionHeight": 3.3
   },
+  "dmgAngles": {
+    "hatch_16": [
+      15.0,
+      35.0
+    ]
+  },
   "ammoStowages": {
     "ammo1": {
       "removeLoadedAmmo": true,
@@ -3180,7 +3201,7 @@
                   -30.0,
                   40.0,
                   -5.0,
-                  18.0
+                  15.0
                 ],
                 "lim4": [
                   40.0,
@@ -3474,7 +3495,19 @@
     "replace_tex": {
       "from": "us_camo_olive*",
       "to": "us_camo_modern_green*"
-    }
+    },
+    "set_tex": [
+      {
+        "from": "m1128_mgs_body_c*",
+        "to": "m1128_mgs_skin_body_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "m1128_mgs_gun_c*",
+        "to": "m1128_mgs_skin_gun_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
   },
   "skin": [
     {

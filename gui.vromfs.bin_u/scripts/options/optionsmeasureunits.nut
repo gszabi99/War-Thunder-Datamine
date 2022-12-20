@@ -4,9 +4,9 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { pow } = require("math")
-let { subscribe, send } = require("eventbus")
 let { format } = require("string")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 let persistent = {
   unitsCfg = null
@@ -57,7 +57,7 @@ let function init()
     }
     persistent.unitsCfg.append(units)
   }
-  send("updateExtWatched", { measureUnitsNames = getMeasureUnitsNames() })
+  updateExtWatched({ measureUnitsNames = getMeasureUnitsNames() })
 }
 
 let function getOption(useroptId)
@@ -114,12 +114,8 @@ let function isMetricSystem(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 
-subscribe("updateMeasureUnitsNames", @(_) send("updateExtWatched", {
-  measureUnitsNames = getMeasureUnitsNames()
-}))
-
 addListenersWithoutEnv({
-  MeasureUnitsChanged = @(_) send("updateExtWatched", { measureUnitsNames = getMeasureUnitsNames() })
+  MeasureUnitsChanged = @(_) updateExtWatched({ measureUnitsNames = getMeasureUnitsNames() })
 })
 
 return {

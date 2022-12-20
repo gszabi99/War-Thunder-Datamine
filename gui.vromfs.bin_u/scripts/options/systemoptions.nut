@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { subscribe, send } = require("eventbus")
 let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
@@ -1319,17 +1318,8 @@ let function applyRestartEngine(reloadScene = false) {
   foreach (id, value in mCfgCurrent)
     mCfgApplied[id] <- value
 
-  local cb = null
-  if (reloadScene) {
-    let params = {
-        resolution = mCfgCurrent.resolution
-        screenMode = mCfgCurrent.mode
-    }
-    cb = @() send("updateExtWatched", params)
-  }
-
   log("[sysopt] Resetting renderer.")
-  applyRendererSettingsChange(reloadScene, true, cb)
+  applyRendererSettingsChange(reloadScene, true)
 }
 
 let isReloadSceneRerquired = @() mCfgApplied.resolution != mCfgCurrent.resolution
@@ -1586,11 +1576,6 @@ let function setQualityPreset(presetName) {
 
 //------------------------------------------------------------------------------
 init()
-
-subscribe("updateScreenStates", @(_) send("updateExtWatched", {
-  resolution = getGuiValue("resolution", "1024 x 768")
-  screenMode = getGuiValue("mode", "fullscreen")
-}))
 
 //------------------------------------------------------------------------------
 return {

@@ -25,7 +25,6 @@ let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nu
 let { setUnitLastBullets,
         getOptionsBulletsList } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { reloadDargUiScript } = require("reactiveGuiCommand")
 let {bombNbr} = require("%scripts/unit/unitStatus.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
@@ -1925,11 +1924,18 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = REPLAY_LOAD_COCKPIT_AUTHOR
       break
 
-    case ::USEROPT_HUD_SHOW_BONUSES:
-      descr.id = "hud_show_bonuses"
-      descr.items = ["#options/no", "#options/inarcade", "#options/always"]
-      descr.values = [0, 1, 2]
-      descr.value = ::get_option_hud_show_bonuses();
+    case ::USEROPT_HUD_VISIBLE_STREAKS:
+      descr.id = "hud_vis_part_streaks"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = true
+      break
+
+    case ::USEROPT_HUD_VISIBLE_ORDERS:
+      descr.id = "hud_vis_part_orders"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = true
       break
 
     case ::USEROPT_HUD_SCREENSHOT_LOGO:
@@ -4618,9 +4624,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       else
         ::set_option_indicators_mode(::get_option_indicators_mode() & ~HUD_INDICATORS_SHOW);
       break
-    case ::USEROPT_HUD_SHOW_BONUSES:
-      ::set_option_hud_show_bonuses(descr.values[value])
-      break
     case ::USEROPT_HUD_SCREENSHOT_LOGO:
       ::set_option_hud_screenshot_logo(value)
       break
@@ -4762,10 +4765,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_FONTS_CSS:
       let selFont = getTblValue(value, descr.values)
-      if (selFont && ::g_font.setCurrent(selFont)) {
+      if (selFont && ::g_font.setCurrent(selFont))
         ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
-        reloadDargUiScript(false)
-      }
       break
 
     case ::USEROPT_HUE_SQUAD:
@@ -5166,6 +5167,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
 
     case ::USEROPT_HUD_SHOW_TANK_GUNS_AMMO:
+    case ::USEROPT_HUD_VISIBLE_ORDERS:
+    case ::USEROPT_HUD_VISIBLE_STREAKS:
       if (descr.controlType == optionControlType.LIST)
       {
         if (type(descr.values) != "array")

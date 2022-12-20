@@ -233,9 +233,12 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     local fullUpdate = prevCount != this.actionItems.len()
     if (!fullUpdate)
     {
+      let hudUnitType = getHudUnitType()
       foreach (id, item in this.actionItems)
         if (item.id != prevActionItems[id].id
-          || item.type != prevActionItems[id].type
+          || (item.type != prevActionItems[id].type
+            && ::g_hud_action_bar_type.getByActionItem(item).getShortcut(item, hudUnitType)
+              != ::g_hud_action_bar_type.getByActionItem(prevActionItems[id]).getShortcut(prevActionItems[id], hudUnitType))
           || (item?.isStreakEx && item.count < 0 && prevActionItems[id].count >= 0)
           || ((item.type == EII_BULLET || item.type == EII_FORCED_GUN)
             && item?.modificationName != prevActionItems[id]?.modificationName)
@@ -257,9 +260,10 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     let hudUnitType = getHudUnitType()
     let ship = hudUnitType == HUD_UNIT_TYPE.SHIP
       || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
-    foreach(item in this.actionItems)
+    foreach(id, item in this.actionItems)
     {
-      let itemObj = this.scene.findObject(this.__action_id_prefix + item.id)
+      let itemObjId = $"{this.__action_id_prefix}{item.id}"
+      let itemObj = this.scene.findObject(itemObjId)
       if (!checkObj(itemObj))
         continue
 
@@ -307,6 +311,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
         this.artillery_target_mode = item.active
         ::broadcastEvent("ArtilleryTarget", { active = this.artillery_target_mode })
       }
+
+      if (item.type != prevActionItems[id].type)
+        this.scene.findObject($"tooltip_{itemObjId}").tooltip = actionBarType.getTooltipText(item)
 
       this.updateWaitGaugeDegree(itemObj.findObject("cooldown"), item.cooldown)
       this.updateWaitGaugeDegree(itemObj.findObject("blockedCooldown"), item?.blockedCooldown ?? 0.0)

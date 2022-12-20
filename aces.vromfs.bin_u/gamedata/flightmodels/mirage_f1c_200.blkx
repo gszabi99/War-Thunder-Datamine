@@ -1,6 +1,6 @@
 {
   "model": "mirage_f1c_200",
-  "fmFile": "fm/mirage_f1c.blk",
+  "fmFile": "fm/mirage_f1c_200.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeC": 0.09,
   "gearSinkRangeLR": 0.19,
@@ -2237,6 +2237,12 @@
         "gunpod_cc_420_001"
       ]
     },
+    "HideDmParts": {
+      "node": [
+        "cannon3_dm",
+        "cannon4_dm"
+      ]
+    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -2611,6 +2617,7 @@
               "blk": "gameData/Weapons/cannonDEFA553_gunpod.blk",
               "emitter": "flare3",
               "flash": "flare3",
+              "dm": "cannon3_dm",
               "bullets": 180,
               "spread": 1.5,
               "traceOffset": 1,
@@ -2921,6 +2928,7 @@
               "blk": "gameData/Weapons/cannonDEFA553_gunpod.blk",
               "emitter": "flare4",
               "flash": "flare4",
+              "dm": "cannon4_dm",
               "bullets": 180,
               "spread": 1.5,
               "traceOffset": 1,
@@ -3392,7 +3400,7 @@
       0.0,
       0.0
     ],
-    "finCut": true,
+    "finCut": false,
     "emtr_break_tail_from": [
       -3.13008,
       0.0275823,

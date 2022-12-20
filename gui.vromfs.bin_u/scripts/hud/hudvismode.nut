@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { subscribe, send } = require("eventbus")
+
 global enum HUD_VIS_PART //bit enum
 {
   DMG_PANEL           = 0x0001
@@ -14,9 +14,7 @@ global enum HUD_VIS_PART //bit enum
   KILLLOG             = 0x0008
   CHAT                = 0x0010
   KILLCAMERA          = 0x0020
-  STREAKS             = 0x0040
   REWARDS_MSG         = 0x0080
-  ORDERS              = 0x0100
   RACE_INFO           = 0x0200
 
   //masks
@@ -82,16 +80,3 @@ enums.addTypesByGlobalName("g_hud_vis_mode", {
 {
   return this.getModeByHudGm(::get_hud_game_mode(), ::g_hud_vis_mode.FULL)
 }
-
-subscribe("updateHudPartVisible", function(_) {
-  if (!::is_in_flight()) {
-    send("updateExtWatched", { isChatPlaceVisible = false, isOrderStatusVisible = false })
-    return
-  }
-
-  let curMode = ::g_hud_vis_mode.getCurMode()
-  send("updateExtWatched", {
-    isChatPlaceVisible = curMode.isPartVisible(HUD_VIS_PART.CHAT)
-    isOrderStatusVisible = curMode.isPartVisible(HUD_VIS_PART.ORDERS)
-  })
-})

@@ -390,7 +390,7 @@ let selMedalIdx = {}
 
     if (buttonsList.btn_EmailRegistration)
       this.scene.findObject("btn_EmailRegistration").tooltip = needShowGuestEmailRegistration()
-        ? loc("mainmenu/PcEmailRegistration/desc")
+        ? loc("mainmenu/guestEmailRegistration/desc")
         : emailRegistrationTooltip
 
     this.updateDecalButtons(this.getCurDecal())

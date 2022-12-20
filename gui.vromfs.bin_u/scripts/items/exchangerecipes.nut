@@ -12,11 +12,12 @@ let time = require("%scripts/time.nut")
 let { getCustomLocalizationPresets, getRandomEffect,
   getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
 let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
-let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
+let { getUserstatItemRewardData,
   userstatItemsListLocId, userstatRewardTitleLocId
 } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
+let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 
 global enum MARK_RECIPE {
   NONE
@@ -683,23 +684,33 @@ local ExchangeRecipes = class {
         : parentRecipe ? componentItem.getItemsListLocId()
         : ""
 
-      let openTrophyWndConfigs = u.map(resultItemsShowOpening, @(extItem) {
-        id = componentItem.id
-        item = extItem?.itemdef?.itemdefid
-        count = extItem?.quantity ?? 0
+      let expectedPrizes = resultItemsShowOpening.map(function(extItem) {
+        let itemdefId = extItem?.itemdef.itemdefid
+        let item = ::ItemsManager.findItemById(itemdefId)
+        return {
+          id = componentItem.id
+          itemId = ::to_integer_safe(extItem?.itemid ?? -1)
+          item = itemdefId
+          count = extItem?.quantity ?? 0
+          needCollectRewards = item?.shouldAutoConsume ?? false
+          isInternalTrophy = item?.metaBlk.trophy != null
+        }
       })
 
-      ::gui_start_open_trophy({ [componentItem.id] = openTrophyWndConfigs,
-        rewardTitle = loc(rewardTitle),
-        rewardListLocId = rewardListLocId
-        isDisassemble = this.isDisassemble
-        isHidePrizeActionBtn = params?.isHidePrizeActionBtn ?? false
-        singleAnimationGuiSound = getRandomEffect(effectOnOpenChest?.playSound)
-        rewardImage = effectOnOpenChest?.showImage
-        rewardImageRatio = effectOnOpenChest?.imageRatio
-        reUseRecipeUid = params?.reUseRecipeUid
+      showExternalTrophyRewardWnd({
+        trophyItemDefId = componentItem.id
+        expectedPrizes
+        rewardWndConfig = {
+          rewardTitle = loc(rewardTitle),
+          rewardListLocId = rewardListLocId
+          isDisassemble = this.isDisassemble
+          isHidePrizeActionBtn = params?.isHidePrizeActionBtn ?? false
+          singleAnimationGuiSound = getRandomEffect(effectOnOpenChest?.playSound)
+          rewardImage = effectOnOpenChest?.showImage
+          rewardImageRatio = effectOnOpenChest?.imageRatio
+          reUseRecipeUid = params?.reUseRecipeUid
+        }
       })
-      removeUserstatItemRewardToShow(componentItem.id)
     }
     else if (effectOnOpenChest?.playSound != null) {
       let isDelayedExchange = resultItems.findindex(@(v) v?.itemdef.type == "delayedexchange") != null

@@ -60,6 +60,13 @@
     "groundFx": "ad_sand",
     "waterFx": "bomb_reflection"
   },
+  "wreckageDestroyedTracerSplash": {
+    "groundFx": "ad_dust_stucco",
+    "waterFx": "water_splash_rain",
+    "sizeMult": 1.0,
+    "minScale": 0.9,
+    "maxScale": 1.1
+  },
   "rotorFxForMaterial": {
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects",
@@ -670,7 +677,8 @@
     "onePointNumber": 2,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "ground/effects",
-    "sfxEvent": "extinguisher"
+    "sfxEvent": "leak_air_liquid",
+    "soundEnableDistance": 50.0
   },
   "smoke_exhaust_air": {
     "fx": "smoke_exhaust_air_cmps_fx",
@@ -6064,6 +6072,24 @@
     "numReserved": 20,
     "onePointNumber": 10
   },
+  "tracer_ricocheted_small": {
+    "fx": "tracer_ricocheted_small_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 10
+  },
+  "tracer_ricocheted_med": {
+    "fx": "tracer_ricocheted_med_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 10
+  },
+  "tracer_ricocheted_big": {
+    "fx": "tracer_ricocheted_big_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 10
+  },
   "misc_fake_glow": {
     "fx": "misc_fake_glow_cmps_fx",
     "numInstances": 70,
@@ -6502,6 +6528,29 @@
     "numReserved": 5,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_wind_halloween": {
+    "fx": "dust_wind_halloween_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 32,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "special_snow_ball": {
+    "fx": "special_snow_ball_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 32,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/effects",
+    "sfxEvent": "snowball"
+  },
+  "duna_blue_muzzle": {
+    "fx": "duna_blue_muzzle_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 40
   },
   "repair_ground": {
     "fx": "misc_markers_repair_ground_cmps_fx",
@@ -7985,6 +8034,9 @@
     "numInstances": 70,
     "numReserved": 20,
     "onePointNumber": 15,
-    "onePointRadius": 1000.0
+    "onePointRadius": 1000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework_misc"
   }
 }

@@ -1,5 +1,6 @@
 {
   "fov": 70.0,
+  "newYearHangar": true,
   "objectSphereDefaultScreenAspectRatio": 1.177777,
   "objectSphereViscosity": 0.333,
   "objectSphereAirplaneYFactor": 0.65,
@@ -57,7 +58,7 @@
   ],
   "weather": "clear",
   "hqWeather": "clear",
-  "level": "levels/hangar_field.bin",
+  "level": "levels/hangar_field_winter.bin",
   "defCameraTime": [
     5.0,
     10.0
@@ -102,10 +103,11 @@
   "additionalHangarCameraBias": 0.13,
   "fmGearsSpringsCoeffMul": 1.0,
   "modelVerticalShift": 0.0,
-  "hangarMission": "gameData/scenes/hangar_field_mission.blk",
+  "hangarMission": "gameData/scenes/hangar_field_mission_winter.blk",
   "hangarSoundEngineMult": 0.4,
   "hangarSoundMult": 0.15,
   "buoyUnitName": "anchor_buoy",
+  "hasInteractiveUnits": true,
   "useHmapSubdiv": true,
   "modelRotation": 0.0,
   "modelPos": [
@@ -113,6 +115,27 @@
     74.0,
     -696.0
   ],
+  "aurora_borealis": {
+    "enabled": true,
+    "top_height": 10.0,
+    "top_color": [
+      0.1,
+      0.1,
+      1.4
+    ],
+    "bottom_height": 7.0,
+    "bottom_color": [
+      0.1,
+      1.3,
+      0.1
+    ],
+    "brightness": 2.15,
+    "speed": 0.018,
+    "luminance": 22.0,
+    "ripples_scale": 8.6,
+    "ripples_speed": 0.04,
+    "ripples_strength": 0.83
+  },
   "nuclearEvent": {
     "fx": "",
     "posForShip": [
@@ -231,13 +254,13 @@
   ],
   "env": [
     {
-      "env": "14.5",
-      "weight": 10.0,
+      "env": "11.15",
+      "weight": 7.0,
       "compatibilityWeight": 1.0
     },
     {
-      "env": "21.15",
-      "weight": 1.0,
+      "env": "23.15",
+      "weight": 3.0,
       "compatibilityWeight": 0.0
     }
   ],
@@ -754,6 +777,17 @@
       ]
     },
     {
+      "unitName": "a_6e_tram",
+      "weapon": "a_6e_tram_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [
+        5,
+        8
+      ]
+    },
+    {
       "unitName": "ah_64a_greece_usa",
       "weapon": "ah_64a_greece_usa_default",
       "type": "plane",
@@ -828,6 +862,17 @@
       "rank": [
         5,
         7
+      ]
+    },
+    {
+      "unitName": "mig-21_bis_lazur",
+      "weapon": "mig-21_bis_lazur_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_germany",
+      "rank": [
+        5,
+        8
       ]
     },
     {
@@ -974,6 +1019,17 @@
       ]
     },
     {
+      "unitName": "mig_23ml",
+      "weapon": "mig_23ml_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [
+        5,
+        8
+      ]
+    },
+    {
       "unitName": "ka_50",
       "weapon": "ka_50_rocket_c_8_ko",
       "type": "plane",
@@ -1070,6 +1126,17 @@
       "rank": [
         5,
         7
+      ]
+    },
+    {
+      "unitName": "f-4jk",
+      "weapon": "f-4jk_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_britain",
+      "rank": [
+        5,
+        8
       ]
     },
     {
@@ -1172,6 +1239,17 @@
       ]
     },
     {
+      "unitName": "f-4ej_adtw",
+      "weapon": "f-4ej_adtw_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_japan",
+      "rank": [
+        5,
+        8
+      ]
+    },
+    {
       "unitName": "ah_1s",
       "weapon": "ah_1s_rocket_8xTOW",
       "type": "plane",
@@ -1238,6 +1316,17 @@
       ]
     },
     {
+      "unitName": "j_7d",
+      "weapon": "j_7d_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_china",
+      "rank": [
+        5,
+        8
+      ]
+    },
+    {
       "unitName": "z_19e",
       "weapon": "z_19e_default",
       "type": "plane",
@@ -1301,6 +1390,17 @@
       "rank": [
         5,
         7
+      ]
+    },
+    {
+      "unitName": "f-104s_cb",
+      "weapon": "f-104s_cb_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_italy",
+      "rank": [
+        5,
+        8
       ]
     },
     {
@@ -1381,6 +1481,17 @@
       ]
     },
     {
+      "unitName": "mirage_f1c_200",
+      "weapon": "mirage_f1c_200_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_france",
+      "rank": [
+        5,
+        8
+      ]
+    },
+    {
       "unitName": "tiger_hap_france",
       "weapon": "tiger_hap_france_hot3",
       "type": "plane",
@@ -1447,6 +1558,17 @@
       ]
     },
     {
+      "unitName": "saab_j35xs",
+      "weapon": "saab_j35xs_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_sweden",
+      "rank": [
+        5,
+        8
+      ]
+    },
+    {
       "unitName": "spitfire_lf_mk9e_weisman",
       "weapon": "spitfireIX_default",
       "type": "plane",
@@ -1477,6 +1599,17 @@
       "rank": [
         5,
         7
+      ]
+    },
+    {
+      "unitName": "kfir_canard",
+      "weapon": "kfir_canard_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_israel",
+      "rank": [
+        5,
+        8
       ]
     },
     {
@@ -1546,8 +1679,30 @@
       ]
     },
     {
+      "unitName": "us_m728",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [
+        3,
+        5
+      ]
+    },
+    {
       "unitName": "us_xm1_gm",
       "weapon": "us_xm1_gm_default",
+      "type": "tank",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [
+        4,
+        7
+      ]
+    },
+    {
+      "unitName": "us_m1128_wolfpack",
+      "weapon": "",
       "type": "tank",
       "skin": "",
       "country": "country_usa",
@@ -1810,6 +1965,17 @@
       "rank": [
         4,
         6
+      ]
+    },
+    {
+      "unitName": "uk_khalid",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_britain",
+      "rank": [
+        4,
+        7
       ]
     },
     {
@@ -2254,6 +2420,17 @@
       ]
     },
     {
+      "unitName": "germ_destroyer_class1936c_z47",
+      "weapon": "germ_destroyer_class1936c_z47_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_germany",
+      "rank": [
+        1,
+        3
+      ]
+    },
+    {
       "unitName": "germ_cruiser_karlsruhe",
       "weapon": "germ_cruiser_karlsruhe_default",
       "type": "ship",
@@ -2525,11 +2702,11 @@
     "country_ussr": "ussr_t_80bvm",
     "country_britain": "uk_challenger_2_bn",
     "country_japan": "jp_tkx_prot",
-    "country_china": "cn_ztz_99_w",
+    "country_china": "cn_wz_1001",
     "country_italy": "it_centauro_mgs_120",
-    "country_france": "fr_leclerc_s2",
+    "country_france": "fr_amx_32_105",
     "country_sweden": "sw_leopard_2a6nl",
-    "country_israel": "il_magach_6b_gal_batash"
+    "country_israel": "il_magach_7c"
   },
   "movingTanks": {
     "country_usa": "us_hstv_l",
@@ -2546,7 +2723,7 @@
   "movingPlanes": {
     "country_usa": "a_10a_late",
     "country_germany": "fiat_g91_r3",
-    "country_ussr": "su_25",
+    "country_ussr": "mig_29_9_13",
     "country_britain": "jaguar_gr1",
     "country_japan": "f-4ej",
     "country_italy": "f-104s",
@@ -2554,206 +2731,5 @@
     "country_china": "q_5a",
     "country_sweden": "saab_ja37",
     "country_israel": "kfir_c7"
-  },
-  "mechanics": {
-    "country_usa": {
-      "n": [
-        "unit_hangar_technic_idle_",
-        "unit_hangar_technic_black_idle_",
-        "unit_hangar_technic_asian_idle_"
-      ]
-    },
-    "country_germany": {
-      "n": "unit_hangar_technic_idle_"
-    },
-    "country_ussr": {
-      "n": "unit_hangar_technic_idle_"
-    },
-    "country_britain": {
-      "n": [
-        "unit_hangar_technic_idle_",
-        "unit_hangar_technic_black_idle_"
-      ]
-    },
-    "country_japan": {
-      "n": "unit_hangar_technic_asian_idle_"
-    },
-    "country_italy": {
-      "n": "unit_hangar_technic_idle_"
-    },
-    "country_france": {
-      "n": [
-        "unit_hangar_technic_idle_",
-        "unit_hangar_technic_black_idle_",
-        "unit_hangar_technic_asian_idle_"
-      ]
-    },
-    "country_china": {
-      "n": "unit_hangar_technic_asian_idle_"
-    },
-    "country_sweden": {
-      "n": "unit_hangar_technic_idle_"
-    },
-    "country_israel": {
-      "n": "unit_hangar_technic_idle_"
-    }
-  },
-  "hangarEffects": {
-    "checkHoliday": true,
-    "hangarEffect": [
-      {
-        "effect": "misc_firework",
-        "areaMin": [
-          -0.0,
-          70.0,
-          300.0
-        ],
-        "areaMax": [
-          200.0,
-          210.0,
-          900.0
-        ],
-        "delay": [
-          20.0,
-          40.0
-        ]
-      },
-      {
-        "effect": "firework_score_ginger",
-        "areaMin": [
-          -0.0,
-          70.0,
-          300.0
-        ],
-        "areaMax": [
-          200.0,
-          210.0,
-          900.0
-        ],
-        "delay": [
-          3.0,
-          6.0
-        ]
-      },
-      {
-        "effect": "firework_score_turquoise",
-        "areaMin": [
-          -0.0,
-          70.0,
-          300.0
-        ],
-        "areaMax": [
-          200.0,
-          210.0,
-          900.0
-        ],
-        "delay": [
-          4.0,
-          7.0
-        ]
-      },
-      {
-        "effect": "misc_firework",
-        "areaMin": [
-          -375.0,
-          70.0,
-          -450.0
-        ],
-        "areaMax": [
-          175.0,
-          140.0,
-          -250.0
-        ],
-        "delay": [
-          20.0,
-          40.0
-        ]
-      },
-      {
-        "effect": "firework_score_ginger",
-        "areaMin": [
-          -375.0,
-          70.0,
-          -450.0
-        ],
-        "areaMax": [
-          175.0,
-          140.0,
-          -250.0
-        ],
-        "delay": [
-          3.0,
-          6.0
-        ]
-      },
-      {
-        "effect": "firework_score_turquoise",
-        "areaMin": [
-          -375.0,
-          70.0,
-          -450.0
-        ],
-        "areaMax": [
-          175.0,
-          140.0,
-          -250.0
-        ],
-        "delay": [
-          4.0,
-          7.0
-        ]
-      },
-      {
-        "effect": "misc_firework",
-        "areaMin": [
-          -2200.0,
-          20.0,
-          -100.0
-        ],
-        "areaMax": [
-          -2000.0,
-          200.0,
-          300.0
-        ],
-        "delay": [
-          20.0,
-          40.0
-        ]
-      },
-      {
-        "effect": "firework_score_turquoise",
-        "areaMin": [
-          -2200.0,
-          20.0,
-          -100.0
-        ],
-        "areaMax": [
-          -2000.0,
-          200.0,
-          300.0
-        ],
-        "delay": [
-          3.0,
-          6.0
-        ]
-      },
-      {
-        "effect": "firework_score_ginger",
-        "areaMin": [
-          -2200.0,
-          20.0,
-          -100.0
-        ],
-        "areaMax": [
-          -2000.0,
-          200.0,
-          300.0
-        ],
-        "delay": [
-          4.0,
-          7.0
-        ]
-      }
-    ]
   }
 }

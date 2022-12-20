@@ -1,41 +1,39 @@
 #explicit-this
 #no-root-fallback
+let { Watched } = require("frp")
 let eventbus = require("eventbus")
-let {log} = require("%sqstd/log.nut")()
-let {isEqual} = require("%sqstd/underscore.nut")
-let {Watched} = require("frp")
+let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
+let { log } = require("%sqstd/log.nut")()
 
-let sharedData = {} //id = { watch, lastReceived }
-let NOT_INITED = {}
+let sharedData = {}
 
 let function make(name, ctor) {
-  if (name in sharedData) {
+  if (sharedData?[name].watch != null) {
     assert(false, $"sharedWatched: duplicate name: {name}")
     return sharedData[name].watch
   }
 
-  let res = persist(name, @() Watched(NOT_INITED))
-  let data = { watch = res, lastReceived = NOT_INITED }
-  sharedData[name] <- data
-  if (res.value == NOT_INITED) {
-    res(ctor())
-    try {
-      eventbus.send_foreign("sharedWatched.requestData", { name })
-    } catch (err) {
-      log("eventbus.send_foreign() failed")
-      log(err)
-      throw err?.errMsg ?? "Unknown error"
-    }
+  let key = ["SHARED_WATCHED_STATE", name]
+  local val = null
+  if (ndbExists(key))
+    val = ndbRead(key)
+  else {
+    val = ctor()
+    ndbWrite(key, val)
   }
 
+  let res = Watched(val)
+  let data = { key, watch = res.weakref(), isExternalEvent = false }
+  sharedData[name] <- data
+
   res.subscribe(function(value) {
-    if (data.lastReceived == value)
+    if (data.isExternalEvent)
       return
-    data.lastReceived = NOT_INITED
+    ndbWrite(key, value)
     try {
       eventbus.send_foreign("sharedWatched.update", { name, value })
     } catch (err) {
-      log("eventbus.send_foreign() failed")
+      log($"eventbus.send_foreign() failed (sharedWatched = {name})")
       log(err)
       throw err?.errMsg ?? "Unknown error"
     }
@@ -46,24 +44,11 @@ let function make(name, ctor) {
 eventbus.subscribe("sharedWatched.update",
   function(msg) {
     let data = sharedData?[msg.name]
-    if (!data || isEqual(data.watch.value, msg.value))
+    if (data?.watch == null)
       return
-    data.lastReceived = msg.value
+    data.isExternalEvent = true
     data.watch(msg.value)
-  })
-
-eventbus.subscribe("sharedWatched.requestData",
-  function(msg) {
-    let w = sharedData?[msg.name].watch
-    if (!w)
-      return
-    try {
-      eventbus.send_foreign("sharedWatched.update", { name = msg.name, value = w.value })
-    } catch (err) {
-      log("eventbus.send_foreign() failed")
-      log(err)
-      throw err?.errMsg ?? "Unknown error"
-    }
+    data.isExternalEvent = false
   })
 
 return make

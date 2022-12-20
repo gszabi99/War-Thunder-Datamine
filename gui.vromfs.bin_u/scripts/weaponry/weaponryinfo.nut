@@ -441,6 +441,9 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
                 if (rangeRearAspect > 0 || rangeAllAspect > 0)
                   item.seekerRange <- min(rangeRearAspect, rangeAllAspect)
               }
+              if ((itemBlk?.guidanceType == "ir" || itemBlk?.guidanceType == "tv") &&
+                  itemBlk.guidance.irSeeker?.gateWidth != null && itemBlk.guidance.irSeeker.gateWidth < itemBlk.guidance.irSeeker.fov)
+                item.seekerECCM <- true
               if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.irSeeker?.bandMaskToReject ?? 0) != 0)
                 item.seekerECCM <- true
             }

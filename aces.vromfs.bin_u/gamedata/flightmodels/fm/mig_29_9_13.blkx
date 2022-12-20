@@ -183,12 +183,12 @@
         "Flaps": 0.0
       },
       "Combat": {
-        "Presents": true,
+        "Presents": false,
         "Flaps": 0.2
       },
       "Takeoff": {
         "Presents": true,
-        "Flaps": 0.99
+        "Flaps": 0.9
       },
       "Landing": {
         "Presents": true,
@@ -223,8 +223,8 @@
       "Angle": 1.5,
       "VAngle": 0.0,
       "UseSpinLoss": true,
-      "SpinCdloss": 0.2,
-      "SpinClloss": 0.05,
+      "SpinCdloss": 0.12,
+      "SpinClloss": 0.03,
       "DownwashType": 2,
       "DownwashCoeff": 0.8,
       "Areas": {
@@ -242,7 +242,7 @@
           -0.3,
           2.15
         ],
-        "SineAosMultiplier": 0.4,
+        "SineAosMultiplier": 0.2,
         "VFocusMultiplier": 0.0,
         "FlapsShift": [
           0.06,
@@ -271,11 +271,11 @@
         ],
         "AoaShiftAdd2": [
           0.0,
-          0.02
+          0.01
         ],
         "AoaShiftAdd3": [
           10.0,
-          -0.05
+          -0.02
         ]
       },
       "FlapsPolar0": {
@@ -283,7 +283,7 @@
         "OswaldsEfficiencyNumber": 0.64,
         "lineClCoeff": 0.065,
         "AfterCritParabAngle": 2.0,
-        "AfterCritDeclineCoeff": 0.02,
+        "AfterCritDeclineCoeff": 0.01,
         "AfterCritMaxDistanceAngle": 45.0,
         "CxAfterCoeff": 0.01,
         "ClAfterCritHigh": 1.22,
@@ -309,11 +309,11 @@
         "MultMachMax4": 0.85,
         "MultLineCoeff4": -0.1,
         "MultLimit4": 0.4,
-        "MachCrit5": 0.8,
-        "MachMax5": 1.7,
-        "MultMachMax5": 1.1,
-        "MultLineCoeff5": 0.01,
-        "MultLimit5": 10.0,
+        "MachCrit5": 0.9,
+        "MachMax5": 1.9,
+        "MultMachMax5": 1.8,
+        "MultLineCoeff5": 0.05,
+        "MultLimit5": 20.0,
         "MachCrit6": 0.92,
         "MachMax6": 1.2,
         "MultMachMax6": 0.1,
@@ -328,12 +328,12 @@
         "ClToCmByMach0": [
           0.0,
           0.0,
-          0.0
+          0.04
         ],
         "ClToCmByMach1": [
           0.5,
           0.0,
-          0.01
+          0.04
         ],
         "ClToCmByMach2": [
           0.8,
@@ -420,12 +420,12 @@
           0.02
         ],
         "ClToCmByMach1": [
-          0.5,
+          0.4,
           0.05,
           0.05
         ],
         "ClToCmByMach2": [
-          0.8,
+          0.85,
           0.04,
           0.1
         ],
@@ -784,7 +784,7 @@
       ],
       "AnglesMultiplierPitch2": [
         700.0,
-        0.85,
+        0.95,
         -0.04,
         0.6
       ],
@@ -964,14 +964,14 @@
         "Velocity_10": 2000.0,
         "Velocity_11": 2400.0,
         "ThrustMax0": 4000.0,
-        "ThrustMaxCoeff_0_0": 1.0,
-        "ThrAftMaxCoeff_0_0": 1.05,
-        "TorqueMaxCoeff_0_0": 1.0,
+        "ThrustMaxCoeff_0_0": 0.98,
+        "ThrAftMaxCoeff_0_0": 1.12,
+        "TorqueMaxCoeff_0_0": 0.98,
         "ThrustMaxCoeff_0_1": 0.98,
-        "ThrAftMaxCoeff_0_1": 1.08,
+        "ThrAftMaxCoeff_0_1": 1.12,
         "TorqueMaxCoeff_0_1": 0.98,
         "ThrustMaxCoeff_0_2": 0.99,
-        "ThrAftMaxCoeff_0_2": 1.12,
+        "ThrAftMaxCoeff_0_2": 1.14,
         "TorqueMaxCoeff_0_2": 0.99,
         "ThrustMaxCoeff_0_3": 1.02,
         "ThrAftMaxCoeff_0_3": 1.2,
@@ -1650,7 +1650,7 @@
   },
   "Mass": {
     "EmptyMass": 11075.0,
-    "MaxFuelMass0": 3300.0,
+    "MaxFuelMass0": 4529.0,
     "FuelAccumulatorCapacity0": 120.0,
     "MinimalLoadFactor0": -0.3,
     "FuelAccumulatorFlowRate0": 24.0,
@@ -1659,7 +1659,7 @@
     "OilMass": 30.0,
     "AdvancedMass": false,
     "doesPayloadAffectCOG": false,
-    "SeparateFuelTanks": false,
+    "SeparateFuelTanks": true,
     "Takeoff": 45750.0,
     "CenterOfGravity": [
       -0.2,
@@ -1677,14 +1677,34 @@
       463.0
     ],
     "Parts": {
-      "tank1_capacity": 872.0,
+      "tank1_capacity": 507.0,
       "tank1_system": 0,
       "tank1_external": false,
-      "tank1_priority": 1,
-      "tank2_capacity": 1123.0,
+      "tank1_priority": 2,
+      "tank2_capacity": 702.0,
       "tank2_system": 0,
       "tank2_external": false,
       "tank2_priority": 2,
+      "tank3_capacity": 1404.0,
+      "tank3_system": 0,
+      "tank3_external": false,
+      "tank3_priority": 3,
+      "tank4_capacity": 234.0,
+      "tank4_system": 0,
+      "tank4_external": false,
+      "tank4_priority": 2,
+      "tank5_capacity": 253.0,
+      "tank5_system": 0,
+      "tank5_external": false,
+      "tank5_priority": 1,
+      "tank6_capacity": 253.0,
+      "tank6_system": 0,
+      "tank6_external": false,
+      "tank6_priority": 1,
+      "tank7_capacity": 1175.0,
+      "tank7_system": 0,
+      "tank7_external": true,
+      "tank7_priority": 0,
       "engine1_dm": 900.0,
       "engine2_dm": 900.0
     },

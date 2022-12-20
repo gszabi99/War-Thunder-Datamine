@@ -106,6 +106,7 @@ actionBarItemDiv {
   }
 
   tooltipLayer {
+    id:t='tooltip_<<id>>'
     size:t='pw, ph'
     position:t='absolute'
     input-transparent:t='yes'

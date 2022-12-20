@@ -62,8 +62,8 @@ let function toggleProfile() {
     return
   }
 
-  printText("scriptProfiler STOP")
   stopToFile()
+  printText("scriptProfiler STOP")
 }
 
 let function registerConsoleCommand(prefix) {

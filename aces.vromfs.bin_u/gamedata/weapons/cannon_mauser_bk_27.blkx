@@ -14,6 +14,7 @@
   "aimMaxDist": 1000.0,
   "maxDeltaAngle": 0.25,
   "shotFreq": 28.33,
+  "alternativeShotFreq": 16.66,
   "traceFreq": 4,
   "bEnablePause": false,
   "bullets": 180,
@@ -233,7 +234,7 @@
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/aphe_belt.ivf",
+      "shellAnimation": "video/shells_animations/aphe_shell.ivf",
       "bulletName": "27x145mm_DM13_APHE",
       "relativeVelHitShift": [
         300.0,
@@ -406,7 +407,7 @@
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/aphe_belt.ivf",
+      "shellAnimation": "video/shells_animations/aphe_shell.ivf",
       "bulletName": "27x145mm_DM13_APHE",
       "relativeVelHitShift": [
         300.0,
@@ -579,7 +580,7 @@
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/aphe_belt.ivf",
+      "shellAnimation": "video/shells_animations/aphe_shell.ivf",
       "bulletName": "27x145mm_DM13_APHE",
       "relativeVelHitShift": [
         300.0,
@@ -940,7 +941,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/sap.ivf",
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
         "bulletName": "27x145mm_DM43_SAPHE",
         "relativeVelHitShift": [
           300.0,
@@ -1088,8 +1089,6 @@
         "mass": 0.26,
         "caliber": 0.027,
         "speed": 1025.0,
-        "explosiveType": "rdx_tnt",
-        "explosiveMass": 0.022,
         "maxDistance": 5000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
@@ -1098,26 +1097,19 @@
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "stucking": 0.7,
-        "stuckingAngle": 45.0,
-        "bulletType": "aphe",
+        "bulletType": "ap",
         "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/aphe_belt.ivf",
-        "bulletName": "27x145mm_DM73_MP",
-        "fuseDelayDist": [
-          0.3,
-          1.2
-        ],
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
+        "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
-        "explodeTreshold": 9.0,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -1165,7 +1157,7 @@
         "damage": {
           "kinetic": {
             "damageType": "generic",
-            "demarrePenetrationK": 1.0,
+            "demarrePenetrationK": 0.9,
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
@@ -1283,7 +1275,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/aphe_belt.ivf",
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
         "bulletName": "27x145mm_DM73_MP",
         "fuseDelayDist": [
           0.3,
@@ -1645,7 +1637,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "bulletName": "27x145mm_DM103_FAP",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [
@@ -1815,7 +1807,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "bulletName": "27x145mm_DM103_FAP",
         "selfDestructionInAir": true,
         "relativeVelHitShift": [
@@ -1985,7 +1977,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
@@ -2345,7 +2337,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/sap.ivf",
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
         "bulletName": "27x145mm_DM43_SAPHE",
         "relativeVelHitShift": [
           300.0,
@@ -2512,7 +2504,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "hitPowerMult": 1.0,
         "effectiveDistance": 700.0,
         "relativeVelHitShift": [
@@ -2906,7 +2898,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/sap.ivf",
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
         "bulletName": "27x145mm_DM43_SAPHE",
         "relativeVelHitShift": [
           300.0,
@@ -3072,7 +3064,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/sap.ivf",
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
         "bulletName": "27x145mm_DM43_SAPHE",
         "relativeVelHitShift": [
           300.0,
@@ -3220,6 +3212,8 @@
         "mass": 0.26,
         "caliber": 0.027,
         "speed": 1025.0,
+        "explosiveType": "rdx_tnt",
+        "explosiveMass": 0.018,
         "maxDistance": 5000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
@@ -3228,19 +3222,23 @@
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "ap",
+        "stucking": 0.7,
+        "stuckingAngle": 45.0,
+        "bulletType": "aphe",
         "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
-        "onHitChanceMultFire": 10.0,
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
+        "bulletName": "27x145mm_DM13_APHE",
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 9.0,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -3288,7 +3286,7 @@
         "damage": {
           "kinetic": {
             "damageType": "generic",
-            "demarrePenetrationK": 0.9,
+            "demarrePenetrationK": 1.0,
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
@@ -3388,43 +3386,42 @@
         "caliber": 0.027,
         "speed": 1025.0,
         "explosiveType": "rdx_tnt",
-        "explosiveMass": 0.027,
+        "explosiveMass": 0.018,
         "maxDistance": 5000.0,
-        "recoilMultiplier": 0.35,
-        "normalizationPreset": "heat",
-        "ricochetPreset": "he",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "he_frag",
+        "stucking": 0.7,
+        "stuckingAngle": 45.0,
+        "bulletType": "aphe",
         "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
-        "hitPowerMult": 1.0,
-        "effectiveDistance": 700.0,
+        "shellAnimation": "video/shells_animations/aphe_shell.ivf",
+        "bulletName": "27x145mm_DM13_APHE",
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 9.0,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
-        "explodeTreshold": 0.1,
-        "fuseDelayDist": 0.2,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
-        "explosionEffect": "hit_28_38mm_metal_he",
-        "groundCollisionEffect": "hit_28_38mm_dirt_he",
+        "explosionEffect": "hit_28_38mm_metal_ap",
+        "groundCollisionEffect": "hit_28_38mm_dirt_ap",
         "ricochetEffect": "hit_28_38mm_metal_ap",
         "waterCollisionEffect": "hit_28_38mm_water",
-        "explosionPatchRadius": 1.0,
+        "explosionPatchRadius": 0.4,
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -3445,70 +3442,27 @@
             ]
           ]
         },
-        "pressureDamage": {
-          "damageType": "pressure"
-        },
         "hitpower": {
-          "HitPower10m": [
+          "HitPower0m": [
             1.0,
-            50.0
+            0.0
           ],
           "HitPower1000m": [
-            0.79,
-            300.0
+            0.9,
+            0.0
           ],
-          "HitPower1500m": [
-            0.56,
-            700.0
-          ],
-          "HitPower2000m": [
-            0.32,
-            1500.0
-          ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            2.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.5,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
+          "HitPower10000m": [
+            0.8,
+            10000.0
           ]
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
-          },
-          "shatter": {
-            "useRealShatters": true,
-            "countPortion": 0.125,
-            "segment": {
-              "radiusScale": 3.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "damageType": "generic",
+            "demarrePenetrationK": 1.0,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           }
         },
         "visual": {
@@ -3521,82 +3475,82 @@
         },
         "collisions": {
           "default": {
-            "fx": "hit_28_38mm_dirt_he"
+            "fx": "hit_28_38mm_dirt_ap"
           },
           "horLandMesh": {
-            "fx": "hit_28_38mm_dirt_he"
+            "fx": "hit_28_38mm_dirt_ap"
           },
           "soil": {
-            "fx": "hit_28_38mm_dirt_he"
+            "fx": "hit_28_38mm_dirt_ap"
           },
           "dirt": {
-            "fx": "hit_28_38mm_dirt_he"
+            "fx": "hit_28_38mm_dirt_ap"
           },
           "road": {
-            "fx": "hit_28_38mm_dirt_he"
+            "fx": "hit_28_38mm_dirt_ap"
           },
           "roadSoil": {
-            "fx": "hit_28_38mm_dirt_he"
+            "fx": "hit_28_38mm_dirt_ap"
           },
           "bricks_red": {
-            "fx": "hit_28_38mm_red_brick_he"
+            "fx": "hit_28_38mm_red_brick_ap"
           },
           "sand": {
-            "fx": "hit_28_38mm_sand_he"
+            "fx": "hit_28_38mm_sand_ap"
           },
           "duneSand": {
-            "fx": "hit_28_38mm_sand_he"
+            "fx": "hit_28_38mm_sand_ap"
           },
           "roadSand": {
-            "fx": "hit_28_38mm_sand_he"
+            "fx": "hit_28_38mm_sand_ap"
           },
           "quickSand": {
-            "fx": "hit_28_38mm_sand_he"
+            "fx": "hit_28_38mm_sand_ap"
           },
           "snow": {
-            "fx": "hit_28_38mm_snow_he"
+            "fx": "hit_28_38mm_snow_ap"
           },
           "ice": {
-            "fx": "hit_28_38mm_snow_he"
+            "fx": "hit_28_38mm_snow_ap"
           },
           "roadSnow": {
-            "fx": "hit_28_38mm_snow_he"
+            "fx": "hit_28_38mm_snow_ap"
           },
           "snowLower": {
-            "fx": "hit_28_38mm_snow_he"
+            "fx": "hit_28_38mm_snow_ap"
           },
           "glass": {
-            "fx": "hit_28_38mm_metal_he"
+            "fx": "hit_28_38mm_metal_ap"
           },
           "wood": {
-            "fx": "hit_28_38mm_wood_he"
+            "fx": "hit_28_38mm_wood_ap"
           },
           "steel": {
-            "fx": "hit_28_38mm_metal_he"
+            "fx": "hit_28_38mm_metal_ap"
           },
           "metal": {
-            "fx": "hit_28_38mm_metal_he"
+            "fx": "hit_28_38mm_metal_ap"
           },
           "buildings": {
-            "fx": "hit_28_38mm_stone_he"
+            "fx": "hit_28_38mm_stone_ap"
           },
           "verLandMesh": {
-            "fx": "hit_28_38mm_stone_he"
+            "fx": "hit_28_38mm_stone_ap"
           },
           "concrete": {
-            "fx": "hit_28_38mm_stone_he"
+            "fx": "hit_28_38mm_stone_ap"
           },
           "rocks": {
-            "fx": "hit_28_38mm_stone_he"
+            "fx": "hit_28_38mm_stone_ap"
           },
           "rocksSlippery": {
-            "fx": "hit_28_38mm_stone_he"
+            "fx": "hit_28_38mm_stone_ap"
           },
           "fabric": {
-            "fx": "hit_28_38mm_stone_he"
+            "fx": "hit_28_38mm_stone_ap"
           },
           "stone_snow": {
-            "fx": "hit_28_38mm_snow_he"
+            "fx": "hit_28_38mm_snow_ap"
           }
         }
       }

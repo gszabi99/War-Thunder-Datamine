@@ -13,6 +13,8 @@ let { getPromoAction, isVisiblePromoByAction } = require("%scripts/promo/promoAc
 let { getPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { validateLink } = require("%scripts/onlineShop/url.nut")
+let { showGuestEmailRegistration, needShowGuestEmailRegistration
+} = require("%scripts/user/suggestionEmailRegistration.nut")
 
 ::g_promo <- {
   PROMO_BUTTON_TYPE = {
@@ -56,6 +58,32 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
 
     return split_by_chars(block.reqEntitlement, "; ").findvalue(@(ent) ::has_entitlement(ent) == 1 ) != null
   }
+}
+
+let function isMultiBlockActiveChanged(blockBlk){
+  if(!blockBlk?.multiple)
+    return false
+  let id = blockBlk.getBlockName()
+  for(local i = 0; i < blockBlk.blockCount(); i++){
+    let isActiveBlock = this.checkBlockTime(blockBlk.getBlock(i))
+    let isMultiblockDataActive = this.multiblockData?[id].subBlockInfo[i] ?? false
+    if(isActiveBlock != isMultiblockDataActive)
+      return true
+  }
+  return false
+}
+
+let function getActiveSubBlockCount(block){
+  local activeBlockCounter = 0
+  if(!block?.multiple)
+    return activeBlockCounter
+  for (local i = 0; i < block.blockCount(); i++)
+  {
+    let isVisibleSubBlock = this.checkBlockTime(block.getBlock(i))
+    if(isVisibleSubBlock)
+      activeBlockCounter++
+  }
+  return activeBlockCounter
 }
 
 ::g_promo.checkOldRecordsOnInit <- function checkOldRecordsOnInit()
@@ -158,6 +186,8 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
       this.visibilityStatuses[id] <- show
       reqForceUpdate = true
     }
+    if(!reqForceUpdate && isMultiBlockActiveChanged(block))
+      reqForceUpdate = true
   }
 
   return reqForceUpdate
@@ -200,8 +230,8 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
   let id = block.getBlockName()
   let view = ::buildTableFromBlk(block)
   let promoButtonConfig = getPromoButtonConfig(id)
+  let multiBlockTbl = {}
   view.id <- id
-  view.type <- ::g_promo.getType(block)
   view.collapsed <- ::g_promo.isCollapsed(id)? "yes" : "no"
   view.fillBlocks <- []
   view.h_ratio <- 1 / (block?.aspect_ratio ?? promoButtonConfig?.aspect_ratio ?? 1.0)
@@ -215,8 +245,8 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
   let blocksCount = block.blockCount()
   let isMultiblock = block?.multiple ?? false
   view.isMultiblock <- isMultiblock
-
   view.radiobuttons <- []
+
   if (isMultiblock)
   {
     let value = ::to_integer_safe(this.multiblockData?[id]?.value ?? 0)
@@ -229,15 +259,24 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
                             life_time = lifeTimeVal}
   }
 
+  view.type <- ::g_promo.getType(block)
   let requiredBlocks = isMultiblock? blocksCount : 1
   local hasImage = isMultiblock
+  local counter = 0
   for (local i = 0; i < requiredBlocks; i++)
   {
-    let blockId = view.id + (isMultiblock? ("_" + i) : "")
-    let actionParamsKey = this.getActionParamsKey(blockId)
-
     let checkBlock = isMultiblock? block.getBlock(i) : block
     let fillBlock = ::buildTableFromBlk(checkBlock)
+    let isVisibleSubBlock = this.checkBlockTime(fillBlock)
+
+    if(isMultiblock)
+      multiBlockTbl[i] <- isVisibleSubBlock
+
+    if(isMultiblock && !isVisibleSubBlock)
+      continue
+
+    let blockId = view.id + (isMultiblock? ($"_{counter}") : "")
+    let actionParamsKey = this.getActionParamsKey(blockId)
     fillBlock.blockId <- actionParamsKey
 
     let actionData = this.gatherActionParamsData(fillBlock) || this.gatherActionParamsData(block)
@@ -291,8 +330,15 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
     fillBlock.h_ratio <- view.h_ratio
     view.fillBlocks.append(fillBlock)
 
+    counter += 1
     view.radiobuttons.append({selected = isBlockSelected})
   }
+
+  if(isMultiblock)
+    this.multiblockData[id].subBlockInfo <- multiBlockTbl
+
+  if(view.fillBlocks.len() == 1)
+    view.radiobuttons = []
 
   if (!hasImage)
     view.h_ratio = 0
@@ -454,13 +500,16 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
 
 ::g_promo.getType <- function getType(block)
 {
-  local res = getPromoButtonConfig(block.getBlockName())?.buttonType ?? this.PROMO_BUTTON_TYPE.ARROW
-  if (block.blockCount() > 1)
-    res = this.PROMO_BUTTON_TYPE.IMAGE_ROULETTE
-  else if (getTblValue("image", block, "") != "")
-    res = this.PROMO_BUTTON_TYPE.IMAGE
+  let blockCount = block.blockCount()
+  let activeBlockCount = getActiveSubBlockCount(block)
+  if (blockCount > 1 && activeBlockCount > 1)
+    return this.PROMO_BUTTON_TYPE.IMAGE_ROULETTE
+  if (blockCount == 1)
+    block = block.getBlock(0)
+  if (getTblValue("image", block, "") != "")
+    return this.PROMO_BUTTON_TYPE.IMAGE
+  return getPromoButtonConfig(block.getBlockName())?.buttonType ?? this.PROMO_BUTTON_TYPE.ARROW
 
-  return res
 }
 
 ::g_promo.setButtonText <- function setButtonText(buttonObj, id, text = "")
@@ -551,6 +600,11 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
   {
     assert(false, "Promo: Not found action params by key " + (key ?? "NULL"))
     return false
+  }
+
+  if (actionData?.action == "url" && needShowGuestEmailRegistration()) {
+      showGuestEmailRegistration()
+      return false
   }
 
   return this.launchAction(actionData, handler, obj)
@@ -692,14 +746,15 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
 
 ::g_promo.selectNextBlock <- function selectNextBlock(obj, dt)
 {
-  if (!(obj?.id in this.multiblockData))
+  let objId = obj?.id
+  if (!(objId in this.multiblockData))
     return
 
-  this.multiblockData[obj.id].life_time -= dt
-  if (this.multiblockData[obj.id].life_time > 0)
+  this.multiblockData[objId].life_time -= dt
+  if (this.multiblockData[objId].life_time > 0)
     return
 
-  this.multiblockData[obj.id].life_time = this.multiblockData[obj.id].switch_time_sec
+  this.multiblockData[objId].life_time = this.multiblockData[objId].switch_time_sec
 
   let listObj = obj.findObject("multiblock_radiobuttons_list")
   if (!checkObj(listObj))
@@ -711,6 +766,7 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
     nextVal = 0
   listObj.setValue(nextVal)
 }
+
 
 //----------------- </RADIOBUTTONS> -------------------------
 

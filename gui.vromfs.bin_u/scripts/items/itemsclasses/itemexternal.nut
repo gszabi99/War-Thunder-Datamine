@@ -865,9 +865,8 @@ local ItemExternal = class extends ::BaseItem
       buttonText = loc("msgbox/btn_purchase")
       getValueText = function(amount) {
         let cost = ::Cost() + item.getCost()
-        let mult = cost.getUncoloredText()
         let product = cost.multiply(amount).getTextAccordingToBalance()
-        return $"{amount} x {mult} = {product}"
+        return $"{amount} x {cost} = {product}"
       }
       onAcceptCb = @(amount) item.onAmountAccept(cb, handler, params.__merge({amount}))
     })

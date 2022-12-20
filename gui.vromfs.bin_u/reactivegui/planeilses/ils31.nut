@@ -1,16 +1,17 @@
 from "%rGui/globals/ui_library.nut" import *
-let {Speed, Altitude, Tangage, Accel} = require("%rGui/planeState/planeFlyState.nut")
+let {Speed, BarAltitude, Tangage, Accel} = require("%rGui/planeState/planeFlyState.nut")
 let {mpsToKmh, baseLineWidth, radToDeg} = require("ilsConstants.nut")
 let {IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget,
-  BombCCIPMode, RocketMode, CannonMode, TargetPosValid, TargetPos, RadarTargetPos} = require("%rGui/planeState/planeToolsState.nut")
+  BombCCIPMode, RocketMode, CannonMode, TargetPosValid, TargetPos, RadarTargetPos,
+  BombingMode, AirCannonMode} = require("%rGui/planeState/planeToolsState.nut")
 let {compassWrap, generateCompassMarkASP} = require("ilsCompasses.nut")
-let {ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark} = require("commonElements.nut")
+let {ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine} = require("commonElements.nut")
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
   IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, Elevation,
   HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax } = require("%rGui/radarState.nut")
-let { CurWeaponName} = require("%rGui/planeState/planeWeaponState.nut")
+let { CurWeaponName, ShellCnt} = require("%rGui/planeState/planeWeaponState.nut")
 let string = require("string")
-let {floor} = require("%sqstd/math.nut")
+let {floor, ceil} = require("%sqstd/math.nut")
 let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
 
 let SpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
@@ -21,10 +22,11 @@ let speed = @() {
   pos = [pw(17), ph(20)]
   color = IlsColor.value
   fontSize = 50
+  font = Fonts.ils31
   text = SpeedValue.value.tostring()
 }
 
-let AltValue = Computed(@() Altitude.value.tointeger())
+let AltValue = Computed(@() BarAltitude.value.tointeger())
 let altitude = @() {
   watch = AltValue
   size = SIZE_TO_CONTENT
@@ -32,6 +34,7 @@ let altitude = @() {
   pos = [pw(71), ph(20)]
   color = IlsColor.value
   fontSize = 50
+  font = Fonts.ils31
   text = string.format("%dp", AltValue.value)
 }
 
@@ -139,6 +142,7 @@ let function generatePitchLine(num) {
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
         fontSize = 35
+        font = Fonts.ils31
         text = string.format("%02d", num)
       }
     ]
@@ -157,7 +161,7 @@ let function pitch(width, height, generateFunc) {
 
   return {
     size = [width * 0.6, height * 0.5]
-    pos = [width * 0.2, height * 0.5]
+    pos = [-width * 0.05, height * 0.25]
     flow = FLOW_VERTICAL
     children = children
     behavior = Behaviors.RtPropUpdate
@@ -169,17 +173,30 @@ let function pitch(width, height, generateFunc) {
   }
 }
 
+let function pitchWrap(width, height) {
+  return @() {
+    watch = AirCannonMode
+    size = [pw(50), ph(50)]
+    pos = [pw(25), ph(25)]
+    clipChildren  = true
+    children = !AirCannonMode.value ? [
+      pitch(width, height, generatePitchLine)
+    ] : null
+  }
+}
+
 let function basicInfo(width, height) {
-  return {
+  return @(){
+    watch = AirCannonMode
     size = flex()
     children = [
       speed,
       acceleration,
-      compassWrap(width, height, 0.17, generateCompassMarkASP, 0.6),
-      compassMark,
+      (!AirCannonMode.value ? compassWrap(width, height, 0.17, generateCompassMarkASP, 0.6, 5.0, false, -1, Fonts.ils31) : null),
+      (!AirCannonMode.value ? compassMark : null),
       altitude,
-      rollIndicator,
-      pitch(width, height, generatePitchLine),
+      (!AirCannonMode.value ? rollIndicator : null),
+      pitchWrap(width, height),
       connectors
     ]
   }
@@ -192,6 +209,7 @@ let radarMaxDist = @(){
   pos = [pw(18), ph(28)]
   color = IlsColor.value
   fontSize = 35
+  font = Fonts.ils31
   text = DistanceMax.value.tointeger()
 }
 
@@ -203,6 +221,7 @@ let radarMaxElev = @(){
   pos = [pw(70), ph(28)]
   color = IlsColor.value
   fontSize = 35
+  font = Fonts.ils31
   text = MaxElevation.value.tointeger()
 }
 
@@ -320,6 +339,7 @@ let ccipDistGrid = @(){
       pos = [pw(-150), ph(-5)]
       color = IlsColor.value
       fontSize = 36
+      font = Fonts.ils31
       text = "5"
     }
   ]
@@ -346,6 +366,7 @@ let radarType = @() {
   rendObj = ROBJ_TEXT
   color = IlsColor.value
   fontSize = 50
+  font = Fonts.ils31
   text = Irst.value ? "ТП" : "РЛ"
 }
 
@@ -442,11 +463,11 @@ let radarReticle = @(){
 
 let RadarTargetValid = Computed(@() RadarTargetDist.value > 0.0)
 let radar = @(){
-  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode]
+  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirCannonMode]
   size = flex()
-  children = IsRadarVisible.value && !CCIPMode.value ? [
-    (!Irst.value ? radarDistGrid : null),
-    (!Irst.value ? radarMaxDist : null),
+  children = IsRadarVisible.value && !CCIPMode.value && !AirCannonMode.value ? [
+    (!Irst.value || RadarTargetValid.value ? radarDistGrid : null),
+    (!Irst.value || RadarTargetValid.value ? radarMaxDist : null),
     (!Irst.value && !RadarTargetValid.value ? radarElevGrid : null),
     (!Irst.value && !RadarTargetValid.value ? radarMaxElev : null),
     {
@@ -466,19 +487,23 @@ let radar = @(){
 let function getRadarMode() {
   if (RadarModeNameId.value >= 0) {
     let mode = modeNames[RadarModeNameId.value]
-    if (mode == "hud/ACM" || mode == "hud/LD ACM" || mode == "hud/PD ACM" || mode == "hud/PD VS ACM" || mode == "hud/MTI ACM" || mode == "hud/TWS ACM")
+    if (mode == "hud/track" || mode == "hud/PD track" || mode == "hud/MTI track" || mode == "hud/IRST track")
+      return "АТК"
+    if (mode == "hud/ACM" || mode == "hud/LD ACM" || mode == "hud/PD ACM" || mode == "hud/PD VS ACM" || mode == "hud/MTI ACM" || mode == "hud/TWS ACM" ||  mode == "hud/IRST ACM")
       return "БВБ"
   }
   return "ДВБ"
 }
 
 let function getRadarSubMode() {
+  if (AirCannonMode.value)
+    return ""
   if (Irst.value || CCIPMode.value)
     return "ОПТ"
   if (RadarModeNameId.value >= 0) {
     let mode = modeNames[RadarModeNameId.value]
     if (mode == "hud/track" || mode == "hud/PD track" || mode == "hud/MTI track")
-      return "АТК"
+      return "А"
     if (mode == "hud/TWS standby" || mode == "hud/TWS search")
       return "СНП"
   }
@@ -486,22 +511,24 @@ let function getRadarSubMode() {
 }
 
 let currentMode = @(){
-  watch = [CCIPMode, IsRadarVisible, RadarModeNameId]
+  watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode]
   size = SIZE_TO_CONTENT
   pos = [pw(15), ph(72)]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
   fontSize = 50
-  text = CCIPMode.value ? "ЗМЛ" : (IsRadarVisible.value ? getRadarMode() : "ФИ0")
+  font = Fonts.ils31
+  text = AirCannonMode.value ? "ВПУ" : (CCIPMode.value ? "ЗМЛ" : (IsRadarVisible.value ? getRadarMode() : "ФИ0"))
 }
 
 let currentSubMode = @(){
-  watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst]
+  watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode]
   size = SIZE_TO_CONTENT
   pos = [pw(15), ph(66)]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
   fontSize = 50
+  font = Fonts.ils31
   text = getRadarSubMode()
 }
 
@@ -543,7 +570,8 @@ let shellName = @() {
   pos = [pw(75), ph(72)]
   color = IlsColor.value
   fontSize = 35
-  text = !CannonMode.value ? loc(CurWeaponName.value) : ""
+  font = Fonts.ils31
+  text = !CannonMode.value ? (BombingMode.value || BombCCIPMode.value ? "АБ" : loc(CurWeaponName.value)) : ""
 }
 
 let aamReticle = @(){
@@ -570,6 +598,45 @@ let aamReticle = @(){
   ] : null
 }
 
+let ShellPart = Computed(@() ceil(ShellCnt.value / 37.5).tointeger())
+let impactLine = @() {
+  watch = AirCannonMode
+  size = flex()
+  children = AirCannonMode.value ? [
+    bulletsImpactLine,
+    {
+      size = SIZE_TO_CONTENT
+      rendObj = ROBJ_TEXT
+      pos = [pw(49), ph(22)]
+      color = IlsColor.value
+      fontSize = 40
+      font = Fonts.ils31
+      text = "11"
+    },
+    {
+      size = [pw(4), ph(4)]
+      pos = [pw(70), ph(70)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.value
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth * IlsLineScale.value * 0.5
+      commands = [
+        [VECTOR_RECTANGLE, 0, 0, 100, 100]
+      ]
+    },
+    @(){
+      watch = ShellPart
+      size = SIZE_TO_CONTENT
+      rendObj = ROBJ_TEXT
+      pos = [pw(71), ph(70.2)]
+      color = IlsColor.value
+      fontSize = 40
+      font = Fonts.ils31
+      text = ShellPart.value.tostring()
+    }
+  ] : null
+}
+
 let function Ils31(width, height) {
   return {
     size = [width, height]
@@ -581,7 +648,8 @@ let function Ils31(width, height) {
       currentSubMode,
       ccip,
       shellName,
-      aamReticle
+      aamReticle,
+      impactLine
     ]
   }
 }

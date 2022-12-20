@@ -11,7 +11,6 @@ let { is_stereo_mode } = require_native("vr")
 let { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
-let { subscribe, send } = require("eventbus")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
@@ -300,11 +299,3 @@ let function saveFontToConfig(font) {
   appliedFontsSh = 0;
   update_font_heights(::g_font.getCurrent());
 }
-
-subscribe("updateFontStates", function(_) {
-  let currentFont = ::g_font.getCurrent()
-  send("updateExtWatched", {
-    fontGenId = currentFont.fontGenId
-    fontSizePx = currentFont.getFontSizePx(::screen_width(), ::screen_height())
-  })
-})

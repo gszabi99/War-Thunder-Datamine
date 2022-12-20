@@ -6,7 +6,6 @@ from "%scripts/dagui_library.nut" import *
 // warning disable: -file:forbidden-function
 
 let fonts = require("fonts")
-let { reloadDargUiScript } = require("reactiveGuiCommand")
 let { register_command } = require("console")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 
@@ -15,10 +14,8 @@ let function debug_change_font_size(shouldIncrease = true) {
   let curFont = ::g_font.getCurrent()
   local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
   idx = clamp(idx + (shouldIncrease ? 1 : -1), 0, availableFonts.len() - 1)
-  if (::g_font.setCurrent(availableFonts[idx])) {
+  if (::g_font.setCurrent(availableFonts[idx]))
     ::handlersManager.getActiveBaseHandler().fullReloadScene()
-    reloadDargUiScript(false)
-  }
   dlog($"Loaded fonts: {availableFonts[idx].id}")
 }
 

@@ -6,10 +6,10 @@ from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let controllerState = require("controllerState")
-let { send } = require("eventbus")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { get_gui_option } = require("guiOptions")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 ::classic_control_preset <- "classic"
 ::shooter_control_preset <- "shooter"
@@ -135,7 +135,7 @@ if (isPlatformXboxOne)
 ::on_connected_controller <- function on_connected_controller()
 {
   //calls from c++ code, no event on PS4 or XBoxOne
-  send("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
+  updateExtWatched({ haveXinputDevice = ::have_xinput_device() })
   if (!::isInMenu() || !hasFeature("ControlsDeviceChoice"))
     return
   let action = function() { ::gui_start_controls_type_choice() }
@@ -232,6 +232,6 @@ if (controllerState?.add_event_handler)
 }
 
 ::on_lost_controller <- function on_lost_controller() {
-  send("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
+  updateExtWatched({ haveXinputDevice = ::have_xinput_device() })
   ::add_msg_box("cannot_session", loc("pl1/lostController"), [["ok", function() {}]], "ok")
 }

@@ -23,7 +23,7 @@ local airSymbol = @(){
   ]
 }
 
-let generateCompassMark = function(num, _elemWidth) {
+let generateCompassMark = function(num, _elemWidth, _font) {
   return {
     size = [pw(7.5), ph(100)]
     flow = FLOW_VERTICAL

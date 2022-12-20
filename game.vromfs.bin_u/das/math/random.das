@@ -1,6 +1,6 @@
 module random shared
 require math
-require DagorRandom
+require DagorRandom public
 
 def rnd_point_on_disk(radius : float) : float2
   return rnd_point_on_ring(0f, radius)

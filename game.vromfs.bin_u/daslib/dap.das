@@ -6,7 +6,7 @@ module dap shared
 
 require daslib/json
 require daslib/json_boost
-require strings
+require daslib/strings_boost
 
 
 // https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Initialize
@@ -211,9 +211,10 @@ struct Variable
     indexedVariables: double
 
 def JV(data: Variable)
+    let valStr = unescape(data.value)
     return JV({{
         "name"=>JV(data.name);
-        "value"=>JV(data.value);
+        "value"=>JV(valStr);
         "variablesReference"=>JV(data.variablesReference);
         "indexedVariables"=>data.indexedVariables > 0lf ? JV(data.indexedVariables) : JVNull();
         "type"=>JV(data._type)
@@ -289,6 +290,16 @@ def JV(data: EvaluateResponse)
         "type"=>JV(data._type)
     }})
 
+
+// https://microsoft.github.io/debug-adapter-protocol/specification#Events_Breakpoint
+struct BreakpointEvent
+    reason : string // 'changed' | 'new' | 'removed' | string;
+    breakpoint : Breakpoint
+
+// https://microsoft.github.io/debug-adapter-protocol/specification#Events_Thread
+struct ThreadEvent
+    reason : string // 'started' | 'exited' | string;
+    threadId : double
 
 
 def joj(val : JsonValue?; id : string) : JsonValue?

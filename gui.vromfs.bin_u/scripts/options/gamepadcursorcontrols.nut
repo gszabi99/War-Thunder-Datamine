@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { send } = require("eventbus")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 const GAMEPAD_CURSOR_CONTROL_CONFIG_NAME = "use_gamepad_cursor_control"
 const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
@@ -32,7 +32,7 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
     this.currentOptionValue = newValue
     ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, this.currentOptionValue)
     ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
-    send("updateExtWatched", { gamepadCursorControl = newValue })
+    updateExtWatched({ gamepadCursorControl = newValue })
   }
 
 

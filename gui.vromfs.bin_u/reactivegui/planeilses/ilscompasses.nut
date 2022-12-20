@@ -5,7 +5,7 @@ let {IlsColor, IlsLineScale} = require("%rGui/planeState/planeToolsState.nut")
 let {CompassValue} = require("%rGui/planeState/planeFlyState.nut")
 let {baseLineWidth} = require("ilsConstants.nut")
 
-let generateCompassMark = function(num, _elemWidth) {
+let generateCompassMark = function(num, _elemWidth, _font) {
   return {
     size = [pw(20), ph(100)]
     flow = FLOW_VERTICAL
@@ -31,7 +31,7 @@ let generateCompassMark = function(num, _elemWidth) {
   }
 }
 
-let generateCompassMarkSUM = function(num, _elemWidth) {
+let generateCompassMarkSUM = function(num, _elemWidth, _font) {
   return {
     size = [pw(20), ph(100)]
     flow = FLOW_VERTICAL
@@ -56,7 +56,7 @@ let generateCompassMarkSUM = function(num, _elemWidth) {
   }
 }
 
-let generateCompassMarkASP = function(num, _elemWidth) {
+let generateCompassMarkASP = function(num, _elemWidth, font) {
   return {
     size = [pw(20), ph(100)]
     flow = FLOW_VERTICAL
@@ -67,7 +67,7 @@ let generateCompassMarkASP = function(num, _elemWidth) {
         color = IlsColor.value
         hplace = ALIGN_CENTER
         fontSize = 40
-        font = Fonts.ussr_ils
+        font = font
         text = num % 10 == 0 ? (num / 10).tostring() : ""
       }
       @() {
@@ -82,7 +82,7 @@ let generateCompassMarkASP = function(num, _elemWidth) {
   }
 }
 
-let generateCompassMarkEP = function(num, _elemWidth) {
+let generateCompassMarkEP = function(num, _elemWidth, _font) {
   return {
     size = [pw(20), ph(100)]
     flow = FLOW_VERTICAL
@@ -108,7 +108,7 @@ let generateCompassMarkEP = function(num, _elemWidth) {
   }
 }
 
-let generateCompassMarkEP08 = function(num, _elemWidth) {
+let generateCompassMarkEP08 = function(num, _elemWidth, _font) {
   return {
     size = [pw(20), ph(100)]
     flow = FLOW_VERTICAL
@@ -134,7 +134,7 @@ let generateCompassMarkEP08 = function(num, _elemWidth) {
   }
 }
 
-let generateCompassMarkShim = function(num, elemWidth) {
+let generateCompassMarkShim = function(num, elemWidth, _font) {
   return {
     size = [elemWidth < 0 ? pw(8) : pw(elemWidth), ph(100)]
     flow = FLOW_VERTICAL
@@ -160,7 +160,7 @@ let generateCompassMarkShim = function(num, elemWidth) {
   }
 }
 
-let generateCompassTCSFMark = function(num, _elemWidth) {
+let generateCompassTCSFMark = function(num, _elemWidth, _font) {
   return {
     size = [pw(8), ph(280)]
     children = [
@@ -192,7 +192,7 @@ let generateCompassTCSFMark = function(num, _elemWidth) {
 }
 
 
-let generateCompassMarkJ8 = function(num, _elemWidth) {
+let generateCompassMarkJ8 = function(num, _elemWidth, _font) {
   return {
     size = [pw(20), ph(100)]
     children = [
@@ -218,14 +218,14 @@ let generateCompassMarkJ8 = function(num, _elemWidth) {
   }
 }
 
-let function compass(width, generateFunc, step, is_circle = false, elemWidth = -1) {
+let function compass(width, generateFunc, step, is_circle = false, elemWidth = -1, font = Fonts.hud) {
   let children = []
 
   for (local i = 0; i <= (is_circle ? 1.0 : 2.0) * 360.0 / step; ++i) {
 
     let num = (i * step) % 360
 
-    children.append(generateFunc(num, elemWidth))
+    children.append(generateFunc(num, elemWidth, font))
   }
   let elemScale = elemWidth <= 0 ? 1.0 : (elemWidth / 20.0)
   let getOffset = @() (360 + CompassValue.value) * 0.2 * elemScale * width / 5.0
@@ -255,7 +255,7 @@ let function compass(width, generateFunc, step, is_circle = false, elemWidth = -
   }
 }
 
-let generateCompassMarkF14 = function(num, _elemWidth) {
+let generateCompassMarkF14 = function(num, _elemWidth, _font) {
   return {
     size = [pw(20), ph(100)]
     flow = FLOW_VERTICAL
@@ -281,7 +281,7 @@ let generateCompassMarkF14 = function(num, _elemWidth) {
   }
 }
 
-let generateCompassMarkVE130 = function(num, _elemWidth) {
+let generateCompassMarkVE130 = function(num, _elemWidth, _font) {
   return {
     size = [pw(15), ph(100)]
     flow = FLOW_VERTICAL
@@ -314,7 +314,7 @@ let generateCompassMarkVE130 = function(num, _elemWidth) {
   }
 }
 
-let generateCompassMarkSU145 = function(num, _elemWidth) {
+let generateCompassMarkSU145 = function(num, _elemWidth, _font) {
   return {
     size = [pw(12), ph(100)]
     flow = FLOW_VERTICAL
@@ -347,16 +347,16 @@ let generateCompassMarkSU145 = function(num, _elemWidth) {
   }
 }
 
-let function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5.0, is_circle = false, elemWidth = -1) {
+let function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5.0, is_circle = false, elemWidth = -1, font = Fonts.hud) {
   return {
     size = [width * 0.6 * scale, height * 0.2]
     pos = [width * (1 - 0.6 * scale) * 0.5, height * pos]
     clipChildren = true
-    children = compass(width * 0.6 * scale, generateFunc, step, is_circle, elemWidth)
+    children = compass(width * 0.6 * scale, generateFunc, step, is_circle, elemWidth, font)
   }
 }
 
-let generateCompassMarkElbit = function(num, _elemWidth) {
+let generateCompassMarkElbit = function(num, _elemWidth, _font) {
   return {
     size = [pw(15), ph(100)]
     flow = FLOW_VERTICAL

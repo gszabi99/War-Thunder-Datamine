@@ -42,9 +42,258 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "ikGunner": [
+    {
+      "model": "italian_gunner_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "2",
+      "dmName": "commander_dm",
+      "deadHeadAttitudeMin": -40.0,
+      "deadHeadAttitudeMax": -55.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "italian_gunner_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "3",
+      "dmName": "gunner_dm",
+      "deadHeadAttitudeMin": -40.0,
+      "deadHeadAttitudeMax": -55.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "italian_gunner_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "1",
+      "dmName": "driver_dm",
+      "deadHeadAttitudeMin": -40.0,
+      "deadHeadAttitudeMax": -55.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    }
+  ],
+  "controlDevices": {
+    "device": [
+      {
+        "type": "turretTurnH",
+        "turnSpeed": 0.6,
+        "node": "bone_roll_turret_h",
+        "node_handle": "bone_roll_turret_h_handle"
+      },
+      {
+        "type": "turretTurnV",
+        "turnSpeed": -1.0,
+        "node": "bone_roll_turret_v",
+        "node_handle": "bone_roll_turret_v_handle"
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -3.0,
+        "node": "bone_roll_driver",
+        "absoluteValue": true
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_01"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_02"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_03"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": -1.7,
+        "node": "body_shutter_l",
+        "absoluteValue": true,
+        "progressive": true
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": 1.7,
+        "node": "body_shutter_r",
+        "absoluteValue": true,
+        "progressive": true
+      }
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "tank_structural_steel",
@@ -428,6 +677,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -447,7 +700,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -587,6 +844,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -607,6 +868,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -1549,7 +1814,7 @@
           "lim2": [
             -40.0,
             40.0,
-            5.0,
+            15.0,
             90.0
           ],
           "lim3": [
@@ -2640,36 +2905,49 @@
     "12mm_usa_M2HB_APIT": {},
     "12mm_usa_M2HB_APIT_ammo_pack": {}
   },
-  "user_skin": {
-    "name": "gmc_cckw_353_m45_quad",
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
-  },
   "default_skin": {
-    "replace_tex": {
-      "from": "us_camo_olive*",
-      "to": "cn_camo_light_olive*"
-    }
+    "name": "default",
+    "replace_tex": [
+      {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_olive_dab*"
+      },
+      {
+        "from": "us_camo_olive*",
+        "to": "it_camo_olive_dab*"
+      }
+    ]
   },
   "skin": [
     {
-      "name": "green_yellow_black",
-      "nameLocId": "skin/cn_camo_green_yellow_black",
-      "descLocId": "skin/cn_camo_green_yellow_black/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "cn_camo_green_yellow_black*"
-      }
+      "name": "it_camo_desert_light_yellow",
+      "nameLocId": "skin/it_camo_desert_light_yellow",
+      "descLocId": "skin/it_camo_desert_light_yellow/desc",
+      "replace_tex": [
+        {
+          "from": "it_camo_olive_green*",
+          "to": "it_camo_desert_light_yellow*"
+        },
+        {
+          "from": "us_camo_olive*",
+          "to": "it_camo_desert_light_yellow*"
+        }
+      ]
     },
     {
-      "name": "winter",
+      "name": "it_camo_winter_white",
       "nameLocId": "skin/winter",
       "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_winter_olive*"
-      }
+      "replace_tex": [
+        {
+          "from": "it_camo_olive_green*",
+          "to": "it_camo_winter_white*"
+        },
+        {
+          "from": "us_camo_olive*",
+          "to": "it_camo_winter_white*"
+        }
+      ]
     }
   ]
 }

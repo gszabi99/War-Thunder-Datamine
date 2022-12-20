@@ -10,6 +10,8 @@ let seenList = require("%scripts/seen/seenList.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 /*
   config = {
@@ -235,6 +237,24 @@ let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks
     this.updateButtons()
   }
 
+  function onBuy() {
+    let idx = this.getSelIconIdx()
+    let unlockId = this.options?[idx].unlockId
+    if (!unlockId)
+      return
+
+    let cost = ::get_unlock_cost(unlockId)
+    let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+    let unlockCfg = ::build_conditions_config(unlockBlk)
+    let title = ::warningIfGold(loc("onlineShop/needMoneyQuestion", {
+      purchase = colorize("unlockHeaderColor", getUnlockTitle(unlockCfg)),
+      cost = cost.getTextAccordingToBalance()
+    }), cost)
+    let onSuccess = Callback(@() this.chooseImage(idx), this)
+    let onOk = @() ::g_unlocks.buyUnlock(unlockId, onSuccess)
+    this.msgBox("question_buy_unlock", title, [["ok", onOk], ["cancel"]], "cancel")
+  }
+
   function goToMarketplace(item)
   {
     if (item?.hasLink())
@@ -284,11 +304,21 @@ let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks
   function updateButtons()
   {
     let option = getTblValue(this.getSelIconIdx(), this.options)
-    let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
-    let btn = this.showSceneBtn("btn_select", isVisible)
+    let cost = ::get_unlock_cost(option.unlockId)
+    let canBuy = !option.enabled && !cost.isZero()
+    this.showSceneBtn("btn_buy", canBuy)
 
-    let isFavBtnVisible = !isVisible
+    let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
+    let btn = this.showSceneBtn("btn_select", isVisible && !canBuy)
+
+    let isFavBtnVisible = !isVisible && !canBuy
     let favBtnObj = this.showSceneBtn("btn_fav", isFavBtnVisible)
+
+    if (canBuy) {
+      placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnOrder"), cost)
+      return
+    }
+
     if (isFavBtnVisible) {
       favBtnObj.setValue(isUnlockFav(option.unlockId)
         ? loc("preloaderSettings/untrackProgress")

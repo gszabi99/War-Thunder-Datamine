@@ -4,8 +4,9 @@ let {IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   RocketMode, CannonMode, BombCCIPMode, BombingMode,
   RadarTargetPos, TargetPos, TargetPosValid, DistToTarget,
   GunfireSolution, RadarTargetAngle } = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, mpsToKnots, metrToFeet, GuidanceLockResult, feetToNavMile} = require("ilsConstants.nut")
-let { AdlPoint, CurWeaponName, ShellCnt, BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
+let {baseLineWidth, mpsToKnots, metrToFeet, feetToNavMile} = require("ilsConstants.nut")
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
+let { AdlPoint, CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
 let {Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach} = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let {floor} = require("%sqstd/math.nut")
@@ -14,6 +15,8 @@ let {sin, cos, abs} = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let {cvt} = require("dagor.math")
 let {compassWrap, generateCompassMarkElbit} = require("ilsCompasses.nut")
+let {bulletsImpactLine} = require("commonElements.nut")
+
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
@@ -525,44 +528,6 @@ let function ccipShell(width, height) {
       } : null)
     ] : null
   }
-}
-
-let function getBulletImpactLineCommand() {
-  let commands = []
-  for (local i = 0; i < BulletImpactPoints1.value.len() - 2; ++i){
-    let point1 = BulletImpactPoints1.value[i]
-    let point2 = BulletImpactPoints1.value[i + 1]
-    if (point1.x == -1 && point1.y == -1)
-      continue
-    if (point2.x == -1 && point2.y == -1)
-      continue
-    commands.append([VECTOR_LINE, point1.x, point1.y, point2.x, point2.y])
-  }
-  for (local i = 0; i < BulletImpactPoints2.value.len() - 2; ++i){
-    let point1 = BulletImpactPoints2.value[i]
-    let point2 = BulletImpactPoints2.value[i + 1]
-    if (point1.x == -1 && point1.y == -1)
-      continue
-    if (point2.x == -1 && point2.y == -1)
-      continue
-    commands.append([VECTOR_LINE, point1.x, point1.y, point2.x, point2.y])
-  }
-  return commands
-}
-
-let bulletsImpactLine = @() {
-  watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
-  size = flex()
-  children = BulletImpactLineEnable.value && !CCIPMode.value && !isAAMMode.value ? [
-    @(){
-      watch = [BulletImpactPoints1, BulletImpactPoints2]
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = flex()
-      color = IlsColor.value
-      lineWidth = baseLineWidth * IlsLineScale.value
-      commands = getBulletImpactLineCommand()
-    }
-  ] : null
 }
 
 let gunfireSolution = @() {

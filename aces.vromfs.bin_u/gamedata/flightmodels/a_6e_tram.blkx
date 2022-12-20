@@ -52,6 +52,26 @@
         "hp": 15.0
       }
     },
+    "armor12_5": {
+      "armor4_dm": {
+        "hp": 40.0
+      },
+      "armor5_dm": {
+        "hp": 40.0
+      },
+      "armor6_dm": {
+        "hp": 40.0
+      },
+      "armor7_dm": {
+        "hp": 40.0
+      },
+      "armor8_dm": {
+        "hp": 40.0
+      },
+      "armor9_dm": {
+        "hp": 40.0
+      }
+    },
     "armor6": {
       "armor1_dm": {
         "hp": 35.0
@@ -61,27 +81,9 @@
       },
       "armor3_dm": {
         "hp": 35.0
-      },
-      "armor4_dm": {
-        "hp": 35.0
-      },
-      "armor5_dm": {
-        "hp": 35.0
-      },
-      "armor6_dm": {
-        "hp": 35.0
-      },
-      "armor7_dm": {
-        "hp": 35.0
-      },
-      "armor8_dm": {
-        "hp": 35.0
-      },
-      "armor9_dm": {
-        "hp": 35.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 38.5
@@ -107,18 +109,6 @@
         "hp": 30.5
       },
       "flap1_r_dm": {
-        "hp": 30.5
-      },
-      "flap2_l_dm": {
-        "hp": 30.5
-      },
-      "flap2_r_dm": {
-        "hp": 30.5
-      },
-      "flap3_l_dm": {
-        "hp": 30.5
-      },
-      "flap3_r_dm": {
         "hp": 30.5
       },
       "flap_l_dm": {
@@ -565,170 +555,6 @@
       },
       {
         "name": "flap1_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "flap2_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "flap2_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "flap3_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "flap3_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -2252,10 +2078,14 @@
     "Range": 1200.0
   },
   "Sound": {
-    "Engine": "engine05_J52P_N1",
+    "Engine": "engine05_J52",
     "gun": "gun_default"
   },
   "cockpit": {
+    "targetingPodFov": [
+      12.0,
+      2.9
+    ],
     "zoomOutFov": 22.46,
     "zoomInFov": 7.37,
     "sightInFov": 5.66,
@@ -2698,17 +2528,17 @@
   },
   "gunnerOpticFps": {
     "pos": [
-      0.3,
-      -0.2,
+      0.0,
+      -0.4,
       0.0
     ],
     "head": "optic1_turret",
     "crosshairPreset": "test_crosshair",
     "angularLimits": [
-      -180.0,
-      180.0,
-      -55.0,
-      55.0
+      -90.0,
+      90.0,
+      -160.0,
+      15.0
     ],
     "opticType": "targeting",
     "turretNo": 0
@@ -2724,10 +2554,6 @@
   },
   "sensors": {
     "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_apq_156.blk",
-        "dmPart": "radar_dm"
-      },
       {
         "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
@@ -2803,6 +2629,10 @@
       {
         "name": "a_6e_tram_mk4_pod",
         "blk": "gameData/FlightModels/weaponPresets/a_6e_tram_mk4_pod.blk"
+      },
+      {
+        "name": "a_6e_tram_an_ale37a",
+        "blk": "gameData/FlightModels/weaponPresets/a_6e_tram_an_ale37a.blk"
       }
     ]
   },
@@ -2823,6 +2653,7 @@
         "flare1",
         "us_lau_117a_001",
         "aero_1a_adapter_001",
+        "adu_299_001",
         "pylon_l",
         "aero_1a_002",
         "lau_7a_002",
@@ -2833,6 +2664,7 @@
         "flare2",
         "us_lau_117a_002",
         "aero_1a_adapter_002",
+        "adu_299_002",
         "pylon_c",
         "mer_003",
         "ter_003",
@@ -2847,6 +2679,7 @@
         "flare3",
         "us_lau_117a_003",
         "aero_1a_adapter_003",
+        "adu_299_003",
         "pylon1_r",
         "aero_1a_004",
         "lau_7a_004",
@@ -2856,7 +2689,12 @@
         "us_mk4_mod0_pod_004",
         "flare4",
         "us_lau_117a_004",
-        "aero_1a_adapter_004"
+        "aero_1a_adapter_004",
+        "adu_299_004",
+        "an_ale37a_pod_001",
+        "an_ale37a_pod_002",
+        "an_ale37a_pod_003",
+        "an_ale37a_pod_004"
       ]
     },
     "HideDmParts": {
@@ -2887,9 +2725,9 @@
               "emitter": "optic1_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
               "aimForOperatedShell": true,
               "turret": {
                 "head": "optic1_turret",
@@ -2898,12 +2736,12 @@
               },
               "limits": {
                 "yaw": [
-                  -180.0,
-                  180.0
+                  -90.0,
+                  90.0
                 ],
                 "pitch": [
-                  -55.0,
-                  55.0
+                  -90.0,
+                  90.0
                 ]
               }
             }
@@ -2920,9 +2758,9 @@
                 "emitter": "optic1_gun",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
+                "speedYaw": 200.0,
+                "speedPitch": 200.0,
+                "parkInDeadzone": true,
                 "aimForOperatedShell": true,
                 "turret": {
                   "head": "optic1_turret",
@@ -2931,12 +2769,12 @@
                 },
                 "limits": {
                   "yaw": [
-                    -180.0,
-                    180.0
+                    -90.0,
+                    90.0
                   ],
                   "pitch": [
-                    -55.0,
-                    55.0
+                    -90.0,
+                    90.0
                   ]
                 }
               },
@@ -2974,9 +2812,8 @@
             "ShowNodes": {
               "node": [
                 "pylon1_l",
-                "aero_1a_001",
                 "lau_7a_001",
-                "aero_1a_adapter_001"
+                "adu_299_001"
               ]
             },
             "Weapon": {
@@ -2995,9 +2832,8 @@
             "ShowNodes": {
               "node": [
                 "pylon1_l",
-                "aero_1a_001",
-                "lau_7a_001",
-                "aero_1a_adapter_001"
+                "adu_299_001",
+                "lau_7a_001"
               ]
             },
             "Weapon": {
@@ -3040,8 +2876,8 @@
             }
           },
           {
-            "iconType": "guided_bomb_middle_laser",
-            "name": "us_gbu_12",
+            "iconType": "guided_bomb_middle_laser_x2",
+            "name": "us_gbu_12_slot1",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
               "node": [
@@ -3051,9 +2887,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
-              "emitter": "bomb_2000lb_001",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2_x2.blk",
+              "emitter": "ter_001",
               "external": true,
               "separate": true
             }
@@ -3070,9 +2905,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
-              "emitter": "bomb_2000lb_001",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/ter_us_gbu_16_paveway_2.blk",
+              "emitter": "ter_001",
               "external": true,
               "separate": true
             }
@@ -3217,6 +3051,39 @@
               "traceOffset": 1,
               "counterIndex": 1
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "ltc",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "pylon1_l",
+                "an_ale37a_pod_001",
+                "flare3",
+                "flare4"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 120,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 120,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       },
@@ -3232,9 +3099,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_l",
-                "aero_1a_002",
-                "lau_7a_002",
-                "aero_1a_adapter_002"
+                "adu_299_002",
+                "lau_7a_002"
               ]
             },
             "Weapon": {
@@ -3253,9 +3119,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_l",
-                "aero_1a_002",
-                "lau_7a_002",
-                "aero_1a_adapter_002"
+                "adu_299_002",
+                "lau_7a_002"
               ]
             },
             "Weapon": {
@@ -3298,8 +3163,8 @@
             }
           },
           {
-            "iconType": "guided_bomb_middle_laser",
-            "name": "us_gbu_12",
+            "iconType": "guided_bomb_middle_laser_x2",
+            "name": "us_gbu_12_slot2",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
               "node": [
@@ -3309,9 +3174,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
-              "emitter": "bomb_2000lb_002",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/mer_us_gbu_12_paveway_2_x2_left.blk",
+              "emitter": "mer_002",
               "external": true,
               "separate": true
             }
@@ -3328,9 +3192,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
-              "emitter": "bomb_2000lb_002",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/ter_us_gbu_16_paveway_2.blk",
+              "emitter": "ter_002",
               "external": true,
               "separate": true
             }
@@ -3475,6 +3338,39 @@
               "traceOffset": 1,
               "counterIndex": 1
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "ltc",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "pylon_l",
+                "an_ale37a_pod_002",
+                "flare5",
+                "flare6"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 120,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 120,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       },
@@ -3485,23 +3381,8 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_special_group_x3",
-            "name": "lau_10a",
-            "reqModification": "f4c_zuni",
-            "ShowNodes": {
-              "node": "pylon_c"
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_10a_ffar_mighty_mouse.blk",
-              "emitter": "ter_003",
-              "external": true,
-              "machLimit": 1.01
-            }
-          },
-          {
             "iconType": "guided_bomb_middle_laser",
-            "name": "us_gbu_12",
+            "name": "us_gbu_12_slot3",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
               "node": [
@@ -3511,9 +3392,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
-              "emitter": "bomb_2000lb_003",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2.blk",
+              "emitter": "ter_003",
               "external": true,
               "separate": true
             }
@@ -3530,9 +3410,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
-              "emitter": "bomb_2000lb_003",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/ter_us_gbu_16_paveway_2.blk",
+              "emitter": "ter_003",
               "external": true,
               "separate": true
             }
@@ -3663,9 +3542,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_r",
-                "aero_1a_003",
-                "lau_7a_003",
-                "aero_1a_adapter_003"
+                "adu_299_003",
+                "lau_7a_003"
               ]
             },
             "Weapon": {
@@ -3684,9 +3562,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_r",
-                "aero_1a_003",
-                "lau_7a_003",
-                "aero_1a_adapter_003"
+                "adu_299_003",
+                "lau_7a_003"
               ]
             },
             "Weapon": {
@@ -3729,8 +3606,8 @@
             }
           },
           {
-            "iconType": "guided_bomb_middle_laser",
-            "name": "us_gbu_12",
+            "iconType": "guided_bomb_middle_laser_x2",
+            "name": "us_gbu_12_slot4",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
               "node": [
@@ -3740,9 +3617,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
-              "emitter": "bomb_2000lb_004",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/mer_us_gbu_12_paveway_2_x2_right.blk",
+              "emitter": "mer_004",
               "external": true,
               "separate": true
             }
@@ -3759,9 +3635,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
-              "emitter": "bomb_2000lb_004",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/ter_us_gbu_16_paveway_2.blk",
+              "emitter": "ter_004",
               "external": true,
               "separate": true
             }
@@ -3906,6 +3781,39 @@
               "traceOffset": 1,
               "counterIndex": 1
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "ltc",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "pylon_r",
+                "an_ale37a_pod_003",
+                "flare7",
+                "flare8"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare7",
+                "bullets": 120,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare8",
+                "bullets": 120,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       },
@@ -3921,9 +3829,8 @@
             "ShowNodes": {
               "node": [
                 "pylon1_r",
-                "aero_1a_004",
-                "lau_7a_004",
-                "aero_1a_adapter_004"
+                "adu_299_004",
+                "lau_7a_004"
               ]
             },
             "Weapon": {
@@ -3942,9 +3849,8 @@
             "ShowNodes": {
               "node": [
                 "pylon1_r",
-                "aero_1a_004",
-                "lau_7a_004",
-                "aero_1a_adapter_004"
+                "adu_299_004",
+                "lau_7a_004"
               ]
             },
             "Weapon": {
@@ -3987,8 +3893,8 @@
             }
           },
           {
-            "iconType": "guided_bomb_middle_laser",
-            "name": "us_gbu_12",
+            "iconType": "guided_bomb_middle_laser_x2",
+            "name": "us_gbu_12_slot5",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
               "node": [
@@ -3998,9 +3904,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
-              "emitter": "bomb_2000lb_005",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2_x2.blk",
+              "emitter": "ter_005",
               "external": true,
               "separate": true
             }
@@ -4017,9 +3922,8 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
-              "emitter": "bomb_2000lb_005",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/ter_us_gbu_16_paveway_2.blk",
+              "emitter": "ter_005",
               "external": true,
               "separate": true
             }
@@ -4164,6 +4068,39 @@
               "traceOffset": 1,
               "counterIndex": 1
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "ltc",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "pylon1_r",
+                "an_ale37a_pod_004",
+                "flare9",
+                "flare10"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare9",
+                "bullets": 120,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare10",
+                "bullets": 120,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
         ]
       }

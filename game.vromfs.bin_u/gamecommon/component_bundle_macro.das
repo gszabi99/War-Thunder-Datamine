@@ -114,13 +114,13 @@ def fn_or_es_apply(var func; var arguments; var body : ExpressionPtr; var bundle
     funcArgsTbl["{fnArg.name}"] = unsafe(addr(fnArg.at))
 
   var i = 0;
-  var argCount = length(arguments);
-  while i < argCount
+  var argIndex = 0;
+  while i < length(arguments)
     assume arg = arguments[i]
     var stubFuncArg <- clone_variable(arg)
-
     let bundleArgName = "{arg.name}"
     let bundleArgIdx = find_index(bundleArgs, bundleArgName)
+
     if bundleArgIdx != -1
       bundleArgs |> erase(bundleArgIdx)
       if arg._type.baseType != Type tTuple
@@ -129,6 +129,7 @@ def fn_or_es_apply(var func; var arguments; var body : ExpressionPtr; var bundle
       bundleArgNames |> push(bundleArgName)
 
       var fields : array<string>
+      var emplaceIdx = i
       for argName, argType in arg._type.argNames, arg._type.argTypes
         let fieldName = "{argName}"
         let conflictingFuncArgAt = find(funcArgsTbl, fieldName)
@@ -151,10 +152,10 @@ def fn_or_es_apply(var func; var arguments; var body : ExpressionPtr; var bundle
           at=argType.at,
           name := fieldName
         ]]
-        arguments |> emplace_new(variable)
+        arguments |> emplace(variable, ++emplaceIdx)
 
       annArgs |> emplace <| [[auto bundleArgName, [[RttiValue tString=join(fields, ",")]] ]]
-      annArgs |> emplace <| [[auto bundleArgName, [[RttiValue tInt=i]] ]]
+      annArgs |> emplace <| [[auto bundleArgName, [[RttiValue tInt=argIndex]] ]]
 
       var stubVar <- clone_variable(arg)
       var stubVarType <- new [[TypeDecl() baseType=Type tPointer, at=arg.at]]
@@ -172,10 +173,11 @@ def fn_or_es_apply(var func; var arguments; var body : ExpressionPtr; var bundle
       stubFuncArg._type <- new [[TypeDecl() baseType=Type tString, at=arg.at]]
 
       arguments |> erase(i)
-      argCount--
+      i = emplaceIdx
     else
       i++
     stubFuncArgs |> emplace(stubFuncArg)
+    argIndex++
 
   (body as ExprBlock).list |> emplace(stubLet, 0)
   stubLet := null
@@ -222,18 +224,29 @@ class ReplaceBundleCallsWithStubsAndValidate : AstVisitor
   bundleByFieldName : table<string; string>
 
   def override visitExprCall(var expr : smart_ptr<ExprCall>) : ExpressionPtr
+    if "{expr.name}" == "make_bundle"
+      var bundleNames : array<string>
+      for arg in expr.arguments
+        if arg is ExprVar
+          let argName = "{(arg as ExprVar).name}"
+          bundleNames |> push(argName)
+      if length(bundleNames) == 0
+        return [[ExpressionPtr]]
+      return <- new [[ExprConstString() at=expr.at, value := join(bundleNames, ","), genFlags=ExprGenFlags generated]]
+
     var i = 0
-    var has_bundles = false
+    var hasBundles = false
     while i < length(expr.arguments)
       assume arg = expr.arguments[i]
       if arg is ExprVar && bundleArgNames |> find_index("{(arg as ExprVar).name}") != -1
         var argStub <- new [[ExprConstString() at=arg.at, value := "{(arg as ExprVar).name}", genFlags=ExprGenFlags generated]]
         expr.arguments[i] := null
         expr.arguments[i] <- argStub
-        has_bundles = true
-      else
-        i++
-    if has_bundles
+        hasBundles = true
+      elif arg is ExprConstString && arg.genFlags.generated
+        hasBundles = true
+      i++
+    if hasBundles
       expr.name := "{expr.name}__stub"
     return expr
 
@@ -256,7 +269,7 @@ class BundleArgsAnn : AstFunctionAnnotation
 {}
 
 [macro_function]
-def fn_or_es_get_bundles(var func)
+def fn_or_es_get_bundles(func)
   var bundles : table<string; array<string>>
   for ann in func.annotations
     if "{ann.annotation.name}" == "_bundle_args"
@@ -267,7 +280,7 @@ def fn_or_es_get_bundles(var func)
 
 
 [macro_function]
-def fn_or_es_get_bundle_indices(var func)
+def fn_or_es_get_bundle_indices(func)
   var bundles : table<int; string>
   for ann in func.annotations
     if "{ann.annotation.name}" == "_bundle_args"
@@ -319,46 +332,67 @@ class RestoreFieldsAndCallsVisitor : AstVisitor
             macro_error(compiling_program(), expr.at, "field {expr.name} is not present in bundle {bundleName}")
     return expr
 
-  def override visitExprCall(var expr : smart_ptr<ExprCall>) : ExpressionPtr
+  def override visitExprCall(expr : smart_ptr<ExprCall>) : ExpressionPtr
     let func_name = "{expr.func.name}"
     let postfix = "__stub"
     if !ends_with(func_name, postfix)
       return expr
 
+    var exprClone <- clone_expression(expr)
+    var exprCall = exprClone as ExprCall
     var bundles <- fn_or_es_get_bundles(expr.func)
     var bundleIndices <- fn_or_es_get_bundle_indices(expr.func)
-    expr.name := func_name |> slice(0, length(func_name) - length(postfix))
+    exprCall.name := func_name |> slice(0, length(func_name) - length(postfix))
 
-    var i = length(expr.arguments) - 1
+    var hasErrors = false
+    var exprChanged = false
+
+    var i = length(exprCall.arguments) - 1
     while i >= 0
-      assume arg = expr.arguments[i]
+      assume arg = exprCall.arguments[i]
       if key_exists(bundleIndices, i) && arg is ExprConstString && arg.genFlags.generated
-        let bundleName = "{(arg as ExprConstString).value}"
-        var availableFields = availableBundles |> find(bundleName)
-        for field in bundles[bundleIndices[i]]
-          if availableFields != null && *availableFields |> find_index(field) != -1
-            expr.arguments |> emplace_new() <| new [[ExprVar()
-              at=arg.at,
-              name := field,
-              genFlags=ExprGenFlags generated
-            ]]
+        let bundleNames <- "{(arg as ExprConstString).value}" |> split(",")
+        var availableFields : table<string; bool>
+        for bundleName in bundleNames
+          let bundleFields = availableBundles |> find(bundleName)
+          if bundleFields != null
+            for bundleField in *bundleFields
+              availableFields[bundleField] = true
           else
-            expr.arguments |> emplace_new() <| new [[ExprField()
-              at=arg.at,
-              name := field,
-              value <- new [[ExprRef2Value()
-                at=arg.at,
-                subexpr <- new [[ExprVar()
-                  at=arg.at,
-                  name := bundleName,
-                  genFlags=ExprGenFlags generated
-                ]]
-              ]]
-            ]]
-        changed = true
-        expr.arguments |> erase(i)
+            availableFields[bundleName] = true
+
+        var emplaceIdx = i;
+        var missingFields : array<string>
+        for field in bundles[bundleIndices[i]]
+          var expandedArg : ExpressionPtr <- new [[ExprVar()
+            at=arg.at,
+            name := field,
+            genFlags=ExprGenFlags generated
+          ]]
+          exprCall.arguments |> emplace(expandedArg, ++emplaceIdx)
+
+          if !key_exists(availableFields, field)
+            hasErrors = true
+            missingFields |> push(field)
+
+        if length(missingFields) > 0
+          if length(bundleNames) == 1
+            macro_error(compiling_program(), arg.at, "fields {join(missingFields, ", ")} dont exist in bundle {bundleNames[0]}")
+          else
+            macro_error(compiling_program(), arg.at, "fields {join(missingFields, ", ")} dont exist in make_bundle({join(bundleNames, ", ")})")
+
+        exprChanged = true
+        exprCall.arguments |> erase(i)
       i--
-    return expr
+
+    if hasErrors
+      exprCall := null
+      exprClone := null
+      return expr
+    else
+      if exprChanged
+        changed = true
+      return <- exprClone
 
 
 [macro_function]

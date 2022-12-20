@@ -4,7 +4,8 @@ let string = require("string")
 let {Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude} = require("%rGui/planeState/planeFlyState.nut");
 let {IlsColor, TargetPosValid, TargetPos, CannonMode,
         BombCCIPMode, RocketMode, IlsLineScale} = require("%rGui/planeState/planeToolsState.nut")
-let {mpsToKmh, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
+let {mpsToKmh, baseLineWidth} = require("ilsConstants.nut")
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
 let {compassWrap, generateCompassMarkJ8} = require("ilsCompasses.nut")
 let {TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
 let {flyDirection, angleTxt, shimadzuRoll, ShimadzuPitch, ShimadzuAlt, aimMark} = require("commonElements.nut")

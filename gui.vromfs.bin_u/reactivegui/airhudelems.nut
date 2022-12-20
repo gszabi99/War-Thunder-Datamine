@@ -39,6 +39,8 @@ let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 
 let { isInitializedMeasureUnits, measureUnitsNames } = require("options/optionsMeasureUnits.nut")
 
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
+
 let aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
 
 let agmAimState = require("agmAimState.nut")
@@ -52,15 +54,6 @@ let compass = require("compass.nut")
 const NUM_VISIBLE_ENGINES_MAX = 6
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
-
-enum GuidanceLockResult {
-  RESULT_INVALID = -1
-  RESULT_STANDBY = 0
-  RESULT_WARMING_UP = 1
-  RESULT_LOCKING = 2
-  RESULT_TRACKING = 3
-  RESULT_LOCK_AFTER_LAUNCH = 4
-}
 
 let verticalSpeedInd = function(height, style, color) {
   return style.__merge({

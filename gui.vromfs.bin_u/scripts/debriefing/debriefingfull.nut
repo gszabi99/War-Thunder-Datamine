@@ -905,12 +905,15 @@ let function getDebriefingGiftItemsInfo(skipItemId = null) {
 }
 
 let function gatherDebriefingResult() {
+  let missionBlk = ::DataBlock()
+  ::get_current_mission_desc(missionBlk)
+
   let gm = ::get_game_mode()
   if (gm==GM_DYNAMIC)
     dynamicResult = ::dynamic_apply_status();
 
   debriefingResult = {}
-
+  debriefingResult.checkActivityByPlayerDamage <- missionBlk?.netDifficultyBlk.checkActivityByPlayerDamage ?? false
   debriefingResult.isSucceed <- (::get_mission_status() == MISSION_STATUS_SUCCESS)
   debriefingResult.restoreType <- ::get_mission_restore_type()
   debriefingResult.gm <- gm

@@ -404,7 +404,6 @@ let prizeViewConfig = {
       } else if (st.stackType == STACK_TYPE.VEHICLE)
       {
         data = {
-          icon = this.getPrizeTypeIcon(st.prize)
           title = this._getStackUnitsText(st)
         }
       } else if (st.stackType == STACK_TYPE.CURRENCY)

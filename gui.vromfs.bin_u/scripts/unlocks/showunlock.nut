@@ -19,6 +19,8 @@ let { openLinkWithSource } = require("%scripts/web/webActionsForPromo.nut")
 let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
+let { showGuestEmailRegistration, needShowGuestEmailRegistration
+} = require("%scripts/user/suggestionEmailRegistration.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config)
@@ -259,6 +261,12 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 
   function onMsgLink(obj)
   {
+    if (needShowGuestEmailRegistration()) {
+      base.goBack()
+      showGuestEmailRegistration()
+      return
+    }
+
     if (getTblValue("type", this.config) == "regionalPromoPopup")
       ::add_big_query_record("promo_popup_click",
         ::save_to_json({ id = this.config?.id ?? this.config?.link ?? this.config?.popupImage ?? - 1 }))

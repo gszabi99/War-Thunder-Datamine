@@ -122,7 +122,7 @@ let function basicASP23(width, height) {
   return @() {
     size = [width, height]
     children = [
-      compassWrap(width, height, 0.25, generateCompassMarkASP, 0.6),
+      compassWrap(width, height, 0.25, generateCompassMarkASP, 0.6, 5.0, false, -1, Fonts.ussr_ils),
       ASPCompassMark,
       ASPSpeed,
       ASPAltitude

@@ -1,30 +1,38 @@
+#explicit-this
+#no-root-fallback
 let { Watched } = require("frp")
-let { subscribe } = require("eventbus")
+let eventbus = require("eventbus")
+let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 
-let extData = {}
+let sharedData = {}
 
-let function update(config) {
-  foreach (name, value in config) {
-    let watch = extData?[name]
-    if (watch == null)
-      continue
-
-    watch(value)
-  }
-}
-
-let function make(name, defValue) {
-  if (name in extData) {
+let function make(name, val) {
+  if (sharedData?[name].watch != null) {
     assert(false, $"extWatched: duplicate name: {name}")
-    return extData[name]
+    return sharedData[name].watch
   }
 
-  let res = Watched(defValue)
-  extData[name] <- res
-  res.whiteListMutatorClosure(update)
+  let key = ["EXT_WATCHED_STATE", name]
+  if (ndbExists(key))
+    val = ndbRead(key)
+  else
+    ndbWrite(key, val)
+
+  let res = Watched(val)
+  let data = { key, watch = res.weakref() }
+  sharedData[name] <- data
+
   return res
 }
 
-subscribe("updateExtWatched", update)
+eventbus.subscribe("extWatched.update",
+  function(config) {
+    foreach (name, value in config) {
+      let data = sharedData?[name]
+      if (data?.watch == null)
+        return
+      data.watch(value)
+    }
+  })
 
 return make

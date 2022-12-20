@@ -78,6 +78,9 @@
       },
       "superstructure_top_dm": {
         "armorThickness": 10.0
+      },
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0
       }
     },
     "turret": {
@@ -418,6 +421,17 @@
       "ammo_turret_28_dm": {},
       "ammo_turret_29_dm": {},
       "ammo_turret_30_dm": {}
+    }
+  },
+  "xray_viewer_data": {
+    "armorArrayHull": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "titleLoc": "RHA_tank_modern",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm"
+        }
+      }
     }
   },
   "sound": {
@@ -1091,8 +1105,18 @@
     },
     "tracks": {
       "animationMultiplier": -0.68,
-      "height": 0.018,
-      "width": 0.4
+      "height": 0.055,
+      "width": 0.4,
+      "tracksTensionK": [
+        5.0,
+        10.0,
+        4.0
+      ],
+      "trackMesh": "jp_sub_i_ii_20mm_phys_track_line",
+      "trackLen": 0.15,
+      "trackCount": 80,
+      "trackFadeTime": 1.1,
+      "trackStartOffset": 0.03
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -1135,7 +1159,7 @@
         -0.2,
         0.2
       ],
-      "defaultGearRadius": 0.38,
+      "defaultGearRadius": 0.35,
       "topGearRadius": 0.11,
       "frontBackGearRadius": 0.315,
       "defaultDampeningForce": [
@@ -1143,7 +1167,11 @@
         100000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_r_drive": 0.27,
+      "wheel_l_drive": 0.27,
+      "wheel_r_back": 0.26,
+      "wheel_l_back": 0.26
     }
   },
   "PhysSys": {

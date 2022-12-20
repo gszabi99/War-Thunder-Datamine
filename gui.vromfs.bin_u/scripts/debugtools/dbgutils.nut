@@ -4,7 +4,6 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 let userstat = require("userstat")
 let { format, split_by_chars } = require("string")
-let { send } = require("eventbus")
 // warning disable: -file:forbidden-function
 
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -333,7 +332,6 @@ let function debug_change_resolution(shouldIncrease = true) {
     return done()
   ::setSystemConfigOption("video/resolution", newResolution)
   applyRendererSettingsChange(true, false, function() {
-    send("updateExtWatched", { resolution = newResolution })
     done()
   })
 }

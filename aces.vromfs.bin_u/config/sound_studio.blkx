@@ -266,14 +266,6 @@
           "async": false,
           "preload": false
         },
-        "toon": {
-          "async": true,
-          "preload": false
-        },
-        "toon.assets": {
-          "async": true,
-          "preload": false
-        },
         "event": {
           "async": true,
           "preload": false
@@ -2631,6 +2623,31 @@
       "eventBack": "engine05_R195_ai",
       "eventSurround": "",
       "eventLod1": "engine05_R195_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine05_J52_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_J52_ai",
+      "eventSurround": "",
+      "eventLod1": "engine05_J52_ai",
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5380,6 +5397,17 @@
       "distScaleOnNotHero": 1.0
     }
   },
+  "snow_drag": {
+    "outside": {
+      "path": "ground/effects",
+      "eventBack": "snow_drag",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
   "engine_tank_ai_middle": {
     "effects": {
       "path": "ground/engines/ai/panzer4",
@@ -7810,6 +7838,56 @@
       "event_start_cockpit_r": "engine05_R195_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_R195_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_R195_stop_cockpit_r",
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.006,
+      "loadScale": 1.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_J52": {
+    "startTimeout": 8.0,
+    "stopTimeout": 0.1,
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine05_J52_start",
+      "eventStop": "engine05_J52_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_J52",
+      "eventSurround": "",
+      "eventLod1": "engine05_J52",
+      "rpmSmooth": 0.006,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_J52_cockpit_l",
+      "event_cockpit_r": "engine05_J52_cockpit_r",
+      "event_start_cockpit_l": "engine05_J52_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_J52_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_J52_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_J52_stop_cockpit_r",
       "leftPos": [
         -0.5,
         1.0,
@@ -17228,6 +17306,8 @@
     "breachesCritThreshold": 4.5,
     "breachesSeriousThreshold": 3.5,
     "aircraftDetectionRadius": 2000.0,
+    "detectionReportSideCooldown": 25.0,
+    "detectionReportGlobalCooldown": 25.0,
     "isAdSystemExtended": {
       "Russian": {
         "warShip": true
@@ -17868,25 +17948,25 @@
         }
       },
       "eventsExtended": {
-        "torpedoInView": {
+        "targetForwardOff": {
           "event": "07_environment/voice_message_officer_forward",
           "playerRole": "commander",
           "player": -1,
           "minSpeechInterval": 0.0
         },
-        "torpedoInViewLeft": {
+        "targetLeftOff": {
           "event": "07_environment/voice_message_officer_left",
           "playerRole": "commander",
           "player": -1,
           "minSpeechInterval": 0.0
         },
-        "torpedoInViewRight": {
+        "targetRightOff": {
           "event": "07_environment/voice_message_officer_right",
           "playerRole": "commander",
           "player": -1,
           "minSpeechInterval": 0.0
         },
-        "torpedoInViewRear": {
+        "targetBackwardOff": {
           "event": "07_environment/voice_message_officer_backward",
           "playerRole": "commander",
           "player": -1,
@@ -17914,7 +17994,8 @@
           "event": "02_surface_ship_submarine_movement/voice_message_commander_move_stop",
           "playerRole": "commander",
           "player": -1,
-          "delayTime": 1.0
+          "delayTime": 1.0,
+          "minSpeechInterval": 10.0
         },
         "moveFullSpeed": {
           "event": "02_surface_ship_submarine_movement/voice_message_commander_move_full_speed",
@@ -17950,66 +18031,66 @@
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_left",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "moveLeftReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_left_report",
           "playerRole": "sailor",
           "player": -1,
           "delayTime": 1.0,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "moveLeftFull": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_left_full",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "moveLeftFullReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_left_full_report",
           "playerRole": "sailor",
           "player": -1,
           "delayTime": 1.0,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "moveRight": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_right",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "moveRightReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_right_report",
           "playerRole": "sailor",
           "player": -1,
           "delayTime": 1.0,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "moveRightFull": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_right_full",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "moveRightFullReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_right_full_report",
           "playerRole": "sailor",
           "player": -1,
           "delayTime": 1.0,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "rudderStraight": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_straight",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "rudderStraightReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_straight_report",
           "playerRole": "sailor",
           "player": -1,
           "delayTime": 1.0,
-          "minSpeechInterval": 5.0
+          "minSpeechInterval": 20.0
         },
         "depthChargePrepare": {
           "event": "06_ship_activities/voice_message_commander_ship_bombs_prepare",
@@ -18032,7 +18113,7 @@
         "torpedoesPrepare": {
           "event": "06_ship_activities/voice_message_commander_ship_torpedoes_prepare",
           "playerRole": "commander",
-          "minSpeechInterval": 5.0,
+          "minSpeechInterval": 30.0,
           "player": -1
         },
         "torpedoAway": {
@@ -18449,21 +18530,21 @@
           "event": "08_state_ship/voice_message_officer_got_serious_damage",
           "playerRole": "commander",
           "player": -1,
-          "delayTime": 10.0,
+          "delayTime": 5.0,
           "minSpeechInterval": 30.0
         },
         "shipCriticalDamage": {
           "event": "08_state_ship/voice_message_officer_got_critical_damage",
           "playerRole": "commander",
           "player": -1,
-          "delayTime": 15.0,
+          "delayTime": 10.0,
           "minSpeechInterval": 30.0
         },
         "shipGotDamage": {
           "event": "08_state_ship/voice_message_officer_got_damage",
           "playerRole": "commander",
           "player": -1,
-          "delayTime": 20.0,
+          "delayTime": 25.0,
           "minSpeechInterval": 60.0
         },
         "compartmentFlooded": {
@@ -18530,7 +18611,7 @@
           "event": "08_state_ship/voice_message_sailor_got_engine_damage",
           "playerRole": "sailor",
           "player": -1,
-          "minSpeechInterval": 30.0
+          "minSpeechInterval": 40.0
         },
         "engineFire": {
           "event": "08_state_ship/voice_message_sailor_engine_fire",
@@ -18566,7 +18647,7 @@
           "event": "08_state_ship/voice_message_sailor_waterline_breach",
           "playerRole": "sailor",
           "player": -1,
-          "minSpeechInterval": 10.0,
+          "minSpeechInterval": 20.0,
           "eventsChancePlay": 1.0
         },
         "stranded": {
@@ -18580,7 +18661,13 @@
           "playerRole": "commander",
           "player": -1,
           "delayTime": 1.5,
-          "minSpeechInterval": 10.0
+          "minSpeechInterval": 25.0
+        },
+        "acousticFarHit": {
+          "event": "07_environment/voice_message_officer_submarine_hit",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 5.0
         },
         "enemyDestroyed": {
           "event": "07_environment/voice_message_officer_target_destroyed",
@@ -18617,33 +18704,39 @@
           "delayTime": 0.0,
           "minSpeechInterval": 0.0
         },
+        "approaching": {
+          "event": "07_environment/voice_message_officer_approaching",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 0.0
+        },
         "fightFire": {
           "event": "09_survivability/voice_message_commander_fight_fire",
           "playerRole": "commander",
           "player": -1,
           "delayTime": 0.0,
-          "minSpeechInterval": 25.0
+          "minSpeechInterval": 30.0
         },
         "extinguisherActivated": {
           "event": "09_survivability/voice_message_commander_fight_fire",
           "playerRole": "commander",
           "player": -1,
           "delayTime": 0.0,
-          "minSpeechInterval": 25.0
+          "minSpeechInterval": 30.0
         },
         "dryCompartments": {
           "event": "09_survivability/voice_message_commander_drying_compartments",
           "playerRole": "commander",
           "player": -1,
           "delayTime": 0.0,
-          "minSpeechInterval": 25.0
+          "minSpeechInterval": 30.0
         },
         "straightenRoll": {
           "event": "09_survivability/voice_message_commander_straighten_roll",
           "playerRole": "commander",
           "player": -1,
           "delayTime": 0.0,
-          "minSpeechInterval": 25.0
+          "minSpeechInterval": 30.0
         },
         "survivability": {
           "event": "09_survivability/voice_message_commander_survivability",
@@ -18833,7 +18926,7 @@
       "azimuth": {
         "event": "07_environment/bearing/voice_message_officer_bearing_<angle>",
         "step": 20,
-        "num": 18,
+        "num": 20,
         "player": -1,
         "playerRole": "commander",
         "minSpeechInterval": 0.0

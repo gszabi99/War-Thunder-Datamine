@@ -3,7 +3,8 @@ let {floor} = require("%sqstd/math.nut")
 let {IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   RadarTargetDistRate, RocketMode, CannonMode, BombCCIPMode, BombingMode,
   RadarTargetPos, TargetPos, TargetPosValid, TimeBeforeBombRelease, DistToTarget } = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile, GuidanceLockResult} = require("ilsConstants.nut")
+let {baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile} = require("ilsConstants.nut")
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
 let {Tangage, Overload, Altitude, Speed, Roll, Mach} = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")

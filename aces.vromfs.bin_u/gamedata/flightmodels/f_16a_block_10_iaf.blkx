@@ -11,6 +11,7 @@
   "haveCCRPForBombs": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
+  "ilsMarconiAvionics": true,
   "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
@@ -43,9 +44,6 @@
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1851,74 +1849,59 @@
     "sightOutFov": 40.5,
     "sightFov": 1.0,
     "headPos": [
-      6.05,
-      0.23,
+      4.25,
+      0.85,
       0.0
     ],
     "headPosOnShooting": [
-      6.15,
-      0.23,
+      4.35,
+      0.85,
       0.0
-    ],
-    "mirror": true,
-    "mirrorPos": [
-      6.446,
-      0.206,
-      0.0
-    ],
-    "mirrorNorm": [
-      -0.999,
-      0.042,
-      0.0
-    ],
-    "mirrorNode": [
-      "blister2",
-      "blister3"
     ],
     "lightPos": [
-      6.533985,
-      -0.011147,
-      0.115243
+      4.95,
+      0.5,
+      0.0
     ],
     "lightColor": [
-      0.2,
-      0.0,
-      0.01
+      0.05,
+      0.7,
+      0.1
     ],
-    "lightRadius": 0.2,
+    "lightRadius": 0.35,
     "lightPos1": [
-      6.514319,
-      0.00916,
-      -0.123631
+      4.78,
+      0.3,
+      0.4
     ],
     "lightColor1": [
-      0.2,
-      0.0,
-      0.01
+      0.05,
+      0.7,
+      0.1
     ],
     "lightRadius1": 0.2,
     "lightPos2": [
-      6.519775,
-      -0.216203,
-      0.198854
+      4.78,
+      0.3,
+      -0.4
     ],
     "lightColor2": [
-      0.2,
-      0.0,
-      0.01
+      0.05,
+      0.7,
+      0.1
     ],
-    "lightRadius2": 0.25,
+    "lightRadius2": 0.2,
     "lightPos3": [
-      6.526531,
-      -0.241413,
-      -0.127213
+      4.88,
+      0.65,
+      0.0
     ],
     "lightColor3": [
-      0.2,
-      0.0,
-      0.01
+      0.05,
+      0.7,
+      0.1
     ],
-    "lightRadius3": 0.25,
+    "lightRadius3": 0.15,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -1929,30 +1912,38 @@
         1.0
       ],
       "pedals": [
-        -1.5,
-        1.5
+        -1.0,
+        1.0
       ],
       "pedals1": [
-        -1.5,
-        1.5
+        -1.0,
+        1.0
       ],
       "pedals2": [
-        -1.5,
-        1.5
+        -1.0,
+        1.0
       ],
       "pedals3": [
-        -1.5,
-        1.5
+        -1.0,
+        1.0
       ],
       "pedals4": [
-        -1.5,
-        1.5
+        -1.0,
+        1.0
       ],
       "pedals5": [
-        -1.5,
-        1.5
+        -1.0,
+        1.0
+      ],
+      "pedals6": [
+        -1.0,
+        1.0
       ],
       "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle_1": [
         0.0,
         1.0
       ],
@@ -1960,7 +1951,7 @@
         0.0,
         1.0
       ],
-      "weapon3": [
+      "weapon4": [
         0.0,
         1.0
       ],
@@ -2002,9 +1993,9 @@
         0.0,
         1000.0
       ],
-      "altitude1_hour": [
+      "altitude1_10k": [
         0.0,
-        50000.0
+        100000.0
       ],
       "altitude1_min": [
         0.0,
@@ -2028,16 +2019,28 @@
         180.0
       ],
       "aviahorizon_pitch1": [
-        -45.0,
-        45.0
+        -90.0,
+        90.0
       ],
       "aviahorizon_roll1": [
         -180.0,
         180.0
       ],
       "aoa": [
-        0.0,
-        30.0
+        -5.0,
+        32.0
+      ],
+      "aoa_indexer1": [
+        14.0,
+        17.0
+      ],
+      "aoa_indexer2": [
+        11.0,
+        14.0
+      ],
+      "aoa_indexer3": [
+        9.0,
+        11.0
       ],
       "compass": [
         0.0,
@@ -2059,33 +2062,33 @@
         0.0,
         60.0
       ],
-      "fuel_consume": [
+      "rpm": [
         0.0,
-        150.0
-      ],
-      "rpm_hour": [
-        0.0,
-        7510.0
-      ],
-      "rpm_min": [
-        0.0,
-        1000.0
+        10200.0
       ],
       "oil_pressure": [
         0.0,
         160.0
       ],
       "water_temperature": [
-        0.0,
-        1000.0
+        200.0,
+        1200.0
       ],
       "fuel_pressure": [
         0.0,
         15.0
       ],
+      "fuel_consume": [
+        0.0,
+        800.0
+      ],
       "fuel": [
         0.0,
-        2903.0
+        1905.0
+      ],
+      "fuel1": [
+        0.0,
+        1905.0
       ],
       "carb_temperature": [
         -50.0,
@@ -2106,30 +2109,66 @@
       "gears_lamp": [
         0.0,
         0.0
-      ],
-      "ammo_counter1": [
-        1000.0,
-        0.0
-      ],
-      "ammo_counter2": [
-        1000.0,
-        0.0
       ]
     },
     "multifunctionDisplays": {
-      "display": {
-        "textureArea": [
-          0.0,
-          0.6,
-          0.5,
-          1.15
-        ],
-        "page": {
-          "type": "radar_b_round",
-          "radarScale": 1.1,
-          "radarColor": "/3Mb/w=="
+      "display": [
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "monoDisplayColor": [
+            0.37,
+            0.45,
+            0.4
+          ],
+          "cameraFromShell": true,
+          "page": [
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "radarScale": 0.81,
+              "hideRadarBackground": true
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.5,
+            1.0,
+            1.0
+          ],
+          "page": {
+            "type": "rwr",
+            "radarScale": 1.0
+          }
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "page": {
+            "type": "plane_ils",
+            "ilsSize": [
+              0.2,
+              0.2
+            ],
+            "ilsOffsetForce": 0.0,
+            "brightnessMult": 3.5,
+            "ilsColor": "Cv8KZA=="
+          }
         }
-      }
+      ]
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -2156,8 +2195,8 @@
   },
   "gunnerOpticFps": {
     "pos": [
-      -0.2,
-      0.2,
+      1.2,
+      -0.15,
       0.0
     ],
     "head": "optic1_turret",

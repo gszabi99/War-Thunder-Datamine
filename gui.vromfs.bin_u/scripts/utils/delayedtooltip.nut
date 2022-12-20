@@ -18,6 +18,7 @@ let tooltipObjMarkup = "tooltipObj { id:t='{0}'; position:t='root'; order-popup:
 let needActionAfterHoldPID = ::dagui_propid.add_name_id("need-action-after-hold")
 
 local waitPlace = null
+local tooltipData = null // warning disable: -declared-never-used //used to store the subscription context
 local tooltipPlace = null
 local hintPlace = null
 local hintTgt = null
@@ -32,6 +33,7 @@ let function hideWaitIcon() {
 let function hideTooltip() {
   ::show_obj(tooltipPlace, false)
   tooltipPlace = null
+  tooltipData = null
 }
 
 let function hideHint() {
@@ -110,7 +112,10 @@ let function fillTooltipObj(tooltipObj, tooltipId) {
     return false
 
   let tooltipType = getTooltipType(params.ttype)
-  return fillTooltip(tooltipObj, null, tooltipType, params.id, params)
+  let isSuccess = fillTooltip(tooltipObj, null, tooltipType, params.id, params)
+  if(isSuccess)
+    tooltipData = ::g_tooltip.addEventListeners(tooltipObj, null, tooltipType, params.id, params)
+  return isSuccess
 }
 
 let function showTooltipForObj(obj) {

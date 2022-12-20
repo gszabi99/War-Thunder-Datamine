@@ -294,7 +294,8 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
         loc($"missile/guidance/{targetSignatureType == "optic" ? "tv" : "ir"}"))
       if (bulletsData?.bulletType == "aam" || bulletsData?.bulletType == "sam_tank")
       {
-        if (bulletsData.bandMaskToReject != 0)
+        if ( (bulletsData?.gateWidth != null && bulletsData.gateWidth < bulletsData.fov) ||
+             bulletsData.bandMaskToReject != 0)
           addProp(p, loc("missile/eccm"), loc("options/yes"))
         addProp(p, loc("missile/aspect"), bulletsData.rangeBand1 > 0 ?
           loc("missile/aspect/allAspect") : loc("missile/aspect/rearAspect"))
@@ -516,7 +517,7 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
       continue
 
     foreach(p in ["mass", "kineticDmg", "explosiveDmg", "cumulativeDmg", "speed", "fuseDelay", "fuseDelayDist", "explodeTreshold", "operatedDist",
-      "machMax", "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1", "bandMaskToReject"])
+      "machMax", "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1", "fov", "gateWidth", "bandMaskToReject"])
       bulletsData[p] <- bullet_params?[p] ?? 0
 
     foreach(p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange", "rangeMax",

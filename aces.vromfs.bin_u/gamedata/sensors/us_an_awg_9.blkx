@@ -482,7 +482,7 @@
             "signal": "pulseDopplerVelocitySearch"
           },
           "setModeName": {
-            "name": "PD VS standby"
+            "name": "PD HDN VS standby"
           }
         },
         "setPulseDopplerStandbyMode": {
@@ -509,7 +509,7 @@
             "signal": "pulseDopplerSearch"
           },
           "setModeName": {
-            "name": "TWS standby"
+            "name": "TWS HDN standby"
           }
         },
         "resetStandbyMode": {
@@ -570,7 +570,7 @@
             "signal": "pulseDopplerVelocitySearch"
           },
           "setModeName": {
-            "name": "PD VS search"
+            "name": "PD HDN VS search"
           }
         },
         "setPulseDopplerSearchMode": {
@@ -594,7 +594,7 @@
             "signal": "pulseDopplerSearch"
           },
           "setModeName": {
-            "name": "TWS search"
+            "name": "TWS HDN search"
           }
         },
         "resetSearchMode": {
@@ -671,7 +671,7 @@
             "signal": "pulseDopplerVelocitySearch"
           },
           "setModeName": {
-            "name": "PD VS acquisition"
+            "name": "PD HDN VS acquisition"
           }
         },
         "setPulseDopplerDesignationLockMode": {
@@ -727,7 +727,7 @@
             "signal": "pulseDopplerTrack"
           },
           "setModeName": {
-            "name": "TWS acquisition"
+            "name": "TWS HDN acquisition"
           }
         },
         "designatedTargetSearch": {
@@ -1109,6 +1109,19 @@
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "setStandbyMode"
+            }
+          }
+        },
+        "acmTrackToSearch": {
+          "stateFrom": "acmTrack",
+          "command": "acmSwitch",
+          "stateTo": "search",
+          "actions": {
+            "disableTrackModes": {},
+            "resetTrackMode": {},
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSearchMode"
             }
           }
         },

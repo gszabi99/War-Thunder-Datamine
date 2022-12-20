@@ -25,6 +25,8 @@ let { isNeedFirstCountryChoice,
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
 let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
+let { parse }          = require("json")
+
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -293,6 +295,33 @@ let function go_to_account_web_page(bqKey = "")
       ::g_login.firstMainMenuLoad()
     })
   })
+
+  // Personal offers example for developers
+  if (::is_dev_version)
+  {
+    let personalOffers = require("personalOffers")
+    let count          = personalOffers.count()
+
+    log($"PersonalOffers: count = {count}")
+    for (local i = 0; i < count; ++i)
+    {
+      let offer = personalOffers.get(i)
+      log($" get({i}): {typeof offer} [{offer.len()}]")
+      debugTableData(offer)
+    }
+
+    {
+      let offer = personalOffers.find("some-key")
+      log($" find: {typeof offer} [{offer.len()}]")
+    }
+
+    for (local i = 0; i < count; ++i)
+    {
+      let offer = personalOffers.get(i)
+      let json  = parse(offer.text)
+      ::g_popups.add(json?.title, json?.message)
+    }
+  }
 }
 
 let function needAutoStartBattle() {

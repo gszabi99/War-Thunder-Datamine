@@ -1332,6 +1332,8 @@ let function isViewModeTutorAvailableForUser() {
             this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
         }
 
+        if (this.unitBlk.getBool("hasHelmetDesignator", false))
+          desc.append(loc("avionics_hmd"))
         if (this.unitBlk.getBool("havePointOfInterestDesignator", false) || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER)
           desc.append(loc("avionics_aim_spi"))
         if (this.unitBlk.getBool("laserDesignator", false))

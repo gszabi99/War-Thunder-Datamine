@@ -25,8 +25,8 @@ let function launchGuestEmailRegistration() {
 
 let function showGuestEmailRegistration() {
   ::showUnlockWnd({
-    name = loc("mainmenu/PcEmailRegistration")
-    desc = loc("mainmenu/PcEmailRegistration/desc")
+    name = loc("mainmenu/SteamEmailRegistration")
+    desc = loc("mainmenu/guestEmailRegistration/desc")
     popupImage = "ui/images/invite_big.jpg?P1"
     onOkFunc = launchGuestEmailRegistration
     okBtnText = "msgbox/btn_bind"

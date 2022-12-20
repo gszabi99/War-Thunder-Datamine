@@ -40,9 +40,6 @@
   "smokeScreenFx": "smokescreen_no_therm_big",
   "canReloadNonGuns": true,
   "perfectRangefinder": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1236,7 +1233,7 @@
       "speedLossOnManeuver": 0.15
     },
     "engines": {
-      "maxSpeed": 24.69,
+      "maxSpeed": 24.8,
       "maxReverseSpeed": 9.0,
       "speedToTime": {
         "row": [
@@ -1249,7 +1246,7 @@
             3.7
           ],
           [
-            24.69,
+            24.8,
             8.5
           ]
         ]
@@ -2471,6 +2468,30 @@
           "count": 1000
         }
       }
+    },
+    "ammo2": {
+      "weaponTrigger": "mines",
+      "entityMunition": "mines",
+      "removeLoadedAmmo": false,
+      "fatalFire": false,
+      "fatalExplosion": false,
+      "fireEvent": "torpedo_fire",
+      "explosionEvent": "torpedo_explosion",
+      "fireParamsPreset": "ship_torpedo_fire",
+      "shells": [
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_01_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_02_dm": {
+            "count": 1
+          }
+        }
+      ]
     }
   },
   "winch": {
@@ -2536,6 +2557,34 @@
         "deviation": 0.6,
         "rotation": 2.1,
         "collisionNode": "mast_01_dm"
+      }
+    ]
+  },
+  "user_skin": {
+    "name": "pr_131",
+    "replace_tex": [
+      {
+        "from": "camo_glossmediumgreen*"
+      },
+      {
+        "from": "camo_medium_bluegray*"
+      },
+      {
+        "from": "camo_lightgreen*"
+      }
+    ],
+    "set_tex": [
+      {
+        "from": "turret_23mm_zu_2_23_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "tt_minethrowers_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "pr_131_c*",
+        "param": "camo_skin_tex"
       }
     ]
   }

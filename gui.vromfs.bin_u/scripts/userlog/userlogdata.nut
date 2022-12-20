@@ -21,6 +21,7 @@ let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
 let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.nut")
+let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -205,6 +206,9 @@ local logNameByType = {
   let handler = ::handlersManager.getActiveBaseHandler()
   if (!handler)
     return //no need to try do something when no one base handler loaded
+
+  if (!onStartAwards)
+    checkShowExternalTrophyRewardWnd()
 
   let seenIdsArray = []
 

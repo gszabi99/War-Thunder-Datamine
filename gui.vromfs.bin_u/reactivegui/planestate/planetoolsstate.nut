@@ -16,6 +16,7 @@ let DistToSafety = Watched(0.0)
 let DistToTarget = Watched(0.0)
 let RocketMode = Watched(false)
 let CannonMode = Watched(false)
+let AirCannonMode = Watched(false)
 let BombCCIPMode = Watched(false)
 let BlkFileName = Watched("")
 let IsMfdEnabled = Watched(false)
@@ -82,7 +83,8 @@ let planeState = {
   MfdVdiVisible,
   MfdVdiPosSize,
   VdiColor,
-  IsOnGround
+  IsOnGround,
+  AirCannonMode
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

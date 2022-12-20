@@ -2165,8 +2165,12 @@
         "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_rocket_aim9l.blk"
       },
       {
-        "name": "harrier_frs1_rocket_matra155_dlt_matra155",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_rocket_matra155_dlt_matra155.blk"
+        "name": "harrier_frs1_rocket_aim9l_x2",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_rocket_aim9l_x2.blk"
+      },
+      {
+        "name": "harrier_frs1_rocket_matra7",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_rocket_matra7.blk"
       },
       {
         "name": "harrier_frs1_bomb_1000lbs",
@@ -2181,16 +2185,16 @@
         "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_bomb_1000lbs_aim9.blk"
       },
       {
-        "name": "harrier_frs1_rocket_matra155_dlt_aim9",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_rocket_matra155_dlt_aim9.blk"
+        "name": "harrier_frs1_rocket_matra7_aim9",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_rocket_matra7_aim9.blk"
       },
       {
         "name": "harrier_frs1_bomb_1000lbs_aim9l",
         "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_bomb_1000lbs_aim9l.blk"
       },
       {
-        "name": "harrier_frs1_rocket_matra155_dlt_aim9l",
-        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_rocket_matra155_dlt_aim9l.blk"
+        "name": "harrier_frs1_rocket_matra7_aim9l",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_rocket_matra7_aim9l.blk"
       }
     ]
   },
@@ -2378,21 +2382,18 @@
             }
           },
           {
-            "iconType": "nar_ap_large",
-            "name": "matra_155",
-            "reqModification": "fr_matra_sneb",
+            "iconType": "missile_type_b_air_to_air_group",
+            "name": "aim9l_x2_left_wing",
+            "reqModification": "us_aim_9l",
             "ShowNodes": {
-              "node": [
-                "pylon_e_l",
-                "pylon_e_l_upor"
-              ]
+              "node": "pylon_e_l"
             },
             "Weapon": {
-              "trigger": "rockets",
+              "trigger": "aam",
               "external": true,
-              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
-              "emitter": "matra_155_pod_b001",
-              "machLimit": 1.01
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_double_lau_7_aim_9l_x2_left_wing.blk",
+              "emitter": "matra_155_pod_b001"
             }
           }
         ]
@@ -2403,21 +2404,20 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_large_group",
-            "name": "matra_155_left",
-            "reqModification": "fr_matra_sneb",
+            "iconType": "nar_he_large",
+            "name": "matra_7",
+            "reqModification": "uk_matra_7",
             "ShowNodes": {
               "node": [
                 "pylon_i_l",
-                "pylon_i_l_upor",
-                "dlt_001"
+                "pylon_i_l_upor"
               ]
             },
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/uk_dlt_matra_155_sneb_type23_x2_left_wing.blk",
-              "emitter": "dlt_001",
+              "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "matra_155_pod_b002",
               "machLimit": 1.01
             }
           },
@@ -2447,8 +2447,7 @@
             "ShowNodes": {
               "node": [
                 "dlt_001",
-                "pylon_i_l",
-                "pylon_i_l_upor"
+                "pylon_i_l"
               ]
             },
             "Weapon": {
@@ -2492,21 +2491,20 @@
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_large_group",
-            "name": "matra_155_right",
-            "reqModification": "fr_matra_sneb",
+            "iconType": "nar_he_large",
+            "name": "matra_7",
+            "reqModification": "uk_matra_7",
             "ShowNodes": {
               "node": [
                 "pylon_i_r",
-                "pylon_i_r_upor",
-                "dlt_002"
+                "pylon_i_r_upor"
               ]
             },
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/uk_dlt_matra_155_sneb_type23_x2_right_wing.blk",
-              "emitter": "dlt_002",
+              "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "matra_155_pod_b003",
               "machLimit": 1.01
             }
           },
@@ -2544,7 +2542,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_right_wing.blk",
               "emitter": "dlt_002"
             }
           }
@@ -2595,21 +2593,18 @@
             }
           },
           {
-            "iconType": "nar_ap_large",
-            "name": "matra_155",
-            "reqModification": "fr_matra_sneb",
+            "iconType": "missile_type_b_air_to_air_group",
+            "name": "aim9l_x2_right_wing",
+            "reqModification": "us_aim_9l",
             "ShowNodes": {
-              "node": [
-                "pylon_e_r",
-                "pylon_e_r_upor"
-              ]
+              "node": "pylon_e_r"
             },
             "Weapon": {
-              "trigger": "rockets",
+              "trigger": "aam",
               "external": true,
-              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
-              "emitter": "matra_155_pod_b004",
-              "machLimit": 1.01
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_double_lau_7_aim_9l_x2_right_wing.blk",
+              "emitter": "matra_155_pod_b004"
             }
           }
         ]
@@ -2813,7 +2808,7 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "fr_matra_sneb": {
+    "uk_matra_7": {
       "tier": 4,
       "modClass": "weapon",
       "reqModification": "sea_hawk_2x1000lb"
@@ -2854,17 +2849,17 @@
     "emtr_break_wing1_l_from": [
       -0.60297,
       0.388528,
-      1.51843
+      1.41843
     ],
     "emtr_break_wing1_l_to": [
       -0.60297,
       0.388528,
-      1.9484
+      1.5484
     ],
     "emtr_break_wing2_l_from": [
       -0.60297,
       0.388528,
-      2.59337
+      3.01337
     ],
     "emtr_break_wing2_l_to": [
       -0.60297,
@@ -2884,17 +2879,17 @@
     "emtr_break_wing1_r_from": [
       -0.60297,
       0.388528,
-      -1.51843
+      -1.41843
     ],
     "emtr_break_wing1_r_to": [
       -0.60297,
       0.388528,
-      -1.94853
+      -1.54853
     ],
     "emtr_break_wing2_r_from": [
       -0.60297,
       0.388528,
-      -2.59368
+      -3.01337
     ],
     "emtr_break_wing2_r_to": [
       -0.60297,

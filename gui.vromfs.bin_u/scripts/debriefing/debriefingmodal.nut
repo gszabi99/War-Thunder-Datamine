@@ -3123,7 +3123,14 @@ let statTooltipColumnParamByType = {
 
     let wpdata = ::get_session_warpoints()
 
-    if (this.debriefingResult.exp.result == STATS_RESULT_ABORTED_BY_KICK)
+    if (this.debriefingResult.exp.activity == 0
+      && this.debriefingResult.exp.sessionTime > 10
+      && (this.debriefingResult?.checkActivityByPlayerDamage ?? false))
+    {
+      infoText = loc("MISSION_NO_ACTIVITY")
+      infoColor = "bad"
+    }
+    else if (this.debriefingResult.exp.result == STATS_RESULT_ABORTED_BY_KICK)
     {
       infoText = this.getKickReasonLocText()
       infoColor = "bad"

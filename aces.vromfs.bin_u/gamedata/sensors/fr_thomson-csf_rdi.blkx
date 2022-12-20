@@ -482,7 +482,7 @@
             "signal": "pulseDopplerSearch"
           },
           "setModeName": {
-            "name": "TWS standby"
+            "name": "TWS HDN standby"
           }
         },
         "resetStandbyMode": {
@@ -555,7 +555,7 @@
             "signal": "pulseDopplerSearch"
           },
           "setModeName": {
-            "name": "TWS search"
+            "name": "TWS HDN search"
           }
         },
         "resetSearchMode": {
@@ -666,7 +666,7 @@
             "signal": "pulseDopplerTrack"
           },
           "setModeName": {
-            "name": "TWS acquisition"
+            "name": "TWS HDN acquisition"
           }
         },
         "designatedTargetSearch": {
@@ -1048,6 +1048,19 @@
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "setStandbyMode"
+            }
+          }
+        },
+        "acmTrackToSearch": {
+          "stateFrom": "acmTrack",
+          "command": "acmSwitch",
+          "stateTo": "search",
+          "actions": {
+            "disableTrackModes": {},
+            "resetTrackMode": {},
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSearchMode"
             }
           }
         },

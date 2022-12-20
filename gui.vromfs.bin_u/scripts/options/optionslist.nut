@@ -81,7 +81,6 @@ let getMainOptions = function() {
       [::USEROPT_HDR_SETTINGS, "button", ::is_hdr_enabled()],
 
       ["options/header/commonBattleParameters"],
-      [::USEROPT_HUD_SHOW_BONUSES, "spinner"],
       [::USEROPT_DAMAGE_INDICATOR_SIZE, "slider"],
       [::USEROPT_CAMERA_SHAKE_MULTIPLIER, "slider"],
       [::USEROPT_VR_CAMERA_SHAKE_MULTIPLIER, "slider", is_stereo_mode()],
@@ -192,6 +191,8 @@ let getMainOptions = function() {
       [::USEROPT_HUD_SHOW_AMMO, "spinner"],
       [::USEROPT_HUD_SHOW_TEMPERATURE, "spinner"],
       [::USEROPT_INGAME_VIEWTYPE, "spinner", ::is_in_flight() && canChangeViewType],
+      [::USEROPT_HUD_VISIBLE_ORDERS, "switchbox"],
+      [::USEROPT_HUD_VISIBLE_STREAKS, "switchbox"],
 
       ["options/header/measureUnits"],
       [::USEROPT_MEASUREUNITS_SPEED, "spinner"],

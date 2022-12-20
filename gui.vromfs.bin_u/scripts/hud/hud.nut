@@ -22,6 +22,7 @@ let { is_replay_playing } = require("replays")
 let { hitCameraInit, hitCameraReinit } = require("%scripts/hud/hudHitCamera.nut")
 let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { is_benchmark_game_mode } = require("mission")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -351,10 +352,10 @@ let function maybeOfferControlsHelp() {
       hud_kill_log              = visMode.isPartVisible(HUD_VIS_PART.KILLLOG)
       chatPlace                 = visMode.isPartVisible(HUD_VIS_PART.CHAT)
       hud_enemy_damage_nest     = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
-      order_status              = visMode.isPartVisible(HUD_VIS_PART.ORDERS)
+      order_status              = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_ORDERS, ::OPTIONS_MODE_GAMEPLAY, true)
     }
 
-    send("updateExtWatched", {
+    updateExtWatched({
       isChatPlaceVisible = objsToShow.chatPlace
       isOrderStatusVisible = objsToShow.order_status
     })

@@ -3,11 +3,15 @@ from "%rGui/globals/ui_library.nut" import *
 let {IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety,
       TimeBeforeBombRelease, AimLocked, TargetPos, TargetPosValid,
       RocketMode, CannonMode, RadarTargetPosValid} = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, GuidanceLockResult, metrToFeet} = require("ilsConstants.nut")
+let {baseLineWidth, metrToFeet} = require("ilsConstants.nut")
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
 let {Aos, Tangage, Roll, BarAltitude, Altitude} = require("%rGui/planeState/planeFlyState.nut")
 let {GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
 let {Irst, targets, TargetsTrigger, Azimuth} = require("%rGui/radarState.nut")
 let string = require("string")
+let { BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
+
+let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 
 let function flyDirection(width, height, isLockedFlyPath = false) {
   return @() {
@@ -307,6 +311,44 @@ let function SUMAltitude(font_size) {
   }
 }
 
+let function getBulletImpactLineCommand() {
+  let commands = []
+  for (local i = 0; i < BulletImpactPoints1.value.len() - 2; ++i){
+    let point1 = BulletImpactPoints1.value[i]
+    let point2 = BulletImpactPoints1.value[i + 1]
+    if (point1.x == -1 && point1.y == -1)
+      continue
+    if (point2.x == -1 && point2.y == -1)
+      continue
+    commands.append([VECTOR_LINE, point1.x, point1.y, point2.x, point2.y])
+  }
+  for (local i = 0; i < BulletImpactPoints2.value.len() - 2; ++i){
+    let point1 = BulletImpactPoints2.value[i]
+    let point2 = BulletImpactPoints2.value[i + 1]
+    if (point1.x == -1 && point1.y == -1)
+      continue
+    if (point2.x == -1 && point2.y == -1)
+      continue
+    commands.append([VECTOR_LINE, point1.x, point1.y, point2.x, point2.y])
+  }
+  return commands
+}
+
+let bulletsImpactLine = @() {
+  watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
+  size = flex()
+  children = BulletImpactLineEnable.value && !CCIPMode.value && !isAAMMode.value ? [
+    @(){
+      watch = [BulletImpactPoints1, BulletImpactPoints2]
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = flex()
+      color = IlsColor.value
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = getBulletImpactLineCommand()
+    }
+  ] : null
+}
+
 return {
   flyDirection
   angleTxt,
@@ -322,5 +364,6 @@ return {
   ASPLaunchPermitted,
   targetsComponent,
   ASPAzimuthMark,
-  SUMAltitude
+  SUMAltitude,
+  bulletsImpactLine
 }

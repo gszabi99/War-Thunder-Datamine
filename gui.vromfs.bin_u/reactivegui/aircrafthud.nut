@@ -2,6 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let planeMfd = require("planeMfd.nut")
 let planeIls = require("planeIls.nut")
+let planeHmd = require("planeHmd.nut")
 
 let { bw, bh, rw, rh } = require("style/screenState.nut")
 let opticAtgmSight = require("opticAtgmSight.nut")
@@ -147,7 +148,7 @@ let function aircraftHUDs() {
   let radarSize = sh(28)
   let radarPosComputed = Computed(@() [
     bw.value + 0.99 * rw.value - radarSize,
-    bh.value + 0.43 * rh.value
+    bh.value + 0.45 * rh.value
   ])
 
   let twsSize = sh(20)
@@ -173,6 +174,7 @@ let function aircraftHUDs() {
       LaserAtgmSightVisible.value ? laserAtgmSight(sw(100), sh(100)) : null
       aircraftSightHud
       !LaserAtgmSightVisible.value ? compassElem(HudColor, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)]) : null
+      planeHmd(sw(100), sh(100))
     ]
   }
 }

@@ -21,6 +21,13 @@ let modeNames = [
   "hud/PD VS BST",
   "hud/PD VS VSL",
 
+  "hud/PD HDN VS standby",
+  "hud/PD HDN VS search",
+  "hud/PD HDN VS acquisition",
+  "hud/PD HDN VS ACM",
+  "hud/PD HDN VS BST",
+  "hud/PD HDN VS VSL",
+
   "hud/PD standby",
   "hud/PD search",
   "hud/PD acquisition",

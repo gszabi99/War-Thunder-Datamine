@@ -41,7 +41,7 @@ let function updateAnimTimer() {
 {
   if (!this.isStreaksAvailable())
     return
-  if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.STREAKS))
+  if (!::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_STREAKS, ::OPTIONS_MODE_GAMEPLAY, true))
   {
     this.streakQueue.clear()
     return

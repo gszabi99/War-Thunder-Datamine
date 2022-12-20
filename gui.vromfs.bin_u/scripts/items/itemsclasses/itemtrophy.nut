@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
-let { hoursToString, secondsToHours, getTimestampFromStringUtc,
+let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrectTimePeriodYears,
   TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
 
 ::items_classes.Trophy <- class extends ::BaseItem
@@ -61,8 +61,11 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
     this.showNameAsSingleAward = blk?.showNameAsSingleAward ?? false
 
     if (blk?.beginDate && blk?.endDate) {
-      this.beginDate = getTimestampFromStringUtc(blk.beginDate)
-      this.endDate = getTimestampFromStringUtc(blk.endDate)
+      let { startTime, endTime } = calculateCorrectTimePeriodYears(
+        getTimestampFromStringUtc(blk.beginDate),
+        getTimestampFromStringUtc(blk.endDate))
+      this.beginDate = startTime
+      this.endDate = endTime
     }
 
     let blksArray = [blk]

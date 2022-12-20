@@ -77,10 +77,10 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
     return
 
   obj["class"] = ""
-  this.register(obj, handler, tooltipType, id, params)
+  openedTooltipObjs.append(this.addEventListeners(obj, handler, tooltipType, id, params))
 }
 
-::g_tooltip.register <- function register(obj, handler, tooltipType, id, params)
+::g_tooltip.addEventListeners <- function addEventListeners(obj, handler, tooltipType, id, params)
 {
   let data = {
     obj         = obj
@@ -99,8 +99,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
         tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params)
       })(eventName), data)
     }
-
-  openedTooltipObjs.append(data)
+  return data
 }
 
 ::g_tooltip.close <- function close(obj) //!!FIXME: this function can be called with wrong context. Only for replace content in correct handler

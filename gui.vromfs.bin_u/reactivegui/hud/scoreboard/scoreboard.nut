@@ -17,6 +17,8 @@ let timerComponent = @() {
   text = secondsToTimeSimpleString(timeLeft.value)
 }
 
+let hasTimerComponent = Computed(@() timeLimitWarn.value > 0 && timeLeft.value < timeLimitWarn.value)
+
 let function getScoreBoardChildren() {
   if ((gameType.value & GT_FOOTBALL) != 0)
     return football
@@ -27,7 +29,7 @@ let function getScoreBoardChildren() {
   if (customHUD.value == "po2OpMission")
     return po2OpMission
 
-  if (timeLimitWarn.value > 0 && timeLeft.value < timeLimitWarn.value)
+  if (hasTimerComponent.value)
     return timerComponent
 
   return null
@@ -37,6 +39,6 @@ return @() {
   size = flex()
   margin = safeAreaSizeHud.value.borders
   halign = ALIGN_CENTER
-  watch = [gameType, useDeathmatchHUD, safeAreaSizeHud, timeLeft, timeLimitWarn, customHUD]
+  watch = [gameType, useDeathmatchHUD, safeAreaSizeHud, hasTimerComponent, customHUD]
   children = getScoreBoardChildren()
 }

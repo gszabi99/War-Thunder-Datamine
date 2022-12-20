@@ -6,7 +6,8 @@ let {flyDirection} = require("commonElements.nut")
 let {IlsColor, IlsLineScale, CannonMode, TargetPosValid, TargetPos, BombingMode,
   DistToTarget, RocketMode, BombCCIPMode, RadarTargetPosValid, RadarTargetPos,
    RadarTargetDistRate, RadarTargetDist} = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, mpsToKnots, metrToFeet, GuidanceLockResult, metrToNavMile} = require("ilsConstants.nut")
+let {baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile} = require("ilsConstants.nut")
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
 let {Speed, Mach, BarAltitude, Altitude, Overload, Tangage, Roll,
   Accel} = require("%rGui/planeState/planeFlyState.nut")
 let {floor, round} = require("%sqstd/math.nut")

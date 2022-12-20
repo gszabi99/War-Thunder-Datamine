@@ -25,6 +25,7 @@ let hasChite = memoize(@(unitId) ::get_full_unit_blk(unitId)?.parachutes != null
 let hasCockpitDoor = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
 let hasBayDoor = memoizeByMission(@(_unitId) vehicleModel.hasBayDoor())
 let hasSchraegeMusik = memoize(@(_unitId) vehicleModel.hasSchraegeMusik())
+let hasExternalFuelTanks = memoizeBySpawn(@(_unitId) vehicleModel?.hasExternalFuelTanks() ?? false)
 let hasCountermeasureFlareGuns = memoize(@(_unitId) vehicleModel.hasCountermeasureFlareGuns())
 let hasCountermeasureSystemIRCM = memoize(@(_unitId) vehicleModel.hasCountermeasureSystemIRCM())
 
@@ -243,7 +244,7 @@ let cfg = {
     items = [
       { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
       { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
-      null
+      { shortcut = [ "ID_FUEL_TANKS" ], enable = hasExternalFuelTanks }
       { shortcut = [ "ID_TOGGLE_GUNNERS" ], enable = hasAiGunners }
       { section = "weapon_selector" }
       { shortcut = [ "ID_BAY_DOOR" ], enable = hasBayDoor }
@@ -336,7 +337,7 @@ let cfg = {
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       { shortcut = [ "ID_COMPLEX_ENGINE" ] }
       { section = "control_engines_separately" }
-      null // { shortcut = [ "ID_FUEL_TANKS" ] }
+      null
       null
       null
     ]

@@ -8,6 +8,9 @@ let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setGuiOptionsMode } = require_native("guiOptions")
+let { is_running } = require_native("steam")
+let userstat = require("userstat")
+let { APP_ID } = require("app")
 
 ::gui_handlers.LoginWndHandlerSteam <- class extends ::gui_handlers.LoginWndHandler
 {
@@ -69,6 +72,14 @@ let { setGuiOptionsMode } = require_native("guiOptions")
     )
   }
 
+  function userstatRequestSyncUnlocks() {
+    userstat.request({
+      add_token = true
+      headers = { appid = APP_ID }
+      action = "SyncUnlocksWithSteam"
+    }, @(_res) null)
+  }
+
   function proceedAuthorizationResult(result, no_dump_login)
   {
     switch(result)
@@ -77,8 +88,9 @@ let { setGuiOptionsMode } = require_native("guiOptions")
         this.goToLoginWnd()
         break
       case YU2_OK:
-        if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking"))
+        if (is_running() && !hasFeature("AllowSteamAccountLinking"))
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
+        this.userstatRequestSyncUnlocks()
           // no break!
       default:  // warning disable: -missed-break
         base.proceedAuthorizationResult(result, no_dump_login)

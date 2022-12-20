@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { send } = require("eventbus")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 ::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled()
 {
@@ -34,7 +34,7 @@ let { send } = require("eventbus")
     return false
 
   ::show_console_buttons = showCB
-  send("updateExtWatched", { showConsoleButtons = showCB })
+  updateExtWatched({ showConsoleButtons = showCB })
   ::set_dagui_mouse_last_time_used(!showCB)
 
   if (!::g_login.isProfileReceived())

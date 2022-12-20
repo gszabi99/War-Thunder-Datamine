@@ -9,14 +9,14 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 let { format } = require("string")
 let colorCorrector = require_native("colorCorrector")
 let fonts = require("fonts")
-let { subscribe, send } = require("eventbus")
+let { send } = require("eventbus")
 let { is_stereo_mode } = require_native("vr")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let focusFrame = require("%scripts/viewUtils/focusFrameWT.nut")
-let { setSceneActive } = require("reactiveGuiCommand")
+let { setSceneActive, reloadDargUiScript } = require("reactiveGuiCommand")
 let rootScreenBlkPathWatch = require("%scripts/baseGuiHandler/rootScreenBlkPathWatch.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isPlatformSony,
@@ -24,6 +24,7 @@ let { isPlatformSony,
         targetPlatform } = require("%scripts/clientState/platform.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 ::dagui_propid.add_name_id("has_ime")
 ::dagui_propid.add_name_id("platformId")
@@ -33,6 +34,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 local lastScreenHeightForFont = 0
 local lastInFlight = false  //to reload scenes on change inFlight
 local currentFont = ::g_font.LARGE
+local hasInitializedFont = false
 
 
 let controlsAllowMaskDefaults = {
@@ -264,14 +266,18 @@ let function getHandlerControlsAllowMask(handler) {
   local haveChanges = false
 
   let font = ::g_font.getCurrent()
-  if (currentFont != font)
-  {
+  if (currentFont != font) {
     this.shouldResetFontsCache = true
     haveChanges = true
-    send("updateExtWatched", {
+  }
+  if (!hasInitializedFont || currentFont != font) { //need update font for darg
+    let hasValueChangedInDb = updateExtWatched({
       fontGenId = font.fontGenId
       fontSizePx = font.getFontSizePx(::screen_width(), ::screen_height())
     })
+    if (hasValueChangedInDb)
+      reloadDargUiScript(false)
+    hasInitializedFont = true
   }
   currentFont = font
 
@@ -281,7 +287,7 @@ let function getHandlerControlsAllowMask(handler) {
     let safearea = safeAreaHud.getSafearea()
     ::set_dagui_pre_include_css_str(cssStringPre)
     ::set_hud_width_limit(safearea[0])
-    send("updateExtWatched", {
+    updateExtWatched({
       safeAreaHud = safearea
       safeAreaMenu = safeAreaMenu.getSafearea()
     })
@@ -548,14 +554,3 @@ let needDebug = ::getFromSettingsBlk("debug/debugGamepadCursor", false)
 ::get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
 
 ::handlersManager.init()
-
-subscribe("updateGamepadStates", @(_) send("updateExtWatched", {
-  gamepadCursorControl = ::g_gamepad_cursor_controls.getValue()
-  haveXinputDevice = ::have_xinput_device()
-  showConsoleButtons = ::get_is_console_mode_enabled()
-}))
-
-subscribe("updateSafeAreaStates", @(_) send("updateExtWatched", {
-  safeAreaHud = safeAreaHud.getSafearea()
-  safeAreaMenu = safeAreaMenu.getSafearea()
-}))

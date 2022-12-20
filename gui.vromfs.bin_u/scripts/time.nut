@@ -184,6 +184,29 @@ let function isInTimerangeByUtcStrings(beginDateStr, endDateStr) {
   return true
 }
 
+// For convenience, time periods may be specified without a year.
+// In such cases, it is necessary to correctly determine the start and end times of the period,
+// as they may be in different years.
+let function calculateCorrectTimePeriodYears(startTime, endTime) {
+  // time period is within the current year
+  if (startTime < endTime)
+    return { startTime, endTime }
+
+  // time period starts in the prev year
+  if (::get_charserver_time_sec() <= endTime) {
+    let date = unixtime_to_utc_timetbl(startTime)
+    --date.year
+    startTime = utc_timetbl_to_unixtime(date)
+  }
+  // time period ends in the next year
+  else {
+    let date = unixtime_to_utc_timetbl(endTime)
+    ++date.year
+    endTime = utc_timetbl_to_unixtime(date)
+  }
+
+  return { startTime, endTime }
+}
 
 local function processTimeStamps(text) {
   foreach (_idx, time in ["{time=", "{time_countdown="]) {
@@ -266,6 +289,7 @@ let function getExpireText(expireMin) {
 
 
 return timeBase.__merge({
+  calculateCorrectTimePeriodYears
   getUtcDays = getUtcDays
   buildDateTimeStr = buildDateTimeStr
   buildDateStr

@@ -3,7 +3,8 @@ from "%rGui/globals/ui_library.nut" import *
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
        AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety} = require("%rGui/planeState/planeToolsState.nut")
 let {Speed, Roll, Aoa, ClimbSpeed, Tangage} = require("%rGui/planeState/planeFlyState.nut");
-let {mpsToKnots, mpsToFpm, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
+let {mpsToKnots, mpsToFpm, baseLineWidth} = require("ilsConstants.nut")
+let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
 let {GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
 let {cvt} = require("dagor.math")
 let {compassWrap, generateCompassMarkSUM} = require("ilsCompasses.nut")

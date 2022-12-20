@@ -35,10 +35,11 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
     let max_water_alive = cover |> datablock_getReal("maxWaterAlive", 1.0f)
     assert(weight > 0.0)
     assert(max_water_alive >= 0.0f && max_water_alive <= 1.0f)
-    let part_id = get_dm_part_id_by_dm_name(cover |> datablock_getStr("part", ""), true)
+    let partNo = get_dm_part_id_by_dm_name(cover |> datablock_getStr("part", ""), true)
+    let partId = unit_dm |> dm_get_remap(partNo)
 
-    if part_id >= 0 && unit_dm |> dm_is_dmg_part_active(part_id)
-      ship_cover_parts_part_id |> push((unit_dm |> dm_get_remap(part_id)).packed)
+    if partId |> dm_part_id_valid()
+      ship_cover_parts_part_id |> push(partId.packed)
       ship_cover_parts_water |> push(float3(0.0f, 0.0f, max_water_alive))
       ship_cover_parts_weight |> push(weight)
       ship_cover_parts_compartment_id |> push(compartment_id)
@@ -46,7 +47,7 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
       if cover |> datablock_param_exists("pos", -1)
         ship_cover_parts_pos |> push(cover |> datablock_getPoint3("pos", float3(0, 0, 0)))
       else
-        let node = unit_dm |> dm_get_collision_node_by_part_id(part_id)
+        let node = unit_dm |> dm_get_collision_node_by_part_id(partNo)
         assert(node != null)
         ship_cover_parts_pos |> push(node.tm * node.modelBBox.center)
 
@@ -213,10 +214,11 @@ def ship_init_repair_parts_info_handle_es(evt : CmdInitComponent;
 
   *evt.modelBlk |> datablock_get_block("partsToRepair") <| $(blk)
     blk |> datablock_for_each_block() <| $(part_info)
-      let part_id = get_dm_part_id_by_dm_name(part_info.getBlockName, true)
-      if part_id < 0 || !dm |> dm_is_dmg_part_active(part_id)
+      let partNo = get_dm_part_id_by_dm_name(part_info.getBlockName, true)
+      let partId = dm |> dm_get_remap(partNo)
+      if !partId |> dm_part_id_valid()
         return
-      ship_repair_parts_part_id |> push(part_id)
+      ship_repair_parts_part_id |> push(partNo)
       ship_repair_parts_time |> push(part_info |> datablock_getReal("time", 60.0f))
       ship_repair_parts_hp |> push(part_info |> datablock_getReal("hp", 0.5f))
 
@@ -464,7 +466,8 @@ def calc_pump_mass_vel(unit : Unit?;
     var pumps_total_rel_hp = 0.0f
     var pumps_count = 0
     for pump_part_id in ship_pumps_part_id
-      if unit_dm |> dm_is_dmg_part_active(pump_part_id)
+      let partId = unit_dm |> dm_get_remap(pump_part_id)
+      if partId |> dm_part_id_valid()
         pumps_count++
         pumps_total_rel_hp += unit_dm |> dm_get_rel_hp(pump_part_id)
 

@@ -590,7 +590,7 @@ interop.updateAam <- function(count, seconds, selected, name, actualCount) {
 interop.updateGuidedBombs <- function(count, seconds,  mode, selected, name, actualCount) {
   let curVal = GuidedBombsState.value
   if (curVal.count != count || curVal.seconds != seconds || curVal.mode != mode ||
-    curVal.name != name || curVal.actualCount != actualCount)
+    curVal.name != name || curVal.actualCount != actualCount || curVal.selected != selected)
     GuidedBombsState({count, seconds,  mode, selected, name, actualCount})
 }
 
