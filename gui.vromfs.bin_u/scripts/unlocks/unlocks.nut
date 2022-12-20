@@ -782,7 +782,7 @@ let function setImageByUnlockType(config, unlockBlk) {
       break
 
     case UNLOCKABLE_INVENTORY:
-      let item = ::ItemsManager.getItemOrRecipeBundleById(::to_integer_safe(id))
+      let item = ::ItemsManager.isItemdefId(id) ? ::ItemsManager.getItemOrRecipeBundleById(::to_integer_safe(id)) : null
       if (item)
       {
         res.title = getUnlockTypeText(uType, realId)

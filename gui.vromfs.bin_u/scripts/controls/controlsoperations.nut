@@ -12,7 +12,7 @@ let replaceAxes = function(ctrlGroup, replacements, flags = Flags.NONE) {
   local isUpdated = false
   let groupAxes = []
   foreach (item in ::shortcutsList)
-    if ((item.checkGroup & ctrlGroup) && item.type == CONTROL_TYPE.AXIS)
+    if (item.type == CONTROL_TYPE.AXIS && (item.checkGroup & ctrlGroup))
       groupAxes.append(item.id)
 
   let controls = ::g_controls_manager.getCurPreset()
