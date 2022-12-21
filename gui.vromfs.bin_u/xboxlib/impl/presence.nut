@@ -12,14 +12,12 @@ let function set_presence(presence, callback) {
 }
 
 
-let function retrieve_presences_for_users(users_list, callback) {
-  let eventName = "xbox_get_presences_for_users"
-  subscribe_onehit(eventName, function(result) {
-    let success = result?.success
-    let presences = result?.presences
+let function subscribe_to_presence_update_events(callback) {
+  subscribe(pres.presence_update_event_name, function(res) {
+    let success = res?.success
+    let presences = res?.presences
     callback?(success, presences)
   })
-  pres.get_presences_for_users(eventName, users_list)
 }
 
 
@@ -50,10 +48,12 @@ return {
 
   subscribe_to_changes = pres.subscribe_to_changes
   unsubscribe_from_changes = pres.unsubscribe_from_changes
+  set_update_call_interval = pres.set_update_call_interval
 
   set_presence
-  retrieve_presences_for_users
+  retrieve_presences_for_users = pres.get_presences_for_users
 
+  subscribe_to_presence_update_events
   subscribe_to_device_change_events
   subscribe_to_title_change_events
 
