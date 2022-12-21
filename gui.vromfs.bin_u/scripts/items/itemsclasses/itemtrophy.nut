@@ -76,6 +76,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     foreach (datablock in blksArray)
     {
       let content = datablock % "i"
+      content.extend(datablock % "d")
       foreach (p in content)
       {
         let prize = ::DataBlock()

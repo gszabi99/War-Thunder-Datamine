@@ -6,8 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
-let { hasClanUnitChosenResearch, saveClanUnitResearchChosen,
-  isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
+let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 local handlerClass = class extends vehiclesModal.handlerClass
@@ -156,8 +155,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
     onSpendExcessExp = Callback(this.onSpendExcessExp, this)
   }
 
-  needChosenResearchOfSquadron = @() !hasClanUnitChosenResearch()
-    || ::clan_get_researching_unit() == ""
+  needChosenResearchOfSquadron = @() ::clan_get_researching_unit() == ""
 
   function onBuy()
   {
@@ -170,9 +168,6 @@ local handlerClass = class extends vehiclesModal.handlerClass
     let isAllResearched = isAllClanUnitsResearched()
     if (!isAllResearched && ::clan_get_exp() > 0)
       return base.onEventFlushSquadronExp(params)
-
-    if (isAllResearched)
-      saveClanUnitResearchChosen(false)
 
     if (unit && ::canBuyUnit(unit))
       ::buyUnit(unit)

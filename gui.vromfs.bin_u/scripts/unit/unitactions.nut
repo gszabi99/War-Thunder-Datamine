@@ -3,8 +3,6 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { saveClanUnitResearchChosen } = require("%scripts/unit/squadronUnitAction.nut")
-
 let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null)
 {
   let blk = ::DataBlock()
@@ -137,8 +135,6 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
     ::destroyMsgBox(progressBox)
     if (afterDoneFunc)
       afterDoneFunc()
-    if (unit.isSquadronVehicle())
-      saveClanUnitResearchChosen(true)
     ::broadcastEvent("UnitResearch", {unitName = unitName, prevUnitName = prevUnitName})
   })
 }
@@ -153,7 +149,6 @@ let function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() n
   let taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
   let taskCallback = function() {
     afterDoneFunc()
-    saveClanUnitResearchChosen(true)
     ::broadcastEvent("UnitResearch", {unitName, prevUnitName, unit})
   }
   ::g_tasker.addTask(taskId, { showProgressBox = true }, taskCallback, taskCallback)

@@ -154,7 +154,7 @@ local ItemGenerator = class {
     return ::u.filter(this.getRecipes(), @(ec) ec.hasComponent(componentItemdefId))
   }
 
-  function _unpackContent(contentRank = null)
+  function _unpackContent(contentRank = null, fromGenId = null)
   {
     this._contentUnpacked = []
     let parsedBundles = inventoryClient.parseRecipesString(this.bundle)
@@ -173,6 +173,7 @@ local ItemGenerator = class {
           let b = ::DataBlock()
           b.item =  item.id
           b.rank = rank
+          b.fromGenId = fromGenId ?? this.id
           if (this.tags?.showFreq)
             b.dropChance = this.tags.showFreq.tointeger() / 100.0
           if (trophyWeightsBlk != null && trophyWeightsBlockCount > 0
@@ -185,7 +186,7 @@ local ItemGenerator = class {
         }
         else if (generator)
         {
-          let content = generator.getContent(rank)
+          let content = generator.getContent(rank, fromGenId ?? cfg.itemdefid)
           this.hasHiddenItems = this.hasHiddenItems || generator.hasHiddenItems
           this.hiddenTopPrizeParams = this.hiddenTopPrizeParams || generator.hiddenTopPrizeParams
           this._contentUnpacked.extend(content)
@@ -197,10 +198,10 @@ local ItemGenerator = class {
     this.hiddenTopPrizeParams = isBundleHidden ? this.tags : this.hiddenTopPrizeParams
   }
 
-  function getContent(contentRank = null)
+  function getContent(contentRank = null, fromGenId = null)
   {
     if (!this._contentUnpacked)
-      this._unpackContent(contentRank)
+      this._unpackContent(contentRank, fromGenId)
     return this._contentUnpacked
   }
 

@@ -697,20 +697,24 @@ local ExchangeRecipes = class {
         }
       })
 
-      showExternalTrophyRewardWnd({
-        trophyItemDefId = componentItem.id
-        expectedPrizes
-        rewardWndConfig = {
-          rewardTitle = loc(rewardTitle),
-          rewardListLocId = rewardListLocId
-          isDisassemble = this.isDisassemble
-          isHidePrizeActionBtn = params?.isHidePrizeActionBtn ?? false
-          singleAnimationGuiSound = getRandomEffect(effectOnOpenChest?.playSound)
-          rewardImage = effectOnOpenChest?.showImage
-          rewardImageRatio = effectOnOpenChest?.imageRatio
-          reUseRecipeUid = params?.reUseRecipeUid
-        }
-      })
+      let rewardWndConfig = {
+        rewardTitle = loc(rewardTitle),
+        rewardListLocId = rewardListLocId
+        isDisassemble = this.isDisassemble
+        isHidePrizeActionBtn = params?.isHidePrizeActionBtn ?? false
+        singleAnimationGuiSound = getRandomEffect(effectOnOpenChest?.playSound)
+        rewardImage = effectOnOpenChest?.showImage
+        rewardImageRatio = effectOnOpenChest?.imageRatio
+        reUseRecipeUid = params?.reUseRecipeUid
+      }
+      if (componentItem?.itemDef.tags.showTrophyWndWhenReciveAllRewardsData ?? false)
+        showExternalTrophyRewardWnd({
+          trophyItemDefId = componentItem.id
+          expectedPrizes
+          rewardWndConfig
+        })
+      else
+        ::gui_start_open_trophy(rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
     }
     else if (effectOnOpenChest?.playSound != null) {
       let isDelayedExchange = resultItems.findindex(@(v) v?.itemdef.type == "delayedexchange") != null

@@ -756,26 +756,24 @@ let function getUnlockMultDesc(condition) {
     mulText = $"{mulText}{mulLocParam} (x{num})"
   }
 
-  local mulRankText = ""
+  let mulRanks = []
   if (rankMultiplierTable.len() > 0) {
-    local lastAddedRank = null
+    local lastAddedRank = 0
     for (local rank = 1; rank <= ::max_country_rank; rank++) {
       let curRankMul = rankMultiplierTable[rank]
       let nextRankMul = rankMultiplierTable?[rank + 1]
       if (!curRankMul || (nextRankMul && curRankMul == nextRankMul))
         continue
 
-      let rankText = (rank - 1 == lastAddedRank || rank == 1)
+      let rankText = (rank - 1 == lastAddedRank)
         ? ::get_roman_numeral(rank)
-        : getRangeString(::get_roman_numeral(lastAddedRank ?? 1), ::get_roman_numeral(rank))
+        : getRangeString(::get_roman_numeral(lastAddedRank + 1), ::get_roman_numeral(rank))
 
-      if (mulRankText.len() > 0)
-        mulRankText = $"{mulRankText}, "
-
-      mulRankText = $"{mulRankText}{rankText} (x{curRankMul})"
+      mulRanks.append($"{rankText} (x{curRankMul})")
       lastAddedRank = rank
     }
   }
+  local mulRankText = ", ".join(mulRanks)
 
   mulText = mulText.len() > 0
     ? "{0}{1}{2}".subst(loc("conditions/multiplier"), loc("ui/colon"), mulText)

@@ -7,12 +7,44 @@ from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { removeUserstatItemRewardToShow } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { resetTimeout } = require("dagor.workcycle")
 
 //this module collect all prizes from userlogs if chest has prizes with auto consume prizes and show trophy window
 
-const MAX_DELAYED_TIME_MS = 30000
+const MAX_DELAYED_TIME_SEC = 10
+const PROGRESS_BOX_BUTTONS_DELAY_SEC = 15
 
 let delayedTrophies = persist("delayedTrophies", @() [])
+
+local currentProgressBox = null
+
+let function showWaitingProgressBox() {
+  if (currentProgressBox?.isValid() ?? false)
+    return
+
+  let guiScene = ::get_cur_gui_scene()
+  if (guiScene == null)
+    return
+
+  currentProgressBox = ::scene_msg_box(
+    "wait_trophy_rewards_progress_box", guiScene, loc("charServer/purchase0"),
+    [["cancel", @() null]], "cancel",
+    {
+      waitAnim = true
+      delayedButtons = PROGRESS_BOX_BUTTONS_DELAY_SEC
+    })
+}
+
+let function hideWaitingProgressBox() {
+  if (!(currentProgressBox?.isValid() ?? false))
+    return
+
+  let guiScene = currentProgressBox.getScene()
+  guiScene.destroyElement(currentProgressBox)
+  if ("broadcastEvent" in getroottable())
+    ::broadcastEvent("ModalWndDestroy")
+  currentProgressBox = null
+}
 
 let function showTrophyWnd(config) {
   let { trophyItemDefId, rewardWndConfig } = config
@@ -49,7 +81,7 @@ let function checkRecivedAllPrizesAndShowWnd(config) {
       receivedPrizes.append(userLog.__merge({ itemDefId = trophyItemDefId }))
   }
 
-  if (time != -1 && (time + MAX_DELAYED_TIME_MS < get_time_msec())) {
+  if (time != -1 && (time + ((MAX_DELAYED_TIME_SEC - 1) * 1000) < get_time_msec())) {
     receivedPrizes.extend(notReceivedPrizes)
     notReceivedPrizes.clear()
   }
@@ -58,20 +90,9 @@ let function checkRecivedAllPrizesAndShowWnd(config) {
   if (notReceivedPrizes.len() > 0)
     return config
 
+  hideWaitingProgressBox()
   showTrophyWnd(config)
   return null
-}
-
-let function showExternalTrophyRewardWnd(config) {
-  if (config.expectedPrizes.findvalue(@(p) p.needCollectRewards) == null) {
-    showTrophyWnd(config)
-    return
-  }
-  config = checkRecivedAllPrizesAndShowWnd(config)
-  if (config == null)
-    return
-
-  delayedTrophies.append(config.__merge({ time = get_time_msec() }))
 }
 
 let function checkShowExternalTrophyRewardWnd() {
@@ -87,6 +108,20 @@ let function checkShowExternalTrophyRewardWnd() {
 
     delayedTrophies[idx] = config
   }
+}
+
+let function showExternalTrophyRewardWnd(config) {
+  if (config.expectedPrizes.findvalue(@(p) p.needCollectRewards) == null) {
+    showTrophyWnd(config)
+    return
+  }
+  config = checkRecivedAllPrizesAndShowWnd(config)
+  if (config == null)
+    return
+
+  delayedTrophies.append(config.__merge({ time = get_time_msec() }))
+  showWaitingProgressBox()
+  resetTimeout(MAX_DELAYED_TIME_SEC, checkShowExternalTrophyRewardWnd)
 }
 
 addListenersWithoutEnv({

@@ -24,6 +24,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
   _isInitialized = false
   generator = null
   categoryWeight = null
+  categoryByItems = null
 
   function getGenerator()
   {
@@ -146,9 +147,14 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
     if (hasContent) {
       let categoryWeightArray = this.getCategoryWeight()
+      let categoryByItemsArray = this.getCategoryByItems()
       if (params.needShowDropChance && categoryWeightArray.len() > 0) {
         params.categoryWeight <- categoryWeightArray
         prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(),clone params))
+      }
+      else if (categoryByItemsArray.len() > 0) {
+        params.categoryByItems <- categoryByItemsArray
+        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(),clone params))
       }
       else
         prizeMarkupArray.append(::PrizesView.getPrizesStacksView(content, this.getDescHeaderFunction(), params))
@@ -331,5 +337,35 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
       categ.__update({ rarity = categ.rarity.append({ rarity = rarity, weight = weight }) })
     }
     return this.categoryWeight
+  }
+
+  function getCategoryByItems() {
+    if (this.categoryByItems != null)
+      return this.categoryByItems
+
+    this.categoryByItems = []
+    if (this.itemDef?.tags.category == null)
+      return this.categoryByItems
+
+    foreach (category in (this.itemDef.tags % "category")) {
+      local paramsArray = category.split("_")
+      if (paramsArray.len() < 2)
+        continue
+
+      let itemDefId = ::to_integer_safe(paramsArray[0])
+      let categoryName = paramsArray[1]
+      let categoryIdx = this.categoryByItems.findindex(@(c) c.categoryName == categoryName)
+      if (categoryIdx == null) {
+        this.categoryByItems.append({
+          categoryName
+          itemDefIds = [itemDefId]
+        })
+        continue
+      }
+
+      this.categoryByItems[categoryIdx].itemDefIds.append(itemDefId)
+    }
+
+    return this.categoryByItems
   }
 }

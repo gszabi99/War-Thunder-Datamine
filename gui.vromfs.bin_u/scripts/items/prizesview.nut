@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let time = require("%scripts/time.nut")
-let { cutPostfix } = require("%sqstd/string.nut")
+let { cutPostfix, utf8ToLower } = require("%sqstd/string.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -206,13 +206,10 @@ let prizeViewConfig = {
     }
   }
 
-  function getPrizesViewArrayByWeightCategory(prizes, category, title, params) {
+  function getPrizesViewArrayByCategory(prizes,titleOvr, params) {
     let { showOnlyCategoriesOfPrizes = false, categoryId } = params
     let isFirstHighlightedLine = categoryId % 2 == 0
-    local prizeTitleView = getPrizeChanceConfig(category).__merge({
-      title = title
-      isHighlightedLine = isFirstHighlightedLine
-    })
+    local prizeTitleView = titleOvr.__merge({ isHighlightedLine = isFirstHighlightedLine })
 
     if (showOnlyCategoriesOfPrizes)
       return [prizeTitleView]
@@ -234,6 +231,10 @@ let prizeViewConfig = {
       onCategoryClick = "onPrizeCategoryClick"
     })
     return [prizeTitleView].extend(arrayForView)
+  }
+
+  function getPrizesViewArrayByWeightCategory(prizes, category, title, params) {
+    return this.getPrizesViewArrayByCategory(prizes, { title }.__update(getPrizeChanceConfig(category)), params)
   }
 
   getMaxPrizeButtonsCount = @(prizes) prizes.reduce(@(acc, prize) prize.buttonsCount > acc ? prize.buttonsCount : acc, 0)
@@ -464,6 +465,66 @@ let prizeViewConfig = {
   }
 
   hasKnowPrize = @(prize) this.getPrizeType(prize) != PRIZE_TYPE.UNKNOWN
+
+  function getPrizesStacksViewByCategory(content, fixedAmountHeaderFunc, params) {
+    let { shopDesc = false, stackLevel = prizesStack.DETAILED, categoryByItems, showOnlyCategoriesOfPrizes = false } = params
+    let view = clone params
+    let fixedAmount = fixedAmountHeaderFunc ? this._getContentFixedAmount(content) : 1
+
+    view.isCollapsable <- !showOnlyCategoriesOfPrizes
+    if (fixedAmountHeaderFunc)
+      view.header <- fixedAmountHeaderFunc(fixedAmount)
+
+    params = clone params
+    params.needShowDropChance <- false
+    params.hasChanceIcon <- false
+    params.fixedAmount <- fixedAmount
+    params.categoryId <- 0
+
+    local prizeListView = []
+    foreach(category in categoryByItems) {
+      let { categoryName, itemDefIds } = category
+      local stacksList = []
+      local packList = []
+      foreach (itemDefId in itemDefIds) {
+        let prizes = content.filter(@(p) p.fromGenId == itemDefId)
+        if (prizes.len() == 0)
+          continue
+
+        let stacks = this._stackContent(prizes, stackLevel, shopDesc)
+        if (::ItemsManager.getItemOrRecipeBundleById(itemDefId)?.isContentPack() ?? false)
+          packList.extend(stacks)
+        else
+          stacksList.extend(stacks)
+      }
+
+      let categoryText = loc($"trophyCategory/{categoryName}")
+      if (packList.len() != 0) {
+        params.categoryId++
+        prizeListView.extend(this.getPrizesViewArrayByCategory(packList,
+          {
+            title = "".concat(categoryText,
+              loc("ui/parentheses/space", { text = utf8ToLower(loc("shop/giftAir/campaign")) }))
+          },
+          params))
+      }
+
+      if (stacksList.len() != 0) {
+        params.categoryId++
+        prizeListView.extend(this.getPrizesViewArrayByCategory(stacksList, { title = categoryText }, params))
+      }
+    }
+
+    let maxButtonsCount = prizeListView.reduce(@(res, p) max(p?.buttonsCount ?? 0, res), 0)
+    prizeListView = prizeListView.map(@(p) p.__update({
+      buttonsCount = maxButtonsCount
+      buttons = p?.buttons ? p.buttons.resize(maxButtonsCount, { emptyButton = true })
+        : array(maxButtonsCount, { emptyButton = true })
+    }))
+
+    view.list <- prizeListView
+    return ::handyman.renderCached(template, view)
+  }
 }
 
 ::PrizesView.getPrizeType <- function getPrizeType(prize)
