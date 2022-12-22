@@ -73,7 +73,7 @@
     0.5,
     0.005
   ],
-  "MaxSpeedNearGround": 540.0,
+  "MaxSpeedNearGround": 542.999,
   "MaxSpeedAtAltitude": 555.0,
   "CriticalSpeed": 50.0,
   "ArcadeHelpersSensitivity": 1.0,
@@ -131,9 +131,6 @@
     }
   },
   "FlyByWire": {},
-  "MouseAim": {
-    "PreciseRotStopDetection": false
-  },
   "Aerodynamics": {
     "GearCd": 0.018,
     "GearCentralCd": 0.0,
@@ -346,8 +343,8 @@
       },
       "Strength": {
         "CritOverload": [
-          -2.14744E+09,
-          2.14744E+09
+          -153260.0,
+          204347.0
         ],
         "VNE": 740.0,
         "MNE": 0.83
@@ -430,7 +427,7 @@
         0.18,
         0.962
       ],
-      "FlowInertia": 0.0700008,
+      "FlowInertia": 0.0700023,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 3.794,
@@ -502,7 +499,7 @@
         0.907,
         0.0
       ],
-      "FlowInertia": 0.100001,
+      "FlowInertia": 0.100003,
       "SlipStreamDistance": 10.72,
       "Areas": {
         "Main": 1.19,
@@ -1275,7 +1272,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      90.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -1301,6 +1298,7 @@
   "Mass": {
     "EmptyMass": 2728.0,
     "MaxFuelMass0": 475.2,
+    "MaxFuelMassExternal0": 0.0,
     "FuelAccumulatorCapacity0": 1.9,
     "MinimalLoadFactor0": 0.0,
     "FuelAccumulatorFlowRate0": 0.38,
@@ -1347,7 +1345,7 @@
       "tank5_system": 0,
       "tank5_external": false,
       "tank5_priority": 1,
-      "tank6_capacity": 0.0,
+      "tank6_capacity": -0.299957,
       "tank6_system": 0,
       "tank6_external": false,
       "tank6_priority": 0,
@@ -1423,7 +1421,7 @@
   },
   "Gear": {
     "SinkFactor": 1000.0,
-    "SinkRateMult": 0.216403,
+    "SinkRateMult": 0.218533,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.05,
@@ -1768,6 +1766,70 @@
       ]
     }
   },
+  "Instructor": {
+    "critMult": [
+      -1.0,
+      -1.0
+    ],
+    "limitOverload": true,
+    "overloadMult": [
+      0.85,
+      0.92,
+      0.85,
+      0.92
+    ],
+    "overloadTimeRange": [
+      0.9,
+      1.0
+    ],
+    "limitLoadfactor": false,
+    "loadFactorLimit": [
+      -5.0,
+      12.0
+    ],
+    "MouseAim": {
+      "forceAdvanced": false,
+      "preciseRotStopDetection": false,
+      "localDirYawPitchRotYZMax0": 0.125,
+      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
+      "rollAndPullUpWishDirYMin": -0.7,
+      "rollandPullUpWishDirMin": 0.3,
+      "allowedRollRateCoeff": [
+        0.17,
+        0.3,
+        0.4,
+        1.5
+      ],
+      "rollTimeMult": 0.44,
+      "rollPidKpMult": 1.25,
+      "dirXZFactorPitch0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorPitchMin": 0.02,
+      "dirXZFactorYaw0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorYawMin": 0.02,
+      "dirXZToRollRateLim": [
+        0.0,
+        0.0
+      ],
+      "rollRateLimToDirXZFactorMin": [
+        0.7,
+        1000000.0
+      ],
+      "rollRateLimToDirXZFactorMax": [
+        0.7,
+        1000000.0
+      ]
+    }
+  },
   "Autopilot": {
     "Roll": {
       "RateMax": [
@@ -1870,6 +1932,10 @@
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
+      "RateMaxLoadFactorMax": [
+        -218903000.0,
+        218903000.0
+      ],
       "RatePID": {
         "Kp": 0.0,
         "Ki": 0.0,
