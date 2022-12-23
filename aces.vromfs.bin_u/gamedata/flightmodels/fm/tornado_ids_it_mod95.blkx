@@ -95,8 +95,8 @@
   "VneControl": 1450.0,
   "CockpitOpenedDoorBreakSpeed": 220.0,
   "MomentOfInertia": [
-    40000.0,
-    120000.0,
+    55000.0,
+    135000.0,
     80000.0
   ],
   "AvailableControls": {
@@ -241,7 +241,7 @@
     "Flaps1": {
       "Flaps": 0.2,
       "FlapsPolarBlending": 0.1,
-      "FlapsAnimation": 0.01,
+      "FlapsAnimation": 0.1,
       "Stab": 0.0,
       "Slats": 0.5
     },
@@ -265,7 +265,7 @@
       "SweptAngle": 25.0,
       "TaperRatio": 2.5,
       "Angle": 1.0,
-      "VAngle": -4.0,
+      "VAngle": 0.0,
       "UseSpinLoss": true,
       "SpinCdloss": 0.1,
       "SpinClloss": 0.12,
@@ -286,7 +286,7 @@
           -0.05,
           2.4
         ],
-        "SineAosMultiplier": 0.3,
+        "SineAosMultiplier": 0.23,
         "VFocusMultiplier": 0.0,
         "FlapsShift": [
           0.05,
@@ -793,7 +793,7 @@
       "Span": 14.0,
       "Angle": 0.0,
       "Arm": [
-        2.0,
+        3.5,
         -0.05,
         0.0
       ],
@@ -934,8 +934,8 @@
       "Span": 3.2,
       "Angle": 0.0,
       "Arm": [
-        -5.5,
-        2.0,
+        -5.0,
+        1.6,
         0.0
       ],
       "FlowInertia": 0.1,
@@ -964,16 +964,16 @@
         "MultMachMax2": 0.9,
         "MultLineCoeff2": -0.02,
         "MultLimit2": 0.5,
-        "MachCrit3": 0.3,
+        "MachCrit3": 0.6,
         "MachMax3": 1.1,
-        "MultMachMax3": 0.32,
-        "MultLineCoeff3": -0.44,
-        "MultLimit3": 0.25,
+        "MultMachMax3": 0.7,
+        "MultLineCoeff3": -0.3,
+        "MultLimit3": 0.5,
         "MachCrit4": 0.3,
         "MachMax4": 1.0,
-        "MultMachMax4": 0.4,
+        "MultMachMax4": 0.65,
         "MultLineCoeff4": -0.2,
-        "MultLimit4": 0.25,
+        "MultLimit4": 0.5,
         "MachCrit5": 0.79,
         "MachMax5": 1.5,
         "MultMachMax5": 2.0,
@@ -2456,20 +2456,20 @@
       1.0
     ],
     "MouseAim": {
-      "forceAdvanced": true,
-      "preciseRotStopDetection": false,
-      "localDirYawPitchRotYZMax0": 0.125,
+      "forceAdvanced": false,
+      "preciseRotStopDetection": true,
+      "localDirYawPitchRotYZMax0": 0.1,
       "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
       "rollAndPullUpWishDirYMin": -0.7,
       "rollandPullUpWishDirMin": 0.3,
       "allowedRollRateCoeff": [
-        0.17,
-        0.3,
-        0.4,
-        1.5
+        0.07,
+        0.07,
+        0.2,
+        1.0
       ],
-      "rollTimeMult": 0.44,
-      "rollPidKpMult": 1.25,
+      "rollTimeMult": 0.15,
+      "rollPidKpMult": 0.5,
       "dirXZFactorPitch0": [
         0.15,
         2.0,
@@ -2490,11 +2490,11 @@
       ],
       "rollRateLimToDirXZFactorMin": [
         0.7,
-        1000000.0
+        3.0
       ],
       "rollRateLimToDirXZFactorMax": [
         0.7,
-        1000000.0
+        1.0
       ]
     }
   },
