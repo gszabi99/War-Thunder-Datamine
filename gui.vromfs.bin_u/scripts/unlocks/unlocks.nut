@@ -11,7 +11,7 @@ let { number_of_set_bits } = require("%sqstd/math.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
   getUnlockMultDescByCfg, getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getUnlockMultDesc,
-  getUnlockNameText, getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
+  getUnlockNameText, getUnlockTypeText, getUnlockCostText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions, getMainProgressCondition, getProgressBarData, loadMainProgressCondition,
   loadConditionsFromBlk, getMultipliersTable, isBitModeType,
   isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
@@ -554,19 +554,21 @@ let function setImageByUnlockType(config, unlockBlk) {
   let id = config?.displayId ?? realId
 
   res.desc = null
-  local cond = null
+  local unlockCfg = null
   if (unlockBlk)
   {
-    cond = ::build_conditions_config(unlockBlk, stage)
-    let isProgressing = showProgress && (stage == -1 || stage == cond.curStage) && cond.curVal < cond.maxVal
-    let progressData = isProgressing ? cond.getProgressBarData() : null
+    unlockCfg = ::build_conditions_config(unlockBlk, stage)
+    let isProgressing = showProgress
+      && (stage == -1 || stage == unlockCfg.curStage)
+      && unlockCfg.curVal < unlockCfg.maxVal
+    let progressData = isProgressing ? unlockCfg.getProgressBarData() : null
     let haveProgress = getTblValue("show", progressData, false)
     if (haveProgress)
       res.progressBar <- progressData
-    cond = ::build_unlock_desc(cond)
-    cond.showProgress = cond.showProgress && haveProgress
-    res.link = cond.link
-    res.forceExternalBrowser = cond.forceExternalBrowser
+    unlockCfg = ::build_unlock_desc(unlockCfg)
+    unlockCfg.showProgress = unlockCfg.showProgress && haveProgress
+    res.link = unlockCfg.link
+    res.forceExternalBrowser = unlockCfg.forceExternalBrowser
   }
 
   res.id = id
@@ -710,9 +712,9 @@ let function setImageByUnlockType(config, unlockBlk) {
       res.desc = desc
       res.image = "#ui/gameuiskin#unlock_streak.png"
       res.iconStyle <- iconStyle
-      res.minVal <- cond?.minVal ?? 0
-      res.maxVal <- cond?.maxVal ?? 0
-      res.multiplier <- cond?.multiplier ?? {}
+      res.minVal <- unlockCfg?.minVal ?? 0
+      res.maxVal <- unlockCfg?.maxVal ?? 0
+      res.multiplier <- unlockCfg?.multiplier ?? {}
       break
 
     case UNLOCKABLE_AWARD:
@@ -815,20 +817,22 @@ let function setImageByUnlockType(config, unlockBlk) {
     res.desc = loc(unlockBlk.customDescription, "")
 
   if (res.desc == null) {
-    let unlockDesc = cond ? getFullUnlockDesc(cond) : ""
+    let unlockDesc = unlockCfg ? getFullUnlockDesc(unlockCfg) : ""
     if (unlockDesc != "") {
       res.desc = unlockDesc
       res.isUnlockDesc <- true
-      res.unlockCfg <- cond
+      res.unlockCfg <- unlockCfg
     }
     else
       res.desc = (id != realId) ? loc($"{id}/desc", "") : ""
   }
 
   if (uType == UNLOCKABLE_PILOT
-      && unlockBlk?.marketplaceItemdefId
+      && (unlockBlk?.marketplaceItemdefId || !::get_unlock_cost(unlockBlk.id).isZero())
       && id != "" && !::is_unlocked_scripted(-1, id)) {
-    res.obtainInfo <- colorize("userlogColoredText", loc("shop/pilot/coupon/info"))
+    res.obtainInfo <- unlockBlk?.marketplaceItemdefId
+      ? colorize("userlogColoredText", loc("shop/pilot/coupon/info"))
+      : getUnlockCostText(unlockCfg)
     res.desc = "\n".join([res.desc, res.obtainInfo], true)
   }
 
@@ -880,7 +884,7 @@ let function setImageByUnlockType(config, unlockBlk) {
         if (curStage==stage)
         {
           rBlock = sBlock
-          if (cond.needToAddCurStageToName)
+          if (unlockCfg.needToAddCurStageToName)
             res.name = $"{res.name} {::get_roman_numeral(stage + 1)}"
           res.stage <- stage
           res.unlocked <- true

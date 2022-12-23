@@ -47,6 +47,7 @@ let function hideWaitingProgressBox() {
 }
 
 let function showTrophyWnd(config) {
+  hideWaitingProgressBox()
   let { trophyItemDefId, rewardWndConfig } = config
   ::gui_start_open_trophy(rewardWndConfig.__merge({
     [ trophyItemDefId ] = config?.receivedPrizes ?? config.expectedPrizes
@@ -54,7 +55,7 @@ let function showTrophyWnd(config) {
   removeUserstatItemRewardToShow(trophyItemDefId)
 }
 
-let function checkRecivedAllPrizesAndShowWnd(config) {
+let function checkRecivedAllPrizes(config) {
   let { trophyItemDefId, expectedPrizes, time = -1, } = config
   let receivedPrizes = "receivedPrizes" in config ? clone config.receivedPrizes : []
   let notReceivedPrizes = []
@@ -90,9 +91,8 @@ let function checkRecivedAllPrizesAndShowWnd(config) {
   if (notReceivedPrizes.len() > 0)
     return config
 
-  hideWaitingProgressBox()
-  showTrophyWnd(config)
-  return null
+  config.needShowWnd <- true
+  return config
 }
 
 let function checkShowExternalTrophyRewardWnd() {
@@ -100,9 +100,10 @@ let function checkShowExternalTrophyRewardWnd() {
     return
 
   foreach (idx, trophyConfig in delayedTrophies) {
-    let config = checkRecivedAllPrizesAndShowWnd(trophyConfig)
-    if (config == null) {
+    let config = checkRecivedAllPrizes(trophyConfig)
+    if (config?.needShowWnd ?? false) {
       delayedTrophies.remove(idx)
+      showTrophyWnd(config)
       return
     }
 
@@ -115,9 +116,11 @@ let function showExternalTrophyRewardWnd(config) {
     showTrophyWnd(config)
     return
   }
-  config = checkRecivedAllPrizesAndShowWnd(config)
-  if (config == null)
+  config = checkRecivedAllPrizes(config)
+  if (config?.needShowWnd ?? false) {
+    showTrophyWnd(config)
     return
+  }
 
   delayedTrophies.append(config.__merge({ time = get_time_msec() }))
   showWaitingProgressBox()
