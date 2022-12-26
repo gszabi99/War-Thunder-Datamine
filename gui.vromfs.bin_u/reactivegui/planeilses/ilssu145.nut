@@ -11,7 +11,7 @@ let {floor, abs, sin, round} = require("%sqstd/math.nut")
 let {cvt} = require("dagor.math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let {Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll} = require("%rGui/planeState/planeFlyState.nut")
+let {Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll, MaxOverload} = require("%rGui/planeState/planeFlyState.nut")
 let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/planeState/planeWeaponState.nut")
 
 let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
@@ -96,6 +96,18 @@ let overload = @() {
   fontSize = 45
   font = Fonts.hud
   text = string.format("G %.1f", OverloadWatch.value / 10.0)
+}
+
+let MaxOverloadWatch = Computed(@() (floor(MaxOverload.value * 10)).tointeger())
+let maxOverload = @() {
+  watch = [MaxOverloadWatch, IlsColor]
+  size = flex()
+  pos = [pw(8), ph(90)]
+  rendObj = ROBJ_TEXT
+  color = IlsColor.value
+  fontSize = 45
+  font = Fonts.hud
+  text = string.format("MAX G %.1f", MaxOverloadWatch.value / 10.0)
 }
 
 let function pitch(width, height, generateFunc) {
@@ -421,6 +433,7 @@ let function SU145(width, height) {
       mach,
       SUMAoa,
       overload,
+      maxOverload,
       pitch(width, height, generatePitchLine),
       groundReticle,
       shellName,

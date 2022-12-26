@@ -139,9 +139,9 @@
     3.0,
     1.5
   ],
-  "AileronMaxDv": 10.0,
-  "ElevatorMaxDv": 15.0,
-  "RudderMaxDv": 10.0,
+  "AileronMaxDv": 8.0,
+  "ElevatorMaxDv": 8.0,
+  "RudderMaxDv": 8.0,
   "CockpitOpenedDoorBreakSpeed": 450.0,
   "MomentOfInertia": [
     9000.0,
@@ -305,7 +305,7 @@
     "MachCrit1": 0.93,
     "MachMax1": 1.05,
     "MultMachMax1": 4.1,
-    "MultLineCoeff1": -3.4,
+    "MultLineCoeff1": -1.4,
     "MultLimit1": 1.6,
     "MachCrit2": 0.6,
     "MachMax2": 1.0,
@@ -323,10 +323,10 @@
     "MultLineCoeff4": -0.1,
     "MultLimit4": 0.4,
     "MachCrit5": 0.8,
-    "MachMax5": 1.08,
-    "MultMachMax5": 1.02,
-    "MultLineCoeff5": -0.05,
-    "MultLimit5": 0.0,
+    "MachMax5": 1.18,
+    "MultMachMax5": 1.12,
+    "MultLineCoeff5": 0.04,
+    "MultLimit5": 10.0,
     "MachCrit6": 0.92,
     "MachMax6": 1.2,
     "MultMachMax6": 0.1,
@@ -2454,11 +2454,11 @@
       ],
       "AutoAngleToAutoRateMult": 3.0,
       "RatePID": {
-        "Kp": 1.5,
+        "Kp": 1.1,
         "Ki": 0.1,
         "Imax": 1.0,
-        "Kd": 0.005,
-        "dTau": 0.0208333,
+        "Kd": 0.002,
+        "dTau": 0.10208333,
         "Lim": [
           -2.14744E+09,
           2.14744E+09
@@ -2539,7 +2539,7 @@
         "Ki": 0.1,
         "Imax": 1.0,
         "Kd": 0.005,
-        "dTau": 0.0208333,
+        "dTau": 0.1208333,
         "Lim": [
           -0.75,
           0.75
@@ -2617,7 +2617,7 @@
         ]
       },
       "RatePID": {
-        "Kp": 3.0,
+        "Kp": 2.0,
         "Ki": 0.0,
         "Imax": 1.0,
         "Kd": 0.0,

@@ -13,6 +13,7 @@ let Aos = Watched(0.0)
 let Aoa = Watched(0.0)
 let Mach = Watched(0.0)
 let Overload = Watched(0.0)
+let MaxOverload = Watched(0.0)
 let Tas = Watched(0.0)
 let Accel = Watched(0.0)
 let HorizonX = Watched(0)
@@ -33,7 +34,8 @@ let planeState = {
   Accel,
   Tas,
   HorizonX,
-  HorizonY
+  HorizonY,
+  MaxOverload
 }
 
 interopGen({

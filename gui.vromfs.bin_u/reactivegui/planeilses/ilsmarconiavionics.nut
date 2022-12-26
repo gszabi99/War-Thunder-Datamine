@@ -5,7 +5,7 @@ let {IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   RadarTargetPos, TargetPos, TargetPosValid, TimeBeforeBombRelease, DistToTarget } = require("%rGui/planeState/planeToolsState.nut")
 let {baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile} = require("ilsConstants.nut")
 let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {Tangage, Overload, Altitude, Speed, Roll, Mach} = require("%rGui/planeState/planeFlyState.nut")
+let {Tangage, Overload, Altitude, Speed, Roll, Mach, MaxOverload} = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
 let {compassWrap, generateCompassMarkSU145} = require("ilsCompasses.nut")
@@ -300,6 +300,17 @@ let overload = @() {
   text = string.format("%.1f", OverloadWatch.value / 10.0)
 }
 
+let MaxOverloadWatch = Computed(@() (floor(MaxOverload.value * 10)).tointeger())
+let maxOverload = @() {
+  watch = [MaxOverloadWatch, IlsColor, BombingMode]
+  size = flex()
+  pos = [pw(15), ph(78)]
+  rendObj = ROBJ_TEXT
+  color = IlsColor.value
+  fontSize = 40
+  text = string.format("%.1f", MaxOverloadWatch.value / 10.0)
+}
+
 let armLabel = @(){
   watch = IlsColor
   size = flex()
@@ -589,6 +600,7 @@ let function MarconiAvionics(width, height) {
         color = IlsColor.value
       },
       overload,
+      maxOverload,
       compassWrap(width, height, 0.86, generateCompassMarkSU145, 0.8, 5.0, false, 12),
       {
         size = [baseLineWidth * IlsLineScale.value, ph(4)]

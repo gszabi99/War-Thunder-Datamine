@@ -419,10 +419,11 @@
       "lockAfterLaunch": true,
       "lockTimeOut": 0.75,
       "afterLaunchSpeedUp": 200.0,
-      "breakLockMaxTime": 20.0,
+      "breakLockMaxTime": 60.0,
       "inertialGuidance": {
         "inertialNavigationDriftSpeed": 10.0,
-        "datalink": true
+        "datalink": true,
+        "reconnectDatalink": true
       },
       "radarSeeker": {
         "band": 8,
@@ -460,7 +461,7 @@
         "dopplerSpeedGate": {
           "filterAlpha": 0.25,
           "filterBetta": 0.03,
-          "dopplerSpeedGateSearchRange": 320.0
+          "dopplerSpeedGateSearchRange": 100.0
         }
       },
       "guidanceAutopilot": {

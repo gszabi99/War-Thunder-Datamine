@@ -7,7 +7,7 @@ let {IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
 let {baseLineWidth, mpsToKnots, metrToFeet, feetToNavMile} = require("ilsConstants.nut")
 let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
 let { AdlPoint, CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
-let {Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach} = require("%rGui/planeState/planeFlyState.nut")
+let {Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach, MaxOverload} = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let {floor} = require("%sqstd/math.nut")
 let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
@@ -226,6 +226,17 @@ let overload = @() {
   color = IlsColor.value
   fontSize = 40
   text = string.format("%.1f", OverloadWatch.value / 10.0)
+}
+
+let MaxOverloadWatch = Computed(@() (floor(MaxOverload.value * 10)).tointeger())
+let maxOverload = @() {
+  watch = [MaxOverloadWatch, IlsColor]
+  size = flex()
+  pos = [pw(10), ph(78)]
+  rendObj = ROBJ_TEXT
+  color = IlsColor.value
+  fontSize = 40
+  text = string.format("%.1f", MaxOverloadWatch.value / 10.0)
 }
 
 let armLabel = @(){
@@ -815,6 +826,7 @@ let function Elbit967(width, height) {
       speedVal,
       AltVal,
       overload,
+      maxOverload,
       armLabel,
       mach,
       radioAlt,
