@@ -11,6 +11,7 @@ let time = require("%scripts/time.nut")
 let { is_stereo_mode } = require_native("vr")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
@@ -423,15 +424,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hideEvent = ["hint:bailout:offerBailout", "hint:bailout:notBailouts"]
 
     selfRemove = true
-    buildText = function (data) {
-      local res = ::g_hud_hints._buildText.call(this, data)
-      res += " " + ::g_hint_tag.TIMER.makeFullTag()
-      let leaveKill = getTblValue("leaveKill", data, false)
+    function buildText(data) {
+      local res = $"{::g_hud_hints._buildText.call(this, data)} {::g_hint_tag.TIMER.makeFullTag()}"
+      let leaveKill = data?.leaveKill ?? false
       if (leaveKill)
-        res +=  "\n" + loc(this.nearestOffenderLocId)
-      let offenderName = getTblValue("offenderName", data, "")
+        res = $"{res}\n{loc(this.nearestOffenderLocId)}"
+      let offenderName = data?.offenderName ?? ""
       if (offenderName != "")
-        res +=  "\n" + loc(this.awardGiveForLocId) + offenderName
+        res = $"{res}\n{loc(this.awardGiveForLocId)}{getPlayerName(offenderName)}"
       return res
     }
   }

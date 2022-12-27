@@ -11,10 +11,7 @@ global enum HUD_VIS_PART //bit enum
   DMG_PANEL           = 0x0001
   MAP                 = 0x0002
   CAPTURE_ZONE_INFO   = 0x0004
-  KILLLOG             = 0x0008
-  CHAT                = 0x0010
   KILLCAMERA          = 0x0020
-  REWARDS_MSG         = 0x0080
   RACE_INFO           = 0x0200
 
   //masks
@@ -55,7 +52,7 @@ enums.addTypesByGlobalName("g_hud_vis_mode", {
     hudGm = HUD_GAME_MODE_MINIMAL
     locId = "options/hudNecessary"
     parts = HUD_VIS_PART.DMG_PANEL | HUD_VIS_PART.MAP | HUD_VIS_PART.CAPTURE_ZONE_INFO
-            | HUD_VIS_PART.CHAT | HUD_VIS_PART.KILLCAMERA | HUD_VIS_PART.KILLLOG | HUD_VIS_PART.RACE_INFO
+            | HUD_VIS_PART.KILLCAMERA | HUD_VIS_PART.RACE_INFO
   }
 
   DISABLED = {

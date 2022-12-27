@@ -1928,6 +1928,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "hud_vis_part_streaks"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
+      descr.optionCb <- "onChangedPartHudVisible"
       defaultValue = true
       break
 
@@ -1935,6 +1936,31 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "hud_vis_part_orders"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
+      descr.optionCb <- "onChangedPartHudVisible"
+      defaultValue = true
+      break
+
+    case ::USEROPT_HUD_VISIBLE_REWARDS_MSG:
+      descr.id = "hud_vis_part_reward_msg"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.optionCb <- "onChangedPartHudVisible"
+      defaultValue = true
+      break
+
+    case ::USEROPT_HUD_VISIBLE_KILLLOG:
+      descr.id = "hud_vis_part_killlog"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.optionCb <- "onChangedPartHudVisible"
+      defaultValue = true
+      break
+
+    case ::USEROPT_HUD_VISIBLE_CHAT_PLACE:
+      descr.id = "hud_vis_part_chat_place"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.optionCb <- "onChangedPartHudVisible"
       defaultValue = true
       break
 
@@ -5169,6 +5195,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_HUD_SHOW_TANK_GUNS_AMMO:
     case ::USEROPT_HUD_VISIBLE_ORDERS:
     case ::USEROPT_HUD_VISIBLE_STREAKS:
+    case ::USEROPT_HUD_VISIBLE_REWARDS_MSG:
+    case ::USEROPT_HUD_VISIBLE_KILLLOG:
+    case ::USEROPT_HUD_VISIBLE_CHAT_PLACE:
       if (descr.controlType == optionControlType.LIST)
       {
         if (type(descr.values) != "array")

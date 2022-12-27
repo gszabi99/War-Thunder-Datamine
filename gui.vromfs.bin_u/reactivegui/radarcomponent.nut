@@ -1568,8 +1568,9 @@ let function B_Scope(size, color) {
     })
 
     return {
+      pos = [-maxMeasuresCompWidth(), -maxLabelHeight * 2]
       watch = [IsRadarVisible, IsRadar2Visible]
-       children =  outerPlace
+      children =  outerPlace
     }
   }
 }

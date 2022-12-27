@@ -144,12 +144,15 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     }
 
     let weaponryObj = this.scene.findObject("unit_weapons_selector")
+    let isUnitUsable = this.unit.isUsable()
+    let isUnitSpecial = ::isUnitSpecial(this.unit)
 
     let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
       canChangeBulletsAmount = true
-      isForcedAvailable = ::isUnitSpecial(this.unit) && !this.unit.isBought()
+      isForcedAvailable = isUnitSpecial && !isUnitUsable
+      forceShowDefaultTorpedoes = !isUnitSpecial && !isUnitUsable
     })
 
     this.weaponsSelectorWeak = handler.weakref()

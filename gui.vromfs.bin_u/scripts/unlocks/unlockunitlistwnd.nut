@@ -15,6 +15,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 let function getUnitsData(unlockId) {
   let data = {}
+  let ediff = getShopDiffCode()
   let units = getUnitListByUnlockId(unlockId).filter(@(u) u.isVisibleInShop())
   foreach (countryId in shopCountriesList) {
     let countryUnits = units.filter(@(unit) ::getUnitCountry(unit) == countryId)
@@ -27,7 +28,8 @@ let function getUnitsData(unlockId) {
       if (!armyUnits.len())
         continue
 
-      armyUnits.sort(@(a, b) a.rank <=> b.rank)
+      armyUnits.sort(@(a, b) a.rank <=> b.rank
+        || a.getBattleRating(ediff) <=> b.getBattleRating(ediff))
       data[countryId][unitType.armyId] <- armyUnits
     }
   }

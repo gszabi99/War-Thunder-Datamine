@@ -13,7 +13,7 @@ let function decodeJwtAndHandleErrors(jwt) {
   if (payload != null && jwtError == null)
     return { jwt, payload }
 
-  return { error = jwtError }
+  return { decodError = jwtError }
 }
 
 return {

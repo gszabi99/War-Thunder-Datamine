@@ -326,7 +326,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (messageData.type == HUD_MSG_MULTIPLAYER_DMG
         && !(messageData?.isKill ?? true) && ::mission_settings.maxRespawns != 1)
         return
-      if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.KILLLOG))
+      if (!::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_KILLLOG, ::OPTIONS_MODE_GAMEPLAY, true))
         return
       this.addMessage(messageData)
     }
@@ -488,7 +488,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     {
       if (!checkObj(::g_hud_messages.REWARDS.nest))
         return
-      if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.REWARDS_MSG))
+      if (!::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_REWARDS_MSG, ::OPTIONS_MODE_GAMEPLAY, true))
         return
 
       let isSeries = this.curRewardPriority != REWARD_PRIORITY.noPriority

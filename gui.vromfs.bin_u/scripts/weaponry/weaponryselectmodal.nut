@@ -32,11 +32,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil, sqrt } = require("math")
 
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon,
-        setLastWeapon,
-        isWeaponVisible,
-        isWeaponEnabled,
-        needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultTorpedoes,
+  needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 
 ::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config)
 {
@@ -58,6 +55,7 @@ local CHOOSE_WEAPON_PARAMS = {
   let curWeaponName = params.getLastWeapon(unit.name)
   let hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
   let isForcedAvailable = params.isForcedAvailable
+  let forceShowDefaultTorpedoes = params?.forceShowDefaultTorpedoes ?? false
   let onChangeValueCb = function(weapon) {
     params.setLastWeapon(unit.name, weapon.name)
     cb?(unit.name, weapon.name)
@@ -66,13 +64,15 @@ local CHOOSE_WEAPON_PARAMS = {
   let list = []
   foreach(weapon in unit.getWeapons())
   {
-    if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlySelectable))
+    let needShowDefTorpedoes = forceShowDefaultTorpedoes && isDefaultTorpedoes(weapon)
+    if (!isForcedAvailable && !needShowDefTorpedoes
+        && !isWeaponVisible(unit, weapon, hasOnlySelectable))
       continue
 
     list.append({
       weaponryItem = weapon
       selected = curWeaponName == weapon.name
-      enabled = isForcedAvailable || isWeaponEnabled(unit, weapon)
+      enabled = isForcedAvailable || needShowDefTorpedoes || isWeaponEnabled(unit, weapon)
     })
   }
 

@@ -71,9 +71,7 @@ let getMainOptions = function() {
 
 
       [::USEROPT_FONTS_CSS, "spinner"],
-      [::USEROPT_GAMMA, "slider", !::is_hdr_enabled() && platformId != "macosx"
-                                  && (!is_platform_windows
-                                      || ::getSystemConfigOption("video/mode") == "fullscreen") ],
+      [::USEROPT_GAMMA, "slider", !::is_hdr_enabled()],
       [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_PRELOADER_SETTINGS, "button", hasFeature("LoadingBackgroundFilter") && !::is_in_flight()],
       [::USEROPT_REVEAL_NOTIFICATIONS, "button"],
@@ -192,7 +190,10 @@ let getMainOptions = function() {
       [::USEROPT_HUD_SHOW_TEMPERATURE, "spinner"],
       [::USEROPT_INGAME_VIEWTYPE, "spinner", ::is_in_flight() && canChangeViewType],
       [::USEROPT_HUD_VISIBLE_ORDERS, "switchbox"],
+      [::USEROPT_HUD_VISIBLE_REWARDS_MSG, "switchbox"],
+      [::USEROPT_HUD_VISIBLE_KILLLOG, "switchbox"],
       [::USEROPT_HUD_VISIBLE_STREAKS, "switchbox"],
+      [::USEROPT_HUD_VISIBLE_CHAT_PLACE, "switchbox"],
 
       ["options/header/measureUnits"],
       [::USEROPT_MEASUREUNITS_SPEED, "spinner"],

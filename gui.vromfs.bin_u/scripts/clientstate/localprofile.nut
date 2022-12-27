@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 let { set_blk_value_by_path, get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
+let { debug_dump_stack } = require("dagor.debug")
 
 ::onUpdateProfile <- function onUpdateProfile(taskId, action, transactionType = ::EATT_UNKNOWN) //code callback on profile update
 {
@@ -25,7 +26,8 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
-    logerr("".concat("unsafe profile settings read: save_local_account_settings at login state ",
+    debug_dump_stack()
+    logerr("".concat("unsafe profile settings write: save_local_account_settings at login state ",
       ::g_login.getStateDebugStr()))
     return
   }
@@ -39,6 +41,7 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
+    debug_dump_stack()
     logerr("".concat("unsafe profile settings read: load_local_account_settings at login state ",
       ::g_login.getStateDebugStr()))
     return defValue
@@ -128,6 +131,7 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
+    debug_dump_stack()
     logerr("".concat("unsafe profile settings read: loadLocalByAccount at login state ",
       ::g_login.getStateDebugStr()))
     return defValue
@@ -157,6 +161,7 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
+    debug_dump_stack()
     logerr("".concat("unsafe profile settings read: saveLocalByAccount at login state ",
       ::g_login.getStateDebugStr()))
     return

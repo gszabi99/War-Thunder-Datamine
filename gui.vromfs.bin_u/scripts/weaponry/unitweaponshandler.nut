@@ -11,10 +11,8 @@ let { updateModItem,
 
 let { ceil } = require("math")
 
-let { getLastWeapon,
-        setLastWeapon,
-        isWeaponEnabled,
-        isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible,
+  isDefaultTorpedoes } = require("%scripts/weaponry/weaponryInfo.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
 ::gui_handlers.unitWeaponsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -36,6 +34,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
   showItemParams = null
   isForcedAvailable = false
+  forceShowDefaultTorpedoes = false
 
   function initScreen()
   {
@@ -63,7 +62,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
       selectBulletsByManager = (this.canChangeWeaponry && this.canChangeBulletsAmount) ? this.bulletsManager : null
       needSliderButtons = this.canChangeBulletsAmount
       hasMenu = false
-      isForceHidePlayerInfo = this.isForcedAvailable
+      isForceHidePlayerInfo = this.isForcedAvailable || this.forceShowDefaultTorpedoes
     }
   }
 
@@ -399,8 +398,9 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
       if (!found && defWeapon)
         continue
 
-      if (!this.isForcedAvailable &&
-          (!isWeaponVisible(this.unit, weapon) || !isWeaponEnabled(this.unit, weapon)))
+      if (!this.isForcedAvailable
+          && (!this.forceShowDefaultTorpedoes || !isDefaultTorpedoes(weapon))
+          && (!isWeaponVisible(this.unit, weapon) || !isWeaponEnabled(this.unit, weapon)))
         continue
 
       if (found)
@@ -424,7 +424,9 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
     let hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
     foreach(weapon in this.unit.getWeapons())
     {
-      if (!this.isForcedAvailable && !isWeaponVisible(this.unit, weapon, hasOnlySelectable))
+      if (!this.isForcedAvailable
+          && (!this.forceShowDefaultTorpedoes || !isDefaultTorpedoes(weapon))
+          && !isWeaponVisible(this.unit, weapon, hasOnlySelectable))
         continue
 
       count++
@@ -541,6 +543,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
           itemParams = this.getSelectionItemParams()
           alignObj = obj
           isForcedAvailable = this.isForcedAvailable
+          forceShowDefaultTorpedoes = this.forceShowDefaultTorpedoes
         })
       return
     }

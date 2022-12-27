@@ -349,8 +349,8 @@ let function maybeOfferControlsHelp() {
       hud_tank_damage_indicator = isDmgPanelVisible
       tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
       hud_tank_tactical_map     = visMode.isPartVisible(HUD_VIS_PART.MAP)
-      hud_kill_log              = visMode.isPartVisible(HUD_VIS_PART.KILLLOG)
-      chatPlace                 = visMode.isPartVisible(HUD_VIS_PART.CHAT)
+      hud_kill_log              = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_KILLLOG, ::OPTIONS_MODE_GAMEPLAY, true)
+      chatPlace                 = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_CHAT_PLACE, ::OPTIONS_MODE_GAMEPLAY, true)
       hud_enemy_damage_nest     = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
       order_status              = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_ORDERS, ::OPTIONS_MODE_GAMEPLAY, true)
     }
@@ -364,6 +364,9 @@ let function maybeOfferControlsHelp() {
     ::showBtnTable(this.scene, objsToShow)
     this.guiScene.setUpdatesEnabled(true, true)
   }
+
+  updateHudVisModeForce = @() this.updateHudVisMode(::FORCE_UPDATE)
+  onEventChangedPartHudVisible = @(_) this.doWhenActiveOnce("updateHudVisModeForce")
 
   function onHudUpdate(_obj=null, dt=0.0)
   {

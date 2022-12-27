@@ -384,17 +384,20 @@ shopData = [
 
   function onEventSlotbarPresetLoaded(_p)
   {
-    this.doWhenActiveOnce("fullReloadAircraftsList")
+    this.doWhenActiveOnce("fillAircraftsList")
   }
 
-  function onEventProfileUpdated(_p)
+  function onEventProfileUpdated(p)
   {
-    this.doWhenActiveOnce("fullReloadAircraftsList")
+    if (p.transactionType == EATT_UPDATE_ENTITLEMENTS
+        || p.transactionType == EATT_BUY_ENTITLEMENT
+        || p.transactionType == EATT_BUYING_UNLOCK)
+      this.doWhenActiveOnce("fullReloadAircraftsList")
   }
 
   function onEventItemsShopUpdate(_p)
   {
-    this.doWhenActiveOnce("fullReloadAircraftsList")
+    this.doWhenActiveOnce("fillAircraftsList")
   }
 
   function onUpdate(_obj, dt)
@@ -1855,7 +1858,7 @@ shopData = [
 
   function onEventExpConvert(_params)
   {
-    this.doWhenActiveOnce("fullReloadAircraftsList")
+    this.doWhenActiveOnce("fillAircraftsList")
     this.fillGroupObj()
   }
 
@@ -2117,7 +2120,7 @@ shopData = [
 
   function onEventClanChanged(_params)
   {
-    this.doWhenActiveOnce("fullReloadAircraftsList")
+    this.doWhenActiveOnce("fillAircraftsList")
   }
 
   function onEventSquadronExpChanged(_params)

@@ -350,6 +350,11 @@ let function get_country_by_team(team_index) {
     this.setOptionValueByControlObj(obj)
   }
 
+  function onChangedPartHudVisible(_obj)
+  {
+    ::broadcastEvent("ChangedPartHudVisible")
+  }
+
   function onTankAltCrosshair(obj)
   {
     if (this.isOptionInUpdate)

@@ -127,6 +127,8 @@ let getWeaponDisabledMods = @(unit, weapon)
     ? []
     : (weapon?.reqModification.filter(@(n) !::shop_is_modification_enabled(unit.name, n)) ?? [])
 
+let isDefaultTorpedoes = @(weapon) weapon?.reqModification.contains("ship_torpedoes") ?? false
+
 let function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null)
 {
   if (isWeaponAux(weapon))
@@ -1049,6 +1051,7 @@ return {
   checkUnitBullets
   isWeaponEnabled
   isWeaponVisible
+  isDefaultTorpedoes
   checkBadWeapons
   getOverrideBullets
   needSecondaryWeaponsWnd
