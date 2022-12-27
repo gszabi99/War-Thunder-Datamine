@@ -17,6 +17,7 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { PRICE } = require("%scripts/utils/configs.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 let { floor } = require("math")
+let { resetTimeout } = require("dagor.workcycle")
 
 // Independent Modules
 require("%scripts/items/roulette/bhvRoulette.nut")
@@ -39,7 +40,8 @@ let OUT_OF_DATE_DAYS_INVENTORY = 0
 ::FAKE_ITEM_CYBER_CAFE_BOOSTER_UID <- -1
 
 //events from native code:
-::on_items_loaded <- @() ::ItemsManager.onItemsLoaded()
+let onItemsLoaded = @() ::ItemsManager.onItemsLoaded()
+::on_items_loaded <- @() resetTimeout(0.01, onItemsLoaded)
 
 let itemsShopListVersion = Watched(0)
 let inventoryListVersion = Watched(0)
