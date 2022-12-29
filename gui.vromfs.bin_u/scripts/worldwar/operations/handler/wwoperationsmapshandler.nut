@@ -985,6 +985,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   /*!!! Will be used in further tasks !!!
   local wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
   local { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+  let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
   function onEventWWGlobeMarkerHover(params)
   {
     local obj = scene.findObject("globe_hint")
@@ -1014,7 +1015,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     statisticsObj.show(true)
     local callback = Callback(
       function(countriesData) {
-        local statistics = wwLeaderboardData.convertWwLeaderboardData(countriesData).rows
+        local statistics = convertLeaderboardData(countriesData).rows
         local view = getStatisticsView(statistics, map)
         local markup = ::handyman.renderCached("%gui/worldWar/wwGlobeMapInfo.tpl", view)
         guiScene.replaceContentFromText(statisticsObj, markup, markup.len(), this)

@@ -6,6 +6,8 @@ let userstat = require("userstat")
 let { get_time_msec } = require("dagor.time")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
+let { APP_ID_CUSTOM_LEADERBOARD
+} = require("%scripts/leaderboard/requestLeaderboardData.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
@@ -112,6 +114,14 @@ let unlocksUpdatable = makeUpdatable("GetUnlocks",
     }, cb),
   {})
 
+let customLeaderboardStatsUpdatable = makeUpdatable("GetCustomLeaderboardStats",
+  @(cb) userstat.request({
+      add_token = true
+      headers = { appid = APP_ID_CUSTOM_LEADERBOARD }
+      action = "GetStats"
+    }, cb),
+  {})
+
 let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, taskOptions = {}) {
   let resultCb = function(result) {
     if (result?.error) {
@@ -177,6 +187,10 @@ addListenersWithoutEnv({
   BattleEnded    = @(_p) validateUserstatData()
 })
 
+let userstatCustomLeaderboardStats = customLeaderboardStatsUpdatable.data
+userstatCustomLeaderboardStats.subscribe(
+  @(_) ::broadcastEvent("UserstatCustomLeaderboardStats"))
+
 return {
   userstatUnlocks
   userstatDescList
@@ -187,4 +201,6 @@ return {
   receiveUnlockRewards
   isUserstatMissingData
   validateUserstatData
+  userstatCustomLeaderboardStats
+  refreshUserstatCustomLeaderboardStats = @() customLeaderboardStatsUpdatable.refresh()
 }

@@ -20,6 +20,7 @@ let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let clanInfoView = require("%scripts/clans/clanInfoView.nut")
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
+let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 
 let clan_member_list = [
   {id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false}
@@ -1253,7 +1254,7 @@ foreach(idx, item in clan_member_list)
 
   function updateCurWwMembers(membersData = {})
   {
-    this.curWwMembers = wwLeaderboardData.convertWwLeaderboardData(
+    this.curWwMembers = convertLeaderboardData(
       this.updateDataByUnitRank(membersData)).rows
   }
 

@@ -128,19 +128,39 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
           : playerName
       }
     ]
+    let isMainPlayer = selfPos == row.pos && row.pos >= 0
+    let customSelfStats = isMainPlayer ? this.lbParams?.customSelfStats : null
     foreach(category in this.lbPresets)
     {
       if (!this.lbModel.checkLbRowVisibility(category, this.lbParams))
         continue
 
-      rowData.append(this.getItemCell(category, row))
+      let itemCell = this.getItemCell(category, row)
+      if (customSelfStats != null) {
+        let customTooltip = this.getCustomSelfStatsTooltip(category, customSelfStats)
+        itemCell.tooltip <- itemCell?.tooltip == null ? customTooltip
+          : $"{itemCell.tooltip}\n\n{customTooltip}"
+        itemCell.text = $"{itemCell.text} ┋"
+      }
+      rowData.append(itemCell)
     }
     let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
-    let highlightRow = selfPos == row.pos && row.pos >= 0
-    let rowParamsText = $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
+    let rowParamsText = $"clanId:t='{clanId}';{isMainPlayer ? "mainPlayer:t='yes';" : ""}"
     let data = ::buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
 
     return data
+  }
+
+  function getCustomSelfStatsTooltip(category, customSelfStats) {
+    let { field } = category
+    local bestStats = (customSelfStats?["$sessions"] ?? [])
+      .map(@(s) s?.stats[field] ?? 0).filter(@(stat) stat > 0).sort(@(a, b) b<=>a)
+
+    if (bestStats.len() == 0)
+      return ""
+
+    bestStats = bestStats.map(@(value) category.lbDataType.getShortTextByValue(value))
+    return $"{loc("results_best")}{loc("ui/colon")}\n{"\n".join(bestStats)}"
   }
 
   function getItemCell(curLbCategory, row)
@@ -160,41 +180,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let emptyRow = ::buildTableRow("row_"+this.rowsInPage, ["..."], null,
       "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;'; ")
 
-    return emptyRow + this.generateRowTableData(selfRow[0], this.rowsInPage + 1, selfRow)
-  }
-
-  function generateRowTableData(row, rowIdx, selfRow)
-  {
-    let rowName = "row_" + rowIdx
-    let needAddClanTag = row?.needAddClanTag ?? false
-    let clanTag = row?.clanTag ?? ""
-    let playerName = platformModule.getPlayerName(row?.name ?? "")
-    let rowData = [
-      {
-        text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
-      },
-      {
-        id = "name"
-        tdalign = "left"
-        text = needAddClanTag
-          ? ::g_contacts.getPlayerFullName(playerName, clanTag)
-          : playerName
-      }
-    ]
-    foreach(category in this.lbPresets)
-    {
-      if (!this.lbModel.checkLbRowVisibility(category, this.lbParams))
-        continue
-
-      rowData.append(this.getItemCell(category, row))
-    }
-
-    let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
-    let highlightRow = selfRow == row.pos && row.pos >= 0
-    let data = ::buildTableRow(rowName, rowData, rowIdx % 2 == 0,
-      $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}")
-
-    return data
+    return emptyRow + this.getTableRowMarkup(selfRow[0], this.rowsInPage + 1, selfRow[0].pos)
   }
 
   function onRowSelect(obj)

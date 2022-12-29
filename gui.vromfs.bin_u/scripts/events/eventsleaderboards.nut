@@ -4,8 +4,10 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
 let { get_time_msec } = require("dagor.time")
+let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
+  requestCustomEventLeaderboardData, convertLeaderboardData
+} = require("%scripts/leaderboard/requestLeaderboardData.nut")
 
 ::events._leaderboards = {
   cashLifetime = 60000
@@ -24,6 +26,9 @@ let { get_time_msec } = require("dagor.time")
     forClans = false,
     tournament = false,
     tournament_mode = GAME_EVENT_TYPE.TM_NONE
+
+    lbTable = null
+    lbMode = null
   }
 
   defaultRequest = {
@@ -35,6 +40,9 @@ let { get_time_msec } = require("dagor.time")
     forClans = false
     tournament = false,
     tournament_mode = -1
+
+    lbTable = null
+    lbMode = null
   }
 
   canRequestEventLb    = true
@@ -148,43 +156,11 @@ let { get_time_msec } = require("dagor.time")
    */
   function requestUpdateEventLb(requestData, onSuccessCb, onErrorCb)
   {
-    let blk = ::DataBlock()
-    blk.event = requestData.economicName
-    blk.sortField = requestData.lbField
-    blk.start = requestData.pos
-    blk.count = requestData.rowsInPage
-    blk.inverse = requestData.inverse
-    blk.clan = requestData.forClans
-    blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
-    blk.version = 1
-    blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
-
-    if (blk.start == null || blk.start < 0)
-    {
-      let event = blk.event  // warning disable: -declared-never-used
-      let start = blk.start  // warning disable: -declared-never-used
-      let count = blk.count  // warning disable: -declared-never-used
-      ::script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
-      log($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
-
-      blk.start = 0
+    if (requestData.lbTable == null) {
+      requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb)
+      return
     }
-    if (blk.count == null || blk.count <= 0)
-    {
-      let event = blk.event  // warning disable: -declared-never-used
-      let count = blk.count  // warning disable: -declared-never-used
-      let start = blk.start  // warning disable: -declared-never-used
-      ::script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
-      log($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
-
-      blk.count = 49  // unusual value indicate problem
-    }
-
-    let event = ::events.getEvent(requestData.economicName)
-    if (requestData.tournament || ::events.isRaceEvent(event))
-      blk.tournamentMode = requestData.tournament_mode
-
-    return ::g_tasker.charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
+    requestCustomEventLeaderboardData(requestData, onSuccessCb, onErrorCb)
   }
 
   /**
@@ -193,23 +169,18 @@ let { get_time_msec } = require("dagor.time")
    */
   function requestEventLbSelfRow(requestData, onSuccessCb, onErrorCb)
   {
-    let blk = ::DataBlock()
-    blk.event = requestData.economicName
-    blk.sortField = requestData.lbField
-    blk.start = -1
-    blk.count = -1
-    blk.clanId = ::clan_get_my_clan_id();
-    blk.inverse = requestData.inverse
-    blk.clan = requestData.forClans
-    blk.version = 1
-    blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
-    blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
+    if (requestData.lbTable == null) {
+      requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb)
+      return
+    }
 
-    let event = ::events.getEvent(requestData.economicName)
-    if (requestData.tournament || ::events.isRaceEvent(event))
-      blk.tournamentMode = requestData.tournament_mode
-
-    return ::g_tasker.charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
+    requestCustomEventLeaderboardData(
+      requestData.__merge({
+        pos = null
+        rowsInPage = 0
+        userId = ::my_user_id_int64
+      }),
+      onSuccessCb, onErrorCb)
   }
 
   /**
@@ -315,6 +286,11 @@ let { get_time_msec } = require("dagor.time")
                       : ::events.getTableConfigShortRowByEvent(event)
     newRequest.inverse = shortRow.inverse
     newRequest.lbField = shortRow.field
+    if (event?.leaderboardEventTable ?? false) {
+      newRequest.lbTable = event.leaderboardEventTable
+      newRequest.lbMode = "stats"
+      newRequest.lbField = event?.leaderboardEventBestStat ?? shortRow.field
+    }
 
     return newRequest
   }
@@ -366,14 +342,15 @@ let { get_time_msec } = require("dagor.time")
       foreach(lbRow in lbRows)
         this.postProcessClanLbRow(lbRow)
 
-    let superiorityBattlesThreshold = blk.getInt("superiorityBattlesThreshold", 0)
+    let superiorityBattlesThreshold = blk?.superiorityBattlesThreshold ?? 0
     if (superiorityBattlesThreshold > 0)
       foreach(lbRow in lbRows)
         lbRow["superiorityBattlesThreshold"] <- superiorityBattlesThreshold
 
-    let res = {}
-    res["rows"] <- lbRows
-    res["updateTime"] <- blk.getStr("lastUpdateTime", "0").tointeger()
+    let res = {
+      rows = lbRows
+      updateTime = (blk?.lastUpdateTime ?? "0").tointeger()
+    }
     return res
   }
 
@@ -388,6 +365,9 @@ let { get_time_msec } = require("dagor.time")
 
   function lbBlkToArray(blk)
   {
+    if (type(blk) == "table") {
+      return convertLeaderboardData(blk).rows
+    }
     let res = []
     foreach (row in blk % "event")
     {

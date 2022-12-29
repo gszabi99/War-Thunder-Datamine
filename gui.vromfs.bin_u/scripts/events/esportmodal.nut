@@ -286,8 +286,10 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onLeaderboard(obj) {
     let tournament = getTourById(obj.eventId)
     if (tournament)
-      ::gui_modal_event_leaderboards(// No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
-        getMatchingEventId(tournament.id, 0, false), tournament.sharedEconomicName)
+      ::gui_modal_event_leaderboards({// No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
+        eventId = getMatchingEventId(tournament.id, 0, false)
+        sharedEconomicName = tournament.sharedEconomicName
+      })
   }
 
   onTimer = @(_obj, _dt) (this.scene.getModalCounter() != 0) ? null : this.updateAllEventsByFilters()

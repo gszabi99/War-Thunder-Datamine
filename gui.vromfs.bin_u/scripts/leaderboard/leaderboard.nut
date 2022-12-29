@@ -12,6 +12,8 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
+let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats
+} = require("%scripts/userstat/userstat.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO
@@ -107,12 +109,8 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
   ::gui_start_modal_wnd(::gui_handlers.LeaderboardWindow, {lb_presets = lb_presets})
 }
 
-::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(
-  eventId = null, sharedEconomicName = null) {
-    ::gui_start_modal_wnd(::gui_handlers.EventsLeaderboardWindow, {
-      eventId = eventId
-      sharedEconomicName = sharedEconomicName
-    })
+::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(params) {
+  ::gui_start_modal_wnd(::gui_handlers.EventsLeaderboardWindow, params)
 }
 
 ::leaderboardModel <-
@@ -857,11 +855,18 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   inverse  = false
   request = null
+  customSelfStats = null
 
   function initScreen() {
     let eventData = ::events.getEvent(this.eventId)
     if (!eventData)
       return this.goBack()
+
+    let event = ::events.getEvent(this.eventId)
+    if (event?.leaderboardEventTable != null) {
+      this.customSelfStats = userstatCustomLeaderboardStats.value?.stats[event.leaderboardEventTable]
+      refreshUserstatCustomLeaderboardStats()
+    }
 
     this.request = ::events.getMainLbRequest(eventData)
     if (!this.lbModel)
@@ -943,6 +948,15 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
     this.request.economicName = curTabObj.id
     this.updateLeaderboard()
+  }
+
+  function onEventUserstatCustomLeaderboardStats(_) {
+    let event = ::events.getEvent(this.eventId)
+    if (event?.leaderboardEventTable == null)
+      return
+
+    this.customSelfStats = userstatCustomLeaderboardStats.value?.stats[event.leaderboardEventTable]
+    this.fillLeaderboard(this.pageData)
   }
 }
 

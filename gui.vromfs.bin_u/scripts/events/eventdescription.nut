@@ -516,8 +516,15 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
 
   function onOpenEventLeaderboards()
   {
-    if (this.selectedEvent != null)
-      ::gui_modal_event_leaderboards(this.selectedEvent.name)
+    if (this.selectedEvent == null)
+      return
+
+    ::gui_modal_event_leaderboards({
+      eventId = this.selectedEvent.name
+      lb_presets = this.selectedEvent?.leaderboardEventBestStat != null
+        ? [ ::g_lb_category.getTypeByField(this.selectedEvent.leaderboardEventBestStat) ]
+        : null
+    })
   }
 
   function onRewardsList()

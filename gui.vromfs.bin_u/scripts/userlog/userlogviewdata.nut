@@ -161,17 +161,18 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
     if (("country" in logObj) && ::checkCountry(logObj.country, "userlog EULT_SESSION_"))
       res.logImg2 = ::get_country_icon(logObj.country)
 
+    let eventId = logObj?.eventId
     local mission = ::get_mission_name(logObj.mission, logObj)
-    if ("eventId" in logObj && !::events.isEventRandomBattlesById(logObj.eventId))
+    if (eventId != null && !::events.isEventRandomBattlesById(eventId))
     {
       local locName = ""
 
       if ("eventLocName" in logObj)
-       locName = logObj.eventLocName
+        locName = logObj.eventLocName
       else
-       locName = "events/" + logObj.eventId + "/name"
-      logName = "event/" + logName
-      mission = loc(locName, logObj.eventId)
+        locName = $"events/{eventId}/name"
+      logName = $"event/{logName}"
+      mission = loc(locName, eventId)
     }
 
     local nameLoc = "userlog/"+logName
@@ -362,8 +363,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
           "\n" + ::g_string.implode(usedItems, "\n")
     }
 
-
-    if ("tournamentResult" in logObj)
+    if (("tournamentResult" in logObj) && (::events.getEvent(eventId)?.leaderboardEventTable == null))
     {
       let now = getTblValue("newStat", logObj.tournamentResult)
       let was = getTblValue("oldStat", logObj.tournamentResult)
@@ -372,7 +372,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       foreach (lbFieldsConfig in ::events.eventsTableConfig)
       {
         if (!(lbFieldsConfig.field in now)
-          || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId = logObj?.eventId }))
+          || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
           continue
 
         items.append(::getLeaderboardItemView(lbFieldsConfig,

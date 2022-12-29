@@ -353,8 +353,10 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   onEventSquadDataUpdated = @(_p) this.updateApplyButton()
 
   onLeaderboard = @()
-    ::gui_modal_event_leaderboards(getMatchingEventId(this.tournament.id, this.curTourParams.dayNum, false),
-      this.tournament.sharedEconomicName)
+    ::gui_modal_event_leaderboards({
+      eventId = getMatchingEventId(this.tournament.id, this.curTourParams.dayNum, false)
+      sharedEconomicName = this.tournament.sharedEconomicName
+    })
 
   function onReward() {
     ::gui_handlers.EventRewardsWnd.open([{
