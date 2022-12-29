@@ -1219,7 +1219,7 @@ let function startCreateWndByGamemode(_handler, _obj)
 
 ::is_platform_shield_tv <- function is_platform_shield_tv()
 {
-  return ::getFromSettingsBlk("deviceType", "") == "shieldTv"
+  return is_platform_android && ::getFromSettingsBlk("deviceType", "") == "shieldTv"
 }
 
 ::is_worldwar_enabled <- function is_worldwar_enabled()
