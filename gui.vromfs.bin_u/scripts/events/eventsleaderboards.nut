@@ -21,7 +21,7 @@ let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
     economicName = null,
     lbField = "",
     pos = 0,
-    rowsInPage = max(EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW, EVENTS_SHORT_LB_VISIBLE_ROWS)
+    rowsInPage = EVENTS_SHORT_LB_VISIBLE_ROWS
     inverse = false,
     forClans = false,
     tournament = false,

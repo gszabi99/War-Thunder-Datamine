@@ -13,10 +13,6 @@ const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 
-let alwaysForceRefreshEvents = {
-  LoginComplete = true
-}
-
 let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
   let data = Watched(defValue)
   let lastTime = Watched({ request = 0, update = 0 })
@@ -67,10 +63,8 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
     forceRefresh()
   }
 
-  addListenersWithoutEnv(
-    alwaysForceRefreshEvents.__merge(forceRefreshEvents).map(@(_v) invalidateConfig),
-    ::g_listener_priority.CONFIG_VALIDATION
-  )
+  addListenersWithoutEnv(forceRefreshEvents.map(@(_v) invalidateConfig),
+    ::g_listener_priority.CONFIG_VALIDATION)
 
   if (lastTime.value.request >= lastTime.value.update)
     forceRefresh()
@@ -96,7 +90,7 @@ let descListUpdatable = makeUpdatable("GetUserStatDescList",
     action = "GetUserStatDescList"
   }, cb),
   {},
-  { GameLocalizationChanged = true})
+  { GameLocalizationChanged = true, LoginComplete = true })
 
 let statsUpdatable = makeUpdatable("GetStats",
   @(cb) userstat.request({
@@ -104,7 +98,8 @@ let statsUpdatable = makeUpdatable("GetStats",
       headers = { appid = APP_ID }
       action = "GetStats"
     }, cb),
-  {})
+  {},
+  { LoginComplete = true })
 
 let unlocksUpdatable = makeUpdatable("GetUnlocks",
   @(cb) userstat.request({
@@ -112,7 +107,8 @@ let unlocksUpdatable = makeUpdatable("GetUnlocks",
       headers = { appid = APP_ID }
       action = "GetUnlocks"
     }, cb),
-  {})
+  {},
+  { LoginComplete = true })
 
 let customLeaderboardStatsUpdatable = makeUpdatable("GetCustomLeaderboardStats",
   @(cb) userstat.request({

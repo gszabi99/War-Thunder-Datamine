@@ -417,6 +417,8 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
     local rowIdx = 0
     foreach(row in lbRows)
     {
+      if ((row?[lbCategory.field] ?? -1) <= 0)
+        continue
       data += this.generateRowTableData(row, rowIdx++, lbCategory)
       this.playersInTable.append("nick" in row ? row.nick : -1)
       if (rowIdx >= EVENTS_SHORT_LB_VISIBLE_ROWS)
@@ -427,18 +429,10 @@ let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventReward
 
   function checkLbTableVisible(lb_rows, lbCategory)
   {
-    if (isPlatformSony || isPlatformXboxOne)
+    if (isPlatformSony || isPlatformXboxOne || lbCategory == null || lb_rows.len() == 0)
       return false
 
-    if (lbCategory == null)
-      return false
-
-    let participants = lb_rows ? lb_rows.len() : 0
-    if (!participants || (::isProductionCircuit() && participants < EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW))
-      return false
-
-    let lastValidatedRow = lb_rows[min(EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW, participants) - 1]
-    return getTblValue(lbCategory.field, lastValidatedRow, 0) > 0
+    return true
   }
 
   function generateRowTableData(row, rowIdx, lbCategory)
