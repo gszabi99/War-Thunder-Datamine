@@ -12,9 +12,9 @@ let {hudFontHgt, fontOutlineFxFactor, greenColor, fontOutlineColor,
 
 let { selectedTargetSpeedBlinking, selectedTargetBlinking, targetAspectEnabled, modeNames,
   targets, screenTargets, azimuthMarkers, forestall, selectedTarget, radarPosSize, IsRadarHudVisible,
-  IsNoiseSignaVisible, MfdRadarEnabled, IsRadarVisible, RadarModeNameId,
+  IsNoiseSignaVisible, MfdRadarEnabled, IsRadarVisible, IsRadarEmitting, RadarModeNameId,
   Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
-  IsRadar2Visible, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2,
+  IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2,
   NoiseSignal2, AimAzimuth, TurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax,
   ElevationMin, ElevationMax, IsBScopeVisible, IsCScopeVisible, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax,
   CueVisible, CueAzimuth, CueDist, TargetsTrigger, ScreenTargetsTrigger, ViewMode, MfdViewMode, HasAzimuthScale, HasDistanceScale, ScanPatternsMax,
@@ -992,11 +992,13 @@ let function B_ScopeSquare(size, color, hide_back) {
 
     let children = [ bkg, scopeTgtSectorComp, scopeSquareAzimuthComp0, groundReflComp ]
     if (IsRadarVisible.value) {
-      children.append(scopeSquareAzimuthComp1)
+      if (IsRadarEmitting.value)
+        children.append(scopeSquareAzimuthComp1)
       children.append(scopeSquareElevationComp1)
     }
     if (IsRadar2Visible.value) {
-      children.append(scopeSquareAzimuthComp2)
+      if (IsRadar2Emitting.value)
+        children.append(scopeSquareAzimuthComp2)
       children.append(scopeSquareElevationComp2)
     }
     if (IsAamLaunchZoneVisible.value && HasDistanceScale.value)
@@ -1004,7 +1006,7 @@ let function B_ScopeSquare(size, color, hide_back) {
     children.append(tgts)
     children.append(cue)
     return {
-      watch = [ IsRadarVisible, IsRadar2Visible, IsAamLaunchZoneVisible,
+      watch = [ IsRadarVisible, IsRadarEmitting, IsRadar2Visible, IsRadar2Emitting, IsAamLaunchZoneVisible,
         HasDistanceScale ]
       size = SIZE_TO_CONTENT
       clipChildren = true
@@ -1542,9 +1544,9 @@ let function B_Scope(size, color) {
 
   return function() {
     let children = [ bkg, azComp1, azComp2, sectorComp ]
-    if (IsRadarVisible.value)
+    if (IsRadarVisible.value && IsRadarEmitting.value)
       children.append(azComp3)
-    if (IsRadar2Visible.value)
+    if (IsRadar2Visible.value && IsRadar2Emitting.value)
       children.append(azComp4)
     children.append(tgts)
     children.append(cue)
@@ -1569,7 +1571,7 @@ let function B_Scope(size, color) {
 
     return {
       pos = [-maxMeasuresCompWidth(), -maxLabelHeight * 2]
-      watch = [IsRadarVisible, IsRadar2Visible]
+      watch = [IsRadarVisible, IsRadarEmitting, IsRadar2Visible, IsRadar2Emitting]
       children =  outerPlace
     }
   }
@@ -1873,18 +1875,20 @@ let function B_ScopeHalf(size, color, fontScale) {
   return function() {
     let children = [ bkg, sector, reflections ]
     if (IsRadarVisible.value) {
-      children.append(az1)
+      if (IsRadarEmitting.value)
+        children.append(az1)
       children.append(el1)
     }
     if (IsRadar2Visible.value) {
-      children.append(az2)
+      if (IsRadar2Emitting.value)
+        children.append(az2)
       children.append(el2)
     }
     if (IsAamLaunchZoneVisible.value && HasDistanceScale.value)
       children.append(aamLaunch)
     children.append(tgts)
     return {
-      watch = [IsRadarVisible, IsRadar2Visible, HasDistanceScale, IsAamLaunchZoneVisible]
+      watch = [IsRadarVisible, IsRadarEmitting, IsRadar2Visible, IsRadar2Emitting, HasDistanceScale, IsAamLaunchZoneVisible]
       children = [
         {
           size = sizeBScopeHalf
@@ -2320,14 +2324,14 @@ let function C_Scope(size, color) {
 
   return function() {
     let children = [bkg]
-    if (IsRadarVisible.value)
+    if (IsRadarVisible.value && IsRadarEmitting.value)
       children.append(azim1)
-    if (IsRadar2Visible.value)
+    if (IsRadar2Visible.value && IsRadar2Emitting.value)
       children.append(azim2)
     children.append(tgts)
 
     return {
-      watch = [IsRadarVisible, IsRadar2Visible]
+      watch = [IsRadarVisible, IsRadarEmitting, IsRadar2Visible, IsRadar2Emitting]
       children = [
         {
           clipChildren = true
@@ -2589,19 +2593,17 @@ let function scanZoneElevationComponent(color) {
   }
 }
 
-let function lockZoneComponent(color) {
-  let animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1, duration = 0.25, play = true, loop = true, easing = InOutSine}]
-
+let function lockZoneComponentCommon(IsCustomLockZoneVisible, color, animations) {
   return function() {
-    let res =  { watch = [IsLockZoneVisible, LockZoneWatched] }
-    if (!IsLockZoneVisible.value)
-      return res.__update({animations})
+    let res =  { watch = [IsCustomLockZoneVisible, LockZoneWatched] }
+    if (!IsCustomLockZoneVisible.value)
+      return res.__update({animations = animations})
 
     let width = sw(100)
     let height = sh(100)
     let mw = 100 / width
     let mh = 100 / height
-    let corner = 0.1
+    let corner = IsRadarEmitting.value ? 0.1 : 0.02
     let lineWidth = hdpx(4)
     let size = [sw(100), sh(100)]
 
@@ -2633,7 +2635,7 @@ let function lockZoneComponent(color) {
     ]
 
     return res.__update({
-      animations
+      animations = animations
       pos = [_x0, _y0 ]
       rendObj = ROBJ_VECTOR_CANVAS
       color
@@ -2643,6 +2645,17 @@ let function lockZoneComponent(color) {
       commands
     })
   }
+}
+
+let function lockZoneComponent(color) {
+  let animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1, duration = 0.25, play = true, loop = true, easing = InOutSine}]
+  let IsActiveLockZoneVisibile = Computed(@() IsLockZoneVisible.value && IsRadarEmitting.value)
+  return lockZoneComponentCommon(IsActiveLockZoneVisibile, color, animations)
+}
+
+let function standbyLockZoneComponent(color) {
+  let IsStandbyLockZoneVisibile = Computed(@() IsLockZoneVisible.value && !IsRadarEmitting.value)
+  return lockZoneComponentCommon(IsStandbyLockZoneVisibile, color, null)
 }
 
 let function getForestallTargetLineCoords() {
@@ -2955,6 +2968,7 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
       mkRadarBase(radarPos, [radarSize, radarSize], isAir, color, ViewMode)
       scanZoneAzimuthComponent(color)
       lockZoneComponent(color)
+      standbyLockZoneComponent(color)
       compassComponent(color)
       azimuthMarkStrike(color)
     ] :
@@ -2966,6 +2980,7 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
       scanZoneAzimuthComponent(color)
       scanZoneElevationComponent(color)
       lockZoneComponent(color)
+      standbyLockZoneComponent(color)
     ]
 
     return res.__update({

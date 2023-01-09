@@ -10,6 +10,7 @@ let modeNames = [
   "hud/search",
   "hud/acquisition",
   "hud/ACM",
+  "hud/HMD",
   "hud/BST",
   "hud/VSL",
   "hud/track",
@@ -32,6 +33,7 @@ let modeNames = [
   "hud/PD search",
   "hud/PD acquisition",
   "hud/PD ACM",
+  "hud/PD HMD",
   "hud/PD BST",
   "hud/PD VSL",
   "hud/PD track",
@@ -76,6 +78,7 @@ let modeNames = [
   "hud/IRST search",
   "hud/IRST acquisition",
   "hud/IRST ACM",
+  "hud/IRST HMD",
   "hud/IRST track",
 
   "hud/air_search",
@@ -119,6 +122,7 @@ let Speed = Watched(0.0)
 
   //radar 1
 let IsRadarVisible = Watched(false)
+let IsRadarEmitting = Watched(false)
 let RadarModeNameId = Watched(-1)
 let Azimuth = Watched(0.0)
 let Elevation = Watched(0.0)
@@ -130,6 +134,7 @@ let NoiseSignal = Watched(0)
 
   //radar 2
 let IsRadar2Visible = Watched(false)
+let IsRadar2Emitting = Watched(false)
 let Radar2ModeNameId = Watched(-1)
 let Azimuth2 = Watched(0.0)
 let Elevation2 = Watched(0.0)
@@ -197,6 +202,9 @@ let AamTimeOfFlightMax = Watched(0.0)
 let AamLaunchZoneDistMinVal = Watched(1.0)
 let AamLaunchZoneDistMaxVal = Watched(1.0)
 
+let HmdSensorVisible = Watched(false)
+let HmdSensorDesignation = Watched(false)
+
 let AzimuthRange = Computed(@() max(0.0, AzimuthMax.value - AzimuthMin.value))
 let AzimuthRangeInv = Computed(@() AzimuthRange.value != 0 ? 1.0 / AzimuthRange.value : 1.0)
 let ElevationRange = Computed(@() max(0.0, ElevationMax.value - ElevationMin.value))
@@ -209,10 +217,10 @@ radarState.__update({
     Speed,
 
     //radar 1
-    IsRadarVisible, RadarModeNameId, Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
+    IsRadarVisible, IsRadarEmitting, RadarModeNameId, Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
 
     //radar 2
-    IsRadar2Visible, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2,
+    IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2,
 
     AimAzimuth, TurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax,
 
@@ -230,7 +238,9 @@ radarState.__update({
 
     VelocitySearch
 
-    AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal
+    AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
+
+    HmdSensorVisible, HmdSensorDesignation
   }
 )
 
