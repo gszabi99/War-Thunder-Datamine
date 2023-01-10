@@ -1087,6 +1087,7 @@ let prizeViewConfig = {
   let isBought = ::isUnitBought(unit)
   let receivedPrizes = getTblValue("receivedPrizes", params, true)
   let classIco = getTblValue("singlePrize", params, false) ? null : ::getUnitClassIco(unit)
+  let countryIco = ::get_unit_country_icon(unit, false)
   let shopItemType = getUnitRole(unit)
   let isShowLocalState = receivedPrizes || rentTimeHours > 0
   let buttons = this.getPrizeActionButtonsView({ unit = unitName }, params)
@@ -1114,6 +1115,7 @@ let prizeViewConfig = {
   })
   return {
     classIco = classIco,
+    countryIco = countryIco,
     shopItemType = shopItemType,
     unitPlate = unitPlate,
     commentText = infoText.len() ? infoText : null
@@ -1157,7 +1159,9 @@ let prizeViewConfig = {
 
   return {
     icon = icon
+    classIco = ::getUnitClassIco(unit)
     icon2 = ::get_unit_country_icon(unit)
+    shopItemType = getUnitRole(unit)
     title = colorize("activeTextColor", ::getUnitName(unitName, true)) + loc("ui/colon")
       + colorize("userlogColoredText",
         getModificationName(unit, modName))

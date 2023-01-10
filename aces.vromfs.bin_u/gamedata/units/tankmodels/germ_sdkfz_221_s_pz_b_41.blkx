@@ -240,10 +240,10 @@
     "hull": {
       "armorClass": "RHA_tank",
       "body_top_dm": {
-        "armorThickness": 8.0
+        "armorThickness": 6.0
       },
       "body_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 6.0
       },
       "body_back_dm": {
         "armorThickness": 8.0
@@ -255,7 +255,7 @@
         "armorThickness": 8.0
       },
       "superstructure_front_dm": {
-        "armorThickness": 14.5
+        "armorThickness": 8.0
       },
       "superstructure_side_dm": {
         "armorThickness": 8.0
@@ -264,8 +264,7 @@
         "armorThickness": 8.0
       },
       "superstructure_top_dm": {
-        "armorThickness": 3.0,
-        "armorClass": "tank_structural_steel"
+        "armorThickness": 6.0
       },
       "superstructure_bottom_dm": {
         "armorThickness": 8.0
@@ -280,7 +279,7 @@
         "armorThickness": 10.0
       },
       "turret_01_front_dm": {
-        "armorThickness": 14.5
+        "armorThickness": 8.0
       },
       "turret_01_top_dm": {
         "armorThickness": 8.0
@@ -298,6 +297,12 @@
         "armorThickness": 8.0
       },
       "turret_02_bottom_dm": {
+        "armorThickness": 8.0
+      },
+      "ex_decor_04_dm": {
+        "armorThickness": 8.0
+      },
+      "ex_armor_02_dm": {
         "armorThickness": 8.0
       }
     },
@@ -317,7 +322,7 @@
         "armorClass": "tank_structural_steel"
       },
       "turret_02_back_dm": {
-        "armorThickness": 14.5,
+        "armorThickness": 8.0,
         "armorClass": "CHA_tank"
       },
       "turret_top_dm": {
@@ -405,9 +410,7 @@
       "ex_armor_l_04_dm": {},
       "ex_armor_r_01_dm": {},
       "ex_armor_r_02_dm": {},
-      "ex_decor_r_08_dm": {},
-      "ex_armor_02_dm": {},
-      "ex_decor_04_dm": {}
+      "ex_decor_r_08_dm": {}
     },
     "crew": {
       "armorClass": "steel_tankman",
@@ -1791,9 +1794,9 @@
       "Fuel": 100.0,
       "TakeOff": 4000.0,
       "momentOfInertia": [
-        2.0,
-        2.0,
-        5.0
+        1.0,
+        1.0,
+        1.0
       ],
       "CenterOfGravity": [
         0.3,
@@ -1804,7 +1807,7 @@
       "trackMass": 40.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.5
       ],
       "engineInertialMass": 400.0
     },
@@ -1821,42 +1824,41 @@
     },
     "engine": {
       "horsePowers": 75.0,
-      "maxRPM": 2600.0,
+      "maxRPM": 3600.0,
       "minRPM": 600.0
     },
     "mechanics": {
-      "maxBrakeForce": 30000.0,
+      "maxBrakeForce": 20000.0,
       "driveGearRadius": 0.4,
-      "mainGearRatio": 1.2,
-      "sideGearRatio": 5.5,
+      "mainGearRatio": 6.375,
+      "sideGearRatio": 1.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -4.63,
+          -5.67,
           0.0,
-          16.5,
-          6.0,
-          3.5,
+          6.52,
+          4.24,
           2.5,
-          1.5,
-          0.82
+          1.575,
+          1.064
         ]
       }
     },
     "suspension": {
       "suspensionOffsets": [
-        -0.15,
-        -0.12,
-        0.1
+        -0.11,
+        -0.1,
+        0.07
       ],
       "defaultGearRadius": 0.4,
       "defaultDampeningForce": [
-        15000.0,
-        15000.0
+        20000.0,
+        20000.0
       ],
       "hasSuspensionOnDriveGear": true,
-      "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15,
+      "dampeningRelaxationRatio": 0.3,
+      "dampeningCompressionRatio": 0.1,
       "brokenWheelSteeringDeflection": -15.0,
       "steeringDeflection": {
         "wheel_r_01": 45.0,
@@ -2665,6 +2667,49 @@
     "sightName": "default_tank_spg",
     "detectionHeight": 2.8,
     "bone_turret": ""
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": true,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_01_dm": {
+          "count": 6
+        },
+        "ammo_body_02_dm": {
+          "count": 6
+        },
+        "ammo_body_03_dm": {
+          "count": 6
+        },
+        "ammo_body_04_dm": {
+          "count": 6
+        },
+        "ammo_body_05_dm": {
+          "count": 6
+        },
+        "ammo_body_06_dm": {
+          "count": 6
+        },
+        "ammo_body_07_dm": {
+          "count": 6
+        },
+        "ammo_body_08_dm": {
+          "count": 6
+        },
+        "ammo_body_09_dm": {
+          "count": 6
+        },
+        "ammo_body_10_dm": {
+          "count": 6
+        }
+      }
+    }
   },
   "modifications": {
     "new_wheels": {},

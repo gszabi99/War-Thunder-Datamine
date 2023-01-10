@@ -11,11 +11,11 @@ let time = require("%scripts/time.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
+let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 
 ::dagui_propid.add_name_id("_queueTableGenCode")
 
-let FULL_CIRCLE_GRAD = 360
 local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
 ::gui_handlers.QueueTable <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -95,18 +95,11 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
   function updateTip()
   {
-    let tipObj = this.getObj("queue_tip")
-    if (!tipObj)
+    let tipObj = this.scene.findObject("queue_tip")
+    if (tipObj?.isValid() ?? false)
       return
 
-    local esUnitTypes = this.getCurEsUnitTypesList(true)
-    if (!esUnitTypes.len())
-      esUnitTypes = this.getCurEsUnitTypesList(false)
-
-    local mask = 0
-    foreach(esUnitType in esUnitTypes)
-      mask = mask | (1 << esUnitType)
-    tipObj.setValue(mask)
+    tipObj.setValue(getCurEsUnitTypesMask())
   }
 
   function fillQueueInfo()
@@ -515,43 +508,15 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     this.scene.show(!topMenuShopActive.value)
   }
 
-  function getCurEsUnitTypesList(needRequiredOnly = false)
-  {
-    let gameModeId = ::game_mode_manager.getCurrentGameModeId()
-    let gameMode = ::game_mode_manager.getGameModeById(gameModeId)
-    return ::game_mode_manager._getUnitTypesByGameMode(gameMode, true, needRequiredOnly)
-  }
-
   function updateQueueWaitIconImage()
   {
     if (!checkObj(this.scene))
       return
     let obj = this.scene.findObject("queue_wait_icon_block")
-    if (!checkObj(obj))
+    if (!(obj?.isValid() ?? false))
       return
 
-    let esUnitTypes = this.getCurEsUnitTypesList()
-    let esUnitTypesOrder = [
-      ES_UNIT_TYPE_SHIP
-      ES_UNIT_TYPE_TANK
-      ES_UNIT_TYPE_HELICOPTER
-      ES_UNIT_TYPE_AIRCRAFT
-    ]
-
-    let view = { icons = [] }
-    let rotationStart = ::math.rnd() % FULL_CIRCLE_GRAD
-    foreach (esUnitType in esUnitTypesOrder)
-      if (isInArray(esUnitType, esUnitTypes))
-        view.icons.append({
-          unittag = unitTypes.getByEsUnitType(esUnitType).tag
-          rotation = rotationStart
-        })
-
-    let circlesCount = view.icons.len()
-    if (circlesCount)
-      foreach (idx, icon in view.icons)
-        icon.rotation = (rotationStart + idx * FULL_CIRCLE_GRAD / circlesCount) % FULL_CIRCLE_GRAD
-    let markup = ::handyman.renderCached("%gui/queue/queueWaitingIcon.tpl", view)
+    let markup = getQueueWaitIconImageMarkup()
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 }

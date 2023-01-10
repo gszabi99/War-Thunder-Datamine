@@ -678,19 +678,23 @@ itemBlock > itemDiv[enableBackground = no] {
 }
 
 prizeNest > img,
-prizeNest > classIconPlace {
+prizeNest > iconsPlace > classIconPlace,
+prizeNest > iconsPlace > countryIconPlace {
   size:1@dIco, 1@dIco;
   background-svg-size:1@dIco, 1@dIco;
 }
 
-prizeNest > classIconPlace > img {
+prizeNest > iconsPlace > classIconPlace > img,
+prizeNest > iconsPlace > countryIconPlace > img {
   size:1@tableIcoSize, 1@tableIcoSize;
   background-svg-size:1@tableIcoSize, 1@tableIcoSize;
 }
 
 [smallFont=yes] prizeNest > img,
-[smallFont=yes] prizeNest > classIconPlace,
-[smallFont=yes] prizeNest > classIconPlace > img {
+[smallFont=yes] prizeNest > iconsPlace > classIconPlace,
+[smallFont=yes] prizeNest > iconsPlace > classIconPlace > img,
+[smallFont=yes] prizeNest > iconsPlace > countryIconPlace,
+[smallFont=yes] prizeNest > iconsPlace > countryIconPlace > img {
   size:2@fontHeightSmall, 2@fontHeightSmall;
   background-svg-size:2@fontHeightSmall, 2@fontHeightSmall;
 }

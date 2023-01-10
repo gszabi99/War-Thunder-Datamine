@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { is_replay_playing } = require("replays")
 
 local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 {
@@ -63,7 +62,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
       ordersButton.inactiveColor = !::g_orders.orderCanBeActivated() ? "yes" : "no"
     }
     this.showMissionResult()
-    tblObj1.setValue(0)
+    this.selectLocalPlayer()
     this.scene.findObject("table_kills_team2").setValue(-1)
   }
 
@@ -73,8 +72,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     ::set_mute_sound_in_flight_menu(false)
     ::in_flight_menu(true)
     this.forceUpdate()
-    if (is_replay_playing())
-      this.selectLocalPlayer()
+    this.selectLocalPlayer()
     this.showMissionResult()
   }
 

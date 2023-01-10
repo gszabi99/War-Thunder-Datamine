@@ -12,6 +12,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 
 /*
   config = {
@@ -208,6 +209,13 @@ let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
       return
     }
 
+    let cost = ::get_unlock_cost(option.unlockId)
+    let canBuy = !cost.isZero()
+    if (canBuy) {
+      this.onBuy()
+      return
+    }
+
     if (option?.marketplaceItemdefId) {
       let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
       if (inventoryItem != null)
@@ -223,8 +231,10 @@ let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
       return
     }
 
-    toggleUnlockFav(option.unlockId)
-    this.updateButtons()
+    if (getUnlockConditions(::g_unlocks.getUnlockById(option.unlockId)?.mode).len() > 0) {
+      toggleUnlockFav(option.unlockId)
+      this.updateButtons()
+    }
   }
 
   function onToggleFav() {

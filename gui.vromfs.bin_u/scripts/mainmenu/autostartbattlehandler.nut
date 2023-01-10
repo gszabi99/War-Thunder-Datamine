@@ -8,6 +8,10 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { format } = require("string")
+let time = require("%scripts/time.nut")
+let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
+let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 
 let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -16,11 +20,12 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
   queueMask = QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE
 
   curGameMode = null
-  queueTableHandler = null
   curQueue = null
 
   WAIT_BATTLE_DURATION = 20
   goBackTime = -1
+
+  autoStartQueueWnd = null
 
   function initScreen() {
     ::set_presence_to_player("menu")
@@ -29,50 +34,55 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
 
+    this.autoStartQueueWnd = this.scene.findObject("autoStartQueueWnd")
+
     this.setCurQueue(::queues.findQueue({}, this.queueMask))
+    this.updateTip()
+    this.updateWaitTime()
+    this.updateQueueWaitIconImage()
   }
 
-  function onTimer(_, __) {
-    if (!this.isValid())
-      return
-
-    if (::handlersManager.isAnyModalHandlerActive())
-      return
-
-    let timeLeft = this.goBackTime - ::get_charserver_time_sec()
-    if (timeLeft < 0)
-      return this.goBack()
-
-    if (!::queues.isQueueActive(this.curQueue)
-        && ::SessionLobby.status == lobbyStates.NOT_IN_ROOM)
-      return this.goBack()
-  }
+  getCurQueue = @() this.curQueue
 
   function setCurQueue(value) {
     this.curQueue = value
     if (this.curQueue == null)
       return
 
-    this.loadQueueTableHandler()
+    this.updateScene()
   }
 
-  function onEventRequestToggleVisibility(params) {
-    ::show_obj(params.target, params.visible)
+  function updateTip()
+  {
+    let tipObj = this.scene.findObject("queue_tip")
+    if (tipObj?.isValid() ?? false)
+      return
+
+    tipObj.setValue(getCurEsUnitTypesMask())
   }
 
-  function loadQueueTableHandler() {
-    if (::handlersManager.isHandlerValid(this.queueTableHandler))
+  function updateQueueWaitIconImage()
+  {
+    let obj = this.scene.findObject("queue_wait_icon_block")
+    if (!(obj?.isValid() ?? false))
       return
 
-    let container = this.scene.findObject("queue_table_container")
-    if (container == null)
-      return
+    let markup = getQueueWaitIconImageMarkup()
+    this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+  }
 
-    this.queueTableHandler = ::handlersManager.loadHandler(::gui_handlers.QueueTable, {
-      scene = container
-      queueMask = this.queueMask
-    })
-    this.queueTableHandler.setShowQueueTable(true)
+  function updateWaitTime()
+  {
+    local txtWaitTime = ""
+    let waitTime = this.getCurQueue()?.getActiveTime() ?? 0
+    if (waitTime > 0)
+    {
+      let minutes = time.secondsToMinutes(waitTime).tointeger()
+      let seconds = waitTime - time.minutesToSeconds(minutes)
+      txtWaitTime = format("%d:%02d", minutes, seconds)
+    }
+
+    this.scene.findObject("msgText").setValue(txtWaitTime)
   }
 
   function joinMpQueue() {
@@ -112,10 +122,45 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventQueueChangeState(p) {
+    let queue = p?.queue
+    if (::queues.isQueuesEqual(queue, this.getCurQueue()))
+    {
+      this.updateScene()
+      return
+    }
+
     if (!::queues.checkQueueType(p.queue, this.queueMask))
       return
 
     this.setCurQueue(::queues.isQueueActive(p.queue) ? p.queue : null)
+  }
+
+  function onEventQueueInfoUpdated(_params)
+  {
+    if (!this.getCurQueue())
+      return
+
+    this.updateScene()
+  }
+
+  function updateScene()
+  {
+    let showQueueTbl = ::queues.isQueueActive(this.getCurQueue())
+    this.setShowQueueTable(showQueueTbl)
+  }
+
+  function setShowQueueTable(value)
+  {
+    if (value && this.autoStartQueueWnd.isVisible())
+      return
+
+    if (value)
+    {
+      this.updateTip()
+      this.updateQueueWaitIconImage()
+    }
+
+    ::show_obj(this.autoStartQueueWnd, value)
   }
 
   function startBattle() {
@@ -134,6 +179,24 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
     this.curGameMode = ::game_mode_manager.getCurrentGameMode()
     this.doWhenActiveOnce("startBattle")
+  }
+
+  function onTimer(_, __) {
+    if (!this.isValid())
+      return
+
+    if (::handlersManager.isAnyModalHandlerActive())
+      return
+
+    let timeLeft = this.goBackTime - ::get_charserver_time_sec()
+    if (timeLeft < 0)
+      return this.goBack()
+
+    if (!::queues.isQueueActive(this.curQueue)
+        && ::SessionLobby.status == lobbyStates.NOT_IN_ROOM)
+      return this.goBack()
+
+    this.updateWaitTime()
   }
 }
 

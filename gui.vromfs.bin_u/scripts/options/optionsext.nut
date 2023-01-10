@@ -2290,9 +2290,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.optionCb = "onMyWeaponOptionUpdate"
       }
       else {
-        logerr($"Options: ::USEROPT_BULLET{groupIndex}: get: Wrong 'aircraft_for_weapons' type")
         debugTableData(::aircraft_for_weapons)
         debug_dump_stack()
+        logerr($"Options: ::USEROPT_BULLET{groupIndex}: get: Wrong 'aircraft_for_weapons' type")
       }
       break
 
@@ -4133,9 +4133,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     default:
       let optionName = ::user_option_name_by_idx?[optionId] ?? ""
-      assert(false, $"[ERROR] Options: Get: Unsupported type {optionId} ({optionName})")
       debugTableData(::aircraft_for_weapons)
-      debug_dump_stack()
+      assert(false, $"[ERROR] Options: Get: Unsupported type {optionId} ({optionName})")
   }
 
   if (!descr.hint)
