@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { ceil } = require("math")
+let { ceil, fabs } = require("math")
 let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
 let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry,
   isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -17,7 +17,6 @@ let { MIN_TIERS_COUNT, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUS
 } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getCustomPresetByPresetBlk, convertPresetToBlk
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { abs } = require("%sqstd/math.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { openRestrictionsWeaponryPreset } = require("%scripts/weaponry/restrictionsWeaponryPreset.nut")
@@ -669,8 +668,8 @@ let function overloadMsg(locKey, weight, maxWeight) {
 
   let kgMeasure = ::g_measure_type.getTypeByName("kg", true)
   return loc(locKey, {
-    overload = kgMeasure.getMeasureUnitsText(abs(overload)),
-    weight = kgMeasure.getMeasureUnitsText(abs(weight)),
+    overload = kgMeasure.getMeasureUnitsText(fabs(overload)),
+    weight = kgMeasure.getMeasureUnitsText(fabs(weight)),
     maxWeight = kgMeasure.getMeasureUnitsText(maxWeight)
   })
 }
@@ -710,7 +709,7 @@ let function getPresetWeightRestrictionText(preset, unitBlk) {
         rightMass += tierMass
   }
 
-  let disbalance = abs(leftMass - rightMass)
+  let disbalance = fabs(leftMass - rightMass)
   if (disbalance > maxDisbalance) {
     let kgMeasure = ::g_measure_type.getTypeByName("kg", true)
     result.append(loc("weapons/pylonsWeightDisbalance", {

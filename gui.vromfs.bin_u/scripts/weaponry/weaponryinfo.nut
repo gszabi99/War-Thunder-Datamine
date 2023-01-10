@@ -611,9 +611,9 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
 
   local massText = null
   if (weapon.massLbs > 0)
-    massText = format(loc("mass/lbs"), weapon.massLbs)
+    massText = ::g_measure_type.getTypeByName("lbs", true).getMeasureUnitsText(weapon.massLbs)
   else if (weapon.massKg > 0)
-    massText = format(loc("mass/kg"), weapon.massKg)
+    massText = ::g_measure_type.getTypeByName("kg", true).getMeasureUnitsText(weapon.massKg)
   if (massText)
     res.append("".concat(loc("shop/tank_mass"), " ", massText))
 
