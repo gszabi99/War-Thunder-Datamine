@@ -126,6 +126,33 @@
         -60.0,
         60.0
       ]
+    },
+    "hmdLock": {
+      "type": "cone",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "period": 1.0,
+      "width": 1.75,
+      "indicate": true,
+      "hmd": true
+    },
+    "hmdTrack": {
+      "type": "no",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "hmd": true
     }
   },
   "signals": {
@@ -226,6 +253,9 @@
     },
     "boresightLock": {
       "scanPattern1": "boresightLock"
+    },
+    "hmdLock": {
+      "scanPattern1": "hmdLock"
     }
   },
   "scopeRangeSets": {
@@ -596,6 +626,176 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "pulse"
           }
+        },
+        "setHmdStandbyModeCommon": {
+          "setEnabled": {
+            "value": false
+          },
+          "clearTargets": {},
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdLock"
+          },
+          "resetScanPhase": {},
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 9250.0,
+            "width": 18500.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 675.0,
+            "width": 1950.0
+          },
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": true
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseBoresightLock"
+          },
+          "setIllumination": {
+            "illumination": false
+          }
+        },
+        "setPulseHmdStandbyMode": {
+          "setHmdStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "pulse"
+          },
+          "setSignal": {
+            "signal": "pulseTrack"
+          },
+          "setModeName": {
+            "name": "HMD"
+          }
+        },
+        "setPulseDopplerHmdStandbyMode": {
+          "setHmdStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
+          "setSignal": {
+            "signal": "pulseDopplerSearch"
+          },
+          "setModeName": {
+            "name": "PD HMD"
+          }
+        },
+        "setHmdLockModeCommon": {
+          "setEnabled": {
+            "value": true
+          },
+          "clearTargets": {},
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdLock"
+          },
+          "resetScanPhase": {},
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 9250.0,
+            "width": 18500.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 675.0,
+            "width": 1950.0
+          },
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseBoresightLock"
+          },
+          "setIllumination": {
+            "illumination": false
+          }
+        },
+        "setPulseHmdLockMode": {
+          "setHmdLockModeCommon": {},
+          "setTransiver": {
+            "transiver": "pulse"
+          },
+          "setSignal": {
+            "signal": "pulseTrack"
+          },
+          "setModeName": {
+            "name": "HMD"
+          }
+        },
+        "setPulseDopplerHmdLockMode": {
+          "setHmdLockModeCommon": {},
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
+          "setSignal": {
+            "signal": "pulseDopplerSearch"
+          },
+          "setModeName": {
+            "name": "PD HMD"
+          }
+        },
+        "setHmdTrackModeCommon": {
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdTrack"
+          },
+          "clearTargetsOfInterest": {},
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setFsmActive": {
+            "fsm": "track",
+            "active": true
+          },
+          "setIllumination": {
+            "illumination": true
+          }
+        },
+        "setPulseHmdTrackMode": {
+          "setHmdTrackModeCommon": {},
+          "setTransiver": {
+            "transiver": "pulse"
+          },
+          "setSignal": {
+            "signal": "pulseTrack"
+          },
+          "setModeName": {
+            "name": "track"
+          }
+        },
+        "setPulseDopplerHmdTrackMode": {
+          "setHmdTrackModeCommon": {},
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
+          "setSignal": {
+            "signal": "pulseDopplerTrack"
+          },
+          "setModeName": {
+            "name": "PD track"
+          }
         }
       },
       "transitions": {
@@ -893,21 +1093,6 @@
             "setPulseStandbyMode": {}
           }
         },
-        "pulseBoresightLockToPulseSearch": {
-          "stateFrom": "pulseBoresightLock",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "pulseSearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseSearchMode": {}
-          }
-        },
         "brokenPulseBoresightTrack": {
           "stateFrom": "pulseBoresightTrack",
           "event": "targetsOfInterestCleanup",
@@ -989,18 +1174,6 @@
             "setPulseDopplerStandbyMode": {}
           }
         },
-        "pulseDopplerBoresightLockToPulseDopplerSearch": {
-          "stateFrom": "pulseDopplerBoresightLock",
-          "command": "acmSwitch",
-          "stateTo": "pulseDopplerSearch",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setPulseDopplerSearchMode": {}
-          }
-        },
         "brokenPulseDopplerBoresightTrack": {
           "stateFrom": "pulseDopplerBoresightTrack",
           "event": "targetsOfInterestCleanup",
@@ -1055,6 +1228,172 @@
           "command": "rangeSwitch",
           "actions": {
             "setNextScopeRange": {}
+          }
+        },
+        "pulseBoresightLockToPulseHmdStandby": {
+          "stateFrom": "pulseBoresightLock",
+          "command": "acmSwitch",
+          "stateTo": "pulseHmdStandby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setPulseHmdStandbyMode": {}
+          }
+        },
+        "pulseHmdStandbyToPulseHmdLock": {
+          "stateFrom": "pulseHmdStandby",
+          "command": "selectTarget",
+          "stateTo": "pulseHmdLock",
+          "actions": {
+            "setPulseHmdLockMode": {}
+          }
+        },
+        "pulseHmdLockToPulseHmdTrack": {
+          "stateFrom": "pulseHmdLock",
+          "event": "targetDetected",
+          "stateTo": "pulseHmdTrack",
+          "actions": {
+            "setFsmActive": [
+              {
+                "fsm": "lock",
+                "active": false
+              },
+              {
+                "fsm": "helmetDesignation",
+                "active": false
+              }
+            ],
+            "setPulseHmdTrackMode": {}
+          }
+        },
+        "pulseHmdLockToPulseHmdStandby": {
+          "stateFrom": "pulseHmdLock",
+          "event": "scanFinished",
+          "stateTo": "pulseHmdStandby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setPulseHmdStandbyMode": {}
+          }
+        },
+        "pulseHmdStandbyToPulseSearch": {
+          "stateFrom": "pulseHmdStandby",
+          "command": "acmSwitch",
+          "stateTo": "pulseSearch",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "helmetDesignation",
+              "active": false
+            },
+            "setPulseSearchMode": {}
+          }
+        },
+        "pulseHmdTrackToPulseHmdStandby": {
+          "stateFrom": "pulseHmdTrack",
+          "event": "targetsOfInterestCleanup",
+          "command": "selectTarget",
+          "stateTo": "pulseHmdStandby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setPulseHmdStandbyMode": {}
+          }
+        },
+        "pulseDopplerBoresightLockToPulseDopplerHmdStandby": {
+          "stateFrom": "pulseDopplerBoresightLock",
+          "command": "acmSwitch",
+          "stateTo": "pulseDopplerHmdStandby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setPulseDopplerHmdStandbyMode": {}
+          }
+        },
+        "pulseDopplerHmdStandbyToPulseDopplerHmdLock": {
+          "stateFrom": "pulseDopplerHmdStandby",
+          "command": "selectTarget",
+          "stateTo": "pulseDopplerHmdLock",
+          "actions": {
+            "setPulseDopplerHmdLockMode": {}
+          }
+        },
+        "pulseDopplerHmdLockToPulseDopplerHmdTrack": {
+          "stateFrom": "pulseDopplerHmdLock",
+          "event": "targetDetected",
+          "stateTo": "pulseDopplerHmdTrack",
+          "actions": {
+            "setFsmActive": [
+              {
+                "fsm": "lock",
+                "active": false
+              },
+              {
+                "fsm": "helmetDesignation",
+                "active": false
+              }
+            ],
+            "setPulseDopplerHmdTrackMode": {}
+          }
+        },
+        "pulseDopplerHmdLockToPulseDopplerHmdStandby": {
+          "stateFrom": "pulseDopplerHmdLock",
+          "event": "scanFinished",
+          "stateTo": "pulseDopplerHmdStandby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setPulseDopplerHmdStandbyMode": {}
+          }
+        },
+        "pulseDopplerHmdStandbyToPulseDopplerSearch": {
+          "stateFrom": "pulseDopplerHmdStandby",
+          "command": "acmSwitch",
+          "stateTo": "pulseDopplerSearch",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "helmetDesignation",
+              "active": false
+            },
+            "setPulseDopplerSearchMode": {}
+          }
+        },
+        "pulseDopplerHmdTrackToPulseDopplerHmdStandby": {
+          "stateFrom": "pulseDopplerHmdTrack",
+          "event": "targetsOfInterestCleanup",
+          "command": "selectTarget",
+          "stateTo": "pulseDopplerHmdStandby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setPulseDopplerHmdStandbyMode": {}
+          }
+        },
+        "pulseHmdStandbyToPulseDopplerHmdStandby": {
+          "stateFrom": "pulseHmdStandby",
+          "command": "modeSwitch",
+          "stateTo": "pulseDopplerHmdStandby",
+          "actions": {
+            "setPulseDopplerHmdStandbyMode": {}
+          }
+        },
+        "pulseDopplerHmdStandbyToPulseHmdStandby": {
+          "stateFrom": "pulseDopplerHmdStandby",
+          "command": "modeSwitch",
+          "stateTo": "pulseHmdStandby",
+          "actions": {
+            "setPulseHmdStandbyMode": {}
           }
         }
       }
@@ -1198,6 +1537,36 @@
               "source": "activeTargetOfInterest",
               "width": 0.0
             }
+          }
+        }
+      }
+    },
+    "helmetDesignation": {
+      "stateInit": "helmetDesignation",
+      "actionsTemplates": {
+        "designateHelmetTargetDir": {
+          "designateHelmetTarget": {
+            "self": true
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          }
+        }
+      },
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "actions": {
+            "designateHelmetTargetDir": {}
+          }
+        },
+        "updateDesignation": {
+          "event": "update",
+          "actions": {
+            "designateHelmetTargetDir": {}
           }
         }
       }
