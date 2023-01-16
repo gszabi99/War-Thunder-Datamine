@@ -523,6 +523,9 @@ local isFullScriptsLoaded = false
     require("%scripts/user/psnFeatures.nut").enablePremiumFeatureReporting()
     require("%scripts/gameModes/psnActivities.nut").enableGameIntents()
   }
+
+  if (::steam_is_running())
+    require("%scripts/inventory/steamCheckNewItems.nut")
   // end of Independent Modules
 
   require("%scripts/utils/systemMsg.nut").registerColors(colorTagToColors)

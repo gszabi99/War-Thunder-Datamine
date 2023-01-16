@@ -73,11 +73,14 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
   unit = null
   slotbarActions = [ "take", "sec_weapons", "weapons", "info" ]
 
+  onDestroyFunc = null
+
   function initScreen()
   {
     if (!this.config)
       return
 
+    this.onDestroyFunc = this.config?.onDestroyFunc
     this.guiScene.setUpdatesEnabled(false, false)
     this.scene.findObject("award_name").setValue(this.config.name)
 
@@ -210,8 +213,10 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     let canBuy = this.unit != null && !this.unit.isRented() && !this.unit.isBought() && (::canBuyUnit(this.unit) || canBuyOnline)
     this.showSceneBtn("btn_set_air", showSetAir)
     let okObj = this.showSceneBtn("btn_ok", !showSetAir)
-    if ("okBtnText" in this.config)
+    if (this.config?.okBtnText)
       okObj.setValue(loc(this.config.okBtnText))
+    if (this.config?.okBtnStyle)
+      okObj.visualStyle = this.config.okBtnStyle
 
     this.showSceneBtn("btn_close", !showSetAir || !this.needShowUnitTutorial)
 
@@ -295,6 +300,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 
   function afterModalDestroy()
   {
+    this.onDestroyFunc?()
     ::check_delayed_unlock_wnd(this.config)
   }
 

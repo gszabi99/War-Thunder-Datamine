@@ -22,7 +22,7 @@ let { checkShowEmailRegistration,
 let { checkShowGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
 let { checkAfterFlight } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 let checkReconnect = require("%scripts/matchingRooms/checkReconnect.nut")
-let { grant_promo_items = @() null, is_running } = require_native("steam")
+let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
@@ -129,6 +129,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkNoviceTutor")
     handler.doWhenActiveOnce("checkUpgradeCrewTutorial")
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
+    handler.doWhenActive(steamCheckNewItems)
   }
 
   if (!isAfterLogin && isAllowPopups) {
@@ -137,10 +138,6 @@ local function onMainMenuReturn(handler, isAfterLogin) {
   }
 
   handler.doWhenActive(popGblkErrorPopups)
-
-  //steamapi
-  if (is_running())
-    handler.doWhenActive(@() grant_promo_items())
 
   guiScene.initCursor("%gui/cursor.blk", "normal")
 
