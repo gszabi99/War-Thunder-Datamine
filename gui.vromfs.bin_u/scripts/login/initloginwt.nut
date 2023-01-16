@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+local cachedLoginData = persist("cachedLoginData", @() { use_tencent_login = null, use_dmm_login = null})
+
 foreach (fn in [
                  "login.nut"
                  "loginWnd.nut"
@@ -19,9 +21,15 @@ foreach (fn in [
   ::g_script_reloader.loadOnce("%scripts/login/" + fn)
 
 ::use_tencent_login <- function use_tencent_login() {
-  return is_platform_windows && ::getFromSettingsBlk("yunetwork/useTencentLogin", false)
+  if (cachedLoginData.use_tencent_login == null) {
+    cachedLoginData.use_tencent_login = is_platform_windows && ::getFromSettingsBlk("yunetwork/useTencentLogin", false)
+  }
+  return cachedLoginData.use_tencent_login
 }
 
 ::use_dmm_login <- function use_dmm_login() {
-  return ::dgs_get_argv("dmm_user_id") && ::dgs_get_argv("dmm_token")
+  if (cachedLoginData.use_dmm_login == null) {
+    cachedLoginData.use_dmm_login = ::dgs_get_argv("dmm_user_id") && ::dgs_get_argv("dmm_token")
+  }
+  return cachedLoginData.use_dmm_login
 }
