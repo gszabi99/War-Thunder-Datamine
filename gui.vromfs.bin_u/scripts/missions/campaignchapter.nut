@@ -967,7 +967,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
   function checkFilterData(filterData)
   {
     local res = !this.filterText.len() || filterData.locString.indexof(this.filterText) != null
-      || filterData.mission.blk.name.indexof(this.filterText) != null
+      || (filterData.mission.blk?.name ?? "").indexof(this.filterText) != null
     if (res && this.isOnlyFavorites)
       res = this.misListType.isMissionFavorite(filterData.mission)
     return res

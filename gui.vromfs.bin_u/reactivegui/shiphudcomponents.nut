@@ -7,7 +7,8 @@ let { IsRadarVisible, IsRadar2Visible, IsRadarHudVisible } = require("radarState
 
 let radarPic = Picture("!ui/gameuiskin#radar_stby_icon.png")
 let radarCollapsedPos = Computed(@() [bw.value + 0.055 * rw.value, bh.value + 0.05 * rh.value])
-let radarPos = Computed(@() [bw.value + 0.055 * rw.value, bh.value + 0.25 * rh.value])
+let radarPos = Computed(@() [bw.value, bh.value])
+
 let radarVisible = Computed(@() IsRadarVisible.value || IsRadar2Visible.value || !CollapsedIcon.value)
 
 let radarCollapsed = @() {

@@ -66,8 +66,8 @@
       0.0,
       0.0
     ],
-    "fuseDelayDist": 7.5,
-    "explodeTreshold": 5.0,
+    "fuseDelayDist": 5.0,
+    "explodeTreshold": 0.5,
     "guidanceSfx": "alarm_spin_scan",
     "rendinstDamageRadius": 9.0,
     "statType": "hydra",
@@ -226,14 +226,16 @@
       "workTime": 100.0,
       "uncageBeforeLaunch": true,
       "lockAfterLaunch": true,
-      "breakLockMaxTime": 100.0,
+      "breakLockMaxTime": 101.0,
       "inertialGuidance": {
-        "inertialNavigationDriftSpeed": 0.01
+        "inertialNavigationDriftSpeed": 0.0
       },
       "radarSeeker": {
         "band": 8,
         "active": true,
         "groundVehiclesAsTarget": true,
+        "aircraftAsTarget": false,
+        "targetRadiusMin": 15.0,
         "groundClutter": false,
         "sideLobesAttenuation": -80.0,
         "lockAngleMax": 15.0,
@@ -245,22 +247,22 @@
           "power": 2000.0,
           "antenna": {
             "angleHalfSens": 5.0,
-            "sideLobesSensitivity": -40.0
+            "sideLobesSensitivity": -60.0
           }
         },
         "receiver": {
           "rcs": 2.0,
-          "range": 50000.0,
-          "rangeMax": 80000.0,
+          "range": 15000.0,
+          "rangeMax": 18000.0,
           "antenna": {
             "angleHalfSens": 5.0,
-            "sideLobesSensitivity": -40.0
+            "sideLobesSensitivity": -60.0
           }
         },
         "distance": {
           "presents": true,
           "minValue": 150.0,
-          "maxValue": 75000.0,
+          "maxValue": 15000.0,
           "width": 150.0,
           "signalWidthMin": 75.0,
           "refWidth": 750.0
@@ -272,11 +274,11 @@
       },
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 3.5,
-        "loftTargetElevation": -5.0,
-        "loftAngleToAccelMult": 7.0,
-        "loftTargetOmegaMax": 5.0,
-        "propNavMult": 8.0,
+        "loftElevation": 7.0,
+        "loftTargetElevation": -10.0,
+        "loftAngleToAccelMult": 3.0,
+        "loftTargetOmegaMax": 2.0,
+        "propNavMult": 6.0,
         "reqAccelMax": 5.0,
         "baseIndSpeed": 1800.0,
         "accelControlProp": 0.012,

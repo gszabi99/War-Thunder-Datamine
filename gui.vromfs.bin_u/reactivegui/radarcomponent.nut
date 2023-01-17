@@ -639,7 +639,7 @@ let radToDeg = 180.0 / 3.14159
 
 let function getRadarModeText(radarModeNameWatch, isRadarVisibleWatch) {
   let texts = []
-  if (radarModeNameWatch.value >= 0)
+  if (radarModeNameWatch.value in modeNames)
     texts.append(loc(modeNames[radarModeNameWatch.value]))
   else if (isRadarVisibleWatch.value)
     texts.append(Irst.value ? loc("hud/irst") : loc("hud/radarEmitting"))
@@ -1570,7 +1570,6 @@ let function B_Scope(size, color) {
     })
 
     return {
-      pos = [-maxMeasuresCompWidth(), -maxLabelHeight * 2]
       watch = [IsRadarVisible, IsRadarEmitting, IsRadar2Visible, IsRadar2Emitting]
       children =  outerPlace
     }
