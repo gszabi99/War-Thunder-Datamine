@@ -80,15 +80,15 @@
     "mission": {
       "level": "levels/avg_arctic.bin",
       "type": "domination",
-      "environment": "Day",
+      "environment": "Night",
       "weather": "clear",
-      "locName": "missions/_Conq2;location/avg_arctic",
-      "locDesc": "missions/_Conq/desc",
-      "scoreLimit": 14000,
+      "locName": "missions/_Bttl;location/avg_arctic",
+      "locDesc": "missions/_Bttl/desc",
+      "scoreLimit": 10000,
       "timeLimit": 25,
       "deathPenaltyMul": 1.0,
-      "postfix": "_Conq2",
-      "ctaCaptureZoneEqualPenaltyMul": 0.0,
+      "postfix": "_Bttl",
+      "ctaCaptureZoneEqualPenaltyMul": 0.5,
       "useAlternativeMapCoord": false,
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
@@ -100,8 +100,202 @@
       "restoreType": "attempts",
       "optionalTakeOff": false,
       "stars": {
-        "month": 6,
-        "day": 6
+        "month": 1,
+        "day": 17
+      },
+      "customWeather": {
+        "scatteringEffect": [
+          0.0,
+          0.0
+        ],
+        "cloud_shadow_intensity": 0.8,
+        "addWhiteTemp": -250.0,
+        "aurora_borealis": {
+          "enabled": true,
+          "top_height": 10.0,
+          "top_color": [
+            0.1,
+            0.1,
+            1.4
+          ],
+          "bottom_height": 5.0,
+          "bottom_color": [
+            0.1,
+            1.3,
+            0.1
+          ],
+          "brightness": 1.74,
+          "speed": 0.02,
+          "luminance": 8.0,
+          "ripples_scale": 13.3,
+          "ripples_speed": 0.08,
+          "ripples_strength": 0.34
+        },
+        "clouds_weather_gen": {
+          "layers[0].coverage": [
+            0.0,
+            0.2
+          ],
+          "layers[1].coverage": [
+            0.0,
+            0.2
+          ],
+          "layers[0].seed": [
+            0.0,
+            32768.0
+          ],
+          "layers[1].seed": [
+            0.0,
+            32768.0
+          ]
+        },
+        "clouds_form": {
+          "layers[0].startAt": [
+            0.8,
+            1.1
+          ],
+          "layers[0].thickness": [
+            7.0,
+            8.2
+          ],
+          "layers[0].density": [
+            1.0,
+            0.8
+          ],
+          "layers[0].clouds_type": [
+            0.0,
+            0.2
+          ],
+          "layers[0].clouds_type_variance": [
+            1.0,
+            1.0
+          ],
+          "layers[1].startAt": [
+            6.0,
+            6.5
+          ],
+          "layers[1].thickness": [
+            3.5,
+            4.25
+          ],
+          "layers[1].density": [
+            1.0,
+            2.0
+          ],
+          "layers[1].clouds_type": [
+            0.0,
+            0.2
+          ],
+          "layers[1].clouds_type_variance": [
+            0.5,
+            0.5
+          ],
+          "extinction": [
+            0.75,
+            0.75
+          ],
+          "turbulenceStrength": [
+            0.25,
+            0.3
+          ],
+          "shapeNoiseScale": 11,
+          "cumulonimbusShapeScale": 4,
+          "turbulenceFreq": 1
+        },
+        "sky": {
+          "mie_scale": [
+            1.0,
+            2.0
+          ],
+          "mie2_thickness": 450.0,
+          "mie2_scale": 7.0,
+          "multiple_scattering_factor": 1.13,
+          "sun_brightness": 0.85,
+          "moon_brightness": 0.85
+        },
+        "clouds_gen": {
+          "humidity": [
+            -0.1,
+            0.2
+          ],
+          "persistence": [
+            0.36,
+            0.5
+          ],
+          "asymmetry": [
+            0.05,
+            0.12
+          ]
+        },
+        "clouds_position": {
+          "sizeX": [
+            111.0,
+            111.0
+          ],
+          "sizeZ": [
+            99.0,
+            99.0
+          ],
+          "start_altitude": [
+            1.2,
+            2.5
+          ],
+          "thickness": [
+            2.2,
+            5.0
+          ],
+          "light_extinction": [
+            0.25,
+            0.5
+          ],
+          "amb_extinction_mul": [
+            0.5,
+            1.0
+          ]
+        },
+        "clouds_render": {
+          "silver_lining": [
+            0.5,
+            0.7
+          ],
+          "sun_light": [
+            0.5,
+            0.6
+          ],
+          "ambient": [
+            0.35,
+            0.5
+          ],
+          "silver_lining_eccentricity": [
+            0.4,
+            0.7
+          ]
+        },
+        "strata_clouds": {
+          "amount": [
+            -0.15,
+            0.22
+          ],
+          "altitude": [
+            8.0,
+            11.9
+          ]
+        },
+        "windParams": {
+          "cloudsWindSpeedMult": 100.0,
+          "cloudsWindSpeedLimit": 30.0,
+          "strataCloudsWindSpeedMult": 2.0,
+          "defaultWindSpeed": 0.1,
+          "height0": 500.0,
+          "turbulence0": 0.9,
+          "windMul0": 1.0,
+          "height1": 2000.0,
+          "turbulence1": 0.3,
+          "windMul1": 0.5,
+          "height2": 8000.0,
+          "turbulence2": 0.01,
+          "windMul2": 0.01
+        }
       },
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
@@ -111,16 +305,23 @@
       },
       "mission": [
         {
+          "difficulty": "arcade",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 6000,
+          "randomSpawnTeams": false,
+          "remapAiTankModels": true
+        },
+        {
           "difficulty": "realistic",
           "useAlternativeMapCoord": false,
-          "scoreLimit": 16000,
+          "scoreLimit": 6000,
           "randomSpawnTeams": true,
           "remapAiTankModels": true
         },
         {
           "difficulty": "hardcore",
           "useAlternativeMapCoord": false,
-          "scoreLimit": 18000,
+          "scoreLimit": 6000,
           "randomSpawnTeams": true,
           "remapAiTankModels": true
         }
@@ -167,12 +368,17 @@
             },
             {
               "icontype": "basezone_A",
-              "side": "neutral",
+              "side": "ally",
               "target": "briefing_t1_capturezone"
+            },
+            {
+              "icontype": "basezone_B",
+              "side": "enemy",
+              "target": "briefing_t2_capturezone"
             }
           ],
           "battleArea": {
-            "target": "brief_conq_battle_area"
+            "target": "briefing_bttl_battle_area"
           }
         }
       }
@@ -209,7 +415,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/arctic/battleareas/template_arctic_Conq2_battlearea.blk",
+        "file": "gameData/missions/cta/tanks/arctic/battleareas/template_arctic_Bttl_battlearea.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -223,7 +429,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/templates/tank_templates/conq_template.blk",
+        "file": "gameData/missions/templates/tank_templates/bttl_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -283,9 +489,9 @@
       "name": "t1_player01",
       "tm": [
         [
-          -0.130526,
+          -0.173648,
           0.0,
-          -0.991445
+          -0.984808
         ],
         [
           0.0,
@@ -293,14 +499,14 @@
           0.0
         ],
         [
-          0.991445,
+          0.984808,
           0.0,
-          -0.130526
+          -0.173648
         ],
         [
-          2299.7,
-          112.81,
-          2047.74
+          2825.18,
+          -106.936,
+          2941.58
         ]
       ],
       "unit_class": "aaa_dummy",
@@ -343,9 +549,9 @@
       "type": "Point",
       "tm": [
         [
-          0.766045,
+          -0.970377,
           0.0,
-          -0.642788
+          0.241596
         ],
         [
           0.0,
@@ -353,14 +559,14 @@
           0.0
         ],
         [
-          0.642788,
+          -0.241596,
           0.0,
-          0.766045
+          -0.970377
         ],
         [
-          2877.21,
-          -2.31257,
-          1058.74
+          2992.62,
+          -1.65155,
+          3230.93
         ]
       ],
       "objLayer": 0,
@@ -370,9 +576,9 @@
       "type": "Point",
       "tm": [
         [
-          0.766045,
+          -0.970377,
           0.0,
-          -0.642788
+          0.241596
         ],
         [
           0.0,
@@ -380,14 +586,14 @@
           0.0
         ],
         [
-          0.642788,
+          -0.241596,
           0.0,
-          0.766045
+          -0.970377
         ],
         [
-          3183.31,
-          -1.35741,
-          1381.01
+          2851.53,
+          2.21758,
+          2747.76
         ]
       ],
       "objLayer": 0,
@@ -397,9 +603,9 @@
       "type": "Point",
       "tm": [
         [
-          0.608762,
+          0.990773,
           0.0,
-          -0.793353
+          -0.135536
         ],
         [
           0.0,
@@ -407,14 +613,14 @@
           0.0
         ],
         [
-          0.793353,
+          0.135536,
           0.0,
-          0.608762
+          0.990773
         ],
         [
-          1937.75,
-          -1.23827,
-          1990.49
+          1290.32,
+          44.3773,
+          2662.55
         ]
       ],
       "objLayer": 0,
@@ -424,9 +630,9 @@
       "type": "Point",
       "tm": [
         [
-          0.608762,
+          0.998358,
           0.0,
-          -0.793353
+          -0.0572827
         ],
         [
           0.0,
@@ -434,14 +640,14 @@
           0.0
         ],
         [
-          0.793353,
+          0.0572827,
           0.0,
-          0.608762
+          0.998358
         ],
         [
-          2267.92,
-          -1.26173,
-          2312.01
+          1323.89,
+          26.2144,
+          3375.77
         ]
       ],
       "objLayer": 0,
@@ -451,9 +657,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.130526,
+          -0.173648,
           0.0,
-          -0.991445
+          -0.984808
         ],
         [
           0.0,
@@ -461,26 +667,26 @@
           0.0
         ],
         [
-          0.991445,
+          0.984808,
           0.0,
-          -0.130526
+          -0.173648
         ],
         [
-          2594.58,
-          25.0378,
-          1683.2
+          2590.76,
+          18.5191,
+          3023.29
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_rb_resp02": {
+    "briefing_t2_capturezone": {
       "type": "Point",
       "tm": [
         [
-          0.766045,
+          -0.173648,
           0.0,
-          -0.642788
+          -0.984808
         ],
         [
           0.0,
@@ -488,95 +694,14 @@
           0.0
         ],
         [
-          0.642788,
+          0.984808,
           0.0,
-          0.766045
+          -0.173648
         ],
         [
-          3184.79,
-          -1.35747,
-          1380.9
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t1_rb_resp01": {
-      "type": "Point",
-      "tm": [
-        [
-          0.766045,
-          0.0,
-          -0.642788
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.642788,
-          0.0,
-          0.766045
-        ],
-        [
-          2876.15,
-          -2.31212,
-          1058.44
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t2_rb_resp01": {
-      "type": "Point",
-      "tm": [
-        [
-          0.608762,
-          0.0,
-          -0.793353
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.793353,
-          0.0,
-          0.608762
-        ],
-        [
-          1937.43,
-          -1.2372,
-          1990.41
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t2_rb_resp02": {
-      "type": "Point",
-      "tm": [
-        [
-          0.608762,
-          0.0,
-          -0.793353
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.793353,
-          0.0,
-          0.608762
-        ],
-        [
-          2267.71,
-          -1.26175,
-          2312.09
+          1598.09,
+          1.58313,
+          2990.97
         ]
       ],
       "objLayer": 0,
@@ -586,9 +711,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.130526,
+          -0.173648,
           0.0,
-          -0.991445
+          -0.984808
         ],
         [
           0.0,
@@ -596,26 +721,53 @@
           0.0
         ],
         [
-          0.991445,
+          0.984808,
           0.0,
-          -0.130526
+          -0.173648
         ],
         [
-          2593.89,
-          25.0378,
-          1683.6
+          2590.86,
+          18.5191,
+          3023.19
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "brief_conq_battle_area": {
+    "briefing_t2_rb_capturezone": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.173648,
+          0.0,
+          -0.984808
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.984808,
+          0.0,
+          -0.173648
+        ],
+        [
+          1597.96,
+          1.58383,
+          2991.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_bttl_battle_area": {
       "type": "Box",
       "tm": [
         [
-          -0.000103708,
+          -0.000129634,
           0.0,
-          1600.0
+          2000.0
         ],
         [
           0.0,
@@ -623,14 +775,14 @@
           0.0
         ],
         [
-          -1650.0,
+          -2000.0,
           0.0,
-          -0.000106948
+          -0.000129634
         ],
         [
-          2602.36,
-          3.15302,
-          1707.15
+          2107.15,
+          11.4441,
+          3164.45
         ]
       ],
       "objLayer": 4,
