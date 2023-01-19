@@ -5,31 +5,38 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let logS = log_with_prefix("[Steam Items] ")
 
-let consumeItem = @(item)
-  ExchangeRecipes.tryUse(item.getRelatedRecipes(), item, { shouldSkipMsgBox = true })
-
 let steamNewItems = persist("steamNewItems", @() Watched([]))
 wlog(steamNewItems, "[Steam Items]: newitems ")
 let unknownSteamNewItems = persist("unknownSteamNewItems", @() Watched([]))
 wlog(unknownSteamNewItems, "[Steam Items]: unknownSteamNewItems ")
+let inqueueSteamItems = persist("inqueueSteamItems", @() Watched({}))
+wlog(inqueueSteamItems, "[Steam Items]: inqueueSteamItems ")
 
 
-let showSteamItemNotification = @(item) ::showUnlockWnd({
-  name = item.getName(false)
-  desc = item.getLongDescription()
-  popupImage = item.getIconName()
-  ratioHeight = 1.0
-  onDestroyFunc = @() consumeItem(item)
-  okBtnText = loc("items/getReward")
-  okBtnStyle = "secondary"
-})
-
+let showSteamItemNotification = function(itemInfo) {
+  let { item, steamItemId } = itemInfo
+  ::showUnlockWnd({
+    name = item.getName(false)
+    desc = item.getLongDescription()
+    popupImage = item.getIconName()
+    ratioHeight = 1.0
+    onDestroyFunc = function() {
+      inqueueSteamItems.mutate(@(v) delete v[steamItemId])
+      ExchangeRecipes.tryUse(item.getRelatedRecipes(), item, { shouldSkipMsgBox = true })
+    }
+    okBtnText = loc("items/getReward")
+    okBtnStyle = "secondary"
+  })
+}
 
 let function tryShowSteamItemsNotification(items = []) {
   if (!::isInMenu() || ::checkIsInQueue())
     return
 
-  items.each(showSteamItemNotification)
+  items.each(function(itemInfo) {
+    inqueueSteamItems.mutate(@(v) v[itemInfo.steamItemId] <- true)
+    showSteamItemNotification(itemInfo)
+  })
   steamNewItems.update([])
 }
 
@@ -45,7 +52,7 @@ let function steamCheckNewItems() {
   let newItems = []
   foreach (sItem in steamNewItems.value) {
     let itemDefId = sItem.itemDef
-    let item = ::ItemsManager.getItemOrRecipeBundleById(itemDefId)
+    let item = ::ItemsManager.getInventoryItemById(itemDefId)
     if (!item) {
       if (!unknownSteamNewItems.value.contains(itemDefId))
         unknownSteamNewItems.mutate(@(v) v.append(itemDefId))
@@ -53,7 +60,15 @@ let function steamCheckNewItems() {
       continue
     }
 
-    newItems.append(item)
+    if (sItem.itemId in inqueueSteamItems.value) {
+      logS($"Try to show duplicate {itemDefId}. Ignore")
+      continue
+    }
+
+    newItems.append({
+      steamItemId = sItem.itemId
+      item
+    })
   }
 
   tryShowSteamItemsNotificationOnUpdate(newItems)
@@ -76,7 +91,7 @@ let function checkUnknownItems() {
   local isListChanged = false
   for (local i = unknownSteamNewItems.value.len() - 1; i >= 0; i--) {
     let itemDefId = unknownSteamNewItems.value[i]
-    if (::ItemsManager.getItemOrRecipeBundleById(itemDefId)) {
+    if (::ItemsManager.findItemById(itemDefId)) {
       unknownSteamNewItems.mutate(@(v) v.remove(i))
       isListChanged = true
     }
@@ -88,7 +103,10 @@ let function checkUnknownItems() {
 }
 
 addListenersWithoutEnv({
-  LoginComplete = @(_) requestRewardsAndCheckSteamInventory()
+  LoginComplete = function(_) {
+    inqueueSteamItems({})
+    requestRewardsAndCheckSteamInventory()
+  }
   BattleEnded = @(_) requestRewardsAndCheckSteamInventory()
   ItemsShopUpdate = @(_) checkUnknownItems()
 })
