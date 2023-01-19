@@ -357,7 +357,7 @@ let ilsMode = @(){
   pos = [pw(10), ph(82)]
   color = IlsColor.value
   fontSize = 40
-  text = isAAMMode.value ? string.format("%d %s", ShellCnt.value, loc(CurWeaponName.value)) : (BombingMode.value ? "CCRP" : (CannonMode.value ? "STRF" : (CCIPMode.value ? "CCIP" : "EEGS")))
+  text = isAAMMode.value ? string.format("%d SRM", ShellCnt.value) : (BombingMode.value ? "CCRP" : (CannonMode.value ? "STRF" : (CCIPMode.value ? "CCIP" : "EEGS")))
 }
 
 let TargetAngle = Computed(@() cvt(RadarTargetAngle.value, -1.0, 1.0, 0, 180).tointeger())

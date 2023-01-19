@@ -99,15 +99,22 @@ let overload = @() {
 }
 
 let MaxOverloadWatch = Computed(@() (floor(MaxOverload.value * 10)).tointeger())
+let IsShowOverload = Computed(@() MaxOverloadWatch.value >= 45)
 let maxOverload = @() {
-  watch = [MaxOverloadWatch, IlsColor]
+  watch = [IsShowOverload]
   size = flex()
-  pos = [pw(8), ph(90)]
-  rendObj = ROBJ_TEXT
-  color = IlsColor.value
-  fontSize = 45
-  font = Fonts.hud
-  text = string.format("MAX G %.1f", MaxOverloadWatch.value / 10.0)
+  children = IsShowOverload.value ? [
+    @() {
+      watch = [MaxOverloadWatch, IlsColor]
+      size = flex()
+      pos = [pw(8), ph(90)]
+      rendObj = ROBJ_TEXT
+      color = IlsColor.value
+      fontSize = 45
+      font = Fonts.hud
+      text = string.format("MAX G %.1f", MaxOverloadWatch.value / 10.0)
+    }
+  ] : null
 }
 
 let function pitch(width, height, generateFunc) {
