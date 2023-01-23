@@ -3560,6 +3560,11 @@
       "hideUntilUnlocked": true
     },
     {
+      "id": "cardicon_royal_guardsman",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
       "id": "hardcoded_initial_warpoints",
       "type": "award",
       "amount_warpoints": 10000,
@@ -32593,50 +32598,6 @@
           {
             "type": "offenderUnit",
             "class": "uk_destroyer_clemson_montgomery_g95"
-          }
-        ]
-      }
-    },
-    {
-      "id": "uk_destroyer_daring_class_diana/uk_camo_lightbeige_blots",
-      "type": "skin",
-      "chapter": "skins",
-      "group": "ships_britain",
-      "mode": {
-        "type": "awardDamage",
-        "mulArcade": 1,
-        "mulRealistic": 1,
-        "mulHardcore": 1,
-        "num": 94500,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "offenderUnit",
-            "class": "uk_destroyer_daring_class_diana"
-          }
-        ]
-      }
-    },
-    {
-      "id": "uk_destroyer_daring_class_diana/uk_camo_navy_lightblue",
-      "type": "skin",
-      "chapter": "skins",
-      "group": "ships_britain",
-      "mode": {
-        "type": "awardDamage",
-        "mulArcade": 1,
-        "mulRealistic": 1,
-        "mulHardcore": 1,
-        "num": 135000,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "offenderUnit",
-            "class": "uk_destroyer_daring_class_diana"
           }
         ]
       }
@@ -133642,8 +133603,8 @@
           },
           {
             "type": "char_time_range",
-            "beginDate": "2022-10-26 12:00:00",
-            "endDate": "2023-01-25 11:59:00"
+            "beginDate": "2023-01-25 12:00:00",
+            "endDate": "2023-04-26 11:59:00"
           }
         ]
       }
@@ -134312,6 +134273,67 @@
             "type": "char_time_range",
             "beginDate": "2022-11-23 12:00:00",
             "endDate": "2023-01-25 12:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season10_purchased_main",
+      "type": "achievement",
+      "costGold": 2000,
+      "hidden": true
+    },
+    {
+      "id": "battlepass_season10_purchased_entitlement",
+      "userLogId": "battlepass_season10_purchased",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season10_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season10_purchased_item",
+      "type": "inventory",
+      "userLogId": "730008",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season10_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season10_allow_skip_all_stages_entitlement",
+      "userLogId": "battlepass_season10_allow_skip_all_stages",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_always_progress",
+        "condition": [
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "battlepass_season10_allow_skip_all_stages",
+            "invertResult": true
+          },
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePassSeason10Purchased"
+          },
+          {
+            "type": "char_time_range",
+            "beginDate": "2023-02-22 12:00:00",
+            "endDate": "2023-04-26 12:00:00"
           }
         ]
       }
