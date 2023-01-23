@@ -2168,46 +2168,6 @@
       }
     ]
   },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "Bf-109F-4_default",
-        "blk": "gameData/FlightModels/weaponPresets/bf-109f-4_default.blk"
-      },
-      {
-        "name": "Bf-109F-4_4xSC50",
-        "blk": "gameData/FlightModels/weaponPresets/bf_109_4xsc50.blk",
-        "reqModification": "Bf-109F-4_4xSC50"
-      },
-      {
-        "name": "Bf-109F-4_SC250",
-        "blk": "gameData/FlightModels/weaponPresets/bf_109_sc250.blk",
-        "reqModification": "Bf-109F-4_SC250"
-      },
-      {
-        "name": "Bf-109F-4_R1",
-        "blk": "gameData/FlightModels/weaponPresets/bf-109f-4_R1.blk",
-        "reqModification": "Bf-109F-4_R1",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/cannonMG15115_underwing.blk",
-            "tier": [
-              {
-                "idx": 5,
-                "amountPerTier": 1.0,
-                "iconType": "machine_gun"
-              },
-              {
-                "idx": 7,
-                "amountPerTier": 1.0,
-                "iconType": "machine_gun"
-              }
-            ]
-          }
-        }
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2410,57 +2370,6 @@
     "maxSpeed": 184.722,
     "turnTime": 21.57
   },
-  "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
-    "mg_universal": {},
-    "mg_all_tracers": {},
-    "mg_stealth": {},
-    "mg15115_universal": {},
-    "mg15115_air_targets": {},
-    "mg15115_armor_targets": {},
-    "mg15115_belt_pack": {
-      "reqModification": "Bf-109F-4_R1",
-      "tier": 3
-    },
-    "mg15115_new_gun": {
-      "reqModification": "mg15115_belt_pack",
-      "tier": 4
-    },
-    "mg151_universal": {},
-    "mg151_air_targets": {},
-    "mg151_armor_targets": {},
-    "mg151_all_tracers": {},
-    "mg151_stealth": {},
-    "mg_belt_pack": {},
-    "mg17_new_gun": {
-      "reqModification": "mg_belt_pack"
-    },
-    "mg15120_belt_pack": {},
-    "mg15120_new_gun": {
-      "reqModification": "mg15120_belt_pack"
-    },
-    "Bf-109F-4_4xSC50": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "Bf-109F-4_SC250": {
-      "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "Bf-109F-4_4xSC50"
-    },
-    "Bf-109F-4_R1": {
-      "modClass": "weapon",
-      "tier": 2,
-      "deactivationIsAllowed": false
-    }
-  },
   "cutting": {
     "_emtr_break_wing0_l_from": [
       -0.514255,
@@ -2558,6 +2467,106 @@
       1.36926,
       3.98199E-07
     ]
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "Bf-109F-4_default",
+        "blk": "gameData/FlightModels/weaponPresets/bf-109f-4_default.blk"
+      },
+      {
+        "name": "Bf-109F-4_4xSC50",
+        "blk": "gameData/FlightModels/weaponPresets/bf_109_4xsc50.blk",
+        "reqModification": "Bf-109F-4_4xSC50"
+      },
+      {
+        "name": "Bf-109F-4_SC250",
+        "blk": "gameData/FlightModels/weaponPresets/bf_109_sc250.blk",
+        "reqModification": "Bf-109F-4_SC250"
+      },
+      {
+        "name": "Bf-109F-4_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/bf_109_flamm_250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
+        "name": "Bf-109F-4_R1",
+        "blk": "gameData/FlightModels/weaponPresets/bf-109f-4_R1.blk",
+        "reqModification": "Bf-109F-4_R1",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/cannonMG15115_underwing.blk",
+            "tier": [
+              {
+                "idx": 5,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              },
+              {
+                "idx": 7,
+                "amountPerTier": 1.0,
+                "iconType": "machine_gun"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "modifications": {
+    "cd_98": {},
+    "CdMin_Fuse": {},
+    "new_cover": {},
+    "structure_str": {},
+    "hp_105": {},
+    "new_radiator": {},
+    "new_compressor": {},
+    "new_engine_injection": {},
+    "mg_universal": {},
+    "mg_all_tracers": {},
+    "mg_stealth": {},
+    "mg15115_universal": {},
+    "mg15115_air_targets": {},
+    "mg15115_armor_targets": {},
+    "mg15115_belt_pack": {
+      "reqModification": "Bf-109F-4_R1",
+      "tier": 3
+    },
+    "mg15115_new_gun": {
+      "reqModification": "mg15115_belt_pack",
+      "tier": 4
+    },
+    "mg151_universal": {},
+    "mg151_air_targets": {},
+    "mg151_armor_targets": {},
+    "mg151_all_tracers": {},
+    "mg151_stealth": {},
+    "mg_belt_pack": {},
+    "mg17_new_gun": {
+      "reqModification": "mg_belt_pack"
+    },
+    "mg15120_belt_pack": {},
+    "mg15120_new_gun": {
+      "reqModification": "mg15120_belt_pack"
+    },
+    "Bf-109F-4_4xSC50": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "Bf-109F-4_SC250": {
+      "modClass": "weapon",
+      "tier": 2,
+      "reqModification": "Bf-109F-4_4xSC50"
+    },
+    "Bf-109F-4_R1": {
+      "modClass": "weapon",
+      "tier": 2,
+      "deactivationIsAllowed": false
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
+    }
   },
   "default_skin_tomoe": {
     "replace_tex": [
