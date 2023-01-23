@@ -168,7 +168,7 @@ let generateCompassTCSFMark = function(num, _elemWidth, _font) {
         watch = IlsColor
         pos = [pw(-50), ph(80)]
         rendObj = ROBJ_TEXT
-        color = IlsColor.value
+        color = Color(255, 70, 10)
         hplace = ALIGN_CENTER
         fontSize = 50
         font = Fonts.hud
@@ -179,7 +179,7 @@ let generateCompassTCSFMark = function(num, _elemWidth, _font) {
         pos = [pw(-50), ph(num % 10 == 0 ? 90 : 92)]
         size = [baseLineWidth * IlsLineScale.value, baseLineWidth * (num % 10 == 0 ? 5 : 3)]
         rendObj = ROBJ_SOLID
-        color = IlsColor.value
+        color = Color(255, 70, 10)
         lineWidth = baseLineWidth * IlsLineScale.value
         hplace = ALIGN_CENTER
       }

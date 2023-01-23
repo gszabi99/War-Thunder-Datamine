@@ -1,10 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale,
-       RocketMode, CannonMode, BombCCIPMode} = require("%rGui/planeState/planeToolsState.nut")
-let {Roll, Tangage} = require("%rGui/planeState/planeFlyState.nut");
+       RocketMode, CannonMode, BombCCIPMode, RadarTargetPos, RadarTargetPosValid} = require("%rGui/planeState/planeToolsState.nut")
+let {Roll, Tangage, BarAltitude} = require("%rGui/planeState/planeFlyState.nut");
 let {baseLineWidth} = require("ilsConstants.nut")
 let {compassWrap, generateCompassTCSFMark} = require("ilsCompasses.nut")
+let {fabs} = require("math")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let tcsfAimMark = @() {
@@ -12,12 +13,11 @@ let tcsfAimMark = @() {
   size = flex()
   children = TargetPosValid.value ? (
     !CCIPMode.value ?
-    @() {
-      watch = IlsColor
+    {
       size = [pw(13), ph(13)]
       rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.value
-      fillColor = IlsColor.value
+      color = Color(255, 70, 10)
+      fillColor = Color(255, 70, 10)
       lineWidth = baseLineWidth * IlsLineScale.value
       commands = [
         [VECTOR_POLY, 0, -100, -2, -92.5, 0, -85, 2, -92.5],
@@ -32,7 +32,7 @@ let tcsfAimMark = @() {
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
-          translate = [TargetPos.value[0], TargetPos.value[1]]
+          translate = RadarTargetPosValid.value ? RadarTargetPos : [TargetPos.value[0], TargetPos.value[1]]
         }
       }
     } :
@@ -52,10 +52,9 @@ let tcsfAimMark = @() {
   : null
 }
 
-let tcsfAirSymbol = @() {
-  watch = IlsColor
+let tcsfAirSymbol = {
   size = flex()
-  color = IlsColor.value
+  color = Color(255, 70, 10)
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.value * 1.5
   commands = [
@@ -67,29 +66,160 @@ let tcsfAirSymbol = @() {
   ]
 }
 
-let function tcsfHorizont(height) {
-  return @() {
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
-    color = Color(10, 202, 10, 250)
-    lineWidth = baseLineWidth * IlsLineScale.value
-    commands = [
-      [VECTOR_LINE, 10, 50, 30, 50],
-      [VECTOR_LINE, 15, 51, 25, 51],
-      [VECTOR_LINE, 17.5, 52, 22.5, 52],
-      [VECTOR_LINE, 40, 50, 60, 50],
-      [VECTOR_LINE, 70, 50, 90, 50],
-      [VECTOR_LINE, 75, 51, 85, 51],
-      [VECTOR_LINE, 77.5, 52, 82.5, 52]
-    ]
+let function altitude(height, generateFunc) {
+  let children = []
+
+  for (local i = 200; i >= 0; i -= 5) {
+    children.append(generateFunc(i))
+  }
+
+  let getOffset = @() (max(2000.0 - BarAltitude.value, 0.0) * 0.00202 - 0.45) * height
+  return {
+    size = [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = [0, height * 0.5 * clamp(Tangage.value  * 0.2, -0.9, 0.9)]
-        rotate = -Roll.value
-        pivot=[0.5, 0.5 -  0.5 * clamp(Tangage.value  * 0.2, -0.9, 0.9)]
+        translate = [0, -getOffset()]
       }
     }
+    flow = FLOW_VERTICAL
+    children = children
+  }
+}
+
+let function altWrap(width, height, generateFunc) {
+  return {
+    size = [width * 0.17, height * 0.3]
+    pos = [width * 0.75, height * 0.35]
+    clipChildren = true
+    children = [
+      altitude(height * 0.3, generateFunc),
+    ]
+  }
+}
+
+let generateAltMark = function(num) {
+  return {
+    size = [pw(100), ph(10)]
+    pos = [pw(15), 0]
+    flow = FLOW_HORIZONTAL
+    children = [
+      @() {
+        watch = IlsColor
+        size = [baseLineWidth * (num % 10 > 0 ? 3 : 5), baseLineWidth * IlsLineScale.value]
+        rendObj = ROBJ_SOLID
+        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.value
+        vplace = ALIGN_CENTER
+      },
+      ( num % 10 > 0 ? null :
+        @() {
+          watch = IlsColor
+          size = flex()
+          rendObj = ROBJ_TEXT
+          color = IlsColor.value
+          vplace = ALIGN_CENTER
+          fontSize = 40
+          font = Fonts.hud
+          text = (num * 10).tostring()
+        }
+      )
+    ]
+  }
+}
+
+let function pitch(width, height, generateFunc) {
+  const step = 5.0
+  let children = []
+
+  for (local i = 90.0 / step; i >= -90.0 / step; --i) {
+    let num = (i * step).tointeger()
+
+    children.append(generateFunc(num))
+  }
+
+  return {
+    size = [width * 0.6, height * 0.5]
+    pos = [width * 0.2, height * 0.5]
+    flow = FLOW_VERTICAL
+    children = children
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [0, -height * (90.0 - Tangage.value) * 0.015]
+        rotate = -Roll.value
+        pivot=[0.5, (90.0 - Tangage.value) * 0.03]
+      }
+    }
+  }
+}
+
+let function generatePitchLine(num) {
+  return {
+    size = [pw(100), ph(15)]
+    flow = FLOW_VERTICAL
+    children = num == 0 ? [
+      @() {
+        size = flex()
+        watch = IlsColor
+        rendObj = ROBJ_VECTOR_CANVAS
+        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.value
+        fillColor = Color(0, 0, 0, 0)
+        commands = [
+          [VECTOR_LINE, 0, 0, 30, 0],
+          [VECTOR_LINE, 7.5, 10, 22.5, 10],
+          [VECTOR_LINE, 11.25, 20, 18.75, 20],
+          [VECTOR_LINE, 70, 0, 100, 0],
+          [VECTOR_LINE, 77.5, 10, 92.5, 10],
+          [VECTOR_LINE, 88.75, 20, 81.75, 20],
+          [VECTOR_ELLIPSE, 50, 0, 1, 8]
+        ]
+      }
+    ] :
+    [
+      (num % 10 == 0 ? @() {
+        size = flex()
+        watch = IlsColor
+        rendObj = ROBJ_VECTOR_CANVAS
+        lineWidth = baseLineWidth * IlsLineScale.value
+        color = IlsColor.value
+        commands = [
+          (fabs(num) == 10 ? [VECTOR_LINE, 15, 0, 30, 0] : []),
+          (fabs(num) == 10 ? [VECTOR_LINE, 70, 0, 85, 0] : []),
+          (fabs(num) == 10 ? [VECTOR_LINE, 21.5, 10, 23.5, 10] : []),
+          (fabs(num) == 10 ? [VECTOR_LINE, 78.5, 10, 76.5, 10] : []),
+          (fabs(num) == 20 ? [VECTOR_LINE, 25, 0, 30, 0] : []),
+          (fabs(num) == 20 ? [VECTOR_LINE, 70, 0, 75, 0] : []),
+          (fabs(num) == 20 ? [VECTOR_LINE, 73.25, 10, 71.75, 10] : []),
+          (fabs(num) == 20 ? [VECTOR_LINE, 28.25, 10, 26.75, 10] : []),
+          (fabs(num) == 30 ? [VECTOR_LINE, 32.5, 0, 37.5, 0] : []),
+          (fabs(num) == 30 ? [VECTOR_LINE, 62.5, 0, 67.5, 0] : []),
+          (fabs(num) == 30 ? [VECTOR_LINE, 65.75, 10, 64.25, 10] : []),
+          (fabs(num) == 30 ? [VECTOR_LINE, 34.25, 10, 35.75, 10] : []),
+          (fabs(num) > 30 ? [VECTOR_LINE, 42.5, 0, 37.5, 0] : []),
+          (fabs(num) > 30 ? [VECTOR_LINE, 62.5, 0, 57.5, 0] : []),
+          (fabs(num) > 30 ? [VECTOR_LINE, 60.75, 10, 59.25, 10] : []),
+          (fabs(num) > 30 ? [VECTOR_LINE, 39.25, 10, 40.75, 10] : []),
+        ]
+        children = [
+          {
+            rendObj = ROBJ_TEXT
+            pos = [pw(47), pw(-2.5)]
+            size = flex()
+            color = IlsColor.value
+            fontSize = 30
+            font = Fonts.hud
+            text = num.tostring()
+          }
+        ]
+      } : {
+        size = [pw(3), baseLineWidth * IlsLineScale.value]
+        pos = [pw(48.5), 0]
+        rendObj = ROBJ_SOLID
+        color = IlsColor.value
+      }),
+    ]
   }
 }
 
@@ -98,9 +228,16 @@ let function TCSF196(width, height) {
     size = [width, height]
     children = [
       tcsfAirSymbol,
-      tcsfHorizont(height),
       compassWrap(width, height, -0.1, generateCompassTCSFMark, 0.4, 2.0, true),
-      tcsfAimMark
+      tcsfAimMark,
+      altWrap(width, height, generateAltMark),
+      pitch(width, height, generatePitchLine),
+      {
+        rendObj = ROBJ_SOLID
+        pos = [pw(74), (height - baseLineWidth * IlsLineScale.value) * 0.5]
+        size = [pw(3), baseLineWidth * IlsLineScale.value]
+        color = IlsColor.value
+      }
     ]
   }
 }
