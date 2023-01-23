@@ -2,17 +2,19 @@ from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
 let {compassWrap, generateCompassMarkSU145} = require("ilsCompasses.nut")
-let {IlsColor, IlsLineScale, BombCCIPMode, RocketMode, BombingMode,
+let {IlsColor, IlsLineScale, BombCCIPMode, RocketMode, BombingMode, TvvMark,
  CannonMode, TargetPosValid, TargetPos, IlsPosSize, TimeBeforeBombRelease} = require("%rGui/planeState/planeToolsState.nut")
 let {baseLineWidth, mpsToKnots, metrToFeet} = require("ilsConstants.nut")
 let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {flyDirection, lowerSolutionCue} = require("commonElements.nut")
-let {floor, abs, sin, round} = require("%sqstd/math.nut")
+let {lowerSolutionCue} = require("commonElements.nut")
+let {floor, abs, sin, round, atan2, PI} = require("%sqstd/math.nut")
 let {cvt} = require("dagor.math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let {Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll, MaxOverload} = require("%rGui/planeState/planeFlyState.nut")
 let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/planeState/planeWeaponState.nut")
+let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
+let {rwrTargetsTriggers, rwrTargets} = require("%rGui/twsState.nut")
 
 let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let speed = @() {
@@ -117,6 +119,24 @@ let maxOverload = @() {
   ] : null
 }
 
+local localTime = @(){
+  watch = IlsColor
+  rendObj = ROBJ_TEXT
+  size = SIZE_TO_CONTENT
+  pos = [pw(80), ph(90)]
+  color = IlsColor.value
+  fontSize = 45
+  font = Fonts.hud
+  text = "11:22:33"
+  behavior = Behaviors.RtPropUpdate
+  function update() {
+    let localTime = unixtime_to_local_timetbl(get_local_unixtime())
+    return {
+      text = string.format("%02d:%02d:%02d", localTime.hour, localTime.min, localTime.sec)
+    }
+  }
+}
+
 let function pitch(width, height, generateFunc) {
   const step = 5.0
   let children = []
@@ -207,7 +227,7 @@ let function generatePitchLine(num) {
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 let GunMode = Computed(@() !BombCCIPMode.value && !RocketMode.value && !BombingMode.value && !isAAMMode.value && GunBullets0.value >= 0)
-let HasGndReticle = Computed(@() GunMode.value || RocketMode.value || BombCCIPMode.value)
+let HasGndReticle = Computed(@() (GunMode.value && GunBullets0.value > 0) || RocketMode.value || BombCCIPMode.value)
 let groundReticle = @() {
   watch = [HasGndReticle, TargetPosValid]
   size = flex()
@@ -319,7 +339,28 @@ let function aamReticle(width, height) {
       @(){
         watch = flyDirHide
         size = flex()
-        children = !flyDirHide.value ? [flyDirection(width, height, true)] : null
+        children = !flyDirHide.value ? [
+          {
+            watch = IlsColor
+            size = [pw(4), ph(4)]
+            rendObj = ROBJ_VECTOR_CANVAS
+            color = IlsColor.value
+            fillColor = Color(0, 0, 0, 0)
+            lineWidth = IlsLineScale.value * baseLineWidth
+            behavior = Behaviors.RtPropUpdate
+            commands = [
+              [VECTOR_ELLIPSE, 0, 0, 40, 40],
+              [VECTOR_LINE, 0, -40, 0, -100],
+              [VECTOR_LINE, -100, 0, -40, 0],
+              [VECTOR_LINE, 100, 0, 40, 0]
+            ]
+            update = @() {
+              transform = {
+                translate = GunMode.value ? [TvvMark[0], TvvMark[1]] : [width * 0.5, height * 0.5]
+              }
+            }
+          }
+        ] : null
       }
     ]
   }
@@ -418,6 +459,65 @@ let timeToReleaseBomb = @(){
   ] : null
 }
 
+let function mkRwrTarget(target, index) {
+  let targetComponent = @() {
+    watch = [IlsColor, IlsLineScale]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.value
+    lineWidth = baseLineWidth * IlsLineScale.value
+    fillColor = Color(0, 0, 0, 0)
+    size = [pw(25), ph(25)]
+    pos = [pw(90), ph(90)]
+    commands = [
+      [VECTOR_ELLIPSE, 20, 20, 30, 30],
+    ]
+    children = {
+      rendObj = ROBJ_TEXT
+      size = SIZE_TO_CONTENT
+      pos = [pw(10) ,0]
+      color = IlsColor.value
+      font = Fonts.hud
+      fontSize = 40
+      text = (index + 1).tostring()
+      transform = {
+        pivot = [0.5, 0.5]
+        rotate = -atan2(target.y, target.x) * (180.0 / PI) + 45
+      }
+    }
+  }
+
+  let trackLine = @() {
+    watch = [IlsColor, IlsLineScale]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.value
+    size = flex()
+    pos = [pw(100), ph(100)]
+    lineWidth = baseLineWidth * IlsLineScale.value
+    commands = [
+      (target.track ? [VECTOR_LINE, -11, -11, -30, -30] : [VECTOR_LINE_DASHED, -11, -11, -30, -30, 20, 20])
+    ]
+  }
+
+  return {
+    size = [pw(35), ph(35)]
+    pos = [pw(50), ph(50)]
+    transform = {
+      pivot = [0.0, 0.0]
+      rotate = atan2(target.y, target.x) * (180.0 / PI) - 45
+    }
+    children = [
+      targetComponent,
+      trackLine,
+    ]
+  }
+}
+
+let rwrTargetsComponent = @() {
+  watch = rwrTargetsTriggers
+  size = flex()
+  children = rwrTargets.filter(@(t) t != null && t.age < 2.0).map(@(t, i) mkRwrTarget(t, i))
+}
+
 let function SU145(width, height) {
   return {
     size = [width, height]
@@ -449,7 +549,26 @@ let function SU145(width, height) {
       aamReadyLabel,
       ccrpAimMark,
       ccrpBombLine(height),
-      timeToReleaseBomb
+      timeToReleaseBomb,
+      rwrTargetsComponent,
+      localTime,
+      @(){
+        watch = GunMode
+        size = flex()
+        children = GunMode.value ? [
+          {
+            watch = IlsColor
+            rendObj = ROBJ_VECTOR_CANVAS
+            size = flex()
+            color = IlsColor.value
+            lineWidth = baseLineWidth * IlsLineScale.value
+            commands = [
+              [VECTOR_LINE, 50, 48, 50, 52],
+              [VECTOR_LINE, 48, 50, 52, 50]
+            ]
+          }
+        ] : null
+      }
     ]
   }
 }
