@@ -36,5 +36,5 @@ from "%scripts/dagui_library.nut" import *
 ::controls_fix_device_mapping <- function controls_fix_device_mapping()
 {
   ::g_controls_manager.fixDeviceMapping()
-  ::g_controls_manager.commitControls(false)
+  ::g_controls_manager.commitControls()
 }

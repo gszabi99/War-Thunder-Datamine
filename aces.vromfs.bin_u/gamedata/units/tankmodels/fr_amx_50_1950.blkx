@@ -265,7 +265,7 @@
     "chassis": {
       "armorClass": "tank_steel_wheels",
       "hp": 250.0,
-      "armorThickness": 15.0,
+      "armorThickness": 20.0,
       "wheel_r_01_dm": {},
       "wheel_r_02_dm": {},
       "wheel_r_03_dm": {},
@@ -1653,7 +1653,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander",
+      "role": [
+        "tank_gunner",
+        "commander"
+      ],
       "substitute": "machine_gunner"
     },
     "machine_gunner": {
@@ -1900,7 +1903,9 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
-          "barrel": "bone_gun_barrel"
+          "barrel": "bone_gun_barrel",
+          "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
@@ -1977,7 +1982,8 @@
         "turret": {
           "head": "bone_mg_gun_twin_01",
           "gun": "bone_mg_gun_twin_01",
-          "gunnerDm": "gunner_dm"
+          "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
@@ -2969,7 +2975,9 @@
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
-                "barrel": "bone_gun_barrel"
+                "barrel": "bone_gun_barrel",
+                "gunnerDm": "gunner_dm",
+                "secondGunnerDm": "commander_dm"
               },
               "limits": {
                 "yaw": [
@@ -3046,7 +3054,8 @@
               "turret": {
                 "head": "bone_mg_gun_twin_01",
                 "gun": "bone_mg_gun_twin_01",
-                "gunnerDm": "gunner_dm"
+                "gunnerDm": "gunner_dm",
+                "secondGunnerDm": "commander_dm"
               },
               "limits": {
                 "yaw": [

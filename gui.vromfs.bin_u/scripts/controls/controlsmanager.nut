@@ -125,16 +125,13 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
 
   /* Commit controls to game client */
-  function commitControls(fixMappingIfRequired = true)
+  function commitControls()
   {
     if (this.isControlsCommitPerformed)
       return
     this.isControlsCommitPerformed = true
 
-    if (fixMappingIfRequired && isPlatformSony)
-      this.fixDeviceMapping()
     this.fixControls()
-
     this.commitGuiOptions()
 
     // Check helpers options and fix if nessesary
