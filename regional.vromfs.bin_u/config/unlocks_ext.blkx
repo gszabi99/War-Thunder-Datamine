@@ -14854,11 +14854,14 @@
           },
           {
             "type": "playerUnitRank",
-            "minRank": 3
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
           },
           {
             "type": "playerType",
-            "unitType": "typeTankDestroyer"
+            "unitType": "typeTankDestroyer",
+            "inSession": true
           },
           {
             "type": "timeRange",
@@ -15158,7 +15161,8 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeDestroyer"
+            "unitType": "typeDestroyer",
+            "inSession": true
           },
           {
             "type": "timeRange",
@@ -15213,7 +15217,8 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeLightTank"
+            "unitType": "typeLightTank",
+            "inSession": true
           },
           {
             "type": "timeRange",
@@ -15268,7 +15273,8 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeSPAA"
+            "unitType": "typeSPAA",
+            "inSession": true
           },
           {
             "type": "timeRange",
@@ -15291,7 +15297,7 @@
       "type": "challenge",
       "chapter": "battlepass_season10",
       "group": "battlepass_season_10_challenge_5",
-      "locId": "mainmenu/type_assault",
+      "locId": "mainmenu/type_strike_aircraft",
       "icon": "!ui/gameuiskin#item_sub_challenge.png",
       "mode": {
         "type": "missionsPlayedScore",
@@ -15327,7 +15333,8 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeStormovik"
+            "unitType": "typeStormovik",
+            "inSession": true
           },
           {
             "type": "timeRange",
@@ -15386,7 +15393,8 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeBomber"
+            "unitType": "typeBomber",
+            "inSession": true
           },
           {
             "type": "timeRange",
@@ -15586,7 +15594,7 @@
       "type": "challenge",
       "chapter": "battlepass_season10",
       "group": "battlepass_season_10_challenge_6",
-      "locId": "mainmenu/type_assault",
+      "locId": "mainmenu/type_strike_aircraft",
       "icon": "!ui/gameuiskin#item_sub_challenge.png",
       "mode": {
         "type": "killedPlayersScore",
@@ -15681,7 +15689,7 @@
           {
             "type": "timeRange",
             "beginDate": "2023-03-08 12:00:00",
-            "endDate": "2023-04-05 12:00:00"
+            "endDate": "2023-03-29 12:00:00"
           },
           {
             "type": "playerHasFeature",
@@ -16181,7 +16189,6 @@
             "exactName": true,
             "value": [
               "air_arcade",
-              "air_realistic",
               "tank_event_in_random_battles_arcade",
               "tank_event_in_random_battles_historical",
               "ship_event_in_random_battles_arcade",
@@ -16261,11 +16268,6 @@
             "percent": 70
           },
           {
-            "type": "playerType",
-            "unitType": "tank",
-            "controlled": true
-          },
-          {
             "type": "playerHasFeature",
             "feature": "BattlePass"
           },
@@ -16328,14 +16330,6 @@
             "percent": 70
           },
           {
-            "type": "playerType",
-            "unitType": [
-              "ship",
-              "boat"
-            ],
-            "controlled": true
-          },
-          {
             "type": "battlepassProgress",
             "progress": 400
           },
@@ -16380,10 +16374,7 @@
             "type": "gameModeInfoString",
             "name": "name",
             "exactName": true,
-            "value": [
-              "air_arcade",
-              "air_realistic"
-            ],
+            "value": "air_arcade",
             "locParamName": "conditions/missionType",
             "locValuePrefix": "missions/short/"
           },
@@ -16396,11 +16387,6 @@
           {
             "type": "activity",
             "percent": 70
-          },
-          {
-            "type": "playerType",
-            "unitType": "aircraft",
-            "controlled": true
           },
           {
             "type": "battlepassProgress",
@@ -16529,10 +16515,7 @@
             "type": "gameModeInfoString",
             "name": "name",
             "exactName": true,
-            "value": [
-              "air_arcade",
-              "air_realistic"
-            ],
+            "value": "air_arcade",
             "locParamName": "conditions/missionType",
             "locValuePrefix": "missions/short/"
           },
