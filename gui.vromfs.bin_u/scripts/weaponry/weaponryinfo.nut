@@ -393,6 +393,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       item.bulletType = itemBlk?.bulletType
       item.blk = weaponBlkPath
 
+      item.armDistance <- itemBlk?.armDistance ?? 0
       if (isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM, WEAPON_TYPE.GUIDED_BOMBS ]))
       {
         item.machMax  <- itemBlk?.machMax ?? 0
@@ -508,7 +509,6 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         item.maxSpeedInWater <- itemBlk?.maxSpeedInWater ?? 0
         item.distToLive <- itemBlk?.distToLive ?? 0
         item.diveDepth <- itemBlk?.diveDepth ?? 0
-        item.armDistance <- itemBlk?.armDistance ?? 0
       }
 
       if ([ WEAPON_TYPE.BOMBS, WEAPON_TYPE.GUIDED_BOMBS ].contains(currentTypeName) && weapon?.machLimit)
@@ -681,6 +681,9 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
         res.append("".concat(loc("missile/timeSelfdestruction"), colon,
           format("%.1f %s", weapon.timeLife, loc("measureUnits/seconds"))))
     }
+    if (weapon?.armDistance)
+      res.append("".concat(loc("missile/armingDistance"), colon,
+        ::g_measure_type.DEPTH.getMeasureUnitsText(weapon?.armDistance)))
   }
   else if (weaponType == "torpedoes")
   {
