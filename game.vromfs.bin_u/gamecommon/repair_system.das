@@ -101,7 +101,7 @@ def load_toolkit_mod_blk(blk : DataBlock&;
     )
 
   let has_toolkit = ((repair_system_toolkit_count_max < 0 && available_without_toolkit) ||
-                     (repair_system_toolkit_count_max >= 0 && gm.toolkit != null && gm.toolkit.isAvailable))
+                     (repair_system_toolkit_count_max >= 0 && gm != null && gm.toolkit.isAvailable))
   if has_toolkit
     repair_system_speed_multiplier_base = speed_multiplier
     repair_system_repair_hp_multiplier = repair_hp_multiplier
@@ -238,13 +238,12 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   if unit == null || unit.isDelayed
     return
   let gm = unit |> as_gm()
-  assume toolkit = gm.toolkit;
 
   // update repair available state
   set_flag(repair_system_state, RepairState HAS_REPAIR_TOOLKIT,
     (repair_system_toolkit_count_max < 0 && get_flag(repair_system_state, RepairState REPAIR_AVAILABLE_WITHOUT_TOOLKIT)) ||
     (repair_system_toolkit_count_max >= 0 && (
-      (repair_system_toolkit_count > 0 && toolkit != null && toolkit.isAvailable) ||
+      (repair_system_toolkit_count > 0 && gm != null && gm.toolkit.isAvailable) ||
       get_flag(repair_system_state, RepairState IS_BOT)
     ))
   )
@@ -409,12 +408,6 @@ def repair_system_update_es(act : UpdateStageInfoAct;
               repair_system_trailer_repair_progress = -1.0
               any_parts_repairing = true
 
-          // if some parts are repairing and repair without mods is not needed
-          if any_parts_repairing && !is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
-                  repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
-                  false, true, false)
-            set_flag(repair_system_state, RepairState WAS_REPAIRING_WITHOUT_MODS, false)
-
           let prev_remaining_repair_time = repair_system_remaining_repair_time
           repair_system_remaining_repair_time = calc_time_to_repair(unit,
             repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
@@ -425,12 +418,18 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
           // if repair has ended - spend toolkit
           if repair_system_remaining_repair_time <= 0.0
-            sendEvent(eid, [[EventRepairSystemSpendToolkit]])
+            if !get_flag(repair_system_state, RepairState WAS_REPAIRING_WITHOUT_MODS)
+              sendEvent(eid, [[EventRepairSystemSpendToolkit]])
             has_changed = true
-
           // if repair time has changed - send updates to client
           elif floor(prev_remaining_repair_time * 2.0f) != floor(repair_system_remaining_repair_time * 2.0f)
             has_changed = true
+
+          // if some parts are repairing and repair without mods is not needed
+          if any_parts_repairing && !is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
+                  repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
+                  false, true, false)
+            set_flag(repair_system_state, RepairState WAS_REPAIRING_WITHOUT_MODS, false)
 
       // if repair is not needed, reset timers
       else
@@ -506,8 +505,7 @@ def repair_system_handle_restore_es(evt : EventUnitRespawn;
   if unit == null || unit.isDelayed
     return
   let gm = unit |> as_gm()
-  assume toolkit = gm.toolkit;
-  let toolkit_count = toolkit != null ? (*toolkit).count : 0
+  let toolkit_count = gm != null ? gm.toolkit.count : 0
 
   repair_system_remaining_repair_time = -1.0f
   repair_system_delay_time_to_repair = -1.0f

@@ -14860,8 +14860,7 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeTankDestroyer",
-            "inSession": true
+            "unitType": "typeTankDestroyer"
           },
           {
             "type": "timeRange",
@@ -15043,9 +15042,7 @@
           },
           {
             "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
+            "minRank": 3
           },
           {
             "type": "activity",
@@ -15096,9 +15093,7 @@
           },
           {
             "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
+            "minRank": 3
           },
           {
             "type": "activity",
@@ -15151,9 +15146,7 @@
           },
           {
             "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
+            "minRank": 3
           },
           {
             "type": "activity",
@@ -15161,8 +15154,7 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeDestroyer",
-            "inSession": true
+            "unitType": "typeDestroyer"
           },
           {
             "type": "timeRange",
@@ -15217,8 +15209,7 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeLightTank",
-            "inSession": true
+            "unitType": "typeLightTank"
           },
           {
             "type": "timeRange",
@@ -15263,9 +15254,7 @@
           },
           {
             "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
+            "minRank": 3
           },
           {
             "type": "activity",
@@ -15273,8 +15262,7 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeSPAA",
-            "inSession": true
+            "unitType": "typeSPAA"
           },
           {
             "type": "timeRange",
@@ -15323,9 +15311,7 @@
           },
           {
             "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
+            "minRank": 3
           },
           {
             "type": "activity",
@@ -15333,8 +15319,7 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeStormovik",
-            "inSession": true
+            "unitType": "typeStormovik"
           },
           {
             "type": "timeRange",
@@ -15383,9 +15368,7 @@
           },
           {
             "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
+            "minRank": 3
           },
           {
             "type": "activity",
@@ -15393,8 +15376,7 @@
           },
           {
             "type": "playerType",
-            "unitType": "typeBomber",
-            "inSession": true
+            "unitType": "typeBomber"
           },
           {
             "type": "timeRange",
@@ -16233,15 +16215,7 @@
         "condition": [
           {
             "type": "unlocked",
-            "unlock": "hidden_battlepass_season_10_challenge_13_player_ground_kill"
-          },
-          {
-            "type": "unlocked",
-            "unlock": "hidden_base_capturer"
-          },
-          {
-            "type": "unlocked",
-            "unlock": "hidden_marks_1_aircraft"
+            "unlock": "hidden_battlepass_multitasker_tank_1_kill"
           },
           {
             "type": "online"
@@ -16295,15 +16269,7 @@
         "condition": [
           {
             "type": "unlocked",
-            "unlock": "hidden_marks_1_ship"
-          },
-          {
-            "type": "unlocked",
-            "unlock": "hidden_base_capturer"
-          },
-          {
-            "type": "unlocked",
-            "unlock": "hidden_marks_1_aircraft"
+            "unlock": "hidden_multitasker_ship_1_kill"
           },
           {
             "type": "online"
@@ -16357,7 +16323,7 @@
         "condition": [
           {
             "type": "unlocked",
-            "unlock": "hidden_battlepass_season_10_challenge_13_ai_ground_kill"
+            "unlock": "hidden_battlepass_multitasker_aircraft_1_kill"
           },
           {
             "type": "unlocked",
@@ -16365,7 +16331,7 @@
           },
           {
             "type": "unlocked",
-            "unlock": "hidden_marks_1_aircraft"
+            "unlock": "hidden_multitasker_air_1_kill"
           },
           {
             "type": "online"
@@ -16404,138 +16370,71 @@
       }
     },
     {
-      "id": "hidden_battlepass_season_10_challenge_13_player_ground_kill",
+      "id": "hidden_battlepass_multitasker_tank_1_kill",
       "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
       "isAfterFlight": false,
-      "isMultiStage": true,
-      "wpA": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "wpB": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "expA": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "expB": [
-        0.0,
-        0.0,
-        0.0
-      ],
       "hidden": true,
-      "stage": {
-        "param": 1,
-        "amount_exp": 0,
-        "amount_warpoints": 0
-      },
       "mode": {
-        "type": "killedPlayersScore",
-        "inRow": false,
-        "num": 1005000,
+        "type": "unlocks",
+        "unlock": [
+          "hidden_base_capturer",
+          "hidden_marks_1_aircraft",
+          "hidden_battlepass_marks_1_tank"
+        ]
+      }
+    },
+    {
+      "id": "hidden_battlepass_marks_1_tank",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "isAfterFlight": false,
+      "hidden": true,
+      "mode": {
+        "type": "killedPlayers",
+        "num": 1,
         "condition": [
           {
             "type": "online"
           },
           {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": true,
-            "value": [
-              "tank_event_in_random_battles_arcade",
-              "tank_event_in_random_battles_historical"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "offenderUnitRank",
-            "minRank": 3
-          },
-          {
-            "type": "battlepassProgress",
-            "progress": 400
-          },
-          {
-            "type": "playerHasFeature",
-            "feature": "BattlePass"
-          },
-          {
-            "type": "battlepassSeason",
-            "season": 10
+            "type": "targetType",
+            "unitType": "tank"
           }
         ]
       }
     },
     {
-      "id": "hidden_battlepass_season_10_challenge_13_ai_ground_kill",
+      "id": "hidden_battlepass_multitasker_aircraft_1_kill",
       "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
       "isAfterFlight": false,
-      "isMultiStage": true,
-      "wpA": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "wpB": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "expA": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "expB": [
-        0.0,
-        0.0,
-        0.0
-      ],
       "hidden": true,
-      "stage": {
-        "param": 1,
-        "amount_exp": 0,
-        "amount_warpoints": 0
-      },
+      "mode": {
+        "type": "unlocks",
+        "unlock": [
+          "hidden_base_capturer",
+          "hidden_marks_1_aircraft",
+          "hidden_battlepass_marks_1_ground_or_surface"
+        ]
+      }
+    },
+    {
+      "id": "hidden_battlepass_marks_1_ground_or_surface",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "isAfterFlight": false,
+      "hidden": true,
       "mode": {
         "type": "killedGroundScore",
-        "inRow": false,
-        "num": 1005000,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": true,
-            "value": "air_arcade",
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "offenderUnitRank",
-            "minRank": 3
-          },
-          {
-            "type": "battlepassProgress",
-            "progress": 400
-          },
-          {
-            "type": "playerHasFeature",
-            "feature": "BattlePass"
-          },
-          {
-            "type": "battlepassSeason",
-            "season": 10
-          }
-        ]
+        "num": 1,
+        "condition": {
+          "type": "online"
+        }
       }
     },
     {

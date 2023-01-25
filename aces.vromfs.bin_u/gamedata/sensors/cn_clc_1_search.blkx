@@ -28,8 +28,8 @@
         180.0
       ],
       "elevationLimits": [
-        7.5,
-        7.5
+        -10.0,
+        10.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
@@ -37,7 +37,8 @@
       "period": 1.0,
       "barHeight": 15.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 7.5
     }
   },
   "signals": {
@@ -78,10 +79,6 @@
           },
           "setScanPattern": {
             "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 7.5
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
