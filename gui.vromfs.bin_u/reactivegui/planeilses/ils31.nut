@@ -504,7 +504,7 @@ let function getRadarSubMode() {
     let mode = modeNames[RadarModeNameId.value]
     if (mode == "hud/track" || mode == "hud/PD track" || mode == "hud/MTI track")
       return "А"
-    if (mode == "hud/TWS standby" || mode == "hud/TWS search")
+    if (mode == "hud/TWS standby" || mode == "hud/TWS search" || mode == "hud/TWS HDN search")
       return "СНП"
   }
   return "ОБЗ"

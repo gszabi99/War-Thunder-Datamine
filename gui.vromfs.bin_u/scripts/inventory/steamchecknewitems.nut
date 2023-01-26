@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { requestAllItems, grantPromoItems } = require("%scripts/inventory/steamInventory.nut")
+let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let logS = log_with_prefix("[Steam Items] ")
@@ -75,11 +75,9 @@ let function steamCheckNewItems() {
 }
 
 let function requestRewardsAndCheckSteamInventory() {
-  grantPromoItems(function() {
-    requestAllItems(function(res) {
-      steamNewItems.update(res?.items ?? [])
-      steamCheckNewItems()
-    })
+  requestAllItems(function(res) {
+    steamNewItems.update(res?.items ?? [])
+    steamCheckNewItems()
   })
 }
 
@@ -107,7 +105,6 @@ addListenersWithoutEnv({
     inqueueSteamItems({})
     requestRewardsAndCheckSteamInventory()
   }
-  BattleEnded = @(_) requestRewardsAndCheckSteamInventory()
   ItemsShopUpdate = @(_) checkUnknownItems()
 })
 
