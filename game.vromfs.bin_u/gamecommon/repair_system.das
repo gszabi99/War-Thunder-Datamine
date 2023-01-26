@@ -636,7 +636,20 @@ def repair_system_net_sync_handle_es(evt : EventRepairSystemNetSync;
   repair_system_delay_time_to_repair = evt.delayToRepair
   repair_system_remaining_repair_time = evt.remainingRepiarTime
 
+
 [es]
 def repair_system_trailer_dead_handle_es(evt : EventOnTrailerDead;
                                          var repair_system_trailer_repair_progress : float&)
   repair_system_trailer_repair_progress = 0.0
+
+
+[es]
+def repair_system_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
+                                         repair_system_remaining_repair_time : float;
+                                         repair_system_parts_id : IntList;
+                                         var repair_system_parts_state : UInt32List)
+  if repair_system_remaining_repair_time > 0.0f
+    for part_id, part_state in repair_system_parts_id, repair_system_parts_state
+      if part_id == evt.partId
+        set_flag(part_state, DmPartRepairState IN_PROGRESS, false)
+
