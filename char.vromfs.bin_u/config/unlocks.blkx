@@ -65,8 +65,10 @@
       }
     },
     {
-      "id": "gift_beginners_kit",
-      "type": "challenge",
+      "id": "gift_steam_beginners_kit",
+      "type": "inventory",
+      "userLogId": "200337",
+      "loggingEnabled": true,
       "hidden": true,
       "mode": {
         "type": "char_unlocks",
@@ -85,11 +87,17 @@
         "type": "char_login_time_range",
         "beginDate": "2023-01-16 00:00:00",
         "endDate": "2032-01-01 00:00:00",
-        "condition": {
-          "type": "playerFirstLogin",
-          "beginDate": "2023-01-16 00:00:00",
-          "endDate": "2032-01-01 00:00:00"
-        }
+        "condition": [
+          {
+            "type": "playerFirstLogin",
+            "beginDate": "2023-01-16 00:00:00",
+            "endDate": "2032-01-01 00:00:00"
+          },
+          {
+            "type": "char_player_has_feature",
+            "feature": "ShowDebugEvents"
+          }
+        ]
       }
     },
     {
@@ -138,10 +146,16 @@
       "mode": {
         "type": "char_mission",
         "num": 2,
-        "condition": {
-          "type": "char_unlocked",
-          "unlock": "gift_beginners_kit_tech"
-        }
+        "condition": [
+          {
+            "type": "char_unlocked",
+            "unlock": "gift_beginners_kit_tech"
+          },
+          {
+            "type": "char_player_has_feature",
+            "feature": "ShowDebugEvents"
+          }
+        ]
       }
     },
     {
