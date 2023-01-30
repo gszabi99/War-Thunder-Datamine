@@ -25,6 +25,8 @@ let BulletImpactPoints = Watched([])
 let BulletImpactPoints1 = Watched([])
 let BulletImpactPoints2 = Watched([])
 let BulletImpactLineEnable = Watched(false)
+let WeaponSlots = Watched([])
+let WeaponSlotActive = Watched([])
 
 let planeState = {
   OpticAtgmSightVisible,
@@ -48,7 +50,9 @@ let planeState = {
   BulletImpactPoints,
   BulletImpactPoints1,
   BulletImpactPoints2,
-  BulletImpactLineEnable
+  BulletImpactLineEnable,
+  WeaponSlots,
+  WeaponSlotActive
 }
 
 interop.updateLaserPoint <- function(x, y) {

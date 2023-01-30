@@ -9,7 +9,7 @@ let {ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bul
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
   IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, Elevation,
   HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax } = require("%rGui/radarState.nut")
-let { CurWeaponName, ShellCnt} = require("%rGui/planeState/planeWeaponState.nut")
+let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive} = require("%rGui/planeState/planeWeaponState.nut")
 let string = require("string")
 let {floor, ceil} = require("%sqstd/math.nut")
 let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
@@ -102,20 +102,50 @@ let rollIndicator = @() {
   children = ASPAirSymbolWrap
 }
 
+let function getWeaponSlotCommands() {
+  let commands = []
+  for (local i = 0; i < WeaponSlots.value.len(); ++i) {
+    if (WeaponSlots.value[i] != null)
+      commands.append([VECTOR_LINE, 15 * (WeaponSlots.value[i] - 1), 100, 15 * (WeaponSlots.value[i] - 1) + 8, 100])
+  }
+  return commands
+}
+
+let function getWeaponSlotNumber() {
+  let numbers = []
+  for (local i = 0; i < WeaponSlots.value.len(); ++i) {
+    if (WeaponSlots.value[i] != null && WeaponSlotActive.value[i] == true) {
+      let pos = 15 * (WeaponSlots.value[i] - 1)
+      numbers.append(
+        {
+          rendObj = ROBJ_TEXT
+          size = SIZE_TO_CONTENT
+          pos = [pw(pos), 0]
+          color = IlsColor.value
+          fontSize = 30
+          font = Fonts.ils31
+          text = (i + 1).tostring()
+        }
+      )
+    }
+  }
+  return numbers
+}
+
 let connectors = @(){
-  size = [pw(24), ph(5)]
-  pos = [pw(38), ph(73)]
+  watch = WeaponSlots
+  size = [pw(24), ph(3)]
+  pos = [pw(38), ph(76)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
   lineWidth = baseLineWidth * IlsLineScale.value
-  commands = [
-    [VECTOR_LINE, 0, 100, 7, 100],
-    [VECTOR_LINE, 15, 100, 22, 100],
-    [VECTOR_LINE, 28.5, 100, 35.6, 100],
-    [VECTOR_LINE, 42.8, 100, 49.8, 100],
-    [VECTOR_LINE, 57.14, 100, 63.1, 100],
-    [VECTOR_LINE, 71.3, 100, 78.4, 100],
-    [VECTOR_LINE, 85.3, 100, 93, 100],
+  commands = getWeaponSlotCommands()
+  children = [
+    @(){
+      watch = WeaponSlotActive
+      size = flex()
+      children = getWeaponSlotNumber()
+    }
   ]
 }
 
