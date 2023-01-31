@@ -7,7 +7,7 @@ let logS = log_with_prefix("[Steam Items] ")
 
 let steamNewItems = persist("steamNewItems", @() Watched([]))
 wlog(steamNewItems, "[Steam Items]: newitems ")
-let unknownSteamNewItems = persist("unknownSteamNewItems", @() Watched([]))
+let unknownSteamNewItems = persist("unknownSteamNewItems", @() Watched({}))
 wlog(unknownSteamNewItems, "[Steam Items]: unknownSteamNewItems ")
 let inqueueSteamItems = persist("inqueueSteamItems", @() Watched({}))
 wlog(inqueueSteamItems, "[Steam Items]: inqueueSteamItems ")
@@ -51,22 +51,22 @@ let function tryShowSteamItemsNotificationOnUpdate(items = []) {
 let function steamCheckNewItems() {
   let newItems = []
   foreach (sItem in steamNewItems.value) {
-    let itemDefId = sItem.itemDef
-    let item = ::ItemsManager.getInventoryItemById(itemDefId)
+    let steamItem = sItem
+    let item = ::ItemsManager.getInventoryItemById(steamItem.itemDef)
     if (!item) {
-      if (!unknownSteamNewItems.value.contains(itemDefId))
-        unknownSteamNewItems.mutate(@(v) v.append(itemDefId))
-      logS($"Not found inventory item by steam itemDef {itemDefId}", sItem)
+      if (steamItem.itemDef not in unknownSteamNewItems.value)
+        unknownSteamNewItems.mutate(@(v) v[steamItem.itemDef] <- steamItem)
+      logS($"Not found inventory item by steam itemDef {steamItem.itemDef}", steamItem)
       continue
     }
 
-    if (sItem.itemId in inqueueSteamItems.value) {
-      logS($"Try to show duplicate {itemDefId}. Ignore")
+    if (steamItem.itemId in inqueueSteamItems.value) {
+      logS($"Try to show duplicate {steamItem.itemDef}. Ignore")
       continue
     }
 
     newItems.append({
-      steamItemId = sItem.itemId
+      steamItemId = steamItem.itemId
       item
     })
   }
@@ -86,26 +86,27 @@ let function checkUnknownItems() {
     return
 
   logS("Check unknown items", unknownSteamNewItems.value)
-  local isListChanged = false
-  for (local i = unknownSteamNewItems.value.len() - 1; i >= 0; i--) {
-    let itemDefId = unknownSteamNewItems.value[i]
-    if (::ItemsManager.findItemById(itemDefId)) {
-      unknownSteamNewItems.mutate(@(v) v.remove(i))
-      isListChanged = true
+  let knownItems = []
+  foreach (itemDef, sItem in unknownSteamNewItems.value) {
+    if (::ItemsManager.findItemById(itemDef)) {
+      knownItems.append(sItem)
+      let itemDefId = itemDef
+      unknownSteamNewItems.mutate(@(v) delete v[itemDefId] )
     }
   }
 
   logS("Left unknown items", unknownSteamNewItems.value)
-  if (isListChanged)
-    requestRewardsAndCheckSteamInventory()
+  if (!knownItems.len())
+    return
+
+  steamNewItems.update(knownItems)
+  steamCheckNewItems()
 }
 
 addListenersWithoutEnv({
-  LoginComplete = function(_) {
-    inqueueSteamItems({})
-    requestRewardsAndCheckSteamInventory()
-  }
+  LoginComplete = @(_) requestRewardsAndCheckSteamInventory()
   ItemsShopUpdate = @(_) checkUnknownItems()
+  SignOut = @(_) inqueueSteamItems({})
 })
 
 return {

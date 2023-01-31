@@ -1973,10 +1973,30 @@
     ]
   },
   "MetaParts": {
+    "bridge": {
+      "part": "bridge_dm",
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 415.0,
+          "kill": true,
+          "killEffect": "destruction"
+        },
+        {
+          "conditionDamageType": "generic",
+          "conditionDamage": 3500.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      ]
+    },
     "cover": [
       {
         "part": "compartment_01_dm",
         "effect": [
+          {
+            "pressureOpen": true
+          },
           {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
@@ -1995,6 +2015,9 @@
         "part": "compartment_02_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
             "kill": true,
@@ -2011,6 +2034,9 @@
       {
         "part": "compartment_03_dm",
         "effect": [
+          {
+            "pressureOpen": true
+          },
           {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
@@ -2029,6 +2055,9 @@
         "part": "compartment_04_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
             "kill": true,
@@ -2046,6 +2075,9 @@
         "part": "compartment_05_dm",
         "effect": [
           {
+            "pressureOpen": true
+          },
+          {
             "conditionDamageType": "explosion",
             "conditionDamage": 415.0,
             "kill": true,
@@ -2060,23 +2092,6 @@
         ]
       }
     ],
-    "bridge": {
-      "part": "bridge_dm",
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "conditionDamage": 415.0,
-          "kill": true,
-          "killEffect": "destruction"
-        },
-        {
-          "conditionDamageType": "generic",
-          "conditionDamage": 3500.0,
-          "kill": true,
-          "killEffect": "destruction"
-        }
-      ]
-    },
     "open_mounts": {
       "part": [
         "main_caliber_turret_01_dm",
@@ -2115,13 +2130,7 @@
         "rangefinder_04_dm",
         "rangefinder_05_dm",
         "fire_director_01_dm",
-        "fire_director_02_dm",
-        "compartment_01_dm",
-        "compartment_02_dm",
-        "compartment_03_dm",
-        "compartment_04_dm",
-        "compartment_05_dm",
-        "compartment_06_dm"
+        "fire_director_02_dm"
       ],
       "effect": {
         "pressureOpen": true
