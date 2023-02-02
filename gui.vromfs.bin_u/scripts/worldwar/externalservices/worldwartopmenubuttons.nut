@@ -88,7 +88,7 @@ let list = {
     text = "#mainmenu/btnUnlockAchievement"
     onClickFunc = @(_obj, handler) handler?.onOpenAchievements()
     isHidden = @(...) ::g_unlocks.getUnlocksByType("achievement").findindex(
-      @(u) u?.chapter && u.chapter == "worldwar") == null
+      @(u) u?.chapter && u.chapter == "worldwar" && u?.hidden != true) == null
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_SCENARIO_DESCR = {

@@ -588,7 +588,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   function onEventGameModesUpdated(_p) { this.updateContent() }
   function onEventWWLoadOperation(_p) { this.updateContent() }
   function onEventWWStopWorldWar(_p) { this.updateContent() }
-  function onEventWWShortGlobalStatusChanged(_p) { this.updateContent() }
+  function onEventWWGlobalStatusChanged(_p) { this.updateContent() }
   function onEventCrossPlayOptionChanged(_p) { this.updateContent() }
   function onEventXboxMultiplayerPrivilegeUpdated(_p) { this.updateContent() }
 

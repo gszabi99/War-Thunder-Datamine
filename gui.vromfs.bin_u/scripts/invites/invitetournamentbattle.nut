@@ -12,6 +12,8 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
+let knownTournamentInvites = []
+
 ::g_invites_classes.TournamentBattle <- class extends ::BaseInvite
 {
   //custom class params, not exist in base invite
@@ -152,4 +154,28 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   }
 
 }
+
+::g_invites.registerInviteUserlogHandler(EULT_INVITE_TO_TOURNAMENT, function(blk, idx) {
+  if (!hasFeature("Tournaments")) {
+    ::disable_user_log_entry(idx)
+    return false
+  }
+
+  let ulogId = blk?.id
+  let battleId = blk?.body.battleId ?? ""
+  let inviteTime = blk?.body.inviteTime ?? -1
+  let startTime = blk?.body.startTime ?? -1
+  let endTime = blk?.body.endTime ?? -1
+
+  log( $"checking battle invite ulog ({ulogId}) : battleId '{battleId}'");
+  if (startTime <= ::get_charserver_time_sec()
+    || isInArray(ulogId, knownTournamentInvites))
+    return
+
+  ::g_invites.knownTournamentInvites.append(ulogId)
+
+  log( $"Got userlog EULT_INVITE_TO_TOURNAMENT: battleId '{battleId}'");
+  ::g_invites.addTournamentBattleInvite(battleId, inviteTime, startTime, endTime)
+  return true
+})
 

@@ -89,7 +89,7 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
     textCode = "UT_WATER"
     sortCode = WW_UNIT_SORT_CODE.WATER
     esUnitCode = ES_UNIT_TYPE_BOAT
-    name = "Boat"
+    name = "Ship"
     fontIcon = loc("worldwar/iconWater")
     canBeControlledByPlayer = true
   }

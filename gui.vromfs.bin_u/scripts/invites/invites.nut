@@ -13,7 +13,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   list = []
   newInvitesAmount = 0
   refreshInvitesTask = -1
-  knownTournamentInvites = []
+  userlogHandlers = {}
 }
 
 ::g_invites.addInvite <- function addInvite(inviteClass, params)
@@ -236,55 +236,17 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   log("Rescheduled refreshInvitesTask " + this.refreshInvitesTask+" with delay "+triggerDelay);
 }
 
-::g_invites.fetchNewInvitesFromUserlogs <- function fetchNewInvitesFromUserlogs()
-{
+::g_invites.registerInviteUserlogHandler <- @(logType, addFn)
+  ::g_invites.userlogHandlers[logType] <- addFn
+
+::g_invites.fetchNewInvitesFromUserlogs <- function fetchNewInvitesFromUserlogs() {
   local needReshedule = false
-  let now = ::get_charserver_time_sec();
   let total = ::get_user_logs_count()
-  for (local i = total-1; i >= 0; i--)
-  {
+  for (local i = total-1; i >= 0; i--) {
     let blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
-
-    if ( blk.type == EULT_WW_CREATE_OPERATION ||
-         blk.type == EULT_WW_START_OPERATION )
-    {
-      if (blk?.disabled || !::is_worldwar_enabled())
-        continue
-
-      ::g_world_war.addOperationInvite(
-        blk.body?.operationId ?? -1,
-        blk.body?.clanId ?? -1,
-        blk.type == EULT_WW_START_OPERATION,
-        blk?.timeStamp ?? 0)
-
-      ::disable_user_log_entry(i)
+    if (::g_invites.userlogHandlers?[blk.type](blk, i) ?? false)
       needReshedule = true
-    }
-    else if (blk.type == EULT_INVITE_TO_TOURNAMENT)
-    {
-      if (!hasFeature("Tournaments"))
-      {
-        ::disable_user_log_entry(i)
-        continue
-      }
-
-      let ulogId = blk.id
-      let battleId = getTblValue("battleId", blk.body, "")
-      let inviteTime = getTblValue("inviteTime", blk.body, -1)
-      let startTime = getTblValue("startTime", blk.body, -1)
-      let endTime = getTblValue("endTime", blk.body, -1)
-
-      log( "checking battle invite ulog ("+ulogId+") : battleId '"+battleId+"'");
-      if ( startTime <= now || isInArray(ulogId, ::g_invites.knownTournamentInvites) )
-        continue
-
-      ::g_invites.knownTournamentInvites.append(ulogId)
-
-      log( "Got userlog EULT_INVITE_TO_TOURNAMENT: battleId '"+battleId+"'");
-      ::g_invites.addTournamentBattleInvite(battleId, inviteTime, startTime, endTime);
-      needReshedule = true
-    }
   }
 
   if ( needReshedule )

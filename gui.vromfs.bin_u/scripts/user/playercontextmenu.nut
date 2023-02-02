@@ -188,6 +188,11 @@ let getActions = function(contact, params)
       show = hasFeature("Clans") && !u.isEmpty(clanTag) && clanTag != ::clan_get_my_clan_tag()
       action = @() ::showClanPage("", "", clanTag)
     }
+    {
+      text = loc("mainmenu/btnInviteInWWOperation")
+      show = ::is_worldwar_enabled() && ::g_world_war.isWwOperationInviteEnable()
+      action = @() ::g_world_war.inviteToWwOperation(contact.uid)
+    }
   )
 //---- </Common> ------------------
 

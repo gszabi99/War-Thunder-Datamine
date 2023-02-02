@@ -14,7 +14,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { LEADER_OPERATION_STATES,
-  getLeaderOperationState } = require("%scripts/squads/leaderOperationStates.nut")
+  getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
 
 ::gui_handlers.WwMap <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -403,7 +403,7 @@ let { LEADER_OPERATION_STATES,
         break
 
         case LEADER_OPERATION_STATES.ANOTHER_OPERATION:
-          txt = getOperationById(::g_squad_manager.getWwOperationId())?.getNameText(false) ?? ""
+          txt = "".concat(loc("ui/number_sign"), ::g_squad_manager.getWwOperationId())
           isCancel = true
       }
     }

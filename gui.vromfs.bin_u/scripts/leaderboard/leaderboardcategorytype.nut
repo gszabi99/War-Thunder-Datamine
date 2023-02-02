@@ -252,8 +252,33 @@ enums.addTypesByGlobalName("g_lb_category", {
 
     SCORE = {
       field = "score"
-      visualKey = "total_score"
+      visualKey = "average_score"
       headerTooltip = "score"
+    }
+
+    MISSION_SCORE = {
+      field = "score"
+      visualKey = "average_score"
+      headerTooltip = "mission_score"
+    }
+
+    WP_EARNED = {
+      field = "wpEarned"
+      visualKey = "wp_total_gained"
+      headerTooltip = "mission_wp_earned"
+    }
+
+    TOTAL_SCORE = {
+      field = "totalScore"
+      visualKey = "total_score"
+      headerTooltip = "total_score"
+    }
+
+    ACTIVITY = {
+      field = "activity"
+      visualKey = "activity"
+      lbDataType = lbDataType.PERCENT
+      headerTooltip = "commander_activity"
     }
 
     VICTORIES_BATTLES = {

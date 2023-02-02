@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { getMapByName, getMapFromShortStatusByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 enum WW_OPERATION_STATUSES
 {
@@ -34,13 +34,11 @@ enum WW_OPERATION_PRIORITY //bit enum
   _myClanGroup = null
   _assignCountry = null
 
-  isFromShortStatus = false
   isFinished = false //this parametr updated from local operation when return main menu of WWar
 
-  constructor(v_data, v_isFromShortStatus = false)
+  constructor(v_data)
   {
     this.data = v_data
-    this.isFromShortStatus = v_isFromShortStatus
     this.id = getTblValue("_id", this.data, -1)
     this.status = getTblValue("st", this.data, WW_OPERATION_STATUSES.UNKNOWN)
   }
@@ -69,10 +67,7 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function getMap()
   {
-    if (this.isFromShortStatus)
-      return getMapFromShortStatusByName(this.getMapId())
-    else
-      return getMapByName(this.getMapId())
+    return getMapByName(this.getMapId())
   }
 
   function getNameText(full = true)

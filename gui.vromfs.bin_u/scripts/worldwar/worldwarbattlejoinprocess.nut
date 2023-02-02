@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { get_time_msec } = require("dagor.time")
 
 ::WwBattleJoinProcess <- class
@@ -81,14 +80,6 @@ let { get_time_msec } = require("dagor.time")
 
     if (::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE))
       return this.remove()
-
-    let availableUnitTypes = this.wwBattle.getAvailableUnitTypes()
-    if (availableUnitTypes.len() > 0)
-    {
-      foreach(_idx, unitType in availableUnitTypes)
-        if (checkDiffTutorial(DIFFICULTY_REALISTIC, unitType))
-          return this.remove()
-    }
 
     ::queues.checkAndStart(
       Callback(this.joinStep4_repairInfo, this),

@@ -583,6 +583,10 @@ local logNameByType = {
             showClanFlushExpInfo({ userlog = blk, needChoseResearch })
         })
     }
+    else if (blk?.type == EULT_WW_END_OPERATION && (blk.body?.wp ?? 0) > 0) {
+      markDisabled = true
+      ::g_world_war.openOperationRewardPopup(blk.body)
+    }
 
     if (markDisabled)
       seenIdsArray.append(blk.id)

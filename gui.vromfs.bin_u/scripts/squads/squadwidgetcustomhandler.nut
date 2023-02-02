@@ -10,16 +10,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
+let { getSquadLeaderOperation } = require("%scripts/squads/leaderWwOperationStates.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
-
-let function getSquadLeaderOperation() {
-  if (!::is_worldwar_enabled() || !::g_squad_manager.isSquadMember())
-    return null
-
-  let operationId = ::g_squad_manager.getWwOperationId()
-  return operationId >= 0 ? ::g_ww_global_status_actions.getOperationById(operationId) : null
-}
 
 ::init_squad_widget_handler <- function init_squad_widget_handler(nestObj)
 {
@@ -146,11 +139,6 @@ let function getSquadLeaderOperation() {
 
     this.showSceneBtn("txt_squad_title", ::g_squad_manager.canManageSquad()
       && ::g_squad_manager.getMembers().len() < SQUAD_MEMBERS_TO_HIDE_TITLE)
-    let squadLeaderOperation = getSquadLeaderOperation()
-    let btnSquadReady = this.showSceneBtn("btn_squad_ready",
-      ::g_squad_manager.canSwitchReadyness() && !squadLeaderOperation)
-    btnSquadReady.findObject("text").setValue(
-      loc(::g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
 
     this.showSceneBtn("btn_squadInvites", ::gui_handlers.squadInviteListWnd.canOpen())
     this.updateVisibleNewApplications()
@@ -158,13 +146,22 @@ let function getSquadLeaderOperation() {
     let btnSquadLeave = this.showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
     btnSquadLeave.tooltip = loc("squadAction/leave")
 
+    this.updateWwButtons()
+    this.scene.show(isInTransition || canInvite || ::g_squad_manager.isInSquad())
+  }
+
+  function updateWwButtons() {
+    let squadLeaderOperation = getSquadLeaderOperation()
     let wwBtnObj = this.showSceneBtn("btn_world_war",
       squadLeaderOperation && squadLeaderOperation.id != ::ww_get_operation_id())
     if (wwBtnObj?.isValid())
       wwBtnObj.tooltip = "".concat(loc("worldwar/squadLeaderInOperation"), " ",
         loc("ui/quotes", { text = squadLeaderOperation?.getNameText() ?? ""}))
 
-    this.scene.show(isInTransition || canInvite || ::g_squad_manager.isInSquad())
+    let btnSquadReady = this.showSceneBtn("btn_squad_ready",
+      ::g_squad_manager.canSwitchReadyness() && !squadLeaderOperation)
+    btnSquadReady.findObject("text").setValue(
+      loc(::g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
   }
 
   function canShowContactTooltip(contact)
@@ -272,11 +269,19 @@ let function getSquadLeaderOperation() {
     return this.isSceneActive()
   }
 
+  onEventOperationInfoUpdated = @(_) this.updateWwButtons()
+
+  function onEventWWGlobalStatusChanged(p) {
+    if (p.changedListsMask & WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS)
+      this.updateWwButtons()
+  }
+
   function onWorldWar() {
     let squadLeaderOperationId = getSquadLeaderOperation()?.id
     if (squadLeaderOperationId == null || squadLeaderOperationId == ::ww_get_operation_id())
       return
 
-    this.guiScene.performDelayed(this, @()::g_world_war.joinOperationById(squadLeaderOperationId))
+    this.guiScene.performDelayed(this, @()::g_world_war.joinOperationById(squadLeaderOperationId,
+      ::g_squad_manager.getWwOperationCountry()))
   }
 }

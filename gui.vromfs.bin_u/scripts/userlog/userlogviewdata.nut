@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { abs, round } = require("math")
+let { round_by_value } = require("%sqstd/math.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -1540,15 +1541,14 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
         getTblValue("operationId", logObj),
         ::WwMap.getNameTextByMapName(getTblValue("mapName", logObj))
       )
-    res.name = loc(locId,
-      {
-        clan = getTblValue("name", logObj)
-        operation = operation
-      })
+    res.name = loc(locId, { clan = logObj?.name, operation = operation })
+    let appName = ::getContact(logObj?.registratorId.tostring())?.getName()
+    res.description <- appName ? $"{loc("worldwar/applicant")}{loc("ui/colon")} {appName}" : ""
   }
   else if (logObj.type == EULT_WW_END_OPERATION)
   {
     local textLocId = "worldWar/userlog/endOperation/"
+    let colon = loc("ui/colon")
     textLocId += getTblValue("winner", logObj) ? "win" : "lose"
     let mapName = getTblValue("mapName", logObj)
     let opId = getTblValue("operationId", logObj)
@@ -1556,8 +1556,39 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
     res.name = loc(textLocId, {
       opId = opId, mapName = loc("worldWar/map/" + mapName), reward = earnedText })
 
-    let statsWpText = ::Cost(getTblValue("wpStats", logObj, 0)).toStringWithParams({isWpAlwaysShown = true})
-    res.description <- loc("worldWar/userlog/endOperation/stats", { reward = statsWpText })
+    let description = [
+      $"{loc("multiplayer/lb_kills_player")}{colon}{logObj.userStats.playerKills}",
+      $"{loc("multiplayer/lb_kills_ai")}{colon}{logObj.userStats.aiKills}",
+      $"{loc("multiplayer/flyouts")}{colon}{logObj.userStats.flyouts}",
+      $"{loc("multiplayer/deaths")}{colon}{logObj.userStats.deaths}",
+      $"{loc("multiplayer/mission_score")}{colon}{logObj.userStats.score}",
+      $"{loc("multiplayer/mission_wp_earned")}{colon}{logObj.userStats.wpEarned}"
+    ]
+
+    let hasManager = logObj?.managerStats == null ? false : true
+    if(hasManager) {
+      let { actionsCount = 0, totalActionsCount = 0 } = logObj?.managerStats
+      let activity = totalActionsCount > 0
+        ? round_by_value(actionsCount.tofloat() / totalActionsCount.tofloat(), 0.01)
+        : 0
+      description.append(
+        $"{loc("multiplayer/total_score")}{colon}{logObj.managerStats.totalScore}",
+        $"{loc("multiplayer/commander_activity")}{colon}{"".concat((activity * 100 + 0.5).tointeger(), "%")}"
+      )
+    }
+    let reward = ::Cost((logObj?.wp ?? 0) - (logObj?.managerStats.wpManager ?? 0)).toStringWithParams({
+      isWpAlwaysShown = true})
+    description.append(
+      "",
+      $"{loc("worldWar/endOperation/reward")}{colon}{reward}"
+    )
+
+    if(hasManager){
+      let manager_reward = ::Cost(logObj?.managerStats.wpManager ?? 0).toStringWithParams({
+        isWpAlwaysShown = true})
+      description.append($"{loc("worldWar/endOperation/manager_reward")}{colon}{manager_reward}")
+    }
+    res.description <- "\n".join(description)
   }
   else if (logObj.type == EULT_INVITE_TO_TOURNAMENT)
   {

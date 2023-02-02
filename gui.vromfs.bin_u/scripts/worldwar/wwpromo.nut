@@ -37,7 +37,7 @@ addPromoButtonConfig({
     let id = promoButtonId
     let isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
     let isVisible = ::g_promo.getShowAllPromoBlocks()
-      || (isWwEnabled && ::g_world_war.isWWSeasonActiveShort())
+      || (isWwEnabled && ::g_world_war.isWWSeasonActive())
 
     let buttonObj = ::showBtn(id, isVisible, this.scene)
     if (!isVisible || !checkObj(buttonObj))
@@ -52,5 +52,5 @@ addPromoButtonConfig({
       ::g_promo.toggleItem(buttonObj.findObject(id + "_toggle"))
   }
   updateByEvents = ["WWLoadOperation", "WWStopWorldWar",
-    "WWShortGlobalStatusChanged", "CrossPlayOptionChanged"]
+    "WWGlobalStatusChanged", "CrossPlayOptionChanged"]
 })

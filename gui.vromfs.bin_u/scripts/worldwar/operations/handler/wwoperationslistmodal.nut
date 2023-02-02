@@ -4,8 +4,9 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-local { getOperationById, getOperationGroupByMapId
+let { getOperationById, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
@@ -28,6 +29,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!this.map)
       return this.goBack()
 
+    if (hasFeature("WWOperationsList"))
+      actionWithGlobalStatusRequest("cln_ww_global_status")
     this.opListObj = this.scene.findObject("items_list")
     this.fillOperationList()
   }

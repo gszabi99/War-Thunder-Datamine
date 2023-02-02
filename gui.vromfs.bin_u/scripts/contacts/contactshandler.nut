@@ -381,6 +381,15 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
   }
 
+  function onWwOperationInvite(obj) {
+    if (!::is_worldwar_enabled())
+      return
+
+    this.updateCurPlayer(obj)
+    if (this.curPlayer)
+      ::g_world_war.inviteToWwOperation(this.curPlayer.uid)
+  }
+
   function updateContactButtonsVisibility(contact, contact_buttons_holder)
   {
     if (!this.checkScene())
@@ -408,6 +417,8 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
                            && !isBlock
                            && isChatEnabled()
                            && canChat, contact_buttons_holder)
+    ::showBtn("btn_ww_invite", ::is_worldwar_enabled()
+      && ::g_world_war.isWwOperationInviteEnable(), contact_buttons_holder)
 
     let showSquadInvite = hasFeature("SquadInviteIngame")
       && !isMe

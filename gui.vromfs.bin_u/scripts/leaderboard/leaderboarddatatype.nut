@@ -119,7 +119,7 @@ enums.addTypes(lbDataType, {
     function getFullTextByValue(value, _allowNegative = false) {
       return value < 0
         ? loc("leaderboards/notAvailable")
-        : "".concat((value * 100).tointeger(), "%")
+        : "".concat((value * 100 + 0.5).tointeger(), "%")
     }
 
     function getPrimaryTooltipText(value, _allowNegative = false) {

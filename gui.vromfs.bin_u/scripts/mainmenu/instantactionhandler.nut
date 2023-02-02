@@ -34,7 +34,7 @@ let { isHaveNonApprovedClanUnitResearches } = require("%scripts/unit/squadronUni
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let time = require("%scripts/time.nut")
 let { LEADER_OPERATION_STATES,
-  getLeaderOperationState } = require("%scripts/squads/leaderOperationStates.nut")
+  getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
@@ -476,6 +476,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.setCurrentGameModeName()
     this.doWhenActiveOnce("updateStartButton")
   }
+
+  onEventOperationInfoUpdated = @(_) this.doWhenActiveOnce("updateStartButton")
 
   function determineAndStartAction(isFromDebriefing = false)
   {

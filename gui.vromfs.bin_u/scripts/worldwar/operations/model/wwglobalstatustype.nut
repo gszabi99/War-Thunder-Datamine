@@ -6,17 +6,12 @@ from "%scripts/dagui_library.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
-let { refreshGlobalStatusData,
+let {
+  refreshGlobalStatusData,
   getValidGlobalStatusListMask,
   setValidGlobalStatusListMask,
   getGlobalStatusData
 } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-local {
-  refreshShortGlobalStatusData,
-  getValidShortGlobalStatusListMask,
-  setValidShortGlobalStatusListMask,
-  getShortGlobalStatusData
-} = require("%scripts/worldWar/operations/model/wwShortGlobalStatus.nut")
 
 const MAPS_OUT_OF_DATE_DAYS = 1
 
@@ -29,10 +24,8 @@ const MAPS_OUT_OF_DATE_DAYS = 1
   charDataId = null //data id on request "cln_ww_global_stats"
   invalidateByOtherStatusType = 0 //mask of WW_GLOBAL_STATUS_TYPE
   emptyCharData = []
-  isAvailableInShortStatus = false
-
   cachedList = null
-  cachedShortStatusList = null
+
   getList = function(filterFunc = null)
   {
     refreshGlobalStatusData()
@@ -47,36 +40,13 @@ const MAPS_OUT_OF_DATE_DAYS = 1
     return this.cachedList
   }
 
-  getData = function(globalStatusData = null)
-  {
+  getData = function(globalStatusData = null) {
     if (this.charDataId == null)
       return null
     return (globalStatusData ?? getGlobalStatusData())?[this.charDataId] ?? this.emptyCharData
   }
 
   loadList = @() this.cachedList = this.getData()
-
-  getShortStatusList = function(filterFunc = null)
-  {
-    refreshShortGlobalStatusData()
-    let validListsMask = getValidShortGlobalStatusListMask()
-    if (!this.cachedShortStatusList || !(validListsMask & this.typeMask))
-    {
-      this.loadShortList()
-      setValidShortGlobalStatusListMask(validListsMask | this.typeMask)
-    }
-    if (filterFunc)
-      return ::u.filter(this.cachedShortStatusList, filterFunc)
-    return this.cachedShortStatusList
-  }
-
-  getShortData = function(globalStatusData = null) {
-    if (this.charDataId == null)
-      return null
-    return (globalStatusData ?? getShortGlobalStatusData())?[this.charDataId] ?? this.emptyCharData
-  }
-
-  loadShortList = @() this.cachedShortStatusList = this.getShortData()
 }
 
 enums.addTypesByGlobalName("g_ww_global_status_type", {
@@ -102,7 +72,6 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
   ACTIVE_OPERATIONS = {
     typeMask = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
     charDataId = "activeOperations"
-    isAvailableInShortStatus = true
 
     loadList = function() {
       this.cachedList = []
@@ -116,26 +85,12 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
           this.cachedList.append(operation)
       }
     }
-
-    loadShortList = function() {
-      this.cachedShortStatusList = []
-      let data = this.getShortData()
-      if (!::u.isArray(data))
-        return
-
-      foreach(opData in data) {
-        let operation = ::WwOperation(opData, true)
-        if (operation.isValid())
-          this.cachedShortStatusList.append(operation)
-      }
-    }
   }
 
   MAPS = {
     typeMask = WW_GLOBAL_STATUS_TYPE.MAPS
     charDataId = "maps"
     emptyCharData = {}
-    isAvailableInShortStatus = true
 
     loadList = function() {
       this.cachedList = {}
@@ -145,16 +100,6 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
       foreach(name, mapData in data)
         this.cachedList[name] <-::WwMap(name, mapData)
-    }
-
-    loadShortList = function() {
-      this.cachedShortStatusList = {}
-      let data = this.getShortData()
-      if (!::u.isTable(data) || (data.len() <= 0))
-        return
-
-      foreach(name, mapData in data)
-        this.cachedShortStatusList[name] <-::WwMap(name, mapData)
 
       let guiScene = ::get_cur_gui_scene()
       if (guiScene) //need all other configs invalidate too before push event
@@ -179,6 +124,6 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
 seenWWMapsAvailable.setListGetter(function() {
   return ::u.map(
-    ::g_ww_global_status_type.MAPS.getShortStatusList().filter(@(map) map.isAnnounceAndNotDebug()),
+    ::g_ww_global_status_type.MAPS.getList().filter(@(map) map.isAnnounceAndNotDebug()),
     @(map) map.name)
 })

@@ -484,7 +484,7 @@ foreach(idx, item in clan_member_list)
     this.isWorldWarMode = tabObj?.isWorldWarMode == "yes"
     this.showSceneBtn("clan_members_list", !this.isWorldWarMode)
     this.showSceneBtn("lb_table_nest", this.isWorldWarMode)
-    this.showSceneBtn("season_over_notice", this.isWorldWarMode && !::g_world_war.isWWSeasonActiveShort())
+    this.showSceneBtn("season_over_notice", this.isWorldWarMode && !::g_world_war.isWWSeasonActive())
 
     this.curPlayer = null
 

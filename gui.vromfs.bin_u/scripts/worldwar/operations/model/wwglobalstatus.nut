@@ -26,9 +26,10 @@ let function pushStatusChangedEvent(changedListsMask) {
   ::ww_event("GlobalStatusChanged", { changedListsMask = changedListsMask })
 }
 
-local function canRefreshData(refreshDelay = null) {
+let function canRefreshData(refreshDelay = null) {
   if (!hasFeature("WorldWar"))
     return false
+
   refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshGlobalStatusTimeSec", refreshMinTimeSec)
   let refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
   refreshDelay = refreshDelay ?? refreshMinTime
@@ -39,6 +40,14 @@ local function canRefreshData(refreshDelay = null) {
   if (lastUpdatetTime.value > 0 && lastUpdatetTime.value + refreshDelay > get_time_msec())
     return false
   return true
+}
+
+let function updateCurData(newData) {
+  let data = curData.value ?? {}
+  foreach (name, value in newData)
+    data[name] <- value
+
+  curData(data)
 }
 
 let function onGlobalStatusReceived(newData) {
@@ -55,26 +64,24 @@ let function onGlobalStatusReceived(newData) {
     if (gsType.invalidateByOtherStatusType & changedListsMask)
       changedListsMask = changedListsMask | gsType.typeMask
 
-  curData(newData)
+  updateCurData(newData)
   validListsMask(validListsMask.value & ~changedListsMask)
   pushStatusChangedEvent(changedListsMask)
 }
 
 //special actions with global status in successCb
-local function actionWithGlobalStatusRequest(actionName, requestBlk, taskOptions = null, onSuccessCb = null, onErrorCb = null) {
+let function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOptions = null, onSuccessCb = null) {
   lastRequestTime(get_time_msec())
   let cb = Callback(function(data) {
     onGlobalStatusReceived(data)
     if (onSuccessCb)
       onSuccessCb()
   }, this)
+
   if (requestBlk == null)
     requestBlk = ::DataBlock()
 
-  requestBlk.addBlock("reqParams")
-  requestBlk.reqParams.ERF_FAIL_ONCE = true
-
-  ::g_tasker.charRequestJson(actionName, requestBlk, taskOptions, cb, onErrorCb)
+  ::g_tasker.charRequestJson(actionName, requestBlk, taskOptions, cb)
 }
 
 let function onEventMyClanIdChanged(_p) {
@@ -94,13 +101,22 @@ subscriptions.addListenersWithoutEnv({
 })
 
 let function refreshGlobalStatusData(refreshDelay = null) {
-  if (canRefreshData(refreshDelay))
-    actionWithGlobalStatusRequest("cln_ww_global_status", null)
+  if (!canRefreshData(refreshDelay))
+    return
+
+  let requestBlk = ::DataBlock()
+  if (::is_in_clan())
+    requestBlk.clanId = ::clan_get_my_clan_id()
+  if (::g_world_war.lastPlayedOperationId != null)
+    requestBlk.operationId = ::g_world_war.lastPlayedOperationId
+  actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk)
+  if (::handlersManager.findHandlerClassInScene(::gui_handlers.WwOperationsMapsHandler) != null)
+    actionWithGlobalStatusRequest("cln_ww_queue_status")
 }
 
 return {
-  refreshGlobalStatusData = refreshGlobalStatusData
-  actionWithGlobalStatusRequest = actionWithGlobalStatusRequest
+  refreshGlobalStatusData
+  actionWithGlobalStatusRequest
   getValidGlobalStatusListMask = @() validListsMask.value
   setValidGlobalStatusListMask = @(mask) validListsMask(mask)
   getGlobalStatusData = @() curData.value

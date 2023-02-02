@@ -96,6 +96,10 @@ foreach (fn in [
 
 // Independed Modules
 require("%scripts/worldWar/wwPromo.nut")
+require("%scripts/worldWar/wwSquadManager.nut")
+require("%scripts/worldWar/wwInvites.nut")
+require("%scripts/worldWar/wwInviteOperation.nut")
+
 
 foreach(bhvName, bhvClass in ::ww_gui_bhv)
   ::replace_script_gui_behaviour(bhvName, bhvClass)

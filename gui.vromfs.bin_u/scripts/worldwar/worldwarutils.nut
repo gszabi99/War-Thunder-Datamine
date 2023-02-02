@@ -13,11 +13,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 let wwArmyGroupManager = require("%scripts/worldWar/inOperation/wwArmyGroupManager.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
-let { getNearestMapToBattleShort,
-  hasAvailableMapToBattle,
-  hasAvailableMapToBattleShort,
-  getOperationById,
-  getOperationFromShortStatusById
+let { getNearestMapToBattle, hasAvailableMapToBattle, getOperationById
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
@@ -26,6 +22,9 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
+let { openWwOperationRewardPopup
+} = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
+let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -95,7 +94,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   function getLastPlayedOperation() {
     if (this.lastPlayedOperationId)
-      return getOperationFromShortStatusById(this.lastPlayedOperationId)
+      return getOperationById(this.lastPlayedOperationId)
     return null
   }
 
@@ -106,7 +105,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
       return operation.getMapText()
 
 
-    let nearestAvailableMapToBattle = getNearestMapToBattleShort()
+    let nearestAvailableMapToBattle = getNearestMapToBattle()
     if(!nearestAvailableMapToBattle)
       return null
 
@@ -122,7 +121,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     if (this.getLastPlayedOperation() != null)
       return null
 
-    let nearestAvailableMapToBattle = getNearestMapToBattleShort()
+    let nearestAvailableMapToBattle = getNearestMapToBattle()
     if (!nearestAvailableMapToBattle)
       return null
 
@@ -148,7 +147,6 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   }
 
   isWWSeasonActive = @() hasAvailableMapToBattle()
-  isWWSeasonActiveShort = @() hasAvailableMapToBattleShort()
 
   function updateCurOperationStatusInGlobalStatus() {
     let operationId = ::ww_get_operation_id()
@@ -157,6 +155,24 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
     let operation = getOperationById(operationId)
     operation?.setFinishedStatus(this.isCurrentOperationFinished())
+  }
+
+  function isWwOperationInviteEnable() {
+    let wwOperationId = ::ww_get_operation_id()
+    return wwOperationId > -1 && ::g_clans.hasRightsToQueueWWar()
+      && getOperationById(wwOperationId)?.isMyClanParticipate()
+  }
+
+  function inviteToWwOperation(uid) {
+    let operationId = ::ww_get_operation_id()
+    if (operationId < 0 || !this.canJoinWorldwarBattle())
+      return
+
+    addMail({
+      user_id = uid.tointeger()
+      mail = { operationId = operationId }
+      ttl = 3600
+    })
   }
 }
 
@@ -1265,11 +1281,15 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   if (!this.canJoinWorldwarBattle())
     return
 
-  if (clanId.tostring() != ::clan_get_my_clan_id())
+  clanId = clanId.tostring()
+  if (clanId != ::clan_get_my_clan_id())
     return
 
-  if (operationId >= 0 && operationId != ::ww_get_operation_id())
-    actionWithGlobalStatusRequest("cln_ww_global_status", null, null, function() {
+  if (operationId >= 0 && operationId != ::ww_get_operation_id()){
+    let requestBlk = ::DataBlock()
+    requestBlk.clanId = clanId
+    requestBlk.operationId = operationId
+    actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null, function() {
       let operation = getOperationById(operationId)
       if (operation && operation.isAvailableToJoin())
         ::g_invites.addInvite( ::g_invites_classes.WwOperation,
@@ -1279,6 +1299,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
             inviteTime = inviteTime
           })
     })
+  }
 }
 
 ::g_world_war.addSquadInviteToWWBattle <- function addSquadInviteToWWBattle(params)
@@ -1368,6 +1389,9 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   let operation = getOperationById(operationId.tointeger())
   return operation ? operation.getNameText() : ""
+}
+::g_world_war.openOperationRewardPopup <- function openOperationRewardPopup(logObj) {
+  openWwOperationRewardPopup(logObj)
 }
 
 ::subscribe_handler(::g_world_war, ::g_listener_priority.DEFAULT_HANDLER)

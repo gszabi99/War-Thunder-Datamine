@@ -707,9 +707,8 @@ let function guiStartMPStatScreenFromGame()
 
   if (::g_mis_custom_state.getCurMissionRules().isWorldWar && ::is_worldwar_enabled())
   {
-    text = ::g_world_war.getCurMissionWWOperationName()
-    let battleInfoText = ::g_world_war.getCurMissionWWBattleName()
-    text += ((text.len() && battleInfoText.len()) ? loc("ui/comma") : "") + battleInfoText
+    text = ::g_world_war.getCurMissionWWBattleName()
+    text = (text.len() > 0 ? loc("ui/comma") : "").concat(text, ::loc_current_mission_name())
   }
   else
   {
