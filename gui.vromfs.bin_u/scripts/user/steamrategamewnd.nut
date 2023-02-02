@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { subscribe } = require("eventbus")
+let { format } = require("string")
 
 ::gui_handlers.SteamRateGame <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -17,7 +18,7 @@ let { subscribe } = require("eventbus")
 
   onApply = function() {
     this.onApplyFunc?(true)
-    openUrl(loc("url/steam/community", {appId = ::steam_get_app_id()} ))
+    openUrl(format(loc("url/steamstore/item"), ::steam_get_app_id().tostring()))
   }
   onEventDestroyEmbeddedBrowser = @(_p) base.goBack()
   onEventSteamOverlayStateChanged = function(p) {

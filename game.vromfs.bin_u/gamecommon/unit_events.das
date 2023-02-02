@@ -1,8 +1,6 @@
 module unit_events shared
 require ecs
-require dm
 require DagorDataBlock
-require WTDamageModel
 
 [cpp_event(unicast)]
 struct CmdInitComponent
@@ -21,14 +19,3 @@ struct EventUnitRespawn
 [cpp_event(unicast, with_scheme)]
 struct EventUnitRepair
 {}
-
-[cpp_event(unicast)]
-struct CmdApplyPartDamageEffect
-  partId : int
-  metapartId : int
-  offender : OffenderData
-  hpFixed : uint16
-  prevHpFixed : uint16
-  dmEffects : int
-  pos : float3
-  seed : int
