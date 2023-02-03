@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": {
       "army": 1,
       "wing": [
@@ -84,8 +80,6 @@
     "mission": {
       "level": "levels/avg_snow_alps.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_DBttlB;alps/name",
@@ -99,10 +93,12 @@
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
-      "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
+      "timeLimitWarn": 3600,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -110,7 +106,10 @@
         "isHelicoptersAllowed": true
       }
     },
-    "spectator_points": {},
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
+    },
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -170,35 +169,7 @@
   "imports": {
     "import_record": [
       {
-        "file": "gameData/missions/cta/tanks/alps/template_alps_Dbttl.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
         "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/templates/tank_templates/ai_base_defense_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -238,6 +209,48 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/alps/mainareas/template_apls_dbttl.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/dbttl_short_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/dbttl_at_guns_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -255,7 +268,44 @@
   "dialogs": {},
   "airfields": {},
   "effects": {},
-  "units": {},
+  "units": {
+    "area_squad": {
+      "name": "remove_rendinst_area",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          921.797,
+          241.652,
+          550.045
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "remove_rendinst_area_01",
+          "remove_rendinst_area_02",
+          "remove_rendinst_area_03",
+          "remove_rendinst_area_04",
+          "remove_rendinst_area_05",
+          "remove_rendinst_area_06",
+          "remove_rendinst_area_07"
+        ]
+      }
+    }
+  },
   "areas": {
     "t2_briefing_airspawn": {
       "type": "Point",
@@ -276,9 +326,9 @@
           -0.198457
         ],
         [
-          506.818,
+          474.236,
           414.211,
-          1539.25
+          1052.57
         ]
       ],
       "objLayer": 0,
@@ -303,9 +353,9 @@
           -0.186653
         ],
         [
-          1500.91,
+          1528.65,
           296.9,
-          537.269
+          1366.29
         ]
       ],
       "objLayer": 0,
@@ -441,6 +491,195 @@
           618.0,
           235.0,
           977.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          60.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          449.67,
+          242.625,
+          674.135
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_02": {
+      "type": "Box",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          522.386,
+          219.06,
+          883.033
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_03": {
+      "type": "Box",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          625.833,
+          219.06,
+          894.376
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_04": {
+      "type": "Box",
+      "tm": [
+        [
+          60.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          636.345,
+          219.06,
+          980.179
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_05": {
+      "type": "Box",
+      "tm": [
+        [
+          17.5638,
+          0.0,
+          -9.56623
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          19.1325,
+          0.0,
+          35.1276
+        ],
+        [
+          643.387,
+          219.06,
+          1017.38
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_06": {
+      "type": "Box",
+      "tm": [
+        [
+          12.8683,
+          0.0,
+          15.3103
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          -22.9655,
+          0.0,
+          19.3025
+        ],
+        [
+          569.663,
+          219.06,
+          1093.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_07": {
+      "type": "Box",
+      "tm": [
+        [
+          36.2089,
+          0.0,
+          -16.9975
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          8.49878,
+          0.0,
+          18.1044
+        ],
+        [
+          545.124,
+          242.625,
+          740.847
         ]
       ],
       "objLayer": 0,

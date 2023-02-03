@@ -1,0 +1,1964 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17",
+        "t1_player18",
+        "t1_player19",
+        "t1_player20",
+        "t1_player21",
+        "t1_player22",
+        "t1_player23",
+        "t1_player24",
+        "t1_player25",
+        "t1_player26",
+        "t1_player27",
+        "t1_player28",
+        "t1_player29",
+        "t1_player30",
+        "t1_player31",
+        "t1_player32"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17",
+        "t2_player18",
+        "t2_player19",
+        "t2_player20",
+        "t2_player21",
+        "t2_player22",
+        "t2_player23",
+        "t2_player24",
+        "t2_player25",
+        "t2_player26",
+        "t2_player27",
+        "t2_player28",
+        "t2_player29",
+        "t2_player30",
+        "t2_player31",
+        "t2_player32",
+        "t2_player33"
+      ]
+    },
+    "mission": {
+      "level": "levels/avg_poland_snow.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/_DBttlB;poland/name;missions/winter",
+      "locDesc": "missions/_DBttl/desc",
+      "scoreLimit": 6000,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.0,
+      "postfix": "_DBttlB",
+      "ctaCaptureZoneEqualPenaltyMul": 0.0,
+      "useAlternativeMapCoord": false,
+      "allowedKillStreaks": true,
+      "randomSpawnTeams": false,
+      "remapAiTankModels": true,
+      "showTacticalMapCellSize": true,
+      "timeLimitWarn": 3600,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": true,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": true
+      }
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "basezone_A",
+              "side": "enemy",
+              "target": "briefing_dbttl_t2_capture_area"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_dbttl_t2_spawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_dbttl_t1_spawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_dbttl_t1_spawn_02"
+            },
+            {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "t1_briefing_airspawn",
+              "lookAt": "t2_briefing_airspawn"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "t2_briefing_airspawn",
+              "lookAt": "t1_briefing_airspawn"
+            }
+          ],
+          "battleArea": {
+            "target": "briefing_battle_area"
+          }
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/poland/template_poland_air_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/ww_no_attackers_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/poland/mainareas/template_poland_dbttlb.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/dbttl_short_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/dbttl_at_guns_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "defenseMissionTeam": "teamB"
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
+        "name": "dbttl_t1_spawn_01",
+        "tm": [
+          [
+            -0.302034,
+            0.0,
+            0.953297
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.953297,
+            0.0,
+            -0.302034
+          ],
+          [
+            3334.2,
+            26.75,
+            1809.63
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "dbttl_t1_spawn_01_01",
+            "dbttl_t1_spawn_01_02",
+            "dbttl_t1_spawn_01_03",
+            "dbttl_t1_spawn_01_04",
+            "dbttl_t1_spawn_01_05",
+            "dbttl_t1_spawn_01_06",
+            "dbttl_t1_spawn_01_07",
+            "dbttl_t1_spawn_01_08",
+            "dbttl_t1_spawn_01_09",
+            "dbttl_t1_spawn_01_10",
+            "dbttl_t1_spawn_01_11",
+            "dbttl_t1_spawn_01_12",
+            "dbttl_t1_spawn_01_13",
+            "dbttl_t1_spawn_01_14",
+            "dbttl_t1_spawn_01_15",
+            "dbttl_t1_spawn_01_16",
+            "dbttl_t1_spawn_01_17",
+            "dbttl_t1_spawn_01_18",
+            "dbttl_t1_spawn_01_19",
+            "dbttl_t1_spawn_01_20"
+          ]
+        }
+      },
+      {
+        "name": "dbttl_t1_spawn_02",
+        "tm": [
+          [
+            0.611628,
+            0.0,
+            -0.791146
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.791146,
+            0.0,
+            0.611628
+          ],
+          [
+            2909.16,
+            17.6,
+            1261.57
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "dbttl_t1_spawn_02_01",
+            "dbttl_t1_spawn_02_02",
+            "dbttl_t1_spawn_02_03",
+            "dbttl_t1_spawn_02_04",
+            "dbttl_t1_spawn_02_05",
+            "dbttl_t1_spawn_02_06",
+            "dbttl_t1_spawn_02_07",
+            "dbttl_t1_spawn_02_08",
+            "dbttl_t1_spawn_02_09",
+            "dbttl_t1_spawn_02_10",
+            "dbttl_t1_spawn_02_11",
+            "dbttl_t1_spawn_02_12",
+            "dbttl_t1_spawn_02_13",
+            "dbttl_t1_spawn_02_14",
+            "dbttl_t1_spawn_02_15",
+            "dbttl_t1_spawn_02_16",
+            "dbttl_t1_spawn_02_17",
+            "dbttl_t1_spawn_02_18",
+            "dbttl_t1_spawn_02_19",
+            "dbttl_t1_spawn_02_20"
+          ]
+        }
+      },
+      {
+        "name": "t1_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3250.25,
+            35.8,
+            1673.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_killarea_01",
+            "t1_killarea_02"
+          ]
+        }
+      },
+      {
+        "name": "remove_rendinst_area",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2120.9,
+            0.0,
+            1583.95
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "remove_rendinst_area_01",
+            "remove_rendinst_area_02",
+            "remove_rendinst_area_03",
+            "remove_rendinst_area_04",
+            "remove_rendinst_area_05",
+            "remove_rendinst_area_06"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "briefing_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          2000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2000.0
+        ],
+        [
+          2439.16,
+          4.64536,
+          2067.79
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "briefing_dbttl_t1_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.766044,
+          0.0,
+          -0.642788
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.642788,
+          0.0,
+          -0.766044
+        ],
+        [
+          3285.86,
+          19.0,
+          1759.64
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_dbttl_t2_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.819152,
+          0.0,
+          0.573577
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.573577,
+          0.0,
+          0.819152
+        ],
+        [
+          2001.85,
+          11.5,
+          2034.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_dbttl_t1_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.766044,
+          0.0,
+          -0.642788
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.642788,
+          0.0,
+          -0.766044
+        ],
+        [
+          3045.34,
+          15.2976,
+          1346.71
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_briefing_airspawn": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.198457,
+          0.0,
+          0.98011
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.98011,
+          0.0,
+          -0.198457
+        ],
+        [
+          1637.5,
+          47.25,
+          2019.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_briefing_airspawn": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.186653,
+          0.0,
+          -0.982426
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.982426,
+          0.0,
+          -0.186653
+        ],
+        [
+          3362.28,
+          43.5,
+          1513.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_dbttl_t2_capture_area": {
+      "type": "Point",
+      "tm": [
+        [
+          31.1664,
+          0.0,
+          26.9652
+        ],
+        [
+          0.0,
+          75.0,
+          0.0
+        ],
+        [
+          -26.9652,
+          0.0,
+          31.1664
+        ],
+        [
+          2346.95,
+          4.37088,
+          2148.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3274.17,
+          20.65,
+          1696.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3281.12,
+          20.2872,
+          1715.64
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.323,
+          0.0,
+          4.3009
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.3009,
+          0.0,
+          -13.323
+        ],
+        [
+          3288.14,
+          19.9204,
+          1734.02
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3252.22,
+          19.6255,
+          1746.69
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3236.5,
+          20.2292,
+          1708.47
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2785,
+          0.0,
+          4.43641
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.43641,
+          0.0,
+          -13.2785
+        ],
+        [
+          3295.11,
+          19.5199,
+          1754.68
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3273.19,
+          19.6159,
+          1749.69
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3259.66,
+          19.3508,
+          1764.69
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3280.22,
+          19.2876,
+          1769.14
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3228.41,
+          20.4453,
+          1689.29
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3252.51,
+          20.5865,
+          1692.94
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3244.8,
+          19.9211,
+          1727.98
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3265.97,
+          20.8581,
+          1677.23
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3259.36,
+          20.2924,
+          1711.86
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3245.83,
+          20.7164,
+          1674.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3265.8,
+          19.9409,
+          1731.22
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3069.54,
+          20.9,
+          1422.86
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_17": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3287.78,
+          20.9732,
+          1679.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3296.07,
+          20.6647,
+          1699.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3304.38,
+          20.235,
+          1719.38
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_01_20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -13.2241,
+          0.0,
+          4.59595
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -4.59595,
+          0.0,
+          -13.2241
+        ],
+        [
+          3312.68,
+          19.7963,
+          1739.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3057.53,
+          20.9,
+          1403.12
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3045.52,
+          20.9,
+          1383.38
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3033.51,
+          20.9,
+          1363.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3021.5,
+          20.9,
+          1343.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3009.49,
+          20.9,
+          1324.17
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3082.89,
+          20.9,
+          1391.04
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3069.78,
+          20.9,
+          1371.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3056.68,
+          20.9,
+          1350.98
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3043.58,
+          20.9,
+          1330.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3030.48,
+          20.9,
+          1310.92
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3017.37,
+          20.9,
+          1290.89
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3110.52,
+          20.9,
+          1390.17
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3095.45,
+          20.9,
+          1367.53
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3080.37,
+          20.9,
+          1344.89
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3065.29,
+          20.9,
+          1322.24
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_17": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3050.21,
+          20.9,
+          1299.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3035.13,
+          20.9,
+          1276.96
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3059.06,
+          20.9,
+          1271.88
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dbttl_t1_spawn_02_20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.08381,
+          0.0,
+          10.6529
+        ],
+        [
+          0.0,
+          14.0,
+          0.0
+        ],
+        [
+          -10.6529,
+          0.0,
+          -9.08381
+        ],
+        [
+          3086.98,
+          20.9,
+          1319.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          200.0
+        ],
+        [
+          3245.38,
+          14.35,
+          1738.07
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          200.0
+        ],
+        [
+          3005.09,
+          14.35,
+          1369.41
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_rearm_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          3071.52,
+          4.55005,
+          1605.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          24.8697,
+          0.0,
+          -2.54877
+        ],
+        [
+          0.0,
+          5.87841,
+          0.0
+        ],
+        [
+          12.2341,
+          0.0,
+          119.375
+        ],
+        [
+          1958.33,
+          3.77573,
+          1943.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_02": {
+      "type": "Box",
+      "tm": [
+        [
+          44.7538,
+          0.0,
+          -4.70038
+        ],
+        [
+          0.0,
+          5.87841,
+          0.0
+        ],
+        [
+          4.70038,
+          0.0,
+          44.7538
+        ],
+        [
+          2014.38,
+          3.77573,
+          1908.68
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_03": {
+      "type": "Box",
+      "tm": [
+        [
+          24.5755,
+          0.0,
+          -4.58733
+        ],
+        [
+          0.0,
+          5.87841,
+          0.0
+        ],
+        [
+          8.2572,
+          0.0,
+          44.2359
+        ],
+        [
+          2027.97,
+          3.77573,
+          2036.49
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_04": {
+      "type": "Box",
+      "tm": [
+        [
+          24.5755,
+          0.0,
+          -4.58733
+        ],
+        [
+          0.0,
+          5.87841,
+          0.0
+        ],
+        [
+          10.0921,
+          0.0,
+          54.0662
+        ],
+        [
+          1989.56,
+          3.77573,
+          2044.08
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_05": {
+      "type": "Box",
+      "tm": [
+        [
+          83.5568,
+          0.0,
+          -15.5969
+        ],
+        [
+          0.0,
+          5.87841,
+          0.0
+        ],
+        [
+          15.5969,
+          0.0,
+          83.5568
+        ],
+        [
+          2020.77,
+          3.77573,
+          2106.27
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "remove_rendinst_area_06": {
+      "type": "Box",
+      "tm": [
+        [
+          71.9422,
+          0.0,
+          -21.1971
+        ],
+        [
+          0.0,
+          5.87841,
+          0.0
+        ],
+        [
+          12.7183,
+          0.0,
+          43.1653
+        ],
+        [
+          2013.8,
+          3.77573,
+          1995.51
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

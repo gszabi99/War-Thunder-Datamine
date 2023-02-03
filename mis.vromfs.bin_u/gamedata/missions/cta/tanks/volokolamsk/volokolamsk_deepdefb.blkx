@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": {
       "army": 1,
       "wing": [
@@ -82,27 +78,24 @@
       ]
     },
     "mission": {
-      "level": "levels/avg_volokolamsk.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
+      "level": "levels/avg_volokolamsk.bin",
       "environment": "Day",
       "weather": "hazy",
-      "locName": "missions/_DBttlA;volokolamsk/name",
-      "locDesc": "volokolamsk/desc;missions/_DBttl/desc",
-      "scoreLimit": 6000,
+      "tformPhysicsError": 0.05,
+      "locName": "missions/_deepdefb;volokolamsk/name",
+      "scoreLimit": 10000,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
-      "postfix": "_DBttlA",
+      "postfix": "_deepdefb",
       "ctaCaptureZoneEqualPenaltyMul": 0.0,
       "useAlternativeMapCoord": false,
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
-      "remapAiTankModels": true,
-      "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
+      "timeLimitWarn": 3600,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -110,7 +103,6 @@
         "isHelicoptersAllowed": true
       }
     },
-    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -124,79 +116,81 @@
           "minTime": 4,
           "picture": "",
           "showAirMap": false,
+          "arrow": [
+            {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "briefing_spawn_t1_01",
+                "briefing_capture_point_01"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "briefing_spawn_t1_02",
+                "briefing_capture_point_02"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "briefing_spawn_t2_01",
+                "briefing_capture_point_01"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "briefing_spawn_t2_02",
+                "briefing_capture_point_02"
+              ]
+            }
+          ],
           "icon": [
             {
               "icontype": "basezone_A",
-              "side": "ally",
-              "target": "briefing_dbttl_t1_capture_area"
+              "side": "enemy",
+              "target": "briefing_capture_point_01"
+            },
+            {
+              "icontype": "basezone_B",
+              "side": "enemy",
+              "target": "briefing_capture_point_02"
             },
             {
               "icontype": "tank",
               "side": "ally",
-              "target": "briefing_dbttl_t1_spawn_01"
+              "target": "briefing_spawn_t1_01"
             },
             {
               "icontype": "tank",
               "side": "ally",
-              "target": "briefing_dbttl_t1_spawn_02"
+              "target": "briefing_spawn_t1_02"
             },
             {
               "icontype": "tank",
               "side": "enemy",
-              "target": "briefing_dbttl_t2_spawn_01"
+              "target": "briefing_spawn_t2_01"
             },
             {
               "icontype": "tank",
               "side": "enemy",
-              "target": "briefing_dbttl_t2_spawn_02"
-            },
-            {
-              "icontype": "fighter",
-              "side": "ally",
-              "target": "t1_briefing_airspawn",
-              "lookAt": "t2_briefing_airspawn"
-            },
-            {
-              "icontype": "fighter",
-              "side": "enemy",
-              "target": "t2_briefing_airspawn",
-              "lookAt": "t1_briefing_airspawn"
+              "target": "briefing_spawn_t2_02"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "briefing_battle_area_01"
+          }
         }
       }
     }
   },
   "imports": {
     "import_record": [
-      {
-        "file": "gameData/missions/cta/tanks/volokolamsk/template_volokolamsk_air_spawn.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/volokolamsk/template_volokolamsk_Dbttl.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
       {
         "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
         "importAreas": true,
@@ -212,7 +206,21 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/templates/tank_templates/ai_base_defense_template.blk",
+        "file": "gameData/missions/templates/tank_templates/deepdef_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/volokolamsk/template_volokolamsk_deepdef.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -238,6 +246,20 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/volokolamsk/template_volokolamsk_air_spawn.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -247,23 +269,45 @@
   },
   "mission_objectives": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "avg_Bto_objective_01": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "team": "A"
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    },
+    "avg_Bto_objective_02": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "team": "B"
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    }
   },
-  "variables": {
-    "defenseMissionTeam": "teamA"
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
   "units": {},
   "areas": {
-    "t2_briefing_airspawn": {
+    "briefing_spawn_t1_01": {
       "type": "Point",
       "tm": [
         [
-          -0.198457,
+          1.0,
           0.0,
-          0.98011
+          0.0
         ],
         [
           0.0,
@@ -271,26 +315,26 @@
           0.0
         ],
         [
-          -0.98011,
           0.0,
-          -0.198457
+          0.0,
+          1.0
         ],
         [
-          1061.11,
-          414.211,
-          1768.79
+          -840.736,
+          65.75,
+          173.965
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "t1_briefing_airspawn": {
+    "briefing_capture_point_01": {
       "type": "Point",
       "tm": [
         [
-          -0.186653,
+          1.0,
           0.0,
-          -0.982426
+          0.0
         ],
         [
           0.0,
@@ -298,53 +342,26 @@
           0.0
         ],
         [
-          0.982426,
           0.0,
-          -0.186653
+          0.0,
+          1.0
         ],
         [
-          -1744.77,
-          296.9,
-          -1651.62
+          -490.793,
+          65.75,
+          777.5
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_dbttl_t1_capture_area": {
+    "briefing_capture_point_02": {
       "type": "Point",
       "tm": [
         [
-          23.0925,
+          1.0,
           0.0,
-          -34.1351
-        ],
-        [
-          0.0,
-          75.0,
           0.0
-        ],
-        [
-          34.1351,
-          0.0,
-          23.0925
-        ],
-        [
-          -295.0,
-          64.5206,
-          -110.0
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dbttl_t1_spawn_01": {
-      "type": "Point",
-      "tm": [
-        [
-          -0.929915,
-          0.0,
-          -0.367774
         ],
         [
           0.0,
@@ -352,26 +369,26 @@
           0.0
         ],
         [
-          0.367774,
           0.0,
-          -0.929915
+          0.0,
+          1.0
         ],
         [
-          -719.289,
-          70.9147,
-          -386.89
+          -230.918,
+          65.75,
+          1133.47
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_dbttl_t2_spawn_01": {
+    "briefing_spawn_t2_02": {
       "type": "Point",
       "tm": [
         [
-          0.95843,
+          1.0,
           0.0,
-          0.285327
+          0.0
         ],
         [
           0.0,
@@ -379,26 +396,53 @@
           0.0
         ],
         [
-          -0.285327,
           0.0,
-          0.95843
+          0.0,
+          1.0
         ],
         [
-          -561.946,
-          73.0916,
-          1270.31
+          331.966,
+          65.7491,
+          1386.62
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_dbttl_t2_spawn_02": {
+    "briefing_battle_area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          -1600.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          0.0,
+          -0.000968814,
+          -1600.0
+        ],
+        [
+          -385.674,
+          72.75,
+          852.641
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_spawn_t1_02": {
       "type": "Point",
       "tm": [
         [
-          0.95843,
+          1.0,
           0.0,
-          0.285327
+          0.0
         ],
         [
           0.0,
@@ -406,26 +450,26 @@
           0.0
         ],
         [
-          -0.285327,
           0.0,
-          0.95843
+          0.0,
+          1.0
         ],
         [
-          1.5966,
-          73.0913,
-          1422.6
+          -597.509,
+          65.75,
+          625.292
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_dbttl_t1_spawn_02": {
+    "briefing_spawn_t2_01": {
       "type": "Point",
       "tm": [
         [
-          -0.929915,
+          1.0,
           0.0,
-          -0.367774
+          0.0
         ],
         [
           0.0,
@@ -433,14 +477,14 @@
           0.0
         ],
         [
-          0.367774,
           0.0,
-          -0.929915
+          0.0,
+          1.0
         ],
         [
-          -154.771,
-          65.8068,
-          -538.017
+          -52.5797,
+          65.7498,
+          1283.15
         ]
       ],
       "objLayer": 0,

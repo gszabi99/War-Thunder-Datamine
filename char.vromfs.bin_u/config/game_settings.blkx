@@ -5,7 +5,7 @@
   "resetViralAcquisitionDaysCounter": 1,
   "moderatorPresenceCheckMaxCode": 65536,
   "moderatorPresenceCheckPeriodSec": 1200,
-  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm;pvet",
+  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm;pvet;deepdefa;deepdefb;aadefa;aadefb",
   "ordersPerSession": 3,
   "randomBattle": {
     "classiness": {
@@ -191,7 +191,11 @@
       "_tft": 3,
       "_tfs": 6,
       "_stdm": 3,
-      "_pvet": 3
+      "_pvet": 3,
+      "_deepdefa": 3,
+      "_deepdefb": 3,
+      "_aadefa": 3,
+      "_aadefb": 3
     }
   },
   "mapIntDiffToName": {
@@ -1481,7 +1485,7 @@
       "nordwind_wwmap": {
         "country_usa": {
           "us_m4a2_76w_sherman": {
-            "name": "worldwar/group/us_m4_sherman_76mm",
+            "name": "worldwar/group/us_m4_sherman_medium_76mm",
             "defaultUnit": "us_m4a1_76w_sherman",
             "unitList": {
               "unit": [
@@ -1492,25 +1496,41 @@
             }
           },
           "us_m4a2_sherman": {
-            "name": "worldwar/group/us_m4_sherman_75mm",
+            "name": "worldwar/group/us_m4_sherman_medium_75mm",
             "defaultUnit": "us_m4a2_sherman",
             "unitList": {
               "unit": [
                 "us_m4a2_sherman",
-                "us_m4a3e2_sherman_jumbo",
-                "us_m4a3e2_sherman_jumbo_cobra_king",
                 "us_m4_sherman_calliope"
               ]
             }
           },
+          "us_m4a3e2_sherman_jumbo": {
+            "name": "worldwar/group/us_m4_sherman_assault_75mm",
+            "defaultUnit": "us_m4a3e2_sherman_jumbo",
+            "unitList": {
+              "unit": [
+                "us_m4a3e2_sherman_jumbo",
+                "us_m4a3e2_sherman_jumbo_cobra_king"
+              ]
+            }
+          },
           "us_m10": {
-            "name": "mainmenu/type_tank_destroyer",
+            "name": "worldwar/group/medium_tank_destroyer",
             "defaultUnit": "us_m10",
             "unitList": {
               "unit": [
                 "us_m10",
+                "us_m36"
+              ]
+            }
+          },
+          "us_m18_hellcat": {
+            "name": "worldwar/group/light_tank_destroyer",
+            "defaultUnit": "us_m18_hellcat",
+            "unitList": {
+              "unit": [
                 "us_m18_hellcat",
-                "us_m36",
                 "us_m18_hellcat_black_cat"
               ]
             }
@@ -1525,14 +1545,11 @@
               ]
             }
           },
-          "p-51d-30_usaaf_korea": {
-            "name": "mainmenu/type_medium_fighter",
-            "defaultUnit": "p-47d",
+          "p-51d-5": {
+            "name": "worldwar/group/p_51",
+            "defaultUnit": "p-51d-5",
             "unitList": {
               "unit": [
-                "p-47d",
-                "p-47d-28",
-                "p-47n-15",
                 "p-51d-5",
                 "p-51d-30_usaaf_korea",
                 "p-51d-10",
@@ -1540,14 +1557,22 @@
               ]
             }
           },
-          "a-26b": {
-            "name": "mainmenu/type_common_assault",
-            "defaultUnit": "a-26b_10",
+          "p-47d": {
+            "name": "worldwar/group/p_47",
+            "defaultUnit": "p-47d",
             "unitList": {
               "unit": [
-                "a-26b_10",
-                "a-26b"
+                "p-47d",
+                "p-47d-28",
+                "p-47n-15"
               ]
+            }
+          },
+          "b_26b_c": {
+            "name": "mainmenu/type_frontline_bomber",
+            "defaultUnit": "b_26b_c",
+            "unitList": {
+              "unit": "b_26b_c"
             }
           }
         },
@@ -1622,29 +1647,44 @@
               ]
             }
           },
-          "bf-109g-14": {
-            "name": "mainmenu/type_medium_fighter",
-            "defaultUnit": "fw-190a-5_cannons",
+          "bf-109g-6": {
+            "name": "worldwar/group/bf_109",
+            "defaultUnit": "bf-109g-6",
             "unitList": {
               "unit": [
-                "fw-190a-5_cannons",
-                "fw-190a-5",
-                "fw-190a-8",
-                "fw-190d-9",
                 "bf-109g-6",
                 "bf-109g-14",
                 "bf-109g-10"
               ]
             }
           },
-          "fw-190f-8": {
-            "name": "mainmenu/type_strike_fighter",
+          "fw-190a-5_cannons": {
+            "name": "worldwar/group/fw_190_jaeger",
+            "defaultUnit": "fw-190a-5_cannons",
+            "unitList": {
+              "unit": [
+                "fw-190a-5_cannons",
+                "fw-190a-5",
+                "fw-190a-8",
+                "fw-190d-9"
+              ]
+            }
+          },
+          "fw-190a-5_u2": {
+            "name": "worldwar/group/fw_190_jabo",
             "defaultUnit": "fw-190a-5_u2",
             "unitList": {
               "unit": [
                 "fw-190a-5_u2",
                 "fw-190f-8"
               ]
+            }
+          },
+          "me-262a-1a_early": {
+            "name": "worldwar/group/me_262_jabo",
+            "defaultUnit": "me-262a-1a_early",
+            "unitList": {
+              "unit": "me-262a-1a_early"
             }
           }
         }

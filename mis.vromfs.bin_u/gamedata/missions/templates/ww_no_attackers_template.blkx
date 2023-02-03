@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 30.0
-    },
     "player": {
       "army": 1
     },
@@ -15,15 +11,11 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
-      "scoreLimit": 6400,
-      "timeLimit": 25,
-      "deathPenaltyMul": 0.0
-    },
-    "spectator_points": {}
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    }
   },
   "imports": {},
   "triggers": {
@@ -50,6 +42,12 @@
           },
           {
             "postfix": "_BDA"
+          },
+          {
+            "postfix": "_deepdefa"
+          },
+          {
+            "postfix": "_aadefa"
           }
         ]
       },
@@ -84,6 +82,12 @@
           },
           {
             "postfix": "_BDB"
+          },
+          {
+            "postfix": "_deepdefb"
+          },
+          {
+            "postfix": "_aadefb"
           }
         ]
       },
@@ -118,8 +122,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t2_players_squad"
+          "object": "t2_players_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -153,8 +157,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t2_players_squad"
+          "object": "t2_players_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -324,8 +328,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t1_players_squad"
+          "object": "t1_players_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -359,8 +363,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t1_players_squad"
+          "object": "t1_players_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
