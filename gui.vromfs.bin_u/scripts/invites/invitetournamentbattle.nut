@@ -172,7 +172,7 @@ let knownTournamentInvites = []
     || isInArray(ulogId, knownTournamentInvites))
     return
 
-  ::g_invites.knownTournamentInvites.append(ulogId)
+  knownTournamentInvites.append(ulogId)
 
   log( $"Got userlog EULT_INVITE_TO_TOURNAMENT: battleId '{battleId}'");
   ::g_invites.addTournamentBattleInvite(battleId, inviteTime, startTime, endTime)
