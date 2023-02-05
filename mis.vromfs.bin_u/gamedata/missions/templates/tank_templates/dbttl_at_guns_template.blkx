@@ -21,7 +21,7 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "set_at_gun_squad_name_dbttla": {
+    "set_vars_dbttla": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -38,10 +38,20 @@
         }
       },
       "actions": {
-        "varSetString": {
-          "value": "t1_gun_pit_",
-          "var": "pit_name_prefix"
-        },
+        "varSetString": [
+          {
+            "value": "t1_at_gun_squad",
+            "var": "at_gun_squad_name"
+          },
+          {
+            "value": "t1_at_gun_",
+            "var": "at_gun_name_prefix"
+          },
+          {
+            "value": "t1_gun_pit_",
+            "var": "pit_name_prefix"
+          }
+        ],
         "varSetInt": {
           "value": 20,
           "var": "at_gun_count",
@@ -53,11 +63,11 @@
       },
       "else_actions": {
         "triggerEnable": {
-          "target": "set_at_gun_squad_name_dbttlb"
+          "target": "set_vars_dbttlb"
         }
       }
     },
-    "set_at_gun_squad_name_dbttlb": {
+    "set_vars_dbttlb": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -74,22 +84,24 @@
         }
       },
       "actions": {
-        "varSetString": {
-          "value": "t2_gun_pit_",
-          "var": "pit_name_prefix"
-        },
+        "varSetString": [
+          {
+            "value": "t2_at_gun_squad",
+            "var": "at_gun_squad_name"
+          },
+          {
+            "value": "t2_at_gun_",
+            "var": "at_gun_name_prefix"
+          },
+          {
+            "value": "t2_gun_pit_",
+            "var": "pit_name_prefix"
+          }
+        ],
         "varSetInt": {
           "value": 20,
           "var": "at_gun_count",
           "fromDescriptor": "teamB_antiTankGun_count"
-        },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "at_gun_squad",
-          "army": 2
         },
         "triggerEnable": {
           "target": "at_gun_init"
@@ -119,7 +131,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "at_gun_squad",
+          "object": "@at_gun_squad_name",
           "accuracy": 0.5,
           "checkVisibilityTarget": true,
           "visibilityTreeTransparencyThreshold": 0.01
@@ -185,7 +197,7 @@
       },
       "actions": {
         "unitWakeUp": {
-          "target": "at_gun_squad",
+          "target": "@at_gun_squad_name",
           "varNameNumToWakeUp": "at_gun_count",
           "order": "random"
         },
@@ -224,8 +236,9 @@
         },
         "varSetString": [
           {
-            "value": "at_gun_",
-            "var": "at_gun_iter_name"
+            "value": "",
+            "var": "at_gun_iter_name",
+            "input_var": "at_gun_name_prefix"
           },
           {
             "value": "",
@@ -324,6 +337,8 @@
     "is_enabled": true
   },
   "variables": {
+    "at_gun_squad_name": "",
+    "at_gun_name_prefix": "",
     "pit_name_prefix": "",
     "at_gun_count_max": 20,
     "at_gun_count": 0,
@@ -337,7 +352,7 @@
   "units": {
     "tankModels": [
       {
-        "name": "at_gun_01",
+        "name": "t1_at_gun_01",
         "tm": [
           [
             1.0,
@@ -397,7 +412,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_02",
+        "name": "t1_at_gun_02",
         "tm": [
           [
             1.0,
@@ -457,7 +472,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_03",
+        "name": "t1_at_gun_03",
         "tm": [
           [
             1.0,
@@ -517,7 +532,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_04",
+        "name": "t1_at_gun_04",
         "tm": [
           [
             1.0,
@@ -577,7 +592,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_05",
+        "name": "t1_at_gun_05",
         "tm": [
           [
             1.0,
@@ -637,7 +652,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_06",
+        "name": "t1_at_gun_06",
         "tm": [
           [
             1.0,
@@ -697,7 +712,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_07",
+        "name": "t1_at_gun_07",
         "tm": [
           [
             1.0,
@@ -757,7 +772,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_08",
+        "name": "t1_at_gun_08",
         "tm": [
           [
             1.0,
@@ -817,7 +832,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_09",
+        "name": "t1_at_gun_09",
         "tm": [
           [
             1.0,
@@ -877,7 +892,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_10",
+        "name": "t1_at_gun_10",
         "tm": [
           [
             1.0,
@@ -937,7 +952,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_11",
+        "name": "t1_at_gun_11",
         "tm": [
           [
             1.0,
@@ -997,7 +1012,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_12",
+        "name": "t1_at_gun_12",
         "tm": [
           [
             1.0,
@@ -1057,7 +1072,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_13",
+        "name": "t1_at_gun_13",
         "tm": [
           [
             1.0,
@@ -1117,7 +1132,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_14",
+        "name": "t1_at_gun_14",
         "tm": [
           [
             1.0,
@@ -1177,7 +1192,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_15",
+        "name": "t1_at_gun_15",
         "tm": [
           [
             1.0,
@@ -1237,7 +1252,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_16",
+        "name": "t1_at_gun_16",
         "tm": [
           [
             1.0,
@@ -1297,7 +1312,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_17",
+        "name": "t1_at_gun_17",
         "tm": [
           [
             1.0,
@@ -1357,7 +1372,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_18",
+        "name": "t1_at_gun_18",
         "tm": [
           [
             1.0,
@@ -1417,7 +1432,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_19",
+        "name": "t1_at_gun_19",
         "tm": [
           [
             1.0,
@@ -1477,7 +1492,7 @@
         "way": {}
       },
       {
-        "name": "at_gun_20",
+        "name": "t1_at_gun_20",
         "tm": [
           [
             1.0,
@@ -1535,57 +1550,1308 @@
           "unitReplacementType": "antiTankGun"
         },
         "way": {}
+      },
+      {
+        "name": "t2_at_gun_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1919.52,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1889.54,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1859.55,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1829.57,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1799.59,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1769.6,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1739.62,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1709.63,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1679.65,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1649.67,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_11",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1619.68,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_12",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1589.7,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_13",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1559.72,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_14",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1529.73,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_15",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1499.75,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_16",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1469.77,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_17",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1439.78,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_18",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1409.8,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_19",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1379.81,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_at_gun_20",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1349.83,
+            4.49017,
+            1992.11
+          ]
+        ],
+        "unit_class": "germ_at_gun_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "unitReplacementType": "antiTankGun"
+        },
+        "way": {}
       }
     ],
-    "squad": {
-      "name": "at_gun_squad",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
+    "squad": [
+      {
+        "name": "t1_at_gun_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1657.85,
+            9.66663,
+            2560.92
+          ]
         ],
-        [
-          0.0,
-          1.0,
-          0.0
+        "props": {
+          "squad_members": [
+            "t1_at_gun_01",
+            "t1_at_gun_02",
+            "t1_at_gun_03",
+            "t1_at_gun_04",
+            "t1_at_gun_05",
+            "t1_at_gun_06",
+            "t1_at_gun_07",
+            "t1_at_gun_08",
+            "t1_at_gun_09",
+            "t1_at_gun_10",
+            "t1_at_gun_11",
+            "t1_at_gun_12",
+            "t1_at_gun_13",
+            "t1_at_gun_14",
+            "t1_at_gun_15",
+            "t1_at_gun_16",
+            "t1_at_gun_17",
+            "t1_at_gun_18",
+            "t1_at_gun_19",
+            "t1_at_gun_20"
+          ]
+        }
+      },
+      {
+        "name": "t2_at_gun_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1634.68,
+            4.49017,
+            1822.28
+          ]
         ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1657.85,
-          9.66663,
-          2560.92
-        ]
-      ],
-      "props": {
-        "squad_members": [
-          "at_gun_01",
-          "at_gun_02",
-          "at_gun_03",
-          "at_gun_04",
-          "at_gun_05",
-          "at_gun_06",
-          "at_gun_07",
-          "at_gun_08",
-          "at_gun_09",
-          "at_gun_10",
-          "at_gun_11",
-          "at_gun_12",
-          "at_gun_13",
-          "at_gun_14",
-          "at_gun_15",
-          "at_gun_16",
-          "at_gun_17",
-          "at_gun_18",
-          "at_gun_19",
-          "at_gun_20"
-        ]
+        "props": {
+          "squad_members": [
+            "t2_at_gun_01",
+            "t2_at_gun_02",
+            "t2_at_gun_03",
+            "t2_at_gun_04",
+            "t2_at_gun_05",
+            "t2_at_gun_06",
+            "t2_at_gun_07",
+            "t2_at_gun_08",
+            "t2_at_gun_09",
+            "t2_at_gun_10",
+            "t2_at_gun_11",
+            "t2_at_gun_12",
+            "t2_at_gun_13",
+            "t2_at_gun_14",
+            "t2_at_gun_15",
+            "t2_at_gun_16",
+            "t2_at_gun_17",
+            "t2_at_gun_18",
+            "t2_at_gun_19",
+            "t2_at_gun_20"
+          ]
+        }
       }
-    }
+    ]
   },
   "areas": {},
   "objLayers": {
