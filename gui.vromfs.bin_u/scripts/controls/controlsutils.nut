@@ -10,6 +10,7 @@ let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scrip
 let { get_gui_option } = require("guiOptions")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { DeviceType, register_for_devices_change } = require("%xboxLib/impl/input.nut")
 
 ::classic_control_preset <- "classic"
 ::shooter_control_preset <- "shooter"
@@ -235,3 +236,21 @@ if (controllerState?.add_event_handler)
   updateExtWatched({ haveXinputDevice = ::have_xinput_device() })
   ::add_msg_box("cannot_session", loc("pl1/lostController"), [["ok", function() {}]], "ok")
 }
+
+local xboxInputDevicesData = persist("xboxInputDevicesData", @(){ gamepads = 0, keyboards = 0, user_notified = false })
+
+register_for_devices_change(function(device_type, count) {
+  if (device_type == DeviceType.Gamepad)
+    xboxInputDevicesData.gamepads = count
+  if (device_type == DeviceType.Keyboard)
+    xboxInputDevicesData.keyboards = count
+
+  let shouldNotify = xboxInputDevicesData.gamepads == 0 && xboxInputDevicesData.keyboards == 0
+  if (shouldNotify && !xboxInputDevicesData.user_notified) {
+    xboxInputDevicesData.user_notified = true
+    ::add_msg_box("no_input_devices", loc("pl1/lostController"),
+      [
+        ["ok", @() xboxInputDevicesData.user_notified = false]
+      ], "ok")
+  }
+})

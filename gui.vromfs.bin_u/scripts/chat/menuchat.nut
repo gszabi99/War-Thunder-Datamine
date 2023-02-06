@@ -19,6 +19,7 @@ let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled, isChatEnableWithPlayer, hasMenuChat,
   isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
+let { add_user, remove_user, is_muted } = require("%scripts/chat/xboxVoice.nut")
 let { send } = require("eventbus")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
@@ -1101,17 +1102,19 @@ let sortChatUsers = @(a, b) a.name <=> b.name
         local voiceChatStatus = null
         if(db.type == "join")
         {
-          voiceChatStatus = ::xbox_is_chat_player_muted(db.uid.tointeger())?
+          add_user(db.uid)
+          voiceChatStatus = is_muted(db.uid) ?
                               voiceChatStats.muted :
                               voiceChatStats.online
         }
         if(db.type == "part")
         {
           voiceChatStatus = voiceChatStats.offline
+          remove_user(db.uid)
         }
         if(db.type == "update")
         {
-          if (::xbox_is_chat_player_muted(db.uid.tointeger()))
+          if (is_muted(db.uid))
             voiceChatStatus = voiceChatStats.muted
           else if(db.is_speaking)
             voiceChatStatus = voiceChatStats.talking
@@ -1476,6 +1479,9 @@ let sortChatUsers = @(a, b) a.name <=> b.name
       this.lastActionRoom = getTblValue("id", this.curRoom, "")
   }
 
+  filterPlayerName = @(name) getPlayerName(
+    ::g_string.replace( ::g_string.replace(name, "%20", " ") , "%40", "@"))
+
   function onMessage(db)
   {
     if (!db || !db.from)
@@ -1601,7 +1607,7 @@ let sortChatUsers = @(a, b) a.name <=> b.name
         {
           this.addRoomMsg(this.lastActionRoom, "",
                      format(loc("chat/error/401/userNotConnected"),
-                            ::gchat_unescape_target(getPlayerName(userName)) ))
+                            ::gchat_unescape_target(this.filterPlayerName(userName))))
           return
         }
       }
@@ -1655,8 +1661,9 @@ let sortChatUsers = @(a, b) a.name <=> b.name
 
         if (this.roomRegexp.match(value))
           value = roomType.getRoomName(value)
-        else if (i == 0 && errorName == chatErrorName.CANNOT_JOIN_CHANNEL_NO_INVITATION)
-          value = getPlayerName(value)
+        else if ((i == 0 && errorName == chatErrorName.CANNOT_JOIN_CHANNEL_NO_INVITATION)
+          || ((i == 0 || i == 1) && errorName == chatErrorName.ALREADY_ON_CHANNEL))
+          value = this.filterPlayerName(value)
 
         locParams[key] <- value
       }

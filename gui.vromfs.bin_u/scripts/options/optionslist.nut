@@ -298,7 +298,7 @@ let getVoicechatOptions = function()
     ]
   }
 
-  if (!isPlatformSony && !isPlatformXboxOne)
+  if (!isPlatformSony)
   {
     if (soundDevice.get_record_devices().len() > 0)
       voiceOptions.options.insert(1, [::USEROPT_VOICE_DEVICE_IN, "combobox"])

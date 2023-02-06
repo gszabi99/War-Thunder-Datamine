@@ -9,7 +9,7 @@ let updateExternalIDsTable = function(request)
   ::get_player_external_ids(blk)
 
   let eIDtable = blk?.externalIds
-  if (!eIDtable)
+  if (!eIDtable && !request?.fireEventAlways)
     return
 
   let table = {}
@@ -41,16 +41,18 @@ let requestExternalIDsFromServer = function(taskId, request, taskOptions)
   ::g_tasker.addTask(taskId, taskOptions, @() updateExternalIDsTable(request))
 }
 
-let function reqPlayerExternalIDsByPlayerId(playerId, taskOptions = {}, afterSuccessUpdateFunc = null)
+let function reqPlayerExternalIDsByPlayerId(playerId, taskOptions = {}, afterSuccessUpdateFunc = null, fireEventAlways = false)
 {
   let taskId = ::req_player_external_ids_by_player_id(playerId)
-  requestExternalIDsFromServer(taskId, {playerId = playerId, afterSuccessUpdateFunc = afterSuccessUpdateFunc}, taskOptions)
+  requestExternalIDsFromServer(taskId,
+    {playerId = playerId, afterSuccessUpdateFunc = afterSuccessUpdateFunc, fireEventAlways = fireEventAlways}, taskOptions)
 }
 
-let function reqPlayerExternalIDsByUserId(uid, taskOptions = {}, afterSuccessUpdateFunc = null)
+let function reqPlayerExternalIDsByUserId(uid, taskOptions = {}, afterSuccessUpdateFunc = null, fireEventAlways = false)
 {
   let taskId = ::req_player_external_ids(uid)
-  requestExternalIDsFromServer(taskId, {uid = uid, afterSuccessUpdateFunc = afterSuccessUpdateFunc}, taskOptions)
+  requestExternalIDsFromServer(taskId,
+    {uid = uid, afterSuccessUpdateFunc = afterSuccessUpdateFunc, fireEventAlways = fireEventAlways}, taskOptions)
 }
 
 let function getSelfExternalIds()

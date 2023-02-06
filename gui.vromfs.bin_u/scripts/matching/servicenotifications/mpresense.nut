@@ -73,8 +73,9 @@ let function on_presences_update(params)
 
 ::reload_contact_list <- function reload_contact_list()
 {
-  ::matching_api_func("mpresence.reload_contact_list",
-                    function(...){})
+  ::matching_api_func("mpresence.reload_contact_list", function(...) {
+    ::broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, {groupName = EPL_BLOCKLIST})
+  })
 }
 
 ::set_presence <- function set_presence(presence)
