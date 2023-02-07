@@ -49,7 +49,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
   hasClanOperation = false
   hasRightsToQueueClan = false
-  hasAnyActiveOperations = false
 
   queuesJoinTime = 0
 
@@ -86,7 +85,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
         "ww_status_check_timer",  // periodic ww status updates check
         "queues_wait_timer",      // frequent queues wait time text update
         "begin_map_wait_timer",    // frequent map begin wait time text update
-        "check_active_operations_timer" // update hasAnyActiveOperations status
       ])
     {
       let timerObj = this.scene.findObject(timerObjId)
@@ -114,7 +112,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   {
     this.hasClanOperation = getMyClanOperation() != null
     this.hasRightsToQueueClan = ::g_clans.hasRightsToQueueWWar()
-    this.hasAnyActiveOperations = ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList().len() > 0
 
     this.collectMaps()
     this.findMapForSelection()
@@ -589,7 +586,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
         && isQueueJoiningEnabled && !isInQueue, sideObj)
       joinQueueBtn.inactiveColor = (cantJoinAnyQueues.canJoin && this.clustersList != null) ? "no" : "yes"
 
-      ::showBtn("btn_find_operation", this.hasAnyActiveOperations
+      ::showBtn("btn_find_operation", this.selMap.isActive()
         && !isInQueue && !isSquadMember, sideObj)
 
       let backOperBtn = ::showBtn("btn_back_operation", isBackOperBtnVisible, sideObj)
@@ -663,9 +660,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     if (!this.selMap)
       return ""
 
-    let res = this.selMap.getOpGroup().hasOperations() ? "" :
-        colorize("badTextColor", loc("worldwar/msg/noActiveOperations"))
-
     let operation = getMyClanOperation()
     if (operation && operation.getMapId() == this.selMap.getId())
       return colorize("userlogColoredText",
@@ -682,8 +676,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       return ""
 
     let cantJoinReason = queue.getCantJoinQueueReasonData()
-    return "\n".concat(res, cantJoinReason.canJoin
-      ? "" : colorize("badTextColor", cantJoinReason.reasonText))
+    return cantJoinReason.canJoin ? "" : colorize("badTextColor", cantJoinReason.reasonText)
   }
 
   function getChapterObjId(map)
@@ -1218,15 +1211,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
         return containerObj.getChild(idx)
 
     return containerObj.getChild(idx-1).getClone(containerObj, this)
-  }
-
-  function onUpdateActiveOperationsStatus(_obj, _dt) {
-    let newStatus = ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList().len() > 0
-    if (newStatus == this.hasAnyActiveOperations)
-      return
-
-    this.hasAnyActiveOperations = newStatus
-    this.updateButtons()
   }
 
   function getSelectedConflictSideObj() {

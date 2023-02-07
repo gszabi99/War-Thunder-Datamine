@@ -11,21 +11,23 @@ let { notifyMailRead } = require("%scripts/matching/serviceNotifications/postbox
 let { removeInviteToOperation } = require("%scripts/worldWar/wwInvites.nut")
 
 const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
+let inviteActiveColor = "userlogColoredText"
 
 ::g_invites_classes.Operation <- class extends ::BaseInvite {
   mailId           = null
   operationId      = -1
   senderId         = ""
+  country          = ""
 
-  startTime                  = -1
+  clanTag          = ""
+  isStarted        = false
+
   isAccepted                 = false
   senderContact              = null
   needCheckSystemRestriction = true
 
-  inviteActiveColor = "userlogColoredText"
-
   static function getUidByParams(p) {
-    return $"OP_{p?.mail.operationId ?? ""}"
+    return $"OP_{p?.operationId ?? ""}"
   }
 
 
@@ -35,8 +37,11 @@ const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
 
   function updateCustomParams(p, initial = false) {
     this.mailId = p?.mail_id
-    this.senderId = p?.mail.sender_id.tostring() ?? this.senderId
-    this.operationId = p?.mail.operationId ?? this.operationId
+    this.senderId = p?.senderId ?? this.senderId
+    this.country = p?.country ?? this.country
+    this.operationId = p?.operationId ?? this.operationId
+    this.isStarted = p?.isStarted ?? this.isStarted
+    this.clanTag = p?.clanTag ?? this.clanTag
 
     this.updateInviterContact()
 
@@ -61,13 +66,22 @@ const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
 
   function updateInviterName() {
     if (this.senderContact)
-      this.inviterName = this.senderContact.name
+      this.inviterName = this.senderContact.getName()
   }
 
-  getInviteText = @() loc("worldwar/inviteOperation", {
-      name = colorize(this.inviteActiveColor, this.getInviterName())
-      operation = colorize(this.inviteActiveColor, $"{loc("ui/number_sign")}{this.operationId}")
+  function getInviteText() {
+    let operationStr = colorize(inviteActiveColor, $"{loc("ui/number_sign")}{this.operationId}")
+    if (this.clanTag != "")
+      return loc(this.isStarted ? "worldWar/userlog/startOperation"
+        : "worldWar/userlog/createOperation", {
+          clan = colorize(inviteActiveColor, this.clanTag)
+          operation = operationStr
+        })
+    return loc("worldwar/inviteOperation", {
+      name = colorize(inviteActiveColor, this.getInviterName())
+      operation = operationStr
     })
+  }
 
   getPopupText = @() this.getInviteText()
   haveRestrictions = @() !::isInMenu()
@@ -94,7 +108,7 @@ const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
     let requestBlk = ::DataBlock()
     requestBlk.operationId = this.operationId
     actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null,
-      @() ::g_world_war.joinOperationById(this.operationId, null, null, onSuccess))
+      @() ::g_world_war.joinOperationById(this.operationId, this.country, null, onSuccess))
   }
 
   function accept() {
@@ -115,7 +129,9 @@ const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
   }
 
   function reject() {
-    notifyMailRead(this.mailId)
+    if (this.mailId)
+      notifyMailRead(this.mailId)
+
     if (this.isOutdated())
       return this.remove()
 

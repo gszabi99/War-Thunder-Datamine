@@ -195,18 +195,11 @@
         }
       }
     ],
-    "timer": [
-      {
-        "id": "ww_status_check_timer",
-        "timer_handler_func": "onTimerStatusCheck",
-        "timer_interval_msec": "2000"
-      },
-      {
-        "id": "check_active_operations_timer",
-        "timer_handler_func": "onUpdateActiveOperationsStatus",
-        "timer_interval_msec": "10000"
-      }
-    ],
+    "timer": {
+      "id": "ww_status_check_timer",
+      "timer_handler_func": "onTimerStatusCheck",
+      "timer_interval_msec": "2000"
+    },
     "gamercard_div": {
       "id": "chapter_gamercard",
       "gamercard": [

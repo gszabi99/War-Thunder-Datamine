@@ -140,6 +140,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
 
 ::get_userlog_view_data <- function get_userlog_view_data(logObj)
 {
+  let colon = loc("ui/colon")
   let res = {
     name = "",
     time = time.buildDateTimeStr(logObj.time, true)
@@ -1543,12 +1544,17 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       )
     res.name = loc(locId, { clan = logObj?.name, operation = operation })
     let appName = ::getContact(logObj?.registratorId.tostring())?.getName()
-    res.description <- appName ? $"{loc("worldwar/applicant")}{loc("ui/colon")} {appName}" : ""
+    let description = [appName ? $"{loc("worldwar/applicant")}{colon} {appName}" : ""]
+
+    if(logObj?.wpCost != null) {
+      let costString = ::Cost(logObj.wpCost).toStringWithParams({ isWpAlwaysShown = true })
+      description.append($"{loc("worldwar/creation_cost")}{colon} {costString}")
+    }
+    res.description <- "\n".join(description, true)
   }
   else if (logObj.type == EULT_WW_END_OPERATION)
   {
     local textLocId = "worldWar/userlog/endOperation/"
-    let colon = loc("ui/colon")
     textLocId += getTblValue("winner", logObj) ? "win" : "lose"
     let mapName = getTblValue("mapName", logObj)
     let opId = getTblValue("operationId", logObj)

@@ -189,7 +189,7 @@ let getActions = function(contact, params)
       action = @() ::showClanPage("", "", clanTag)
     }
     {
-      text = loc("mainmenu/btnInviteInWWOperation")
+      text = loc("worldwar/inviteToOperation")
       show = ::is_worldwar_enabled() && ::g_world_war.isWwOperationInviteEnable()
       action = @() ::g_world_war.inviteToWwOperation(contact.uid)
     }

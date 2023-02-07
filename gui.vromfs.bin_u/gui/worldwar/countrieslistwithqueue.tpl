@@ -89,7 +89,7 @@ Button_text {
   navButtonFont:t='yes'
   hasConsoleImage:t='yes'
   on_click:t='onJoinQueue'
-
+  <<#hasCreationCost>>smallFont:t='yes'<</hasCreationCost>>
   pattern{}
   buttonWink { _transp-timer:t='0' }
   buttonGlance {}
@@ -98,8 +98,11 @@ Button_text {
     showOnSelect:t='yes'
   }
   btnText {
-    text:t='#worldwar/btnCreateOperation'
+    text:t='<<createOperationBtnText>>'
   }
+  <<#hasCreationCost>>
+  tooltip:t='#worldwar/creation_cost_tooltip'
+  <</hasCreationCost>>
 }
 
 Button_text {

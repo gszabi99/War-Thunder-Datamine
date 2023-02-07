@@ -15,7 +15,6 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { getNearestMapToBattle, hasAvailableMapToBattle, getOperationById
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -170,7 +169,10 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
     addMail({
       user_id = uid.tointeger()
-      mail = { operationId = operationId }
+      mail = {
+        operationId = operationId
+        country = getOperationById(operationId)?.getMyAssignCountry()
+      }
       ttl = 3600
     })
   }
@@ -1274,32 +1276,6 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   }
 
   return collectedUnits
-}
-
-::g_world_war.addOperationInvite <- function addOperationInvite(operationId, clanId, isStarted, inviteTime)
-{
-  if (!this.canJoinWorldwarBattle())
-    return
-
-  clanId = clanId.tostring()
-  if (clanId != ::clan_get_my_clan_id())
-    return
-
-  if (operationId >= 0 && operationId != ::ww_get_operation_id()){
-    let requestBlk = ::DataBlock()
-    requestBlk.clanId = clanId
-    requestBlk.operationId = operationId
-    actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null, function() {
-      let operation = getOperationById(operationId)
-      if (operation && operation.isAvailableToJoin())
-        ::g_invites.addInvite( ::g_invites_classes.WwOperation,
-          { operationId = operationId,
-            clanName = ::clan_get_my_clan_tag(),
-            isStarted = isStarted,
-            inviteTime = inviteTime
-          })
-    })
-  }
 }
 
 ::g_world_war.addSquadInviteToWWBattle <- function addSquadInviteToWWBattle(params)

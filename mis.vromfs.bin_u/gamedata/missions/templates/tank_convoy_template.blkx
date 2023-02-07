@@ -3,8 +3,7 @@
   "bin_dump_file": "",
   "mission_settings": {
     "player": {
-      "army": 1,
-      "wing": ""
+      "army": 1
     },
     "player_teamB": {
       "army": 2
@@ -13,11 +12,8 @@
       "level": "levels/water.bin",
       "type": "singleMission",
       "environment": "Day",
-      "weather": "hazy",
-      "restoreType": "attempts",
-      "optionalTakeOff": false
-    },
-    "spectator_points": {}
+      "weather": "hazy"
+    }
   },
   "imports": {},
   "triggers": {
@@ -215,14 +211,6 @@
           "speed": 20.0,
           "lockSpeed": true,
           "advancedCollisionAvoidance": true
-        },
-        "unitSetIndication": {
-          "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "@convoy_sq_name"
         },
         "varSetInt": {
           "value": 0,
@@ -690,84 +678,12 @@
           "var": "waypoint_reached_penalty",
           "team": "B"
         },
-        "missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "missions/spawn",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "useExisting": false,
-            "isIndividual": true,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "radius": 50.0,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "target": "@current_spawnpoint_str",
-            "team": "A",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              100.0
-            ],
-            "tags": {
-              "type_bomber": false,
-              "type_fighter": false,
-              "type_assault": false,
-              "tank": true,
-              "type_heavy_tank": true,
-              "type_medium_tank": true,
-              "type_light_tank": true,
-              "type_tank_destroyer": true,
-              "type_spaa": true
-            }
-          },
-          {
-            "loc_name": "missions/spawn",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "useExisting": false,
-            "isIndividual": true,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": false,
-            "radius": 50.0,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "target": "@prev_spawnpoint_str",
-            "team": "A",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "disableAfter": 0,
-            "offset": [
-              0.0,
-              0.0,
-              100.0
-            ],
-            "tags": {
-              "type_bomber": false,
-              "type_fighter": false,
-              "type_assault": false,
-              "tank": true,
-              "type_heavy_tank": true,
-              "type_medium_tank": true,
-              "type_light_tank": true,
-              "type_tank_destroyer": true,
-              "type_spaa": true
-            }
-          }
-        ],
         "varSetString": [
+          {
+            "value": "",
+            "var": "current_spawnpoint_loc_name",
+            "input_var": "spawnpoint_loc_name_prefix"
+          },
           {
             "value": "",
             "var": "prev_spawnpoint_str",
@@ -778,16 +694,55 @@
             "var": "current_spawnpoint_str"
           }
         ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 2,
+            "var": "current_spawnpoint_loc_name",
+            "input_var": "current_waypoint"
+          },
+          {
+            "value": "",
+            "digits": 2,
+            "var": "current_spawnpoint_str",
+            "input_var": "current_waypoint"
+          }
+        ],
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "@current_spawnpoint_loc_name",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "useExisting": false,
+          "isIndividual": true,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "radius": 50.0,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "resetStrictSpawnIndex": false,
+          "replaceAreas": false,
+          "forceCreate": false,
+          "ignoreTeamsOnReuse": false,
+          "target": "@current_spawnpoint_str",
+          "team": "A",
+          "tags": {
+            "type_bomber": false,
+            "type_fighter": false,
+            "type_assault": false,
+            "tank": true,
+            "type_heavy_tank": true,
+            "type_medium_tank": true,
+            "type_light_tank": true,
+            "type_tank_destroyer": true,
+            "type_spaa": true
+          }
+        },
         "varModify": {
           "operator": "add",
           "value": 1.0,
           "var": "current_waypoint"
-        },
-        "varAddString": {
-          "value": "",
-          "digits": 2,
-          "var": "current_spawnpoint_str",
-          "input_var": "current_waypoint"
         },
         "triggerEnable": {
           "target": "waypoint_reached_hide_lines"
@@ -800,84 +755,12 @@
           "var": "waypoint_reached_penalty",
           "team": "A"
         },
-        "missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "missions/spawn",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "useExisting": false,
-            "isIndividual": true,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "radius": -1.0,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "target": "@current_spawnpoint_str",
-            "team": "B",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "tags": {
-              "type_bomber": false,
-              "type_fighter": false,
-              "type_assault": false,
-              "tank": true,
-              "type_heavy_tank": true,
-              "type_medium_tank": true,
-              "type_light_tank": true,
-              "type_tank_destroyer": true,
-              "type_spaa": true
-            }
-          },
-          {
-            "loc_name": "missions/spawn",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "useExisting": false,
-            "isIndividual": true,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": false,
-            "radius": -1.0,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "target": "@prev_spawnpoint_str",
-            "team": "B",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "disableAfter": 0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "tags": {
-              "type_bomber": false,
-              "type_fighter": false,
-              "type_assault": false,
-              "tank": true,
-              "type_heavy_tank": true,
-              "type_medium_tank": true,
-              "type_light_tank": true,
-              "type_tank_destroyer": true,
-              "type_spaa": true
-            }
-          }
-        ],
         "varSetString": [
+          {
+            "value": "",
+            "var": "current_spawnpoint_loc_name",
+            "input_var": "spawnpoint_loc_name_prefix"
+          },
           {
             "value": "",
             "var": "prev_spawnpoint_str",
@@ -888,16 +771,55 @@
             "var": "current_spawnpoint_str"
           }
         ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 2,
+            "var": "current_spawnpoint_loc_name",
+            "input_var": "current_waypoint"
+          },
+          {
+            "value": "",
+            "digits": 2,
+            "var": "current_spawnpoint_str",
+            "input_var": "current_waypoint"
+          }
+        ],
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "@current_spawnpoint_loc_name",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "useExisting": false,
+          "isIndividual": true,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "radius": -1.0,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "resetStrictSpawnIndex": false,
+          "replaceAreas": false,
+          "forceCreate": false,
+          "ignoreTeamsOnReuse": false,
+          "target": "@current_spawnpoint_str",
+          "team": "B",
+          "tags": {
+            "type_bomber": false,
+            "type_fighter": false,
+            "type_assault": false,
+            "tank": true,
+            "type_heavy_tank": true,
+            "type_medium_tank": true,
+            "type_light_tank": true,
+            "type_tank_destroyer": true,
+            "type_spaa": true
+          }
+        },
         "varModify": {
           "operator": "add",
           "value": 1.0,
           "var": "current_waypoint"
-        },
-        "varAddString": {
-          "value": "",
-          "digits": 2,
-          "var": "current_spawnpoint_str",
-          "input_var": "current_waypoint"
         },
         "triggerEnable": {
           "target": "waypoint_reached_hide_lines"
@@ -1132,6 +1054,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "all_players_squad",
           "speed": 50.0,
           "distributionRadius": 300.0
@@ -1202,12 +1127,14 @@
           {
             "target": "t1_convoy_defend",
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           {
             "target": "t2_convoy_attack",
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           }
         ]
       },
@@ -1216,12 +1143,14 @@
           {
             "target": "t2_convoy_defend",
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           {
             "target": "t1_convoy_attack",
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           }
         ]
       }
@@ -1293,6 +1222,8 @@
     "linPointStr_next": "",
     "current_spawnpoint_str": "t1_tanks_spawn01",
     "prev_spawnpoint_str": "t1_tanks_spawn00",
+    "spawnpoint_loc_name_prefix": "missions/spawn_",
+    "current_spawnpoint_loc_name": "",
     "convoy_sq_name": "t1_convoy_sq"
   },
   "dialogs": {},
@@ -1342,6 +1273,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1404,6 +1337,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1466,6 +1401,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1528,6 +1465,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1590,6 +1529,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1652,6 +1593,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1714,6 +1657,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1776,6 +1721,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1838,6 +1785,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1900,6 +1849,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1962,6 +1913,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2024,6 +1977,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2086,6 +2041,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2148,6 +2105,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2210,6 +2169,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2272,6 +2233,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2334,6 +2297,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2396,6 +2361,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2458,6 +2425,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2520,6 +2489,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2582,6 +2553,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2644,6 +2617,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2706,6 +2681,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2768,6 +2745,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2830,6 +2809,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2892,6 +2873,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2954,6 +2937,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3016,6 +3001,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3078,6 +3065,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3140,6 +3129,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3202,6 +3193,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3264,6 +3257,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3326,6 +3321,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3388,6 +3385,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3450,6 +3449,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3512,6 +3513,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3574,6 +3577,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3636,6 +3641,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3698,6 +3705,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3760,6 +3769,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3822,6 +3833,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3884,6 +3897,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3946,6 +3961,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4008,6 +4025,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4070,6 +4089,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4132,6 +4153,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4194,6 +4217,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4256,6 +4281,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4318,6 +4345,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4380,6 +4409,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4442,6 +4473,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4504,6 +4537,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4566,6 +4601,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4628,6 +4665,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4690,6 +4729,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4752,6 +4793,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4814,6 +4857,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4876,6 +4921,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4938,6 +4985,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5000,6 +5049,8 @@
           "tank_tool_kit",
           "manual_extinguisher"
         ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5047,7 +5098,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_convoy_01",
             "t2_convoy_02",
@@ -5079,7 +5129,8 @@
             "t2_convoy_28",
             "t2_convoy_29",
             "t2_convoy_30"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -5107,7 +5158,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_convoy_01",
             "t1_convoy_02",
@@ -5139,7 +5189,8 @@
             "t1_convoy_28",
             "t1_convoy_29",
             "t1_convoy_30"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ]

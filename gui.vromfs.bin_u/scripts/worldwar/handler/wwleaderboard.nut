@@ -3,13 +3,10 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-let userstat = require("userstat")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
-let time = require("%scripts/time.nut")
 let { getSeparateLeaderboardPlatformName,
         getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
@@ -53,7 +50,6 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
   requestData = null
 
   rewardsBlk = null
-  rewardsTimeData = null
   availableMapsList = null
   availableCountriesList = null
 
@@ -76,7 +72,6 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     this.initModes()
     this.updateButtons()
     this.fetchRewardsData()
-    this.fetchRewardsTimeData()
   }
 
   function fetchRewardsData()
@@ -95,27 +90,6 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
         this.rewardsBlk = null
         this.updateButtons()
       }, this))
-  }
-
-  function fetchRewardsTimeData()
-  {
-    let userstatRequestData = {
-      add_token = true
-      headers = { appid = "1134" }
-      action = "GetTablesInfo"
-    }
-
-    let callback = Callback(function(userstatTbl) {
-      this.rewardsTimeData = {}
-      foreach (key, val in (userstatTbl?.response ?? userstatTbl))
-      {
-        let rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
-          val?.prevInterval?.end : val?.interval?.end
-        this.rewardsTimeData[key] <- rewardTimeStr ? time.getTimestampFromIso8601(rewardTimeStr) : 0
-      }
-    }, this)
-
-    userstat.request(userstatRequestData, @(userstatTbl) callback(userstatTbl))
   }
 
   function fillMapsList()
@@ -456,7 +430,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     wwRewards.open({
       isClanRewards = this.forClans
       rewardsBlk = curRewardsBlk
-      rewardsTime = this.getCurRewardsTime()
+      day       = this.lbDay ? wwLeaderboardData.getDayIdByNumber(this.lbDay) : "season"
       lbMode    = this.lbMode
       lbDay     = this.lbDay
       lbMap     = this.lbMap
@@ -486,12 +460,6 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     let awardTableName = this.requestData.modeName + this.requestData.modePostFix
 
     return this.rewardsBlk?[rewardTableName]?[day]?.awards?[awardTableName]
-  }
-
-  function getCurRewardsTime()
-  {
-    let day = this.lbDay ? wwLeaderboardData.getDayIdByNumber(this.lbDay) : "season"
-    return this.rewardsTimeData?[day] ?? 0
   }
 
   function updateModeDataByAvailableTables(modes)

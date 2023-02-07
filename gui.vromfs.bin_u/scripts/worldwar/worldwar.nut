@@ -26,7 +26,6 @@ foreach (fn in [
                  "externalServices/worldWarTopMenuSectionsConfigs.nut"
                  "externalServices/wwTopMenuOperationMapConfig.nut"
                  "externalServices/wwQueue.nut"
-                 "externalServices/inviteWwOperation.nut"
                  "externalServices/inviteWwOperationBattle.nut"
                  "bhvWorldWarMap.nut"
                  "model/wwUnitType.nut"

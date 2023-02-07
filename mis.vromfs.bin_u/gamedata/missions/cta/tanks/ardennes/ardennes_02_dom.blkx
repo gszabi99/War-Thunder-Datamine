@@ -80,8 +80,6 @@
     "mission": {
       "level": "levels/avg_ardennes.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_Dom2;ardennes/name",
@@ -95,9 +93,11 @@
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
       "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -289,6 +289,21 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/ardennes/template_ardennes_02_zonedef.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importByParameter": "isWorldWar",
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -347,7 +362,11 @@
             "dom_t2_tank_spawn_01_arcade_13",
             "dom_t2_tank_spawn_01_arcade_14",
             "dom_t2_tank_spawn_01_arcade_15",
-            "dom_t2_tank_spawn_01_arcade_16"
+            "dom_t2_tank_spawn_01_arcade_16",
+            "dom_t2_tank_spawn_01_arcade_17",
+            "dom_t2_tank_spawn_01_arcade_18",
+            "dom_t2_tank_spawn_01_arcade_19",
+            "dom_t2_tank_spawn_01_arcade_20"
           ]
         }
       },
@@ -392,7 +411,11 @@
             "dom_t1_tank_spawn_01_arcade_13",
             "dom_t1_tank_spawn_01_arcade_14",
             "dom_t1_tank_spawn_01_arcade_15",
-            "dom_t1_tank_spawn_01_arcade_16"
+            "dom_t1_tank_spawn_01_arcade_16",
+            "dom_t1_tank_spawn_01_arcade_17",
+            "dom_t1_tank_spawn_01_arcade_18",
+            "dom_t1_tank_spawn_01_arcade_19",
+            "dom_t1_tank_spawn_01_arcade_20"
           ]
         }
       },
@@ -615,6 +638,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "count": 1,
@@ -3284,6 +3309,222 @@
       ],
       "objLayer": 4,
       "props": {}
+    },
+    "dom_t1_tank_spawn_01_arcade_17": {
+      "type": "Sphere",
+      "tm": [
+        [
+          10.319,
+          0.0,
+          14.7484
+        ],
+        [
+          0.0,
+          18.0,
+          0.0
+        ],
+        [
+          -14.7484,
+          0.0,
+          10.319
+        ],
+        [
+          930.383,
+          305.837,
+          1563.74
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_t1_tank_spawn_01_arcade_18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          10.319,
+          0.0,
+          14.7484
+        ],
+        [
+          0.0,
+          18.0,
+          0.0
+        ],
+        [
+          -14.7484,
+          0.0,
+          10.319
+        ],
+        [
+          936.076,
+          305.837,
+          1583.44
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_t1_tank_spawn_01_arcade_19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          10.319,
+          0.0,
+          14.7484
+        ],
+        [
+          0.0,
+          18.0,
+          0.0
+        ],
+        [
+          -14.7484,
+          0.0,
+          10.319
+        ],
+        [
+          957.408,
+          305.837,
+          1589.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_t1_tank_spawn_01_arcade_20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          10.319,
+          0.0,
+          14.7484
+        ],
+        [
+          0.0,
+          18.0,
+          0.0
+        ],
+        [
+          -14.7484,
+          0.0,
+          10.319
+        ],
+        [
+          1024.68,
+          309.337,
+          1512.02
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_t2_tank_spawn_01_arcade_17": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.3339,
+          0.0,
+          -13.1102
+        ],
+        [
+          0.0,
+          18.0,
+          0.0
+        ],
+        [
+          13.1102,
+          0.0,
+          -12.3339
+        ],
+        [
+          1939.81,
+          297.492,
+          2806.94
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_t2_tank_spawn_01_arcade_18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.3339,
+          0.0,
+          -13.1102
+        ],
+        [
+          0.0,
+          18.0,
+          0.0
+        ],
+        [
+          13.1102,
+          0.0,
+          -12.3339
+        ],
+        [
+          1951.32,
+          297.492,
+          2823.42
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_t2_tank_spawn_01_arcade_19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.3339,
+          0.0,
+          -13.1102
+        ],
+        [
+          0.0,
+          18.0,
+          0.0
+        ],
+        [
+          13.1102,
+          0.0,
+          -12.3339
+        ],
+        [
+          1970.58,
+          297.492,
+          2823.93
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_t2_tank_spawn_01_arcade_20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.3339,
+          0.0,
+          -13.1102
+        ],
+        [
+          0.0,
+          18.0,
+          0.0
+        ],
+        [
+          13.1102,
+          0.0,
+          -12.3339
+        ],
+        [
+          2002.87,
+          297.492,
+          2797.93
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {
@@ -3310,7 +3551,7 @@
     "viewpt_01": {
       "pos": [
         1302.15,
-        293.005,
+        -472.558,
         3180.0
       ],
       "ht": 2.97134
@@ -3318,7 +3559,7 @@
     "viewpt_02": {
       "pos": [
         1965.37,
-        301.579,
+        -475.5,
         1484.5
       ],
       "ht": 1.5

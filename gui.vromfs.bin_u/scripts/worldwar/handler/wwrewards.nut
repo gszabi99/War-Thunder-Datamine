@@ -4,9 +4,35 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let userstat = require("userstat")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
+const USERSTAT_REQUEST_TIMEOUT = 600
+
+local lastRequestTime = null
+local rewardsTimeData = null
+let fetchRewardsTimeData = function(cb) {
+  let now = ::get_charserver_time_sec()
+  if (lastRequestTime && now < lastRequestTime + USERSTAT_REQUEST_TIMEOUT)
+    return cb()
+
+  lastRequestTime = now
+  userstat.request({
+      add_token = true
+      headers = { appid = "1134" }
+      action = "GetTablesInfo"
+    },
+    function(userstatTbl) {
+      rewardsTimeData = {}
+      foreach (key, val in (userstatTbl?.response ?? userstatTbl)) {
+        let rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
+          val?.prevInterval?.end : val?.interval?.end
+        rewardsTimeData[key] <- rewardTimeStr ? time.getTimestampFromIso8601(rewardTimeStr) : 0
+      }
+      cb()
+    })
+}
 
 ::gui_handlers.WwRewards <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -15,7 +41,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   isClanRewards = false
   rewardsBlk = null
-  rewardsTime = 0
+  day       = ""
   lbMode    = null
   lbDay     = null
   lbMap     = null
@@ -39,7 +65,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.scene.findObject("wnd_title").setValue(wndTitle)
 
     this.showSceneBtn("nav-help", true)
-    this.updateRerwardsStartTime()
 
     this.rewards = []
     foreach (rewardBlk in this.rewardsBlk)
@@ -64,6 +89,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     this.updateRewardsList()
+    fetchRewardsTimeData(Callback(@() this.updateRerwardsStartTime(), this))
   }
 
   function getRewardData(rewardBlk, needPlace = true)
@@ -170,9 +196,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function updateRerwardsStartTime()
   {
     local text = ""
-    if (this.rewardsTime > 0)
+    let rewardsTime = rewardsTimeData?[this.day] ?? 0
+    if (rewardsTime > 0)
       text = loc("worldwar/rewards_start_time") + loc("ui/colon") +
-        time.buildDateTimeStr(this.rewardsTime, false, false)
+        time.buildDateTimeStr(rewardsTime, false, false)
     this.scene.findObject("statusbar_text").setValue(text)
   }
 

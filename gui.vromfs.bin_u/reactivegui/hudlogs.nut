@@ -12,6 +12,7 @@ let tabsList = [
   { id = "Chat", text = loc("mainmenu/chat"), content = chat }
   { id = "BattleLog", text = loc("options/_Bttl"), content = battleLog }
 ]
+let initialTabId = tabsList[0].id
 
 let isEnabled = Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
 let isInteractive = Computed(@() canWriteToChat.value || cursorVisible.value)
@@ -21,13 +22,13 @@ let isInited = Watched(false)
 let isVisible = Computed(@() isEnabled.value && isInited.value
   && (isInteractive.value || isFadingOut.value || isNewMessage.value))
 
-let currentTab = Watched(tabsList[0])
+let currentTab = mkWatched(persist, "currentTab", initialTabId)
 let currentLog = Computed(function(prev) {
   if (cursorVisible.value || prev == FRP_INITIAL)
     return currentTab.value
 
   if (canWriteToChat.value || isNewMessage.value)
-    return tabsList[0]
+    return initialTabId
 
   return prev
 })
@@ -104,8 +105,8 @@ let logsHeader = @() {
   children = [
     tabs({
       tabs = tabsList
-      currentTab = currentTab.value.id
-      onChange = @(tab) currentTab.update(tab)
+      currentTab = currentTab.value
+      onChange = @(tab) currentTab.update(tab.id)
     })
   ]
   transitions = [{ prop = AnimProp.opacity, duration = fastDuration, easing = OutCubic }]
@@ -114,7 +115,7 @@ let logsHeader = @() {
 let logsContainer = @() {
   watch = currentLog
   size = [flex(), SIZE_TO_CONTENT]
-  children = currentLog.value.content
+  children = tabsList.findvalue(@(tab) tab.id == currentLog.value).content
   animations = logsContainerAnims
 }
 

@@ -86,6 +86,13 @@ let function getActiveSubBlockCount(block){
   return activeBlockCounter
 }
 
+let function getFirstActiveSubBlockIndex(block){
+  for (local i = 0; i < block.blockCount(); i++)
+    if(this.checkBlockTime(block.getBlock(i)))
+      return i
+  return -1
+}
+
 ::g_promo.checkOldRecordsOnInit <- function checkOldRecordsOnInit()
 {
   let blk = ::loadLocalByAccount("seen")
@@ -321,7 +328,7 @@ let function getActiveSubBlockCount(block){
     let showTextShade = !::is_chat_message_empty(text) || isDebugModeEnabled
     fillBlock.showTextShade <- showTextShade
 
-    let isBlockSelected = this.isValueCurrentInMultiBlock(id, i)
+    let isBlockSelected = this.isValueCurrentInMultiBlock(id, view.fillBlocks.len())
     local show = this.checkBlockVisibility(checkBlock) && isBlockSelected
     if (view.type == this.PROMO_BUTTON_TYPE.ARROW && !showTextShade)
       show = false
@@ -506,10 +513,12 @@ let function getActiveSubBlockCount(block){
     return this.PROMO_BUTTON_TYPE.IMAGE_ROULETTE
   if (blockCount == 1)
     block = block.getBlock(0)
+  else if(activeBlockCount == 1)
+    block = block.getBlock(getFirstActiveSubBlockIndex(block))
+
   if (getTblValue("image", block, "") != "")
     return this.PROMO_BUTTON_TYPE.IMAGE
   return getPromoButtonConfig(block.getBlockName())?.buttonType ?? this.PROMO_BUTTON_TYPE.ARROW
-
 }
 
 ::g_promo.setButtonText <- function setButtonText(buttonObj, id, text = "")

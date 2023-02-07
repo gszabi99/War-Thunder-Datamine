@@ -6,7 +6,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { getMyClanOperation, isMyClanInQueue
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { actionWithGlobalStatusRequest,
+  getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::WwQueue <- class
@@ -209,8 +210,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     requestBlk.mapName = this.map.name
     requestBlk.country = country
     requestBlk.clusters = clusters
-    actionWithGlobalStatusRequest("cln_clan_register_ww_army_group", requestBlk,
-      { showProgressBox = true })
+    if (::check_balance_msgBox(::Cost(getGlobalStatusData()?.operationCreationFeeWp ?? 0)))
+      actionWithGlobalStatusRequest("cln_clan_register_ww_army_group", requestBlk,
+        { showProgressBox = true } )
+
   }
 
   function getCantLeaveQueueReasonData()
