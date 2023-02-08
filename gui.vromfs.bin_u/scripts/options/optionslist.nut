@@ -162,6 +162,7 @@ let getMainOptions = function() {
       [::USEROPT_USE_PERFECT_RANGEFINDER, "spinner"],
       [::USEROPT_SAVE_AI_TARGET_TYPE, "spinner"],
       [::USEROPT_DEFAULT_AI_TARGET_TYPE, "spinner"],
+      [::USEROPT_TORPEDO_AUTO_SWITCH, "spinner"],
       [::USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE, "spinner"],
       [::USEROPT_BULLET_FALL_INDICATOR_SHIP, "spinner"],
       [::USEROPT_BULLET_FALL_SPOT_SHIP, "spinner"],

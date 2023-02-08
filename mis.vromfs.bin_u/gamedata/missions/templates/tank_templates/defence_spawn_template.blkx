@@ -21,7 +21,7 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "defence_spawn_set_var": {
+    "defence_spawn_start_t1": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -42,21 +42,10 @@
           {
             "value": "dbttl_t1_spawn_02",
             "var": "t1_spawn_02_name"
-          },
-          {
-            "value": "dbttl_t2_spawn_01",
-            "var": "t2_spawn_01_name"
-          },
-          {
-            "value": "dbttl_t2_spawn_02",
-            "var": "t2_spawn_02_name"
           }
         ],
         "triggerEnable": {
-          "target": [
-            "defence_spawn_check_random_t1",
-            "defence_spawn_check_random_t2"
-          ]
+          "target": "defence_spawn_check_random_t1"
         }
       },
       "else_actions": {}
@@ -211,6 +200,35 @@
           "tags": {
             "tank": true
           }
+        }
+      },
+      "else_actions": {}
+    },
+    "defence_spawn_start_t2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetString": [
+          {
+            "value": "dbttl_t2_spawn_01",
+            "var": "t2_spawn_01_name"
+          },
+          {
+            "value": "dbttl_t2_spawn_02",
+            "var": "t2_spawn_02_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "defence_spawn_check_random_t2"
         }
       },
       "else_actions": {}

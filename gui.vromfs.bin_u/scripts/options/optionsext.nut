@@ -1080,6 +1080,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = false
       break
 
+    case ::USEROPT_TORPEDO_AUTO_SWITCH:
+      descr.id = "torpedo_auto_switch"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = true
+      break
+
     case ::USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE:
       descr.id = "default_torpedo_forestall_active"
       descr.controlType = optionControlType.CHECKBOX
@@ -5174,6 +5181,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_SINGLE_SHOT_BY_TURRET:
     case ::USEROPT_AUTO_TARGET_CHANGE_SHIP:
     case ::USEROPT_REALISTIC_AIMING_SHIP:
+    case ::USEROPT_TORPEDO_AUTO_SWITCH:
     case ::USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE:
     case ::USEROPT_REPLAY_ALL_INDICATORS:
     case ::USEROPT_CONTENT_ALLOWED_PRESET_ARCADE:

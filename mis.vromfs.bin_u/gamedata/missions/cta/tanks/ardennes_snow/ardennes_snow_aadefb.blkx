@@ -78,23 +78,23 @@
       ]
     },
     "mission": {
-      "level": "levels/avg_sector_montmedy_snow.bin",
+      "level": "levels/avg_ardennes_snow.bin",
       "type": "domination",
       "environment": "Day",
-      "weather": "clear",
-      "locName": "missions/_Bttl2;sector_montmedy/name;missions/winter",
-      "locDesc": "sector_montmedy/desc;missions/_Bttl/desc",
+      "weather": "hazy",
+      "locName": "missions/_ADBttlB;ardennes/name;missions/winter",
+      "locDesc": "missions/_ADBttl/desc",
       "scoreLimit": 6000,
       "timeLimit": 25,
-      "deathPenaltyMul": 1.0,
-      "postfix": "_Bttl",
-      "ctaCaptureZoneEqualPenaltyMul": 0.5,
+      "deathPenaltyMul": 0.0,
+      "postfix": "_aadefb",
+      "ctaCaptureZoneEqualPenaltyMul": 0.0,
       "useAlternativeMapCoord": false,
       "allowedKillStreaks": true,
-      "randomSpawnTeams": true,
+      "randomSpawnTeams": false,
       "remapAiTankModels": true,
-      "battleAreaColorPreset": "battleArea",
       "showTacticalMapCellSize": true,
+      "timeLimitWarn": 3600,
       "country_axis": "germany",
       "country_allies": "ussr",
       "restoreType": "attempts",
@@ -126,37 +126,44 @@
           "icon": [
             {
               "icontype": "tank",
-              "side": "ally",
-              "target": "briefing_bttl_t1_spawn_01"
-            },
-            {
-              "icontype": "tank",
-              "side": "ally",
-              "target": "briefing_bttl_t1_spawn_02"
+              "side": "enemy",
+              "target": "briefing_aadef_t2_spawn_01"
             },
             {
               "icontype": "tank",
               "side": "enemy",
-              "target": "briefing_bttl_t2_spawn_01"
+              "target": "briefing_aadef_t2_spawn_02"
             },
             {
-              "icontype": "tank",
+              "icontype": "mark",
               "side": "enemy",
-              "target": "briefing_bttl_t2_spawn_02"
+              "target": "briefing_aadef_ai_target_01"
             },
             {
-              "icontype": "basezone_A",
+              "icontype": "mark",
+              "side": "enemy",
+              "target": "briefing_aadef_ai_target_02"
+            },
+            {
+              "icontype": "mark",
+              "side": "enemy",
+              "target": "briefing_aadef_ai_target_03"
+            },
+            {
+              "icontype": "bomber",
               "side": "ally",
-              "target": "bttl_t1_capture_area_arcade"
+              "target": "t1_briefing_airspawn",
+              "lookAt": "briefing_aadef_ai_target_01"
             },
             {
-              "icontype": "basezone_B",
+              "icontype": "fighter",
               "side": "enemy",
-              "target": "bttl_t2_capture_area_arcade"
+              "target": "t2_briefing_airspawn",
+              "lookAt": "t1_briefing_airspawn"
             }
           ],
           "battleArea": {
-            "target": "bttl_battle_area_arcade"
+            "target": "aadef_battle_area"
           }
         }
       }
@@ -179,7 +186,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/templates/tank_templates/bttl_template.blk",
+        "file": "gameData/missions/cta/tanks/ardennes/template_ardennes_air_spawn.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -193,7 +200,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/sector_montmedy/template_sector_montmedy_air_spawns.blk",
+        "file": "gameData/missions/templates/ww_no_attackers_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -207,7 +214,21 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/sector_montmedy/mainareas/template_sector_montmedy_02_tanks_spawns.blk",
+        "file": "gameData/missions/cta/tanks/ardennes/mainareas/template_ardennes_aadefb.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/aadef_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -230,13 +251,47 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {},
+  "variables": {
+    "defenseMissionTeam": "teamB"
+  },
   "dialogs": {},
   "airfields": {},
   "effects": {},
-  "units": {},
+  "units": {
+    "area_squad": {
+      "name": "remove_rendinst_area",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1405.14,
+          292.177,
+          1897.78
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "remove_rendinst_area_01",
+          "remove_rendinst_area_02"
+        ]
+      }
+    }
+  },
   "areas": {
-    "briefing_bttl_t1_spawn_01": {
+    "briefing_aadef_t2_spawn_01": {
       "type": "Point",
       "tm": [
         [
@@ -255,15 +310,15 @@
           1.0
         ],
         [
-          -1446.18,
-          7.24927,
-          1088.24
+          479.087,
+          201.824,
+          1340.25
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_bttl_t1_spawn_02": {
+    "briefing_aadef_t2_spawn_02": {
       "type": "Point",
       "tm": [
         [
@@ -282,21 +337,21 @@
           1.0
         ],
         [
-          -2431.13,
-          16.7152,
-          851.25
+          454.384,
+          235.449,
+          669.084
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_bttl_t2_spawn_01": {
+    "t2_briefing_airspawn": {
       "type": "Point",
       "tm": [
         [
-          1.0,
+          -0.198457,
           0.0,
-          0.0
+          0.98011
         ],
         [
           0.0,
@@ -304,26 +359,26 @@
           0.0
         ],
         [
+          -0.98011,
           0.0,
-          0.0,
-          1.0
+          -0.198457
         ],
         [
-          -1992.84,
-          15.5504,
-          3654.53
+          824.168,
+          296.38,
+          2989.64
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_bttl_t2_spawn_02": {
+    "t1_briefing_airspawn": {
       "type": "Point",
       "tm": [
         [
-          1.0,
+          -0.186653,
           0.0,
-          0.0
+          -0.982426
         ],
         [
           0.0,
@@ -331,179 +386,179 @@
           0.0
         ],
         [
+          0.982426,
           0.0,
-          0.0,
-          1.0
+          -0.186653
         ],
         [
-          -2988.68,
-          4.30017,
-          3588.35
+          2107.03,
+          292.324,
+          1849.01
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "bttl_t1_capture_area_arcade": {
-      "type": "Cylinder",
+    "briefing_aadef_ai_target_01": {
+      "type": "Point",
       "tm": [
         [
-          -42.5068,
+          0.819152,
           0.0,
-          5.5961
+          0.573577
         ],
         [
           0.0,
-          25.0,
+          1.0,
           0.0
         ],
         [
-          -5.5961,
+          -0.573577,
           0.0,
-          -42.5068
+          0.819152
         ],
         [
-          -2091.05,
-          21.6315,
-          1510.95
+          1334.65,
+          322.288,
+          2178.94
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "bttl_t1_capture_area_hardcore": {
-      "type": "Cylinder",
+    "briefing_aadef_ai_target_02": {
+      "type": "Point",
       "tm": [
         [
-          -42.5068,
+          0.819152,
           0.0,
-          5.5961
+          0.573577
         ],
         [
           0.0,
-          25.0,
+          1.0,
           0.0
         ],
         [
-          -5.5961,
+          -0.573577,
           0.0,
-          -42.5068
+          0.819152
         ],
         [
-          -2091.05,
-          21.6326,
-          1510.98
+          1474.49,
+          322.286,
+          2488.89
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "bttl_t2_capture_area_arcade": {
-      "type": "Cylinder",
+    "briefing_aadef_ai_target_03": {
+      "type": "Point",
       "tm": [
         [
-          -42.5068,
+          0.819152,
           0.0,
-          5.5961
+          0.573577
         ],
         [
           0.0,
-          25.0,
+          1.0,
           0.0
         ],
         [
-          -5.5961,
+          -0.573577,
           0.0,
-          -42.5068
+          0.819152
         ],
         [
-          -2486.8,
-          25.4,
-          3009.2
+          1474.38,
+          322.286,
+          2772.96
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "bttl_t2_capture_area_hardcore": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          -42.5068,
-          0.0,
-          5.5961
-        ],
-        [
-          0.0,
-          25.0,
-          0.0
-        ],
-        [
-          -5.5961,
-          0.0,
-          -42.5068
-        ],
-        [
-          -2486.8,
-          25.4,
-          3009.2
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_battle_area_arcade": {
+    "remove_rendinst_area_01": {
       "type": "Box",
       "tm": [
         [
+          19.4579,
           0.0,
-          0.0,
-          2997.0
+          -4.62488
         ],
         [
           0.0,
-          715.451,
+          10.0,
           0.0
         ],
         [
-          -2997.0,
+          23.1244,
           0.0,
-          0.0
+          97.2896
         ],
         [
-          -2387.27,
-          110.706,
-          2217.03
+          1072.97,
+          296.459,
+          2302.51
         ]
       ],
-      "objLayer": 3,
+      "objLayer": 0,
       "props": {}
     },
-    "bttl_battle_area_hardcore": {
+    "remove_rendinst_area_02": {
       "type": "Box",
       "tm": [
         [
+          17.4483,
           0.0,
-          0.0,
-          2997.0
+          9.77539
         ],
         [
           0.0,
-          715.451,
+          10.0,
           0.0
         ],
         [
-          -2997.0,
+          -48.877,
           0.0,
-          0.0
+          87.2413
         ],
         [
-          -2387.27,
-          110.706,
-          2217.03
+          1084.41,
+          296.459,
+          2217.51
         ]
       ],
-      "objLayer": 3,
+      "objLayer": 0,
+      "props": {}
+    },
+    "aadef_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          1800.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1800.0
+        ],
+        [
+          1480.54,
+          283.048,
+          2421.59
+        ]
+      ],
+      "objLayer": 4,
       "props": {}
     }
   },
