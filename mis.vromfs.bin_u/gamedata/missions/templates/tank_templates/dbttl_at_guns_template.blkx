@@ -296,12 +296,22 @@
         "unitPutToSleep": {
           "target": "@at_gun_iter_name"
         },
+        "duplicateAreaAtPos": {
+          "area": "sample_for_trench_parapet",
+          "target": "@pit_iter_name",
+          "var_out": "trench_parapet_name",
+          "spawnOffsetSpace": "object"
+        },
+        "missionDestroyArea": {
+          "target_type": "permanent_rendinst",
+          "area": "@trench_parapet_name"
+        },
         "missionTerraform": [
           {
-            "delta": 0.7,
+            "delta": 0.5,
             "deltaNoisePercent": 0,
-            "smoothingAreaWidth": 3.0,
-            "object": "@pit_iter_name"
+            "smoothingAreaWidth": 0.0,
+            "object": "@trench_parapet_name"
           },
           {
             "delta": -0.2,
@@ -344,7 +354,8 @@
     "at_gun_count": 0,
     "at_gun_iter_idx": 0,
     "at_gun_iter_name": "",
-    "pit_iter_name": ""
+    "pit_iter_name": "",
+    "trench_parapet_name": ""
   },
   "dialogs": {},
   "airfields": {},
@@ -2853,7 +2864,35 @@
       }
     ]
   },
-  "areas": {},
+  "areas": {
+    "sample_for_trench_parapet": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          5.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.6
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
   "objLayers": {
     "layer": [
       {

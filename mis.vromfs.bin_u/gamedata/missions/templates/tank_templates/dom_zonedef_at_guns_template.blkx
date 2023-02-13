@@ -237,12 +237,22 @@
           "unitPutToSleep": {
             "target": "@t1_at_gun_iter_name"
           },
+          "duplicateAreaAtPos": {
+            "area": "sample_for_trench_parapet",
+            "target": "@t1_pit_iter_name",
+            "var_out": "t1_trench_parapet_name",
+            "spawnOffsetSpace": "object"
+          },
+          "missionDestroyArea": {
+            "target_type": "permanent_rendinst",
+            "area": "@t1_trench_parapet_name"
+          },
           "missionTerraform": [
             {
-              "delta": 0.7,
+              "delta": 0.5,
               "deltaNoisePercent": 0,
-              "smoothingAreaWidth": 3.0,
-              "object": "@t1_pit_iter_name"
+              "smoothingAreaWidth": 0.0,
+              "object": "@t1_trench_parapet_name"
             },
             {
               "delta": -0.2,
@@ -430,12 +440,22 @@
           "unitPutToSleep": {
             "target": "@t2_at_gun_iter_name"
           },
+          "duplicateAreaAtPos": {
+            "area": "sample_for_trench_parapet",
+            "target": "@t2_pit_iter_name",
+            "var_out": "t2_trench_parapet_name",
+            "spawnOffsetSpace": "object"
+          },
+          "missionDestroyArea": {
+            "target_type": "permanent_rendinst",
+            "area": "@t2_trench_parapet_name"
+          },
           "missionTerraform": [
             {
-              "delta": 0.7,
+              "delta": 0.5,
               "deltaNoisePercent": 0,
-              "smoothingAreaWidth": 3.0,
-              "object": "@t2_pit_iter_name"
+              "smoothingAreaWidth": 0.0,
+              "object": "@t2_trench_parapet_name"
             },
             {
               "delta": -0.2,
@@ -478,9 +498,11 @@
     "t1_at_gun_iter_idx": 0,
     "t1_at_gun_iter_name": "",
     "t1_pit_iter_name": "",
+    "t1_trench_parapet_name": "",
     "t2_at_gun_iter_idx": 0,
     "t2_at_gun_iter_name": "",
-    "t2_pit_iter_name": ""
+    "t2_pit_iter_name": "",
+    "t2_trench_parapet_name": ""
   },
   "dialogs": {},
   "airfields": {},
@@ -2989,7 +3011,35 @@
       }
     ]
   },
-  "areas": {},
+  "areas": {
+    "sample_for_trench_parapet": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          5.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.6
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
   "objLayers": {
     "layer": [
       {
