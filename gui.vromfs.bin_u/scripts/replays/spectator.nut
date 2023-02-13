@@ -23,9 +23,10 @@ let { onSpectatorMode, switchSpectatorTargetById,
   getSpectatorTargetName = @() ::get_spectator_target_name() // compatibility with 2.15.1.X
 } = require("guiSpectator")
 let { get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchors,
-  get_replay_info, get_replay_props, move_to_anchor } = require("replays")
+  get_replay_info, get_replay_props, move_to_anchor, cancel_loading = @() null } = require("replays")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
+let { subscribe } = require("eventbus")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -789,6 +790,12 @@ let weaponIconsReloadBits = {
       toggleShortcut(id)
   }
 
+  function onBtnCancelReplayDownload()
+  {
+    cancel_loading()
+    this.scene.findObject("replay_paused_block").show(false)
+  }
+
   function onMapClick(_obj = null)
   {
     let mapLargePanelObj = this.scene.findObject("map_large_div")
@@ -1249,6 +1256,21 @@ let weaponIconsReloadBits = {
       ::game_chat_input_toggle_request(true)
   }
 
+  function onEventReplayWait(event)
+  {
+    this.scene.findObject("replay_paused_block").show(event.isShow)
+
+    let hasDownloadStatus = "dlCur" in event && "dlTotal" in event && "dlPercent" in event
+    let downloadStatusString = event.isShow && hasDownloadStatus
+      ? loc(
+          "hints/replay_download_status",
+          { downloadedMB = event.dlCur, totalMB = event.dlTotal, downloadedPercent = event.dlPercent }
+        )
+      : ""
+
+    this.scene.findObject("replay_download_status").setValue(downloadStatusString)
+  }
+
   function onPlayerRequestedArtillery(userId)
   {
     let player = this.getPlayerByUserId(userId)
@@ -1503,3 +1525,7 @@ let weaponIconsReloadBits = {
   if (handler)
     handler.onMapClick()
 }
+
+subscribe("replayWait", function (event) {
+  ::broadcastEvent("ReplayWait", event)
+})

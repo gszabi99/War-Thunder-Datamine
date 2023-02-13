@@ -253,6 +253,36 @@
           "position": "root",
           "pos": "0, 0",
           "size": "sw, sh"
+        },
+        {
+          "id": "replay_paused_block",
+          "position": "absolute",
+          "pos": "pw/2-w/2, ph/2 - h/2",
+          "display": "hide",
+          "flow": "vertical",
+          "textareaNoTab": {
+            "overlayTextColor": "active",
+            "text": "#hints/replay_paused"
+          },
+          "tdiv": {
+            "margin-top": "1@blockInterval",
+            "halign": "center",
+            "textareaNoTab": {
+              "id": "replay_download_status",
+              "valign": "center",
+              "margin-right": "2@blockInterval",
+              "overlayTextColor": "active"
+            },
+            "animated_wait_icon": {
+              "background-rotation": "0"
+            }
+          },
+          "Button_text": {
+            "margin-top": "2@blockInterval",
+            "halign": "center",
+            "text": "#mainmenu/btnCancel",
+            "on_click": "onBtnCancelReplayDownload"
+          }
         }
       ],
       "spectatorFrame": [
