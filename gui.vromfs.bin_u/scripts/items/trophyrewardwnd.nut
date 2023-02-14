@@ -385,8 +385,10 @@ register_command(
 
   function updateResourceData(resource, resourceType) {
     let decorData = getDecoratorDataToUse(resource, resourceType)
-    if (decorData.decorator == null)
+    if (decorData.decorator == null) {
+      this.decorator = ::g_decorator.getDecoratorByResource(resource, resourceType)
       return
+    }
 
     this.decorator = decorData.decorator
     this.decoratorUnit = decorData.decoratorUnit
@@ -444,7 +446,8 @@ register_command(
       : this.unit && this.unit.isUsable() && !::isUnitInSlotbar(this.unit) ? "btn_take_air"
       : this.rewardItem?.canRunCustomMission() ? "btn_run_custom_mission"
       : this.canGoToItem() ? "btn_go_to_item"
-      : this.decorator && canStartPreviewScene(false) ? "btn_use_decorator"
+      : this.decoratorUnit && canStartPreviewScene(false) ? "btn_use_decorator"
+      : this.decorator?.canPreview() && canStartPreviewScene(false) ? "btn_preview_decorator"
       : isLoadingBgUnlock(this.trophyItem?.getUnlockId()) ? "btn_preloader_settings"
       : ""
 
@@ -453,7 +456,8 @@ register_command(
       "btn_go_to_item",
       "btn_use_decorator",
       "btn_preloader_settings",
-      "btn_run_custom_mission"
+      "btn_run_custom_mission",
+      "btn_preview_decorator"
     ]
 
     foreach (id in btnIds)
@@ -544,6 +548,7 @@ register_command(
       ::gui_start_items_list(-1, { curItem = this.rewardItem })
   }
 
+  onPreviewDecorator = @() canStartPreviewScene(true) && this.decorator.doPreview()
   onUseDecorator = @() useDecorator(this.decorator, this.decoratorUnit, this.decoratorSlot)
   onPreloaderSettings = @() preloaderOptionsModal(getLoadingBgIdByUnlockId(this.trophyItem.getUnlockId()))
   onRunCustomMission = @() this.rewardItem?.runCustomMission()

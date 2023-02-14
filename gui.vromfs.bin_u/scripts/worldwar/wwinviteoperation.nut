@@ -18,9 +18,7 @@ let inviteActiveColor = "userlogColoredText"
   operationId      = -1
   senderId         = ""
   country          = ""
-
   clanTag          = ""
-  isStarted        = false
 
   isAccepted                 = false
   senderContact              = null
@@ -40,7 +38,6 @@ let inviteActiveColor = "userlogColoredText"
     this.senderId = p?.senderId ?? this.senderId
     this.country = p?.country ?? this.country
     this.operationId = p?.operationId ?? this.operationId
-    this.isStarted = p?.isStarted ?? this.isStarted
     this.clanTag = p?.clanTag ?? this.clanTag
 
     this.updateInviterContact()
@@ -71,16 +68,15 @@ let inviteActiveColor = "userlogColoredText"
 
   function getInviteText() {
     let operationStr = colorize(inviteActiveColor, $"{loc("ui/number_sign")}{this.operationId}")
-    if (this.clanTag != "")
-      return loc(this.isStarted ? "worldWar/userlog/startOperation"
-        : "worldWar/userlog/createOperation", {
-          clan = colorize(inviteActiveColor, this.clanTag)
-          operation = operationStr
-        })
-    return loc("worldwar/inviteOperation", {
-      name = colorize(inviteActiveColor, this.getInviterName())
-      operation = operationStr
-    })
+    return this.clanTag != ""
+      ? loc("worldWar/userlog/startOperation", {
+        clan = colorize(inviteActiveColor, this.clanTag)
+        operation = operationStr
+      })
+      : loc("worldwar/inviteOperation", {
+        name = colorize(inviteActiveColor, this.getInviterName())
+        operation = operationStr
+      })
   }
 
   getPopupText = @() this.getInviteText()

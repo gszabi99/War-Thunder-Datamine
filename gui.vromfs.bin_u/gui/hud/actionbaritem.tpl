@@ -3,30 +3,30 @@ actionBarItemDiv {
   padding:t='0.003@shHud'
 
   action_bar_item {
-    id:t='<<id>>';
+    id:t='<<id>>'
     size:t='pw, ph'
     position:t='absolute'
-    background-color:t='#77333333';
-    selected:t='<<selected>>';
-    active:t='<<active>>';
-    enable:t='<<enable>>';
-    css-hier-invalidate:t='yes';
+    background-color:t='#77333333'
+    selected:t='<<selected>>'
+    active:t='<<active>>'
+    enable:t='<<enable>>'
+    css-hier-invalidate:t='yes'
 
-    behaviour:t='button';
-    behaviour:t='touchArea';
-    on_click:t='activateAction';
+    behaviour:t='button'
+    behaviour:t='touchArea'
+    on_click:t='activateAction'
 
     action_item_content {
-      css-hier-invalidate:t='yes';
-      size:t='pw, ph';
-      background-color:t='#55222222';
+      css-hier-invalidate:t='yes'
+      size:t='pw, ph'
+      background-color:t='#55222222'
       selected_action_bg {
-        size:t='pw, ph';
-        position:t='absolute';
-        pos:t='0, 0';
-        background-image:t='#ui/gameuiskin#circle_gradient_white.png';
-        background-color:t='#FFFFFF';
-        display:t='hide';
+        size:t='pw, ph'
+        position:t='absolute'
+        pos:t='0, 0'
+        background-image:t='#ui/gameuiskin#circle_gradient_white.png'
+        background-color:t='#FFFFFF'
+        display:t='hide'
       }
       <<#bullets>>
         <<bullets>>
@@ -34,9 +34,9 @@ actionBarItemDiv {
       <<^bullets>>
       img {
         id:t='action_icon'
-        size:t='pw, ph';
+        size:t='pw, ph'
         background-svg-size:t='pw, ph'
-        background-image:t='<<icon>>';
+        background-image:t='<<icon>>'
       }
       <</bullets>>
       tdiv {
@@ -50,39 +50,39 @@ actionBarItemDiv {
         background-color:t='#cc0c111c';
       }
       transpBlinkAnimation {
-        id:t='availability';
-        size:t='pw, ph';
-        position:t='absolute';
-        pos:t='0, 0';
-        input-transparent:t='yes';
-        background-image:t='#ui/gameuiskin#action_blink.png';
-        background-color:t='#FFFFFF';
-        color-factor:t='0';
+        id:t='availability'
+        size:t='pw, ph'
+        position:t='absolute'
+        pos:t='0, 0'
+        input-transparent:t='yes'
+        background-image:t='#ui/gameuiskin#action_blink.png'
+        background-color:t='#FFFFFF'
+        color-factor:t='0'
 
-        _transp-timer:t='1';
-        transp-func:t='doubleBlink';
-        transp-time:t='1000';
-        _blink:t='no';
-        blend-time:t='0';
+        _transp-timer:t='1'
+        transp-func:t='doubleBlink'
+        transp-time:t='1000'
+        _blink:t='no'
+        blend-time:t='0'
       }
       textarea {
-        id:t='amount_text';
-        pos:t='pw - w, ph - h + 0.004@shHud';
-        position:t='absolute';
-        hudFont:t='small';
+        id:t='amount_text'
+        pos:t='pw - w, ph - h + 0.004@shHud'
+        position:t='absolute'
+        hudFont:t='small'
         shadeStyle:t='outline33pct'
-        text-align:t='right';
-        text:t='<<amount>>';
+        text-align:t='right'
+        text:t='<<amount>>'
       }
       textarea {
-        id:t='automatic_text';
-        pos:t='pw -w -0.002@shHud, 0.004@shHud';
-        position:t='absolute';
-        hudFont:t='small';
+        id:t='automatic_text'
+        pos:t='pw -w -0.002@shHud, 0.004@shHud'
+        position:t='absolute'
+        hudFont:t='small'
         shadeStyle:t='outline33pct'
-        text-align:t='right';
-        text:t='#actionBar/action/automatic/abbr';
-        display:t='hide'
+        text-align:t='right'
+        text:t='#actionBar/action/automatic/abbr'
+        <<^automatic>>display:t='hide'<</automatic>>
       }
       tdiv {
         id:t='BlockedCooldown'

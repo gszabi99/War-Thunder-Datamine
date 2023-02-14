@@ -42,10 +42,13 @@ let addInviteFromUserlog = function(blk, idx) {
   })
 
   ::disable_user_log_entry(idx)
+  // To update queue status immediately as operation created instead of refresh by timer.
+  // It effects on buttons state in main WW screen.
+  if (blk.type == EULT_WW_START_OPERATION)
+    actionWithGlobalStatusRequest("cln_ww_queue_status")
   return true
 }
 
-::g_invites.registerInviteUserlogHandler(EULT_WW_CREATE_OPERATION, addInviteFromUserlog)
 ::g_invites.registerInviteUserlogHandler(EULT_WW_START_OPERATION, addInviteFromUserlog)
 
 addListenersWithoutEnv({

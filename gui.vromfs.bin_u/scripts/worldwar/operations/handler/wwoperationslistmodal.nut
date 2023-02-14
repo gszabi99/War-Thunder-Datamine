@@ -6,7 +6,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { getOperationById, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { actionWithGlobalStatusRequest,
+  setDeveloperMode } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
@@ -29,8 +30,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!this.map)
       return this.goBack()
 
-    if (hasFeature("WWOperationsList"))
+    if (hasFeature("WWOperationsList")) {
+      setDeveloperMode(true)
       actionWithGlobalStatusRequest("cln_ww_global_status")
+    }
     this.opListObj = this.scene.findObject("items_list")
     this.fillOperationList()
   }
@@ -361,5 +364,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   {
     base.onModalWndDestroy()
     ::ww_stop_preview()
+    setDeveloperMode(false)
   }
 }

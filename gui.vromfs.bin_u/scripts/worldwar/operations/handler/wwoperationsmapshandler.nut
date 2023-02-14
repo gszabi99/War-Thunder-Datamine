@@ -11,7 +11,8 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { getAllUnlocks, unlocksChapterName } = require("%scripts/worldWar/unlocks/wwUnlocks.nut")
 let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isRecievedGlobalStatusMaps,
   getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { refreshGlobalStatusData,
+  actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getUnlockLocName, getUnlockMainCondDesc,
@@ -822,6 +823,15 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     log($"cln_ww_autoselect_operation: operationId={operationId}, country={country}")
     ::destroyMsgBox(progressBox)
     switchProfileCountry(country)
+    let operation = getOperationById(operationId)
+    if (!operation) {
+      let requestBlk = ::DataBlock()
+      requestBlk.operationId = operationId
+      actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null,
+        @() ::g_world_war.joinOperationById(operationId))
+      return
+    }
+
     ::g_world_war.joinOperationById(operationId)
   }
 

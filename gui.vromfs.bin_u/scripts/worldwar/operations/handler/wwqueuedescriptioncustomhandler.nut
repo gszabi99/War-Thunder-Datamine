@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
@@ -16,6 +16,16 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
     let mapName = this.descItem.getId()
     let creationCost = this.getCreationCost()
     let hasCreationCost = creationCost != ""
+
+    let createOperationBtnText = hasCreationCost
+      ? $"{loc("worldwar/btnCreateOperation")} ({creationCost})"
+      : loc("worldwar/btnCreateOperation")
+
+    let buttonWidth = to_pixels("0.35@WWOperationDescriptionWidth - 1@buttonIconHeight")
+    let textWidth = getStringWidthPx(createOperationBtnText, "fontMedium", this.guiScene)
+
+    let smallFont = textWidth >= buttonWidth
+
     return {
       countries = countries.map(function(countryId) {
         let customViewCountryData = getCustomViewCountryData(countryId, mapName)
@@ -31,9 +41,8 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
           side            = side
           isLeftAligned   = side == SIDE_1
           hasCreationCost = hasCreationCost
-          createOperationBtnText = hasCreationCost
-            ? $"{loc("worldwar/btnCreateOperation")} ({creationCost})"
-            : loc("worldwar/btnCreateOperation")
+          createOperationBtnText
+          smallFont
         }
       })
     }

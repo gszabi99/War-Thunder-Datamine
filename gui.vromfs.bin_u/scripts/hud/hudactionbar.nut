@@ -129,6 +129,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   function buildItemView(item, needShortcuts = false)
   {
     let hudUnitType = getHudUnitType()
+    let ship = hudUnitType == HUD_UNIT_TYPE.SHIP
+      || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
+
     let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
     let isReady = this.isActionReady(item)
 
@@ -166,6 +169,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       showShortcut     = showShortcut
       amount           = getActionItemAmountText(item)
       cooldown         = this.getWaitGaugeDegree(item.cooldown)
+      automatic        = ship && (item?.automatic ?? false)
     }
 
     let unit = this.getActionBarUnit()

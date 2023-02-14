@@ -14,6 +14,7 @@ let curData = persist("curData", @() Watched(null))
 let validListsMask = persist("validListsMask", @() Watched(0))
 let lastUpdatetTime = persist("lastUpdatetTime", @() Watched(-1))
 let lastRequestTime = persist("lastRequestTime", @() Watched(-1))
+let isDeveloperMode = persist("isDeveloperMode", @() Watched(false))
 
 let function reset() {
   curData(null)
@@ -71,6 +72,11 @@ let function onGlobalStatusReceived(newData) {
 
 //special actions with global status in successCb
 let function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOptions = null, onSuccessCb = null) {
+  if (isDeveloperMode.value) {// Force full global status request in developer mode
+    actionName = "cln_ww_global_status"
+    requestBlk = null
+  }
+
   lastRequestTime(get_time_msec())
   let cb = Callback(function(data) {
     onGlobalStatusReceived(data)
@@ -104,6 +110,9 @@ let function refreshGlobalStatusData(refreshDelay = null) {
   if (!canRefreshData(refreshDelay))
     return
 
+  if (isDeveloperMode.value)// Full global status includes all data from short and queue statuses
+    return actionWithGlobalStatusRequest("cln_ww_global_status")
+
   let requestBlk = ::DataBlock()
   if (::is_in_clan())
     requestBlk.clanId = ::clan_get_my_clan_id()
@@ -120,4 +129,5 @@ return {
   getValidGlobalStatusListMask = @() validListsMask.value
   setValidGlobalStatusListMask = @(mask) validListsMask(mask)
   getGlobalStatusData = @() curData.value
+  setDeveloperMode = @(p) isDeveloperMode(p)
 }

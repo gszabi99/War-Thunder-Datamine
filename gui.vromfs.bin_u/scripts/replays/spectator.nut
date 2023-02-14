@@ -27,6 +27,7 @@ let { get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchor
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { subscribe } = require("eventbus")
+let { round_by_value } = require("%sqstd/math.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -1264,7 +1265,11 @@ let weaponIconsReloadBits = {
     let downloadStatusString = event.isShow && hasDownloadStatus
       ? loc(
           "hints/replay_download_status",
-          { downloadedMB = event.dlCur, totalMB = event.dlTotal, downloadedPercent = event.dlPercent }
+          {
+            downloadedMB = round_by_value(event.dlCur, 0.1),
+            totalMB = round_by_value(event.dlTotal, 0.1),
+            downloadedPercent = round_by_value(event.dlPercent, 0.1)
+          }
         )
       : ""
 
