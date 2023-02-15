@@ -104,7 +104,7 @@ let inviteActiveColor = "userlogColoredText"
     let requestBlk = ::DataBlock()
     requestBlk.operationId = this.operationId
     actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null,
-      @() ::g_world_war.joinOperationById(this.operationId, this.country, null, onSuccess))
+      @() ::g_world_war.joinOperationById(this.operationId, this.country, null, onSuccess, true))
   }
 
   function accept() {

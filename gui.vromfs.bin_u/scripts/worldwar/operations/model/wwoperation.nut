@@ -173,12 +173,13 @@ enum WW_OPERATION_PRIORITY //bit enum
       reasonText = ""
     }
 
-    let assignCountry = this.getMyAssignCountry()// Country by clan. None if last played out of clan.
-    if (this.isMyClanParticipate() && assignCountry != null
-      && assignCountry != this.getMyClanCountry())// My clan participate but can't join by my clan
+    let lastPlayedCountry = ::g_world_war.lastPlayedOperationCountry
+    let lastPlayedOperationId = ::g_world_war.lastPlayedOperationId
+    if (this.isMyClanParticipate() && country != this.getMyClanCountry())// Join to opposite side
       res.reasonText = loc("worldWar/cantJoinByAnotherSideClan")
-    else if ((assignCountry && assignCountry != country)// Assign by another country
-      || (::g_world_war.lastPlayedOperationCountry != country))// Last played by another country
+    else if (!this.isMyClanParticipate()
+      && lastPlayedOperationId && lastPlayedOperationId == this.id
+      && lastPlayedCountry && lastPlayedCountry != country)// Last played out of clan by another country
       res.reasonText = loc("worldWar/cantPlayByThisSide")
     else if (!this.canJoinByCountry(country))// No such country in this operation
       res.reasonText = loc("worldWar/chooseAvailableCountry")
@@ -189,10 +190,10 @@ enum WW_OPERATION_PRIORITY //bit enum
     return res
   }
 
-  function join(country, onErrorCb = null, isSilence = false, onSuccess = null)
+  function join(country, onErrorCb = null, isSilence = false, onSuccess = null, forced = false)
   {
     let cantJoinReason = this.getCantJoinReasonData(country)
-    if (!cantJoinReason.canJoin)
+    if (!cantJoinReason.canJoin && !forced)// Forced when invite in operation
     {
       if (!isSilence)
         ::showInfoMsgBox(cantJoinReason.reasonText)

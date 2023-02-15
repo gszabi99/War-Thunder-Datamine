@@ -296,7 +296,8 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
         autoOpenMapOperation = map })
 }
 
-::g_world_war.joinOperationById <- function joinOperationById(operationId, country = null, isSilence = false, onSuccess = null)
+::g_world_war.joinOperationById <- function joinOperationById(operationId,
+  country = null, isSilence = false, onSuccess = null, forced = false)
 {
   let operation = getOperationById(operationId)
   if (!operation)
@@ -311,7 +312,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   if (::u.isEmpty(country))
     country = operation.getMyAssignCountry() || profileCountrySq.value
 
-  operation.join(country, null, isSilence, onSuccess)
+  operation.join(country, null, isSilence, onSuccess, forced)
 }
 
 ::g_world_war.onJoinOperationSuccess <- function onJoinOperationSuccess(operationId, country, isSilence, onSuccess)

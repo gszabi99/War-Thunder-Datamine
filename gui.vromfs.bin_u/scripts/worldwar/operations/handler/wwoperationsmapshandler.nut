@@ -828,11 +828,11 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       let requestBlk = ::DataBlock()
       requestBlk.operationId = operationId
       actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null,
-        @() ::g_world_war.joinOperationById(operationId))
+        @() ::g_world_war.joinOperationById(operationId, null, false, null, true))
       return
     }
 
-    ::g_world_war.joinOperationById(operationId)
+    ::g_world_war.joinOperationById(operationId, null, false, null, true)
   }
 
   function requestRandomOperationByCountry(countryId, progressBox) {
