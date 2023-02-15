@@ -290,6 +290,7 @@
               "forceCreate": false,
               "ignoreTeamsOnReuse": false,
               "target": "@t1_spawn_cur",
+              "areaNameForSortingByProximity": "@capture_pt_cur",
               "team": "A",
               "tags": {
                 "tank": true
@@ -313,6 +314,7 @@
               "forceCreate": false,
               "ignoreTeamsOnReuse": false,
               "target": "@t2_spawn_cur",
+              "areaNameForSortingByProximity": "@capture_pt_cur",
               "team": "B",
               "tags": {
                 "tank": true
@@ -1002,6 +1004,7 @@
               "forceCreate": false,
               "ignoreTeamsOnReuse": false,
               "target": "@t1_spawn_cur",
+              "areaNameForSortingByProximity": "@capture_pt_cur",
               "team": "A",
               "tags": {
                 "tank": true
@@ -1025,6 +1028,7 @@
               "forceCreate": false,
               "ignoreTeamsOnReuse": false,
               "target": "@t2_spawn_cur",
+              "areaNameForSortingByProximity": "@capture_pt_cur",
               "team": "B",
               "tags": {
                 "tank": true
@@ -1390,6 +1394,7 @@
               "forceCreate": false,
               "ignoreTeamsOnReuse": false,
               "target": "@t1_spawn_cur",
+              "areaNameForSortingByProximity": "@capture_pt_cur",
               "team": "A",
               "tags": {
                 "tank": true
@@ -1413,6 +1418,7 @@
               "forceCreate": false,
               "ignoreTeamsOnReuse": false,
               "target": "@t2_spawn_cur",
+              "areaNameForSortingByProximity": "@capture_pt_cur",
               "team": "B",
               "tags": {
                 "tank": true
@@ -2083,18 +2089,54 @@
               "hideMarkers": true
             }
           ],
-          "moveRespawnBase": [
+          "missionMarkAsRespawnPoint": [
             {
               "loc_name": "missions/spawn_01",
+              "spawnEffect": false,
               "isAirfield": false,
+              "isUnit": false,
+              "radius": -1.0,
+              "isStrictSpawn": false,
+              "useExisting": true,
+              "removeAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "isIndividual": true,
+              "resetStrictSpawnIndex": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "replaceAreas": true,
+              "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@t1_spawn_cur",
-              "team": "A"
+              "areaNameForSortingByProximity": "@capture_pt_cur",
+              "team": "A",
+              "tags": {
+                "tank": true
+              }
             },
             {
               "loc_name": "missions/spawn_01",
+              "spawnEffect": false,
               "isAirfield": false,
+              "isUnit": false,
+              "radius": -1.0,
+              "isStrictSpawn": false,
+              "useExisting": true,
+              "removeAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "isIndividual": true,
+              "resetStrictSpawnIndex": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "replaceAreas": true,
+              "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@t2_spawn_cur",
-              "team": "B"
+              "areaNameForSortingByProximity": "@capture_pt_cur",
+              "team": "B",
+              "tags": {
+                "tank": true
+              }
             }
           ],
           "missionBattleArea": [
