@@ -204,12 +204,12 @@
           },
           "varSetInt": [
             {
-              "value": 10,
+              "value": 15,
               "var": "teamA_antiTankGun_count",
               "fromDescriptor": "teamA_antiTankGun_count"
             },
             {
-              "value": 30,
+              "value": 35,
               "var": "atGunFrontLinePercent",
               "fromDescriptor": "atGunFrontLinePercent"
             },
@@ -459,12 +459,12 @@
             "visibilityTreeTransparencyThreshold": 0.01
           },
           "triggerEnable": {
-            "target": "deepdefa_terraform_check"
+            "target": "deepdefa_at_gun_check"
           }
         },
         "else_actions": {}
       },
-      "deepdefa_terraform_check": {
+      "deepdefa_at_gun_check": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -497,7 +497,7 @@
               "input_var": "at_gun_name_prefix"
             },
             {
-              "value": "t2b_mound_",
+              "value": "t2b_pit_",
               "var": "str_temp2"
             }
           ],
@@ -516,7 +516,7 @@
             }
           ],
           "triggerEnable": {
-            "target": "deepdefa_terraform_do"
+            "target": "deepdefa_at_gun_setup"
           }
         },
         "else_actions": {
@@ -529,7 +529,7 @@
           }
         }
       },
-      "deepdefa_terraform_do": {
+      "deepdefa_at_gun_setup": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -557,7 +557,7 @@
         },
         "actions": {
           "unitSetVar": {
-            "object_var_name": "mound_name",
+            "object_var_name": "pit_name",
             "object": "@str_temp",
             "object_var_string": "@str_temp2"
           },
@@ -568,12 +568,108 @@
           "unitPutToSleep": {
             "target": "@str_temp"
           },
+          "triggerEnable": {
+            "target": "deepdefa_terraform_check_exclude_whole"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "deepdefa_at_gun_check"
+          }
+        }
+      },
+      "deepdefa_terraform_check_exclude_whole": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@TERRAFORM_EXCLUDE_ZONE",
+            "type": "area"
+          }
+        },
+        "actions": {
+          "triggerEnable": {
+            "target": "deepdefa_terraform_check_exclude_cur"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "deepdefa_terraform_do"
+          }
+        }
+      },
+      "deepdefa_terraform_check_exclude_cur": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "areaWhenInArea": {
+            "math": "2D",
+            "target": "@str_temp2",
+            "object": "@TERRAFORM_EXCLUDE_ZONE"
+          }
+        },
+        "actions": {
+          "triggerEnable": {
+            "target": "deepdefa_at_gun_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "deepdefa_terraform_do"
+          }
+        }
+      },
+      "deepdefa_terraform_do": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "duplicateAreaAtPos": {
+            "area": "sample_for_trench_parapet",
+            "target": "@str_temp2",
+            "var_out": "trench_parapet_name",
+            "spawnOffsetSpace": "object"
+          },
+          "missionDestroyArea": {
+            "target_type": "permanent_rendinst",
+            "area": "@trench_parapet_name"
+          },
           "missionTerraform": [
             {
-              "delta": 0.7,
+              "delta": 0.5,
               "deltaNoisePercent": 0,
-              "smoothingAreaWidth": 3.0,
-              "object": "@str_temp2"
+              "smoothingAreaWidth": 0.0,
+              "object": "@trench_parapet_name"
             },
             {
               "delta": -0.2,
@@ -583,14 +679,10 @@
             }
           ],
           "triggerEnable": {
-            "target": "deepdefa_terraform_check"
+            "target": "deepdefa_at_gun_check"
           }
         },
-        "else_actions": {
-          "triggerEnable": {
-            "target": "deepdefa_terraform_check"
-          }
-        }
+        "else_actions": {}
       },
       "deepdefa_wake_at_gun": {
         "is_enabled": false,
@@ -632,7 +724,7 @@
           "unitGetVar": {
             "object_marking": 0,
             "object": "@str_temp",
-            "object_var_name": "mound_name",
+            "object_var_name": "pit_name",
             "out_var_string": "str_temp2"
           },
           "unitRespawn": {
@@ -1212,12 +1304,12 @@
           },
           "varSetInt": [
             {
-              "value": 10,
+              "value": 15,
               "var": "teamB_antiTankGun_count",
               "fromDescriptor": "teamB_antiTankGun_count"
             },
             {
-              "value": 30,
+              "value": 35,
               "var": "atGunFrontLinePercent",
               "fromDescriptor": "atGunFrontLinePercent"
             },
@@ -1467,12 +1559,12 @@
             "visibilityTreeTransparencyThreshold": 0.01
           },
           "triggerEnable": {
-            "target": "deepdefb_terraform_check"
+            "target": "deepdefb_at_gun_check"
           }
         },
         "else_actions": {}
       },
-      "deepdefb_terraform_check": {
+      "deepdefb_at_gun_check": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1505,7 +1597,7 @@
               "input_var": "at_gun_name_prefix"
             },
             {
-              "value": "t2a_mound_",
+              "value": "t2a_pit_",
               "var": "str_temp2"
             }
           ],
@@ -1524,7 +1616,7 @@
             }
           ],
           "triggerEnable": {
-            "target": "deepdefb_terraform_do"
+            "target": "deepdefb_at_gun_setup"
           }
         },
         "else_actions": {
@@ -1537,7 +1629,7 @@
           }
         }
       },
-      "deepdefb_terraform_do": {
+      "deepdefb_at_gun_setup": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1568,7 +1660,7 @@
             "target": "@str_temp"
           },
           "unitSetVar": {
-            "object_var_name": "mound_name",
+            "object_var_name": "pit_name",
             "object": "@str_temp",
             "object_var_string": "@str_temp2"
           },
@@ -1576,12 +1668,108 @@
             "target_marking": 0,
             "target": "@str_temp"
           },
+          "triggerEnable": {
+            "target": "deepdefb_terraform_check_exclude_whole"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "deepdefb_at_gun_check"
+          }
+        }
+      },
+      "deepdefb_terraform_check_exclude_whole": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@TERRAFORM_EXCLUDE_ZONE",
+            "type": "area"
+          }
+        },
+        "actions": {
+          "triggerEnable": {
+            "target": "deepdefb_terraform_check_exclude_cur"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "deepdefb_terraform_do"
+          }
+        }
+      },
+      "deepdefb_terraform_check_exclude_cur": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "areaWhenInArea": {
+            "math": "2D",
+            "target": "@str_temp2",
+            "object": "@TERRAFORM_EXCLUDE_ZONE"
+          }
+        },
+        "actions": {
+          "triggerEnable": {
+            "target": "deepdefb_at_gun_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "deepdefb_terraform_do"
+          }
+        }
+      },
+      "deepdefb_terraform_do": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "duplicateAreaAtPos": {
+            "area": "sample_for_trench_parapet",
+            "target": "@str_temp2",
+            "var_out": "trench_parapet_name",
+            "spawnOffsetSpace": "object"
+          },
+          "missionDestroyArea": {
+            "target_type": "permanent_rendinst",
+            "area": "@trench_parapet_name"
+          },
           "missionTerraform": [
             {
-              "delta": 0.7,
+              "delta": 0.5,
               "deltaNoisePercent": 0,
-              "smoothingAreaWidth": 3.0,
-              "object": "@str_temp2"
+              "smoothingAreaWidth": 0.0,
+              "object": "@trench_parapet_name"
             },
             {
               "delta": -0.2,
@@ -1591,14 +1779,10 @@
             }
           ],
           "triggerEnable": {
-            "target": "deepdefb_terraform_check"
+            "target": "deepdefb_at_gun_check"
           }
         },
-        "else_actions": {
-          "triggerEnable": {
-            "target": "deepdefb_terraform_check"
-          }
-        }
+        "else_actions": {}
       },
       "deepdefb_wake_at_gun": {
         "is_enabled": false,
@@ -1640,7 +1824,7 @@
           "unitGetVar": {
             "object_marking": 0,
             "object": "@str_temp",
-            "object_var_name": "mound_name",
+            "object_var_name": "pit_name",
             "out_var_string": "str_temp2"
           },
           "unitRespawn": {
@@ -2122,7 +2306,9 @@
     "at_gun_1st_sq_name": "",
     "at_gun_2nd_sq_name": "",
     "at_gun_all_sq_name": "",
-    "at_gun_name_prefix": ""
+    "at_gun_name_prefix": "",
+    "trench_parapet_name": "",
+    "TERRAFORM_EXCLUDE_ZONE": "terraform_exclude_zone"
   },
   "dialogs": {},
   "airfields": {},
@@ -4112,7 +4298,35 @@
       }
     }
   },
-  "areas": {},
+  "areas": {
+    "sample_for_trench_parapet": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          5.6,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.6
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
   "objLayers": {
     "layer": [
       {
