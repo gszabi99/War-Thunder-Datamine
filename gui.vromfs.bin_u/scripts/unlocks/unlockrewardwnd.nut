@@ -276,6 +276,7 @@ register_command(
   onReUseItem = @() null
   onRunCustomMission = @() null
   onGoToItem = @() null
+  onPreviewDecorator = @() null
 
   function getImageLayer(unlock, config)
   {
