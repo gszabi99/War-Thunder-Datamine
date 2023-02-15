@@ -177,7 +177,8 @@ enum WW_OPERATION_PRIORITY //bit enum
     if (this.isMyClanParticipate() && assignCountry != null
       && assignCountry != this.getMyClanCountry())// My clan participate but can't join by my clan
       res.reasonText = loc("worldWar/cantJoinByAnotherSideClan")
-    else if (assignCountry && assignCountry != country)// Assign by another country
+    else if ((assignCountry && assignCountry != country)// Assign by another country
+      || (::g_world_war.lastPlayedOperationCountry != country))// Last played by another country
       res.reasonText = loc("worldWar/cantPlayByThisSide")
     else if (!this.canJoinByCountry(country))// No such country in this operation
       res.reasonText = loc("worldWar/chooseAvailableCountry")
