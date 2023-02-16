@@ -437,10 +437,17 @@
             "source": "targetDesignation",
             "width": 2000.0
           },
-          "setRelSpeedGatePos": {
-            "source": "targetDesignation",
-            "width": 30.0
-          },
+          "setRelSpeedGatePos": [
+            {
+              "source": "targetDesignation",
+              "width": 30.0
+            },
+            {
+              "source": "constRange",
+              "pos": 675.0,
+              "width": 1350.0
+            }
+          ],
           "setFsmActive": {
             "fsm": "lock",
             "active": true
