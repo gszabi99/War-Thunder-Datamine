@@ -190,8 +190,7 @@
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
+      "mainBeamNotchWidth": 60.0,
       "distance": {
         "presents": true,
         "minValue": 500.0,
@@ -200,8 +199,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 30.0,
-        "maxValue": 1500.0,
+        "minValue": -1200.0,
+        "maxValue": 1200.0,
         "signalWidthMin": 2.0,
         "width": 30.0
       }
@@ -444,8 +443,8 @@
             },
             {
               "source": "constRange",
-              "pos": 675.0,
-              "width": 1350.0
+              "pos": 0.0,
+              "width": 1800.0
             }
           ],
           "setFsmActive": {
@@ -510,8 +509,8 @@
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
-            "pos": 675.0,
-            "width": 1350.0
+            "pos": 0.0,
+            "width": 1800.0
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
